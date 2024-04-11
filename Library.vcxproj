@@ -1,0 +1,423 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Debug|x64">
+      <Configuration>Debug</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|x64">
+      <Configuration>Release</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Crypto\mSCBase.h" />
+    <ClInclude Include="Crypto\mSCFelica.h" />
+    <ClInclude Include="Crypto\mSCFelicaDefinitions.h" />
+    <ClInclude Include="Crypto\mSCFelicaMac.h" />
+    <ClInclude Include="Crypto\mSCMifare.h" />
+    <ClInclude Include="Crypto\mSCReader.h" />
+    <ClInclude Include="Device\mDeviceEnumerarBase.h" />
+    <ClInclude Include="Device\mDeviceRegistry.h" />
+    <ClInclude Include="Device\mDriveEnumerar.h" />
+    <ClInclude Include="GDI\mWebView2.h" />
+    <ClInclude Include="General\mCodePage.h" />
+    <ClInclude Include="General\mEnvironmentVariable.h" />
+    <ClInclude Include="General\mHexdecimal.h" />
+    <ClInclude Include="General\mSlashFormatUtility.h" />
+    <ClInclude Include="Device\mBluetoothEnumerar.h" />
+    <ClInclude Include="General\mCsvFile.h" />
+    <ClInclude Include="General\mNotifyOption.h" />
+    <ClInclude Include="General\mSlashFormat.h" />
+    <ClInclude Include="Network\mHttpAccess.h" />
+    <ClInclude Include="General\mStdInStream.h" />
+    <ClInclude Include="Network\mHttpConnection.h" />
+    <ClInclude Include="Network\mHttpRequest.h" />
+    <ClInclude Include="Service\mServiceControlManager.h" />
+    <ClInclude Include="Device\mPrinterEnumerar.h" />
+    <ClInclude Include="Device\mPrinterInfo.h" />
+    <ClInclude Include="GDI\mGdiPrinterDC.h" />
+    <ClInclude Include="General\mBinary.h" />
+    <ClInclude Include="mRevision.h" />
+    <ClInclude Include="Service\mServiceHandler.h" />
+    <ClInclude Include="Thread\mTimer.h" />
+    <ClInclude Include="General\mPrivateAlloc.h" />
+    <ClInclude Include="Network\mASyncNamedPipe.h" />
+    <ClInclude Include="Thread\mTaskBase.h" />
+    <ClInclude Include="Thread\mTaskQueue.h" />
+    <ClInclude Include="Device\mDeviceEnumerar.h" />
+    <ClInclude Include="Device\mSerialPortEnumerar.h" />
+    <ClInclude Include="General\mRegistry.h" />
+    <ClInclude Include="Network\mASyncSerialPort.h" />
+    <ClInclude Include="Thread\mWorkerThreadPool.h" />
+    <ClInclude Include="Thread\mThread.h" />
+    <ClInclude Include="Thread\mWorkerThread.h" />
+    <ClInclude Include="COM\mVariant.h" />
+    <ClInclude Include="General\mDateTime.h" />
+    <ClInclude Include="COM\Excel\mExcelCellRef.h" />
+    <ClInclude Include="COM\Excel\mExcelHandler.h" />
+    <ClInclude Include="COM\mComObject.h" />
+    <ClInclude Include="Crypto\mAES.h" />
+    <ClInclude Include="Crypto\mAESDecrypter.h" />
+    <ClInclude Include="Crypto\mAESEncrypter.h" />
+    <ClInclude Include="Crypto\mHash.h" />
+    <ClInclude Include="Crypto\mHmac.h" />
+    <ClInclude Include="Crypto\mMTwister.h" />
+    <ClInclude Include="Crypto\mRand.h" />
+    <ClInclude Include="Crypto\mRSA.h" />
+    <ClInclude Include="Crypto\mRSACipher.h" />
+    <ClInclude Include="Crypto\mRSAVerifier.h" />
+    <ClInclude Include="Database\mOdbc.h" />
+    <ClInclude Include="Database\mOdbcConnection.h" />
+    <ClInclude Include="Database\mOdbcConnectionHandle.h" />
+    <ClInclude Include="Database\mOdbcDescription.h" />
+    <ClInclude Include="Database\mOdbcEnvironment.h" />
+    <ClInclude Include="Database\mOdbcParams.h" />
+    <ClInclude Include="Database\mOdbcQuery.h" />
+    <ClInclude Include="Database\mOdbcSqlState.h" />
+    <ClInclude Include="GDI\mButton.h" />
+    <ClInclude Include="GDI\mCheckBox.h" />
+    <ClInclude Include="GDI\mCheckBoxFamily.h" />
+    <ClInclude Include="GDI\mComboBox.h" />
+    <ClInclude Include="GDI\mEditBox.h" />
+    <ClInclude Include="GDI\mGdiBitmap.h" />
+    <ClInclude Include="GDI\mGdiBrush.h" />
+    <ClInclude Include="GDI\mGdiColor.h" />
+    <ClInclude Include="GDI\mGdiCursor.h" />
+    <ClInclude Include="GDI\mGdiDC.h" />
+    <ClInclude Include="GDI\mGdiDualImagelist.h" />
+    <ClInclude Include="GDI\mGdiFont.h" />
+    <ClInclude Include="GDI\mGdiHandle.h" />
+    <ClInclude Include="GDI\mGdiIcon.h" />
+    <ClInclude Include="GDI\mGdiImagelist.h" />
+    <ClInclude Include="GDI\mGdiMemDC.h" />
+    <ClInclude Include="GDI\mGdiPaintDC.h" />
+    <ClInclude Include="GDI\mGdiPen.h" />
+    <ClInclude Include="GDI\mGdiResource.h" />
+    <ClInclude Include="GDI\mGdiUtil.h" />
+    <ClInclude Include="GDI\mGdiWinDC.h" />
+    <ClInclude Include="GDI\mGlobalWindowFunc.h" />
+    <ClInclude Include="GDI\mGroupBox.h" />
+    <ClInclude Include="GDI\mLabel.h" />
+    <ClInclude Include="GDI\mListBox.h" />
+    <ClInclude Include="GDI\mListBoxFamily.h" />
+    <ClInclude Include="GDI\mMenu.h" />
+    <ClInclude Include="GDI\mRadioButton.h" />
+    <ClInclude Include="GDI\mStatusBar.h" />
+    <ClInclude Include="GDI\mToolBar.h" />
+    <ClInclude Include="GDI\mWindow.h" />
+    <ClInclude Include="GDI\mWindowCollection.h" />
+    <ClInclude Include="GDI\mWindowPosition.h" />
+    <ClInclude Include="General\mAtomicValue.h" />
+    <ClInclude Include="General\mBinaryUtil.h" />
+    <ClInclude Include="General\mCriticalSectionContainer.h" />
+    <ClInclude Include="General\mErrorLogger.h" />
+    <ClInclude Include="General\mException.h" />
+    <ClInclude Include="General\mFile.h" />
+    <ClInclude Include="General\mFileReadStream.h" />
+    <ClInclude Include="General\mFileReadStreamBase.h" />
+    <ClInclude Include="General\mFileUtility.h" />
+    <ClInclude Include="General\mFileWriteStream.h" />
+    <ClInclude Include="General\mFileWriteStreamBase.h" />
+    <ClInclude Include="General\mInitFile.h" />
+    <ClInclude Include="General\mInitFileSection.h" />
+    <ClInclude Include="General\mOptionParser.h" />
+    <ClInclude Include="General\mRegexp.h" />
+    <ClInclude Include="General\mRevPolish.h" />
+    <ClInclude Include="General\mSecureAllocator.h" />
+    <ClInclude Include="General\mTCHAR.h" />
+    <ClInclude Include="General\mUniqueValue.h" />
+    <ClInclude Include="mStandard.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="Crypto\mSCBase.cpp" />
+    <ClCompile Include="Crypto\mSCFelica.cpp" />
+    <ClCompile Include="Crypto\mSCFelicaDefinitions.cpp" />
+    <ClCompile Include="Crypto\mSCFelicaMac.cpp" />
+    <ClCompile Include="Crypto\mSCMifare.cpp" />
+    <ClCompile Include="Crypto\mSCReader.cpp" />
+    <ClCompile Include="Device\mDeviceEnumerarBase.cpp" />
+    <ClCompile Include="Device\mDeviceRegistry.cpp" />
+    <ClCompile Include="Device\mDriveEnumerar.cpp" />
+    <ClCompile Include="GDI\mWebView2.cpp" />
+    <ClCompile Include="General\mCodePage.cpp" />
+    <ClCompile Include="General\mEnvironmentVariable.cpp" />
+    <ClCompile Include="General\mHexdecimal.cpp" />
+    <ClCompile Include="General\mSlashFormatUtility.cpp" />
+    <ClCompile Include="Device\mBluetoothEnumerar.cpp" />
+    <ClCompile Include="General\mCsvFile.cpp" />
+    <ClCompile Include="General\mNotifyOption.cpp" />
+    <ClCompile Include="General\mSlashFormat.cpp" />
+    <ClCompile Include="Network\mHttpAccess.cpp" />
+    <ClCompile Include="General\mStdInStream.cpp" />
+    <ClCompile Include="Network\mHttpConnection.cpp" />
+    <ClCompile Include="Network\mHttpRequest.cpp" />
+    <ClCompile Include="Service\mServiceControlManager.cpp" />
+    <ClCompile Include="Device\mPrinterEnumerar.cpp" />
+    <ClCompile Include="Device\mPrinterInfo.cpp" />
+    <ClCompile Include="GDI\mGdiPrinterDC.cpp" />
+    <ClCompile Include="General\mBinary.cpp" />
+    <ClCompile Include="Service\mServiceHandler.cpp" />
+    <ClCompile Include="Thread\mTimer.cpp" />
+    <ClCompile Include="General\mPrivateAlloc.cpp" />
+    <ClCompile Include="Network\mASyncNamedPipe.cpp" />
+    <ClCompile Include="Thread\mTaskBase.cpp" />
+    <ClCompile Include="Thread\mTaskQueue.cpp" />
+    <ClCompile Include="Device\mDeviceEnumerar.cpp" />
+    <ClCompile Include="Device\mSerialPortEnumerar.cpp" />
+    <ClCompile Include="General\mRegistry.cpp" />
+    <ClCompile Include="Network\mASyncSerialPort.cpp" />
+    <ClCompile Include="Thread\mWorkerThreadPool.cpp" />
+    <ClCompile Include="Thread\mThread.cpp" />
+    <ClCompile Include="Thread\mWorkerThread.cpp" />
+    <ClCompile Include="COM\mVariant.cpp" />
+    <ClCompile Include="General\mDateTime.cpp" />
+    <ClCompile Include="COM\Excel\mExcelCellRef.cpp" />
+    <ClCompile Include="COM\Excel\mExcelHandler.cpp" />
+    <ClCompile Include="COM\mComObject.cpp" />
+    <ClCompile Include="Crypto\mAES.cpp" />
+    <ClCompile Include="Crypto\mAESDecrypter.cpp" />
+    <ClCompile Include="Crypto\mAESEncrypter.cpp" />
+    <ClCompile Include="Crypto\mHash.cpp" />
+    <ClCompile Include="Crypto\mHmac.cpp" />
+    <ClCompile Include="Crypto\mMTwister.cpp" />
+    <ClCompile Include="Crypto\mRand.cpp" />
+    <ClCompile Include="Crypto\mRSA.cpp" />
+    <ClCompile Include="Crypto\mRSACipher.cpp" />
+    <ClCompile Include="Crypto\mRSAVerifier.cpp" />
+    <ClCompile Include="Database\mOdbc.cpp" />
+    <ClCompile Include="Database\mOdbcConnection.cpp" />
+    <ClCompile Include="Database\mOdbcConnectionHandle.cpp" />
+    <ClCompile Include="Database\mOdbcDescription.cpp" />
+    <ClCompile Include="Database\mOdbcEnvironment.cpp" />
+    <ClCompile Include="Database\mOdbcParams.cpp" />
+    <ClCompile Include="Database\mOdbcQuery.cpp" />
+    <ClCompile Include="Database\mOdbcSqlState.cpp" />
+    <ClCompile Include="GDI\mButton.cpp" />
+    <ClCompile Include="GDI\mCheckBox.cpp" />
+    <ClCompile Include="GDI\mCheckBoxFamily.cpp" />
+    <ClCompile Include="GDI\mComboBox.cpp" />
+    <ClCompile Include="GDI\mEditBox.cpp" />
+    <ClCompile Include="GDI\mGdiBitmap.cpp" />
+    <ClCompile Include="GDI\mGdiBrush.cpp" />
+    <ClCompile Include="GDI\mGdiColor.cpp" />
+    <ClCompile Include="GDI\mGdiCursor.cpp" />
+    <ClCompile Include="GDI\mGdiDualImagelist.cpp" />
+    <ClCompile Include="GDI\mGdiFont.cpp" />
+    <ClCompile Include="GDI\mGdiHandle.cpp" />
+    <ClCompile Include="GDI\mGdiIcon.cpp" />
+    <ClCompile Include="GDI\mGdiImagelist.cpp" />
+    <ClCompile Include="GDI\mGdiMemDC.cpp" />
+    <ClCompile Include="GDI\mGdiPaintDC.cpp" />
+    <ClCompile Include="GDI\mGdiPen.cpp" />
+    <ClCompile Include="GDI\mGdiResource.cpp" />
+    <ClCompile Include="GDI\mGdiDC.cpp" />
+    <ClCompile Include="GDI\mGdiWinDC.cpp" />
+    <ClCompile Include="GDI\mGlobalWindowFunc.cpp" />
+    <ClCompile Include="GDI\mGroupBox.cpp" />
+    <ClCompile Include="GDI\mLabel.cpp" />
+    <ClCompile Include="GDI\mListBox.cpp" />
+    <ClCompile Include="GDI\mListBoxFamily.cpp" />
+    <ClCompile Include="GDI\mMenu.cpp" />
+    <ClCompile Include="GDI\mRadioButton.cpp" />
+    <ClCompile Include="GDI\mStatusBar.cpp" />
+    <ClCompile Include="GDI\mToolBar.cpp" />
+    <ClCompile Include="GDI\mWindow.cpp" />
+    <ClCompile Include="GDI\mWindowCollection.cpp" />
+    <ClCompile Include="General\mAtomicValue.cpp" />
+    <ClCompile Include="General\mBinaryUtil.cpp" />
+    <ClCompile Include="General\mCriticalSectionContainer.cpp" />
+    <ClCompile Include="General\mErrorLogger.cpp" />
+    <ClCompile Include="General\mException.cpp" />
+    <ClCompile Include="General\mFile.cpp" />
+    <ClCompile Include="General\mFileReadStream.cpp" />
+    <ClCompile Include="General\mFileReadStreamBase.cpp" />
+    <ClCompile Include="General\mFileUtility.cpp" />
+    <ClCompile Include="General\mFileWriteStream.cpp" />
+    <ClCompile Include="General\mFileWriteStreamBase.cpp" />
+    <ClCompile Include="General\mInitFile.cpp" />
+    <ClCompile Include="General\mInitFileSection.cpp" />
+    <ClCompile Include="General\mOptionParser.cpp" />
+    <ClCompile Include="General\mRegexp.cpp" />
+    <ClCompile Include="General\mRevPolish.cpp" />
+    <ClCompile Include="General\mSecureAllocator.cpp" />
+    <ClCompile Include="General\mStandard.cpp" />
+    <ClCompile Include="General\mTCHAR.cpp" />
+    <ClCompile Include="General\mUniqueValue.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="readme.txt" />
+    <Text Include="rules.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="cpp.hint" />
+    <None Include="packages.config" />
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{C0FCE099-243A-45AE-93E6-2638EFE83E51}</ProjectGuid>
+    <Keyword>Win32Proj</Keyword>
+    <RootNamespace>Library</RootNamespace>
+    <WindowsTargetPlatformVersion>10.0.22000.0</WindowsTargetPlatformVersion>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v141</PlatformToolset>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v141</PlatformToolset>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v141</PlatformToolset>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v141</PlatformToolset>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="Shared">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <IntDir>$(SolutionDir)$(PlatformTarget)\$(Configuration)\$(TargetName)\</IntDir>
+    <OutDir>$(SolutionDir)$(PlatformTarget)\$(Configuration)\$(ProjectName)\</OutDir>
+    <IncludePath>$(SolutionDir)$(PlatformTarget)\$(Configuration)\$(TargetName);$(IncludePath)</IncludePath>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <OutDir>$(SolutionDir)$(PlatformTarget)\$(Configuration)\$(ProjectName)\</OutDir>
+    <IntDir>$(SolutionDir)$(PlatformTarget)\$(Configuration)\$(TargetName)\</IntDir>
+    <IncludePath>$(SolutionDir)$(PlatformTarget)\$(Configuration)\$(TargetName);$(IncludePath)</IncludePath>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <OutDir>$(SolutionDir)$(PlatformTarget)\$(Configuration)\$(ProjectName)\</OutDir>
+    <IntDir>$(SolutionDir)$(PlatformTarget)\$(Configuration)\$(TargetName)\</IntDir>
+    <IncludePath>$(SolutionDir)$(PlatformTarget)\$(Configuration)\$(TargetName);$(IncludePath)</IncludePath>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <OutDir>$(SolutionDir)$(PlatformTarget)\$(Configuration)\$(ProjectName)\</OutDir>
+    <IntDir>$(SolutionDir)$(PlatformTarget)\$(Configuration)\$(TargetName)\</IntDir>
+    <IncludePath>$(SolutionDir)$(PlatformTarget)\$(Configuration)\$(TargetName);$(IncludePath)</IncludePath>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <PrecompiledHeader>
+      </PrecompiledHeader>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>Disabled</Optimization>
+      <PreprocessorDefinitions>WIN32;_DEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>$(ProjectDir)</AdditionalIncludeDirectories>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+    </Link>
+    <Lib>
+      <OutputFile>$(OutDir)$(TargetName)$(TargetExt)</OutputFile>
+    </Lib>
+    <PreBuildEvent>
+      <Command>$(ProjectDir)svncheck.bat LIBRARY &gt; $(ProjectDir)mRevision.h</Command>
+    </PreBuildEvent>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <ClCompile>
+      <PrecompiledHeader>
+      </PrecompiledHeader>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>Disabled</Optimization>
+      <PreprocessorDefinitions>_DEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>$(ProjectDir)</AdditionalIncludeDirectories>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+    </Link>
+    <PreBuildEvent>
+      <Command>$(ProjectDir)svncheck.bat LIBRARY &gt; $(ProjectDir)mRevision.h</Command>
+    </PreBuildEvent>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <PrecompiledHeader>
+      </PrecompiledHeader>
+      <Optimization>MaxSpeed</Optimization>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <PreprocessorDefinitions>WIN32;NDEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>$(ProjectDir)</AdditionalIncludeDirectories>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+    </Link>
+    <Lib>
+      <OutputFile>$(OutDir)$(TargetName)$(TargetExt)</OutputFile>
+    </Lib>
+    <PreBuildEvent>
+      <Command>$(ProjectDir)svncheck.bat LIBRARY &gt; $(ProjectDir)mRevision.h</Command>
+    </PreBuildEvent>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <PrecompiledHeader>
+      </PrecompiledHeader>
+      <Optimization>MaxSpeed</Optimization>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <PreprocessorDefinitions>NDEBUG;_LIB;MERRORLOGGER_NO_FILENAME;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>$(ProjectDir)</AdditionalIncludeDirectories>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+    </Link>
+    <PreBuildEvent>
+      <Command>$(ProjectDir)svncheck.bat LIBRARY &gt; $(ProjectDir)mRevision.h</Command>
+    </PreBuildEvent>
+  </ItemDefinitionGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+    <Import Project="packages\Microsoft.Web.WebView2.1.0.992.28\build\native\Microsoft.Web.WebView2.targets" Condition="Exists('packages\Microsoft.Web.WebView2.1.0.992.28\build\native\Microsoft.Web.WebView2.targets')" />
+    <Import Project="..\packages\Microsoft.Web.WebView2.1.0.2420.47\build\native\Microsoft.Web.WebView2.targets" Condition="Exists('..\packages\Microsoft.Web.WebView2.1.0.2420.47\build\native\Microsoft.Web.WebView2.targets')" />
+  </ImportGroup>
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>このプロジェクトは、このコンピューター上にない NuGet パッケージを参照しています。それらのパッケージをダウンロードするには、[NuGet パッケージの復元] を使用します。詳細については、http://go.microsoft.com/fwlink/?LinkID=322105 を参照してください。見つからないファイルは {0} です。</ErrorText>
+    </PropertyGroup>
+    <Warning Condition="!Exists('packages\Microsoft.Web.WebView2.1.0.992.28\build\native\Microsoft.Web.WebView2.targets')" Text="$([System.String]::Format('$(ErrorText)', 'packages\Microsoft.Web.WebView2.1.0.992.28\build\native\Microsoft.Web.WebView2.targets'))" />
+    <Error Condition="!Exists('..\packages\Microsoft.Web.WebView2.1.0.2420.47\build\native\Microsoft.Web.WebView2.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.Web.WebView2.1.0.2420.47\build\native\Microsoft.Web.WebView2.targets'))" />
+  </Target>
+</Project>

@@ -1,0 +1,747 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="General">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="GDI_Window">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hh;hpp;hxx;hm;inl;inc;xsd</Extensions>
+    </Filter>
+    <Filter Include="GDI_Object">
+      <UniqueIdentifier>{ae3a8b70-84d4-4d40-b835-08f5d6603076}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GDI_General">
+      <UniqueIdentifier>{e3109190-543f-4fbb-ab25-91094d217594}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Crypto">
+      <UniqueIdentifier>{a2f185a8-c59d-4298-87f7-44e0228ffaff}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Database">
+      <UniqueIdentifier>{2d99d655-d375-4704-abaa-c26428805ccf}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GDI_DC">
+      <UniqueIdentifier>{b2afbdb5-b0a4-4a5f-8128-7003ea89fdf4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="COM">
+      <UniqueIdentifier>{d995c615-5335-47da-ae8a-aaf7a01ba1ea}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="COM\Excel">
+      <UniqueIdentifier>{d665e93a-9cc8-402d-8920-353d8f008551}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Network">
+      <UniqueIdentifier>{fc383841-c69c-4cc3-a7ab-3ee8bf1152e1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Thread">
+      <UniqueIdentifier>{7bd4c20a-cade-48d9-9ea7-ccf9cb5ba9de}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Device">
+      <UniqueIdentifier>{8602b45b-3967-4ebe-afc9-160773d3bbb2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Service">
+      <UniqueIdentifier>{03faf0fb-32c2-45a9-a6e5-14948ab63403}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="General\mOptionParser.h">
+      <Filter>General</Filter>
+    </ClInclude>
+    <ClInclude Include="General\mTCHAR.h">
+      <Filter>General</Filter>
+    </ClInclude>
+    <ClInclude Include="General\mException.h">
+      <Filter>General</Filter>
+    </ClInclude>
+    <ClInclude Include="mStandard.h" />
+    <ClInclude Include="General\mErrorLogger.h">
+      <Filter>General</Filter>
+    </ClInclude>
+    <ClInclude Include="General\mFileReadStream.h">
+      <Filter>General</Filter>
+    </ClInclude>
+    <ClInclude Include="General\mFileWriteStream.h">
+      <Filter>General</Filter>
+    </ClInclude>
+    <ClInclude Include="General\mFile.h">
+      <Filter>General</Filter>
+    </ClInclude>
+    <ClInclude Include="GDI\mWindow.h">
+      <Filter>GDI_Window</Filter>
+    </ClInclude>
+    <ClInclude Include="GDI\mGlobalWindowFunc.h">
+      <Filter>GDI_Window</Filter>
+    </ClInclude>
+    <ClInclude Include="General\mCriticalSectionContainer.h">
+      <Filter>General</Filter>
+    </ClInclude>
+    <ClInclude Include="GDI\mButton.h">
+      <Filter>GDI_Window</Filter>
+    </ClInclude>
+    <ClInclude Include="GDI\mCheckBox.h">
+      <Filter>GDI_Window</Filter>
+    </ClInclude>
+    <ClInclude Include="GDI\mCheckBoxFamily.h">
+      <Filter>GDI_Window</Filter>
+    </ClInclude>
+    <ClInclude Include="GDI\mRadioButton.h">
+      <Filter>GDI_Window</Filter>
+    </ClInclude>
+    <ClInclude Include="GDI\mGroupBox.h">
+      <Filter>GDI_Window</Filter>
+    </ClInclude>
+    <ClInclude Include="GDI\mListBoxFamily.h">
+      <Filter>GDI_Window</Filter>
+    </ClInclude>
+    <ClInclude Include="GDI\mComboBox.h">
+      <Filter>GDI_Window</Filter>
+    </ClInclude>
+    <ClInclude Include="GDI\mListBox.h">
+      <Filter>GDI_Window</Filter>
+    </ClInclude>
+    <ClInclude Include="GDI\mLabel.h">
+      <Filter>GDI_Window</Filter>
+    </ClInclude>
+    <ClInclude Include="GDI\mEditBox.h">
+      <Filter>GDI_Window</Filter>
+    </ClInclude>
+    <ClInclude Include="GDI\mMenu.h">
+      <Filter>GDI_Window</Filter>
+    </ClInclude>
+    <ClInclude Include="General\mUniqueValue.h">
+      <Filter>General</Filter>
+    </ClInclude>
+    <ClInclude Include="GDI\mStatusBar.h">
+      <Filter>GDI_Window</Filter>
+    </ClInclude>
+    <ClInclude Include="GDI\mToolBar.h">
+      <Filter>GDI_Window</Filter>
+    </ClInclude>
+    <ClInclude Include="GDI\mGdiBrush.h">
+      <Filter>GDI_Object</Filter>
+    </ClInclude>
+    <ClInclude Include="GDI\mGdiHandle.h">
+      <Filter>GDI_Object</Filter>
+    </ClInclude>
+    <ClInclude Include="GDI\mGdiFont.h">
+      <Filter>GDI_Object</Filter>
+    </ClInclude>
+    <ClInclude Include="GDI\mGdiDC.h">
+      <Filter>GDI_DC</Filter>
+    </ClInclude>
+    <ClInclude Include="GDI\mGdiWinDC.h">
+      <Filter>GDI_DC</Filter>
+    </ClInclude>
+    <ClInclude Include="GDI\mGdiPaintDC.h">
+      <Filter>GDI_DC</Filter>
+    </ClInclude>
+    <ClInclude Include="GDI\mGdiMemDC.h">
+      <Filter>GDI_DC</Filter>
+    </ClInclude>
+    <ClInclude Include="GDI\mGdiPen.h">
+      <Filter>GDI_Object</Filter>
+    </ClInclude>
+    <ClInclude Include="GDI\mGdiBitmap.h">
+      <Filter>GDI_Object</Filter>
+    </ClInclude>
+    <ClInclude Include="GDI\mGdiIcon.h">
+      <Filter>GDI_Object</Filter>
+    </ClInclude>
+    <ClInclude Include="GDI\mGdiCursor.h">
+      <Filter>GDI_Object</Filter>
+    </ClInclude>
+    <ClInclude Include="GDI\mGdiImagelist.h">
+      <Filter>GDI_Object</Filter>
+    </ClInclude>
+    <ClInclude Include="GDI\mGdiDualImagelist.h">
+      <Filter>GDI_Object</Filter>
+    </ClInclude>
+    <ClInclude Include="GDI\mGdiResource.h">
+      <Filter>GDI_General</Filter>
+    </ClInclude>
+    <ClInclude Include="GDI\mWindowCollection.h">
+      <Filter>GDI_Window</Filter>
+    </ClInclude>
+    <ClInclude Include="General\mRegexp.h">
+      <Filter>General</Filter>
+    </ClInclude>
+    <ClInclude Include="General\mInitFile.h">
+      <Filter>General</Filter>
+    </ClInclude>
+    <ClInclude Include="General\mInitFileSection.h">
+      <Filter>General</Filter>
+    </ClInclude>
+    <ClInclude Include="GDI\mGdiUtil.h">
+      <Filter>GDI_General</Filter>
+    </ClInclude>
+    <ClInclude Include="GDI\mWindowPosition.h">
+      <Filter>GDI_Window</Filter>
+    </ClInclude>
+    <ClInclude Include="General\mAtomicValue.h">
+      <Filter>General</Filter>
+    </ClInclude>
+    <ClInclude Include="Crypto\mAES.h">
+      <Filter>Crypto</Filter>
+    </ClInclude>
+    <ClInclude Include="Crypto\mAESDecrypter.h">
+      <Filter>Crypto</Filter>
+    </ClInclude>
+    <ClInclude Include="Crypto\mAESEncrypter.h">
+      <Filter>Crypto</Filter>
+    </ClInclude>
+    <ClInclude Include="Crypto\mMTwister.h">
+      <Filter>Crypto</Filter>
+    </ClInclude>
+    <ClInclude Include="Crypto\mRSA.h">
+      <Filter>Crypto</Filter>
+    </ClInclude>
+    <ClInclude Include="Crypto\mRSACipher.h">
+      <Filter>Crypto</Filter>
+    </ClInclude>
+    <ClInclude Include="Crypto\mRSAVerifier.h">
+      <Filter>Crypto</Filter>
+    </ClInclude>
+    <ClInclude Include="Crypto\mHash.h">
+      <Filter>Crypto</Filter>
+    </ClInclude>
+    <ClInclude Include="Crypto\mHmac.h">
+      <Filter>Crypto</Filter>
+    </ClInclude>
+    <ClInclude Include="Crypto\mRand.h">
+      <Filter>Crypto</Filter>
+    </ClInclude>
+    <ClInclude Include="Database\mOdbc.h">
+      <Filter>Database</Filter>
+    </ClInclude>
+    <ClInclude Include="Database\mOdbcSqlState.h">
+      <Filter>Database</Filter>
+    </ClInclude>
+    <ClInclude Include="Database\mOdbcEnvironment.h">
+      <Filter>Database</Filter>
+    </ClInclude>
+    <ClInclude Include="Database\mOdbcQuery.h">
+      <Filter>Database</Filter>
+    </ClInclude>
+    <ClInclude Include="Database\mOdbcConnection.h">
+      <Filter>Database</Filter>
+    </ClInclude>
+    <ClInclude Include="Database\mOdbcParams.h">
+      <Filter>Database</Filter>
+    </ClInclude>
+    <ClInclude Include="Database\mOdbcDescription.h">
+      <Filter>Database</Filter>
+    </ClInclude>
+    <ClInclude Include="Database\mOdbcConnectionHandle.h">
+      <Filter>Database</Filter>
+    </ClInclude>
+    <ClInclude Include="General\mSecureAllocator.h">
+      <Filter>General</Filter>
+    </ClInclude>
+    <ClInclude Include="GDI\mGdiColor.h">
+      <Filter>GDI_General</Filter>
+    </ClInclude>
+    <ClInclude Include="General\mFileUtility.h">
+      <Filter>General</Filter>
+    </ClInclude>
+    <ClInclude Include="General\mRevPolish.h">
+      <Filter>General</Filter>
+    </ClInclude>
+    <ClInclude Include="COM\Excel\mExcelCellRef.h">
+      <Filter>COM\Excel</Filter>
+    </ClInclude>
+    <ClInclude Include="COM\Excel\mExcelHandler.h">
+      <Filter>COM\Excel</Filter>
+    </ClInclude>
+    <ClInclude Include="COM\mComObject.h">
+      <Filter>COM</Filter>
+    </ClInclude>
+    <ClInclude Include="General\mDateTime.h">
+      <Filter>General</Filter>
+    </ClInclude>
+    <ClInclude Include="COM\mVariant.h">
+      <Filter>COM</Filter>
+    </ClInclude>
+    <ClInclude Include="General\mFileReadStreamBase.h">
+      <Filter>General</Filter>
+    </ClInclude>
+    <ClInclude Include="General\mFileWriteStreamBase.h">
+      <Filter>General</Filter>
+    </ClInclude>
+    <ClInclude Include="Network\mASyncSerialPort.h">
+      <Filter>Network</Filter>
+    </ClInclude>
+    <ClInclude Include="Thread\mThread.h">
+      <Filter>Thread</Filter>
+    </ClInclude>
+    <ClInclude Include="Thread\mWorkerThread.h">
+      <Filter>Thread</Filter>
+    </ClInclude>
+    <ClInclude Include="Thread\mWorkerThreadPool.h">
+      <Filter>Thread</Filter>
+    </ClInclude>
+    <ClInclude Include="General\mBinaryUtil.h">
+      <Filter>General</Filter>
+    </ClInclude>
+    <ClInclude Include="General\mRegistry.h">
+      <Filter>General</Filter>
+    </ClInclude>
+    <ClInclude Include="Device\mDeviceEnumerar.h">
+      <Filter>Device</Filter>
+    </ClInclude>
+    <ClInclude Include="Device\mSerialPortEnumerar.h">
+      <Filter>Device</Filter>
+    </ClInclude>
+    <ClInclude Include="Thread\mTaskBase.h">
+      <Filter>Thread</Filter>
+    </ClInclude>
+    <ClInclude Include="Thread\mTaskQueue.h">
+      <Filter>Thread</Filter>
+    </ClInclude>
+    <ClInclude Include="General\mPrivateAlloc.h">
+      <Filter>General</Filter>
+    </ClInclude>
+    <ClInclude Include="Network\mASyncNamedPipe.h">
+      <Filter>Network</Filter>
+    </ClInclude>
+    <ClInclude Include="Thread\mTimer.h">
+      <Filter>Thread</Filter>
+    </ClInclude>
+    <ClInclude Include="mRevision.h" />
+    <ClInclude Include="GDI\mGdiPrinterDC.h">
+      <Filter>GDI_DC</Filter>
+    </ClInclude>
+    <ClInclude Include="Device\mPrinterEnumerar.h">
+      <Filter>Device</Filter>
+    </ClInclude>
+    <ClInclude Include="General\mBinary.h">
+      <Filter>General</Filter>
+    </ClInclude>
+    <ClInclude Include="Device\mPrinterInfo.h">
+      <Filter>Device</Filter>
+    </ClInclude>
+    <ClInclude Include="Service\mServiceControlManager.h">
+      <Filter>Service</Filter>
+    </ClInclude>
+    <ClInclude Include="Service\mServiceHandler.h">
+      <Filter>Service</Filter>
+    </ClInclude>
+    <ClInclude Include="General\mStdInStream.h">
+      <Filter>General</Filter>
+    </ClInclude>
+    <ClInclude Include="Network\mHttpAccess.h">
+      <Filter>Network</Filter>
+    </ClInclude>
+    <ClInclude Include="Device\mBluetoothEnumerar.h">
+      <Filter>Device</Filter>
+    </ClInclude>
+    <ClInclude Include="General\mCsvFile.h">
+      <Filter>General</Filter>
+    </ClInclude>
+    <ClInclude Include="Network\mHttpRequest.h">
+      <Filter>Network</Filter>
+    </ClInclude>
+    <ClInclude Include="Network\mHttpConnection.h">
+      <Filter>Network</Filter>
+    </ClInclude>
+    <ClInclude Include="General\mNotifyOption.h">
+      <Filter>General</Filter>
+    </ClInclude>
+    <ClInclude Include="General\mSlashFormat.h">
+      <Filter>General</Filter>
+    </ClInclude>
+    <ClInclude Include="General\mSlashFormatUtility.h">
+      <Filter>General</Filter>
+    </ClInclude>
+    <ClInclude Include="General\mCodePage.h">
+      <Filter>General</Filter>
+    </ClInclude>
+    <ClInclude Include="General\mHexdecimal.h">
+      <Filter>General</Filter>
+    </ClInclude>
+    <ClInclude Include="GDI\mWebView2.h">
+      <Filter>GDI_Window</Filter>
+    </ClInclude>
+    <ClInclude Include="Crypto\mSCBase.h">
+      <Filter>Crypto</Filter>
+    </ClInclude>
+    <ClInclude Include="Crypto\mSCMifare.h">
+      <Filter>Crypto</Filter>
+    </ClInclude>
+    <ClInclude Include="Crypto\mSCReader.h">
+      <Filter>Crypto</Filter>
+    </ClInclude>
+    <ClInclude Include="Crypto\mSCFelica.h">
+      <Filter>Crypto</Filter>
+    </ClInclude>
+    <ClInclude Include="Crypto\mSCFelicaDefinitions.h">
+      <Filter>Crypto</Filter>
+    </ClInclude>
+    <ClInclude Include="Crypto\mSCFelicaMac.h">
+      <Filter>Crypto</Filter>
+    </ClInclude>
+    <ClInclude Include="General\mEnvironmentVariable.h">
+      <Filter>General</Filter>
+    </ClInclude>
+    <ClInclude Include="Device\mDeviceRegistry.h">
+      <Filter>Device</Filter>
+    </ClInclude>
+    <ClInclude Include="Device\mDeviceEnumerarBase.h">
+      <Filter>Device</Filter>
+    </ClInclude>
+    <ClInclude Include="Device\mDriveEnumerar.h">
+      <Filter>Device</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="General\mOptionParser.cpp">
+      <Filter>General</Filter>
+    </ClCompile>
+    <ClCompile Include="General\mTCHAR.cpp">
+      <Filter>General</Filter>
+    </ClCompile>
+    <ClCompile Include="General\mException.cpp">
+      <Filter>General</Filter>
+    </ClCompile>
+    <ClCompile Include="General\mStandard.cpp">
+      <Filter>General</Filter>
+    </ClCompile>
+    <ClCompile Include="General\mErrorLogger.cpp">
+      <Filter>General</Filter>
+    </ClCompile>
+    <ClCompile Include="General\mFileReadStream.cpp">
+      <Filter>General</Filter>
+    </ClCompile>
+    <ClCompile Include="General\mFileWriteStream.cpp">
+      <Filter>General</Filter>
+    </ClCompile>
+    <ClCompile Include="General\mFile.cpp">
+      <Filter>General</Filter>
+    </ClCompile>
+    <ClCompile Include="GDI\mWindow.cpp">
+      <Filter>GDI_Window</Filter>
+    </ClCompile>
+    <ClCompile Include="GDI\mGlobalWindowFunc.cpp">
+      <Filter>GDI_Window</Filter>
+    </ClCompile>
+    <ClCompile Include="General\mCriticalSectionContainer.cpp">
+      <Filter>General</Filter>
+    </ClCompile>
+    <ClCompile Include="GDI\mButton.cpp">
+      <Filter>GDI_Window</Filter>
+    </ClCompile>
+    <ClCompile Include="GDI\mCheckBox.cpp">
+      <Filter>GDI_Window</Filter>
+    </ClCompile>
+    <ClCompile Include="GDI\mCheckBoxFamily.cpp">
+      <Filter>GDI_Window</Filter>
+    </ClCompile>
+    <ClCompile Include="GDI\mRadioButton.cpp">
+      <Filter>GDI_Window</Filter>
+    </ClCompile>
+    <ClCompile Include="GDI\mGroupBox.cpp">
+      <Filter>GDI_Window</Filter>
+    </ClCompile>
+    <ClCompile Include="GDI\mListBoxFamily.cpp">
+      <Filter>GDI_Window</Filter>
+    </ClCompile>
+    <ClCompile Include="GDI\mComboBox.cpp">
+      <Filter>GDI_Window</Filter>
+    </ClCompile>
+    <ClCompile Include="GDI\mListBox.cpp">
+      <Filter>GDI_Window</Filter>
+    </ClCompile>
+    <ClCompile Include="GDI\mLabel.cpp">
+      <Filter>GDI_Window</Filter>
+    </ClCompile>
+    <ClCompile Include="GDI\mEditBox.cpp">
+      <Filter>GDI_Window</Filter>
+    </ClCompile>
+    <ClCompile Include="GDI\mMenu.cpp">
+      <Filter>GDI_Window</Filter>
+    </ClCompile>
+    <ClCompile Include="General\mUniqueValue.cpp">
+      <Filter>General</Filter>
+    </ClCompile>
+    <ClCompile Include="GDI\mStatusBar.cpp">
+      <Filter>GDI_Window</Filter>
+    </ClCompile>
+    <ClCompile Include="GDI\mToolBar.cpp">
+      <Filter>GDI_Window</Filter>
+    </ClCompile>
+    <ClCompile Include="GDI\mGdiHandle.cpp">
+      <Filter>GDI_Object</Filter>
+    </ClCompile>
+    <ClCompile Include="GDI\mGdiFont.cpp">
+      <Filter>GDI_Object</Filter>
+    </ClCompile>
+    <ClCompile Include="GDI\mGdiDC.cpp">
+      <Filter>GDI_DC</Filter>
+    </ClCompile>
+    <ClCompile Include="GDI\mGdiWinDC.cpp">
+      <Filter>GDI_DC</Filter>
+    </ClCompile>
+    <ClCompile Include="GDI\mGdiPaintDC.cpp">
+      <Filter>GDI_DC</Filter>
+    </ClCompile>
+    <ClCompile Include="GDI\mGdiMemDC.cpp">
+      <Filter>GDI_DC</Filter>
+    </ClCompile>
+    <ClCompile Include="GDI\mGdiBrush.cpp">
+      <Filter>GDI_Object</Filter>
+    </ClCompile>
+    <ClCompile Include="GDI\mGdiPen.cpp">
+      <Filter>GDI_Object</Filter>
+    </ClCompile>
+    <ClCompile Include="GDI\mGdiBitmap.cpp">
+      <Filter>GDI_Object</Filter>
+    </ClCompile>
+    <ClCompile Include="GDI\mGdiIcon.cpp">
+      <Filter>GDI_Object</Filter>
+    </ClCompile>
+    <ClCompile Include="GDI\mGdiCursor.cpp">
+      <Filter>GDI_Object</Filter>
+    </ClCompile>
+    <ClCompile Include="GDI\mGdiImagelist.cpp">
+      <Filter>GDI_Object</Filter>
+    </ClCompile>
+    <ClCompile Include="GDI\mGdiDualImagelist.cpp">
+      <Filter>GDI_Object</Filter>
+    </ClCompile>
+    <ClCompile Include="GDI\mGdiResource.cpp">
+      <Filter>GDI_General</Filter>
+    </ClCompile>
+    <ClCompile Include="GDI\mWindowCollection.cpp">
+      <Filter>GDI_Window</Filter>
+    </ClCompile>
+    <ClCompile Include="General\mRegexp.cpp">
+      <Filter>General</Filter>
+    </ClCompile>
+    <ClCompile Include="General\mInitFile.cpp">
+      <Filter>General</Filter>
+    </ClCompile>
+    <ClCompile Include="General\mInitFileSection.cpp">
+      <Filter>General</Filter>
+    </ClCompile>
+    <ClCompile Include="General\mAtomicValue.cpp">
+      <Filter>General</Filter>
+    </ClCompile>
+    <ClCompile Include="Crypto\mAES.cpp">
+      <Filter>Crypto</Filter>
+    </ClCompile>
+    <ClCompile Include="Crypto\mAESDecrypter.cpp">
+      <Filter>Crypto</Filter>
+    </ClCompile>
+    <ClCompile Include="Crypto\mAESEncrypter.cpp">
+      <Filter>Crypto</Filter>
+    </ClCompile>
+    <ClCompile Include="Crypto\mMTwister.cpp">
+      <Filter>Crypto</Filter>
+    </ClCompile>
+    <ClCompile Include="Crypto\mRSA.cpp">
+      <Filter>Crypto</Filter>
+    </ClCompile>
+    <ClCompile Include="Crypto\mRSACipher.cpp">
+      <Filter>Crypto</Filter>
+    </ClCompile>
+    <ClCompile Include="Crypto\mRSAVerifier.cpp">
+      <Filter>Crypto</Filter>
+    </ClCompile>
+    <ClCompile Include="Crypto\mHash.cpp">
+      <Filter>Crypto</Filter>
+    </ClCompile>
+    <ClCompile Include="Crypto\mHmac.cpp">
+      <Filter>Crypto</Filter>
+    </ClCompile>
+    <ClCompile Include="Crypto\mRand.cpp">
+      <Filter>Crypto</Filter>
+    </ClCompile>
+    <ClCompile Include="Database\mOdbc.cpp">
+      <Filter>Database</Filter>
+    </ClCompile>
+    <ClCompile Include="Database\mOdbcSqlState.cpp">
+      <Filter>Database</Filter>
+    </ClCompile>
+    <ClCompile Include="Database\mOdbcEnvironment.cpp">
+      <Filter>Database</Filter>
+    </ClCompile>
+    <ClCompile Include="Database\mOdbcQuery.cpp">
+      <Filter>Database</Filter>
+    </ClCompile>
+    <ClCompile Include="Database\mOdbcConnection.cpp">
+      <Filter>Database</Filter>
+    </ClCompile>
+    <ClCompile Include="Database\mOdbcParams.cpp">
+      <Filter>Database</Filter>
+    </ClCompile>
+    <ClCompile Include="Database\mOdbcDescription.cpp">
+      <Filter>Database</Filter>
+    </ClCompile>
+    <ClCompile Include="Database\mOdbcConnectionHandle.cpp">
+      <Filter>Database</Filter>
+    </ClCompile>
+    <ClCompile Include="General\mSecureAllocator.cpp">
+      <Filter>General</Filter>
+    </ClCompile>
+    <ClCompile Include="GDI\mGdiColor.cpp">
+      <Filter>GDI_General</Filter>
+    </ClCompile>
+    <ClCompile Include="General\mFileUtility.cpp">
+      <Filter>General</Filter>
+    </ClCompile>
+    <ClCompile Include="General\mRevPolish.cpp">
+      <Filter>General</Filter>
+    </ClCompile>
+    <ClCompile Include="COM\Excel\mExcelCellRef.cpp">
+      <Filter>COM\Excel</Filter>
+    </ClCompile>
+    <ClCompile Include="COM\Excel\mExcelHandler.cpp">
+      <Filter>COM\Excel</Filter>
+    </ClCompile>
+    <ClCompile Include="COM\mComObject.cpp">
+      <Filter>COM</Filter>
+    </ClCompile>
+    <ClCompile Include="General\mDateTime.cpp">
+      <Filter>General</Filter>
+    </ClCompile>
+    <ClCompile Include="COM\mVariant.cpp">
+      <Filter>COM</Filter>
+    </ClCompile>
+    <ClCompile Include="General\mFileReadStreamBase.cpp">
+      <Filter>General</Filter>
+    </ClCompile>
+    <ClCompile Include="General\mFileWriteStreamBase.cpp">
+      <Filter>General</Filter>
+    </ClCompile>
+    <ClCompile Include="Network\mASyncSerialPort.cpp">
+      <Filter>Network</Filter>
+    </ClCompile>
+    <ClCompile Include="Thread\mWorkerThread.cpp">
+      <Filter>Thread</Filter>
+    </ClCompile>
+    <ClCompile Include="Thread\mThread.cpp">
+      <Filter>Thread</Filter>
+    </ClCompile>
+    <ClCompile Include="Thread\mWorkerThreadPool.cpp">
+      <Filter>Thread</Filter>
+    </ClCompile>
+    <ClCompile Include="General\mBinaryUtil.cpp">
+      <Filter>General</Filter>
+    </ClCompile>
+    <ClCompile Include="General\mRegistry.cpp">
+      <Filter>General</Filter>
+    </ClCompile>
+    <ClCompile Include="Device\mDeviceEnumerar.cpp">
+      <Filter>Device</Filter>
+    </ClCompile>
+    <ClCompile Include="Device\mSerialPortEnumerar.cpp">
+      <Filter>Device</Filter>
+    </ClCompile>
+    <ClCompile Include="Thread\mTaskBase.cpp">
+      <Filter>Thread</Filter>
+    </ClCompile>
+    <ClCompile Include="Thread\mTaskQueue.cpp">
+      <Filter>Thread</Filter>
+    </ClCompile>
+    <ClCompile Include="General\mPrivateAlloc.cpp">
+      <Filter>General</Filter>
+    </ClCompile>
+    <ClCompile Include="Network\mASyncNamedPipe.cpp">
+      <Filter>Network</Filter>
+    </ClCompile>
+    <ClCompile Include="Thread\mTimer.cpp">
+      <Filter>Thread</Filter>
+    </ClCompile>
+    <ClCompile Include="GDI\mGdiPrinterDC.cpp">
+      <Filter>GDI_DC</Filter>
+    </ClCompile>
+    <ClCompile Include="Device\mPrinterEnumerar.cpp">
+      <Filter>Device</Filter>
+    </ClCompile>
+    <ClCompile Include="General\mBinary.cpp">
+      <Filter>General</Filter>
+    </ClCompile>
+    <ClCompile Include="Device\mPrinterInfo.cpp">
+      <Filter>Device</Filter>
+    </ClCompile>
+    <ClCompile Include="Service\mServiceControlManager.cpp">
+      <Filter>Service</Filter>
+    </ClCompile>
+    <ClCompile Include="Service\mServiceHandler.cpp">
+      <Filter>Service</Filter>
+    </ClCompile>
+    <ClCompile Include="General\mStdInStream.cpp">
+      <Filter>General</Filter>
+    </ClCompile>
+    <ClCompile Include="Network\mHttpAccess.cpp">
+      <Filter>Network</Filter>
+    </ClCompile>
+    <ClCompile Include="Device\mBluetoothEnumerar.cpp">
+      <Filter>Device</Filter>
+    </ClCompile>
+    <ClCompile Include="General\mCsvFile.cpp">
+      <Filter>General</Filter>
+    </ClCompile>
+    <ClCompile Include="Network\mHttpRequest.cpp">
+      <Filter>Network</Filter>
+    </ClCompile>
+    <ClCompile Include="Network\mHttpConnection.cpp">
+      <Filter>Network</Filter>
+    </ClCompile>
+    <ClCompile Include="General\mNotifyOption.cpp">
+      <Filter>General</Filter>
+    </ClCompile>
+    <ClCompile Include="General\mSlashFormat.cpp">
+      <Filter>General</Filter>
+    </ClCompile>
+    <ClCompile Include="General\mSlashFormatUtility.cpp">
+      <Filter>General</Filter>
+    </ClCompile>
+    <ClCompile Include="General\mCodePage.cpp">
+      <Filter>General</Filter>
+    </ClCompile>
+    <ClCompile Include="General\mHexdecimal.cpp">
+      <Filter>General</Filter>
+    </ClCompile>
+    <ClCompile Include="GDI\mWebView2.cpp">
+      <Filter>GDI_Window</Filter>
+    </ClCompile>
+    <ClCompile Include="Crypto\mSCBase.cpp">
+      <Filter>Crypto</Filter>
+    </ClCompile>
+    <ClCompile Include="Crypto\mSCMifare.cpp">
+      <Filter>Crypto</Filter>
+    </ClCompile>
+    <ClCompile Include="Crypto\mSCReader.cpp">
+      <Filter>Crypto</Filter>
+    </ClCompile>
+    <ClCompile Include="Crypto\mSCFelica.cpp">
+      <Filter>Crypto</Filter>
+    </ClCompile>
+    <ClCompile Include="Crypto\mSCFelicaDefinitions.cpp">
+      <Filter>Crypto</Filter>
+    </ClCompile>
+    <ClCompile Include="Crypto\mSCFelicaMac.cpp">
+      <Filter>Crypto</Filter>
+    </ClCompile>
+    <ClCompile Include="General\mEnvironmentVariable.cpp">
+      <Filter>General</Filter>
+    </ClCompile>
+    <ClCompile Include="Device\mDeviceRegistry.cpp">
+      <Filter>Device</Filter>
+    </ClCompile>
+    <ClCompile Include="Device\mDeviceEnumerarBase.cpp">
+      <Filter>Device</Filter>
+    </ClCompile>
+    <ClCompile Include="Device\mDriveEnumerar.cpp">
+      <Filter>Device</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="readme.txt" />
+    <Text Include="rules.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="cpp.hint" />
+    <None Include="packages.config" />
+  </ItemGroup>
+</Project>
