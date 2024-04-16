@@ -1,9 +1,8 @@
 @echo off
 
 rem ----- ライブラリ有効性チェック -----
-if not exist "packages\Microsoft.Web.WebView2.*" goto libcheck1
+rem WebView2使わない場合は下をコメントアウト
 echo #define %1_ENABLE_WEBVIEW2
-:libcheck1
 
 rem ----- SVNリビジョンチェック -----
 git help > nul

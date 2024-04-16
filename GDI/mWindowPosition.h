@@ -48,6 +48,36 @@ namespace mWindowPosition
 		}
 	};
 
+	struct PresetUpperLeftWH
+	{
+		INT left;
+		INT top;
+		INT width;
+		INT height;
+		PresetUpperLeftWH( INT Left , INT Top , INT Width , INT Height )
+		{
+			this->left = Left;
+			this->top = Top;
+			this->width = Width;
+			this->height = Height;
+		}
+	};
+
+	struct PresetUpperLeftRECT
+	{
+		INT left;
+		INT top;
+		INT right;
+		INT bottom;
+		PresetUpperLeftRECT( INT Left , INT Top , INT Right , INT Bottom )
+		{
+			this->left = Left;
+			this->top = Top;
+			this->right = Right;
+			this->bottom = Bottom;
+		}
+	};
+
 	//ウインドウの相対的な位置設定
 	//ウインドウ(あるいはボタンなどのパーツ類)を親ウインドウのクライアントエリア内のどのあたりに配置するかを指定します。
 	//上下左右について、親ウインドウの上端・左端からの比率＋オフセットで表します。
@@ -80,6 +110,28 @@ namespace mWindowPosition
 			right = { 1.0f , -v.gap };
 			top = { 0.0f , v.gap };
 			bottom = { 1.0f , -v.gap };
+		}
+		WindowPosition( const PresetUpperLeftWH& v )
+		{
+			set( v );
+		}
+		void set( const PresetUpperLeftWH& v )
+		{
+			left = { 0.0f , v.left };
+			right = { 0.0f , v.left + v.width };
+			top = { 0.0f , v.top };
+			bottom = { 0.0f , v.top + v.height };
+		}
+		WindowPosition( const PresetUpperLeftRECT& v )
+		{
+			set( v );
+		}
+		void set( const PresetUpperLeftRECT& v )
+		{
+			left = { 0.0f , v.left };
+			right = { 0.0f , v.right };
+			top = { 0.0f , v.top };
+			bottom = { 0.0f , v.bottom };
 		}
 	};
 };
