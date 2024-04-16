@@ -737,10 +737,6 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <Text Include="readme.txt" />
-    <Text Include="rules.txt" />
-  </ItemGroup>
-  <ItemGroup>
     <None Include="cpp.hint" />
   </ItemGroup>
 </Project>

@@ -254,10 +254,6 @@
     <ClCompile Include="General\mUniqueValue.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <Text Include="readme.txt" />
-    <Text Include="rules.txt" />
-  </ItemGroup>
-  <ItemGroup>
     <None Include="cpp.hint" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
