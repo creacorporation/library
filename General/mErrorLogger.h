@@ -48,7 +48,7 @@ public:
 		LOG_OUTPUT_CONSOLE,		//コマンドライン(stderr)に出力する
 		LOG_OUTPUT_DEBUGGER,	//デバッガに出力する
 		LOG_OUTPUT_FILE,		//指定ファイルに出力する
-		LOG_OUTPUT_EVENTLOG,	//Windowsのイベントログに出力する
+		LOG_OUTPUT_EVENTLOG,	//Windowsのイベントログに出力する(未実装)
 		LOG_OUTPUT_CALLBACK,	//コールバック関数を呼ぶ
 		LOG_OUTPUT_NONE,		//何もしない
 	};
