@@ -1,10 +1,10 @@
-//----------------------------------------------------------------------------
-// ƒtƒ@ƒCƒ‹ƒ†[ƒeƒBƒŠƒeƒBŠÖ”ŒQ
+ï»¿//----------------------------------------------------------------------------
+// ãƒ•ã‚¡ã‚¤ãƒ«ãƒ¦ãƒ¼ãƒ†ã‚£ãƒªãƒ†ã‚£é–¢æ•°ç¾¤
 // Copyright (C) 2018- Crea Inc. All rights reserved.
 // This program is released under the MIT License. 
 // see http://opensource.org/licenses/mit-license.php
-// ’˜ìŒ •\¦‚âƒ‰ƒCƒZƒ“ƒX‚Ì‰ü•Ï‚Í‹Ö~‚³‚ê‚Ä‚¢‚Ü‚·B
-// ‚±‚Ìƒ\[ƒXƒR[ƒh‚ÉŠÖ‚µ‚ÄAã‹Lƒ‰ƒCƒZƒ“ƒXˆÈŠO‚ÌŒ_–ñ“™‚ÍˆêØ‘¶İ‚µ‚Ü‚¹‚ñB
+// è‘—ä½œæ¨©è¡¨ç¤ºã‚„ãƒ©ã‚¤ã‚»ãƒ³ã‚¹ã®æ”¹å¤‰ã¯ç¦æ­¢ã•ã‚Œã¦ã„ã¾ã™ã€‚
+// ã“ã®ã‚½ãƒ¼ã‚¹ã‚³ãƒ¼ãƒ‰ã«é–¢ã—ã¦ã€ä¸Šè¨˜ãƒ©ã‚¤ã‚»ãƒ³ã‚¹ä»¥å¤–ã®å¥‘ç´„ç­‰ã¯ä¸€åˆ‡å­˜åœ¨ã—ã¾ã›ã‚“ã€‚
 //----------------------------------------------------------------------------
 
 #define MFILEUTILITY_CPP_COMPILING
@@ -18,37 +18,43 @@
 #pragma comment(lib, "shell32.lib")
 #pragma comment(lib, "shlwapi.lib")
 
-//ƒg[ƒNƒ“‚ªWindows‚Ì—\–ñƒtƒ@ƒCƒ‹–¼‚Æ‡’v‚·‚é‚©”»’è
-// token : ƒ`ƒFƒbƒN‚·‚éƒg[ƒNƒ“
-// ret : ŠÜ‚Şê‡false
+//ãƒˆãƒ¼ã‚¯ãƒ³ãŒWindowsã®äºˆç´„ãƒ•ã‚¡ã‚¤ãƒ«åã¨åˆè‡´ã™ã‚‹ã‹åˆ¤å®š
+// token : ãƒã‚§ãƒƒã‚¯ã™ã‚‹ãƒˆãƒ¼ã‚¯ãƒ³
+// ret : å«ã‚€å ´åˆfalse
 static bool CheckReservedFileName( const WString& token )
 {
 	const WCHAR* BadNameList[] =
 	{
-		L"CON",		//ƒRƒ“ƒ\[ƒ‹
-		L"AUX",		//•â•ƒfƒoƒCƒX
-		L"PRN",		//ƒvƒŠƒ“ƒ^[O
-		L"NUL",		//ƒrƒbƒgƒoƒPƒc
-		L"CLOCK",	//ƒfƒoƒCƒX
-		L"CLOCK$",	//ƒfƒoƒCƒX
-		L"COM1",	//ƒVƒŠƒAƒ‹ƒ|[ƒg
-		L"COM2",	//ƒVƒŠƒAƒ‹ƒ|[ƒg
-		L"COM3",	//ƒVƒŠƒAƒ‹ƒ|[ƒg
-		L"COM4",	//ƒVƒŠƒAƒ‹ƒ|[ƒg
-		L"COM5",	//ƒVƒŠƒAƒ‹ƒ|[ƒg
-		L"COM6",	//ƒVƒŠƒAƒ‹ƒ|[ƒg
-		L"COM7",	//ƒVƒŠƒAƒ‹ƒ|[ƒg
-		L"COM8",	//ƒVƒŠƒAƒ‹ƒ|[ƒg
-		L"COM9",	//ƒVƒŠƒAƒ‹ƒ|[ƒg
-		L"LPT1",	//ƒpƒ‰ƒŒƒ‹ƒ|[ƒg
-		L"LPT2",	//ƒpƒ‰ƒŒƒ‹ƒ|[ƒg
-		L"LPT3",	//ƒpƒ‰ƒŒƒ‹ƒ|[ƒg
-		L"LPT4",	//ƒpƒ‰ƒŒƒ‹ƒ|[ƒg
-		L"LPT5",	//ƒpƒ‰ƒŒƒ‹ƒ|[ƒg
-		L"LPT6",	//ƒpƒ‰ƒŒƒ‹ƒ|[ƒg
-		L"LPT7",	//ƒpƒ‰ƒŒƒ‹ƒ|[ƒg
-		L"LPT8",	//ƒpƒ‰ƒŒƒ‹ƒ|[ƒg
-		L"LPT9",	//ƒpƒ‰ƒŒƒ‹ƒ|[ƒg
+		L"CON",		//ã‚³ãƒ³ã‚½ãƒ¼ãƒ«
+		L"AUX",		//è£œåŠ©ãƒ‡ãƒã‚¤ã‚¹
+		L"PRN",		//ãƒ—ãƒªãƒ³ã‚¿ãƒ¼ï¼¾
+		L"NUL",		//ãƒ“ãƒƒãƒˆãƒã‚±ãƒ„
+		L"CLOCK",	//æ™‚åˆ»ãƒ‡ãƒã‚¤ã‚¹
+		L"CLOCK$",	//æ™‚åˆ»ãƒ‡ãƒã‚¤ã‚¹
+		L"COM1",	//ã‚·ãƒªã‚¢ãƒ«ãƒãƒ¼ãƒˆ
+		L"COM2",	//ã‚·ãƒªã‚¢ãƒ«ãƒãƒ¼ãƒˆ
+		L"COM3",	//ã‚·ãƒªã‚¢ãƒ«ãƒãƒ¼ãƒˆ
+		L"COM4",	//ã‚·ãƒªã‚¢ãƒ«ãƒãƒ¼ãƒˆ
+		L"COM5",	//ã‚·ãƒªã‚¢ãƒ«ãƒãƒ¼ãƒˆ
+		L"COM6",	//ã‚·ãƒªã‚¢ãƒ«ãƒãƒ¼ãƒˆ
+		L"COM7",	//ã‚·ãƒªã‚¢ãƒ«ãƒãƒ¼ãƒˆ
+		L"COM8",	//ã‚·ãƒªã‚¢ãƒ«ãƒãƒ¼ãƒˆ
+		L"COM9",	//ã‚·ãƒªã‚¢ãƒ«ãƒãƒ¼ãƒˆ
+		L"COMÂ¹",	//ã‚·ãƒªã‚¢ãƒ«ãƒãƒ¼ãƒˆ
+		L"COMÂ²",	//ã‚·ãƒªã‚¢ãƒ«ãƒãƒ¼ãƒˆ
+		L"COMÂ³",	//ã‚·ãƒªã‚¢ãƒ«ãƒãƒ¼ãƒˆ
+		L"LPT1",	//ãƒ‘ãƒ©ãƒ¬ãƒ«ãƒãƒ¼ãƒˆ
+		L"LPT2",	//ãƒ‘ãƒ©ãƒ¬ãƒ«ãƒãƒ¼ãƒˆ
+		L"LPT3",	//ãƒ‘ãƒ©ãƒ¬ãƒ«ãƒãƒ¼ãƒˆ
+		L"LPT4",	//ãƒ‘ãƒ©ãƒ¬ãƒ«ãƒãƒ¼ãƒˆ
+		L"LPT5",	//ãƒ‘ãƒ©ãƒ¬ãƒ«ãƒãƒ¼ãƒˆ
+		L"LPT6",	//ãƒ‘ãƒ©ãƒ¬ãƒ«ãƒãƒ¼ãƒˆ
+		L"LPT7",	//ãƒ‘ãƒ©ãƒ¬ãƒ«ãƒãƒ¼ãƒˆ
+		L"LPT8",	//ãƒ‘ãƒ©ãƒ¬ãƒ«ãƒãƒ¼ãƒˆ
+		L"LPT9",	//ãƒ‘ãƒ©ãƒ¬ãƒ«ãƒãƒ¼ãƒˆ
+		L"LPTÂ¹",	//ãƒ‘ãƒ©ãƒ¬ãƒ«ãƒãƒ¼ãƒˆ
+		L"LPTÂ²",	//ãƒ‘ãƒ©ãƒ¬ãƒ«ãƒãƒ¼ãƒˆ
+		L"LPTÂ³",	//ãƒ‘ãƒ©ãƒ¬ãƒ«ãƒãƒ¼ãƒˆ
 		nullptr
 	};
 
@@ -65,9 +71,9 @@ static bool CheckReservedFileName( const WString& token )
 	return true;
 }
 
-//ƒg[ƒNƒ“‚ªWindows‚Ìƒtƒ@ƒCƒ‹–¼‚Ég‚¦‚È‚¢•¶š‚ğŠÜ‚Ş‚©”»’è
-// token : ƒ`ƒFƒbƒN‚·‚éƒg[ƒNƒ“
-// ret : ŠÜ‚Şê‡false
+//ãƒˆãƒ¼ã‚¯ãƒ³ãŒWindowsã®ãƒ•ã‚¡ã‚¤ãƒ«åã«ä½¿ãˆãªã„æ–‡å­—ã‚’å«ã‚€ã‹åˆ¤å®š
+// token : ãƒã‚§ãƒƒã‚¯ã™ã‚‹ãƒˆãƒ¼ã‚¯ãƒ³
+// ret : å«ã‚€å ´åˆfalse
 static BOOL CheckFileNameCharacter( const WString& token )
 {
 	const WCHAR BadCharList[] =
@@ -94,13 +100,13 @@ bool mFileUtility::IsSuitableFilename( const wchar_t* filename )
 
 bool mFileUtility::IsSuitableFilename( const WString& filename )
 {
-	//‘å•¶š‚Å”»’è‚·‚é‚½‚ß‚ÉA‘å•¶š•ÏŠ·
+	//å¤§æ–‡å­—ã§åˆ¤å®šã™ã‚‹ãŸã‚ã«ã€å¤§æ–‡å­—å¤‰æ›
 	WString fname_upper = ToUpper( filename );
 
-	//X‚É / ‚ğ \\ ‚É’u‚«Š·‚¦‚é
+	//æ›´ã« / ã‚’ \\ ã«ç½®ãæ›ãˆã‚‹
 	std::replace( fname_upper.begin() , fname_upper.end() , L'/' , L'\\' );
 
-	//ƒtƒ@ƒCƒ‹–¼‚ğ•ª‰ğ‚µAƒfƒBƒŒƒNƒgƒŠ–¼‚Æƒtƒ@ƒCƒ‹–¼‚É‚Â‚¢‚Ä”»’è‚·‚é
+	//ãƒ•ã‚¡ã‚¤ãƒ«åã‚’åˆ†è§£ã—ã€ãƒ‡ã‚£ãƒ¬ã‚¯ãƒˆãƒªåã¨ãƒ•ã‚¡ã‚¤ãƒ«åã«ã¤ã„ã¦åˆ¤å®šã™ã‚‹
 	WString Drive;
 	WString Dir;
 	WString Filename;
@@ -110,7 +116,7 @@ bool mFileUtility::IsSuitableFilename( const WString& filename )
 		return false;
 	}
 
-	//1.ƒfƒBƒŒƒNƒgƒŠ
+	//1.ãƒ‡ã‚£ãƒ¬ã‚¯ãƒˆãƒª
 	{
 		WStringVector dirs;
 		ParseString( Dir , L'\\' , dirs );
@@ -119,33 +125,33 @@ bool mFileUtility::IsSuitableFilename( const WString& filename )
 		{
 			if( !CheckReservedFileName( *itr ) )
 			{
-				RaiseError( g_ErrorLogger , 0 , L"ƒfƒBƒŒƒNƒgƒŠ–¼‚Í—\–ñƒtƒ@ƒCƒ‹–¼‚Å‚·" , *itr );
+				RaiseError( g_ErrorLogger , 0 , L"ãƒ‡ã‚£ãƒ¬ã‚¯ãƒˆãƒªåã¯äºˆç´„ãƒ•ã‚¡ã‚¤ãƒ«åã§ã™" , *itr );
 				return false;
 			}
 			if( !CheckFileNameCharacter( *itr ) )
 			{
-				RaiseError( g_ErrorLogger , 0 , L"ƒfƒBƒŒƒNƒgƒŠ–¼‚Ég—p‚Å‚«‚È‚¢•¶š‚ªŠÜ‚Ü‚ê‚Ü‚·" , *itr );
+				RaiseError( g_ErrorLogger , 0 , L"ãƒ‡ã‚£ãƒ¬ã‚¯ãƒˆãƒªåã«ä½¿ç”¨ã§ããªã„æ–‡å­—ãŒå«ã¾ã‚Œã¾ã™" , *itr );
 				return false;
 			}
 		}
 	}
 
-	//ƒtƒ@ƒCƒ‹–¼
+	//ãƒ•ã‚¡ã‚¤ãƒ«å
 	if( !CheckReservedFileName( Filename ) )
 	{
-		RaiseError( g_ErrorLogger , 0 , L"ƒtƒ@ƒCƒ‹–¼‚Í—\–ñƒtƒ@ƒCƒ‹–¼‚Å‚·" , Filename );
+		RaiseError( g_ErrorLogger , 0 , L"ãƒ•ã‚¡ã‚¤ãƒ«åã¯äºˆç´„ãƒ•ã‚¡ã‚¤ãƒ«åã§ã™" , Filename );
 		return false;
 	}
 	if( !CheckFileNameCharacter( Filename ) )
 	{
-		RaiseError( g_ErrorLogger , 0 , L"ƒtƒ@ƒCƒ‹–¼‚Ég—p‚Å‚«‚È‚¢•¶š‚ªŠÜ‚Ü‚ê‚Ü‚·" , Filename );
+		RaiseError( g_ErrorLogger , 0 , L"ãƒ•ã‚¡ã‚¤ãƒ«åã«ä½¿ç”¨ã§ããªã„æ–‡å­—ãŒå«ã¾ã‚Œã¾ã™" , Filename );
 		return false;
 	}
 
-	//Šg’£q
+	//æ‹¡å¼µå­
 	if( !CheckFileNameCharacter( Ext ) )
 	{
-		RaiseError( g_ErrorLogger , 0 , L"Šg’£q‚Ég—p‚Å‚«‚È‚¢•¶š‚ªŠÜ‚Ü‚ê‚Ü‚·" , Ext );
+		RaiseError( g_ErrorLogger , 0 , L"æ‹¡å¼µå­ã«ä½¿ç”¨ã§ããªã„æ–‡å­—ãŒå«ã¾ã‚Œã¾ã™" , Ext );
 		return false;
 	}
 
@@ -154,13 +160,13 @@ bool mFileUtility::IsSuitableFilename( const WString& filename )
 }
 
 
-//ƒpƒX‚ğƒhƒ‰ƒCƒuAƒfƒBƒŒƒNƒgƒŠAƒtƒ@ƒCƒ‹–¼AŠg’£q‚É•ªŠ„‚·‚é
+//ãƒ‘ã‚¹ã‚’ãƒ‰ãƒ©ã‚¤ãƒ–ã€ãƒ‡ã‚£ãƒ¬ã‚¯ãƒˆãƒªã€ãƒ•ã‚¡ã‚¤ãƒ«åã€æ‹¡å¼µå­ã«åˆ†å‰²ã™ã‚‹
 bool mFileUtility::SplitPath( const WString& path , WString* retDrive , WString* retDir , WString* retFile , WString* retExt )
 {
 	return SplitPath( path.c_str() , retDrive , retDir , retFile , retExt );
 }
 
-//ƒpƒX‚ğƒhƒ‰ƒCƒuAƒfƒBƒŒƒNƒgƒŠAƒtƒ@ƒCƒ‹–¼AŠg’£q‚É•ªŠ„‚·‚é
+//ãƒ‘ã‚¹ã‚’ãƒ‰ãƒ©ã‚¤ãƒ–ã€ãƒ‡ã‚£ãƒ¬ã‚¯ãƒˆãƒªã€ãƒ•ã‚¡ã‚¤ãƒ«åã€æ‹¡å¼µå­ã«åˆ†å‰²ã™ã‚‹
 bool mFileUtility::SplitPath( const wchar_t* path , WString* retDrive , WString* retDir , WString* retFile , WString* retExt )
 {
 	WCHAR Drive   [ _MAX_DRIVE ];
@@ -189,7 +195,7 @@ bool mFileUtility::SplitPath( const wchar_t* path , WString* retDrive , WString*
 		return true;
 	}
 
-	RaiseError( g_ErrorLogger , 0 , L"ƒpƒX‚Ì•ªŠ„‚ª¸”s‚µ‚Ü‚µ‚½" , ( path ) ? ( path ) : ( L"nullptr" ) );
+	RaiseError( g_ErrorLogger , 0 , L"ãƒ‘ã‚¹ã®åˆ†å‰²ãŒå¤±æ•—ã—ã¾ã—ãŸ" , ( path ) ? ( path ) : ( L"nullptr" ) );
 	return false;
 }
 
@@ -221,7 +227,7 @@ bool mFileUtility::RebuildPath( const wchar_t* path , WString& retResult , bool 
 	
 	if( result != 0 )
 	{
-		RaiseError( g_ErrorLogger , 0 , L"ƒpƒX‚ÌÄ\’z‚ª¸”s‚µ‚Ü‚µ‚½" , path );
+		RaiseError( g_ErrorLogger , 0 , L"ãƒ‘ã‚¹ã®å†æ§‹ç¯‰ãŒå¤±æ•—ã—ã¾ã—ãŸ" , path );
 		return false;
 	}
 	retResult = builtpath;
@@ -278,12 +284,49 @@ bool mFileUtility::ReplacePath( const WString& path , WString& retResult , const
 	
 	if( result != 0 )
 	{
-		RaiseError( g_ErrorLogger , 0 , L"ƒpƒX‚ÌÄ\’z‚ª¸”s‚µ‚Ü‚µ‚½" , path.c_str() );
+		RaiseError( g_ErrorLogger , 0 , L"ãƒ‘ã‚¹ã®å†æ§‹ç¯‰ãŒå¤±æ•—ã—ã¾ã—ãŸ" , path.c_str() );
 		return false;
 	}
 	retResult = builtpath;
 	return true;
 }
+
+bool mFileUtility::ReplacePath( const WString& path1 , const WString& path2 , WString& retPath , bool drive , bool dir , bool filename , bool ext )
+{
+	WCHAR builtpath[ _MAX_PATH ];
+
+	WString path1_Drive;
+	WString path1_Dir;
+	WString path1_File;
+	WString path1_Ext;
+	if( !SplitPath( path1 , &path1_Drive , &path1_Dir , &path1_File , &path1_Ext ) )
+	{
+		return false;
+	}
+	WString path2_Drive;
+	WString path2_Dir;
+	WString path2_File;
+	WString path2_Ext;
+	if( !SplitPath( path2 , &path2_Drive , &path2_Dir , &path2_File , &path2_Ext ) )
+	{
+		return false;
+	}
+	int result = _wmakepath_s(
+		builtpath ,
+		_MAX_PATH ,
+		( ( drive    ) ? ( path2_Drive.c_str() ) : ( path1_Drive.c_str() ) ),
+		( ( dir      ) ? ( path2_Dir.c_str()   ) : ( path1_Dir.c_str()   ) ),
+		( ( filename ) ? ( path2_File.c_str()  ) : ( path1_File.c_str()  ) ),
+		( ( ext      ) ? ( path2_Ext.c_str()   ) : ( path1_Ext.c_str()   ) )
+	);
+	if( result != 0 )
+	{
+		return false;
+	}
+	retPath = builtpath;
+	return true;
+}
+
 
 WString mFileUtility::CombinePath( const WString& dir , const WString& file , const WString& ext )
 {
@@ -355,7 +398,7 @@ WString mFileUtility::GetFullPath( const wchar_t* filename )noexcept
 	WCHAR* path = _wfullpath( nullptr , filename , _MAX_PATH );
 	if( path == nullptr )
 	{
-		RaiseError( g_ErrorLogger , 0 , L"ƒtƒ‹ƒpƒX‚Ìæ“¾‚É¸”s‚µ‚Ü‚µ‚½" , filename );
+		RaiseError( g_ErrorLogger , 0 , L"ãƒ•ãƒ«ãƒ‘ã‚¹ã®å–å¾—ã«å¤±æ•—ã—ã¾ã—ãŸ" , filename );
 		return L"";
 	}
 
@@ -364,26 +407,26 @@ WString mFileUtility::GetFullPath( const wchar_t* filename )noexcept
 	return result;
 }
 
-//w’è‚µ‚½ƒpƒX‚ªA‚ ‚éƒpƒXˆÈ‰º‚Å‚ ‚é‚©‚ğ”»’è‚µ‚Ü‚·
+//æŒ‡å®šã—ãŸãƒ‘ã‚¹ãŒã€ã‚ã‚‹ãƒ‘ã‚¹ä»¥ä¸‹ã§ã‚ã‚‹ã‹ã‚’åˆ¤å®šã—ã¾ã™
 bool mFileUtility::CheckPathTraversal( const WString& path , const WString& rootpath )noexcept
 {
 	return CheckPathTraversal( path.c_str() , rootpath.c_str() );
 }
 
-//w’è‚µ‚½ƒpƒX‚ªA‚ ‚éƒpƒXˆÈ‰º‚Å‚ ‚é‚©‚ğ”»’è‚µ‚Ü‚·
+//æŒ‡å®šã—ãŸãƒ‘ã‚¹ãŒã€ã‚ã‚‹ãƒ‘ã‚¹ä»¥ä¸‹ã§ã‚ã‚‹ã‹ã‚’åˆ¤å®šã—ã¾ã™
 bool mFileUtility::CheckPathTraversal( const wchar_t* path , const wchar_t* rootpath )noexcept
 {
 	WString fullpath_str = GetFullPath( path );
 	WString rootpath_str = GetFullPath( rootpath );
 
-	//•s³ƒpƒXH
+	//ä¸æ­£ãƒ‘ã‚¹ï¼Ÿ
 	if( fullpath_str == L"" || rootpath_str == L"" )
 	{
 		SetLastError( ERR_BADPATH );
 		return false;
 	}
 
-	//ƒfƒBƒŒƒNƒgƒŠ–¼‚É‚·‚é‚½‚ß‚ÉAÅŒã‚É\\‚ª‚Â‚¢‚Ä‚¢‚È‚¯‚ê‚Î‚­‚Á‚Â‚¯‚é
+	//ãƒ‡ã‚£ãƒ¬ã‚¯ãƒˆãƒªåã«ã™ã‚‹ãŸã‚ã«ã€æœ€å¾Œã«\\ãŒã¤ã„ã¦ã„ãªã‘ã‚Œã°ãã£ã¤ã‘ã‚‹
 	if( *fullpath_str.rbegin() != L'\\' )
 	{
 		fullpath_str += L'\\';
@@ -393,7 +436,7 @@ bool mFileUtility::CheckPathTraversal( const wchar_t* path , const wchar_t* root
 		rootpath_str += L'\\';
 	}
 
-	//ƒtƒ‹ƒpƒX‚Ìæ“ª‚©‚çAƒ‹[ƒg‚Æˆê’v‚·‚ê‚ÎOK
+	//ãƒ•ãƒ«ãƒ‘ã‚¹ã®å…ˆé ­ã‹ã‚‰ã€ãƒ«ãƒ¼ãƒˆã¨ä¸€è‡´ã™ã‚Œã°OK
 	if( rootpath_str.find( fullpath_str ) == 0 )
 	{
 		return true;
@@ -403,43 +446,43 @@ bool mFileUtility::CheckPathTraversal( const wchar_t* path , const wchar_t* root
 	return false;
 }
 
-//ƒeƒ“ƒ|ƒ‰ƒŠƒtƒHƒ‹ƒ_‚ÌƒpƒX‚ğ“¾‚é
+//ãƒ†ãƒ³ãƒãƒ©ãƒªãƒ•ã‚©ãƒ«ãƒ€ã®ãƒ‘ã‚¹ã‚’å¾—ã‚‹
 WString mFileUtility::GetTempDirPath( void )
 {
-	//ƒeƒ“ƒ|ƒ‰ƒŠƒtƒ@ƒCƒ‹‚ÌƒpƒX‚ğ“¾‚é
+	//ãƒ†ãƒ³ãƒãƒ©ãƒªãƒ•ã‚¡ã‚¤ãƒ«ã®ãƒ‘ã‚¹ã‚’å¾—ã‚‹
 	DWORD path_len = GetTempPathW( 0 , 0 );
 	std::unique_ptr<wchar_t> path( mNew wchar_t[ path_len ] );
 
 	if( GetTempPathW( path_len , path.get() ) == 0 )
 	{
-		RaiseError( g_ErrorLogger , 0 , L"ƒeƒ“ƒ|ƒ‰ƒŠƒtƒHƒ‹ƒ_‚ğæ“¾‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½" );
+		RaiseError( g_ErrorLogger , 0 , L"ãƒ†ãƒ³ãƒãƒ©ãƒªãƒ•ã‚©ãƒ«ãƒ€ã‚’å–å¾—ã§ãã¾ã›ã‚“ã§ã—ãŸ" );
 		return L"";
 	}
 	return path.get();
 }
 
-//ƒeƒ“ƒ|ƒ‰ƒŠƒtƒ@ƒCƒ‹‚ÌƒpƒX‚ğ“¾‚é
+//ãƒ†ãƒ³ãƒãƒ©ãƒªãƒ•ã‚¡ã‚¤ãƒ«ã®ãƒ‘ã‚¹ã‚’å¾—ã‚‹
 WString mFileUtility::GetTempFilePath( const WString& folder , const WString& prefix )
 {
 	WCHAR temp_dll_buff[ MAX_PATH ];
 
 	if( !GetTempFileNameW( folder.c_str() , prefix.c_str() , 0 , temp_dll_buff ) )
 	{
-		RaiseError( g_ErrorLogger , 0 , L"ƒeƒ“ƒ|ƒ‰ƒŠƒtƒ@ƒCƒ‹–¼‚ğæ“¾‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½" );
+		RaiseError( g_ErrorLogger , 0 , L"ãƒ†ãƒ³ãƒãƒ©ãƒªãƒ•ã‚¡ã‚¤ãƒ«åã‚’å–å¾—ã§ãã¾ã›ã‚“ã§ã—ãŸ" );
 		return L"";
 	}
 	return temp_dll_buff;
 }
 
-//ƒpƒX–¼"from"‚©‚çƒpƒX–¼"to"‚Ö‚Ì‘Š‘ÎƒpƒX‚ğ•Ô‚µ‚Ü‚·
-// from : ‘Š‘ÎƒpƒX‚ÌŒ³
-// to : ‘Š‘ÎƒpƒX‚Ìæ
-// ret : from‚©‚çto‚Ö‚Ì‘Š‘ÎƒpƒXB‘Š‘ÎƒpƒX‚ªŒvZ•s”\‚Ìê‡‹ó•¶š—ñB
+//ãƒ‘ã‚¹å"from"ã‹ã‚‰ãƒ‘ã‚¹å"to"ã¸ã®ç›¸å¯¾ãƒ‘ã‚¹ã‚’è¿”ã—ã¾ã™
+// from : ç›¸å¯¾ãƒ‘ã‚¹ã®å…ƒ
+// to : ç›¸å¯¾ãƒ‘ã‚¹ã®å…ˆ
+// ret : fromã‹ã‚‰toã¸ã®ç›¸å¯¾ãƒ‘ã‚¹ã€‚ç›¸å¯¾ãƒ‘ã‚¹ãŒè¨ˆç®—ä¸èƒ½ã®å ´åˆç©ºæ–‡å­—åˆ—ã€‚
 WString mFileUtility::GetRelativePath( const WString& from , const WString& to ) noexcept
 {
 	wchar_t relpath[ MAX_PATH ];
 
-	//from‚ªƒfƒBƒŒƒNƒgƒŠ‚©ƒtƒ@ƒCƒ‹‚©‚ğ”»’è‚µ‚ÄAƒpƒX–¼‚ğ’²®
+	//fromãŒãƒ‡ã‚£ãƒ¬ã‚¯ãƒˆãƒªã‹ãƒ•ã‚¡ã‚¤ãƒ«ã‹ã‚’åˆ¤å®šã—ã¦ã€ãƒ‘ã‚¹åã‚’èª¿æ•´
 	WString from_str;
 	DWORD attrfrom;
 	if( !from.size() )
@@ -457,7 +500,7 @@ WString mFileUtility::GetRelativePath( const WString& from , const WString& to )
 		from_str = from;
 	}
 
-	//to‚ªƒfƒBƒŒƒNƒgƒŠ‚©ƒtƒ@ƒCƒ‹‚©‚ğ”»’è‚µ‚ÄAƒpƒX–¼‚ğ’²®
+	//toãŒãƒ‡ã‚£ãƒ¬ã‚¯ãƒˆãƒªã‹ãƒ•ã‚¡ã‚¤ãƒ«ã‹ã‚’åˆ¤å®šã—ã¦ã€ãƒ‘ã‚¹åã‚’èª¿æ•´
 	WString to_str;
 	DWORD attrto;
 	if( !to.size() )
@@ -475,7 +518,7 @@ WString mFileUtility::GetRelativePath( const WString& from , const WString& to )
 		to_str = to;
 	}
 
-	//‘Š‘ÎƒpƒX‚ÌŒvZ
+	//ç›¸å¯¾ãƒ‘ã‚¹ã®è¨ˆç®—
 	if( PathRelativePathToW( relpath , from_str.c_str() , attrfrom , to.c_str() , attrto ) )
 	{
 		return WString( relpath );
@@ -488,7 +531,7 @@ bool mFileUtility::CreateMiddleDirectory( const WString& path )noexcept
 	WString directory;
 	if( !mFileUtility::RebuildPath( path , directory , true , true , false , false ) )
 	{
-		RaiseError( g_ErrorLogger , 0 , L"ƒfƒBƒŒƒNƒgƒŠ–¼‚ğ\’z‚Å‚«‚Ü‚¹‚ñ" );
+		RaiseError( g_ErrorLogger , 0 , L"ãƒ‡ã‚£ãƒ¬ã‚¯ãƒˆãƒªåã‚’æ§‹ç¯‰ã§ãã¾ã›ã‚“" );
 		return false;
 	}
 	directory = GetFullPath( directory );
@@ -503,6 +546,6 @@ bool mFileUtility::CreateMiddleDirectory( const WString& path )noexcept
 		break;
 	}
 
-	RaiseError( g_ErrorLogger , 0 , L"ƒfƒBƒŒƒNƒgƒŠ‚ğì¬‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½" );
+	RaiseError( g_ErrorLogger , 0 , L"ãƒ‡ã‚£ãƒ¬ã‚¯ãƒˆãƒªã‚’ä½œæˆã§ãã¾ã›ã‚“ã§ã—ãŸ" );
 	return false;
 }

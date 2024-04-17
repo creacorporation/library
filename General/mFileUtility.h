@@ -67,7 +67,7 @@ namespace mFileUtility
 
 	//パスをドライブ、ディレクトリ、ファイル名、拡張子を差し替える
 	// path : 差し替え前のパス
-	// retpath : 差し替え前のパス（出力）
+	// retpath : 差し替えたパス（出力）
 	// retDrive : 差し替えるドライブ名　差し替え不要の場合はnullptr
 	// retDir : 差し替えるディレクトリ名　差し替え不要の場合はnullptr
 	// retFile : 差し替えるファイル名　差し替え不要の場合はnullptr
@@ -77,13 +77,24 @@ namespace mFileUtility
 
 	//パスをドライブ、ディレクトリ、ファイル名、拡張子を差し替える
 	// path : 差し替え前のパス
-	// retpath : 差し替え前のパス（出力）
+	// retpath : 差し替えたパス（出力）
 	// retDrive : 差し替えるドライブ名　差し替え不要の場合はnullptr
 	// retDir : 差し替えるディレクトリ名　差し替え不要の場合はnullptr
 	// retFile : 差し替えるファイル名　差し替え不要の場合はnullptr
 	// retExt : 差し替える拡張子　差し替え不要の場合はnullptr
 	// ret : 成功の場合真
 	bool ReplacePath( const WString& path , WString& retPath , const wchar_t* Drive , const wchar_t* Dir , const wchar_t* File , const wchar_t* Ext );
+
+	//パスをドライブ、ディレクトリ、ファイル名、拡張子を差し替える
+	// path1 : 差し替え前のパス
+	// path2 : 差し替え前のパス
+	// retpath : 差し替えたパス（出力）
+	// Drive : true=path2を使う、false=path1を使う
+	// Dir : true=path2を使う、false=path1を使う
+	// File : true=path2を使う、false=path1を使う
+	// Ext : true=path2を使う、false=path1を使う
+	// ret : 成功の場合真
+	bool ReplacePath( const WString& path1 , const WString& path2 , WString& retPath , bool drive , bool dir , bool filename , bool ext );
 
 	//パスを連結する
 	//ディレクトリ名、ファイル名、拡張子を連結して返します。ディレクトリ名の末尾のバックスラッシュがない場合は
