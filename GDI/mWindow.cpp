@@ -207,3 +207,13 @@ bool mWindow::SetFocus( void )const
 	return ::SetFocus( GetMyHwnd() );
 }
 
+LRESULT mWindow::MessageSend( UINT msg , WPARAM wparam , LPARAM lparam )
+{
+	return SendMessageW( GetMyHwnd() , msg , wparam , lparam );		 
+}
+
+
+LRESULT mWindow::MessagePost( UINT msg , WPARAM wparam , LPARAM lparam )
+{
+	return PostMessageW( GetMyHwnd() , msg , wparam , lparam );		 
+}

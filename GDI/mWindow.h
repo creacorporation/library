@@ -97,13 +97,6 @@ class mWindow
 {
 public:
 	
-	//ウインドウプロシージャ
-	//mWindow::WindowProcedure()を呼び出した場合、
-	//(1)ウインドウプロシージャが置き換えられていれば、置き換え前のウインドウプロシージャに、
-	//(2)ウインドウプロシージャが置き換えられていなければ、DefWindowProcW()に
-	//メッセージを処理させます。
-	virtual LRESULT WindowProcedure( UINT msg , WPARAM wparam , LPARAM lparam );
-
 	/*
 	※ファクトリメソッド作成例
 	　以下コードを継承したクラスにコピペし、「mNew mWindow」の部分を継承したクラス名で置き換えて下さい。
@@ -178,7 +171,23 @@ public:
 	//ウインドウを移動する
 	virtual void MoveWindowPosition( const RECT& pos );
 
+	//
+	LRESULT MessageSend( UINT msg , WPARAM wparam , LPARAM lparam );
+
+	//
+	LRESULT MessagePost( UINT msg , WPARAM wparam , LPARAM lparam );
+
 protected:
+
+	friend class mGlobalWindowFunc;
+
+	//ウインドウプロシージャ
+	//mWindow::WindowProcedure()を呼び出した場合、
+	//(1)ウインドウプロシージャが置き換えられていれば、置き換え前のウインドウプロシージャに、
+	//(2)ウインドウプロシージャが置き換えられていなければ、DefWindowProcW()に
+	//メッセージを処理させます。
+	virtual LRESULT WindowProcedure( UINT msg , WPARAM wparam , LPARAM lparam );
+
 	//---------------------------------------
 	// サブクラスへのコールバック関数
 	//---------------------------------------	
