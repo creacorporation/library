@@ -96,13 +96,27 @@ static int GetCreateThreadCount( int request )
 		switch( request )
 		{
 		case mWorkerThreadPool::THREAD_LOGICAL_CORE_MINUS1:
-			thread_count = ( 2 <= logical_core ) ? ( logical_core - 1 ) : ( 0 );
+			if( logical_core )
+			{
+				thread_count = ( 2 <= logical_core ) ? ( logical_core - 1 ) : ( 1 );
+			}
+			else
+			{
+				thread_count = 0;
+			}
 			break;
 		case mWorkerThreadPool::THREAD_LOGICAL_CORE:
 			thread_count = ( 1 <= logical_core ) ? ( logical_core - 0 ) : ( 0 );
 			break;
 		case mWorkerThreadPool::THREAD_PHYSICAL_CORE_MINUS1:
-			thread_count = ( 2 <= physical_core ) ? ( physical_core - 1 ) : ( 0 );
+			if( physical_core )
+			{
+				thread_count = ( 2 <= physical_core ) ? ( physical_core - 1 ) : ( 1 );
+			}
+			else
+			{
+				thread_count = 0;
+			}
 			break;
 		case mWorkerThreadPool::THREAD_PHYSICAL_CORE:
 			thread_count = ( 1 <= physical_core ) ? ( physical_core - 0 ) : ( 0 );

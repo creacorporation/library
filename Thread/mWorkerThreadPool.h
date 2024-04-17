@@ -23,11 +23,11 @@ public:
 	mWorkerThreadPool();
 	virtual ~mWorkerThreadPool();
 
-	//論理コアの数より1個少ない数だけスレッドを作成する
+	//論理コアの数より1個少ない数だけスレッドを作成する(論理コアが1個だけなら1個起動する)
 	static const int THREAD_LOGICAL_CORE_MINUS1 = 0;
 	//論理コアの数と同じ数だけスレッドを作成する
 	static const int THREAD_LOGICAL_CORE = -1;
-	//物理コアの数より1個少ない数だけスレッドを作成する
+	//物理コアの数より1個少ない数だけスレッドを作成する(物理コアが1個だけなら1個起動する)
 	static const int THREAD_PHYSICAL_CORE_MINUS1 = -2;
 	//物理コアの数と同じ数だけスレッドを作成する
 	static const int THREAD_PHYSICAL_CORE = -3;
