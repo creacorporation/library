@@ -14,11 +14,11 @@
 #include <WinSock2.h>
 #include "mStandard.h"
 
-class mWinSockInitializer
+class mWinsockInitializer
 {
 public:
-	mWinSockInitializer();
-	virtual ~mWinSockInitializer();
+	mWinsockInitializer();
+	virtual ~mWinsockInitializer();
 
 	//Winsockがイニシャライズされているかどうか
 	bool IsInitialized( void )const;
@@ -27,8 +27,9 @@ public:
 	operator bool() const;
 
 private:
-	mWinSockInitializer( const mWinSockInitializer& src ) = delete;
-	const mWinSockInitializer& operator=( const mWinSockInitializer& src ) = delete;
+
+	mWinsockInitializer( const mWinsockInitializer& src ) = delete;
+	const mWinsockInitializer& operator=( const mWinsockInitializer& src ) = delete;
 
 	bool MyIsInitialized;
 };

@@ -8,14 +8,14 @@
 // (何らかの契約がある場合でも、本ソースコードはその対象外となります)
 //----------------------------------------------------------------------------
 
-#include "mWinSockInitializer.h"
+#include "mWinsockInitializer.h"
 #include <General/mErrorLogger.h>
 #include <General/mCriticalSectionContainer.h>
 
 static ULONG g_WinsockInitializeCount = 0;
 static WSADATA g_WsaData = { 0 };
 
-mWinSockInitializer::mWinSockInitializer()
+mWinsockInitializer::mWinsockInitializer()
 {
 	//クリティカルセクション
 	mCriticalSectionTicket cs( g_CriticalSection );
@@ -45,7 +45,7 @@ mWinSockInitializer::mWinSockInitializer()
 	MyIsInitialized = true;
 }
 
-mWinSockInitializer::~mWinSockInitializer()
+mWinsockInitializer::~mWinsockInitializer()
 {
 	//クリティカルセクション
 	mCriticalSectionTicket cs( g_CriticalSection );
@@ -64,12 +64,12 @@ mWinSockInitializer::~mWinSockInitializer()
 	}
 }
 
-bool mWinSockInitializer::IsInitialized( void )const
+bool mWinsockInitializer::IsInitialized( void )const
 {
 	return MyIsInitialized;
 }
 
-mWinSockInitializer::operator bool() const
+mWinsockInitializer::operator bool() const
 {
 	return MyIsInitialized;
 }
