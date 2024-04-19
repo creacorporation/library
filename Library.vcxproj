@@ -41,6 +41,8 @@
     <ClInclude Include="General\mStdInStream.h" />
     <ClInclude Include="Network\mHttpConnection.h" />
     <ClInclude Include="Network\mHttpRequest.h" />
+    <ClInclude Include="Network\mMagicPacketSender.h" />
+    <ClInclude Include="Network\mWinsockInitializer.h" />
     <ClInclude Include="Service\mServiceControlManager.h" />
     <ClInclude Include="Device\mPrinterEnumerar.h" />
     <ClInclude Include="Device\mPrinterInfo.h" />
@@ -160,6 +162,8 @@
     <ClCompile Include="General\mStdInStream.cpp" />
     <ClCompile Include="Network\mHttpConnection.cpp" />
     <ClCompile Include="Network\mHttpRequest.cpp" />
+    <ClCompile Include="Network\mMagicPacketSender.cpp" />
+    <ClCompile Include="Network\mWinsockInitializer.cpp" />
     <ClCompile Include="Service\mServiceControlManager.cpp" />
     <ClCompile Include="Device\mPrinterEnumerar.cpp" />
     <ClCompile Include="Device\mPrinterInfo.cpp" />
