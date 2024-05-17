@@ -391,13 +391,7 @@
     <ClInclude Include="Device\mDriveEnumerar.h">
       <Filter>Device</Filter>
     </ClInclude>
-    <ClInclude Include="Network\mMagicPacketSender.h">
-      <Filter>Network</Filter>
-    </ClInclude>
     <ClInclude Include="Network\mWinsockInitializer.h">
-      <Filter>Network</Filter>
-    </ClInclude>
-    <ClInclude Include="Network\mWinsockUtility.h">
       <Filter>Network</Filter>
     </ClInclude>
   </ItemGroup>
@@ -744,13 +738,7 @@
     <ClCompile Include="Device\mDriveEnumerar.cpp">
       <Filter>Device</Filter>
     </ClCompile>
-    <ClCompile Include="Network\mMagicPacketSender.cpp">
-      <Filter>Network</Filter>
-    </ClCompile>
     <ClCompile Include="Network\mWinsockInitializer.cpp">
-      <Filter>Network</Filter>
-    </ClCompile>
-    <ClCompile Include="Network\mWinsockUtility.cpp">
       <Filter>Network</Filter>
     </ClCompile>
   </ItemGroup>
