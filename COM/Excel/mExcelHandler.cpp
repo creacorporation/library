@@ -208,13 +208,21 @@ bool mExcelHandler::SetCurrentWorkbook( DWORD index )
 	return true;
 }
 
-bool mExcelHandler::SetCurrentWorkbook( const WString& name )
+static WString MakeFuzzyName( const WString& in )
+{
+	WString tmp = RemoveSpace( in );
+	return ConvertString( tmp , LCMAP_FULLWIDTH | LCMAP_HIRAGANA | LCMAP_UPPERCASE );
+}
+
+bool mExcelHandler::SetCurrentWorkbook( const WString& name , bool isFuzzyMatch )
 {
 	if( MyApplication == nullptr )
 	{
 		RaiseError( g_ErrorLogger , 0 , L"Excelは起動していません" );
 		return false;
 	}
+
+	WString tmp_search_name = ( !isFuzzyMatch ) ? ( name ) : ( MakeFuzzyName( name ) );
 
 	//ワークブックの指定が名前出来た場合、
 	//全ワークブックから一致する名前を捜し、一致したものをカレントにする。
@@ -226,11 +234,24 @@ bool mExcelHandler::SetCurrentWorkbook( const WString& name )
 		XlsWorkbook wb = wbs->GetItem( _variant_t( i ) );
 
 		_bstr_t wbname = wb->Name;
-		if( name.compare( (wchar_t*)wbname ) == 0 )
+		if( !isFuzzyMatch )
 		{
-			//最初に名前が一致したものにする
-			MyCurrentWorkbook = wbs->GetItem( _variant_t( i ) );
-			return true;
+			if( name.compare( (wchar_t*)wbname ) == 0 )
+			{
+				//最初に名前が一致したものにする
+				MyCurrentWorkbook = wbs->GetItem( _variant_t( i ) );
+				return true;
+			}
+		}
+		else
+		{
+			WString tmp_book_name = MakeFuzzyName( (wchar_t*)wbname );
+			if( tmp_search_name == tmp_book_name )
+			{
+				//最初に名前が一致したものにする
+				MyCurrentWorkbook = wbs->GetItem( _variant_t( i ) );
+				return true;
+			}
 		}
 	}
 	RaiseError( g_ErrorLogger , 0 , L"指定のワークブックはありません" , name );
@@ -311,13 +332,15 @@ bool mExcelHandler::SetCurrentWorksheet( DWORD index )
 }
 
 
-bool mExcelHandler::SetCurrentWorksheet( const WString& name )
+bool mExcelHandler::SetCurrentWorksheet( const WString& name , bool isFuzzyMatch )
 {
 	if( MyCurrentWorkbook == nullptr )
 	{
 		RaiseError( g_ErrorLogger , 0 , L"現在のワークブックは指定されていません" );
 		return false;
 	}
+
+	WString tmp_search_name = ( !isFuzzyMatch ) ? ( name ) : ( MakeFuzzyName( name ) );
 
 	DWORD count = GetWorksheetCount();
 	XlsWorksheets ws = MyCurrentWorkbook->Worksheets;
@@ -326,11 +349,24 @@ bool mExcelHandler::SetCurrentWorksheet( const WString& name )
 		XlsWorksheet wsptr = ws->GetItem( _variant_t( i ) );
 
 		_bstr_t wsname = wsptr->Name;
-		if( name.compare( (wchar_t*)wsname ) == 0 )
+		if( !isFuzzyMatch )
 		{
-			//最初に名前が一致したものにする
-			MyCurrentWorksheet = ws->GetItem( _variant_t( i ) );
-			return true;
+			if( name.compare( (wchar_t*)wsname ) == 0 )
+			{
+				//最初に名前が一致したものにする
+				MyCurrentWorksheet = ws->GetItem( _variant_t( i ) );
+				return true;
+			}
+		}
+		else
+		{
+			WString tmp_sheet_name = MakeFuzzyName( (wchar_t*)wsname );
+			if( tmp_search_name == tmp_sheet_name )
+			{
+				//最初に名前が一致したものにする
+				MyCurrentWorksheet = ws->GetItem( _variant_t( i ) );
+				return true;
+			}
 		}
 	}
 	RaiseError( g_ErrorLogger , 0 , L"指定のワークブックはありません" , name );

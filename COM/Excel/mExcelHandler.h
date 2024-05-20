@@ -281,8 +281,10 @@ public:
 
 	//現在のワークブックを変更します
 	// name  : 選択するワークブックの名前
+	// isFuzzyMatch : 空白の有無、全角半角、大文字小文字の違いを無視して検索する
+	//                ※無視した結果、複数が一致した場合はそのなかで最初に見つけたものを採用する
 	// ret : 変更に成功した場合はtrue。実在しないワークブックを指定した場合など、失敗したらfalse。
-	bool SetCurrentWorkbook( const WString& name );
+	bool SetCurrentWorkbook( const WString& name , bool isFuzzyMatch = false );
 
 	//現在のワークブックを得る
 	// ret : 現在のワークブック名。指定されていない場合は空文字列
@@ -318,8 +320,10 @@ public:
 
 	//現在のワークシートを変更する
 	// name  : 選択するワークシートの名前
+	// isFuzzyMatch : 空白の有無、全角半角、大文字小文字の違いを無視して検索する
+	//                ※無視した結果、複数が一致した場合はそのなかで最初に見つけたものを採用する
 	// ret : 変更に成功した場合はtrue。実在しないワークシートを指定した場合など、失敗したらfalse。
-	bool SetCurrentWorksheet( const WString& name );
+	bool SetCurrentWorksheet( const WString& name , bool isFuzzyMatch = false );
 
 	//ワークシートの名前を得る
 	// ret : 現在のワークシート名。指定されていない場合は空文字列
