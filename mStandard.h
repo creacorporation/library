@@ -10,7 +10,7 @@
 #ifndef MSTANDARD_H_INCLUDED
 #define MSTANDARD_H_INCLUDED
 
-#ifdef _DEBUG
+#if defined( _DEBUG ) && defined( LIBRARY_ENABLE_CRTDBG )
 #define _CRTDBG_MAP_ALLOC
 #endif //_DEBUG
 
@@ -25,7 +25,7 @@
 #define threadsafe /**/
 
 //デバッグ版new、deleteの定義
-#ifdef _DEBUG
+#if defined( _DEBUG ) && defined( LIBRARY_ENABLE_CRTDBG )
 #include <crtdbg.h>
 #define mNew ::new(_NORMAL_BLOCK, __FILE__ ":" __FUNCSIG__ , __LINE__ ) 
 #define mPlacementNew(a) ::new( a )

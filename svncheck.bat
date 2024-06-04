@@ -3,6 +3,8 @@
 rem ----- ライブラリ有効性チェック -----
 rem WebView2使わない場合は下をコメントアウト
 echo #define %1_ENABLE_WEBVIEW2
+rem CRTDBG使わない場合は下をコメントアウト
+rem echo #define %1_ENABLE_CRTDBG
 
 rem ----- SVNリビジョンチェック -----
 git help > nul
