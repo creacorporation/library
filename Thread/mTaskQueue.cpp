@@ -19,6 +19,7 @@ mTaskQueue::mTaskQueue( mWorkerThreadPool& wtp ) :
 {
 	MyIsSealed = false;
 	MyActiveTask = 0;
+	MyIsCritical = false;
 	return;
 }
 
@@ -231,6 +232,10 @@ void mTaskQueue::TaskRoutine( mWorkerThreadPool& pool , DWORD Param1 , DWORD_PTR
 	{ /*CRITICALSECTION*/
 		mCriticalSectionTicket critical( queue->MyCriticalSection );
 
+		if( queue->MyIsCritical )
+		{
+			return;
+		}
 		for( TicketQueue::iterator itr = queue->MyWaiting.begin() ; itr != queue->MyWaiting.end() ; itr++ )
 		{
 			switch( (*itr)->MyScheduleType )
@@ -242,6 +247,7 @@ void mTaskQueue::TaskRoutine( mWorkerThreadPool& pool , DWORD Param1 , DWORD_PTR
 				{
 					return;
 				}
+				queue->MyIsCritical = true;
 				break;
 			case mTaskBase::ScheduleType::IdLock:
 				if( ( queue->MyTaskInformationMap.count( (*itr)->MyTaskId ) ) &&
@@ -300,6 +306,7 @@ void mTaskQueue::TaskRoutine( mWorkerThreadPool& pool , DWORD Param1 , DWORD_PTR
 				task->MyTaskStatus = mTaskBase::TaskStatus::STATUS_ABORTED;
 			}
 
+			queue->MyIsCritical = false;
 			queue->MyActiveTask--;
 			queue->MyTaskInformationMap[ task->GetTaskId() ].Executing--;
 		}
@@ -326,6 +333,7 @@ void mTaskQueue::TaskRoutine( mWorkerThreadPool& pool , DWORD Param1 , DWORD_PTR
 		{
 			//アクティブなタスクの数を減算
 			mCriticalSectionTicket critical( queue->MyCriticalSection );
+			queue->MyIsCritical = false;
 			queue->MyActiveTask--;
 			queue->MyTaskInformationMap[ task->GetTaskId() ].Executing--;
 			queue->TaskInformationDecrement( task->GetTaskId() );

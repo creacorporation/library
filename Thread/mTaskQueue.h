@@ -92,6 +92,9 @@ protected:
 	//タスクIDの参照カウントをデクリメントする
 	threadsafe void TaskInformationDecrement( const AString& id );
 
+	//クリティカル指定のタスクを実行しているかどうか
+	bool MyIsCritical;
+
 	//タスクキューのエントリ
 	using TicketQueue = std::deque< mTaskBase::Ticket >;
 	TicketQueue MyWaiting;		//実行待ちキュー
