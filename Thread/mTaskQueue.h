@@ -1,6 +1,6 @@
 //----------------------------------------------------------------------------
 // ワーカースレッド＆タスクハンドラ
-// Copyright (C) 2019- Crea Inc. All rights reserved.
+// Copyright (C) 2019-2024 Crea Inc. All rights reserved.
 // This program is released under the MIT License. 
 // see http://opensource.org/licenses/mit-license.php
 // 著作権表示やライセンスの改変は禁止されています。
@@ -73,14 +73,14 @@ protected:
 	bool MyIsSealed;
 
 	//タスクIDごとの情報
-	//※将来、タスクIDごとに優先するとかしないとか、一時休止するとかいった機能を追加することがあれば
-	//　この構造体に情報を追加することになるはず。
 	struct TaskInformation
 	{
-		DWORD Count;	//現在このタスクIDに属しているタスクの数(参照カウント)
+		DWORD Count;		//現在このタスクIDに属しているタスクの数(参照カウント)
+		DWORD Executing;	//現在このタスクIDで実行中のタスクの数
 		TaskInformation()
 		{
 			Count = 0;
+			Executing = 0;
 		}
 	};
 	using TaskInformationMap = std::unordered_map< AString , TaskInformation >;

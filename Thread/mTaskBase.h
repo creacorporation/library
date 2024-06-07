@@ -1,6 +1,6 @@
 //----------------------------------------------------------------------------
 // ワーカースレッド＆タスクハンドラ
-// Copyright (C) 2019- Crea Inc. All rights reserved.
+// Copyright (C) 2019-2024 Crea Inc. All rights reserved.
 // This program is released under the MIT License. 
 // see http://opensource.org/licenses/mit-license.php
 // 著作権表示やライセンスの改変は禁止されています。
@@ -69,6 +69,19 @@ public:
 	//タスク完了時に呼び出すコールバック関数の宣言
 	using CallbackFunction = void(*)( class mTaskQueue& queue , Ticket& ticket , DWORD_PTR parameter , bool result );
 
+	//タスク実行の順位指定
+	enum ScheduleType
+	{
+		//特に指定なし
+		Normal,
+		//他のタスク動作中は開始せず、動作中は他のタスクを開始させない
+		Critical,
+		//キュー内で同一IDのタスクが実行中であれば、タスクを開始しない
+		IdLock,
+		//キュー内で同一IDのタスクが実行中であれば、後続の開始可能なタスクを実行する
+		IdPostpone
+	};
+
 	//タスク完了時の通知オプション
 	class NotifyOption : public mNotifyOption< CallbackFunction >
 	{
@@ -111,10 +124,14 @@ protected:
 
 	mTaskBase();
 
-	mTaskBase( const AString& TaskId );
+	// TaskId : タスクの名称
+	mTaskBase( const AString& TaskId , ScheduleType ScheduleType = ScheduleType::Normal );
 
 	//タスクID
 	const AString MyTaskId;
+
+	//タスク実行順制御
+	const ScheduleType MyScheduleType;
 
 	//タスクの実行結果
 	using TaskFunctionResult = Definitions_TaskBase::TaskFunctionResult;

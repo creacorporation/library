@@ -1,6 +1,6 @@
 //----------------------------------------------------------------------------
 // ワーカースレッド＆タスクハンドラ
-// Copyright (C) 2019- Crea Inc. All rights reserved.
+// Copyright (C) 2019-2024 Crea Inc. All rights reserved.
 // This program is released under the MIT License. 
 // see http://opensource.org/licenses/mit-license.php
 // 著作権表示やライセンスの改変は禁止されています。
@@ -10,13 +10,17 @@
 
 #include "mTaskBase.h"
 
-mTaskBase::mTaskBase() : MyTaskId( "" )
+mTaskBase::mTaskBase() : 
+	MyTaskId( "" ) ,
+	MyScheduleType( ScheduleType::Normal )
 {
 	MyTaskStatus = TaskStatus::STATUS_NOTSTARTED;
 	return;
 }
 
-mTaskBase::mTaskBase( const AString& TaskId ) : MyTaskId( TaskId )
+mTaskBase::mTaskBase( const AString& TaskId , ScheduleType ScType ) : 
+	MyTaskId( TaskId ) ,
+	MyScheduleType( ScType )
 {
 	MyTaskStatus = TaskStatus::STATUS_NOTSTARTED;
 	return;

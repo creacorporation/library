@@ -1,6 +1,6 @@
 //----------------------------------------------------------------------------
 // ワーカースレッド＆タスクハンドラ
-// Copyright (C) 2019- Crea Inc. All rights reserved.
+// Copyright (C) 2019-2024 Crea Inc. All rights reserved.
 // This program is released under the MIT License. 
 // see http://opensource.org/licenses/mit-license.php
 // 著作権表示やライセンスの改変は禁止されています。
@@ -201,8 +201,12 @@ void mTaskQueue::TaskInformationDecrement( const AString& id )
 	}
 
 	//参照カウントがゼロになった場合の処理
-	if( itr->second.Count == 0)
+	if( itr->second.Count == 0 )
 	{
+		if( itr->second.Executing != 0 )
+		{
+			RaiseAssert( g_ErrorLogger , 0 , "実行中のタスク参照カウントがゼロではありません" , id );
+		}
 		MyTaskInformationMap.erase( itr );
 	}
 	return;
@@ -227,18 +231,44 @@ void mTaskQueue::TaskRoutine( mWorkerThreadPool& pool , DWORD Param1 , DWORD_PTR
 	{ /*CRITICALSECTION*/
 		mCriticalSectionTicket critical( queue->MyCriticalSection );
 
-		do
+		for( TicketQueue::iterator itr = queue->MyWaiting.begin() ; itr != queue->MyWaiting.end() ; itr++ )
 		{
-			if( queue->MyWaiting.empty() )
+			switch( (*itr)->MyScheduleType )
 			{
-				return;
+			case mTaskBase::ScheduleType::Normal:
+				break;
+			case mTaskBase::ScheduleType::Critical:
+				if( queue->MyActiveTask != 0 )
+				{
+					return;
+				}
+				break;
+			case mTaskBase::ScheduleType::IdLock:
+				if( ( queue->MyTaskInformationMap.count( (*itr)->MyTaskId ) ) &&
+					( queue->MyTaskInformationMap[ (*itr)->MyTaskId ].Executing ) )
+				{
+					return;
+				}
+				break;
+			case mTaskBase::ScheduleType::IdPostpone:
+				if( ( queue->MyTaskInformationMap.count( (*itr)->MyTaskId ) ) &&
+					( queue->MyTaskInformationMap[ (*itr)->MyTaskId ].Executing ) )
+				{
+					continue;
+				}
+				break;
+			default:
+				break;
 			}
-			task = std::move( queue->MyWaiting.front() );
-			queue->MyWaiting.pop_front();
+			task = std::move( *itr );
+			queue->MyWaiting.erase( itr );
 			queue->MyActiveTask++;
+			queue->MyTaskInformationMap[ (*itr)->MyTaskId ].Executing++;
 		}
-		while( task == nullptr );
-
+		if( task == nullptr )
+		{
+			return;
+		}
 		//ステータスを実行中に
 		task->MyTaskStatus = mTaskBase::TaskStatus::STATUS_INPROGRESS;
 	}
@@ -269,7 +299,9 @@ void mTaskQueue::TaskRoutine( mWorkerThreadPool& pool , DWORD Param1 , DWORD_PTR
 				addtask_result = false;
 				task->MyTaskStatus = mTaskBase::TaskStatus::STATUS_ABORTED;
 			}
+
 			queue->MyActiveTask--;
+			queue->MyTaskInformationMap[ task->GetTaskId() ].Executing--;
 		}
 
 		if( !addtask_result )
@@ -295,6 +327,7 @@ void mTaskQueue::TaskRoutine( mWorkerThreadPool& pool , DWORD Param1 , DWORD_PTR
 			//アクティブなタスクの数を減算
 			mCriticalSectionTicket critical( queue->MyCriticalSection );
 			queue->MyActiveTask--;
+			queue->MyTaskInformationMap[ task->GetTaskId() ].Executing--;
 			queue->TaskInformationDecrement( task->GetTaskId() );
 		}
 	}
