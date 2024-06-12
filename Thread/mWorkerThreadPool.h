@@ -16,6 +16,7 @@
 #include "General/mCriticalSectionContainer.h"
 #include "mWorkerThread.h"
 #include <deque>
+#include <list>
 
 class mWorkerThreadPool
 {
@@ -72,7 +73,8 @@ public:
 	// callback : スレッドプールから呼び出すコールバック関数
 	// Param1 : コールバック関数に渡される値（任意の値でOK）
 	// Param2 : コールバック関数に渡される値（任意の値でOK）
-	threadsafe bool AddTask( CallbackFunction callback , DWORD Param1, DWORD_PTR Param2 );
+	// LoadbalanceKey : 同じキーをもつタスクをなるべく同時実行しないようにする
+	threadsafe bool AddTask( CallbackFunction callback , DWORD Param1, DWORD_PTR Param2 , DWORD_PTR LoadbalanceKey = 0 );
 
 	//現在保持している未完了タスクの数を取得する
 	//※Attachで関連付けたIOの完了は含まない
@@ -94,27 +96,35 @@ private:
 	//クリティカルセクション
 	mutable mCriticalSectionContainer MyCriticalSection;
 
-	//現在保持しているタスクの数
-	DWORD MyQueuedTaskCount;
-
 	//IO完了ポート
 	HANDLE MyIoPort;
 
 	//タスク情報
 	struct TaskInfoEntry
 	{
-		mWorkerThreadPool& Parent;
 		CallbackFunction TaskFunction;
 		DWORD Param1;
 		DWORD_PTR Param2;
 
-		TaskInfoEntry( mWorkerThreadPool& parent ) : Parent( parent )
+		TaskInfoEntry()
 		{
 			TaskFunction = nullptr;
 			Param1 = 0;
 			Param2 = 0;
 		}
 	};
+	using TaskInfo = std::deque<TaskInfoEntry>;
+
+	//タスクキー別タスク情報
+	struct TaskArrayEntry
+	{
+		DWORD_PTR LoadbalanceKey;
+		TaskInfo Task;
+		DWORD ActiveCount;
+	};
+	using TaskArray = std::list<TaskArrayEntry>;
+
+	TaskArray MyTaskArray;
 
 protected:
 	friend class mWorkerThread;		//アクセス許可するクラス

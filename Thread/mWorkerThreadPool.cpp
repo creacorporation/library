@@ -23,9 +23,6 @@ mWorkerThreadPool::mWorkerThreadPool()
 		RaiseError( g_ErrorLogger , 0 , L"IO完了ポートを作成できませんでした" );
 	}
 
-	//タスクの数を初期化
-	MyQueuedTaskCount = 0;
-
 	return;
 }
 
@@ -268,25 +265,78 @@ VOID CALLBACK mWorkerThreadPool::CompleteRoutine( DWORD ec , DWORD len , LPOVERL
 		return;
 	}
 
-	//タスク実行
-	TaskInfoEntry* entry = (TaskInfoEntry*)ov;
-	if( entry->TaskFunction )
+	//次のタスクを決定
+	mWorkerThreadPool* ptr = reinterpret_cast<mWorkerThreadPool*>( ov );
+	DWORD_PTR loadbalance_key;
+	TaskInfoEntry entry;
 	{
-		entry->TaskFunction( entry->Parent , entry->Param1 , entry->Param2 );
+		mCriticalSectionTicket critical( ptr->MyCriticalSection );
+
+		TaskArray::iterator next = ptr->MyTaskArray.end();
+		TaskArray::iterator itr = ptr->MyTaskArray.begin();
+		for( ; itr != ptr->MyTaskArray.end() ; itr++ )
+		{
+			if( !itr->Task.empty() )
+			{
+				next = itr;
+				break;
+			}
+		}
+		if( next == ptr->MyTaskArray.end() )
+		{
+			return;
+		}
+		else
+		{
+			itr = next;
+			itr++;
+		}
+		for(  ; itr != ptr->MyTaskArray.end() ; itr++ )
+		{
+			if( !itr->Task.empty() )
+			{
+				if( itr->ActiveCount < next->ActiveCount )
+				{
+					next = itr;
+				}
+			}
+		}
+
+		loadbalance_key = next->LoadbalanceKey;
+		entry = next->Task.front();
+		next->Task.pop_front();
+		next->ActiveCount++;
+
+		//ラウンドロビンになるように後ろにくっつける
+		ptr->MyTaskArray.splice( ptr->MyTaskArray.end() , ptr->MyTaskArray , next );
+	}
+
+	//タスク実行
+	if( entry.TaskFunction )
+	{
+		entry.TaskFunction( *ptr , entry.Param1 , entry.Param2 );
 	}
 
 	//タスクのデータを破棄
-	//タスクカウントを参照するため、Parentの参照だけコピーを取っておく
-	mWorkerThreadPool& Parent( entry->Parent );
-	mDelete entry;
 	{
-		mCriticalSectionTicket critical( Parent.MyCriticalSection );	
-		Parent.MyQueuedTaskCount--;
+		mCriticalSectionTicket critical( ptr->MyCriticalSection );
+		for( TaskArray::iterator itr = ptr->MyTaskArray.begin() ; itr != ptr->MyTaskArray.end() ; itr++ )
+		{
+			if( itr->LoadbalanceKey == loadbalance_key )
+			{
+				itr->ActiveCount--;
+				if( ( itr->ActiveCount == 0 ) && ( itr->Task.empty() ) )
+				{
+					ptr->MyTaskArray.erase( itr );
+				}
+				return;
+			}
+		}
 	}
 }
 
 //タスクの追加
-bool mWorkerThreadPool::AddTask( CallbackFunction callback , DWORD Param1, DWORD_PTR Param2 )
+bool mWorkerThreadPool::AddTask( CallbackFunction callback , DWORD Param1, DWORD_PTR Param2 , DWORD_PTR LoadbalanceKey )
 {
 	if( callback == nullptr )
 	{
@@ -294,27 +344,50 @@ bool mWorkerThreadPool::AddTask( CallbackFunction callback , DWORD Param1, DWORD
 		return false;
 	}
 
-	mCriticalSectionTicket critical( MyCriticalSection );
-
-	TaskInfoEntry* entry = mNew TaskInfoEntry( *this );
-	entry->Param1 = Param1;
-	entry->Param2 = Param2;
-	entry->TaskFunction = callback;
-
-	if( !PostQueuedCompletionStatus( MyIoPort , 0 , (ULONG_PTR)CompleteRoutine , (LPOVERLAPPED)entry ) )
 	{
-		mDelete entry;
+		mCriticalSectionTicket critical( MyCriticalSection );
+		TaskInfoEntry entry;
+		entry.Param1 = Param1;
+		entry.Param2 = Param2;
+		entry.TaskFunction = callback;
+
+		TaskArray::iterator itr;
+		for( itr = MyTaskArray.begin() ; itr != MyTaskArray.end() ; itr++ )
+		{
+			if( itr->LoadbalanceKey == LoadbalanceKey )
+			{
+				itr->Task.push_back( std::move( entry ) );
+			}
+		}
+		if( itr == MyTaskArray.end() )
+		{
+			TaskArrayEntry arr_entry;
+			arr_entry.ActiveCount = 0;
+			arr_entry.LoadbalanceKey = LoadbalanceKey;
+			arr_entry.Task.push_back( std::move( entry ) );
+			MyTaskArray.push_back( std::move( arr_entry ) );
+		}
+	}
+
+	if( !PostQueuedCompletionStatus( MyIoPort , 0 , (ULONG_PTR)CompleteRoutine , (LPOVERLAPPED)this ) )
+	{
 		RaiseError( g_ErrorLogger , 0 , L"タスクを追加できません" );
 		return false;
 	}
-	MyQueuedTaskCount++;
 	return true;
 }
 
 //現在保持している未完了タスクの数を取得する
 DWORD mWorkerThreadPool::GetTaskCount( void )const
 {
-	return MyQueuedTaskCount;
+	DWORD count = 0;
+	mCriticalSectionTicket critical( MyCriticalSection );
+	for( TaskArray::const_iterator itr = MyTaskArray.begin() ; itr != MyTaskArray.end() ; itr++ )
+	{
+		count += itr->ActiveCount;
+		count += (DWORD)( itr->Task.size() );
+	}
+	return count;
 }
 
 //スレッドの数を得る

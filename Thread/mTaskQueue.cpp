@@ -28,9 +28,19 @@ mTaskQueue::~mTaskQueue()
 	return;
 }
 
+mWorkerThreadPool& mTaskQueue::GetThreadPool( void ) const
+{
+	return MyWorkerThreadPool;
+}
+
 bool mTaskQueue::Seal( bool high , mTaskBase::Ticket& task )
 {
-	return AddTask( high , task , true );
+	return AddTask( high , task , true , (DWORD_PTR)this );
+}
+
+bool mTaskQueue::Seal( bool high , mTaskBase::Ticket& task , DWORD_PTR key )
+{
+	return AddTask( high , task , true , key );
 }
 
 bool mTaskQueue::Seal( void )
@@ -40,13 +50,17 @@ bool mTaskQueue::Seal( void )
 	return true;
 }
 
-
 bool mTaskQueue::AddTask( bool high , mTaskBase::Ticket& task )
 {
-	return AddTask( high , task , false );
+	return AddTask( high , task , false , (DWORD_PTR)this );
 }
 
-bool mTaskQueue::AddTask( bool high , mTaskBase::Ticket& task , bool isFinal )
+bool mTaskQueue::AddTask( bool high , mTaskBase::Ticket& task , DWORD_PTR key )
+{
+	return AddTask( high , task , false , key );
+}
+
+bool mTaskQueue::AddTask( bool high , mTaskBase::Ticket& task , bool isFinal , DWORD_PTR key )
 {
 	if( task == nullptr )
 	{
@@ -87,7 +101,7 @@ bool mTaskQueue::AddTask( bool high , mTaskBase::Ticket& task , bool isFinal )
 		TaskInformationIncrement( task->GetTaskId() );
 	}
 
-	if( !MyWorkerThreadPool.AddTask( TaskRoutine , high , (DWORD_PTR)this ) )
+	if( !MyWorkerThreadPool.AddTask( TaskRoutine , high , (DWORD_PTR)this , key ) )
 	{
 		RaiseError( g_ErrorLogger , 0 , L"Š®—¹ƒ|[ƒg‚Ö‚Ìƒ^ƒXƒN“o˜^‚ªŽ¸”s‚µ‚Ü‚µ‚½" );
 		task->MyTaskStatus = mTaskBase::TaskStatus::STATUS_ABORTED;
@@ -266,10 +280,12 @@ void mTaskQueue::TaskRoutine( mWorkerThreadPool& pool , DWORD Param1 , DWORD_PTR
 			default:
 				break;
 			}
-			task = std::move( *itr );
-			queue->MyWaiting.erase( itr );
 			queue->MyActiveTask++;
 			queue->MyTaskInformationMap[ (*itr)->MyTaskId ].Executing++;
+
+			task = std::move( *itr );
+			queue->MyWaiting.erase( itr );
+			break;
 		}
 		if( task == nullptr )
 		{
