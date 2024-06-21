@@ -79,6 +79,9 @@ public:
 	//スレッドが実行中か否かを調べる
 	threadsafe bool IsValid( void )const;
 
+	//スレッドIDを得る
+	threadsafe unsigned int GetThreadId( void )const;
+
 private:
 
 	mThread( const mThread& src );

@@ -60,6 +60,11 @@ bool mTaskQueue::AddTask( bool high , mTaskBase::Ticket& task , DWORD_PTR key )
 	return AddTask( high , task , false , key );
 }
 
+bool mTaskQueue::AddTaskBlocking( bool high , mTaskBase::Ticket& task )
+{
+	return AddTaskBlocking( high , task , (DWORD_PTR)this );
+}
+
 bool mTaskQueue::AddTask( bool high , mTaskBase::Ticket& task , bool isFinal , DWORD_PTR key )
 {
 	if( task == nullptr )
@@ -106,6 +111,48 @@ bool mTaskQueue::AddTask( bool high , mTaskBase::Ticket& task , bool isFinal , D
 		RaiseError( g_ErrorLogger , 0 , L"完了ポートへのタスク登録が失敗しました" );
 		task->MyTaskStatus = mTaskBase::TaskStatus::STATUS_ABORTED;
 		AsyncEvent( task->Notifier.OnAbort , *this , task , true );
+		return false;
+	}
+	return true;
+}
+
+bool mTaskQueue::AddTaskBlocking( bool high , mTaskBase::Ticket& task , DWORD_PTR key )
+{
+	//ポインタチェック
+	if( task == nullptr )
+	{
+		RaiseError( g_ErrorLogger , 0 , L"タスクのポインタがヌルです" );
+		return false;
+	}
+	//メンバースレッドのチェック
+	if( MyWorkerThreadPool.IsPoolMember() )
+	{
+		RaiseError( g_ErrorLogger , 0 , L"スレッドプールのメンバースレッドからブロッキングタスクは追加できません" );
+		return false;
+	}
+	//完了オブジェクトの確認
+	if( task->MyCompleteObject == 0 )
+	{
+		task->MyCompleteObject = CreateEventA( nullptr , true , false , nullptr );
+		if( task->MyCompleteObject == 0 )
+		{
+			RaiseError( g_ErrorLogger , 0 , L"完了オブジェクトの生成が失敗" );
+			return false;
+		}
+	}
+	else
+	{
+		ResetEvent( task->MyCompleteObject );
+	}
+	//タスクの登録
+	if( !AddTask( high , task , key ) )
+	{
+		return false;
+	}
+	//完了の待機
+	if( WaitForSingleObject( task->MyCompleteObject , INFINITE ) != WAIT_OBJECT_0 )
+	{
+		RaiseError( g_ErrorLogger , 0 , L"タスクの完了待機が失敗" );
 		return false;
 	}
 	return true;
@@ -353,6 +400,11 @@ void mTaskQueue::TaskRoutine( mWorkerThreadPool& pool , DWORD Param1 , DWORD_PTR
 			queue->MyActiveTask--;
 			queue->MyTaskInformationMap[ task->GetTaskId() ].Executing--;
 			queue->TaskInformationDecrement( task->GetTaskId() );
+		}
+		if( task->MyCompleteObject )
+		{
+			//完了オブジェクトが存在していればシグナル状態に
+			SetEvent( task->MyCompleteObject );
 		}
 	}
 	return;

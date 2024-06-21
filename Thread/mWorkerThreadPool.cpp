@@ -395,3 +395,18 @@ DWORD mWorkerThreadPool::GetThreadCount( void )const
 {
 	return (DWORD)MyThreadPool.size();
 }
+
+bool mWorkerThreadPool::IsPoolMember( void )const
+{
+	DWORD currentid = GetCurrentThreadId();
+	for( ThreadPool::const_iterator itr = MyThreadPool.begin() ; itr != MyThreadPool.end() ; itr++ )
+	{
+		if( currentid == itr->GetThreadId() )
+		{
+			return true;
+		}
+	}
+	return false;
+}
+
+

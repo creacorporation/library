@@ -83,6 +83,9 @@ public:
 	//スレッドの数を得る
 	DWORD GetThreadCount( void )const;
 
+	//この関数を呼び出したスレッドがスレッドプールのメンバーか判定する
+	bool IsPoolMember( void )const;
+
 private:
 	mWorkerThreadPool( const mWorkerThreadPool& src );
 	const mWorkerThreadPool& operator=( const mWorkerThreadPool& src );

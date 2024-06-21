@@ -120,6 +120,11 @@ private:
 	//※mTaskQueueが勝手に書き換えるので、内部からは触らないこと
 	TaskStatus MyTaskStatus;
 
+	//完了判定用シグナルオブジェクト(内部使用)
+	//※mTaskQueueが勝手に書き換えるので、内部からは触らないこと
+	//・ブロッキングするタスクで使う
+	HANDLE MyCompleteObject;
+
 protected:
 
 	mTaskBase();

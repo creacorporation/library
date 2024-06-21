@@ -36,6 +36,23 @@ public:
 	// key : 同じキーをもつタスクを同じワーカースレッドプール内でなるべく同時実行しないようにする
 	threadsafe bool AddTask( bool high , mTaskBase::Ticket& task , DWORD_PTR key );
 
+	//タスクの追加（ブロッキング）
+	//追加したタスクが完了するまで戻らない
+	//ワーカースレッドのメンバースレッドから呼び出すことはできない
+	//※パフォーマンスを下げるので、乱用しないこと
+	// high : 他のタスクに優先して処理する
+	// task : 処理するタスク(mTaskBaseを継承したクラス)
+	threadsafe bool AddTaskBlocking( bool high , mTaskBase::Ticket& task );
+
+	//タスクの追加（ブロッキング）
+	//追加したタスクが完了するまで戻らない
+	//ワーカースレッドのメンバースレッドから呼び出すことはできない
+	//※パフォーマンスを下げるので、乱用しないこと
+	// high : 他のタスクに優先して処理する
+	// task : 処理するタスク(mTaskBaseを継承したクラス)
+	// key : 同じキーをもつタスクを同じワーカースレッドプール内でなるべく同時実行しないようにする
+	threadsafe bool AddTaskBlocking( bool high , mTaskBase::Ticket& task , DWORD_PTR key );
+
 	//最終タスクの追加
 	// high : 他のタスクに優先して処理する
 	// task : 処理するタスク(mTaskBaseを継承したクラス)

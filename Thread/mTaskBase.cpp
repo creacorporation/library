@@ -15,6 +15,7 @@ mTaskBase::mTaskBase() :
 	MyScheduleType( ScheduleType::Normal )
 {
 	MyTaskStatus = TaskStatus::STATUS_NOTSTARTED;
+	MyCompleteObject = 0;
 	return;
 }
 
@@ -23,6 +24,11 @@ mTaskBase::mTaskBase( const AString& TaskId , ScheduleType ScType ) :
 	MyScheduleType( ScType )
 {
 	MyTaskStatus = TaskStatus::STATUS_NOTSTARTED;
+	if( MyCompleteObject != 0 )
+	{
+		CloseHandle( MyCompleteObject );
+		MyCompleteObject = 0;
+	}
 	return;
 }
 

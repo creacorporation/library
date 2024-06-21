@@ -217,3 +217,9 @@ bool mThread::IsValid( void )const
 }
 
 
+//ƒXƒŒƒbƒhID‚ğ“¾‚é
+threadsafe unsigned int mThread::GetThreadId( void )const
+{
+	return MyThreadId;
+}
+

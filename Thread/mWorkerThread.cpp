@@ -67,4 +67,3 @@ unsigned int mWorkerThread::TaskFunction( void )
 		}
 	}
 }
-
