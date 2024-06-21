@@ -164,7 +164,7 @@ static bool ReadCsvFileTemplate( mFileReadStreamBase& fp , Table< base_type >& r
 }
 
 template< class base_type >
-static void FillEmptyCell( Table< base_type >& retTable , std::basic_string< base_type >* empty_str )
+static void FillEmptyCell( Table< base_type >& retTable , const std::basic_string< base_type >* empty_str )
 {
 	if( !empty_str )
 	{
@@ -186,7 +186,7 @@ static void FillEmptyCell( Table< base_type >& retTable , std::basic_string< bas
 	}
 }
 
-bool mCsvFile::ReadCsvFile( const WString& filename , WTable& retTable , WString* empty_str )
+bool mCsvFile::ReadCsvFile( const WString& filename , WTable& retTable , const WString* empty_str )
 {
 	//ファイルを開く（テンプレートと関係ない制御は外に追い出す）
 	mFileReadStream fp;
@@ -198,7 +198,7 @@ bool mCsvFile::ReadCsvFile( const WString& filename , WTable& retTable , WString
 	return ReadCsvFile( fp , retTable , empty_str );
 }
 
-bool mCsvFile::ReadCsvFile( const WString& filename , ATable& retTable , AString* empty_str )
+bool mCsvFile::ReadCsvFile( const WString& filename , ATable& retTable , const AString* empty_str )
 {
 	//ファイルを開く（テンプレートと関係ない制御は外に追い出す）
 	mFileReadStream fp;
@@ -217,7 +217,7 @@ bool mCsvFile::ReadCsvFile( const WString& filename , ATable& retTable , AString
 //empty_str : 読み取り結果が長方形になっていないとき（行／列数がでこぼこになっているとき）
 //　　　　　　長方形になるようにこのデータを補って整形する。nullptrなら整形しない。
 //ret : 成功時真
-bool mCsvFile::ReadCsvFile( mFileReadStreamBase& stream , WTable& retTable , WString* empty_str )
+bool mCsvFile::ReadCsvFile( mFileReadStreamBase& stream , WTable& retTable , const WString* empty_str )
 {
 	//読み取り
 	if( !ReadCsvFileTemplate( stream , retTable ) )
@@ -235,7 +235,7 @@ bool mCsvFile::ReadCsvFile( mFileReadStreamBase& stream , WTable& retTable , WSt
 //empty_str : 読み取り結果が長方形になっていないとき（行／列数がでこぼこになっているとき）
 //　　　　　　長方形になるようにこのデータを補って整形する。nullptrなら整形しない。
 //ret : 成功時真
-bool mCsvFile::ReadCsvFile( mFileReadStreamBase& stream , ATable& retTable , AString* empty_str )
+bool mCsvFile::ReadCsvFile( mFileReadStreamBase& stream , ATable& retTable , const AString* empty_str )
 {
 	//読み取り
 	if( !ReadCsvFileTemplate( stream , retTable ) )
