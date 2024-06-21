@@ -31,7 +31,7 @@ namespace mCsvFile
 	//empty_str : 読み取り結果が長方形になっていないとき（行／列数がでこぼこになっているとき）
 	//　　　　　　長方形になるようにこのデータを補って整形する。nullptrなら整形しない。
 	//ret : 成功時真
-	bool ReadCsvFile( const WString& filename , WTable& retTable , WString* empty_str = nullptr );
+	bool ReadCsvFile( const WString& filename , WTable& retTable , const WString* empty_str = nullptr );
 
 	//CSVファイルを読み取って配列に格納する
 	//・読み取るときの文字コードは、retTableに指定した型に合わせる
@@ -40,7 +40,7 @@ namespace mCsvFile
 	//empty_str : 読み取り結果が長方形になっていないとき（行／列数がでこぼこになっているとき）
 	//　　　　　　長方形になるようにこのデータを補って整形する。nullptrなら整形しない。
 	//ret : 成功時真
-	bool ReadCsvFile( const WString& filename , ATable& retTable , AString* empty_str = nullptr );
+	bool ReadCsvFile( const WString& filename , ATable& retTable , const AString* empty_str = nullptr );
 
 
 	//CSVファイルを読み取って配列に格納する
@@ -50,7 +50,7 @@ namespace mCsvFile
 	//empty_str : 読み取り結果が長方形になっていないとき（行／列数がでこぼこになっているとき）
 	//　　　　　　長方形になるようにこのデータを補って整形する。nullptrなら整形しない。
 	//ret : 成功時真
-	bool ReadCsvFile( mFileReadStreamBase& stream , WTable& retTable , WString* empty_str = nullptr );
+	bool ReadCsvFile( mFileReadStreamBase& stream , WTable& retTable , const WString* empty_str = nullptr );
 
 	//CSVファイルを読み取って配列に格納する
 	//・読み取るときの文字コードは、retTableに指定した型に合わせる
@@ -59,7 +59,7 @@ namespace mCsvFile
 	//empty_str : 読み取り結果が長方形になっていないとき（行／列数がでこぼこになっているとき）
 	//　　　　　　長方形になるようにこのデータを補って整形する。nullptrなら整形しない。
 	//ret : 成功時真
-	bool ReadCsvFile( mFileReadStreamBase& stream , ATable& retTable , AString* empty_str = nullptr );
+	bool ReadCsvFile( mFileReadStreamBase& stream , ATable& retTable , const AString* empty_str = nullptr );
 
 
 };
