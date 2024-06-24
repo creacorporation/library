@@ -680,7 +680,7 @@ WString ConvertUpper2Lower( const WString& src );		//大文字→小文字
 // replaceto : 発見した文字列をこれに置き換える
 // ret_count : 置換した回数(nullptr可)
 // ret : 置換した結果
-AString ReplaceString( const AString& src , const AString& findat , const AString replaceto , DWORD* ret_count = nullptr );
+AString ReplaceString( const AString& src , const AString& findat , const AString& replaceto , DWORD* ret_count = nullptr );
 
 //文字列中の特定文字列を置換する
 // src : 元の文字列
@@ -688,19 +688,7 @@ AString ReplaceString( const AString& src , const AString& findat , const AStrin
 // replaceto : 発見した文字列をこれに置き換える
 // ret_count : 置換した回数(nullptr可)
 // ret : 置換した結果
-WString ReplaceString( const WString& src , const WString& findat , const WString replaceto , DWORD* ret_count = nullptr );
-
-//文字列中の特定文字列を置換する
-//このバージョンの置換では、文字列を繰り返し置換します
-//例：AABAAのABをBCに置換する場合
-//    AABAA→ABCAA→BCCAA ：置換した回数=2
-//【注意】無限ループにならないよう気をつけてください
-// src : 元の文字列
-// findat : 探す文字列
-// replaceto : 発見した文字列をこれに置き換える
-// ret_count : 置換した回数(nullptr可)
-// ret : 置換した結果
-AString ReplaceStringRecursive( const AString& src , const AString& findat , const AString replaceto , DWORD* ret_count = nullptr );
+WString ReplaceString( const WString& src , const WString& findat , const WString& replaceto , DWORD* ret_count = nullptr );
 
 //文字列中の特定文字列を置換する
 //このバージョンの置換では、文字列を繰り返し置換します
@@ -712,7 +700,19 @@ AString ReplaceStringRecursive( const AString& src , const AString& findat , con
 // replaceto : 発見した文字列をこれに置き換える
 // ret_count : 置換した回数(nullptr可)
 // ret : 置換した結果
-WString ReplaceStringRecursive( const WString& src , const WString& findat , const WString replaceto , DWORD* ret_count = nullptr );
+AString ReplaceStringRecursive( const AString& src , const AString& findat , const AString& replaceto , DWORD* ret_count = nullptr );
+
+//文字列中の特定文字列を置換する
+//このバージョンの置換では、文字列を繰り返し置換します
+//例：AABAAのABをBCに置換する場合
+//    AABAA→ABCAA→BCCAA ：置換した回数=2
+//【注意】無限ループにならないよう気をつけてください
+// src : 元の文字列
+// findat : 探す文字列
+// replaceto : 発見した文字列をこれに置き換える
+// ret_count : 置換した回数(nullptr可)
+// ret : 置換した結果
+WString ReplaceStringRecursive( const WString& src , const WString& findat , const WString& replaceto , DWORD* ret_count = nullptr );
 
 //NULLを入れてもいいstrcmp
 int StrCmp( const wchar_t* s1 , const wchar_t* s2 );

@@ -1080,13 +1080,13 @@ static T ReplaceStringTemplate( const T& src , const T& findat , const T replace
 }
 
 //文字列中の特定文字列を置換する
-AString ReplaceString( const AString& src , const AString& findat , const AString replaceto , DWORD* ret_count )
+AString ReplaceString( const AString& src , const AString& findat , const AString& replaceto , DWORD* ret_count )
 {
 	return ReplaceStringTemplate( src , findat , replaceto , ret_count );
 }
 
 //文字列中の特定文字列を置換する
-WString ReplaceString( const WString& src , const WString& findat , const WString replaceto , DWORD* ret_count )
+WString ReplaceString( const WString& src , const WString& findat , const WString& replaceto , DWORD* ret_count )
 {
 	return ReplaceStringTemplate( src , findat , replaceto , ret_count );
 }
@@ -1111,13 +1111,13 @@ static T ReplaceStringRecursiveTemplate( const T& src , const T& findat , const 
 }
 
 //文字列中の特定文字列を置換する
-AString ReplaceStringRecursive( const AString& src , const AString& findat , const AString replaceto , DWORD* ret_count )
+AString ReplaceStringRecursive( const AString& src , const AString& findat , const AString& replaceto , DWORD* ret_count )
 {
 	return ReplaceStringRecursiveTemplate( src , findat , replaceto , ret_count );
 }
 
 //文字列中の特定文字列を置換する
-WString ReplaceStringRecursive( const WString& src , const WString& findat , const WString replaceto , DWORD* ret_count )
+WString ReplaceStringRecursive( const WString& src , const WString& findat , const WString& replaceto , DWORD* ret_count )
 {
 	return ReplaceStringRecursiveTemplate( src , findat , replaceto , ret_count );
 }
