@@ -17,10 +17,25 @@ namespace Definitions_NotifyOption
 	//通知モード
 	enum NotifyMode
 	{
+		//通知しません
 		NOTIFY_NONE ,
+
+		//ウインドメッセージを送信します
 		NOTIFY_WINDOWMESSAGE ,
+
+		//イベントオブジェクトをシグナル状態にします
 		NOTIFY_SIGNAL ,
+
+		//コールバック関数を呼びます
+		//・IOに関連付いている場合で、複数のIOが同時期に完了した場合、前回のコールバック以降に新着データがあった場合のみ呼び出します。
+		//・複数スレッドでコールバック関数が同時に呼ばれることはありません。
+		//・mTaskBaseを継承したタスクオブジェクトの場合は、NOTIFY_CALLBACK_PARALLELと同じ。
+		//  (IO以外ではNOTIFY_CALLBACK_PARALLELを使ってください)
 		NOTIFY_CALLBACK ,
+
+		//コールバック関数を呼びます
+		//・常に1つのイベントにつき1回の呼び出しが行われます。
+		//・複数のスレッドでコールバック関数が同時に呼ばれることがあります。
 		NOTIFY_CALLBACK_PARALLEL ,
 	};
 };

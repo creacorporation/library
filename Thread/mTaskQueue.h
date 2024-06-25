@@ -30,12 +30,6 @@ public:
 	// task : 処理するタスク(mTaskBaseを継承したクラス)
 	threadsafe bool AddTask( bool high , mTaskBase::Ticket& task );
 
-	//タスクの追加
-	// high : 他のタスクに優先して処理する
-	// task : 処理するタスク(mTaskBaseを継承したクラス)
-	// key : 同じキーをもつタスクを同じワーカースレッドプール内でなるべく同時実行しないようにする
-	threadsafe bool AddTask( bool high , mTaskBase::Ticket& task , DWORD_PTR key );
-
 	//タスクの追加（ブロッキング）
 	//追加したタスクが完了するまで戻らない
 	//ワーカースレッドのメンバースレッドから呼び出すことはできない
@@ -44,29 +38,13 @@ public:
 	// task : 処理するタスク(mTaskBaseを継承したクラス)
 	threadsafe bool AddTaskBlocking( bool high , mTaskBase::Ticket& task );
 
-	//タスクの追加（ブロッキング）
-	//追加したタスクが完了するまで戻らない
-	//ワーカースレッドのメンバースレッドから呼び出すことはできない
-	//※パフォーマンスを下げるので、乱用しないこと
-	// high : 他のタスクに優先して処理する
-	// task : 処理するタスク(mTaskBaseを継承したクラス)
-	// key : 同じキーをもつタスクを同じワーカースレッドプール内でなるべく同時実行しないようにする
-	threadsafe bool AddTaskBlocking( bool high , mTaskBase::Ticket& task , DWORD_PTR key );
-
 	//最終タスクの追加
 	// high : 他のタスクに優先して処理する
 	// task : 処理するタスク(mTaskBaseを継承したクラス)
 	//この関数でタスクを追加すると、以降のAddTask(),Seal()は全て失敗します。
 	threadsafe bool Seal( bool high , mTaskBase::Ticket& task );
 
-	//最終タスクの追加
-	// high : 他のタスクに優先して処理する
-	// task : 処理するタスク(mTaskBaseを継承したクラス)
-	// key : 同じキーをもつタスクを同じワーカースレッドプール内でなるべく同時実行しないようにする
-	//この関数でタスクを追加すると、以降のAddTask(),Seal()は全て失敗します。
-	threadsafe bool Seal( bool high , mTaskBase::Ticket& task , DWORD_PTR key );
-
-	//タスクつか終了
+	//タスク終了
 	//この関数を呼ぶと、以降のAddTask(),Seal()は全て失敗します。
 	threadsafe bool Seal( void );
 
@@ -137,10 +115,10 @@ protected:
 
 	//タスクの追加
 	//このクラスのインスタンスのデストラクタが実行開始以後は、このコールは実行されず失敗する。
-	threadsafe bool AddTask( bool high , mTaskBase::Ticket& task , bool isFinal , DWORD_PTR key );
+	threadsafe bool AddTask( bool high , mTaskBase::Ticket& task , bool isFinal );
 
 	//タスクの処理ルーチン
-	static void TaskRoutine( mWorkerThreadPool& pool , DWORD Param1 , DWORD_PTR Param2 );
+	static bool TaskRoutine( mWorkerThreadPool& pool , DWORD Param1 , DWORD_PTR Param2 );
 
 };
 

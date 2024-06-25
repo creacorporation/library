@@ -35,12 +35,7 @@ mWorkerThreadPool& mTaskQueue::GetThreadPool( void ) const
 
 bool mTaskQueue::Seal( bool high , mTaskBase::Ticket& task )
 {
-	return AddTask( high , task , true , (DWORD_PTR)this );
-}
-
-bool mTaskQueue::Seal( bool high , mTaskBase::Ticket& task , DWORD_PTR key )
-{
-	return AddTask( high , task , true , key );
+	return AddTask( high , task , true );
 }
 
 bool mTaskQueue::Seal( void )
@@ -52,20 +47,10 @@ bool mTaskQueue::Seal( void )
 
 bool mTaskQueue::AddTask( bool high , mTaskBase::Ticket& task )
 {
-	return AddTask( high , task , false , (DWORD_PTR)this );
+	return AddTask( high , task , false );
 }
 
-bool mTaskQueue::AddTask( bool high , mTaskBase::Ticket& task , DWORD_PTR key )
-{
-	return AddTask( high , task , false , key );
-}
-
-bool mTaskQueue::AddTaskBlocking( bool high , mTaskBase::Ticket& task )
-{
-	return AddTaskBlocking( high , task , (DWORD_PTR)this );
-}
-
-bool mTaskQueue::AddTask( bool high , mTaskBase::Ticket& task , bool isFinal , DWORD_PTR key )
+bool mTaskQueue::AddTask( bool high , mTaskBase::Ticket& task , bool isFinal )
 {
 	if( task == nullptr )
 	{
@@ -106,7 +91,7 @@ bool mTaskQueue::AddTask( bool high , mTaskBase::Ticket& task , bool isFinal , D
 		TaskInformationIncrement( task->GetTaskId() );
 	}
 
-	if( !MyWorkerThreadPool.AddTask( TaskRoutine , high , (DWORD_PTR)this , key ) )
+	if( !MyWorkerThreadPool.AddTask( TaskRoutine , 0 , (DWORD_PTR)this , (DWORD_PTR)this ) )
 	{
 		RaiseError( g_ErrorLogger , 0 , L"完了ポートへのタスク登録が失敗しました" );
 		task->MyTaskStatus = mTaskBase::TaskStatus::STATUS_ABORTED;
@@ -116,7 +101,7 @@ bool mTaskQueue::AddTask( bool high , mTaskBase::Ticket& task , bool isFinal , D
 	return true;
 }
 
-bool mTaskQueue::AddTaskBlocking( bool high , mTaskBase::Ticket& task , DWORD_PTR key )
+bool mTaskQueue::AddTaskBlocking( bool high , mTaskBase::Ticket& task )
 {
 	//ポインタチェック
 	if( task == nullptr )
@@ -145,7 +130,7 @@ bool mTaskQueue::AddTaskBlocking( bool high , mTaskBase::Ticket& task , DWORD_PT
 		ResetEvent( task->MyCompleteObject );
 	}
 	//タスクの登録
-	if( !AddTask( high , task , key ) )
+	if( !AddTask( high , task , false ) )
 	{
 		return false;
 	}
@@ -284,7 +269,7 @@ bool mTaskQueue::IsIdle( void )const
 	return false;
 }
 
-void mTaskQueue::TaskRoutine( mWorkerThreadPool& pool , DWORD Param1 , DWORD_PTR Param2 )
+bool mTaskQueue::TaskRoutine( mWorkerThreadPool& pool , DWORD Param1 , DWORD_PTR Param2 )
 {
 	mTaskQueue* queue = (mTaskQueue*)Param2;
 
@@ -293,9 +278,13 @@ void mTaskQueue::TaskRoutine( mWorkerThreadPool& pool , DWORD Param1 , DWORD_PTR
 	{ /*CRITICALSECTION*/
 		mCriticalSectionTicket critical( queue->MyCriticalSection );
 
+		if( queue->MyWaiting.empty() )
+		{
+			return true;
+		}
 		if( queue->MyIsCritical )
 		{
-			return;
+			return false;
 		}
 		for( TicketQueue::iterator itr = queue->MyWaiting.begin() ; itr != queue->MyWaiting.end() ; itr++ )
 		{
@@ -306,7 +295,7 @@ void mTaskQueue::TaskRoutine( mWorkerThreadPool& pool , DWORD Param1 , DWORD_PTR
 			case mTaskBase::ScheduleType::Critical:
 				if( queue->MyActiveTask != 0 )
 				{
-					return;
+					return false;
 				}
 				queue->MyIsCritical = true;
 				break;
@@ -314,7 +303,7 @@ void mTaskQueue::TaskRoutine( mWorkerThreadPool& pool , DWORD Param1 , DWORD_PTR
 				if( ( queue->MyTaskInformationMap.count( (*itr)->MyTaskId ) ) &&
 					( queue->MyTaskInformationMap[ (*itr)->MyTaskId ].Executing ) )
 				{
-					return;
+					return false;
 				}
 				break;
 			case mTaskBase::ScheduleType::IdPostpone:
@@ -336,7 +325,7 @@ void mTaskQueue::TaskRoutine( mWorkerThreadPool& pool , DWORD Param1 , DWORD_PTR
 		}
 		if( task == nullptr )
 		{
-			return;
+			return false;
 		}
 		//ステータスを実行中に
 		task->MyTaskStatus = mTaskBase::TaskStatus::STATUS_INPROGRESS;
@@ -356,7 +345,7 @@ void mTaskQueue::TaskRoutine( mWorkerThreadPool& pool , DWORD Param1 , DWORD_PTR
 			//一時中断したのだから、プライオリティに関係なく一番後ろにくっつける
 			mCriticalSectionTicket critical( queue->MyCriticalSection );
 
-			if( queue->MyWorkerThreadPool.AddTask( TaskRoutine , Param1 , (DWORD_PTR)queue ) )
+			if( queue->MyWorkerThreadPool.AddTask( TaskRoutine , false , (DWORD_PTR)queue ) )
 			{
 				//ステータスを実行待ちに
 				addtask_result = true;
@@ -407,6 +396,6 @@ void mTaskQueue::TaskRoutine( mWorkerThreadPool& pool , DWORD Param1 , DWORD_PTR
 			SetEvent( task->MyCompleteObject );
 		}
 	}
-	return;
+	return true;
 }
 

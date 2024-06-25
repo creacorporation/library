@@ -67,13 +67,14 @@ public:
 	// pool : コールバック関数を呼び出したワーカースレッドプール
 	// Param1 : AddTask時に渡したパラメータ
 	// Param2 : AddTask時に渡したパラメータ
-	using CallbackFunction = void(*)( mWorkerThreadPool& pool , DWORD Param1 , DWORD_PTR Param2 );
+	// ret : タスクを完了した場合真。タスクを行わなかった（後でもう一度呼び出す）場合偽。
+	using CallbackFunction = bool(*)( mWorkerThreadPool& pool , DWORD Param1 , DWORD_PTR Param2 );
 
 	//タスクの追加
 	// callback : スレッドプールから呼び出すコールバック関数
 	// Param1 : コールバック関数に渡される値（任意の値でOK）
 	// Param2 : コールバック関数に渡される値（任意の値でOK）
-	// LoadbalanceKey : 同じキーをもつタスクをなるべく同時実行しないようにする
+	// LoadbalanceKey : なるべく異なるキーを持つタスクが同時実行されるようにする
 	threadsafe bool AddTask( CallbackFunction callback , DWORD Param1, DWORD_PTR Param2 , DWORD_PTR LoadbalanceKey = 0 );
 
 	//現在保持している未完了タスクの数を取得する
@@ -124,6 +125,7 @@ private:
 		DWORD_PTR LoadbalanceKey;
 		TaskInfo Task;
 		DWORD ActiveCount;
+		bool IsActive;
 	};
 	using TaskArray = std::list<TaskArrayEntry>;
 

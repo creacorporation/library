@@ -260,23 +260,15 @@ HANDLE mWorkerThreadPool::GetHandle( void )const
 //完了ルーチン
 VOID CALLBACK mWorkerThreadPool::CompleteRoutine( DWORD ec , DWORD len , LPOVERLAPPED ov )
 {
-	if( ov == nullptr )
+	auto GetNextTask = []( mWorkerThreadPool* ptr , TaskInfoEntry& retEntry , DWORD_PTR& retLoadbalanceKey )->DWORD
 	{
-		return;
-	}
-
-	//次のタスクを決定
-	mWorkerThreadPool* ptr = reinterpret_cast<mWorkerThreadPool*>( ov );
-	DWORD_PTR loadbalance_key;
-	TaskInfoEntry entry;
-	{
-		mCriticalSectionTicket critical( ptr->MyCriticalSection );
-
 		TaskArray::iterator next = ptr->MyTaskArray.end();
 		TaskArray::iterator itr = ptr->MyTaskArray.begin();
+		DWORD active_threads = 0;
 		for( ; itr != ptr->MyTaskArray.end() ; itr++ )
 		{
-			if( !itr->Task.empty() )
+			active_threads += itr->ActiveCount;
+			if( !itr->Task.empty() && itr->IsActive )
 			{
 				next = itr;
 				break;
@@ -284,7 +276,7 @@ VOID CALLBACK mWorkerThreadPool::CompleteRoutine( DWORD ec , DWORD len , LPOVERL
 		}
 		if( next == ptr->MyTaskArray.end() )
 		{
-			return;
+			return 0;
 		}
 		else
 		{
@@ -293,7 +285,8 @@ VOID CALLBACK mWorkerThreadPool::CompleteRoutine( DWORD ec , DWORD len , LPOVERL
 		}
 		for(  ; itr != ptr->MyTaskArray.end() ; itr++ )
 		{
-			if( !itr->Task.empty() )
+			active_threads += itr->ActiveCount;
+			if( !itr->Task.empty() && itr->IsActive )
 			{
 				if( itr->ActiveCount < next->ActiveCount )
 				{
@@ -302,37 +295,108 @@ VOID CALLBACK mWorkerThreadPool::CompleteRoutine( DWORD ec , DWORD len , LPOVERL
 			}
 		}
 
-		loadbalance_key = next->LoadbalanceKey;
-		entry = next->Task.front();
+		retLoadbalanceKey = next->LoadbalanceKey;
+		retEntry = next->Task.front();
 		next->Task.pop_front();
 		next->ActiveCount++;
 
 		//ラウンドロビンになるように後ろにくっつける
 		ptr->MyTaskArray.splice( ptr->MyTaskArray.end() , ptr->MyTaskArray , next );
-	}
 
-	//タスク実行
-	if( entry.TaskFunction )
+		return active_threads + 1;
+	};
+
+	//次のタスクを決定
+	if( ov == nullptr )
 	{
-		entry.TaskFunction( *ptr , entry.Param1 , entry.Param2 );
+		return;
 	}
-
-	//タスクのデータを破棄
+	mWorkerThreadPool* ptr = reinterpret_cast<mWorkerThreadPool*>( ov );
+	DWORD_PTR loadbalance_key;
+	TaskInfoEntry entry;
 	{
 		mCriticalSectionTicket critical( ptr->MyCriticalSection );
-		for( TaskArray::iterator itr = ptr->MyTaskArray.begin() ; itr != ptr->MyTaskArray.end() ; itr++ )
+		DWORD active_threads = GetNextTask( ptr , entry , loadbalance_key );
+		if( active_threads == 0 )
 		{
-			if( itr->LoadbalanceKey == loadbalance_key )
-			{
-				itr->ActiveCount--;
-				if( ( itr->ActiveCount == 0 ) && ( itr->Task.empty() ) )
-				{
-					ptr->MyTaskArray.erase( itr );
-				}
-				return;
-			}
+			//何もすることなし
+			return;
+		}
+		if( active_threads < ptr->MyThreadPool.size() )
+		{
+			PostQueuedCompletionStatus( ptr->MyIoPort , 0 , (ULONG_PTR)CompleteRoutine , (LPOVERLAPPED)ptr );
 		}
 	}
+
+
+
+	bool is_active;
+	do
+	{
+		//タスク実行
+		if( entry.TaskFunction )
+		{
+			is_active = entry.TaskFunction( *ptr , entry.Param1 , entry.Param2 );
+		}
+		else
+		{
+			is_active = true;
+		}
+
+		//タスクのデータを破棄
+		{
+			mCriticalSectionTicket critical( ptr->MyCriticalSection );
+			//アレイごとのタスク更新
+			if( is_active )
+			{
+				DWORD active_threads = 0;
+				for( TaskArray::iterator itr = ptr->MyTaskArray.begin() ; itr != ptr->MyTaskArray.end() ; )
+				{
+					if( itr->LoadbalanceKey == loadbalance_key )
+					{
+						itr->ActiveCount--;
+						itr->IsActive = true;
+						active_threads += itr->ActiveCount;
+						if( ( itr->ActiveCount == 0 ) && ( itr->Task.empty() ) )
+						{
+							itr = ptr->MyTaskArray.erase( itr );
+						}
+					}
+					else
+					{
+						active_threads += itr->ActiveCount;
+						itr++;
+					}
+				}
+				if( active_threads < ( ptr->MyThreadPool.size() - 1 ) )
+				{
+					PostQueuedCompletionStatus( ptr->MyIoPort , 0 , (ULONG_PTR)CompleteRoutine , (LPOVERLAPPED)ptr );
+				}
+			}
+			else
+			{
+				//次のタスクを決定
+				for( TaskArray::iterator itr = ptr->MyTaskArray.begin() ; itr != ptr->MyTaskArray.end() ; itr++ )
+				{
+					if( itr->LoadbalanceKey == loadbalance_key )
+					{
+						itr->ActiveCount--;
+						itr->IsActive = false;
+						itr->Task.push_back( std::move( entry ) );
+						break;
+					}
+				}
+				if( !GetNextTask( ptr , entry , loadbalance_key ) )
+				{
+					//何もすることなし
+					return;
+				}
+			}
+		}
+	}while( !is_active );
+
+
+	return;
 }
 
 //タスクの追加
@@ -357,6 +421,7 @@ bool mWorkerThreadPool::AddTask( CallbackFunction callback , DWORD Param1, DWORD
 			if( itr->LoadbalanceKey == LoadbalanceKey )
 			{
 				itr->Task.push_back( std::move( entry ) );
+				itr->IsActive = true;
 			}
 		}
 		if( itr == MyTaskArray.end() )
@@ -365,10 +430,10 @@ bool mWorkerThreadPool::AddTask( CallbackFunction callback , DWORD Param1, DWORD
 			arr_entry.ActiveCount = 0;
 			arr_entry.LoadbalanceKey = LoadbalanceKey;
 			arr_entry.Task.push_back( std::move( entry ) );
+			arr_entry.IsActive = true;
 			MyTaskArray.push_back( std::move( arr_entry ) );
 		}
 	}
-
 	if( !PostQueuedCompletionStatus( MyIoPort , 0 , (ULONG_PTR)CompleteRoutine , (LPOVERLAPPED)this ) )
 	{
 		RaiseError( g_ErrorLogger , 0 , L"タスクを追加できません" );
