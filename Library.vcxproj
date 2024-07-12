@@ -19,6 +19,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="COM\mComMemStream.h" />
     <ClInclude Include="Crypto\mSCBase.h" />
     <ClInclude Include="Crypto\mSCFelica.h" />
     <ClInclude Include="Crypto\mSCFelicaDefinitions.h" />
@@ -139,6 +140,7 @@
     <ClInclude Include="mStandard.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="COM\mComMemStream.cpp" />
     <ClCompile Include="Crypto\mSCBase.cpp" />
     <ClCompile Include="Crypto\mSCFelica.cpp" />
     <ClCompile Include="Crypto\mSCFelicaDefinitions.cpp" />
