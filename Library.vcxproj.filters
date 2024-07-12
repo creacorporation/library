@@ -394,6 +394,9 @@
     <ClInclude Include="Network\mWinsockInitializer.h">
       <Filter>Network</Filter>
     </ClInclude>
+    <ClInclude Include="COM\mComMemStream.h">
+      <Filter>COM</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="General\mOptionParser.cpp">
@@ -740,6 +743,9 @@
     </ClCompile>
     <ClCompile Include="Network\mWinsockInitializer.cpp">
       <Filter>Network</Filter>
+    </ClCompile>
+    <ClCompile Include="COM\mComMemStream.cpp">
+      <Filter>COM</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
