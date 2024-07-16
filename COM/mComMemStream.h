@@ -60,10 +60,10 @@ public:
 	bool SetPointerToBegin( void );
 
 	//インターフェイスを取得
-	ISequentialStream* Get( void )const;
+	IStream* Get( void )const;
 
 	//インターフェイスを取得
-	operator ISequentialStream*( void )const;
+	operator IStream*( void )const;
 
 private:
 
