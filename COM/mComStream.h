@@ -20,6 +20,13 @@
 //COMのラッパー
 class mComStream : public mFileReadStreamBase , public mFileWriteStreamBase
 {
+public:
+	//インターフェイスを取得
+	virtual IStream* Get( void )const = 0;
+
+	//インターフェイスを取得
+	virtual operator IStream*( void )const = 0;
+
 };
 
 
