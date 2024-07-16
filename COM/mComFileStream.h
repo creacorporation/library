@@ -13,13 +13,12 @@
 
 #include "mStandard.h"
 #include "General/mFile.h"
-#include "General/mFileReadStreamBase.h"
-#include "General/mFileWriteStreamBase.h"
+#include "mComStream.h"
 #include "General/mTCHAR.h"
 #include <objidl.h>
 
 //COM‚Ìƒ‰ƒbƒp[
-class mComFileStream : public mFileReadStreamBase , public mFileWriteStreamBase
+class mComFileStream : public mComStream
 {
 public:
 
