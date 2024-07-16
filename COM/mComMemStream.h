@@ -12,13 +12,12 @@
 #define MCOMMEMSTREAM_H_INCLUDED
 
 #include "mStandard.h"
-#include "General/mFileReadStreamBase.h"
-#include "General/mFileWriteStreamBase.h"
+#include "mComStream.h"
 #include "General/mTCHAR.h"
 #include <objidl.h>
 
 //COM‚Ìƒ‰ƒbƒp[
-class mComMemStream : public mFileReadStreamBase , public mFileWriteStreamBase
+class mComMemStream : public mComStream
 {
 public:
 

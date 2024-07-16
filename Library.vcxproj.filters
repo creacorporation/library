@@ -397,7 +397,10 @@
     <ClInclude Include="COM\mComMemStream.h">
       <Filter>COM</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\..\..\Programs\Library64\COM\mComFileStream.h">
+    <ClInclude Include="COM\mComFileStream.h">
+      <Filter>COM</Filter>
+    </ClInclude>
+    <ClInclude Include="COM\mComStream.h">
       <Filter>COM</Filter>
     </ClInclude>
   </ItemGroup>
@@ -750,7 +753,10 @@
     <ClCompile Include="COM\mComMemStream.cpp">
       <Filter>COM</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\..\..\Programs\Library64\COM\mComFileStream.cpp">
+    <ClCompile Include="COM\mComFileStream.cpp">
+      <Filter>COM</Filter>
+    </ClCompile>
+    <ClCompile Include="COM\mComStream.cpp">
       <Filter>COM</Filter>
     </ClCompile>
   </ItemGroup>
