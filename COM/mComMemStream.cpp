@@ -154,12 +154,12 @@ void mComMemStream::ResetWriteCache( void )
 }
 
 
-ISequentialStream* mComMemStream::Get( void )const
+IStream* mComMemStream::Get( void )const
 {
 	return MyStream;
 }
 
-mComMemStream::operator ISequentialStream*( void )const
+mComMemStream::operator IStream*( void )const
 {
 	return Get();
 }
