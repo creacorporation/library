@@ -403,6 +403,9 @@
     <ClInclude Include="COM\mComStream.h">
       <Filter>COM</Filter>
     </ClInclude>
+    <ClInclude Include="COM\mComXmlLight.h">
+      <Filter>COM</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="General\mOptionParser.cpp">
@@ -757,6 +760,9 @@
       <Filter>COM</Filter>
     </ClCompile>
     <ClCompile Include="COM\mComStream.cpp">
+      <Filter>COM</Filter>
+    </ClCompile>
+    <ClCompile Include="COM\mComXmlLight.cpp">
       <Filter>COM</Filter>
     </ClCompile>
   </ItemGroup>
