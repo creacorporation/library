@@ -397,6 +397,9 @@
     <ClInclude Include="COM\mComMemStream.h">
       <Filter>COM</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\..\..\..\Programs\Library64\COM\mComFileStream.h">
+      <Filter>COM</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="General\mOptionParser.cpp">
@@ -745,6 +748,9 @@
       <Filter>Network</Filter>
     </ClCompile>
     <ClCompile Include="COM\mComMemStream.cpp">
+      <Filter>COM</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\Programs\Library64\COM\mComFileStream.cpp">
       <Filter>COM</Filter>
     </ClCompile>
   </ItemGroup>
