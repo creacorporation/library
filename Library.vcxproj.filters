@@ -406,6 +406,9 @@
     <ClInclude Include="General\mXmlBase.h">
       <Filter>General</Filter>
     </ClInclude>
+    <ClInclude Include="General\mXml.h">
+      <Filter>General</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="General\mOptionParser.cpp">
@@ -763,6 +766,9 @@
       <Filter>COM</Filter>
     </ClCompile>
     <ClCompile Include="General\mXmlBase.cpp">
+      <Filter>General</Filter>
+    </ClCompile>
+    <ClCompile Include="General\mXml.cpp">
       <Filter>General</Filter>
     </ClCompile>
   </ItemGroup>

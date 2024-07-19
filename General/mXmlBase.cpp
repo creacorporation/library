@@ -71,6 +71,13 @@ bool mXmlBase::Write( mComStream& stream )const
 	HRESULT hr;
 	IXmlWriter* writer = nullptr;
 
+	const mXmlObject_Element_Child* elm = OnWriteRoot();
+	if( !elm )
+	{
+		RaiseError( g_ErrorLogger , 0 , L"出力対象が指定されませんでした" );
+		return false;
+	}
+
 	if( FAILED( hr = CreateXmlWriter( __uuidof( IXmlWriter ) , (void**)&writer ,nullptr ) ) )
 	{
 		RaiseError( g_ErrorLogger , 0 , L"IXmlWriteの生成に失敗" );
@@ -92,13 +99,6 @@ bool mXmlBase::Write( mComStream& stream )const
 	if( FAILED( hr = writer->WriteStartDocument( XmlStandalone_Omit ) ) )
 	{
 		RaiseError( g_ErrorLogger , 0 , L"ドキュメントの開始が失敗" );
-		return false;
-	}
-
-	const mXmlObject_Element_Child* elm = OnWriteRoot();
-	if( !elm )
-	{
-		RaiseError( g_ErrorLogger , 0 , L"出力対象が指定されませんでした" );
 		return false;
 	}
 
@@ -207,16 +207,13 @@ mXmlBase::OnReadResult mXmlBase::ParseMain( const WString& path , mXmlObject_Ele
 
 	while( S_OK == ( hr = reader->Read( &nodetype ) ) )
 	{
+		if( nodetype == XmlNodeType_EndElement )
+		{
+			return OnReadResult::Next;
+		}
 		if( result == OnReadResult::Skip )
 		{
-			if( nodetype == XmlNodeType_EndElement )
-			{
-				return OnReadResult::Next;
-			}
-			else
-			{
-				continue;
-			}
+			continue;
 		}
 		switch( nodetype )
 		{

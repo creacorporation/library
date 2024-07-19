@@ -211,10 +211,10 @@ protected:
 
 	enum OnReadResult
 	{
-		Fail,		//
-		Next,		//
-		Skip,		//
-		Finish,		//
+		Fail,		// 読み取り失敗の場合（エラー終了）
+		Next,		// 読み取りＯＫの場合（処理続行）
+		Skip,		// 当該エレメントについて以降全て無視する場合（次のエレメントから続行）
+		Finish,		// 読み取り終了の場合
 	};
 
 	//

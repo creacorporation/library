@@ -40,6 +40,7 @@
     <ClInclude Include="General\mCsvFile.h" />
     <ClInclude Include="General\mNotifyOption.h" />
     <ClInclude Include="General\mSlashFormat.h" />
+    <ClInclude Include="General\mXml.h" />
     <ClInclude Include="General\mXmlBase.h" />
     <ClInclude Include="Network\mHttpAccess.h" />
     <ClInclude Include="General\mStdInStream.h" />
@@ -164,6 +165,7 @@
     <ClCompile Include="General\mCsvFile.cpp" />
     <ClCompile Include="General\mNotifyOption.cpp" />
     <ClCompile Include="General\mSlashFormat.cpp" />
+    <ClCompile Include="General\mXml.cpp" />
     <ClCompile Include="General\mXmlBase.cpp" />
     <ClCompile Include="Network\mHttpAccess.cpp" />
     <ClCompile Include="General\mStdInStream.cpp" />
