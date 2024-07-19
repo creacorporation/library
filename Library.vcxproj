@@ -22,7 +22,6 @@
     <ClInclude Include="COM\mComFileStream.h" />
     <ClInclude Include="COM\mComStream.h" />
     <ClInclude Include="COM\mComMemStream.h" />
-    <ClInclude Include="COM\mComXmlLight.h" />
     <ClInclude Include="Crypto\mSCBase.h" />
     <ClInclude Include="Crypto\mSCFelica.h" />
     <ClInclude Include="Crypto\mSCFelicaDefinitions.h" />
@@ -41,6 +40,7 @@
     <ClInclude Include="General\mCsvFile.h" />
     <ClInclude Include="General\mNotifyOption.h" />
     <ClInclude Include="General\mSlashFormat.h" />
+    <ClInclude Include="General\mXmlBase.h" />
     <ClInclude Include="Network\mHttpAccess.h" />
     <ClInclude Include="General\mStdInStream.h" />
     <ClInclude Include="Network\mHttpConnection.h" />
@@ -146,7 +146,6 @@
     <ClCompile Include="COM\mComFileStream.cpp" />
     <ClCompile Include="COM\mComStream.cpp" />
     <ClCompile Include="COM\mComMemStream.cpp" />
-    <ClCompile Include="COM\mComXmlLight.cpp" />
     <ClCompile Include="Crypto\mSCBase.cpp" />
     <ClCompile Include="Crypto\mSCFelica.cpp" />
     <ClCompile Include="Crypto\mSCFelicaDefinitions.cpp" />
@@ -165,6 +164,7 @@
     <ClCompile Include="General\mCsvFile.cpp" />
     <ClCompile Include="General\mNotifyOption.cpp" />
     <ClCompile Include="General\mSlashFormat.cpp" />
+    <ClCompile Include="General\mXmlBase.cpp" />
     <ClCompile Include="Network\mHttpAccess.cpp" />
     <ClCompile Include="General\mStdInStream.cpp" />
     <ClCompile Include="Network\mHttpConnection.cpp" />
