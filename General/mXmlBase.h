@@ -217,14 +217,63 @@ protected:
 		Finish,		// 読み取り終了の場合
 	};
 
-	//
+	//ルートエレメントが読み取り完了したときにコールバックされます
 	virtual bool OnReadRoot( std::unique_ptr<mXmlObject_Element_Child>&& obj );
+
+	//ルート以外のエレメントが読み取り完了したときにコールバックされます
+	//※このコールバック関数内で、objをparentのChildメンバに追加しなければ、読み取ったデータは破棄されることになります
+	// path : ルートエレメントから連なるエレメント名を'\\'で連結した文字列。先頭と末尾は'\\'。
+	// parent : 読み取ったデータが直接所属することになる親エレメント
+	// obj : 新たに読み取ったデータ
+	// ret : その後の処理を示すOnReadResultの値
 	virtual OnReadResult OnReadElement( const WString& path , mXmlObject_Element_Child& parent , std::unique_ptr<mXmlObject_Element_Child>&& obj );
+
+	//テキストデータが読み取り完了したときにコールバックされます
+	//※このコールバック関数内で、objをparentのChildメンバに追加しなければ、読み取ったデータは破棄されることになります
+	// path : ルートエレメントから連なるエレメント名を'\\'で連結した文字列。先頭と末尾は'\\'。
+	// parent : 読み取ったデータが直接所属することになる親エレメント
+	// obj : 新たに読み取ったデータ
+	// ret : その後の処理を示すOnReadResultの値
 	virtual OnReadResult OnReadText( const WString& path , mXmlObject_Element_Child& parent , std::unique_ptr<mXmlObject_Text>&& obj );
+
+	//CDATAが読み取り完了したときにコールバックされます
+	//※このコールバック関数内で、objをparentのChildメンバに追加しなければ、読み取ったデータは破棄されることになります
+	// path : ルートエレメントから連なるエレメント名を'\\'で連結した文字列。先頭と末尾は'\\'。
+	// parent : 読み取ったデータが直接所属することになる親エレメント
+	// obj : 新たに読み取ったデータ
+	// ret : その後の処理を示すOnReadResultの値
 	virtual OnReadResult OnReadCDATA( const WString& path , mXmlObject_Element_Child& parent , std::unique_ptr<mXmlObject_CDATA>&& obj );
+
+	//処理命令が読み取り完了したときにコールバックされます
+	//※このコールバック関数内で、objをparentのChildメンバに追加しなければ、読み取ったデータは破棄されることになります
+	// path : ルートエレメントから連なるエレメント名を'\\'で連結した文字列。先頭と末尾は'\\'。
+	// parent : 読み取ったデータが直接所属することになる親エレメント
+	// obj : 新たに読み取ったデータ
+	// ret : その後の処理を示すOnReadResultの値
 	virtual OnReadResult OnReadProcessingInstruction( const WString& path ,  mXmlObject_Element_Child& parent , std::unique_ptr<mXmlObject_ProcessingInstruction>&& obj );
+
+	//コメントが読み取り完了したときにコールバックされます
+	//※このコールバック関数内で、objをparentのChildメンバに追加しなければ、読み取ったデータは破棄されることになります
+	// path : ルートエレメントから連なるエレメント名を'\\'で連結した文字列。先頭と末尾は'\\'。
+	// parent : 読み取ったデータが直接所属することになる親エレメント
+	// obj : 新たに読み取ったデータ
+	// ret : その後の処理を示すOnReadResultの値
 	virtual OnReadResult OnReadComment( const WString& path , mXmlObject_Element_Child& parent , std::unique_ptr<mXmlObject_Comment>&& obj );
+
+	//DOMが読み取り完了したときにコールバックされます
+	//※このコールバック関数内で、objをparentのChildメンバに追加しなければ、読み取ったデータは破棄されることになります
+	// path : ルートエレメントから連なるエレメント名を'\\'で連結した文字列。先頭と末尾は'\\'。
+	// parent : 読み取ったデータが直接所属することになる親エレメント
+	// obj : 新たに読み取ったデータ
+	// ret : その後の処理を示すOnReadResultの値
 	virtual OnReadResult OnReadDocumentType( const WString& path , mXmlObject_Element_Child& parent , std::unique_ptr<mXmlObject_DocumentType>&& obj );
+
+	//XML宣言が読み取り完了したときにコールバックされます
+	//※このコールバック関数内で、objをparentのChildメンバに追加しなければ、読み取ったデータは破棄されることになります
+	// path : ルートエレメントから連なるエレメント名を'\\'で連結した文字列。先頭と末尾は'\\'。
+	// parent : 読み取ったデータが直接所属することになる親エレメント
+	// obj : 新たに読み取ったデータ
+	// ret : その後の処理を示すOnReadResultの値
 	virtual OnReadResult OnReadXmlDeclaration( const WString& path , mXmlObject_Element_Child& parent , std::unique_ptr<mXmlObject_XmlDeclaration_Child>&& obj );
 
 	virtual const mXmlObject_Element_Child* OnWriteRoot( void )const;
