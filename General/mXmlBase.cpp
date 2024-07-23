@@ -199,17 +199,17 @@ bool mXmlBase::WriteElement( const mXmlObject_Element_Child& obj , IXmlWriter* w
 }
 
 
-mXmlBase::OnReadResult mXmlBase::ParseMain( const WString& path , mXmlObject_Element_Child& parent , IXmlReader* reader )
+mXmlBase::OnReadResultEx mXmlBase::ParseMain( const WString& path , mXmlObject_Element_Child& parent , IXmlReader* reader )
 {
 	HRESULT hr;
 	XmlNodeType nodetype;
-	OnReadResult result = OnReadResult::Next;
+	OnReadResultEx result = OnReadResultEx::Next;
 
 	while( S_OK == ( hr = reader->Read( &nodetype ) ) )
 	{
 		if( nodetype == XmlNodeType_EndElement )
 		{
-			return OnReadResult::Next;
+			return OnReadResultEx::Next;
 		}
 		if( result == OnReadResult::Skip )
 		{
@@ -243,21 +243,21 @@ mXmlBase::OnReadResult mXmlBase::ParseMain( const WString& path , mXmlObject_Ele
 		case XmlNodeType_Attribute:
 		case XmlNodeType_None:
 		default:
-			return OnReadResult::Fail;
+			return OnReadResultEx::Fail;
 		}
 		switch( result )
 		{
-		case OnReadResult::Next:
-		case OnReadResult::Skip:
+		case OnReadResultEx::Next:
+		case OnReadResultEx::Skip:
 			break;
-		case OnReadResult::Finish:
-		case OnReadResult::Fail:
+		case OnReadResultEx::Finish:
+		case OnReadResultEx::Fail:
 			return result;
 		default:
-			return OnReadResult::Fail;
+			return OnReadResultEx::Fail;
 		}
 	}
-	return OnReadResult::Next;
+	return OnReadResultEx::Next;
 }
 
 template< class c >
@@ -305,7 +305,7 @@ static bool ReadNamespaceUri( c& ioObject , IXmlReader* reader )
 	return true;
 }
 
-mXmlBase::OnReadResult mXmlBase::ParseElement( const WString& path , mXmlObject_Element_Child& parent , IXmlReader* reader )
+mXmlBase::OnReadResultEx mXmlBase::ParseElement( const WString& path , mXmlObject_Element_Child& parent , IXmlReader* reader )
 {
 	std::unique_ptr< mXmlObject_Element_Child > elm( mNew mXmlObject_Element_Child() );
 
@@ -314,36 +314,36 @@ mXmlBase::OnReadResult mXmlBase::ParseElement( const WString& path , mXmlObject_
 	//プレフィクス
 	if( !ReadPrefix< mXmlObject_Element_Child >( *elm , reader ) )
 	{
-		return OnReadResult::Fail;
+		return OnReadResultEx::Fail;
 	}
 	//名前
 	if( !ReadName< mXmlObject_Element_Child >( *elm , reader ) )
 	{
-		return OnReadResult::Fail;
+		return OnReadResultEx::Fail;
 	}
 	//アトリビュート
 	if( !ParseAttribute( *elm , reader ) )
 	{
-		return OnReadResult::Fail;
+		return OnReadResultEx::Fail;
 	}
 	//URI
 	if( !ReadNamespaceUri< mXmlObject_Element_Child >( *elm , reader ) )
 	{
-		return OnReadResult::Fail;
+		return OnReadResultEx::Fail;
 	}
 
 	//子ノード
 	if( !isempty )
 	{
 		WString childpath = path + elm->Name + L"\\" ;
-		OnReadResult result = ParseMain( childpath , *elm , reader );
-		if( result != OnReadResult::Next )
+		OnReadResultEx result = ParseMain( childpath , *elm , reader );
+		if( result != OnReadResultEx::Next )
 		{
 			return result;
 		}
 	}
 
-	return OnReadElement( path , parent , std::move( elm ) );
+	return (OnReadResultEx)OnReadElement( path , parent , std::move( elm ) );
 }
 
 bool mXmlBase::ParseAttribute( mXmlObject_WithChildObject& parent , IXmlReader* reader )
@@ -395,7 +395,7 @@ bool mXmlBase::ParseAttribute( mXmlObject_WithChildObject& parent , IXmlReader* 
 	return true;
 }
 
-mXmlBase::OnReadResult mXmlBase::ParseText( const WString& path , mXmlObject_Element_Child& parent , IXmlReader* reader )
+mXmlBase::OnReadResultEx mXmlBase::ParseText( const WString& path , mXmlObject_Element_Child& parent , IXmlReader* reader )
 {
 	LPCWSTR ptr;
 	HRESULT hr;
@@ -405,14 +405,14 @@ mXmlBase::OnReadResult mXmlBase::ParseText( const WString& path , mXmlObject_Ele
 	hr = reader->GetValue( &ptr, nullptr );
 	if( FAILED( hr ) )
 	{
-		return OnReadResult::Fail;
+		return OnReadResultEx::Fail;
 	}
 	txt->Text = ptr;
 
-	return OnReadText( path , parent , std::move( txt ) );
+	return (OnReadResultEx)OnReadText( path , parent , std::move( txt ) );
 }
 
-mXmlBase::OnReadResult mXmlBase::ParseCDATA( const WString& path , mXmlObject_Element_Child& parent , IXmlReader* reader )
+mXmlBase::OnReadResultEx mXmlBase::ParseCDATA( const WString& path , mXmlObject_Element_Child& parent , IXmlReader* reader )
 {
 	LPCWSTR ptr;
 	HRESULT hr;
@@ -422,14 +422,14 @@ mXmlBase::OnReadResult mXmlBase::ParseCDATA( const WString& path , mXmlObject_El
 	hr = reader->GetValue( &ptr, nullptr );
 	if( FAILED( hr ) )
 	{
-		return OnReadResult::Fail;
+		return OnReadResultEx::Fail;
 	}
 	txt->Text = ptr;
 
-	return OnReadCDATA( path , parent , std::move( txt ) );
+	return (OnReadResultEx)OnReadCDATA( path , parent , std::move( txt ) );
 }
 
-mXmlBase::OnReadResult mXmlBase::ParseProcessingInstruction( const WString& path , mXmlObject_Element_Child& parent , IXmlReader* reader )
+mXmlBase::OnReadResultEx mXmlBase::ParseProcessingInstruction( const WString& path , mXmlObject_Element_Child& parent , IXmlReader* reader )
 {
 	LPCWSTR ptr;
 	HRESULT hr;
@@ -438,20 +438,20 @@ mXmlBase::OnReadResult mXmlBase::ParseProcessingInstruction( const WString& path
 	//名前
 	if( !ReadName< mXmlObject_ProcessingInstruction >( *procinst , reader ) )
 	{
-		return OnReadResult::Fail;
+		return OnReadResultEx::Fail;
 	}
 	//値
 	hr = reader->GetValue( &ptr, nullptr );
 	if( FAILED( hr ) )
 	{
-		return OnReadResult::Fail;
+		return OnReadResultEx::Fail;
 	}
 	procinst->Value = ptr;
 
-	return OnReadProcessingInstruction( path , parent , std::move( procinst ) );
+	return (OnReadResultEx)OnReadProcessingInstruction( path , parent , std::move( procinst ) );
 }
 
-mXmlBase::OnReadResult mXmlBase::ParseComment( const WString& path , mXmlObject_Element_Child& parent , IXmlReader* reader )
+mXmlBase::OnReadResultEx mXmlBase::ParseComment( const WString& path , mXmlObject_Element_Child& parent , IXmlReader* reader )
 {
 	LPCWSTR ptr;
 	HRESULT hr;
@@ -461,32 +461,32 @@ mXmlBase::OnReadResult mXmlBase::ParseComment( const WString& path , mXmlObject_
 	hr = reader->GetValue( &ptr, nullptr );
 	if( FAILED( hr ) )
 	{
-		return OnReadResult::Fail;
+		return OnReadResultEx::Fail;
 	}
 
-	return OnReadComment( path , parent , std::move( comment ) );
+	return (OnReadResultEx)OnReadComment( path , parent , std::move( comment ) );
 }
 
-mXmlBase::OnReadResult mXmlBase::ParseDocumentType( const WString& path , mXmlObject_Element_Child& parent , IXmlReader* reader )
+mXmlBase::OnReadResultEx mXmlBase::ParseDocumentType( const WString& path , mXmlObject_Element_Child& parent , IXmlReader* reader )
 {
 	std::unique_ptr< mXmlObject_DocumentType > elm( mNew mXmlObject_DocumentType() );
 
 	//TODO
 
-	return OnReadDocumentType( path , parent , std::move( elm ) );
+	return (OnReadResultEx)OnReadDocumentType( path , parent , std::move( elm ) );
 }
 
-mXmlBase::OnReadResult mXmlBase::ParseXmlDeclaration( const WString& path , mXmlObject_Element_Child& parent , IXmlReader* reader )
+mXmlBase::OnReadResultEx mXmlBase::ParseXmlDeclaration( const WString& path , mXmlObject_Element_Child& parent , IXmlReader* reader )
 {
 	std::unique_ptr< mXmlObject_XmlDeclaration_Child > elm( mNew mXmlObject_XmlDeclaration_Child() );
 
 	//アトリビュート
 	if( !ParseAttribute( *elm , reader ) )
 	{
-		return OnReadResult::Fail;
+		return OnReadResultEx::Fail;
 	}
 
-	return OnReadXmlDeclaration( path , parent , std::move( elm ) );
+	return (OnReadResultEx)OnReadXmlDeclaration( path , parent , std::move( elm ) );
 }
 
 bool mXmlBase::OnReadRoot( std::unique_ptr<mXmlObject_Element_Child>&& obj )

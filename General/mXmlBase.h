@@ -178,6 +178,17 @@ public:
 public:
 };
 
+namespace mXmlBase_Definitions
+{
+	enum OnReadResult
+	{
+		Fail,		// 読み取り失敗の場合（エラー終了）
+		Next,		// 読み取りＯＫの場合（処理続行）
+		Skip,		// 当該エレメントについて以降全て無視する場合（次のエレメントから続行）
+		Finish,		// 読み取り終了の場合
+	};
+}
+
 class mXmlBase
 {
 public:
@@ -209,13 +220,7 @@ protected:
 	{
 	};
 
-	enum OnReadResult
-	{
-		Fail,		// 読み取り失敗の場合（エラー終了）
-		Next,		// 読み取りＯＫの場合（処理続行）
-		Skip,		// 当該エレメントについて以降全て無視する場合（次のエレメントから続行）
-		Finish,		// 読み取り終了の場合
-	};
+	using OnReadResult = mXmlBase_Definitions::OnReadResult;
 
 	//ルートエレメントが読み取り完了したときにコールバックされます
 	virtual bool OnReadRoot( std::unique_ptr<mXmlObject_Element_Child>&& obj );
@@ -279,16 +284,25 @@ protected:
 	virtual const mXmlObject_Element_Child* OnWriteRoot( void )const;
 
 private:
+	enum OnReadResultEx
+	{
+		Fail   = OnReadResult::Fail,		// 読み取り失敗の場合（エラー終了）
+		Next   = OnReadResult::Next,		// 読み取りＯＫの場合（処理続行）
+		Skip   = OnReadResult::Skip,		// 当該エレメントについて以降全て無視する場合（次のエレメントから続行）
+		Finish = OnReadResult::Finish,	// 読み取り終了の場合
+		Pending,
+		SkipPending,
+	};
 
 	//要素の読み取り
-	OnReadResult ParseMain( const WString& path , mXmlObject_Element_Child& parent , IXmlReader* reader );
-	OnReadResult ParseElement( const WString& path , mXmlObject_Element_Child& parent , IXmlReader* reader );
-	OnReadResult ParseText( const WString& path , mXmlObject_Element_Child& parent , IXmlReader* reader );
-	OnReadResult ParseCDATA( const WString& path , mXmlObject_Element_Child& parent , IXmlReader* reader );
-	OnReadResult ParseProcessingInstruction( const WString& path , mXmlObject_Element_Child& parent , IXmlReader* reader );
-	OnReadResult ParseComment( const WString& path , mXmlObject_Element_Child& parent , IXmlReader* reader );
-	OnReadResult ParseDocumentType( const WString& path , mXmlObject_Element_Child& parent , IXmlReader* reader );
-	OnReadResult ParseXmlDeclaration( const WString& path , mXmlObject_Element_Child& parent , IXmlReader* reader );
+	OnReadResultEx ParseMain( const WString& path , mXmlObject_Element_Child& parent , IXmlReader* reader );
+	OnReadResultEx ParseElement( const WString& path , mXmlObject_Element_Child& parent , IXmlReader* reader );
+	OnReadResultEx ParseText( const WString& path , mXmlObject_Element_Child& parent , IXmlReader* reader );
+	OnReadResultEx ParseCDATA( const WString& path , mXmlObject_Element_Child& parent , IXmlReader* reader );
+	OnReadResultEx ParseProcessingInstruction( const WString& path , mXmlObject_Element_Child& parent , IXmlReader* reader );
+	OnReadResultEx ParseComment( const WString& path , mXmlObject_Element_Child& parent , IXmlReader* reader );
+	OnReadResultEx ParseDocumentType( const WString& path , mXmlObject_Element_Child& parent , IXmlReader* reader );
+	OnReadResultEx ParseXmlDeclaration( const WString& path , mXmlObject_Element_Child& parent , IXmlReader* reader );
 	//アトリビュートの読み取り
 	bool ParseAttribute( mXmlObject_WithChildObject& parent , IXmlReader* reader );
 
