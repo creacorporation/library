@@ -309,6 +309,8 @@ mXmlBase::OnReadResult mXmlBase::ParseElement( const WString& path , mXmlObject_
 {
 	std::unique_ptr< mXmlObject_Element_Child > elm( mNew mXmlObject_Element_Child() );
 
+	bool isempty = reader->IsEmptyElement();
+
 	//プレフィクス
 	if( !ReadPrefix< mXmlObject_Element_Child >( *elm , reader ) )
 	{
@@ -331,7 +333,7 @@ mXmlBase::OnReadResult mXmlBase::ParseElement( const WString& path , mXmlObject_
 	}
 
 	//子ノード
-	if( !reader->IsEmptyElement() )
+	if( !isempty )
 	{
 		WString childpath = path + elm->Name + L"\\" ;
 		OnReadResult result = ParseMain( childpath , *elm , reader );
