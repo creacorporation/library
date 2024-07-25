@@ -13,3 +13,7 @@
 #include "General/mErrorLogger.h"
 #include <shlwapi.h>
 
+void _DummyFunction_mComStream( void )
+{
+	return;
+}
