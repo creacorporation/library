@@ -541,3 +541,45 @@ const mXmlBase::mXmlObject_Element_Child* mXmlBase::OnWriteRoot( void )const
 	return false;
 }
 
+mXmlBase::mXmlObject_WithChildObject::AttrMap mXmlBase::mXmlObject_WithChildObject::GetAttrMap( const WString& prefix )const
+{
+	AttrMap attrmap;
+	for( ChildObjectArray::const_iterator itr = Child.begin() ; itr != Child.end() ; itr++ )
+	{
+		if( itr->get()->Type == mXmlObjectType::XmlObjectType_Attribute )
+		{
+			const mXmlObject_Attribute* ptr = reinterpret_cast< const mXmlObject_Attribute* >( itr->get() );
+			if( ptr->Prefix == prefix )
+			{
+				attrmap[ ptr->Name ] = ptr->Value;
+			}
+		}
+	}
+	return std::move( attrmap );
+}
+
+WString mXmlBase::mXmlObject_WithChildObject::GetText( void )const
+{
+	for( ChildObjectArray::const_iterator itr = Child.begin() ; itr != Child.end() ; itr++ )
+	{
+		switch( itr->get()->Type )
+		{
+		case mXmlObjectType::XmlObjectType_CDATA:
+		{
+			const mXmlObject_CDATA* ptr = reinterpret_cast< const mXmlObject_CDATA* >( itr->get() );			
+			WString result = ptr->Text;
+			return std::move( result );
+		}
+		case mXmlObjectType::XmlObjectType_Text:
+		{
+			const mXmlObject_Text* ptr = reinterpret_cast< const mXmlObject_Text* >( itr->get() );
+			WString result = ptr->Text;
+			return std::move( result );
+		}
+		default:
+			break;
+		}
+	}
+	return WString();
+}
+

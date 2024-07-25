@@ -16,6 +16,7 @@
 #include "COM/mComStream.h"
 #include <deque>
 #include <xmllite.h>
+#include <map>
 
 enum mXmlObjectType
 {
@@ -211,6 +212,10 @@ protected:
 		using ChildObject = std::unique_ptr<mXmlObject>;
 		using ChildObjectArray = std::deque< ChildObject >;
 		ChildObjectArray Child;
+
+		using AttrMap = std::map< WString , WString >;
+		AttrMap GetAttrMap( const WString& prefix = L"" )const;
+		WString GetText( void )const;
 	};
 
 	class mXmlObject_Element_Child : public mXmlObject_Element , public mXmlObject_WithChildObject
@@ -286,12 +291,10 @@ protected:
 private:
 	enum OnReadResultEx
 	{
-		Fail   = OnReadResult::Fail,		// 読み取り失敗の場合（エラー終了）
-		Next   = OnReadResult::Next,		// 読み取りＯＫの場合（処理続行）
-		Skip   = OnReadResult::Skip,		// 当該エレメントについて以降全て無視する場合（次のエレメントから続行）
+		Fail   = OnReadResult::Fail,	// 読み取り失敗の場合（エラー終了）
+		Next   = OnReadResult::Next,	// 読み取りＯＫの場合（処理続行）
+		Skip   = OnReadResult::Skip,	// 当該エレメントについて以降全て無視する場合（次のエレメントから続行）
 		Finish = OnReadResult::Finish,	// 読み取り終了の場合
-		Pending,
-		SkipPending,
 	};
 
 	//要素の読み取り
