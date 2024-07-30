@@ -22,6 +22,7 @@
     <ClInclude Include="COM\mComFileStream.h" />
     <ClInclude Include="COM\mComStream.h" />
     <ClInclude Include="COM\mComMemStream.h" />
+    <ClInclude Include="COM\mGUID.h" />
     <ClInclude Include="Crypto\mSCBase.h" />
     <ClInclude Include="Crypto\mSCFelica.h" />
     <ClInclude Include="Crypto\mSCFelicaDefinitions.h" />
@@ -147,6 +148,7 @@
     <ClCompile Include="COM\mComFileStream.cpp" />
     <ClCompile Include="COM\mComStream.cpp" />
     <ClCompile Include="COM\mComMemStream.cpp" />
+    <ClCompile Include="COM\mGUID.cpp" />
     <ClCompile Include="Crypto\mSCBase.cpp" />
     <ClCompile Include="Crypto\mSCFelica.cpp" />
     <ClCompile Include="Crypto\mSCFelicaDefinitions.cpp" />
