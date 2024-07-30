@@ -9,3 +9,7 @@
 
 //mRegexpはテンプレートクラスのため、このファイルでは特に書くことはない
 
+void _DummyFunction_mRegexp( void )
+{
+	return;
+}
