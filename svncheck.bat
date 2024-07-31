@@ -1,10 +1,21 @@
-@echo off
+rem @echo off
 
 rem ----- ライブラリ有効性チェック -----
-rem WebView2使わない場合は下をコメントアウト
+if not exist %2libconfig.conf goto optcheckend
+
+rem WebView2使うかどうかの判定
+find /I "ENABLE_WEBVIEW2" %2libconfig.conf > nul
+if errorlevel 1 goto disable_webview2
 echo #define %1_ENABLE_WEBVIEW2
-rem CRTDBG使わない場合は下をコメントアウト
-rem echo #define %1_ENABLE_CRTDBG
+:disable_webview2
+
+rem CRTDBG使うかどうかの判定
+find /I "ENABLE_CRTDBG" %2libconfig.conf > nul
+if errorlevel 1 goto disable_crtdbg
+echo #define %1_ENABLE_CRTDBG
+:disable_crtdbg
+
+:optcheckend
 
 rem ----- SVNリビジョンチェック -----
 git help > nul
