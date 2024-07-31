@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Thanks to : 複数バージョンのVisual Studioで開けるC++のプロジェクトを作る -->
+<!-- https://qiita.com/yumetodo/items/a8324efaf83c9c08d168 -->
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup Label="Configuration" Condition="'$(VisualStudioVersion)' == '15.0'">
+    <PlatformToolset>v141</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Label="Configuration" Condition="'$(VisualStudioVersion)' == '16.0'">
+    <PlatformToolset>v142</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Label="Configuration" Condition="'$(VisualStudioVersion)' == '17.0'">
+    <PlatformToolset>v143</PlatformToolset>
+  </PropertyGroup>
+</Project>
