@@ -12,9 +12,9 @@
 #ifndef LIBRARY_ENABLE_WEBVIEW2
 // WebView2はパッケージをインストールしないと利用できません
 // NuGetパッケージマネージャーよりMicrosoft.Web.WebView2をインストールしてください。
-// また、実行にはランタイムライブラリをインストールする必要があります(※Win10以下の場合)。
+// また、$(SolutionDir)libconfig.confを編集または作成してWebView2を使用するように変更する必要があります。
+// 実行にはランタイムライブラリをインストールする必要があります(※Win10以下の場合)。
 #pragma message("   *Notice* : WebView2 is disabled")
-#pragma message("            : To enable this feature, please install 'Microsoft.Web.WebView2' from NuGet.")
 #else
 #include <General/mErrorLogger.h>
 
