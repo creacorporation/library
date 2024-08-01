@@ -19,6 +19,7 @@
 #include <cstddef>
 #include <new>
 #include <sal.h>
+#include <memory>
 #pragma warning( disable : 4482 )
 
 //スレッドセーフであることを示すマーカー
