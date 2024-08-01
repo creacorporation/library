@@ -36,34 +36,6 @@ bool mMTwister::Initialize( void )
 	return true;
 }
 
-bool mMTwister::Initialize( const RandState& seed , DWORD len )
-{
-	if( len < sizeof( RandSource::result_type ) * RandSource::state_size + sizeof( RandSource::_Idx ) )
-	{
-		RaiseAssert( g_ErrorLogger , 0 , L"初期化データが不足しています" );
-		return false;
-	}
-
-	MoveMemory( &MyRandSource._Idx , seed.get() ,  sizeof( RandSource::_Idx ) );
-	MoveMemory( MyRandSource._Ax , &seed.get()[ sizeof( RandSource::_Idx ) ] , sizeof( RandSource::result_type ) * RandSource::state_size );
-
-	if( RandSource::state_size * 2 < MyRandSource._Idx )
-	{
-		RaiseAssert( g_ErrorLogger , 0 , L"初期化データのインデックスが異常です" , MyRandSource._Idx );
-	}
-	return true;
-}
-
-bool mMTwister::GetState( RandState& retState , DWORD& retLen )const
-{
-	retState.reset( mNew BYTE[ sizeof( RandSource::result_type ) * RandSource::state_size + sizeof( RandSource::_Idx ) ] );
-
-	MoveMemory( retState.get() , &MyRandSource._Idx , sizeof( RandSource::_Idx ) );
-	MoveMemory( &retState.get()[ sizeof( RandSource::_Idx ) ] , MyRandSource._Ax , sizeof( RandSource::result_type ) * RandSource::state_size );
-
-	return true;
-}
-
 UINT mMTwister::RandInt32( void )
 {
 

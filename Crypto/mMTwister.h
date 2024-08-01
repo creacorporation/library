@@ -31,21 +31,6 @@ public:
 	//乱数系列を初期化
 	bool Initialize( void );
 
-	//乱数生成器の内部状態の取得
-	typedef std::unique_ptr<BYTE> RandState;
-
-	//長い数値列で乱数系列を初期化
-	//seed : 内部状態データ
-	//len : 内部状態データの長さ
-	//ret : 成功時真
-	bool Initialize( const RandState& seed , DWORD len );
-
-	//乱数の現在の内部状態を取得する
-	//retState : 取得した結果
-	//retLen : 内部状態として格納されたバイト数
-	//ret : 成功時真
-	bool GetState( RandState& retState , DWORD& retLen )const;
-
 	//UINT形式、32ビットの乱数
 	UINT RandInt32( void );
 
