@@ -771,7 +771,7 @@ bool mDateTime::Date::Set( const WString& src )
 bool mDateTime::Time::Set( const AString& src )
 {
 	Clear();
-	if( sscanf( src.c_str() , "%d:%d:%d.%d" , &Hour , &Minute , &Second , &Milliseconds ) <= 0 )
+	if( 0 < sscanf( src.c_str() , "%d:%d:%d.%d" , &Hour , &Minute , &Second , &Milliseconds ) )
 	{
 		return true;
 	}
@@ -781,7 +781,7 @@ bool mDateTime::Time::Set( const AString& src )
 bool mDateTime::Time::Set( const WString& src )
 {
 	Clear();
-	if( wchar_sscanf( src.c_str() , L"%d:%d:%d.%d" , &Hour , &Minute , &Second , &Milliseconds ) <= 0 )
+	if( 0 < wchar_sscanf( src.c_str() , L"%d:%d:%d.%d" , &Hour , &Minute , &Second , &Milliseconds ) )
 	{
 		return true;
 	}
