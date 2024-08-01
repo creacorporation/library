@@ -1,10 +1,10 @@
-//----------------------------------------------------------------------------
-// �X���b�V����؂�f�[�^�t�H�[�}�b�g
+﻿//----------------------------------------------------------------------------
+// スラッシュ区切りデータフォーマット
 // Copyright (C) 2020- Crea Inc. All rights reserved.
 // This program is released under the MIT License. 
 // see http://opensource.org/licenses/mit-license.php
-// ���쌠�\���⃉�C�Z���X�̉��ς͋֎~����Ă��܂��B
-// ���̃\�[�X�R�[�h�Ɋւ��āA��L���C�Z���X�ȊO�̌_�񓙂͈�ؑ��݂��܂���B
+// 著作権表示やライセンスの改変は禁止されています。
+// このソースコードに関して、上記ライセンス以外の契約等は一切存在しません。
 //----------------------------------------------------------------------------
 
 #ifndef SLASHFORMAT_H_INCLUDED
@@ -16,7 +16,7 @@
 #include "General/mDateTime.h"
 #include <map>
 
-//�X���b�V���t�H�[�}�b�g��ASCII/SJIS�o�[�W����
+//スラッシュフォーマットのASCII/SJISバージョン
 class mSlashFormatA
 {
 public:
@@ -91,7 +91,7 @@ public:
 
 };
 
-//�X���b�V���t�H�[�}�b�g��UNICODE�o�[�W����
+//スラッシュフォーマットのUNICODEバージョン
 class mSlashFormatW
 {
 public:

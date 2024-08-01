@@ -1,5 +1,5 @@
-//----------------------------------------------------------------------------
-// ODBCÚ‘±—pƒ‰ƒCƒuƒ‰ƒŠ
+ï»¿//----------------------------------------------------------------------------
+// ODBCæ¥ç¶šç”¨ãƒ©ã‚¤ãƒ–ãƒ©ãƒª
 // Copyright (C) 2005 Fingerling. All rights reserved. 
 // Copyright (C) 2018- Crea Inc. All rights reserved.
 // This program is released under the MIT License. 
@@ -21,19 +21,19 @@
 
 namespace mOdbcSqlState
 {
-	//ƒnƒ“ƒhƒ‹‚Ìí—Ş
+	//ãƒãƒ³ãƒ‰ãƒ«ã®ç¨®é¡
 	enum HandleKind
 	{
-		Environment,	//ŠÂ‹«ƒnƒ“ƒhƒ‹
-		Connection,		//Ú‘±ƒnƒ“ƒhƒ‹
-		Statement,		//ƒXƒe[ƒgƒƒ“ƒgƒnƒ“ƒhƒ‹
-		Descriotion,	//ƒfƒBƒXƒNƒŠƒvƒ^ƒnƒ“ƒhƒ‹
+		Environment,	//ç’°å¢ƒãƒãƒ³ãƒ‰ãƒ«
+		Connection,		//æ¥ç¶šãƒãƒ³ãƒ‰ãƒ«
+		Statement,		//ã‚¹ãƒ†ãƒ¼ãƒˆãƒ¡ãƒ³ãƒˆãƒãƒ³ãƒ‰ãƒ«
+		Descriotion,	//ãƒ‡ã‚£ã‚¹ã‚¯ãƒªãƒ—ã‚¿ãƒãƒ³ãƒ‰ãƒ«
 	};
 
-	//w’è‚µ‚½ODBCƒIƒuƒWƒFƒNƒg‚©‚çSQLƒXƒe[ƒgƒƒ“ƒg‚ğæ“¾‚·‚é
-	//handle : ƒXƒe[ƒgƒƒ“ƒg‚ğæ“¾‚·‚éƒnƒ“ƒhƒ‹
-	//kind : handle‚Éw’è‚µ‚½ƒnƒ“ƒhƒ‹‚Ìí—Ş
-	//ret : ¬Œ÷^
+	//æŒ‡å®šã—ãŸODBCã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã‹ã‚‰SQLã‚¹ãƒ†ãƒ¼ãƒˆãƒ¡ãƒ³ãƒˆã‚’å–å¾—ã™ã‚‹
+	//handle : ã‚¹ãƒ†ãƒ¼ãƒˆãƒ¡ãƒ³ãƒˆã‚’å–å¾—ã™ã‚‹ãƒãƒ³ãƒ‰ãƒ«
+	//kind : handleã«æŒ‡å®šã—ãŸãƒãƒ³ãƒ‰ãƒ«ã®ç¨®é¡
+	//ret : æˆåŠŸæ™‚çœŸ
 	bool AppendLog( SQLHANDLE handle , HandleKind kind , mErrorLogger* logger = &g_ErrorLogger );
 
 };

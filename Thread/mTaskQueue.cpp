@@ -1,11 +1,11 @@
-//----------------------------------------------------------------------------
-// ƒ[ƒJ[ƒXƒŒƒbƒh•ƒ^ƒXƒNƒnƒ“ƒhƒ‰
+ï»¿//----------------------------------------------------------------------------
+// ãƒ¯ãƒ¼ã‚«ãƒ¼ã‚¹ãƒ¬ãƒƒãƒ‰ï¼†ã‚¿ã‚¹ã‚¯ãƒãƒ³ãƒ‰ãƒ©
 // Copyright (C) 2019-2024 Crea Inc. All rights reserved.
 // This program is released under the MIT License. 
 // see http://opensource.org/licenses/mit-license.php
-// ’˜ìŒ •\Ž¦‚âƒ‰ƒCƒZƒ“ƒX‚Ì‰ü•Ï‚Í‹ÖŽ~‚³‚ê‚Ä‚¢‚Ü‚·B
-// ‚±‚Ìƒ\[ƒXƒR[ƒh‚ÉŠÖ‚µ‚ÄAã‹Lƒ‰ƒCƒZƒ“ƒXˆÈŠO‚ÌŒ_–ñ“™‚ÍˆêØ‘¶Ý‚µ‚Ü‚¹‚ñB
-// (‰½‚ç‚©‚ÌŒ_–ñ‚ª‚ ‚éê‡‚Å‚àA–{ƒ\[ƒXƒR[ƒh‚Í‚»‚Ì‘ÎÛŠO‚Æ‚È‚è‚Ü‚·)
+// è‘—ä½œæ¨©è¡¨ç¤ºã‚„ãƒ©ã‚¤ã‚»ãƒ³ã‚¹ã®æ”¹å¤‰ã¯ç¦æ­¢ã•ã‚Œã¦ã„ã¾ã™ã€‚
+// ã“ã®ã‚½ãƒ¼ã‚¹ã‚³ãƒ¼ãƒ‰ã«é–¢ã—ã¦ã€ä¸Šè¨˜ãƒ©ã‚¤ã‚»ãƒ³ã‚¹ä»¥å¤–ã®å¥‘ç´„ç­‰ã¯ä¸€åˆ‡å­˜åœ¨ã—ã¾ã›ã‚“ã€‚
+// (ä½•ã‚‰ã‹ã®å¥‘ç´„ãŒã‚ã‚‹å ´åˆã§ã‚‚ã€æœ¬ã‚½ãƒ¼ã‚¹ã‚³ãƒ¼ãƒ‰ã¯ãã®å¯¾è±¡å¤–ã¨ãªã‚Šã¾ã™)
 //----------------------------------------------------------------------------
 
 #include "mTaskQueue.h"
@@ -54,46 +54,46 @@ bool mTaskQueue::AddTask( bool high , mTaskBase::Ticket& task , bool isFinal )
 {
 	if( task == nullptr )
 	{
-		RaiseError( g_ErrorLogger , 0 , L"ƒ^ƒXƒN‚Ìƒ|ƒCƒ“ƒ^‚ªƒkƒ‹‚Å‚·" );
+		RaiseError( g_ErrorLogger , 0 , L"ã‚¿ã‚¹ã‚¯ã®ãƒã‚¤ãƒ³ã‚¿ãŒãƒŒãƒ«ã§ã™" );
 		return false;
 	}
 
 	{ /*CRITICALSECTION*/
 		mCriticalSectionTicket critical( MyCriticalSection );
 
-		//”jŠü’†EÅIƒ^ƒXƒNŒã‚ÍŽ¸”s‚³‚¹‚é
+		//ç ´æ£„ä¸­ãƒ»æœ€çµ‚ã‚¿ã‚¹ã‚¯å¾Œã¯å¤±æ•—ã•ã›ã‚‹
 		if( MyIsSealed )
 		{
-			RaiseError( g_ErrorLogger , 0 , L"ÅIƒ^ƒXƒN‚ª‚·‚Å‚É“o˜^Ï‚Ý‚Å‚·" );
+			RaiseError( g_ErrorLogger , 0 , L"æœ€çµ‚ã‚¿ã‚¹ã‚¯ãŒã™ã§ã«ç™»éŒ²æ¸ˆã¿ã§ã™" );
 			return false;
 		}
 
-		//ÅIƒ^ƒXƒNH
+		//æœ€çµ‚ã‚¿ã‚¹ã‚¯ï¼Ÿ
 		if( isFinal )
 		{
 			MyIsSealed = true;
 		}
 
-		//ƒLƒ…[‚É’Ç‰Á
+		//ã‚­ãƒ¥ãƒ¼ã«è¿½åŠ 
 		if( high )
 		{
-			//—Dæ‚È‚çæ“ª‚É’Ç‰Á
+			//å„ªå…ˆãªã‚‰å…ˆé ­ã«è¿½åŠ 
 			MyWaiting.push_front( task );
 		}
 		else
 		{
-			//‚»‚¤‚Å‚È‚¯‚ê‚Î––”ö‚É’Ç‰Á
+			//ãã†ã§ãªã‘ã‚Œã°æœ«å°¾ã«è¿½åŠ 
 			MyWaiting.push_back( task );
 		}
 
-		//ó‘Ô‚ðXV
+		//çŠ¶æ…‹ã‚’æ›´æ–°
 		task->MyTaskStatus = mTaskBase::TaskStatus::STATUS_QUEUED;
 		TaskInformationIncrement( task->GetTaskId() );
 	}
 
 	if( !MyWorkerThreadPool.AddTask( TaskRoutine , 0 , (DWORD_PTR)this , (DWORD_PTR)this ) )
 	{
-		RaiseError( g_ErrorLogger , 0 , L"Š®—¹ƒ|[ƒg‚Ö‚Ìƒ^ƒXƒN“o˜^‚ªŽ¸”s‚µ‚Ü‚µ‚½" );
+		RaiseError( g_ErrorLogger , 0 , L"å®Œäº†ãƒãƒ¼ãƒˆã¸ã®ã‚¿ã‚¹ã‚¯ç™»éŒ²ãŒå¤±æ•—ã—ã¾ã—ãŸ" );
 		task->MyTaskStatus = mTaskBase::TaskStatus::STATUS_ABORTED;
 		AsyncEvent( task->Notifier.OnAbort , *this , task , true );
 		return false;
@@ -103,25 +103,25 @@ bool mTaskQueue::AddTask( bool high , mTaskBase::Ticket& task , bool isFinal )
 
 bool mTaskQueue::AddTaskBlocking( bool high , mTaskBase::Ticket& task )
 {
-	//ƒ|ƒCƒ“ƒ^ƒ`ƒFƒbƒN
+	//ãƒã‚¤ãƒ³ã‚¿ãƒã‚§ãƒƒã‚¯
 	if( task == nullptr )
 	{
-		RaiseError( g_ErrorLogger , 0 , L"ƒ^ƒXƒN‚Ìƒ|ƒCƒ“ƒ^‚ªƒkƒ‹‚Å‚·" );
+		RaiseError( g_ErrorLogger , 0 , L"ã‚¿ã‚¹ã‚¯ã®ãƒã‚¤ãƒ³ã‚¿ãŒãƒŒãƒ«ã§ã™" );
 		return false;
 	}
-	//ƒƒ“ƒo[ƒXƒŒƒbƒh‚Ìƒ`ƒFƒbƒN
+	//ãƒ¡ãƒ³ãƒãƒ¼ã‚¹ãƒ¬ãƒƒãƒ‰ã®ãƒã‚§ãƒƒã‚¯
 	if( MyWorkerThreadPool.IsPoolMember() )
 	{
-		RaiseError( g_ErrorLogger , 0 , L"ƒXƒŒƒbƒhƒv[ƒ‹‚Ìƒƒ“ƒo[ƒXƒŒƒbƒh‚©‚çƒuƒƒbƒLƒ“ƒOƒ^ƒXƒN‚Í’Ç‰Á‚Å‚«‚Ü‚¹‚ñ" );
+		RaiseError( g_ErrorLogger , 0 , L"ã‚¹ãƒ¬ãƒƒãƒ‰ãƒ—ãƒ¼ãƒ«ã®ãƒ¡ãƒ³ãƒãƒ¼ã‚¹ãƒ¬ãƒƒãƒ‰ã‹ã‚‰ãƒ–ãƒ­ãƒƒã‚­ãƒ³ã‚°ã‚¿ã‚¹ã‚¯ã¯è¿½åŠ ã§ãã¾ã›ã‚“" );
 		return false;
 	}
-	//Š®—¹ƒIƒuƒWƒFƒNƒg‚ÌŠm”F
+	//å®Œäº†ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã®ç¢ºèª
 	if( task->MyCompleteObject == 0 )
 	{
 		task->MyCompleteObject = CreateEventA( nullptr , true , false , nullptr );
 		if( task->MyCompleteObject == 0 )
 		{
-			RaiseError( g_ErrorLogger , 0 , L"Š®—¹ƒIƒuƒWƒFƒNƒg‚Ì¶¬‚ªŽ¸”s" );
+			RaiseError( g_ErrorLogger , 0 , L"å®Œäº†ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã®ç”ŸæˆãŒå¤±æ•—" );
 			return false;
 		}
 	}
@@ -129,15 +129,15 @@ bool mTaskQueue::AddTaskBlocking( bool high , mTaskBase::Ticket& task )
 	{
 		ResetEvent( task->MyCompleteObject );
 	}
-	//ƒ^ƒXƒN‚Ì“o˜^
+	//ã‚¿ã‚¹ã‚¯ã®ç™»éŒ²
 	if( !AddTask( high , task , false ) )
 	{
 		return false;
 	}
-	//Š®—¹‚Ì‘Ò‹@
+	//å®Œäº†ã®å¾…æ©Ÿ
 	if( WaitForSingleObject( task->MyCompleteObject , INFINITE ) != WAIT_OBJECT_0 )
 	{
-		RaiseError( g_ErrorLogger , 0 , L"ƒ^ƒXƒN‚ÌŠ®—¹‘Ò‹@‚ªŽ¸”s" );
+		RaiseError( g_ErrorLogger , 0 , L"ã‚¿ã‚¹ã‚¯ã®å®Œäº†å¾…æ©ŸãŒå¤±æ•—" );
 		return false;
 	}
 	return true;
@@ -180,7 +180,7 @@ static void AsyncEvent( const mTaskBase::NotifyOption::NotifierInfo& info , clas
 	}
 	else
 	{
-		RaiseAssert( g_ErrorLogger , 0 , L"”ñ“¯Šú‘€ì‚ÌŠ®—¹’Ê’m•û–@‚ª•s³‚Å‚·" , info.Mode );
+		RaiseAssert( g_ErrorLogger , 0 , L"éžåŒæœŸæ“ä½œã®å®Œäº†é€šçŸ¥æ–¹æ³•ãŒä¸æ­£ã§ã™" , info.Mode );
 	}
 }
 
@@ -234,25 +234,25 @@ void mTaskQueue::TaskInformationDecrement( const AString& id )
 
 	if( itr == MyTaskInformationMap.end() )
 	{
-		RaiseAssert( g_ErrorLogger , 0 , "ƒ^ƒXƒNID‚ª“o˜^‚³‚ê‚Ä‚¢‚Ü‚¹‚ñ" , id );
+		RaiseAssert( g_ErrorLogger , 0 , "ã‚¿ã‚¹ã‚¯IDãŒç™»éŒ²ã•ã‚Œã¦ã„ã¾ã›ã‚“" , id );
 		return;
 	}
 
 	if( itr->second.Count == 0 )
 	{
-		RaiseAssert( g_ErrorLogger , 0 , "ƒ^ƒXƒN‚ÌŽQÆƒJƒEƒ“ƒg‚ªƒ}ƒCƒiƒX‚É‚È‚è‚Ü‚µ‚½" , id );
+		RaiseAssert( g_ErrorLogger , 0 , "ã‚¿ã‚¹ã‚¯ã®å‚ç…§ã‚«ã‚¦ãƒ³ãƒˆãŒãƒžã‚¤ãƒŠã‚¹ã«ãªã‚Šã¾ã—ãŸ" , id );
 	}
 	else
 	{
 		itr->second.Count--;
 	}
 
-	//ŽQÆƒJƒEƒ“ƒg‚ªƒ[ƒ‚É‚È‚Á‚½ê‡‚Ìˆ—
+	//å‚ç…§ã‚«ã‚¦ãƒ³ãƒˆãŒã‚¼ãƒ­ã«ãªã£ãŸå ´åˆã®å‡¦ç†
 	if( itr->second.Count == 0 )
 	{
 		if( itr->second.Executing != 0 )
 		{
-			RaiseAssert( g_ErrorLogger , 0 , "ŽÀs’†‚Ìƒ^ƒXƒNŽQÆƒJƒEƒ“ƒg‚ªƒ[ƒ‚Å‚Í‚ ‚è‚Ü‚¹‚ñ" , id );
+			RaiseAssert( g_ErrorLogger , 0 , "å®Ÿè¡Œä¸­ã®ã‚¿ã‚¹ã‚¯å‚ç…§ã‚«ã‚¦ãƒ³ãƒˆãŒã‚¼ãƒ­ã§ã¯ã‚ã‚Šã¾ã›ã‚“" , id );
 		}
 		MyTaskInformationMap.erase( itr );
 	}
@@ -273,7 +273,7 @@ bool mTaskQueue::TaskRoutine( mWorkerThreadPool& pool , DWORD Param1 , DWORD_PTR
 {
 	mTaskQueue* queue = (mTaskQueue*)Param2;
 
-	//ŽŸ‚Ìƒ^ƒXƒN‚ðŽæ“¾
+	//æ¬¡ã®ã‚¿ã‚¹ã‚¯ã‚’å–å¾—
 	mTaskBase::Ticket task;
 	{ /*CRITICALSECTION*/
 		mCriticalSectionTicket critical( queue->MyCriticalSection );
@@ -327,27 +327,27 @@ bool mTaskQueue::TaskRoutine( mWorkerThreadPool& pool , DWORD Param1 , DWORD_PTR
 		{
 			return false;
 		}
-		//ƒXƒe[ƒ^ƒX‚ðŽÀs’†‚É
+		//ã‚¹ãƒ†ãƒ¼ã‚¿ã‚¹ã‚’å®Ÿè¡Œä¸­ã«
 		task->MyTaskStatus = mTaskBase::TaskStatus::STATUS_INPROGRESS;
 	}
 
-	//ƒ^ƒXƒN‚ÌŽÀs
+	//ã‚¿ã‚¹ã‚¯ã®å®Ÿè¡Œ
 	mTaskBase::TaskFunctionResult result = task->TaskFunction( task );
 
 	if( result == mTaskBase::TaskFunctionResult::RESULT_INPROGRESS )
 	{
-		//ƒ^ƒXƒN‚ÍˆêŽž’†’f‚µ‚½‚Ì‚ÅÄƒXƒPƒWƒ…[ƒ‹‚·‚é
+		//ã‚¿ã‚¹ã‚¯ã¯ä¸€æ™‚ä¸­æ–­ã—ãŸã®ã§å†ã‚¹ã‚±ã‚¸ãƒ¥ãƒ¼ãƒ«ã™ã‚‹
 		AsyncEvent( task->Notifier.OnSuspend , *queue , task , true );
 
 		bool addtask_result;
 		{
-			//Ä“o˜^
-			//ˆêŽž’†’f‚µ‚½‚Ì‚¾‚©‚çAƒvƒ‰ƒCƒIƒŠƒeƒB‚ÉŠÖŒW‚È‚­ˆê”ÔŒã‚ë‚É‚­‚Á‚Â‚¯‚é
+			//å†ç™»éŒ²
+			//ä¸€æ™‚ä¸­æ–­ã—ãŸã®ã ã‹ã‚‰ã€ãƒ—ãƒ©ã‚¤ã‚ªãƒªãƒ†ã‚£ã«é–¢ä¿‚ãªãä¸€ç•ªå¾Œã‚ã«ãã£ã¤ã‘ã‚‹
 			mCriticalSectionTicket critical( queue->MyCriticalSection );
 
 			if( queue->MyWorkerThreadPool.AddTask( TaskRoutine , false , (DWORD_PTR)queue ) )
 			{
-				//ƒXƒe[ƒ^ƒX‚ðŽÀs‘Ò‚¿‚É
+				//ã‚¹ãƒ†ãƒ¼ã‚¿ã‚¹ã‚’å®Ÿè¡Œå¾…ã¡ã«
 				addtask_result = true;
 				task->MyTaskStatus = mTaskBase::TaskStatus::STATUS_QUEUED;
 				queue->MyWaiting.push_back( std::move( task ) );
@@ -365,13 +365,13 @@ bool mTaskQueue::TaskRoutine( mWorkerThreadPool& pool , DWORD Param1 , DWORD_PTR
 
 		if( !addtask_result )
 		{
-			RaiseError( g_ErrorLogger , 0 , L"Š®—¹ƒ|[ƒg‚Ö‚Ìƒ^ƒXƒN“o˜^‚ªŽ¸”s‚µ‚Ü‚µ‚½" );
+			RaiseError( g_ErrorLogger , 0 , L"å®Œäº†ãƒãƒ¼ãƒˆã¸ã®ã‚¿ã‚¹ã‚¯ç™»éŒ²ãŒå¤±æ•—ã—ã¾ã—ãŸ" );
 			AsyncEvent( task->Notifier.OnAbort , *queue , task , true );
 		}
 	}
 	else
 	{
-		//ƒ^ƒXƒN‚ªŠ®—¹‚µ‚½
+		//ã‚¿ã‚¹ã‚¯ãŒå®Œäº†ã—ãŸ
 		if( result == mTaskBase::TaskFunctionResult::RESULT_FINISH_SUCCEED )
 		{
 			task->MyTaskStatus = mTaskBase::TaskStatus::STATUS_FINISH_SUCCEED;
@@ -383,7 +383,7 @@ bool mTaskQueue::TaskRoutine( mWorkerThreadPool& pool , DWORD Param1 , DWORD_PTR
 			AsyncEvent( task->Notifier.OnComplete , *queue , task , false );
 		}
 		{
-			//ƒAƒNƒeƒBƒu‚Èƒ^ƒXƒN‚Ì”‚ðŒ¸ŽZ
+			//ã‚¢ã‚¯ãƒ†ã‚£ãƒ–ãªã‚¿ã‚¹ã‚¯ã®æ•°ã‚’æ¸›ç®—
 			mCriticalSectionTicket critical( queue->MyCriticalSection );
 			queue->MyIsCritical = false;
 			queue->MyActiveTask--;
@@ -392,7 +392,7 @@ bool mTaskQueue::TaskRoutine( mWorkerThreadPool& pool , DWORD Param1 , DWORD_PTR
 		}
 		if( task->MyCompleteObject )
 		{
-			//Š®—¹ƒIƒuƒWƒFƒNƒg‚ª‘¶Ý‚µ‚Ä‚¢‚ê‚ÎƒVƒOƒiƒ‹ó‘Ô‚É
+			//å®Œäº†ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆãŒå­˜åœ¨ã—ã¦ã„ã‚Œã°ã‚·ã‚°ãƒŠãƒ«çŠ¶æ…‹ã«
 			SetEvent( task->MyCompleteObject );
 		}
 	}

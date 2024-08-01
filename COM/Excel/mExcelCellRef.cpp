@@ -1,11 +1,11 @@
-//----------------------------------------------------------------------------
-// Microsoft Excelƒnƒ“ƒhƒ‰
+ï»¿//----------------------------------------------------------------------------
+// Microsoft Excelãƒãƒ³ãƒ‰ãƒ©
 // Copyright (C) 2018- Crea Inc. All rights reserved.
 // This program is released under the MIT License. 
 // see http://opensource.org/licenses/mit-license.php
-// ’˜ìŒ •\¦‚âƒ‰ƒCƒZƒ“ƒX‚Ì‰ü•Ï‚Í‹Ö~‚³‚ê‚Ä‚¢‚Ü‚·B
-// ‚±‚Ìƒ\[ƒXƒR[ƒh‚ÉŠÖ‚µ‚ÄAã‹Lƒ‰ƒCƒZƒ“ƒXˆÈŠO‚ÌŒ_–ñ“™‚ÍˆêØ‘¶İ‚µ‚Ü‚¹‚ñB
-// (‰½‚ç‚©‚ÌŒ_–ñ‚ª‚ ‚éê‡‚Å‚àA–{ƒ\[ƒXƒR[ƒh‚Í‚»‚Ì‘ÎÛŠO‚Æ‚È‚è‚Ü‚·)
+// è‘—ä½œæ¨©è¡¨ç¤ºã‚„ãƒ©ã‚¤ã‚»ãƒ³ã‚¹ã®æ”¹å¤‰ã¯ç¦æ­¢ã•ã‚Œã¦ã„ã¾ã™ã€‚
+// ã“ã®ã‚½ãƒ¼ã‚¹ã‚³ãƒ¼ãƒ‰ã«é–¢ã—ã¦ã€ä¸Šè¨˜ãƒ©ã‚¤ã‚»ãƒ³ã‚¹ä»¥å¤–ã®å¥‘ç´„ç­‰ã¯ä¸€åˆ‡å­˜åœ¨ã—ã¾ã›ã‚“ã€‚
+// (ä½•ã‚‰ã‹ã®å¥‘ç´„ãŒã‚ã‚‹å ´åˆã§ã‚‚ã€æœ¬ã‚½ãƒ¼ã‚¹ã‚³ãƒ¼ãƒ‰ã¯ãã®å¯¾è±¡å¤–ã¨ãªã‚Šã¾ã™)
 //----------------------------------------------------------------------------
 
 #include "mExcelCellRef.h"
@@ -64,17 +64,17 @@ bool mExcelCellRef::UpdateAddress( bool IsRC )const
 
 	if( GetRowCount() == 0 )
 	{
-		RaiseError( g_ErrorLogger , 0 , L"—LŒø‚È”ÍˆÍ‚ğ•Û‚µ‚Ä‚¢‚Ü‚¹‚ñ" );
+		RaiseError( g_ErrorLogger , 0 , L"æœ‰åŠ¹ãªç¯„å›²ã‚’ä¿æŒã—ã¦ã„ã¾ã›ã‚“" );
 		goto badend;
 	}
 
-	//¶ã‚ÌƒZƒ‹
+	//å·¦ä¸Šã®ã‚»ãƒ«
 	if( !BuildCellName( MyAddress , IsRC ,  MyPos1.AbsRow , MyPos1.AbsCol , MyPos1.Row , MyPos1.Col , MyPos1.WholeCol , MyPos1.WholeRow ) )
 	{
 		goto badend;
 	}
 
-	//‰E‰º‚ÌƒZƒ‹
+	//å³ä¸‹ã®ã‚»ãƒ«
 	if( MyPos2.IsValid() )
 	{
 		if( !BuildCellName( StrPos , IsRC , MyPos2.AbsRow , MyPos2.AbsCol , MyPos2.Row , MyPos2.Col , MyPos2.WholeCol , MyPos2.WholeRow ) )
@@ -93,10 +93,10 @@ badend:
 
 bool mExcelCellRef::BuildCellName( WString& retCell , bool IsRC , bool IsAbsRow , bool IsAbsCol , INT row , INT col , bool norow , bool nocol )
 {
-	//Œ‹‰Ê‰Šú‰»
+	//çµæœåˆæœŸåŒ–
 	retCell.clear();
 
-	//R1C1Œ`®‚©”Û‚©H
+	//R1C1å½¢å¼ã‹å¦ã‹ï¼Ÿ
 	if( IsRC )
 	{
 		return BuildCellNameRC( retCell , IsAbsRow , IsAbsCol , row , col , norow , nocol );
@@ -120,7 +120,7 @@ bool mExcelCellRef::BuildCellNameA1( WString& retCell , bool IsAbsRow , bool IsA
 		DWORD rest;
 		if( col < 1 )
 		{
-			RaiseError( g_ErrorLogger , 0 , L"A1Œ`®‚Å‚ÍA—ñ”Ô†‚Í1ŠJn‚Å‚·" );
+			RaiseError( g_ErrorLogger , 0 , L"A1å½¢å¼ã§ã¯ã€åˆ—ç•ªå·ã¯1é–‹å§‹ã§ã™" );
 			return false;
 		}
 
@@ -143,7 +143,7 @@ bool mExcelCellRef::BuildCellNameA1( WString& retCell , bool IsAbsRow , bool IsA
 	{
 		if( row < 1 )
 		{
-			RaiseError( g_ErrorLogger , 0 , L"A1Œ`®‚Å‚ÍAs”Ô†‚Í1ŠJn‚Å‚·" );
+			RaiseError( g_ErrorLogger , 0 , L"A1å½¢å¼ã§ã¯ã€è¡Œç•ªå·ã¯1é–‹å§‹ã§ã™" );
 			return false;
 		}
 
@@ -157,7 +157,7 @@ bool mExcelCellRef::BuildCellNameA1( WString& retCell , bool IsAbsRow , bool IsA
 		}
 	}
 
-	//Œ‹‡
+	//çµåˆ
 	r.append( c );
 	retCell = AString2WString( r );
 
@@ -175,7 +175,7 @@ bool mExcelCellRef::BuildCellNameRC( WString& retCell , bool IsAbsRow , bool IsA
 			{
 				if( row < 1 )
 				{
-					RaiseError( g_ErrorLogger , 0 , L"R1C1Œ`®‚Åâ‘ÎˆÊ’u‚ğw’è‚·‚éê‡As”Ô†‚Í1ŠJn‚Å‚·" );
+					RaiseError( g_ErrorLogger , 0 , L"R1C1å½¢å¼ã§çµ¶å¯¾ä½ç½®ã‚’æŒ‡å®šã™ã‚‹å ´åˆã€è¡Œç•ªå·ã¯1é–‹å§‹ã§ã™" );
 					return false;
 				}
 				sprintf( retCell , L"R%d" , row );
@@ -201,7 +201,7 @@ bool mExcelCellRef::BuildCellNameRC( WString& retCell , bool IsAbsRow , bool IsA
 			{
 				if( col < 1 )
 				{
-					RaiseError( g_ErrorLogger , 0 , L"R1C1Œ`®‚Åâ‘ÎˆÊ’u‚ğw’è‚·‚éê‡A—ñ”Ô†‚Í1ŠJn‚Å‚·" );
+					RaiseError( g_ErrorLogger , 0 , L"R1C1å½¢å¼ã§çµ¶å¯¾ä½ç½®ã‚’æŒ‡å®šã™ã‚‹å ´åˆã€åˆ—ç•ªå·ã¯1é–‹å§‹ã§ã™" );
 					return false;
 				}
 				sprintf( &t , L"C%d" , col );
@@ -280,26 +280,26 @@ DWORD mExcelCellRef::GetRowCount( const Position* pos )const
 {
 	if( !MyPos1.IsValid() )
 	{
-		//—LŒø‚ÈˆÊ’u‚ğ•Û‚µ‚Ä‚¢‚È‚¢
+		//æœ‰åŠ¹ãªä½ç½®ã‚’ä¿æŒã—ã¦ã„ãªã„
 		return 0;
 	}
 	if( !MyPos2.IsValid() )
 	{
-		//MyPos1‚¾‚¯‚Å¦‚³‚ê‚é1‚Â‚ÌƒZƒ‹‚ğ¦‚µ‚Ä‚¢‚é
+		//MyPos1ã ã‘ã§ç¤ºã•ã‚Œã‚‹1ã¤ã®ã‚»ãƒ«ã‚’ç¤ºã—ã¦ã„ã‚‹
 		return 1;
 	}
 	if( ( MyPos1.WholeCol != MyPos2.WholeCol ) ||
 		( MyPos1.WholeRow != MyPos2.WholeRow ) )
 	{
-		//MyPos1‚ÆMyPos2‚ÌŠÖŒW‚ª•s³
+		//MyPos1ã¨MyPos2ã®é–¢ä¿‚ãŒä¸æ­£
 		return 0;
 	}
-	//‚»‚Ì‘¼
+	//ãã®ä»–
 	if( pos != nullptr )
 	{
 		if( !pos->IsValid() )
 		{
-			//Šî€ˆÊ’u‚ª•s³
+			//åŸºæº–ä½ç½®ãŒä¸æ­£
 			return 0;
 		}
 
@@ -325,26 +325,26 @@ DWORD mExcelCellRef::GetColCount( const Position* pos )const
 {
 	if( MyPos1.WholeRow && MyPos1.WholeCol )
 	{
-		//—LŒø‚ÈˆÊ’u‚ğ•Û‚µ‚Ä‚¢‚È‚¢
+		//æœ‰åŠ¹ãªä½ç½®ã‚’ä¿æŒã—ã¦ã„ãªã„
 		return 0;
 	}
 	if( !MyPos2.WholeRow && !MyPos2.WholeCol )
 	{
-		//MyPos1‚¾‚¯‚Å¦‚³‚ê‚é1‚Â‚ÌƒZƒ‹‚ğ¦‚µ‚Ä‚¢‚é
+		//MyPos1ã ã‘ã§ç¤ºã•ã‚Œã‚‹1ã¤ã®ã‚»ãƒ«ã‚’ç¤ºã—ã¦ã„ã‚‹
 		return 1;
 	}
 	if( ( MyPos1.WholeCol != MyPos2.WholeCol ) ||
 		( MyPos1.WholeRow != MyPos2.WholeRow ) )
 	{
-		//MyPos1‚ÆMyPos2‚ÌŠÖŒW‚ª•s³
+		//MyPos1ã¨MyPos2ã®é–¢ä¿‚ãŒä¸æ­£
 		return 0;
 	}
-	//‚»‚Ì‘¼
+	//ãã®ä»–
 	if( pos != nullptr )
 	{
 		if( !pos->IsValid() )
 		{
-			//Šî€ˆÊ’u‚ª•s³
+			//åŸºæº–ä½ç½®ãŒä¸æ­£
 			return 0;
 		}
 
@@ -386,7 +386,7 @@ mExcelCellRef::Position::Position( bool whole_row , bool whole_col , bool abs_ro
 		}
 		else
 		{
-			RaiseError( g_ErrorLogger , 0 , L"A1Œ`®‚Å‚Í‚È‚¢•¶š‚ªw’è‚³‚ê‚Ü‚µ‚½" );
+			RaiseError( g_ErrorLogger , 0 , L"A1å½¢å¼ã§ã¯ãªã„æ–‡å­—ãŒæŒ‡å®šã•ã‚Œã¾ã—ãŸ" );
 			return;
 		}
 	}

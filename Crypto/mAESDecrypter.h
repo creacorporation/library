@@ -1,10 +1,10 @@
-//----------------------------------------------------------------------------
-// AESˆÃ†‰»ƒNƒ‰ƒX
+ï»¿//----------------------------------------------------------------------------
+// AESæš—å·åŒ–ã‚¯ãƒ©ã‚¹
 // Copyright (C) 2013-2016 Fingerling. All rights reserved. 
 // Copyright (C) 2018- Crea Inc. All rights reserved.
 // This program is released under the MIT License. 
 // see http://opensource.org/licenses/mit-license.php
-// 2013/10/09`
+// 2013/10/09ã€œ
 //----------------------------------------------------------------------------
 
 
@@ -15,23 +15,23 @@
 #include "mAES.h"
 #include <memory>
 
-//ˆÃ†‰»‰ğœƒNƒ‰ƒX
+//æš—å·åŒ–è§£é™¤ã‚¯ãƒ©ã‚¹
 class mAESDecrypter : public mAES
 {
 public:
 	mAESDecrypter();
 	virtual ~mAESDecrypter();
 
-	//ˆÃ†‰»ƒf[ƒ^‚ÌŠi”[æ
+	//æš—å·åŒ–ãƒ‡ãƒ¼ã‚¿ã®æ ¼ç´å…ˆ
 	typedef std::unique_ptr<BYTE> EncryptData;
 
-	//ˆÃ†‰»‚ğ‰ğœ‚µ‚Ü‚·
-	// isfinal : ÅŒã‚Ìƒf[ƒ^‚Å‚ ‚éê‡‚Éw’è‚µ‚Ü‚·(true‚Ìê‡AƒpƒfƒBƒ“ƒO‚Ìˆ—‚ğs‚¢‚Ü‚·)
-	// data : ˆÃ†‰»‚³‚ê‚Ä‚¢‚éƒf[ƒ^‚Ö‚Ìƒ|ƒCƒ“ƒ^BˆÃ†‰»‰ğœ‚µ‚½ƒf[ƒ^‚Åã‘‚«‚³‚ê‚Ü‚·B
-	// datalen : data‚ÌƒTƒCƒY
-	// retData : •œ†Œã‚Ìƒf[ƒ^Ši”[æ
-	// retWritten : ˆÃ†‰»‰ğœŒã‚ÌƒTƒCƒYBisfinal=true‚Ìê‡A“ü—Í‚Æo—Í‚ÌƒTƒCƒY‚ªˆÙ‚È‚é‚±‚Æ‚ª‚ ‚è‚Ü‚·B
-	//              ƒTƒCƒY‚ªˆÙ‚È‚éê‡‚ÍA•K‚¸ˆÃ†•¶‚æ‚è•½•¶‚Ì‚Ù‚¤‚ª¬‚³‚­‚È‚è‚Ü‚·B
+	//æš—å·åŒ–ã‚’è§£é™¤ã—ã¾ã™
+	// isfinal : æœ€å¾Œã®ãƒ‡ãƒ¼ã‚¿ã§ã‚ã‚‹å ´åˆã«æŒ‡å®šã—ã¾ã™(trueã®å ´åˆã€ãƒ‘ãƒ‡ã‚£ãƒ³ã‚°ã®å‡¦ç†ã‚’è¡Œã„ã¾ã™)
+	// data : æš—å·åŒ–ã•ã‚Œã¦ã„ã‚‹ãƒ‡ãƒ¼ã‚¿ã¸ã®ãƒã‚¤ãƒ³ã‚¿ã€‚æš—å·åŒ–è§£é™¤ã—ãŸãƒ‡ãƒ¼ã‚¿ã§ä¸Šæ›¸ãã•ã‚Œã¾ã™ã€‚
+	// datalen : dataã®ã‚µã‚¤ã‚º
+	// retData : å¾©å·å¾Œã®ãƒ‡ãƒ¼ã‚¿æ ¼ç´å…ˆ
+	// retWritten : æš—å·åŒ–è§£é™¤å¾Œã®ã‚µã‚¤ã‚ºã€‚isfinal=trueã®å ´åˆã€å…¥åŠ›ã¨å‡ºåŠ›ã®ã‚µã‚¤ã‚ºãŒç•°ãªã‚‹ã“ã¨ãŒã‚ã‚Šã¾ã™ã€‚
+	//              ã‚µã‚¤ã‚ºãŒç•°ãªã‚‹å ´åˆã¯ã€å¿…ãšæš—å·æ–‡ã‚ˆã‚Šå¹³æ–‡ã®ã»ã†ãŒå°ã•ããªã‚Šã¾ã™ã€‚
 	bool Decrypt( bool isfinal , const BYTE* data , DWORD datalen , EncryptData& retData , DWORD& retWritten )const;
 
 private:

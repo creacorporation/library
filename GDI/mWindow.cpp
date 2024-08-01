@@ -1,5 +1,5 @@
-//----------------------------------------------------------------------------
-// ƒEƒCƒ“ƒhƒEŠÇ—i1‚Â‚ÌƒIƒuƒWƒFƒNƒgj
+ï»¿//----------------------------------------------------------------------------
+// ã‚¦ã‚¤ãƒ³ãƒ‰ã‚¦ç®¡ç†ï¼ˆ1ã¤ã®ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆï¼‰
 // Copyright (C) 2016 Fingerling. All rights reserved. 
 // This program is released under the MIT License. 
 // see http://opensource.org/licenses/mit-license.php
@@ -26,24 +26,24 @@ mWindow::mWindow()
 
 mWindow::~mWindow()
 {
-	//qƒEƒCƒ“ƒhƒE‚ğ”jŠü‚·‚é
+	//å­ã‚¦ã‚¤ãƒ³ãƒ‰ã‚¦ã‚’ç ´æ£„ã™ã‚‹
 	mDelete MyChild;
 	MyChild = nullptr;
 	mDelete MyMenu;
 	MyMenu = nullptr;
 
-	//ƒOƒ[ƒoƒ‹‚ÈƒEƒCƒ“ƒhƒEƒtƒ@ƒ“ƒNƒVƒ‡ƒ“‚©‚ç©•ª‚ğ“o˜^‰ğœ‚·‚é
+	//ã‚°ãƒ­ãƒ¼ãƒãƒ«ãªã‚¦ã‚¤ãƒ³ãƒ‰ã‚¦ãƒ•ã‚¡ãƒ³ã‚¯ã‚·ãƒ§ãƒ³ã‹ã‚‰è‡ªåˆ†ã‚’ç™»éŒ²è§£é™¤ã™ã‚‹
 	if( !mGlobalWindowFunc::Detach( mGlobalWindowFunc::DetachAccessPermission() , GetMyHwnd() , this ) )
 	{
-		//íœ‚Å‚«‚È‚¢B‰½‚Å‚¾B
+		//å‰Šé™¤ã§ããªã„ã€‚ä½•ã§ã ã€‚
 		RaiseAssert( g_ErrorLogger , (ULONG_PTR)GetMyHwnd() , MyWindowClass );
 	}
 
-	//©•ª‚Å“o˜^‚µ‚½ƒEƒCƒ“ƒhƒEƒNƒ‰ƒX‚Å‚ ‚éê‡‚ÍƒEƒCƒ“ƒhƒEƒNƒ‰ƒX‚Ìíœ‚ğ‚İ‚é
+	//è‡ªåˆ†ã§ç™»éŒ²ã—ãŸã‚¦ã‚¤ãƒ³ãƒ‰ã‚¦ã‚¯ãƒ©ã‚¹ã§ã‚ã‚‹å ´åˆã¯ã‚¦ã‚¤ãƒ³ãƒ‰ã‚¦ã‚¯ãƒ©ã‚¹ã®å‰Šé™¤ã‚’è©¦ã¿ã‚‹
 	if( MyIsWindowClassOriginal )
 	{
-		//“¯‚¶ƒEƒCƒ“ƒhƒEƒNƒ‰ƒX‚ğg‚Á‚Ä‚¢‚éƒEƒCƒ“ƒhƒE‚ª‘¼‚É‚à‚ ‚é‚©‚à‚µ‚ê‚È‚¢‚Ì‚Å
-		//ƒGƒ‰[‚É‚È‚Á‚Ä‚à•s–â‚É‚·‚éB
+		//åŒã˜ã‚¦ã‚¤ãƒ³ãƒ‰ã‚¦ã‚¯ãƒ©ã‚¹ã‚’ä½¿ã£ã¦ã„ã‚‹ã‚¦ã‚¤ãƒ³ãƒ‰ã‚¦ãŒä»–ã«ã‚‚ã‚ã‚‹ã‹ã‚‚ã—ã‚Œãªã„ã®ã§
+		//ã‚¨ãƒ©ãƒ¼ã«ãªã£ã¦ã‚‚ä¸å•ã«ã™ã‚‹ã€‚
 		UnregisterClassW( MyWindowClass.c_str() , GetModuleHandleW( 0 ) );
 	}
 }
@@ -52,12 +52,12 @@ LRESULT mWindow::WindowProcedure( UINT msg , WPARAM wparam , LPARAM lparam )
 {
 	if( MyDefWndproc != nullptr )
 	{
-		//ƒEƒCƒ“ƒhƒEƒvƒƒV[ƒWƒƒ‚ª’u‚«Š·‚¦‚ç‚ê‚Ä‚¢‚éê‡‚ÍA’u‚«Š·‚¦‘O‚Ì‚Éˆ—‚³‚¹‚é
+		//ã‚¦ã‚¤ãƒ³ãƒ‰ã‚¦ãƒ—ãƒ­ã‚·ãƒ¼ã‚¸ãƒ£ãŒç½®ãæ›ãˆã‚‰ã‚Œã¦ã„ã‚‹å ´åˆã¯ã€ç½®ãæ›ãˆå‰ã®ã«å‡¦ç†ã•ã›ã‚‹
 		return CallWindowProcW( MyDefWndproc , GetMyHwnd() , msg , wparam , lparam );
 	}
 	else
 	{
-		//ƒEƒCƒ“ƒhƒEƒvƒƒV[ƒWƒƒ‚ª’u‚«Š·‚¦‚ç‚ê‚Ä‚¢‚È‚¢ê‡‚ÍAƒfƒtƒHƒ‹ƒgŒN‚É”C‚¹‚éB
+		//ã‚¦ã‚¤ãƒ³ãƒ‰ã‚¦ãƒ—ãƒ­ã‚·ãƒ¼ã‚¸ãƒ£ãŒç½®ãæ›ãˆã‚‰ã‚Œã¦ã„ãªã„å ´åˆã¯ã€ãƒ‡ãƒ•ã‚©ãƒ«ãƒˆå›ã«ä»»ã›ã‚‹ã€‚
 		return DefWindowProcW( GetMyHwnd() , msg , wparam , lparam );
 	}
 }
@@ -67,37 +67,37 @@ bool mWindow::WindowClassSettingCallback( WindowClassSetting& retSetting , const
 	return false;
 }
 
-//ƒEƒCƒ“ƒhƒE¶¬‚ğŠ®—¹‚µ‚½ê‡‚ÉƒR[ƒ‹‚³‚ê‚é
+//ã‚¦ã‚¤ãƒ³ãƒ‰ã‚¦ç”Ÿæˆã‚’å®Œäº†ã—ãŸå ´åˆã«ã‚³ãƒ¼ãƒ«ã•ã‚Œã‚‹
 bool mWindow::OnCreate( const void* opt )
 {
 	return true;
 }
 
-//ƒEƒCƒ“ƒhƒE‚ª”jŠü‚³‚ê‚æ‚¤‚Æ‚µ‚Ä‚¢‚é‚Æ‚«ƒR[ƒ‹‚³‚ê‚é
+//ã‚¦ã‚¤ãƒ³ãƒ‰ã‚¦ãŒç ´æ£„ã•ã‚Œã‚ˆã†ã¨ã—ã¦ã„ã‚‹ã¨ãã‚³ãƒ¼ãƒ«ã•ã‚Œã‚‹
 void mWindow::OnDestroy( void )
 {
 	return;
 }
 
-//©•ª©g‚ÌƒEƒCƒ“ƒhƒEƒnƒ“ƒhƒ‹‚ğæ“¾‚·‚é
+//è‡ªåˆ†è‡ªèº«ã®ã‚¦ã‚¤ãƒ³ãƒ‰ã‚¦ãƒãƒ³ãƒ‰ãƒ«ã‚’å–å¾—ã™ã‚‹
 HWND mWindow::GetMyHwnd( void )const
 {
 	return MyHwnd;
 }
 
-//eƒEƒCƒ“ƒhƒE‚Ìƒnƒ“ƒhƒ‹‚ğæ“¾‚·‚é
+//è¦ªã‚¦ã‚¤ãƒ³ãƒ‰ã‚¦ã®ãƒãƒ³ãƒ‰ãƒ«ã‚’å–å¾—ã™ã‚‹
 HWND mWindow::GetMyParent( void )const
 {
 	return MyParent;
 }
 
-//ÅãˆÊƒEƒCƒ“ƒhƒE‚Ìƒnƒ“ƒhƒ‹‚ğæ“¾‚·‚é
+//æœ€ä¸Šä½ã‚¦ã‚¤ãƒ³ãƒ‰ã‚¦ã®ãƒãƒ³ãƒ‰ãƒ«ã‚’å–å¾—ã™ã‚‹
 HWND mWindow::GetMyRoot( void )const
 {
 	return MyRoot;
 }
 
-//ƒEƒCƒ“ƒhƒE‚ÌˆÊ’u‚ğƒZƒbƒg
+//ã‚¦ã‚¤ãƒ³ãƒ‰ã‚¦ã®ä½ç½®ã‚’ã‚»ãƒƒãƒˆ
 bool mWindow::SetWindowPosition( const WindowPosition& newpos )
 {
 	MyPosition = newpos;
@@ -109,7 +109,7 @@ void mWindow::MoveWindowPosition( const RECT& pos )
 	::SetWindowPos( GetMyHwnd() , nullptr , pos.left , pos.top , pos.right-pos.left , pos.bottom-pos.top , 0 );
 }
 
-//ƒEƒCƒ“ƒhƒE‚Ì‰Â‹/•s‰Â‹‚ğ•ÏX‚·‚é
+//ã‚¦ã‚¤ãƒ³ãƒ‰ã‚¦ã®å¯è¦–/ä¸å¯è¦–ã‚’å¤‰æ›´ã™ã‚‹
 bool mWindow::SetVisible( bool newstate )
 {
 	int cmd = ( newstate ) ? ( SW_SHOW ) : ( SW_HIDE );
@@ -117,14 +117,14 @@ bool mWindow::SetVisible( bool newstate )
 	return true;
 }
 
-//ƒEƒCƒ“ƒhƒE‚Ì—LŒø/–³Œø‚ğ•ÏX‚·‚é
+//ã‚¦ã‚¤ãƒ³ãƒ‰ã‚¦ã®æœ‰åŠ¹/ç„¡åŠ¹ã‚’å¤‰æ›´ã™ã‚‹
 bool mWindow::SetEnable( bool newstate )
 {
 	::EnableWindow( GetMyHwnd() , newstate );
 	return true;
 }
 
-//ƒEƒCƒ“ƒhƒE‚ÌˆÊ’u‚ğƒXƒNƒŠ[ƒ“À•W‚Å“¾‚é
+//ã‚¦ã‚¤ãƒ³ãƒ‰ã‚¦ã®ä½ç½®ã‚’ã‚¹ã‚¯ãƒªãƒ¼ãƒ³åº§æ¨™ã§å¾—ã‚‹
 RECT mWindow::GetRect( void ) const
 {
 	RECT rect;
@@ -139,7 +139,7 @@ RECT mWindow::GetRect( void ) const
 	return rect;
 }
 
-//ƒEƒCƒ“ƒhƒE‚ÌƒTƒCƒY‚ğ“¾‚é
+//ã‚¦ã‚¤ãƒ³ãƒ‰ã‚¦ã®ã‚µã‚¤ã‚ºã‚’å¾—ã‚‹
 SIZE mWindow::GetSize( void ) const
 {
 	RECT rect;
@@ -158,7 +158,7 @@ SIZE mWindow::GetSize( void ) const
 	return size;
 }
 
-//‚±‚ÌƒEƒCƒ“ƒhƒE‚ÌƒNƒ‰ƒCƒAƒ“ƒgÀ•W‚ğƒXƒNƒŠ[ƒ“À•W‚É•ÏŠ·‚·‚é
+//ã“ã®ã‚¦ã‚¤ãƒ³ãƒ‰ã‚¦ã®ã‚¯ãƒ©ã‚¤ã‚¢ãƒ³ãƒˆåº§æ¨™ã‚’ã‚¹ã‚¯ãƒªãƒ¼ãƒ³åº§æ¨™ã«å¤‰æ›ã™ã‚‹
 POINT mWindow::Client2Screen( const POINT& client_pos ) const
 {
 	POINT point = client_pos;
@@ -171,7 +171,7 @@ POINT mWindow::Client2Screen( const POINT& client_pos ) const
 	return point;
 }
 
-//‚±‚ÌƒEƒCƒ“ƒhƒE‚ÌƒNƒ‰ƒCƒAƒ“ƒgÀ•W‚ğƒXƒNƒŠ[ƒ“À•W‚É•ÏŠ·‚·‚é
+//ã“ã®ã‚¦ã‚¤ãƒ³ãƒ‰ã‚¦ã®ã‚¯ãƒ©ã‚¤ã‚¢ãƒ³ãƒˆåº§æ¨™ã‚’ã‚¹ã‚¯ãƒªãƒ¼ãƒ³åº§æ¨™ã«å¤‰æ›ã™ã‚‹
 POINT mWindow::Client2Screen( INT x , INT y ) const
 {
 	POINT point;
@@ -180,7 +180,7 @@ POINT mWindow::Client2Screen( INT x , INT y ) const
 	return Client2Screen( point );
 }
 
-//ƒXƒNƒŠ[ƒ“À•W‚ğ‚±‚ÌƒEƒCƒ“ƒhƒE‚ÌƒNƒ‰ƒCƒAƒ“ƒgÀ•W‚É•ÏŠ·‚·‚é
+//ã‚¹ã‚¯ãƒªãƒ¼ãƒ³åº§æ¨™ã‚’ã“ã®ã‚¦ã‚¤ãƒ³ãƒ‰ã‚¦ã®ã‚¯ãƒ©ã‚¤ã‚¢ãƒ³ãƒˆåº§æ¨™ã«å¤‰æ›ã™ã‚‹
 POINT mWindow::Screen2Client( const POINT& client_pos ) const
 {
 	POINT point = client_pos;
@@ -193,7 +193,7 @@ POINT mWindow::Screen2Client( const POINT& client_pos ) const
 	return point;
 }
 
-//ƒXƒNƒŠ[ƒ“À•W‚ğ‚±‚ÌƒEƒCƒ“ƒhƒE‚ÌƒNƒ‰ƒCƒAƒ“ƒgÀ•W‚É•ÏŠ·‚·‚é
+//ã‚¹ã‚¯ãƒªãƒ¼ãƒ³åº§æ¨™ã‚’ã“ã®ã‚¦ã‚¤ãƒ³ãƒ‰ã‚¦ã®ã‚¯ãƒ©ã‚¤ã‚¢ãƒ³ãƒˆåº§æ¨™ã«å¤‰æ›ã™ã‚‹
 POINT mWindow::Screen2Client( INT x , INT y ) const
 {
 	POINT point;

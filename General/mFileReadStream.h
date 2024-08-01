@@ -1,12 +1,12 @@
-//----------------------------------------------------------------------------
-// �X�g���[�~���O�t�@�C���ǂݍ��ݑ���
+﻿//----------------------------------------------------------------------------
+// ストリーミングファイル読み込み操作
 // Copyright (C) 2013,2016 Fingerling. All rights reserved. 
 // Copyright (C) 2019- Crea Inc. All rights reserved.
 // This program is released under the MIT License. 
 // see http://opensource.org/licenses/mit-license.php
-// ���쌠�\���⃉�C�Z���X�̉��ς͋֎~����Ă��܂��B
-// ���̃\�[�X�R�[�h�Ɋւ��āA��L���C�Z���X�ȊO�̌_�񓙂͈�ؑ��݂��܂���B
-// (���炩�̌_�񂪂���ꍇ�ł��A�{�\�[�X�R�[�h�͂��̑ΏۊO�ƂȂ�܂�)
+// 著作権表示やライセンスの改変は禁止されています。
+// このソースコードに関して、上記ライセンス以外の契約等は一切存在しません。
+// (何らかの契約がある場合でも、本ソースコードはその対象外となります)
 //----------------------------------------------------------------------------
 
 
@@ -17,39 +17,39 @@
 #include "mFileReadStreamBase.h"
 
 /*
-���p�r
-�X�g���[�~���O�I�Ƀt�@�C����ǂݎ��܂��B
+●用途
+ストリーミング的にファイルを読み取ります。
 
-�g�����F
+使い方：
 void TestFunction( void )
 {
-	//�t�@�C�����J���Ƃ��̏��
-	//�������I�ɃL���b�V���������Ă��邽�߁A
-	//  ������̏������݃A�N�Z�X������ƌ��ʂ����������Ȃ�܂��B
+	//ファイルを開くときの情報
+	//※内部的にキャッシュをもっているため、
+	//  他からの書き込みアクセスがあると結果がおかしくなります。
 	mFile::Option opt;
-	opt.Path = L"d:\\test.dat";	//�t�@�C����
-	opt.AccessRead = true;		//�ǂݎ��X�g���[���̂��߁A�ǂݎ��A�N�Z�X�͕K�{
-	opt.ShareWrite = false;		//������̏������݃A�N�Z�X���֎~
+	opt.Path = L"d:\\test.dat";	//ファイル名
+	opt.AccessRead = true;		//読み取りストリームのため、読み取りアクセスは必須
+	opt.ShareWrite = false;		//他からの書き込みアクセスを禁止
 
-	//�t�@�C�����J��
+	//ファイルを開く
 	mFileReadStream fp;
 	fp.Open( opt );
 
-	//1�s���t�@�C�����e�L�X�g�Ƃ��ēǂݎ��܂�
+	//1行ずつファイルをテキストとして読み取ります
 	while( !fp.IsEOF() )
 	{
-		//str��1�s���ǂݎ��܂�
+		//strに1行分読み取ります
 		WString str;
 		if( !fp.ReadLine( str ) )
 		{
-			//�񓯊��̏ꍇ�AReadLine�ARead����EOF�̏ꍇ�́A
-			//�t�@�C���̏I�[�ł���ꍇ�̑��ɁA�ǂݍ��ݒ��ł���ꍇ������܂�
-			//���̂��߁A���߂�IsEOF���g���Ĕ��肷��K�v������܂��B
+			//非同期の場合、ReadLine、Read等がEOFの場合は、
+			//ファイルの終端である場合の他に、読み込み中である場合もあります
+			//そのため、改めてIsEOFを使って判定する必要があります。
 			::Sleep( 100 );
 			continue;
 		}
 
-		//str�̓��e���o�͂��܂�
+		//strの内容を出力します
 		printf( "%s" , str.c_str() );
 	}
 }
@@ -62,55 +62,55 @@ public:
 	mFileReadStream();
 	virtual ~mFileReadStream();
 
-	//�t�@�C�����J���Ƃ��̏��
+	//ファイルを開くときの情報
 	typedef mFile::CreateMode CreateMode;
 	typedef mFile::Option Option;
 
-	//���̃V�X�e���R�[���œǂݎ��t�@�C���T�C�Y�B
-	//Windows�ł�65536�o�C�g�P�ʂœǂݎ��ƌ������悢�炵���̂ŁA���̒l�ɂ��Ă���B
+	//一回のシステムコールで読み取るファイルサイズ。
+	//Windowsでは65536バイト単位で読み取ると効率がよいらしいので、この値にしている。
 	static const DWORD MAX_BUFFER_SIZE = 65536;
 
-	//�t�@�C�����J���܂��B
-	// opt : �t�@�C�����J���Ƃ��̃I�v�V����
-	//       ���[�h�X�g���[���̂��߁Aopt.AccessRead = true�Ƃ��邱��
+	//ファイルを開きます。
+	// opt : ファイルを開くときのオプション
+	//       リードストリームのため、opt.AccessRead = trueとすること
 	bool Open( const mFile::Option& opt );
 
-	//�t�@�C�����J���܂�
-	// filename : �J���t�@�C��
-	// ���ǂݎ��A�N�Z�X�A�������݋��L�s�ŃI�[�v�����܂�
+	//ファイルを開きます
+	// filename : 開くファイル
+	// ※読み取りアクセス、書き込み共有不可でオープンします
 	bool Open( const WString& filename );
 
-	//�t�@�C������܂�
+	//ファイルを閉じます
 	bool Close( void );
 
-	//�P�����i�P�o�C�g�j�ǂݍ��݂܂�
-	//ret : �ǂݎ��������
-	//��EOF�̏ꍇ�A���̃��[�h�X�g���[���������A�N�Z�X�̂��̂��ǂ����ňӖ����Ⴂ�܂�
-	// �����A�N�Z�X�̏ꍇ   : �t�@�C���̏I�[�i����ȏ�̃f�[�^�͂Ȃ��j
-	// �񓯊��A�N�Z�X�̏ꍇ : ���ݓǂݎ���f�[�^���Ȃ��i���Ԃ��o�Ă΍ēx�ǂݎ���j
-	//���񓯊��A�N�Z�X�͖�����
+	//１文字（１バイト）読み込みます
+	//ret : 読み取った文字
+	//※EOFの場合、このリードストリームが同期アクセスのものかどうかで意味が違います
+	// 同期アクセスの場合   : ファイルの終端（それ以上のデータはない）
+	// 非同期アクセスの場合 : 現在読み取れるデータがない（時間が経てば再度読み取れる）
+	//※非同期アクセスは未実装
 	virtual INT Read( void );
 
-	//�w��̈ʒu����ǂݎn�߂܂�
-	//�w�肷��̂́A�t�@�C���̐擪����̈ʒu�ɂȂ�܂��B
+	//指定の位置から読み始めます
+	//指定するのは、ファイルの先頭からの位置になります。
 	bool SetPointer( ULONGLONG newpos );
 
-	//EOF�ɒB���Ă��邩�𒲂ׂ܂�
-	//�������A�N�Z�X�E�񓯊��A�N�Z�X�ǂ���ł����Ă��A���̊֐���true�̏ꍇ�A
-	//�@�t�@�C���̏I�[�ɒB���Ă��܂��B
-	//���񓯊��A�N�Z�X�͖�����
+	//EOFに達しているかを調べます
+	//※同期アクセス・非同期アクセスどちらであっても、この関数がtrueの場合、
+	//　ファイルの終端に達しています。
+	//※非同期アクセスは未実装
 	virtual bool IsEOF( void )const;
 
-	//�t�@�C�����J���Ă��邩�𔻒肵�܂�
-	//�J���Ă���ꍇ�͐^���Ԃ�܂�
+	//ファイルが開いているかを判定します
+	//開いている場合は真が返ります
 	virtual bool IsOpen( void )const;
 
-	//�J���Ă���p�X��Ԃ��܂�
-	// fullpath : true�̏ꍇ�A�J���Ă���p�X���t���p�X�ɕϊ����悤�Ƃ��܂�
-	//            false�̏ꍇ�Atrue�ł��ϊ��Ɏ��s�����ꍇ�́A�t�@�C���I�[�v�����ɓn�����p�X�����̂܂ܕԂ�܂�
+	//開いているパスを返します
+	// fullpath : trueの場合、開いているパスをフルパスに変換しようとします
+	//            falseの場合、trueでも変換に失敗した場合は、ファイルオープン時に渡したパスがそのまま返ります
 	WString GetPath( bool fullpath )const;
 
-	//�t�@�C���̃T�C�Y���擾
+	//ファイルのサイズを取得
 	bool GetFileSize( ULONGLONG& retSize )const;
 
 protected:
@@ -118,13 +118,13 @@ protected:
 	mFileReadStream( const mFileReadStream& source ) = delete;
 	void operator=( const mFileReadStream& source ) = delete;
 
-	//�L���b�V�����N���A����
+	//キャッシュをクリアする
 	virtual void InvalidateCache( void );
 
-	//���̃u���b�N��ǂݍ���
+	//次のブロックを読み込む
 	virtual bool ReadNextBlock( void );
 
-	mFile MyHandle;			//�t�@�C���̃n���h��
+	mFile MyHandle;			//ファイルのハンドル
 
 
 };

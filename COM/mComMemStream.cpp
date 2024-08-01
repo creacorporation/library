@@ -1,11 +1,11 @@
-//----------------------------------------------------------------------------
-// COM‚Ö‚ÌƒXƒgƒŠ[ƒ~ƒ“ƒO‘‚«‚İ‘€ì
+ï»¿//----------------------------------------------------------------------------
+// COMã¸ã®ã‚¹ãƒˆãƒªãƒ¼ãƒŸãƒ³ã‚°æ›¸ãè¾¼ã¿æ“ä½œ
 // Copyright (C) 2024 Crea Inc. All rights reserved.
 // This program is released under the MIT License. 
 // see http://opensource.org/licenses/mit-license.php
-// ’˜ìŒ •\¦‚âƒ‰ƒCƒZƒ“ƒX‚Ì‰ü•Ï‚Í‹Ö~‚³‚ê‚Ä‚¢‚Ü‚·B
-// ‚±‚Ìƒ\[ƒXƒR[ƒh‚ÉŠÖ‚µ‚ÄAã‹Lƒ‰ƒCƒZƒ“ƒXˆÈŠO‚ÌŒ_–ñ“™‚ÍˆêØ‘¶İ‚µ‚Ü‚¹‚ñB
-// (‰½‚ç‚©‚ÌŒ_–ñ‚ª‚ ‚éê‡‚Å‚àA–{ƒ\[ƒXƒR[ƒh‚Í‚»‚Ì‘ÎÛŠO‚Æ‚È‚è‚Ü‚·)
+// è‘—ä½œæ¨©è¡¨ç¤ºã‚„ãƒ©ã‚¤ã‚»ãƒ³ã‚¹ã®æ”¹å¤‰ã¯ç¦æ­¢ã•ã‚Œã¦ã„ã¾ã™ã€‚
+// ã“ã®ã‚½ãƒ¼ã‚¹ã‚³ãƒ¼ãƒ‰ã«é–¢ã—ã¦ã€ä¸Šè¨˜ãƒ©ã‚¤ã‚»ãƒ³ã‚¹ä»¥å¤–ã®å¥‘ç´„ç­‰ã¯ä¸€åˆ‡å­˜åœ¨ã—ã¾ã›ã‚“ã€‚
+// (ä½•ã‚‰ã‹ã®å¥‘ç´„ãŒã‚ã‚‹å ´åˆã§ã‚‚ã€æœ¬ã‚½ãƒ¼ã‚¹ã‚³ãƒ¼ãƒ‰ã¯ãã®å¯¾è±¡å¤–ã¨ãªã‚Šã¾ã™)
 //----------------------------------------------------------------------------
 
 #define MCOMMEMSTREAM_CPP_COMPILING
@@ -33,10 +33,10 @@ bool mComMemStream::Close( void )
 bool mComMemStream::Write( INT data )
 {
 
-	//ƒLƒƒƒbƒVƒ…‚Ìc‚è‚ª‚ ‚éH
+	//ã‚­ãƒ£ãƒƒã‚·ãƒ¥ã®æ®‹ã‚ŠãŒã‚ã‚‹ï¼Ÿ
 	if( MyWriteCacheRemain == 0 )
 	{
-		RaiseError( g_ErrorLogger , 0 , L"‘‚«‚İƒLƒƒƒbƒVƒ…‚Ìc—Ê‚ª‚ ‚è‚Ü‚¹‚ñ" );
+		RaiseError( g_ErrorLogger , 0 , L"æ›¸ãè¾¼ã¿ã‚­ãƒ£ãƒƒã‚·ãƒ¥ã®æ®‹é‡ãŒã‚ã‚Šã¾ã›ã‚“" );
 		return false;
 	}
 
@@ -67,17 +67,17 @@ INT mComMemStream::Read( void )
 		return EOF;
 	}
 
-	//UnRead‚³‚ê‚½•¶š‚ª‚ ‚éê‡‚Íƒ\ƒŒ‚ğ•Ô‚·
+	//UnReadã•ã‚ŒãŸæ–‡å­—ãŒã‚ã‚‹å ´åˆã¯ã‚½ãƒ¬ã‚’è¿”ã™
 	if( !MyUnReadBuffer.IsEmpty() )
 	{
 		return MyUnReadBuffer.Read();
 	}
 
-	//ƒLƒƒƒbƒVƒ…‚Ìc—Ê‚ª‚ ‚ê‚ÎƒLƒƒƒbƒVƒ…‚ğ“Ç‚İ‚Ş
-	//ƒLƒƒƒbƒVƒ…‚Ìc—Ê‚ª‚È‚¢‚È‚çƒLƒ…[‚©‚çæ“¾‚·‚é
+	//ã‚­ãƒ£ãƒƒã‚·ãƒ¥ã®æ®‹é‡ãŒã‚ã‚Œã°ã‚­ãƒ£ãƒƒã‚·ãƒ¥ã‚’èª­ã¿è¾¼ã‚€
+	//ã‚­ãƒ£ãƒƒã‚·ãƒ¥ã®æ®‹é‡ãŒãªã„ãªã‚‰ã‚­ãƒ¥ãƒ¼ã‹ã‚‰å–å¾—ã™ã‚‹
 	if( MyReadCacheRemain == 0 )
 	{
-		//“Ç‚İæ‚èƒLƒƒƒbƒVƒ…‚ÉƒZƒbƒg
+		//èª­ã¿å–ã‚Šã‚­ãƒ£ãƒƒã‚·ãƒ¥ã«ã‚»ãƒƒãƒˆ
 		if( MyReadCacheHead.get() == nullptr )
 		{
 			MyReadCacheHead.reset( mNew BYTE[ MAX_BUFFER_SIZE ] );
@@ -113,13 +113,13 @@ bool mComMemStream::IsEOF( void )const
 
 bool mComMemStream::FlushCache( void )
 {
-	//‘‚«‚Ş‚à‚Ì‚ª‚È‚¢‚Æ‚«‚Í‚»‚Ì‚Ü‚Ü–ß‚é
+	//æ›¸ãè¾¼ã‚€ã‚‚ã®ãŒãªã„ã¨ãã¯ãã®ã¾ã¾æˆ»ã‚‹
 	if( MyWriteCacheWritten == 0 )
 	{
 		return true;
 	}
 
-	//ƒtƒ@ƒCƒ‹‚Ì‘‚«‚İ‚ğs‚¤
+	//ãƒ•ã‚¡ã‚¤ãƒ«ã®æ›¸ãè¾¼ã¿ã‚’è¡Œã†
 	DWORD written;
 	bool result = true;
 	HRESULT hr = MyStream->Write( MyWriteCacheHead.get() , MyWriteCacheWritten , &written );
@@ -130,7 +130,7 @@ bool mComMemStream::FlushCache( void )
 		result = false;
 	}
 
-	//ƒoƒbƒtƒ@‚ğƒŠƒZƒbƒg
+	//ãƒãƒƒãƒ•ã‚¡ã‚’ãƒªã‚»ãƒƒãƒˆ
 	ResetWriteCache();
 
 	return result;
@@ -138,7 +138,7 @@ bool mComMemStream::FlushCache( void )
 
 void mComMemStream::ResetWriteCache( void )
 {
-	//‚à‚µƒLƒƒƒbƒVƒ…‚ª‚È‚¢‚æ‚¤‚È‚çì¬
+	//ã‚‚ã—ã‚­ãƒ£ãƒƒã‚·ãƒ¥ãŒãªã„ã‚ˆã†ãªã‚‰ä½œæˆ
 	if( MyWriteCacheHead.get() == nullptr )
 	{
 		MyWriteCacheHead.reset( mNew BYTE[ MAX_BUFFER_SIZE ] );

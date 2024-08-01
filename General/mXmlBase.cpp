@@ -1,11 +1,11 @@
-//----------------------------------------------------------------------------
-// XML‘€ì
+ï»¿//----------------------------------------------------------------------------
+// XMLæ“ä½œ
 // Copyright (C) 2024 Crea Inc. All rights reserved.
 // This program is released under the MIT License. 
 // see http://opensource.org/licenses/mit-license.php
-// ’˜ìŒ •\¦‚âƒ‰ƒCƒZƒ“ƒX‚Ì‰ü•Ï‚Í‹Ö~‚³‚ê‚Ä‚¢‚Ü‚·B
-// ‚±‚Ìƒ\[ƒXƒR[ƒh‚ÉŠÖ‚µ‚ÄAã‹Lƒ‰ƒCƒZƒ“ƒXˆÈŠO‚ÌŒ_–ñ“™‚ÍˆêØ‘¶İ‚µ‚Ü‚¹‚ñB
-// (‰½‚ç‚©‚ÌŒ_–ñ‚ª‚ ‚éê‡‚Å‚àA–{ƒ\[ƒXƒR[ƒh‚Í‚»‚Ì‘ÎÛŠO‚Æ‚È‚è‚Ü‚·)
+// è‘—ä½œæ¨©è¡¨ç¤ºã‚„ãƒ©ã‚¤ã‚»ãƒ³ã‚¹ã®æ”¹å¤‰ã¯ç¦æ­¢ã•ã‚Œã¦ã„ã¾ã™ã€‚
+// ã“ã®ã‚½ãƒ¼ã‚¹ã‚³ãƒ¼ãƒ‰ã«é–¢ã—ã¦ã€ä¸Šè¨˜ãƒ©ã‚¤ã‚»ãƒ³ã‚¹ä»¥å¤–ã®å¥‘ç´„ç­‰ã¯ä¸€åˆ‡å­˜åœ¨ã—ã¾ã›ã‚“ã€‚
+// (ä½•ã‚‰ã‹ã®å¥‘ç´„ãŒã‚ã‚‹å ´åˆã§ã‚‚ã€æœ¬ã‚½ãƒ¼ã‚¹ã‚³ãƒ¼ãƒ‰ã¯ãã®å¯¾è±¡å¤–ã¨ãªã‚Šã¾ã™)
 //----------------------------------------------------------------------------
 
 #define MXMLBASE_CPP_COMPILING
@@ -31,19 +31,19 @@ bool mXmlBase::Read( mComStream& stream )
 
 	if( FAILED( hr = CreateXmlReader( __uuidof( IXmlReader ) , (void**)&reader , nullptr ) ) )
 	{
-		RaiseError( g_ErrorLogger , 0 , L"IXmlReader‚Ì¶¬‚É¸”s" );
+		RaiseError( g_ErrorLogger , 0 , L"IXmlReaderã®ç”Ÿæˆã«å¤±æ•—" );
 		goto end;
 	}
 
 	if( FAILED( hr = reader->SetProperty( XmlReaderProperty_DtdProcessing , DtdProcessing_Prohibit ) ) )
 	{
-		RaiseError( g_ErrorLogger , 0 , L"DTDİ’è‚ª¸”s" );
+		RaiseError( g_ErrorLogger , 0 , L"DTDè¨­å®šãŒå¤±æ•—" );
 		goto end;
 	}
 
 	if( FAILED( hr = reader->SetInput( stream ) ) )
 	{
-		RaiseError( g_ErrorLogger , 0 , L"“ü—ÍƒXƒgƒŠ[ƒ€‚Ìw’è‚ª¸”s" );
+		RaiseError( g_ErrorLogger , 0 , L"å…¥åŠ›ã‚¹ãƒˆãƒªãƒ¼ãƒ ã®æŒ‡å®šãŒå¤±æ•—" );
 		goto end;
 	}
 
@@ -74,37 +74,37 @@ bool mXmlBase::Write( mComStream& stream )const
 	const mXmlObject_Element_Child* elm = OnWriteRoot();
 	if( !elm )
 	{
-		RaiseError( g_ErrorLogger , 0 , L"o—Í‘ÎÛ‚ªw’è‚³‚ê‚Ü‚¹‚ñ‚Å‚µ‚½" );
+		RaiseError( g_ErrorLogger , 0 , L"å‡ºåŠ›å¯¾è±¡ãŒæŒ‡å®šã•ã‚Œã¾ã›ã‚“ã§ã—ãŸ" );
 		return false;
 	}
 
 	if( FAILED( hr = CreateXmlWriter( __uuidof( IXmlWriter ) , (void**)&writer ,nullptr ) ) )
 	{
-		RaiseError( g_ErrorLogger , 0 , L"IXmlWrite‚Ì¶¬‚É¸”s" );
+		RaiseError( g_ErrorLogger , 0 , L"IXmlWriteã®ç”Ÿæˆã«å¤±æ•—" );
 		return false;
 	}
 
 	if( FAILED( hr = writer->SetOutput( stream ) ) )
 	{
-		RaiseError( g_ErrorLogger , 0 , L"o—Íæ‚Ìw’è‚ª¸”s" );
+		RaiseError( g_ErrorLogger , 0 , L"å‡ºåŠ›å…ˆã®æŒ‡å®šãŒå¤±æ•—" );
 		return false;
 	}
 
 	if( FAILED ( hr = writer->SetProperty( XmlWriterProperty_Indent , TRUE ) ) )
 	{
-		RaiseError( g_ErrorLogger , 0 , L"ƒvƒƒpƒeƒB‚Ìİ’èƒGƒ‰[" );
+		RaiseError( g_ErrorLogger , 0 , L"ãƒ—ãƒ­ãƒ‘ãƒ†ã‚£ã®è¨­å®šã‚¨ãƒ©ãƒ¼" );
 		return false;
 	}
 
 	if( FAILED( hr = writer->WriteStartDocument( XmlStandalone_Omit ) ) )
 	{
-		RaiseError( g_ErrorLogger , 0 , L"ƒhƒLƒ…ƒƒ“ƒg‚ÌŠJn‚ª¸”s" );
+		RaiseError( g_ErrorLogger , 0 , L"ãƒ‰ã‚­ãƒ¥ãƒ¡ãƒ³ãƒˆã®é–‹å§‹ãŒå¤±æ•—" );
 		return false;
 	}
 
 	if( !WriteMain( *elm , writer ) )
 	{
-		RaiseError( g_ErrorLogger , 0 , L"o—Í‚ª¸”s‚µ‚Ü‚µ‚½" );
+		RaiseError( g_ErrorLogger , 0 , L"å‡ºåŠ›ãŒå¤±æ•—ã—ã¾ã—ãŸ" );
 		return false;
 	}
 	return true;
@@ -169,12 +169,12 @@ bool mXmlBase::WriteMain( const mXmlObject_WithChildObject& obj , IXmlWriter* wr
 			break;
 		}
 		default:
-			RaiseError( g_ErrorLogger , 0 , L"ƒIƒuƒWƒFƒNƒg‚Ì“à•”Œ`®‚ª•s³" );
+			RaiseError( g_ErrorLogger , 0 , L"ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã®å†…éƒ¨å½¢å¼ãŒä¸æ­£" );
 			return false;
 		}
 		if( FAILED( hr ) )
 		{
-			RaiseErrorF( g_ErrorLogger , 0 , L"ƒGƒŒƒƒ“ƒg‚Ìo—Í‚ª¸”s" , L"type=%d" , (*itr)->Type );
+			RaiseErrorF( g_ErrorLogger , 0 , L"ã‚¨ãƒ¬ãƒ¡ãƒ³ãƒˆã®å‡ºåŠ›ãŒå¤±æ•—" , L"type=%d" , (*itr)->Type );
 			return false;
 		}
 	}
@@ -311,17 +311,17 @@ mXmlBase::OnReadResultEx mXmlBase::ParseElement( const WString& path , mXmlObjec
 
 	bool isempty = reader->IsEmptyElement();
 
-	//ƒvƒŒƒtƒBƒNƒX
+	//ãƒ—ãƒ¬ãƒ•ã‚£ã‚¯ã‚¹
 	if( !ReadPrefix< mXmlObject_Element_Child >( *elm , reader ) )
 	{
 		return OnReadResultEx::Fail;
 	}
-	//–¼‘O
+	//åå‰
 	if( !ReadName< mXmlObject_Element_Child >( *elm , reader ) )
 	{
 		return OnReadResultEx::Fail;
 	}
-	//ƒAƒgƒŠƒrƒ…[ƒg
+	//ã‚¢ãƒˆãƒªãƒ“ãƒ¥ãƒ¼ãƒˆ
 	if( !ParseAttribute( *elm , reader ) )
 	{
 		return OnReadResultEx::Fail;
@@ -332,7 +332,7 @@ mXmlBase::OnReadResultEx mXmlBase::ParseElement( const WString& path , mXmlObjec
 		return OnReadResultEx::Fail;
 	}
 
-	//qƒm[ƒh
+	//å­ãƒãƒ¼ãƒ‰
 	if( !isempty )
 	{
 		WString childpath = path + elm->Name + L"\\" ;
@@ -353,7 +353,7 @@ bool mXmlBase::ParseAttribute( mXmlObject_WithChildObject& parent , IXmlReader* 
 
 	if( hr == S_FALSE )
 	{
-		//ƒAƒgƒŠƒrƒ…[ƒg‚È‚µ
+		//ã‚¢ãƒˆãƒªãƒ“ãƒ¥ãƒ¼ãƒˆãªã—
 		return true;
 	}
 	else if ( hr == S_OK )
@@ -363,12 +363,12 @@ bool mXmlBase::ParseAttribute( mXmlObject_WithChildObject& parent , IXmlReader* 
 			if( !reader->IsDefault() )
 			{
 				std::unique_ptr< mXmlObject_Attribute > attr( mNew mXmlObject_Attribute() );
-				//ƒvƒŒƒtƒBƒNƒX
+				//ãƒ—ãƒ¬ãƒ•ã‚£ã‚¯ã‚¹
 				if( !ReadPrefix< mXmlObject_Attribute >( *attr , reader ) )
 				{
 					return false;
 				}
-				//–¼‘O
+				//åå‰
 				if( !ReadName< mXmlObject_Attribute >( *attr , reader ) )
 				{
 					return false;
@@ -378,7 +378,7 @@ bool mXmlBase::ParseAttribute( mXmlObject_WithChildObject& parent , IXmlReader* 
 				{
 					return OnReadResult::Fail;
 				}
-				//’l
+				//å€¤
 				hr = reader->GetValue( &ptr, nullptr );
 				if( FAILED( hr ) )
 				{
@@ -401,7 +401,7 @@ mXmlBase::OnReadResultEx mXmlBase::ParseText( const WString& path , mXmlObject_E
 	HRESULT hr;
 	std::unique_ptr< mXmlObject_Text > txt( mNew mXmlObject_Text() );
 
-	//’l
+	//å€¤
 	hr = reader->GetValue( &ptr, nullptr );
 	if( FAILED( hr ) )
 	{
@@ -418,7 +418,7 @@ mXmlBase::OnReadResultEx mXmlBase::ParseCDATA( const WString& path , mXmlObject_
 	HRESULT hr;
 	std::unique_ptr< mXmlObject_CDATA > txt( mNew mXmlObject_CDATA() );
 
-	//’l
+	//å€¤
 	hr = reader->GetValue( &ptr, nullptr );
 	if( FAILED( hr ) )
 	{
@@ -435,12 +435,12 @@ mXmlBase::OnReadResultEx mXmlBase::ParseProcessingInstruction( const WString& pa
 	HRESULT hr;
 	std::unique_ptr< mXmlObject_ProcessingInstruction > procinst( mNew mXmlObject_ProcessingInstruction() );
 
-	//–¼‘O
+	//åå‰
 	if( !ReadName< mXmlObject_ProcessingInstruction >( *procinst , reader ) )
 	{
 		return OnReadResultEx::Fail;
 	}
-	//’l
+	//å€¤
 	hr = reader->GetValue( &ptr, nullptr );
 	if( FAILED( hr ) )
 	{
@@ -457,7 +457,7 @@ mXmlBase::OnReadResultEx mXmlBase::ParseComment( const WString& path , mXmlObjec
 	HRESULT hr;
 	std::unique_ptr< mXmlObject_Comment > comment( mNew mXmlObject_Comment() );
 
-	//’l
+	//å€¤
 	hr = reader->GetValue( &ptr, nullptr );
 	if( FAILED( hr ) )
 	{
@@ -480,7 +480,7 @@ mXmlBase::OnReadResultEx mXmlBase::ParseXmlDeclaration( const WString& path , mX
 {
 	std::unique_ptr< mXmlObject_XmlDeclaration_Child > elm( mNew mXmlObject_XmlDeclaration_Child() );
 
-	//ƒAƒgƒŠƒrƒ…[ƒg
+	//ã‚¢ãƒˆãƒªãƒ“ãƒ¥ãƒ¼ãƒˆ
 	if( !ParseAttribute( *elm , reader ) )
 	{
 		return OnReadResultEx::Fail;

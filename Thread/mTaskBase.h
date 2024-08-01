@@ -1,11 +1,11 @@
-//----------------------------------------------------------------------------
-// ���[�J�[�X���b�h���^�X�N�n���h��
+﻿//----------------------------------------------------------------------------
+// ワーカースレッド＆タスクハンドラ
 // Copyright (C) 2019-2024 Crea Inc. All rights reserved.
 // This program is released under the MIT License. 
 // see http://opensource.org/licenses/mit-license.php
-// ���쌠�\���⃉�C�Z���X�̉��ς͋֎~����Ă��܂��B
-// ���̃\�[�X�R�[�h�Ɋւ��āA��L���C�Z���X�ȊO�̌_�񓙂͈�ؑ��݂��܂���B
-// (���炩�̌_�񂪂���ꍇ�ł��A�{�\�[�X�R�[�h�͂��̑ΏۊO�ƂȂ�܂�)
+// 著作権表示やライセンスの改変は禁止されています。
+// このソースコードに関して、上記ライセンス以外の契約等は一切存在しません。
+// (何らかの契約がある場合でも、本ソースコードはその対象外となります)
 //----------------------------------------------------------------------------
 
 #ifndef MTASKBASE_H_INCLUDED
@@ -16,42 +16,42 @@
 #include "General/mTCHAR.h"
 #include <memory>
 
-//�X���b�h�v�[���ŏ���������^�X�N�̊��N���X
+//スレッドプールで処理させるタスクの基底クラス
 
 //HOW TO USE
-//1.���̃N���X���p�����܂�
-//  TaskFunction()�ɁA�X���b�h�v�[���ŏ����������������������܂�
-//  CancelFunction()�ɁA��x�̓X���b�h�v�[���ɓo�^������A�L�����Z�����ꂽ�ꍇ�̏������������܂�
-//�@���̑������o�ϐ��Ƃ��āA�X���b�h�v�[���ŏ�������f�[�^����ǉ����܂�
-//2.���̃C���X�^���X��mTaskQueue::AddTask()�܂���mTaskQueue::Seal()�ɓn���ăX���b�h�v�[���̃L���[�ɓo�^���܂�
-//3.�^�X�N�̏�����������ƁATaskFunction()���Ăяo����܂�
+//1.このクラスを継承します
+//  TaskFunction()に、スレッドプールで処理したい処理を実装します
+//  CancelFunction()に、一度はスレッドプールに登録した後、キャンセルされた場合の処理を実装します
+//　その他メンバ変数として、スレッドプールで処理するデータ等を追加します
+//2.そのインスタンスをmTaskQueue::AddTask()またはmTaskQueue::Seal()に渡してスレッドプールのキューに登録します
+//3.タスクの処理順が来ると、TaskFunction()が呼び出されます
 namespace Definitions_TaskBase
 {
 	enum TaskFunctionResult
 	{
-		//�^�X�N�̎��s�͊������A���ʂ͐����ł�����
+		//タスクの実行は完了し、結果は成功であった
 		RESULT_FINISH_SUCCEED,
-		//�^�X�N�̎��s�͊������A���ʂ͎��s�ł�����
+		//タスクの実行は完了し、結果は失敗であった
 		RESULT_FINISH_FAILED,
-		//�^�X�N�̎��s���ł���
+		//タスクの実行中である
 		RESULT_INPROGRESS,
 	};
 
 	enum TaskStatus
 	{
-		//�y�������z�^�X�N�͎��s����Ă��Ȃ�
+		//【未完了】タスクは実行されていない
 		STATUS_NOTSTARTED ,
-		//�y�����z�^�X�N�̎��s�͊������A���ʂ͐����ł�����
+		//【完了】タスクの実行は完了し、結果は成功であった
 		STATUS_FINISH_SUCCEED ,
-		//�y�����z�^�X�N�̎��s�͊������A���ʂ͎��s�ł�����
+		//【完了】タスクの実行は完了し、結果は失敗であった
 		STATUS_FINISH_FAILED ,
-		//�y�������z�^�X�N�͎��s�҂��L���[�̒��ɓ����Ă���
+		//【未完了】タスクは実行待ちキューの中に入っている
 		STATUS_QUEUED ,
-		//�y�������z�^�X�N�̎��s���ł���
+		//【未完了】タスクの実行中である
 		STATUS_INPROGRESS ,
-		//�y�����z�^�X�N�̓L�����Z�����ꂽ
+		//【完了】タスクはキャンセルされた
 		STATUS_CANCELED,
-		//�y�����z�^�X�N�͓����G���[�ɂ����s�ł��Ȃ���ԂɂȂ��Ă���
+		//【完了】タスクは内部エラーにより実行できない状態になっている
 		STATUS_ABORTED ,
 
 	};
@@ -66,46 +66,46 @@ public:
 
 	using Ticket = std::shared_ptr< mTaskBase >;
 
-	//�^�X�N�������ɌĂяo���R�[���o�b�N�֐��̐錾
+	//タスク完了時に呼び出すコールバック関数の宣言
 	using CallbackFunction = void(*)( class mTaskQueue& queue , Ticket& ticket , DWORD_PTR parameter , bool result );
 
-	//�^�X�N���s�̏��ʎw��
+	//タスク実行の順位指定
 	enum ScheduleType
 	{
-		//���Ɏw��Ȃ�
+		//特に指定なし
 		Normal,
-		//���̃^�X�N���쒆�͊J�n�����A���s���͑��̃^�X�N���J�n�����Ȃ�
+		//他のタスク動作中は開始せず、実行中は他のタスクを開始させない
 		Critical,
-		//�L���[���œ���ID�̃^�X�N�����s���ł���΁A�^�X�N���J�n���Ȃ��i�㑱�̃^�X�N�͎��s����Ȃ��j
+		//キュー内で同一IDのタスクが実行中であれば、タスクを開始しない（後続のタスクは実行されない）
 		IdLock,
-		//�L���[���œ���ID�̃^�X�N�����s���ł���΁A�㑱�̊J�n�\�ȃ^�X�N�����s����
+		//キュー内で同一IDのタスクが実行中であれば、後続の開始可能なタスクを実行する
 		IdPostpone
 	};
 
-	//�^�X�N�������̒ʒm�I�v�V����
+	//タスク完了時の通知オプション
 	class NotifyOption : public mNotifyOption< CallbackFunction >
 	{
 	public:
-		//�^�X�N�����������ꍇ
+		//タスクが完了した場合
 		NotifierInfo OnComplete;
-		//�^�X�N�����f�����ꍇ
+		//タスクが中断した場合
 		NotifierInfo OnSuspend;
-		//�^�X�N���L�����Z�����ꂽ�ꍇ
+		//タスクがキャンセルされた場合
 		NotifierInfo OnCancel;
-		//�^�X�N��(�V�X�e���I�ȗ��R��)���s�s�\�ɂȂ����ꍇ
+		//タスクが(システム的な理由で)続行不能になった場合
 		NotifierInfo OnAbort;
 	};
 
-	//�^�X�N�������̒ʒm�I�v�V����
+	//タスク完了時の通知オプション
 	NotifyOption Notifier;
 
-	//���݂̃^�X�N�̏��
+	//現在のタスクの状態
 	using TaskStatus = Definitions_TaskBase::TaskStatus;
 
-	//���݂̃^�X�N�̏󋵂𓾂�
+	//現在のタスクの状況を得る
 	TaskStatus GetTaskStatus( void )const;
 
-	//�^�X�NID�𓾂�
+	//タスクIDを得る
 	inline const AString& GetTaskId( void )const noexcept
 	{
 		return MyTaskId;
@@ -116,36 +116,36 @@ private:
 	mTaskBase( const mTaskBase& src );
 	const mTaskBase& operator=( const mTaskBase& src );
 
-	//���݂̃^�X�N�̏��
-	//��mTaskQueue������ɏ���������̂ŁA��������͐G��Ȃ�����
+	//現在のタスクの状態
+	//※mTaskQueueが勝手に書き換えるので、内部からは触らないこと
 	TaskStatus MyTaskStatus;
 
-	//��������p�V�O�i���I�u�W�F�N�g(�����g�p)
-	//��mTaskQueue������ɏ���������̂ŁA��������͐G��Ȃ�����
-	//�E�u���b�L���O����^�X�N�Ŏg��
+	//完了判定用シグナルオブジェクト(内部使用)
+	//※mTaskQueueが勝手に書き換えるので、内部からは触らないこと
+	//・ブロッキングするタスクで使う
 	HANDLE MyCompleteObject;
 
 protected:
 
 	mTaskBase();
 
-	// TaskId : �^�X�N�̖���
+	// TaskId : タスクの名称
 	mTaskBase( const AString& TaskId , ScheduleType ScheduleType = ScheduleType::Normal );
 
-	//�^�X�NID
+	//タスクID
 	const AString MyTaskId;
 
-	//�^�X�N���s������
+	//タスク実行順制御
 	const ScheduleType MyScheduleType;
 
-	//�^�X�N�̎��s����
+	//タスクの実行結果
 	using TaskFunctionResult = Definitions_TaskBase::TaskFunctionResult;
 
-	//�^�X�N�����s�����Ƃ��Ăяo���܂�
-	// ret : �^�X�N�̎��s���ʂ������l
+	//タスクが実行されるとき呼び出します
+	// ret : タスクの実行結果を示す値
 	virtual TaskFunctionResult TaskFunction( const Ticket& task ) = 0;
 
-	//�^�X�N���L�����Z�������Ƃ��Ăяo���܂�
+	//タスクがキャンセルされるとき呼び出します
 	virtual void CancelFunction( const Ticket& task );
 
 };

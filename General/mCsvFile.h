@@ -1,10 +1,10 @@
-//----------------------------------------------------------------------------
-// CSV�t�@�C���n���h��
+﻿//----------------------------------------------------------------------------
+// CSVファイルハンドラ
 // Copyright (C) 2020-2024 Crea Inc. All rights reserved.
 // This program is released under the MIT License. 
 // see http://opensource.org/licenses/mit-license.php
-// ���쌠�\���⃉�C�Z���X�̉��ς͋֎~����Ă��܂��B
-// ���̃\�[�X�R�[�h�Ɋւ��āA��L���C�Z���X�ȊO�̌_�񓙂͈�ؑ��݂��܂���B
+// 著作権表示やライセンスの改変は禁止されています。
+// このソースコードに関して、上記ライセンス以外の契約等は一切存在しません。
 //----------------------------------------------------------------------------
 
 #ifndef MCSVFILE_H_INCLUDED
@@ -24,41 +24,41 @@ namespace mCsvFile
 	using ARow = std::deque< AString >; 
 	using ATable = std::deque< ARow >;
 
-	//CSV�t�@�C����ǂݎ���Ĕz��Ɋi�[����
-	//�E�ǂݎ��Ƃ��̕����R�[�h�́AretTable�Ɏw�肵���^�ɍ��킹��
-	//filename : �ǂݎ��t�@�C����
-	//retTable : �i�[��
-	//empty_str : �ǂݎ�茋�ʂ������`�ɂȂ��Ă��Ȃ��Ƃ��i�s�^�񐔂��ł��ڂ��ɂȂ��Ă���Ƃ��j
-	//�@�@�@�@�@�@�����`�ɂȂ�悤�ɂ��̃f�[�^�����Đ��`����Bnullptr�Ȃ琮�`���Ȃ��B
-	//ret : �������^
+	//CSVファイルを読み取って配列に格納する
+	//・読み取るときの文字コードは、retTableに指定した型に合わせる
+	//filename : 読み取るファイル名
+	//retTable : 格納先
+	//empty_str : 読み取り結果が長方形になっていないとき（行／列数がでこぼこになっているとき）
+	//　　　　　　長方形になるようにこのデータを補って整形する。nullptrなら整形しない。
+	//ret : 成功時真
 	bool ReadCsvFile( const WString& filename , WTable& retTable , const WString* empty_str = nullptr );
 
-	//CSV�t�@�C����ǂݎ���Ĕz��Ɋi�[����
-	//�E�ǂݎ��Ƃ��̕����R�[�h�́AretTable�Ɏw�肵���^�ɍ��킹��
-	//filename : �ǂݎ��t�@�C����
-	//retTable : �i�[��
-	//empty_str : �ǂݎ�茋�ʂ������`�ɂȂ��Ă��Ȃ��Ƃ��i�s�^�񐔂��ł��ڂ��ɂȂ��Ă���Ƃ��j
-	//�@�@�@�@�@�@�����`�ɂȂ�悤�ɂ��̃f�[�^�����Đ��`����Bnullptr�Ȃ琮�`���Ȃ��B
-	//ret : �������^
+	//CSVファイルを読み取って配列に格納する
+	//・読み取るときの文字コードは、retTableに指定した型に合わせる
+	//filename : 読み取るファイル名
+	//retTable : 格納先
+	//empty_str : 読み取り結果が長方形になっていないとき（行／列数がでこぼこになっているとき）
+	//　　　　　　長方形になるようにこのデータを補って整形する。nullptrなら整形しない。
+	//ret : 成功時真
 	bool ReadCsvFile( const WString& filename , ATable& retTable , const AString* empty_str = nullptr );
 
 
-	//CSV�t�@�C����ǂݎ���Ĕz��Ɋi�[����
-	//�E�ǂݎ��Ƃ��̕����R�[�h�́AretTable�Ɏw�肵���^�ɍ��킹��
-	//stream : �ǂݎ��X�g���[��
-	//retTable : �i�[��
-	//empty_str : �ǂݎ�茋�ʂ������`�ɂȂ��Ă��Ȃ��Ƃ��i�s�^�񐔂��ł��ڂ��ɂȂ��Ă���Ƃ��j
-	//�@�@�@�@�@�@�����`�ɂȂ�悤�ɂ��̃f�[�^�����Đ��`����Bnullptr�Ȃ琮�`���Ȃ��B
-	//ret : �������^
+	//CSVファイルを読み取って配列に格納する
+	//・読み取るときの文字コードは、retTableに指定した型に合わせる
+	//stream : 読み取るストリーム
+	//retTable : 格納先
+	//empty_str : 読み取り結果が長方形になっていないとき（行／列数がでこぼこになっているとき）
+	//　　　　　　長方形になるようにこのデータを補って整形する。nullptrなら整形しない。
+	//ret : 成功時真
 	bool ReadCsvFile( mFileReadStreamBase& stream , WTable& retTable , const WString* empty_str = nullptr );
 
-	//CSV�t�@�C����ǂݎ���Ĕz��Ɋi�[����
-	//�E�ǂݎ��Ƃ��̕����R�[�h�́AretTable�Ɏw�肵���^�ɍ��킹��
-	//stream : �ǂݎ��X�g���[��
-	//retTable : �i�[��
-	//empty_str : �ǂݎ�茋�ʂ������`�ɂȂ��Ă��Ȃ��Ƃ��i�s�^�񐔂��ł��ڂ��ɂȂ��Ă���Ƃ��j
-	//�@�@�@�@�@�@�����`�ɂȂ�悤�ɂ��̃f�[�^�����Đ��`����Bnullptr�Ȃ琮�`���Ȃ��B
-	//ret : �������^
+	//CSVファイルを読み取って配列に格納する
+	//・読み取るときの文字コードは、retTableに指定した型に合わせる
+	//stream : 読み取るストリーム
+	//retTable : 格納先
+	//empty_str : 読み取り結果が長方形になっていないとき（行／列数がでこぼこになっているとき）
+	//　　　　　　長方形になるようにこのデータを補って整形する。nullptrなら整形しない。
+	//ret : 成功時真
 	bool ReadCsvFile( mFileReadStreamBase& stream , ATable& retTable , const AString* empty_str = nullptr );
 
 

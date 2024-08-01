@@ -1,10 +1,10 @@
-//----------------------------------------------------------------------------
-// �X���b�V����؂�f�[�^�t�H�[�}�b�g
+﻿//----------------------------------------------------------------------------
+// スラッシュ区切りデータフォーマット
 // Copyright (C) 2020- Crea Inc. All rights reserved.
 // This program is released under the MIT License. 
 // see http://opensource.org/licenses/mit-license.php
-// ���쌠�\���⃉�C�Z���X�̉��ς͋֎~����Ă��܂��B
-// ���̃\�[�X�R�[�h�Ɋւ��āA��L���C�Z���X�ȊO�̌_�񓙂͈�ؑ��݂��܂���B
+// 著作権表示やライセンスの改変は禁止されています。
+// このソースコードに関して、上記ライセンス以外の契約等は一切存在しません。
 //----------------------------------------------------------------------------
 
 #ifndef SLASHFORMATUTILITY_H_INCLUDED
@@ -17,54 +17,54 @@
 
 /*
 
-�ȉ��̌`���̃e�L�X�g�t�@�C��
+以下の形式のテキストファイル
 <command>/<key1>=<val1>/<key2>=<val2>/..../<keyn>=<valn>
 
-command = �R�}���h�B::�ŋ�؂��ĊK�w�\���ɂ��邱�Ƃ��ł���B
-key = �R�}���h�ɕt������ݒ�l�̃L�[�B�ŏ��ɔ�������=�̈ʒu�܂ł�key�ɂȂ�B
-val = �R�}���h�ɕt������ݒ�l�̒l�B�ŏ��ɔ�������=�̈ʒu�ȍ~��val�ɂȂ�B
+command = コマンド。::で区切って階層構造にすることができる。
+key = コマンドに付随する設定値のキー。最初に発見した=の位置までがkeyになる。
+val = コマンドに付随する設定値の値。最初に発見した=の位置以降がvalになる。
 
-�E������ɂ�\r,\n,\0���܂߂邱�Ƃ͏o���Ȃ�
-�Ekey��=���܂ނ��Ƃ͏o���Ȃ��B
-�Ecommand,key,val�ɃX���b�V�����܂߂����ꍇ�́A//�ɂ���B
+・いずれにも\r,\n,\0を含めることは出来ない
+・keyに=を含むことは出来ない。
+・command,key,valにスラッシュを含めたい場合は、//にする。
 
-��1�F
-Info::Price::Current/Id=12345/Name=�R�c���Y/Price=200
-��2�F
+例1：
+Info::Price::Current/Id=12345/Name=山田太郎/Price=200
+例2：
 Set::Date/Date=2020//03//26
-	�����t�̃X���b�V����//�ɂȂ��Ă��邱�Ƃɒ���
+	※日付のスラッシュが//になっていることに注目
 
 */
 
 namespace mSlashFormatUtility
 {
 
-	//�������SlashFormat�`���Ƀp�[�X����
-	// src : �p�[�X���镶����
-	// retData : �p�[�X��������
+	//文字列をSlashFormat形式にパースする
+	// src : パースする文字列
+	// retData : パースした結果
 	void Parse( const AString& src , mSlashFormatA& retData );
 
-	//�������SlashFormat�`���Ƀp�[�X����
-	// src : �p�[�X���镶����
-	// retData : �p�[�X��������
+	//文字列をSlashFormat形式にパースする
+	// src : パースする文字列
+	// retData : パースした結果
 	void Parse( const WString& src , mSlashFormatW& retData );
 
-	//������̃X���b�V����//�ɒu������
+	//文字列のスラッシュを//に置換する
 	WString EscapeSlash( const WString& src );
 
-	//������̃X���b�V����//�ɒu������
+	//文字列のスラッシュを//に置換する
 	AString EscapeSlash( const AString& src );
 
-	//SlashFormat�𕶎���ɃG���R�[�h����
-	// dt : �G���R�[�h�Ώۂ̃f�[�^
-	// retStr : ���ʊi�[��
-	// ret : �������^(�U�̏ꍇ�͎g���Ȃ��������܂�ł���\���������j
+	//SlashFormatを文字列にエンコードする
+	// dt : エンコード対象のデータ
+	// retStr : 結果格納先
+	// ret : 成功時真(偽の場合は使えない文字を含んでいる可能性が高い）
 	bool Encode( const mSlashFormatA& dt , AString& retStr );
 
-	//SlashFormat�𕶎���ɃG���R�[�h����
-	// dt : �G���R�[�h�Ώۂ̃f�[�^
-	// retStr : ���ʊi�[��
-	// ret : �������^(�U�̏ꍇ�͎g���Ȃ��������܂�ł���\���������j
+	//SlashFormatを文字列にエンコードする
+	// dt : エンコード対象のデータ
+	// retStr : 結果格納先
+	// ret : 成功時真(偽の場合は使えない文字を含んでいる可能性が高い）
 	bool Encode( const mSlashFormatW& dt , WString& retStr );
 
 };

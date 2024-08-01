@@ -1,15 +1,15 @@
-//----------------------------------------------------------------------------
-// ƒEƒCƒ“ƒhƒEŠÇ—iƒRƒ“ƒ{ƒ{ƒbƒNƒXj
+ï»¿//----------------------------------------------------------------------------
+// ã‚¦ã‚¤ãƒ³ãƒ‰ã‚¦ç®¡ç†ï¼ˆã‚³ãƒ³ãƒœãƒœãƒƒã‚¯ã‚¹ï¼‰
 // Copyright (C) 2016 Fingerling. All rights reserved. 
 // This program is released under the MIT License. 
 // see http://opensource.org/licenses/mit-license.php
 //----------------------------------------------------------------------------
 
 /*
-œ—p“r
-ƒRƒ“ƒ{ƒ{ƒbƒNƒX‚ÌƒNƒ‰ƒX‚Å‚·BƒEƒCƒ“ƒhƒE‚É“\‚è•t‚¯‚é‚±‚Æ‚ª‚Å‚«‚Ü‚·B
+â—ç”¨é€”
+ã‚³ãƒ³ãƒœãƒœãƒƒã‚¯ã‚¹ã®ã‚¯ãƒ©ã‚¹ã§ã™ã€‚ã‚¦ã‚¤ãƒ³ãƒ‰ã‚¦ã«è²¼ã‚Šä»˜ã‘ã‚‹ã“ã¨ãŒã§ãã¾ã™ã€‚
 
-E©“®ƒ\[ƒgAƒXƒ^ƒCƒ‹‚Ì•ÏX‚Ío—ˆ‚Ü‚¹‚ñi§Œä‚ª•Ï‚í‚Á‚Ä‚µ‚Ü‚¤‚½‚ßj
+ãƒ»è‡ªå‹•ã‚½ãƒ¼ãƒˆã€ã‚¹ã‚¿ã‚¤ãƒ«ã®å¤‰æ›´ã¯å‡ºæ¥ã¾ã›ã‚“ï¼ˆåˆ¶å¾¡ãŒå¤‰ã‚ã£ã¦ã—ã¾ã†ãŸã‚ï¼‰
 */
 
 #ifndef MCOMBOBOX_H_INCLUDED
@@ -22,26 +22,26 @@ class mComboBox : public mListboxFamily
 {
 public:
 
-	//ƒRƒ“ƒ{ƒ{ƒbƒNƒX¶¬‚ÌƒIƒvƒVƒ‡ƒ“
-	//ÀÛ‚Éì¬‚·‚é‚Æ‚«‚ÍAOption\‘¢‘Ì‚ğ’¼Úg‚í‚¸‚ÉAƒVƒ`ƒ…ƒG[ƒVƒ‡ƒ“‚É‡‚í‚¹‚ÄˆÈ‰º‚ğg‚Á‚Ä‰º‚³‚¢B
-	//EOption_UseOption c ƒƒ“ƒo•Ï”‚ğ–„‚ß‚ÄƒIƒvƒVƒ‡ƒ“‚ğİ’è‚µ‚½‚¢‚Æ‚«
+	//ã‚³ãƒ³ãƒœãƒœãƒƒã‚¯ã‚¹ç”Ÿæˆæ™‚ã®ã‚ªãƒ—ã‚·ãƒ§ãƒ³
+	//å®Ÿéš›ã«ä½œæˆã™ã‚‹ã¨ãã¯ã€Optionæ§‹é€ ä½“ã‚’ç›´æ¥ä½¿ã‚ãšã«ã€ã‚·ãƒãƒ¥ã‚¨ãƒ¼ã‚·ãƒ§ãƒ³ã«åˆã‚ã›ã¦ä»¥ä¸‹ã‚’ä½¿ã£ã¦ä¸‹ã•ã„ã€‚
+	//ãƒ»Option_UseOption â€¦ ãƒ¡ãƒ³ãƒå¤‰æ•°ã‚’åŸ‹ã‚ã¦ã‚ªãƒ—ã‚·ãƒ§ãƒ³ã‚’è¨­å®šã—ãŸã„ã¨ã
 	struct Option
 	{
-	//ƒRƒ“ƒ{ƒ{ƒbƒNƒX¶¬‚Ì•û–@
+	//ã‚³ãƒ³ãƒœãƒœãƒƒã‚¯ã‚¹ç”Ÿæˆã®æ–¹æ³•
 		enum CreateMethod
 		{
-			USEOPTION,		//’Êí‚Ì•û–@
+			USEOPTION,		//é€šå¸¸ã®æ–¹æ³•
 		};
 
-		//ƒXƒ^ƒCƒ‹
+		//ã‚¹ã‚¿ã‚¤ãƒ«
 		enum ControlStyle
 		{
-			SIMPLE,			//yƒVƒ“ƒvƒ‹zƒGƒfƒBƒbƒgƒRƒ“ƒgƒ[ƒ‹{í‚É•\¦‚³‚ê‚Ä‚¢‚éƒŠƒXƒg
-			DROPDOWN,		//yƒhƒƒbƒvƒ_ƒEƒ“zƒGƒfƒBƒbƒgƒRƒ“ƒgƒ[ƒ‹{ƒhƒƒbƒvƒ_ƒEƒ“‚·‚éƒŠƒXƒg
-			DROPDOWNLIST,	//yƒhƒƒbƒvƒ_ƒEƒ“ƒŠƒXƒgz•ÒW•s”\‚ÌƒeƒLƒXƒg{ƒhƒƒbƒvƒ_ƒEƒ“‚·‚éƒŠƒXƒg
+			SIMPLE,			//ã€ã‚·ãƒ³ãƒ—ãƒ«ã€‘ã‚¨ãƒ‡ã‚£ãƒƒãƒˆã‚³ãƒ³ãƒˆãƒ­ãƒ¼ãƒ«ï¼‹å¸¸ã«è¡¨ç¤ºã•ã‚Œã¦ã„ã‚‹ãƒªã‚¹ãƒˆ
+			DROPDOWN,		//ã€ãƒ‰ãƒ­ãƒƒãƒ—ãƒ€ã‚¦ãƒ³ã€‘ã‚¨ãƒ‡ã‚£ãƒƒãƒˆã‚³ãƒ³ãƒˆãƒ­ãƒ¼ãƒ«ï¼‹ãƒ‰ãƒ­ãƒƒãƒ—ãƒ€ã‚¦ãƒ³ã™ã‚‹ãƒªã‚¹ãƒˆ
+			DROPDOWNLIST,	//ã€ãƒ‰ãƒ­ãƒƒãƒ—ãƒ€ã‚¦ãƒ³ãƒªã‚¹ãƒˆã€‘ç·¨é›†ä¸èƒ½ã®ãƒ†ã‚­ã‚¹ãƒˆï¼‹ãƒ‰ãƒ­ãƒƒãƒ—ãƒ€ã‚¦ãƒ³ã™ã‚‹ãƒªã‚¹ãƒˆ
 		};
 
-		const CreateMethod method;	//RTTI‚Ì‘ã—p‚Å‚·B•ÏX‚Ì•K—v‚Í‚ ‚è‚Ü‚¹‚ñB
+		const CreateMethod method;	//RTTIã®ä»£ç”¨ã§ã™ã€‚å¤‰æ›´ã®å¿…è¦ã¯ã‚ã‚Šã¾ã›ã‚“ã€‚
 	protected:
 		Option() = delete;
 		Option( CreateMethod create_method ) : method( create_method )
@@ -49,13 +49,13 @@ public:
 		}
 	};
 
-	//ƒIƒvƒVƒ‡ƒ“
+	//ã‚ªãƒ—ã‚·ãƒ§ãƒ³
 	struct Option_UseOption : public Option
 	{
-		ControlStyle Style;		//ƒXƒ^ƒCƒ‹
-		WindowPosition Pos;		//•\¦ˆÊ’u
-		bool Enable;			//—LŒø/–³Œø
-		bool AutoSort;			//©“®ƒ\[ƒg—LŒø
+		ControlStyle Style;		//ã‚¹ã‚¿ã‚¤ãƒ«
+		WindowPosition Pos;		//è¡¨ç¤ºä½ç½®
+		bool Enable;			//æœ‰åŠ¹/ç„¡åŠ¹
+		bool AutoSort;			//è‡ªå‹•ã‚½ãƒ¼ãƒˆæœ‰åŠ¹
 		Option_UseOption() : Option( CreateMethod::USEOPTION )
 		{
 			Style = ControlStyle::DROPDOWNLIST;
@@ -64,43 +64,43 @@ public:
 		}
 	};
 
-	//ƒtƒ@ƒNƒgƒŠƒƒ\ƒbƒh
+	//ãƒ•ã‚¡ã‚¯ãƒˆãƒªãƒ¡ã‚½ãƒƒãƒ‰
 	static mWindow* Factory( const void * option )throw( )
 	{
 		return mNew mComboBox;
 	}
 
-	//ƒAƒCƒeƒ€‚ğ’Ç‰Á‚·‚é
+	//ã‚¢ã‚¤ãƒ†ãƒ ã‚’è¿½åŠ ã™ã‚‹
 	virtual bool AddItem( const WString& caption )override;
 	virtual bool AddItem( const WString& caption , const ItemDataEntry& data )override;
 	virtual bool AddItem( const WString& caption , INT index )override;
 	virtual bool AddItem( const WString& caption , const ItemDataEntry& data , INT index )override;
 
-	//ƒAƒCƒeƒ€‚ğíœ‚·‚é
+	//ã‚¢ã‚¤ãƒ†ãƒ ã‚’å‰Šé™¤ã™ã‚‹
 	virtual bool RemoveItem( INT index )override;
 
-	//‘I‘ğ‚³‚ê‚Ä‚¢‚éƒCƒ“ƒfƒbƒNƒX‚Ìˆê——‚ğæ“¾‚·‚é
+	//é¸æŠã•ã‚Œã¦ã„ã‚‹ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹ã®ä¸€è¦§ã‚’å–å¾—ã™ã‚‹
 	virtual SelectedItems GetSelected( void )const override;
 
-	//w’è‚µ‚½ƒCƒ“ƒfƒbƒNƒX‚ÌƒAƒCƒeƒ€‚ğ‘I‘ğó‘Ô‚É‚·‚é
+	//æŒ‡å®šã—ãŸã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹ã®ã‚¢ã‚¤ãƒ†ãƒ ã‚’é¸æŠçŠ¶æ…‹ã«ã™ã‚‹
 	virtual bool SetSelected( const SelectedItems& items )override;
 
-	//w’è‚µ‚½ƒCƒ“ƒfƒbƒNƒX‚ÌƒAƒCƒeƒ€‚ğ‘I‘ğó‘Ô‚É‚·‚é
+	//æŒ‡å®šã—ãŸã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹ã®ã‚¢ã‚¤ãƒ†ãƒ ã‚’é¸æŠçŠ¶æ…‹ã«ã™ã‚‹
 	virtual bool SetSelected( INT item )override;
 
-	//w’è‚µ‚½ƒLƒƒƒvƒVƒ‡ƒ“‚ğ‚à‚ÂƒAƒCƒeƒ€‚ÌƒCƒ“ƒfƒbƒNƒX‚ğ•Ô‚·
+	//æŒ‡å®šã—ãŸã‚­ãƒ£ãƒ—ã‚·ãƒ§ãƒ³ã‚’ã‚‚ã¤ã‚¢ã‚¤ãƒ†ãƒ ã®ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹ã‚’è¿”ã™
 	virtual INT SearchItem( const WString& caption )override;
 
-	//w’èƒCƒ“ƒfƒbƒNƒX‚ÌƒLƒƒƒvƒVƒ‡ƒ“‚ğæ“¾‚·‚é
+	//æŒ‡å®šã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹ã®ã‚­ãƒ£ãƒ—ã‚·ãƒ§ãƒ³ã‚’å–å¾—ã™ã‚‹
 	virtual WString GetItemCaption( INT index )const override;
 
-	//w’èƒCƒ“ƒfƒbƒNƒX‚ÉŠÖ˜A‚Ã‚¯‚ç‚ê‚Ä‚¢‚éƒf[ƒ^‚ğæ“¾‚·‚é
+	//æŒ‡å®šã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹ã«é–¢é€£ã¥ã‘ã‚‰ã‚Œã¦ã„ã‚‹ãƒ‡ãƒ¼ã‚¿ã‚’å–å¾—ã™ã‚‹
 	virtual bool GetItemData( INT index , ItemDataEntry& retdata )const override;
 
-	//‚¢‚­‚ÂƒAƒCƒeƒ€‚ª‚ ‚é‚©‚ğƒJƒEƒ“ƒg‚·‚é
+	//ã„ãã¤ã‚¢ã‚¤ãƒ†ãƒ ãŒã‚ã‚‹ã‹ã‚’ã‚«ã‚¦ãƒ³ãƒˆã™ã‚‹
 	virtual INT GetItemCount( void )const override;
 
-	//ƒAƒCƒeƒ€‚ğˆÚ“®‚·‚é
+	//ã‚¢ã‚¤ãƒ†ãƒ ã‚’ç§»å‹•ã™ã‚‹
 	virtual bool MoveItem( INT index , INT moveto ) override;
 
 protected:
@@ -108,10 +108,10 @@ protected:
 	mComboBox();
 	virtual ~mComboBox();
 
-	//ƒEƒCƒ“ƒhƒEƒNƒ‰ƒX‚Ì“o˜^‚ğ‚·‚é
+	//ã‚¦ã‚¤ãƒ³ãƒ‰ã‚¦ã‚¯ãƒ©ã‚¹ã®ç™»éŒ²ã‚’ã™ã‚‹
 	virtual bool WindowClassSettingCallback( WindowClassSetting& retSetting , const void* opt )override;
 
-	//ƒEƒCƒ“ƒhƒE‚ğŠJ‚­
+	//ã‚¦ã‚¤ãƒ³ãƒ‰ã‚¦ã‚’é–‹ã
 	virtual bool CreateWindowCallback( CreateWindowSetting& retSetting , const void* opt )override;
 
 private:

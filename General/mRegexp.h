@@ -1,5 +1,5 @@
-//----------------------------------------------------------------------------
-// ³‹K•\Œ»ƒNƒ‰ƒX(std::regexp‚Ìƒ‰ƒbƒp[)
+ï»¿//----------------------------------------------------------------------------
+// æ­£è¦è¡¨ç¾ã‚¯ãƒ©ã‚¹(std::regexpã®ãƒ©ãƒƒãƒ‘ãƒ¼)
 // Copyright (C) 2016 Fingerling. All rights reserved. 
 // This program is released under the MIT License. 
 // see http://opensource.org/licenses/mit-license.php
@@ -17,14 +17,14 @@ template< class T > class mRegexp
 {
 public:
 
-	//³‹K•\Œ»ŽÀsŽž‚ÌƒIƒvƒVƒ‡ƒ“
+	//æ­£è¦è¡¨ç¾å®Ÿè¡Œæ™‚ã®ã‚ªãƒ—ã‚·ãƒ§ãƒ³
 	struct Option
 	{
-		//true‚É‚·‚é‚ÆA‘å•¶ŽšE¬•¶Žš‚ð‹æ•Ê‚µ‚È‚¢
-		//(¡‚Ì‚Æ‚±‚ëAtrue‚É‚·‚é‚Æ³‚µ‚­“®ì‚µ‚È‚­‚È‚éBstd::regex‚ªƒoƒO‚Á‚Ä‚é‹C‚ª‚·‚éB)
+		//trueã«ã™ã‚‹ã¨ã€å¤§æ–‡å­—ãƒ»å°æ–‡å­—ã‚’åŒºåˆ¥ã—ãªã„
+		//(ä»Šã®ã¨ã“ã‚ã€trueã«ã™ã‚‹ã¨æ­£ã—ãå‹•ä½œã—ãªããªã‚‹ã€‚std::regexãŒãƒã‚°ã£ã¦ã‚‹æ°—ãŒã™ã‚‹ã€‚)
 		bool IgnoreCase;
 
-		//true‚É‚·‚é‚ÆAƒ}ƒbƒ`‚µ‚½•”•ª•¶Žš—ñ‚ðŠi”[‚µ‚È‚¢
+		//trueã«ã™ã‚‹ã¨ã€ãƒžãƒƒãƒã—ãŸéƒ¨åˆ†æ–‡å­—åˆ—ã‚’æ ¼ç´ã—ãªã„
 		bool NoSubstr;
 
 		Option( void )
@@ -39,23 +39,23 @@ public:
 		}
 	};
 
-	//³‹K•\Œ»ƒIƒuƒWƒFƒNƒg‚ð\’z‚·‚é
-	//opt : ³‹K•\Œ»ƒ}ƒbƒ`ˆ—Žž‚ÌƒIƒvƒVƒ‡ƒ“
-	//      È—ª‚ânullptr‚Å‚à‰ÂB‚»‚Ìê‡‚ÍAƒfƒtƒHƒ‹ƒg‚ÌÝ’è(Option‚ÌƒRƒ“ƒXƒgƒ‰ƒNƒ^‚É”C‚¹‚½‚Æ‚«‚Æ“¯‚¶)‚É‚È‚è‚Ü‚·B
-	//³‹K•\Œ»‚Ìƒpƒ^[ƒ“‚ðŠÜ‚ñ‚Å‚¢‚È‚¢‚½‚ßA‚±‚Ì‚Ü‚Ü‚Å‚Í‰½‚Æ‚àƒ}ƒbƒ`‚µ‚Ü‚¹‚ñB
-	//ƒ}ƒbƒ`‚³‚¹‚é‘O‚ÉASetPattern()‚ðƒR[ƒ‹‚µ‚Ä‚­‚¾‚³‚¢B
+	//æ­£è¦è¡¨ç¾ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã‚’æ§‹ç¯‰ã™ã‚‹
+	//opt : æ­£è¦è¡¨ç¾ãƒžãƒƒãƒå‡¦ç†æ™‚ã®ã‚ªãƒ—ã‚·ãƒ§ãƒ³
+	//      çœç•¥ã‚„nullptrã§ã‚‚å¯ã€‚ãã®å ´åˆã¯ã€ãƒ‡ãƒ•ã‚©ãƒ«ãƒˆã®è¨­å®š(Optionã®ã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿ã«ä»»ã›ãŸã¨ãã¨åŒã˜)ã«ãªã‚Šã¾ã™ã€‚
+	//æ­£è¦è¡¨ç¾ã®ãƒ‘ã‚¿ãƒ¼ãƒ³ã‚’å«ã‚“ã§ã„ãªã„ãŸã‚ã€ã“ã®ã¾ã¾ã§ã¯ä½•ã¨ã‚‚ãƒžãƒƒãƒã—ã¾ã›ã‚“ã€‚
+	//ãƒžãƒƒãƒã•ã›ã‚‹å‰ã«ã€SetPattern()ã‚’ã‚³ãƒ¼ãƒ«ã—ã¦ãã ã•ã„ã€‚
 	mRegexp( const Option* opt = nullptr ) noexcept
 	{
 		std::basic_string<T> pattern;
 		mRegexp( pattern , opt );
 	}
 
-	//³‹K•\Œ»ƒIƒuƒWƒFƒNƒg‚ð\’z‚·‚é
-	//pattern : ³‹K•\Œ»‚Ìƒpƒ^[ƒ“
-	//opt : ³‹K•\Œ»ƒ}ƒbƒ`ˆ—Žž‚ÌƒIƒvƒVƒ‡ƒ“
-	//      È—ª‚ânullptr‚Å‚à‰ÂB‚»‚Ìê‡‚ÍAƒfƒtƒHƒ‹ƒg‚ÌÝ’è(Option‚ÌƒRƒ“ƒXƒgƒ‰ƒNƒ^‚É”C‚¹‚½‚Æ‚«‚Æ“¯‚¶)‚É‚È‚è‚Ü‚·B
-	//³‹K•\Œ»‚ªŠÔˆá‚Á‚Ä‚Ä‚àƒGƒ‰[‚É‚È‚è‚Ü‚¹‚ñ(g_ErrorLogger‚É‹L˜^‚Í‚³‚ê‚é)
-	//³‹K•\Œ»‚ªƒGƒ‰[‚É‚È‚è‚¤‚éê‡‚ÍSetPattern()‚ðŽg‚Á‚Ä‚­‚¾‚³‚¢B
+	//æ­£è¦è¡¨ç¾ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã‚’æ§‹ç¯‰ã™ã‚‹
+	//pattern : æ­£è¦è¡¨ç¾ã®ãƒ‘ã‚¿ãƒ¼ãƒ³
+	//opt : æ­£è¦è¡¨ç¾ãƒžãƒƒãƒå‡¦ç†æ™‚ã®ã‚ªãƒ—ã‚·ãƒ§ãƒ³
+	//      çœç•¥ã‚„nullptrã§ã‚‚å¯ã€‚ãã®å ´åˆã¯ã€ãƒ‡ãƒ•ã‚©ãƒ«ãƒˆã®è¨­å®š(Optionã®ã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿ã«ä»»ã›ãŸã¨ãã¨åŒã˜)ã«ãªã‚Šã¾ã™ã€‚
+	//æ­£è¦è¡¨ç¾ãŒé–“é•ã£ã¦ã¦ã‚‚ã‚¨ãƒ©ãƒ¼ã«ãªã‚Šã¾ã›ã‚“(g_ErrorLoggerã«è¨˜éŒ²ã¯ã•ã‚Œã‚‹)
+	//æ­£è¦è¡¨ç¾ãŒã‚¨ãƒ©ãƒ¼ã«ãªã‚Šã†ã‚‹å ´åˆã¯SetPattern()ã‚’ä½¿ã£ã¦ãã ã•ã„ã€‚
 	mRegexp( std::basic_string<T> pattern , const Option* opt = nullptr ) noexcept
 	{
 		if( opt != nullptr )
@@ -69,83 +69,83 @@ public:
 		}
 	}
 
-	//³‹K•\Œ»ƒIƒuƒWƒFƒNƒg‚ð\’z‚·‚é
-	//pattern : ³‹K•\Œ»‚Ìƒpƒ^[ƒ“
-	//opt : ³‹K•\Œ»ƒ}ƒbƒ`ˆ—Žž‚ÌƒIƒvƒVƒ‡ƒ“
-	//³‹K•\Œ»‚ªŠÔˆá‚Á‚Ä‚Ä‚àƒGƒ‰[‚É‚È‚è‚Ü‚¹‚ñ(g_ErrorLogger‚É‹L˜^‚Í‚³‚ê‚é)
-	//³‹K•\Œ»‚ªƒGƒ‰[‚É‚È‚è‚¤‚éê‡‚ÍSetPattern()‚ðŽg‚Á‚Ä‚­‚¾‚³‚¢B
+	//æ­£è¦è¡¨ç¾ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã‚’æ§‹ç¯‰ã™ã‚‹
+	//pattern : æ­£è¦è¡¨ç¾ã®ãƒ‘ã‚¿ãƒ¼ãƒ³
+	//opt : æ­£è¦è¡¨ç¾ãƒžãƒƒãƒå‡¦ç†æ™‚ã®ã‚ªãƒ—ã‚·ãƒ§ãƒ³
+	//æ­£è¦è¡¨ç¾ãŒé–“é•ã£ã¦ã¦ã‚‚ã‚¨ãƒ©ãƒ¼ã«ãªã‚Šã¾ã›ã‚“(g_ErrorLoggerã«è¨˜éŒ²ã¯ã•ã‚Œã‚‹)
+	//æ­£è¦è¡¨ç¾ãŒã‚¨ãƒ©ãƒ¼ã«ãªã‚Šã†ã‚‹å ´åˆã¯SetPattern()ã‚’ä½¿ã£ã¦ãã ã•ã„ã€‚
 	mRegexp( std::basic_string<T> pattern , const Option& opt ) noexcept
 	{
 		CreateRegexpObject( pattern , &opt );
 	}
 
-	//Œ©‚ê‚Î•ª‚©‚éAƒfƒXƒgƒ‰ƒNƒ^
+	//è¦‹ã‚Œã°åˆ†ã‹ã‚‹ã€ãƒ‡ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
 	virtual ~mRegexp() = default;
 
-	//³‹K•\Œ»ƒpƒ^[ƒ“‚ðƒZƒbƒg‚·‚é
-	//pattern : ³‹K•\Œ»‚Ìƒpƒ^[ƒ“
-	//opt : ³‹K•\Œ»ƒ}ƒbƒ`ˆ—Žž‚ÌƒIƒvƒVƒ‡ƒ“
-	//      È—ª‚ânullptr‚ðŽw’è‚µ‚½ê‡‚ÍA‚»‚ê‚Ü‚Å‚ÌƒIƒvƒVƒ‡ƒ“Žw’è‚ªˆÛŽ‚³‚ê‚Ü‚·
-	//ret : ¬Œ÷Žžtrue
+	//æ­£è¦è¡¨ç¾ãƒ‘ã‚¿ãƒ¼ãƒ³ã‚’ã‚»ãƒƒãƒˆã™ã‚‹
+	//pattern : æ­£è¦è¡¨ç¾ã®ãƒ‘ã‚¿ãƒ¼ãƒ³
+	//opt : æ­£è¦è¡¨ç¾ãƒžãƒƒãƒå‡¦ç†æ™‚ã®ã‚ªãƒ—ã‚·ãƒ§ãƒ³
+	//      çœç•¥ã‚„nullptrã‚’æŒ‡å®šã—ãŸå ´åˆã¯ã€ãã‚Œã¾ã§ã®ã‚ªãƒ—ã‚·ãƒ§ãƒ³æŒ‡å®šãŒç¶­æŒã•ã‚Œã¾ã™
+	//ret : æˆåŠŸæ™‚true
 	bool SetPattern( std::basic_string<T> pattern , const Option* opt = nullptr )
 	{
 		return CreateRegexpObject( pattern , opt );
 	}
 
-	//³‹K•\Œ»ƒpƒ^[ƒ“‚ðƒZƒbƒg‚·‚é
-	//pattern : ³‹K•\Œ»‚Ìƒpƒ^[ƒ“
-	//opt : ³‹K•\Œ»ƒ}ƒbƒ`ˆ—Žž‚ÌƒIƒvƒVƒ‡ƒ“
-	//ret : ¬Œ÷Žžtrue
+	//æ­£è¦è¡¨ç¾ãƒ‘ã‚¿ãƒ¼ãƒ³ã‚’ã‚»ãƒƒãƒˆã™ã‚‹
+	//pattern : æ­£è¦è¡¨ç¾ã®ãƒ‘ã‚¿ãƒ¼ãƒ³
+	//opt : æ­£è¦è¡¨ç¾ãƒžãƒƒãƒå‡¦ç†æ™‚ã®ã‚ªãƒ—ã‚·ãƒ§ãƒ³
+	//ret : æˆåŠŸæ™‚true
 	bool SetPattern( std::basic_string<T> pattern , const Option& opt )
 	{
 		return CreateRegexpObject( pattern , &opt );
 	}
 
-	//•¶Žš—ñ‚ª³‹K•\Œ»‚Æƒ}ƒbƒ`‚·‚é‚©H
-	//target : ƒ}ƒbƒ`‚³‚¹‚é•¶Žš—ñ
-	//ret : ƒ}ƒbƒ`‚µ‚½ê‡true
-	//Etarget‚Æ•”•ª“I‚Éƒ}ƒbƒ`‚·‚ê‚ÎOK‚Å‚·(‘S‘Ì‚Æƒ}ƒbƒ`‚µ‚½‚¢ê‡‚ÍExactMatch‚ðŽg—p‚µ‚Ü‚·)
-	//Eƒ}ƒbƒ`‚³‚¹‚½‚ ‚ÆASubmatch()‚Å•”•ª•¶Žš—ñ‚ðŽæ“¾‚Å‚«‚Ü‚·(Option::NoSubstr=false‚Ìê‡)
+	//æ–‡å­—åˆ—ãŒæ­£è¦è¡¨ç¾ã¨ãƒžãƒƒãƒã™ã‚‹ã‹ï¼Ÿ
+	//target : ãƒžãƒƒãƒã•ã›ã‚‹æ–‡å­—åˆ—
+	//ret : ãƒžãƒƒãƒã—ãŸå ´åˆtrue
+	//ãƒ»targetã¨éƒ¨åˆ†çš„ã«ãƒžãƒƒãƒã™ã‚Œã°OKã§ã™(å…¨ä½“ã¨ãƒžãƒƒãƒã—ãŸã„å ´åˆã¯ExactMatchã‚’ä½¿ç”¨ã—ã¾ã™)
+	//ãƒ»ãƒžãƒƒãƒã•ã›ãŸã‚ã¨ã€Submatch()ã§éƒ¨åˆ†æ–‡å­—åˆ—ã‚’å–å¾—ã§ãã¾ã™(Option::NoSubstr=falseã®å ´åˆ)
 	bool Match( const std::basic_string<T> target )
 	{
 		return MatchInternal( target , false );
 	}
 
-	//•¶Žš—ñ‘S‘Ì‚ª³‹K•\Œ»‚Æƒ}ƒbƒ`‚·‚é‚©H
-	//target : ƒ}ƒbƒ`‚³‚¹‚é•¶Žš—ñ
-	//ret : ƒ}ƒbƒ`‚µ‚½ê‡true
-	//Etarget‚Æ‘S‘Ì‚ªƒ}ƒbƒ`‚·‚ê‚ÎOK‚Å‚·(ˆê•”•ª‚Ì‚Ýƒ}ƒbƒ`‚µ‚½‚¢ê‡‚ÍMatch‚ðŽg—p‚µ‚Ü‚·)
-	//Eƒ}ƒbƒ`‚³‚¹‚½‚ ‚ÆASubmatch()‚Å•”•ª•¶Žš—ñ‚ðŽæ“¾‚Å‚«‚Ü‚·(Option::NoSubstr=false‚Ìê‡)
+	//æ–‡å­—åˆ—å…¨ä½“ãŒæ­£è¦è¡¨ç¾ã¨ãƒžãƒƒãƒã™ã‚‹ã‹ï¼Ÿ
+	//target : ãƒžãƒƒãƒã•ã›ã‚‹æ–‡å­—åˆ—
+	//ret : ãƒžãƒƒãƒã—ãŸå ´åˆtrue
+	//ãƒ»targetã¨å…¨ä½“ãŒãƒžãƒƒãƒã™ã‚Œã°OKã§ã™(ä¸€éƒ¨åˆ†ã®ã¿ãƒžãƒƒãƒã—ãŸã„å ´åˆã¯Matchã‚’ä½¿ç”¨ã—ã¾ã™)
+	//ãƒ»ãƒžãƒƒãƒã•ã›ãŸã‚ã¨ã€Submatch()ã§éƒ¨åˆ†æ–‡å­—åˆ—ã‚’å–å¾—ã§ãã¾ã™(Option::NoSubstr=falseã®å ´åˆ)
 	bool ExactMatch( const std::basic_string<T> target )
 	{
 		return MatchInternal( target , true );
 	}
 
-	//•”•ª•¶Žš—ñ‚ðŠi”[‚µ‚½ƒRƒ“ƒeƒi
+	//éƒ¨åˆ†æ–‡å­—åˆ—ã‚’æ ¼ç´ã—ãŸã‚³ãƒ³ãƒ†ãƒŠ
 	typedef std::match_results<typename std::basic_string<T>::const_iterator> Matches;
 
-	//•”•ª•¶Žš—ñ‚ðŠi”[‚µ‚½ƒRƒ“ƒeƒi‚Ö‚ÌŽQÆ‚ðŽæ“¾‚µ‚Ü‚·
-	//ret : •”•ª•¶Žš—ñ‚ðŠi”[‚µ‚½ƒRƒ“ƒeƒi‚Ö‚ÌŽQÆ
+	//éƒ¨åˆ†æ–‡å­—åˆ—ã‚’æ ¼ç´ã—ãŸã‚³ãƒ³ãƒ†ãƒŠã¸ã®å‚ç…§ã‚’å–å¾—ã—ã¾ã™
+	//ret : éƒ¨åˆ†æ–‡å­—åˆ—ã‚’æ ¼ç´ã—ãŸã‚³ãƒ³ãƒ†ãƒŠã¸ã®å‚ç…§
 	const Matches& Submatch( void ) const noexcept
 	{
 		return MyMatches;
 	}
 
-	//•”•ª•¶Žš—ñ‚ðŽæ“¾‚µ‚Ü‚·
-	//index : •”•ª•¶Žš—ñ‚ÌƒCƒ“ƒfƒbƒNƒXi0=ƒ}ƒbƒ`‘S‘ÌA1`=•”•ª•¶Žš—ñj
-	//ret : •”•ª•¶Žš—ñ
+	//éƒ¨åˆ†æ–‡å­—åˆ—ã‚’å–å¾—ã—ã¾ã™
+	//index : éƒ¨åˆ†æ–‡å­—åˆ—ã®ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹ï¼ˆ0=ãƒžãƒƒãƒå…¨ä½“ã€1ã€œ=éƒ¨åˆ†æ–‡å­—åˆ—ï¼‰
+	//ret : éƒ¨åˆ†æ–‡å­—åˆ—
 	std::basic_string<T> Submatch( size_t index ) const noexcept
 	{
 		return MyMatches[ index ];
 	}
 
-	//ƒGƒ‰[ƒR[ƒh‚ðŽæ“¾‚·‚é
+	//ã‚¨ãƒ©ãƒ¼ã‚³ãƒ¼ãƒ‰ã‚’å–å¾—ã™ã‚‹
 	std::regex_constants::error_type GetErrorCode( void )const
 	{
 		return MyErrorCode;
 	}
 
-	//ƒGƒ‰[ƒƒbƒZ[ƒW‚ðŽæ“¾‚·‚é
+	//ã‚¨ãƒ©ãƒ¼ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸ã‚’å–å¾—ã™ã‚‹
 	const WString& GetErrorMessage( void )const
 	{
 		return MyErrorMessage;
@@ -174,48 +174,48 @@ private:
 
 protected:
 
-	//³‹K•\Œ»ƒIƒuƒWƒFƒNƒg
+	//æ­£è¦è¡¨ç¾ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆ
 	std::basic_regex<T> MyRegex;
 
-	//ƒ}ƒbƒ`‚³‚¹‚½ê‡‚ÉAƒ^[ƒQƒbƒg•¶Žš—ñ‚ðˆê’UƒRƒs[‚·‚é‚½‚ß‚Ì‚à‚Ì
-	//•”•ª•¶Žš—ñ‚ÍAƒ^[ƒQƒbƒg•¶Žš—ñ‚Ìˆê•”•ª‚Ö‚ÌŽQÆ‚ð”z—ñ‚É‚µ‚½Œ`‚ÅŠi”[‚³‚ê‚é‚Ì‚ÅA
-	//ƒ^[ƒQƒbƒg‚ªˆêŽžƒIƒuƒWƒFƒNƒg‚¾‚Á‚½‚è‚·‚é‚Æƒkƒ‹ƒŠƒtƒ@ƒŒƒ“ƒX‚É‚È‚Á‚Ä‚µ‚Ü‚¤B
-	//‚»‚ê‚¾‚Æ¢‚é‚Ì‚ÅA•”•ª•¶Žš—ñ‚ðŽg‚¤ê‡‚Íˆê“xƒRƒs[‚·‚éB
+	//ãƒžãƒƒãƒã•ã›ãŸå ´åˆã«ã€ã‚¿ãƒ¼ã‚²ãƒƒãƒˆæ–‡å­—åˆ—ã‚’ä¸€æ—¦ã‚³ãƒ”ãƒ¼ã™ã‚‹ãŸã‚ã®ã‚‚ã®
+	//éƒ¨åˆ†æ–‡å­—åˆ—ã¯ã€ã‚¿ãƒ¼ã‚²ãƒƒãƒˆæ–‡å­—åˆ—ã®ä¸€éƒ¨åˆ†ã¸ã®å‚ç…§ã‚’é…åˆ—ã«ã—ãŸå½¢ã§æ ¼ç´ã•ã‚Œã‚‹ã®ã§ã€
+	//ã‚¿ãƒ¼ã‚²ãƒƒãƒˆãŒä¸€æ™‚ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã ã£ãŸã‚Šã™ã‚‹ã¨ãƒŒãƒ«ãƒªãƒ•ã‚¡ãƒ¬ãƒ³ã‚¹ã«ãªã£ã¦ã—ã¾ã†ã€‚
+	//ãã‚Œã ã¨å›°ã‚‹ã®ã§ã€éƒ¨åˆ†æ–‡å­—åˆ—ã‚’ä½¿ã†å ´åˆã¯ä¸€åº¦ã‚³ãƒ”ãƒ¼ã™ã‚‹ã€‚
 	std::basic_string<T> MyTargetCopy;
 
-	//•”•ª•¶Žš—ñ‚ÌŠi”[æ
+	//éƒ¨åˆ†æ–‡å­—åˆ—ã®æ ¼ç´å…ˆ
 	Matches MyMatches;
 
-	//ƒ‰ƒCƒuƒ‰ƒŠ“à‚ÅƒGƒ‰[‚ª‹N‚«‚½ê‡‚ÌƒGƒ‰[ƒR[ƒhŠi”[æ
+	//ãƒ©ã‚¤ãƒ–ãƒ©ãƒªå†…ã§ã‚¨ãƒ©ãƒ¼ãŒèµ·ããŸå ´åˆã®ã‚¨ãƒ©ãƒ¼ã‚³ãƒ¼ãƒ‰æ ¼ç´å…ˆ
 	std::regex_constants::error_type MyErrorCode;
 
-	//ƒ‰ƒCƒuƒ‰ƒŠ“à‚ÅƒGƒ‰[‚ª‹N‚«‚½ê‡‚ÌƒGƒ‰[ƒƒbƒZ[ƒWŠi”[æ
+	//ãƒ©ã‚¤ãƒ–ãƒ©ãƒªå†…ã§ã‚¨ãƒ©ãƒ¼ãŒèµ·ããŸå ´åˆã®ã‚¨ãƒ©ãƒ¼ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸æ ¼ç´å…ˆ
 	WString MyErrorMessage;
 
-	//³‹K•\Œ»ƒIƒuƒWƒFƒNƒg‚ð\’z‚·‚é
-	//pattern : ³‹K•\Œ»‚Ìƒpƒ^[ƒ“
-	//opt : ³‹K•\Œ»ƒ}ƒbƒ`ˆ—Žž‚ÌƒIƒvƒVƒ‡ƒ“
-	//      È—ª‚ânullptr‚ðŽw’è‚µ‚½ê‡‚ÍA‚»‚ê‚Ü‚Å‚ÌƒIƒvƒVƒ‡ƒ“Žw’è‚ªˆÛŽ‚³‚ê‚Ü‚·
-	//ret : ¬Œ÷Žžtrue
+	//æ­£è¦è¡¨ç¾ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã‚’æ§‹ç¯‰ã™ã‚‹
+	//pattern : æ­£è¦è¡¨ç¾ã®ãƒ‘ã‚¿ãƒ¼ãƒ³
+	//opt : æ­£è¦è¡¨ç¾ãƒžãƒƒãƒå‡¦ç†æ™‚ã®ã‚ªãƒ—ã‚·ãƒ§ãƒ³
+	//      çœç•¥ã‚„nullptrã‚’æŒ‡å®šã—ãŸå ´åˆã¯ã€ãã‚Œã¾ã§ã®ã‚ªãƒ—ã‚·ãƒ§ãƒ³æŒ‡å®šãŒç¶­æŒã•ã‚Œã¾ã™
+	//ret : æˆåŠŸæ™‚true
 	bool CreateRegexpObject( typename  std::basic_string<T> pattern , const Option* opt = nullptr )
 	{
-		//Œ»Ý‚ÌƒIƒvƒVƒ‡ƒ“Ý’è’l‚ðŽæ“¾
+		//ç¾åœ¨ã®ã‚ªãƒ—ã‚·ãƒ§ãƒ³è¨­å®šå€¤ã‚’å–å¾—
 		DWORD flags = (DWORD)MyRegex.flags();
 
-		//ƒIƒvƒVƒ‡ƒ“‚ªÝ’è‚³‚ê‚Ä‚¢‚éê‡‚ÍA‚»‚ê‚É]‚¢’l‚ðXV
-		//nullptr‚Å‚ ‚éê‡‚ÍAŒ»óˆÛŽ‚È‚Ì‚Å‰½‚à‚µ‚È‚¢
+		//ã‚ªãƒ—ã‚·ãƒ§ãƒ³ãŒè¨­å®šã•ã‚Œã¦ã„ã‚‹å ´åˆã¯ã€ãã‚Œã«å¾“ã„å€¤ã‚’æ›´æ–°
+		//nullptrã§ã‚ã‚‹å ´åˆã¯ã€ç¾çŠ¶ç¶­æŒãªã®ã§ä½•ã‚‚ã—ãªã„
 		if( opt != nullptr )
 		{
-			//‘å•¶ŽšE¬•¶Žš‚Ì‹æ•ÊH
+			//å¤§æ–‡å­—ãƒ»å°æ–‡å­—ã®åŒºåˆ¥ï¼Ÿ
 			flags &= ~std::regex_constants::icase;
 			flags |= ( opt->IgnoreCase ) ? ( std::regex_constants::icase ) : ( 0 );
-			//•”•ª•¶Žš—ñ‚ðŽg‚¤H
+			//éƒ¨åˆ†æ–‡å­—åˆ—ã‚’ä½¿ã†ï¼Ÿ
 			flags &= ~std::regex_constants::nosubs;
 			flags |= ( opt->NoSubstr ) ? ( std::regex_constants::nosubs ) : ( 0 );
 		}
 
-		//³‹K•\Œ»ƒIƒuƒWƒFƒNƒg‚ð\’zB
-		//ƒGƒ‰[‚ª‚ ‚éê‡‚Í—áŠO‚ª”ò‚ñ‚Å‚­‚é‚Ì‚ÅAtry-catch‚ðŽg‚¤B
+		//æ­£è¦è¡¨ç¾ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã‚’æ§‹ç¯‰ã€‚
+		//ã‚¨ãƒ©ãƒ¼ãŒã‚ã‚‹å ´åˆã¯ä¾‹å¤–ãŒé£›ã‚“ã§ãã‚‹ã®ã§ã€try-catchã‚’ä½¿ã†ã€‚
 		bool result = true;
 		try
 		{
@@ -223,7 +223,7 @@ protected:
 		}
 		catch( std::regex_error e )
 		{
-			//ƒGƒ‰[‚Ìê‡‚ÍAƒGƒ‰[‚Ì‹L˜^‚ð‚µ‚Äfalse‚ð•Ô‚·
+			//ã‚¨ãƒ©ãƒ¼ã®å ´åˆã¯ã€ã‚¨ãƒ©ãƒ¼ã®è¨˜éŒ²ã‚’ã—ã¦falseã‚’è¿”ã™
 			MyErrorCode = e.code();
 			MyErrorMessage = AString2WString( e.what() );
 			RaiseError( g_ErrorLogger , MyErrorCode , MyErrorMessage );
@@ -232,20 +232,20 @@ protected:
 		return true;
 	}
 
-	//•¶Žš—ñ‚ª³‹K•\Œ»‚Æƒ}ƒbƒ`‚·‚é‚©H
-	//target : ƒ}ƒbƒ`‚³‚¹‚é•¶Žš—ñ
-	//is_exact : true‚Ìê‡‚Ítarget‘S‘Ì‚Æƒ}ƒbƒ`Afalse‚Ìê‡‚Í•”•ªƒ}ƒbƒ`
-	//ret : ƒ}ƒbƒ`‚µ‚½ê‡true
+	//æ–‡å­—åˆ—ãŒæ­£è¦è¡¨ç¾ã¨ãƒžãƒƒãƒã™ã‚‹ã‹ï¼Ÿ
+	//target : ãƒžãƒƒãƒã•ã›ã‚‹æ–‡å­—åˆ—
+	//is_exact : trueã®å ´åˆã¯targetå…¨ä½“ã¨ãƒžãƒƒãƒã€falseã®å ´åˆã¯éƒ¨åˆ†ãƒžãƒƒãƒ
+	//ret : ãƒžãƒƒãƒã—ãŸå ´åˆtrue
 	bool MatchInternal( const std::basic_string<T> target , bool is_exact = false )
 	{
-		bool result = false;	//ƒ}ƒbƒ`‚µ‚½‚©H
+		bool result = false;	//ãƒžãƒƒãƒã—ãŸã‹ï¼Ÿ
 
-		//•”•ª•¶Žš—ñ‚ðŽg—p‚µ‚Ä‚¢‚éê‡‚ÍAƒ^[ƒQƒbƒg‚Ì•¶Žš—ñ‚ðƒRƒs[‚µ‚Ä‚©‚çƒ}ƒbƒ`‚·‚é
-		//(ƒ^[ƒQƒbƒg‚ªˆêŽž•Ï”‚¾‚Á‚½ê‡ƒkƒ‹ƒŠ‚É‚È‚é‚½‚ß)
+		//éƒ¨åˆ†æ–‡å­—åˆ—ã‚’ä½¿ç”¨ã—ã¦ã„ã‚‹å ´åˆã¯ã€ã‚¿ãƒ¼ã‚²ãƒƒãƒˆã®æ–‡å­—åˆ—ã‚’ã‚³ãƒ”ãƒ¼ã—ã¦ã‹ã‚‰ãƒžãƒƒãƒã™ã‚‹
+		//(ã‚¿ãƒ¼ã‚²ãƒƒãƒˆãŒä¸€æ™‚å¤‰æ•°ã ã£ãŸå ´åˆãƒŒãƒ«ãƒªã«ãªã‚‹ãŸã‚)
 		if( ( MyRegex.flags() & std::regex_constants::nosubs ) == 0 )
 		{
-			//•”•ª•¶Žš—ñ‚ðŽg—p‚·‚éê‡B
-			//•”•ªˆê’vËregex_search Š®‘Sˆê’vËregex_match
+			//éƒ¨åˆ†æ–‡å­—åˆ—ã‚’ä½¿ç”¨ã™ã‚‹å ´åˆã€‚
+			//éƒ¨åˆ†ä¸€è‡´â‡’regex_search å®Œå…¨ä¸€è‡´â‡’regex_match
 			MyTargetCopy = target;
 			if( is_exact )
 			{
@@ -258,7 +258,7 @@ protected:
 		}
 		else
 		{
-			//•”•ªˆê’v‚ðŽg—p‚µ‚È‚¢ê‡
+			//éƒ¨åˆ†ä¸€è‡´ã‚’ä½¿ç”¨ã—ãªã„å ´åˆ
 			if( is_exact )
 			{
 				result = std::regex_match( target.cbegin() , target.cend() , MyRegex );
@@ -273,13 +273,13 @@ protected:
 
 };
 
-//AString / CHAR—p
+//AString / CHARç”¨
 typedef mRegexp<CHAR> mRegexpA;
 
-//TString / TCHAR—p
+//TString / TCHARç”¨
 typedef mRegexp<TCHAR> mRegexpT;
 
-//WString / WCHAR—p
+//WString / WCHARç”¨
 typedef mRegexp<WCHAR> mRegexpW;
 
 #endif //MREGEXP_H_INCLUDED

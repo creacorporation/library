@@ -1,11 +1,11 @@
-//----------------------------------------------------------------------------
-// Felica Light-S �J�[�h�n���h��
+﻿//----------------------------------------------------------------------------
+// Felica Light-S カードハンドラ
 // Copyright (C) 2021- Crea Inc. All rights reserved.
 // This program is released under the MIT License. 
 // see http://opensource.org/licenses/mit-license.php
-// ���쌠�\���⃉�C�Z���X�̉��ς͋֎~����Ă��܂��B
-// ���̃\�[�X�R�[�h�Ɋւ��āA��L���C�Z���X�ȊO�̌_�񓙂͈�ؑ��݂��܂���B
-// (���炩�̌_�񂪂���ꍇ�ł��A�{�\�[�X�R�[�h�͂��̑ΏۊO�ƂȂ�܂�)
+// 著作権表示やライセンスの改変は禁止されています。
+// このソースコードに関して、上記ライセンス以外の契約等は一切存在しません。
+// (何らかの契約がある場合でも、本ソースコードはその対象外となります)
 //----------------------------------------------------------------------------
 
 #ifndef MSCFELICA_H_INCLUDED
@@ -23,38 +23,38 @@ public:
 	virtual ~mSCFelica();
 
 	///-----------------------------------------
-	/// �ꎟ���s
+	/// 一次発行
 	///-----------------------------------------
 
-	//�P�����s�f�[�^
+	//１次発行データ
 	struct IssuanceParam
 	{
-		//ID�u���b�N(82H)�ɑ��݂��郆�[�U�[���C�ӂɗ��p�ł���l
-		//���u�ʉ��J�[�h���v�𗘗p����ꍇ�́A���̒l�͌������̃V�[�h�̈ꕔ�ɂȂ�܂��B
+		//IDブロック(82H)に存在するユーザーが任意に利用できる値
+		//※「個別化カード鍵」を利用する場合は、この値は鍵生成のシードの一部になります。
 		BYTE Id[ 6 ];
 
-		//�J�[�h���o�[�W����(86H)�̒l�B
-		//�J�[�h���Ƀo�[�W�������������邽�߂̒l�ł����A�����I�ɂ̓��[�U�[���C�ӂɗ��p�\�B
+		//カード鍵バージョン(86H)の値。
+		//カード鍵にバージョンを持たせるための値ですが、実質的にはユーザーが任意に利用可能。
 		uint16_t KeyVersion;
 
-		//�J�[�h��CK(87H)
-		//�E�P�U�o�C�g�̃f�[�^���w�肵���Ƃ��́A���̃o�C�i�����J�[�h���Ƃ��܂�
-		//  �i�w�肵�������̂��̂��J�[�h�ɏ����݂܂��j
-		//�E�Q�S�o�C�g�̃f�[�^���w�肵���Ƃ��́A���̃o�C�i�����ʉ��}�X�^�[���Ƃ��܂�
-		//  �i�w�肵������ID�u���b�N����\�j�[�W���̕��@�Ő������������J�[�h�ɏ����݂܂��j
-		//�E�҂�����P�U�o�C�g�܂��́A�Q�S�o�C�g�̃f�[�^��ێ����Ă����ԂłȂ��ƃG���[�ɂȂ�܂�
+		//カード鍵CK(87H)
+		//・１６バイトのデータを指定したときは、そのバイナリをカード鍵とします
+		//  （指定した鍵そのものをカードに書込みます）
+		//・２４バイトのデータを指定したときは、そのバイナリを個別化マスター鍵とします
+		//  （指定した鍵とIDブロックからソニー標準の方法で生成した鍵をカードに書込みます）
+		//・ぴったり１６バイトまたは、２４バイトのデータを保持している状態でないとエラーになります
 		mSecureBinary Key;
 
-		//�J�[�h���̍X�V�������邩(�^�̏ꍇ����)
-		//�E�X�V���ɂ���ƁA�ꎟ���s�ŃV�X�e���u���b�N�����������֎~�ɂ������MAC���������݂ŃJ�[�h�����X�V�ł��܂�
-		//�E�X�V�s�ɂ���ƁA�ꎟ���s�ŃV�X�e���u���b�N�����������֎~�ɂ�����̓J�[�h�����X�V�ł��Ȃ��Ȃ�܂�
-		//�E�V�X�e���u���b�N�����������֎~�ɂ���܂ł́A���̐ݒ�Ɋւ�炸�J�[�h�������������\�ł�
+		//カード鍵の更新を許可するか(真の場合許可)
+		//・更新許可にすると、一次発行でシステムブロックを書き換え禁止にした後はMACつき書き込みでカード鍵を更新できます
+		//・更新不可にすると、一次発行でシステムブロックを書き換え禁止にした後はカード鍵を更新できなくなります
+		//・システムブロックを書き換え禁止にするまでは、この設定に関わらずカード鍵を書き換え可能です
 		bool EnableKeyChange;
 
-		//STATE�u���b�N�̔F�؂�v����ꍇ�͐^
-		//�E�v����ɊO���F��(���ݔF��)�������ꍇ�͐^�B���Ȃ��ꍇ�͋U�B
-		//�E�ꎟ���s���_�ł́A�ꎟ���s�`�񎟔��s�܂ł̊ԂɔF�؂��g���������ǂ����Őݒ肷��΂悭�A
-		//�@�ŏI�I�ɂ́A�񎟔��s���Ƀ��[�U�[�u���b�N�̃p�[�~�b�V�����̐ݒ莟��Œl�����܂�܂��B
+		//STATEブロックの認証を要する場合は真
+		//・要するに外部認証(相互認証)したい場合は真。しない場合は偽。
+		//・一次発行時点では、一次発行〜二次発行までの間に認証を使いたいかどうかで設定すればよく、
+		//　最終的には、二次発行時にユーザーブロックのパーミッションの設定次第で値が決まります。
 		bool EnableStateMacReq;
 
 		IssuanceParam()
@@ -67,170 +67,170 @@ public:
 		}
 	};
 
-	//�ꎟ���s���s���܂�
-	// lock : �V�X�e���u���b�N�����b�N���A�ȍ~�̏����������֎~���܂�
-	//    ���b�N���s����WCNT�̒l(MAC�t���������݂Ɏg�p)�����Z�b�g����܂��B���������܂ł͂킸���ȉ񐔂���(MAC���ł�)�������݂��ł��܂���B
-	// param : �ݒ肷��ꎟ���s�̃f�[�^
-	// ret : �������^
+	//一次発行を行います
+	// lock : システムブロックをロックし、以降の書き換えを禁止します
+	//    ロックを行うとWCNTの値(MAC付き書き込みに使用)がリセットされます。これをするまではわずかな回数しか(MACつきでの)書き込みができません。
+	// param : 設定する一次発行のデータ
+	// ret : 成功時真
 	bool ExecFirstIssuance( bool lock , const IssuanceParam& param );
 
 	///-----------------------------------------
-	/// �񎟔��s
+	/// 二次発行
 	///-----------------------------------------
 
-	//���[�U�[�u���b�N�̖��O
+	//ユーザーブロックの名前
 	using UserBlock = mSCFelicaDefinitions::UserBlock;
 
-	//�ǂݎ��̃p�[�~�b�V����
+	//読み取りのパーミッション
 	using ReadPermission = mSCFelicaDefinitions::ReadPermission;
 
-	//�������݂̃p�[�~�b�V����
+	//書き込みのパーミッション
 	using WritePermission = mSCFelicaDefinitions::WritePermission;
 
-	//���[�U�[�u���b�N�̃p�[�~�b�V����
+	//ユーザーブロックのパーミッション
 	struct Permission
 	{
-		//�ǂݍ��݃p�[�e�B�V����
-		//0�`13�����[�U�[�u���b�N��S_PAD0�`S_PAD13�ɑΉ����A14��REG�ɑΉ����܂��B
+		//読み込みパーティション
+		//0〜13がユーザーブロックのS_PAD0〜S_PAD13に対応し、14がREGに対応します。
 		ReadPermission Read[ 15 ];
-		//�������݃p�[�e�B�V����
-		//0�`13�����[�U�[�u���b�N��S_PAD0�`S_PAD13�ɑΉ����A14��REG�ɑΉ����܂��B
+		//書き込みパーティション
+		//0〜13がユーザーブロックのS_PAD0〜S_PAD13に対応し、14がREGに対応します。
 		WritePermission Write[ 15 ];
 	};
 
-	//�񎟔��s���s���܂�
-	// lock : �p�[�~�b�V���������b�N���A�ȍ~�̐ݒ�ύX���֎~���܂�
-	// param : �ݒ肷��p�[�~�b�V����
-	// ret : �������^
+	//二次発行を行います
+	// lock : パーミッションをロックし、以降の設定変更を禁止します
+	// param : 設定するパーミッション
+	// ret : 成功時真
 	bool ExecSecondIssuance( bool lock , const Permission& param );
 
 	///-----------------------------------------
-	/// �F��
+	/// 認証
 	///-----------------------------------------
 
-	//�����F�؂܂��́A�O���i���݁j�F�؂��s���܂�
-	// key : �J�[�h���̃o�C�i��(�҂�����16or24�o�C�g�̃f�[�^��ێ����Ă��邱��)
-	//  16�o�C�g�̎����̃o�C�i�����J�[�h���A24�o�C�g�̂Ƃ��ʉ��J�[�h���̃}�X�^�[���Ƃ��ď������܂�
-	// int_auth_only : �^�̏ꍇ�A�����F�؂̂ݍs���܂�
-	//                    �����F�؁����[�_�[���J�[�h��^���Ȃ���(���������������Ă���)�ƔF�߂Ă�����
-	//                 �U�̏ꍇ�A���ݔF�؂��s���܂�(�����F�؁A�O���F�؂̗������s���܂�)
-	//                    ���ݔF�؁����[�_�[�ƃJ�[�h�����݂��ɐ^���Ȃ���(���������������Ă���)�ƔF�߂Ă�����
-	// ret : �������^
+	//内部認証または、外部（相互）認証を行います
+	// key : カード鍵のバイナリ(ぴったり16or24バイトのデータを保持していること)
+	//  16バイトの時そのバイナリをカード鍵、24バイトのとき個別化カード鍵のマスター鍵として処理します
+	// int_auth_only : 真の場合、内部認証のみ行います
+	//                    内部認証＝リーダーがカードを真正なもの(正しい鍵を持っている)と認めている状態
+	//                 偽の場合、相互認証を行います(内部認証、外部認証の両方を行います)
+	//                    相互認証＝リーダーとカードがお互いに真正なもの(正しい鍵を持っている)と認めている状態
+	// ret : 成功時真
 	bool ExecAuthentication( const mSecureBinary& key , bool int_auth_only );
 
-	//�F�؏��
+	//認証状態
 	using AuthStatus = mSCFelicaDefinitions::AuthStatus;
 
-	//���ݔF�؂��s���Ă��邩��Ԃ��܂�
-	// ret : ���݂̔F�؏��
+	//現在認証が行われているかを返します
+	// ret : 現在の認証状態
 	AuthStatus GetAuthStatus( void )const;
 
-	//�w��̃o�C�i�������ۂɃJ�[�h�Ƀn�b�V�������A���̌��ʂ𓾂܂�
-	//�E�J�[�h�����F�؏�Ԃ̂Ƃ������g�p�ł��܂���
-	//�E�Ԃ����l�́Ain���`�������W�Ƃ��AID���擾�����Ƃ���MAC�̒l�ł�
-	// in : �n�b�V������f�[�^
-	//      16�o�C�g�ɖ����Ȃ��ꍇ�͑���Ȃ����͌���00h�𖄂߁A16�o�C�g�𒴂���Ƃ��͐擪��16�o�C�g���g�p���܂��B
-	// retHash : ���ʊi�[��
-	// ret : �������^
+	//指定のバイナリを実際にカードにハッシュさせ、その結果を得ます
+	//・カードが未認証状態のときしか使用できません
+	//・返される値は、inをチャレンジとし、IDを取得したときのMACの値です
+	// in : ハッシュするデータ
+	//      16バイトに満たない場合は足りない分は後ろに00hを埋め、16バイトを超えるときは先頭の16バイトを使用します。
+	// retHash : 結果格納先
+	// ret : 成功時真
 	bool CalcHash( const mBinary& in , mBinary& rethash );
 
-	//�J�[�h�����X�V����
-	//�E���炩���ߊO���F�؁i���ݔF�؁j���������Ă���K�v������܂�
-	//�E�ꎟ���s���ɁA�J�[�h���̍X�V��������Ă���K�v������܂�
-	// key : �J�[�h���̃o�C�i��(�҂�����16or24�o�C�g�̃f�[�^��ێ����Ă��邱��)
-	//  16�o�C�g�̎����̃o�C�i�����J�[�h���A24�o�C�g�̂Ƃ��ʉ��J�[�h���̃}�X�^�[���Ƃ��ď������܂�
-	// keyver : �V�������o�[�W����
-	// ret : �������^
+	//カード鍵を更新する
+	//・あらかじめ外部認証（相互認証）が成功している必要があります
+	//・一次発行時に、カード鍵の更新が許可されている必要があります
+	// key : カード鍵のバイナリ(ぴったり16or24バイトのデータを保持していること)
+	//  16バイトの時そのバイナリをカード鍵、24バイトのとき個別化カード鍵のマスター鍵として処理します
+	// keyver : 新しい鍵バージョン
+	// ret : 成功時真
 	bool UpdateKey( const mSecureBinary& key , uint16_t keyver );
 
 	///-----------------------------------------
-	/// �ݒ���擾
+	/// 設定情報取得
 	///-----------------------------------------
 
-	//ID�u���b�N(82H)�ɑ��݂��郆�[�U�[���C�ӂɗ��p�ł���l���擾���܂�
-	//���u�ʉ��J�[�h���v�𗘗p����ꍇ�́A���̒l�͌������̃V�[�h�̈ꕔ�ɂȂ�܂��B
-	// retVal : �擾�����l
-	// macauth : �^�̏ꍇ�AMAC_A�ɂ��F�؂��s���܂�
-	//   ���^�̏ꍇ�A���炩���ߓ����F�؂܂��́A�O���i���݁j�F�؂��������Ă���K�v������܂�
-	// ret : �������^
+	//IDブロック(82H)に存在するユーザーが任意に利用できる値を取得します
+	//※「個別化カード鍵」を利用する場合は、この値は鍵生成のシードの一部になります。
+	// retVal : 取得した値
+	// macauth : 真の場合、MAC_Aによる認証を行います
+	//   ※真の場合、あらかじめ内部認証または、外部（相互）認証が完了している必要があります
+	// ret : 成功時真
 	bool GetUserID( mBinary& retVal , bool macauth = false )const;
 
-	//���o�[�W�������擾���܂�
-	// retVal : �擾�����l
-	// macauth : �^�̏ꍇ�AMAC_A�ɂ��F�؂��s���܂�
-	//   ���^�̏ꍇ�A���炩���ߓ����F�؂܂��́A�O���i���݁j�F�؂��������Ă���K�v������܂�
-	// ret : �������^
+	//鍵バージョンを取得します
+	// retVal : 取得した値
+	// macauth : 真の場合、MAC_Aによる認証を行います
+	//   ※真の場合、あらかじめ内部認証または、外部（相互）認証が完了している必要があります
+	// ret : 成功時真
 	bool GetKeyVersion( uint16_t& retVal , bool macauth = false )const;
 
-	//�J�[�h������ROM���j�����Ă��Ȃ�����Ԃ��܂�
-	//�ECRC�ɂ��s�������������̌��،��ʂ�Ԃ��܂��B����̓J�[�h�N�����ɂP�񂾂��s����`�F�b�N�ł��B
-	// macauth : �^�̏ꍇ�AMAC_A�ɂ��F�؂��s���܂�
-	//   ���^�̏ꍇ�A���炩���ߓ����F�؂܂��́A�O���i���݁j�F�؂��������Ă���K�v������܂�
-	// ret : �`�F�b�N���i�̏ꍇ�^�A�`�F�b�N�s���i�̏ꍇ�U
+	//カード内部のROMが破損していないかを返します
+	//・CRCによる不揮発性メモリの検証結果を返します。これはカード起動時に１回だけ行われるチェックです。
+	// macauth : 真の場合、MAC_Aによる認証を行います
+	//   ※真の場合、あらかじめ内部認証または、外部（相互）認証が完了している必要があります
+	// ret : チェック合格の場合真、チェック不合格の場合偽
 	bool GetChecksumResult( bool macauth = false )const;
 
 	///-----------------------------------------
-	/// �ǂݏ����֘A
+	/// 読み書き関連
 	///-----------------------------------------
 
-	//�ǂݏ������s���u���b�N�̃G���g��
+	//読み書きを行うブロックのエントリ
 	using DataBlockEntry = mSCFelicaDefinitions::DataBlockEntry;
-	//�ǂݏ������s���u���b�N�̃f�[�^
+	//読み書きを行うブロックのデータ
 	using DataBlock = mSCFelicaDefinitions::DataBlock;
-	//�ǂݎ����s�������u���b�N�̔ԍ�
+	//読み取りを行いたいブロックの番号
 	using ReadRequestBlock = mSCFelicaDefinitions::ReadRequestBlock;
-	//���[�U�[�u���b�N�̖��O
+	//ユーザーブロックの名前
 	using UserBlock = mSCFelicaDefinitions::UserBlock;
-	//REG�f�[�^
+	//REGデータ
 	using RegData = mSCFelicaDefinitions::RegData;
 
-	//�f�[�^�̓ǂݎ��
-	//�E���[�U�[�u���b�N�̂ݓǂݎ��ł��܂�
-	//  �u���b�N�ԍ�S_PAD0(00h)�`REG(0Eh)�͈̔́B
-	//�E�P�x�ɒʐM�ł���T�C�Y�𒴂��ēǂݎ��Ώۂ��w�肵���ꍇ�́A������ɕ������Ă�����s���܂�
-	//�E�����u���b�N���Q��ȏ�ǂݎ�낤�Ƃ���̂͋֎~�ł�
-	// request : �ǂݎ�肽���u���b�N�ԍ��̈ꗗ
-	// retResponse : �ǂݎ�茋��
-	//   �������Arequest�Ɏw�肵���u���b�N�̕��я��ɓǂݎ�����f�[�^���i�[����邱�Ƃ�ۏ؂��܂�
-	// macauth : �^�̏ꍇ�AMAC_A�ɂ��F�؂��s���܂�
-	//   ���^�̏ꍇ�A���炩���ߓ����F�؂܂��́A�O���i���݁j�F�؂��������Ă���K�v������܂�
-	// ret : �������^
+	//データの読み取り
+	//・ユーザーブロックのみ読み取りできます
+	//  ブロック番号S_PAD0(00h)〜REG(0Eh)の範囲。
+	//・１度に通信できるサイズを超えて読み取り対象を指定した場合は、複数回に分割してこれを行います
+	//・同じブロックを２回以上読み取ろうとするのは禁止です
+	// request : 読み取りたいブロック番号の一覧
+	// retResponse : 読み取り結果
+	//   成功時、requestに指定したブロックの並び順に読み取ったデータが格納されることを保証します
+	// macauth : 真の場合、MAC_Aによる認証を行います
+	//   ※真の場合、あらかじめ内部認証または、外部（相互）認証が完了している必要があります
+	// ret : 成功時真
 	bool Read( const ReadRequestBlock& request , DataBlock& retResponse , bool macauth = false )const;
 
-	//�f�[�^�̏�������
-	//�E���[�U�[�u���b�N�̂ݏ������݂ł��܂�
-	//  �u���b�N�ԍ�S_PAD0(00h)�`REG(0Eh)�͈̔́Benum UserBlock�Ŗ��̂��`���Ă���܂��B
-	//�E�����̏������ݑΏۂ��w�肵���ꍇ�́A�P�u���b�N���������ď������݂��s���܂��B
-	//  ���̂Ƃ��A�����ݏ������s���鏇�Ԃ́Adata�̔z��̕��я��ƂȂ�܂��B
-	//�E�����u���b�N���Q��ȏ㏑�������Ƃ���̂͋֎~�ł�
-	// data : �����ރf�[�^
-	// macauth : �^�̏ꍇ�AMAC_A�ɂ��F�؂��s���܂�
-	//   ���^�̏ꍇ�A���炩���ߓ����F�؂܂��́A�O���i���݁j�F�؂��������Ă���K�v������܂�
-	// ret : �������^
+	//データの書き込み
+	//・ユーザーブロックのみ書き込みできます
+	//  ブロック番号S_PAD0(00h)〜REG(0Eh)の範囲。enum UserBlockで名称を定義してあります。
+	//・複数の書き込み対象を指定した場合は、１ブロックずつ分割して書き込みを行います。
+	//  このとき、書込み処理が行われる順番は、dataの配列の並び順となります。
+	//・同じブロックを２回以上書込もうとするのは禁止です
+	// data : 書込むデータ
+	// macauth : 真の場合、MAC_Aによる認証を行います
+	//   ※真の場合、あらかじめ内部認証または、外部（相互）認証が完了している必要があります
+	// ret : 成功時真
 	bool Write( const DataBlock& data , bool macauth = false )const;
 
-	//DataBlockEntry��RegData�ɕϊ�
-	//�ERead���\�b�h�Ŏ擾����DataBlock��REG(���Z)�u���b�N�Ƃ��ēǂݎ��܂�
-	// src : �ǂݎ��f�[�^�u���b�N(�u���b�N�ԍ���REG���W�X�^�̂��̂łȂ��Ă��ǂݎ��܂�)
-	// ret : �ǂݎ�茋��
+	//DataBlockEntryをRegDataに変換
+	//・Readメソッドで取得したDataBlockをREG(減算)ブロックとして読み取ります
+	// src : 読み取るデータブロック(ブロック番号がREGレジスタのものでなくても読み取ります)
+	// ret : 読み取り結果
 	RegData DataBlockEntryToRegData( const DataBlockEntry& src );
 
-	//DataBlockEntry��RegData�ɕϊ�
-	//�ERead���\�b�h�Ŏ擾����DataBlock��REG(���Z)�u���b�N�Ƃ��ēǂݎ��܂�
-	// src : �ǂݎ��f�[�^�u���b�N(�u���b�N�ԍ���REG���W�X�^�̂��̂łȂ��Ă��ǂݎ��܂�)
-	// ret : �ǂݎ�茋��
+	//DataBlockEntryをRegDataに変換
+	//・Readメソッドで取得したDataBlockをREG(減算)ブロックとして読み取ります
+	// src : 読み取るデータブロック(ブロック番号がREGレジスタのものでなくても読み取ります)
+	// ret : 読み取り結果
 	void DataBlockEntryToRegData( const DataBlockEntry& src , RegData& retRegData );
 
-	//RegData��DataBlockEntry�ɕϊ�
-	//�EREG(���Z)�u���b�N���������ݗp��DataBlockEntry�`���ɃG���R�[�h���܂�
-	// src : ���Z�u���b�N
-	// ret : �G���R�[�h����
+	//RegDataをDataBlockEntryに変換
+	//・REG(減算)ブロックを書き込み用にDataBlockEntry形式にエンコードします
+	// src : 減算ブロック
+	// ret : エンコード結果
 	DataBlockEntry RegDataToDataBlockEntry( const RegData& src );
 
-	//RegData��DataBlockEntry�ɕϊ�
-	//�EREG(���Z)�u���b�N���������ݗp��DataBlockEntry�`���ɃG���R�[�h���܂�
-	// src : ���Z�u���b�N
-	// ret : �G���R�[�h����
+	//RegDataをDataBlockEntryに変換
+	//・REG(減算)ブロックを書き込み用にDataBlockEntry形式にエンコードします
+	// src : 減算ブロック
+	// ret : エンコード結果
 	void RegDataToDataBlockEntry( const RegData& src , DataBlockEntry& retDataBlockEntry );
 
 private:
@@ -240,50 +240,50 @@ private:
 
 protected:
 
-	//�F�؃I�u�W�F�N�g
+	//認証オブジェクト
 	mutable mSCFelicaMac MyFelicaMac;
 
-	//�ڑ����̃J�[�h�ʂ̏���
-	// ret : �����������^
+	//接続時のカード個別の処理
+	// ret : 処理成功時真
 	virtual bool OnConnectCallback( void );
 
-	//�f�[�^�̓ǂݎ��
-	// request : �ǂݎ�肽���u���b�N�ԍ��̈ꗗ(�ő�4�u���b�N)
-	// retResponse : �ǂݎ�茋��
-	//   �������Arequest�Ɏw�肵���u���b�N�̕��я��ɓǂݎ�����f�[�^���i�[����邱�Ƃ�ۏ؂��܂�
-	// ret : �������^
+	//データの読み取り
+	// request : 読み取りたいブロック番号の一覧(最大4ブロック)
+	// retResponse : 読み取り結果
+	//   成功時、requestに指定したブロックの並び順に読み取ったデータが格納されることを保証します
+	// ret : 成功時真
 	bool RawRead( const ReadRequestBlock& request , DataBlock& retResponse )const;
 
-	//�f�[�^�̏�������
-	// data : �����ރf�[�^
-	//   �������Adata�Ɏw�肵���u���b�N�̕��я��ɏ������ݏ������s���܂�
-	//   �e�G���g����Data��16�o�C�g�ɖ����Ȃ��ꍇ�́A����Ȃ�����00H��₢�܂��B16�o�C�g��葽���ꍇ�́A�擪��16�o�C�g�̂ݏ����݂܂��B
-	// ret : �������^
+	//データの書き込み
+	// data : 書込むデータ
+	//   成功時、dataに指定したブロックの並び順に書き込み処理を行います
+	//   各エントリのDataが16バイトに満たない場合は、足りない分は00Hを補います。16バイトより多い場合は、先頭の16バイトのみ書込みます。
+	// ret : 成功時真
 	bool RawWrite( const DataBlock& data )const;
 
-	//�f�[�^�̓ǂݎ��(MAC�F�ؗL��)
-	//�����炩���ߓ����F�؂܂��́A�O���i���݁j�F�؂��������Ă���K�v������܂�
-	// request : �ǂݎ�肽���u���b�N�ԍ��̈ꗗ(�ő�3�u���b�N)
-	// retResponse : �ǂݎ�茋��
-	//   �������Arequest�Ɏw�肵���u���b�N�̕��я��ɓǂݎ�����f�[�^���i�[����邱�Ƃ�ۏ؂��܂�
-	// ret : �������^
+	//データの読み取り(MAC認証有効)
+	//※あらかじめ内部認証または、外部（相互）認証が完了している必要があります
+	// request : 読み取りたいブロック番号の一覧(最大3ブロック)
+	// retResponse : 読み取り結果
+	//   成功時、requestに指定したブロックの並び順に読み取ったデータが格納されることを保証します
+	// ret : 成功時真
 	bool MacReadInternal( const ReadRequestBlock& request , DataBlock& retResponse )const;
 
-	//�f�[�^�̏�������(MAC�F�ؗL��)
-	//�����炩���ߊO���i���݁j�F�؂��������Ă���K�v������܂�
-	// data : �����ރf�[�^
-	// ret : �������^
+	//データの書き込み(MAC認証有効)
+	//※あらかじめ外部（相互）認証が完了している必要があります
+	// data : 書込むデータ
+	// ret : 成功時真
 	bool MacWriteInternal( const DataBlockEntry& data , DWORD wcnt )const;
 
-	//WCNT�l(90h)���擾���܂�
-	// ret : ������WCNT�l�B���s��0xFFFFFFFFu�B
+	//WCNT値(90h)を取得します
+	// ret : 成功時WCNT値。失敗時0xFFFFFFFFu。
 	DWORD GetWCNT( void )const;
 
-	//�����F�؂܂��́A�O���i���݁j�F�؂��s���܂�
-	// key : �J�[�h���̃o�C�i��(�҂�����16�o�C�g�̃f�[�^��ێ����Ă��邱��)
-	// int_auth_only : �^�̏ꍇ�A�����F�؂̂ݍs���܂�
-	//                 �U�̏ꍇ�A���ݔF�؂��s���܂�(�����F�؁A�O���F�؂̗������s���܂�)
-	// ret : �������^
+	//内部認証または、外部（相互）認証を行います
+	// key : カード鍵のバイナリ(ぴったり16バイトのデータを保持していること)
+	// int_auth_only : 真の場合、内部認証のみ行います
+	//                 偽の場合、相互認証を行います(内部認証、外部認証の両方を行います)
+	// ret : 成功時真
 	bool ExecAuthenticationInternal( const mSecureBinary& key , bool int_auth_only );
 
 };

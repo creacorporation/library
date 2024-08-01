@@ -1,5 +1,5 @@
-//----------------------------------------------------------------------------
-// ƒEƒCƒ“ƒhƒEŠÇ—iGDIƒŠƒ\[ƒXƒv[ƒ‹j
+ï»¿//----------------------------------------------------------------------------
+// ã‚¦ã‚¤ãƒ³ãƒ‰ã‚¦ç®¡ç†ï¼ˆGDIãƒªã‚½ãƒ¼ã‚¹ãƒ—ãƒ¼ãƒ«ï¼‰
 // Copyright (C) 2016 Fingerling. All rights reserved. 
 // This program is released under the MIT License. 
 // see http://opensource.org/licenses/mit-license.php
@@ -21,28 +21,28 @@ mGdiResource::~mGdiResource()
 	}
 }
 
-//ƒRƒ“ƒgƒ[ƒ‹‚ğƒRƒŒƒNƒVƒ‡ƒ“‚É’Ç‰Á‚·‚é
+//ã‚³ãƒ³ãƒˆãƒ­ãƒ¼ãƒ«ã‚’ã‚³ãƒ¬ã‚¯ã‚·ãƒ§ãƒ³ã«è¿½åŠ ã™ã‚‹
 mGdiHandle* mGdiResource::AddItemInternal( mGdiHandleFactory factory , const WString& id , const void* opt )
 {
-	//g—p•s”\‚ÈID‚Å‚È‚¢‚©‚ğŠm”F
-	//‚·‚Å‚É‘¶İ‚·‚éID‚Å‚Í‚È‚¢‚©AID‚ª‹ó•¶š—ñ‚Å‚Í‚È‚¢‚©‚ğŠm”F‚·‚é
+	//ä½¿ç”¨ä¸èƒ½ãªIDã§ãªã„ã‹ã‚’ç¢ºèª
+	//ã™ã§ã«å­˜åœ¨ã™ã‚‹IDã§ã¯ãªã„ã‹ã€IDãŒç©ºæ–‡å­—åˆ—ã§ã¯ãªã„ã‹ã‚’ç¢ºèªã™ã‚‹
 	if( id == L"" || MyIdMap.count( id ) )
 	{
-		//g—p•s”\‚ÈID‚¾‚Á‚½
+		//ä½¿ç”¨ä¸èƒ½ãªIDã ã£ãŸ
 		RaiseAssert( g_ErrorLogger , (ULONG_PTR)factory , L"Bad id : " + id );
 		return nullptr;
 	}
 
-	//ƒIƒuƒWƒFƒNƒg‚ÌƒCƒ“ƒXƒ^ƒ“ƒX‚ğì¬‚·‚é
+	//ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã®ã‚¤ãƒ³ã‚¹ã‚¿ãƒ³ã‚¹ã‚’ä½œæˆã™ã‚‹
 	mGdiHandle* obj = factory( opt );
 	if( obj == nullptr )
 	{
-		//ƒtƒ@ƒNƒgƒŠƒƒ\ƒbƒh‚ª¸”s‚µ‚½
+		//ãƒ•ã‚¡ã‚¯ãƒˆãƒªãƒ¡ã‚½ãƒƒãƒ‰ãŒå¤±æ•—ã—ãŸ
 		RaiseAssert( g_ErrorLogger , (ULONG_PTR)factory , L"Factory method returned nullptr : " + id );
 		return nullptr;
 	}
 
-	//¶¬‚µ‚½ƒIƒuƒWƒFƒNƒg‚ğ“o˜^‚·‚é
+	//ç”Ÿæˆã—ãŸã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã‚’ç™»éŒ²ã™ã‚‹
 	MyIdMap.insert( IdMap::value_type( id , obj ) );
 
 	return obj;
@@ -52,26 +52,26 @@ HGDIOBJ mGdiResource::GetItem( const WString& id , const WString& subid )const
 {
 	IdMap::const_iterator itr;
 	
-	//‚Ü‚¸‚ÍÅ‰‚Ìid‚ÅŒŸõ
+	//ã¾ãšã¯æœ€åˆã®idã§æ¤œç´¢
 	itr = MyIdMap.find( id );
 	if( itr != MyIdMap.end() )
 	{
 		return itr->second->GetHandle();
 	}
-	//ŠY“–ID‚Ì“o˜^‚ª‚È‚¢ê‡‚ÍAsubid‚ÅŒŸõ
+	//è©²å½“IDã®ç™»éŒ²ãŒãªã„å ´åˆã¯ã€subidã§æ¤œç´¢
 	itr = MyIdMap.find( subid ); 
 	if( itr != MyIdMap.end() )
 	{
 		return itr->second->GetHandle();
 	}
-	//‚»‚Ì“o˜^‚à‚È‚¢ê‡‚ÍŠY“––³‚µƒGƒ‰[
+	//ãã®ç™»éŒ²ã‚‚ãªã„å ´åˆã¯è©²å½“ç„¡ã—ã‚¨ãƒ©ãƒ¼
 	RaiseAssert( g_ErrorLogger , 0 , L"Id not found : " + id );
 	return nullptr;
 }
 
 bool mGdiResource::RemoveItem( const WString& id )
 {
-	//ƒAƒCƒeƒ€‚ğíœ‚·‚é
+	//ã‚¢ã‚¤ãƒ†ãƒ ã‚’å‰Šé™¤ã™ã‚‹
 	IdMap::iterator itr = MyIdMap.find( id );
 	if( itr == MyIdMap.end() )
 	{

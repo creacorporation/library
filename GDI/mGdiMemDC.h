@@ -1,16 +1,16 @@
-//----------------------------------------------------------------------------
-// �E�C���h�E�Ǘ��i�������f�o�C�X�R���e�L�X�g�j
+﻿//----------------------------------------------------------------------------
+// ウインドウ管理（メモリデバイスコンテキスト）
 // Copyright (C) 2016 Fingerling. All rights reserved. 
 // This program is released under the MIT License. 
 // see http://opensource.org/licenses/mit-license.php
 //----------------------------------------------------------------------------
 
 /*
-���p�r
-�ėp�̃f�o�C�X�R���e�L�X�g�ł��B
-���̃N���X�ł́ACreateCompatibleDC()���Ăяo����Windows����f�o�C�X�R���e�L�X�g���擾���܂��B
-��Ƀr�b�g�}�b�v��ێ����邽�߂̃N���X�ł��B
-�v���C�x�[�g�f�o�C�X�R���e�L�X�g�ƂȂ邽�߁A���̃N���X���O���[�o���ϐ��ɕێ����Ă���肠��܂���B
+●用途
+汎用のデバイスコンテキストです。
+このクラスでは、CreateCompatibleDC()を呼び出してWindowsからデバイスコンテキストを取得します。
+主にビットマップを保持するためのクラスです。
+プライベートデバイスコンテキストとなるため、このクラスをグローバル変数に保持しても問題ありません。
 */
 
 #ifndef MGDIMEMDC_H_INCLUDED
@@ -23,17 +23,17 @@ class mGdiMemDC : public mGdiDC
 {
 public:
 
-	//�R���X�g���N�^
-	//�������Ȃ��ꍇ�́A�f�X�N�g�b�v�ƌ݊��̃f�o�C�X�R���e�L�X�g���쐬����܂��B
+	//コンストラクタ
+	//引数がない場合は、デスクトップと互換のデバイスコンテキストが作成されます。
 	mGdiMemDC();
 
-	//�R���X�g���N�^
-	//src : �R�R�Ŏw�肵�����̂ƌ݊��̃f�o�C�X�R���e�L�X�g���쐬����܂��B
+	//コンストラクタ
+	//src : ココで指定したものと互換のデバイスコンテキストが作成されます。
 	mGdiMemDC( const mGdiDC& src );
 
-	//�R���X�g���N�^
-	//src : �R�R�Ŏw�肵�����̂ƌ݊��̃f�o�C�X�R���e�L�X�g���쐬����܂��B
-	//      nullptr���w�肷��ƃf�X�N�g�b�v���w�肵�����̂ƌ��Ȃ��܂�
+	//コンストラクタ
+	//src : ココで指定したものと互換のデバイスコンテキストが作成されます。
+	//      nullptrを指定するとデスクトップを指定したものと見なします
 	mGdiMemDC( const mGdiDC* src );
 
 	virtual ~mGdiMemDC();

@@ -1,12 +1,12 @@
-//----------------------------------------------------------------------------
-// HTTP�A�N�Z�X
+﻿//----------------------------------------------------------------------------
+// HTTPアクセス
 // Copyright (C) 2013 Fingerling. All rights reserved. 
 // Copyright (C) 2019- Crea Inc. All rights reserved.
 // This program is released under the MIT License. 
 // see http://opensource.org/licenses/mit-license.php
-// ���쌠�\���⃉�C�Z���X�̉��ς͋֎~����Ă��܂��B
-// ���̃\�[�X�R�[�h�Ɋւ��āA��L���C�Z���X�ȊO�̌_�񓙂͈�ؑ��݂��܂���B
-// (���炩�̌_�񂪂���ꍇ�ł��A�{�\�[�X�R�[�h�͂��̑ΏۊO�ƂȂ�܂�)
+// 著作権表示やライセンスの改変は禁止されています。
+// このソースコードに関して、上記ライセンス以外の契約等は一切存在しません。
+// (何らかの契約がある場合でも、本ソースコードはその対象外となります)
 //----------------------------------------------------------------------------
 
 
@@ -22,12 +22,12 @@
 
 #pragma comment( lib , "winhttp.lib" )
 
-//����
-//�EPHP�Ōx���E�G���[���ł�ƁAWinHTTP�����G���[�ɂȂ邱�Ƃ�����
-//�@- ERROR_WINHTTP_INVALID_SERVER_RESPONSE���Ԃ��Ă���
-//  - PHP���Ŗ���`�ϐ����Q�Ƃ��Čx�����o���ꍇ�Ȃ�
-//�@- HTTPd�̃X�e�[�^�X�R�[�h��200�ɂȂ��Ă���̂ł킩��ɂ���
-//�E�Q�l�ɂȂ邩������Ȃ�URL
+//メモ
+//・PHPで警告・エラーがでると、WinHTTP側がエラーになることがある
+//　- ERROR_WINHTTP_INVALID_SERVER_RESPONSEが返ってくる
+//  - PHP側で未定義変数を参照して警告が出た場合など
+//　- HTTPdのステータスコードは200になっているのでわかりにくい
+//・参考になるかもしれないURL
 // http://msdn.microsoft.com/en-us/library/aa385473(v=vs.85).aspx
 // http://msdn.microsoft.com/en-us/library/aa384273(v=vs.85).aspx
 // http://eternalwindows.jp/network/winhttp/winhttp01.html
@@ -42,11 +42,11 @@ namespace Definitions_HttpAccess
 
 	enum OptionProtocolVersion
 	{
-		//HTTP1.1���g�p����
+		//HTTP1.1を使用する
 		HTTP_VERSION_11,
-		//HTTP2.0���g�p����
-		//�Ȃ��AmHttpRequest::QueryHeader()���g����HTTP�o�[�W������₢���킹��ƁA
-		//���ۂɂ�HTTP2.0�ŒʐM���Ă��Ă�1.1�ƕ񍐂��Ă��邱�Ƃ�������ۂ��̂�IsHttp2()�Ŋm�F���邱�ƁB
+		//HTTP2.0を使用する
+		//なお、mHttpRequest::QueryHeader()を使ってHTTPバージョンを問い合わせると、
+		//実際にはHTTP2.0で通信していても1.1と報告してくることがあるっぽいのでIsHttp2()で確認すること。
 		HTTP_VERSION_20,
 	};
 };
@@ -59,7 +59,7 @@ public:
 	virtual ~mHttpAccess();
 
 	//-----------------------------------------------------------------------
-	// �����ݒ�
+	// 初期設定
 	//-----------------------------------------------------------------------
 
 	using OptionType = Definitions_HttpAccess::OptionType;
@@ -75,11 +75,11 @@ public:
 			UserAgent = L"";
 		}
 	public:
-		OptionProtocolVersion ProtocolVersion;	//�g�p����v���g�R���o�[�W����
-		WString UserAgent;						//���[�U�G�[�W�F���g
+		OptionProtocolVersion ProtocolVersion;	//使用するプロトコルバージョン
+		WString UserAgent;						//ユーザエージェント
 	};
 
-	//�v���L�V���g�p���Ȃ��ꍇ�̃I�v�V����
+	//プロキシを使用しない場合のオプション
 	struct AccessOption_NoProxy : public AccessOption
 	{
 		AccessOption_NoProxy() : AccessOption( Definitions_HttpAccess::OptionType::NOPROXY )
@@ -87,7 +87,7 @@ public:
 		}
 	};
 
-	//�v���L�V���g�p����ꍇ�̃I�v�V����
+	//プロキシを使用する場合のオプション
 	struct AccessOption_WithProxy : public AccessOption
 	{
 		AccessOption_WithProxy() : AccessOption( Definitions_HttpAccess::OptionType::WITHPROXY )
@@ -95,26 +95,26 @@ public:
 			ProxyServer = L"";
 			NoProxyList = L"";
 		}
-		WString ProxyServer;		//�g�p����v���L�V�T�[�o(�󕶎���Ńf�t�H���g)
-		WString NoProxyList;		//�v���L�V���g�p���Ȃ�URL(�Z�~�R������؂�)
+		WString ProxyServer;		//使用するプロキシサーバ(空文字列でデフォルト)
+		WString NoProxyList;		//プロキシを使用しないURL(セミコロン区切り)
 	};
 
-	//�����ݒ�
+	//初期設定
 	bool Setup( const AccessOption& opt );
 
-	//�Z�b�V�����n���h������������Ă��邩��Ԃ�
+	//セッションハンドルが生成されているかを返す
 	operator bool() const;
 
 	//-----------------------------------------------------------------------
-	// �ڑ��̐���
+	// 接続の生成
 	//-----------------------------------------------------------------------
 
 	using ConnectionOption = mHttpConnection::ConnectionOption;
 
-	//�V�����ڑ��𐶐�����
-	//info : �ڑ�����
-	//retConn : �ڑ��������ʓ���ꂽ�n���h��
-	//ret : �ڑ��������^
+	//新しい接続を生成する
+	//info : 接続先情報
+	//retConn : 接続した結果得られたハンドル
+	//ret : 接続成功時真
 	bool NewConnection( const ConnectionOption& info , mHttpConnection& retConn );
 
 private:
@@ -124,14 +124,14 @@ private:
 
 protected:
 
-	//�n���h��
+	//ハンドル
 	HINTERNET MySession;
 
 	std::unique_ptr< AccessOption > MyOption;
 
 };
 
-//�g�p��
+//使用例
 #if 0
 
 #include <mStandard.h>
@@ -143,7 +143,7 @@ int main( int argc , char** argv )
 
 	mHttpAccess http;
 
-	//WinHTTP�̃Z�b�V�����I�u�W�F�N�g���쐬
+	//WinHTTPのセッションオブジェクトを作成
 	mHttpAccess::AccessOption_NoProxy accessopt;
 	accessopt.UserAgent = L"TEST";
 	accessopt.ProtocolVersion = mHttpAccess::OptionProtocolVersion::HTTP_VERSION_11;
@@ -153,7 +153,7 @@ int main( int argc , char** argv )
 		return 1;
 	}
 
-	//�Z�b�V�����I�u�W�F�N�g�ɐڑ�����i�A�h���X�ƃ|�[�g�j��n���Đڑ��I�u�W�F�N�g���쐬
+	//セッションオブジェクトに接続先情報（アドレスとポート）を渡して接続オブジェクトを作成
 	mHttpConnection conn;
 	mHttpConnection::ConnectionOption connopt;
 	connopt.ServerName = L"https://192.168.0.1/index.php";
@@ -164,19 +164,19 @@ int main( int argc , char** argv )
 		return 2;
 	}
 
-	//�ڑ��I�u�W�F�N�g�Ƀ��N�G�X�g���i�������URL���j��n���ă��N�G�X�g�I�u�W�F�N�g���쐬
+	//接続オブジェクトにリクエスト情報（動詞やらURLやら）を渡してリクエストオブジェクトを作成
 	mHttpRequest req;
 	mHttpRequest::RequestOption reqopt;
 	reqopt.Url = L"https://192.168.0.1/index.php";
 	reqopt.Verb = mHttpRequest::RequestVerb::VERB_GET;
-	reqopt.Secure = true;	//https�̏ꍇtrue
+	reqopt.Secure = true;	//httpsの場合true
 
 	if( !conn.NewRequest( reqopt , req ) )
 	{
 		return 3;
 	}
 
-	//SSL�G���[�𖳎�����ꍇ�͈ȉ��̂悤�Ȑݒ�������
+	//SSLエラーを無視する場合は以下のような設定をいれる
 	//mHttpRequest::SslIgnoreErrors sslerr;
 	//sslerr.IgnoreInvalidCA = true;
 	//sslerr.IgnoreInvalidCommonName = true;
@@ -185,41 +185,41 @@ int main( int argc , char** argv )
 	//	return 5;
 	//}
 
-	//���N�G�X�g���M�O�ɁA���炩����POST����f�[�^�Ƃ����������ނ��Ƃ��ł���
-	//���炩���ߏ�������ł����΁A���N�G�X�g���M���ɏ���ɑ��M����B
-	//���炩���ߏ������ރf�[�^�ɂ��ẮAExecute()�̈����Ɏw�肷��f�[�^�T�C�Y�Ɋ܂߂Ȃ��ėǂ�
+	//リクエスト送信前に、あらかじめPOSTするデータとかを書き込むこともできる
+	//あらかじめ書き込んでおけば、リクエスト送信時に勝手に送信する。
+	//あらかじめ書き込むデータについては、Execute()の引数に指定するデータサイズに含めなくて良い
 	//req.WriteString( "value1=123\r\n" );
 	//req.WriteString( "value2=456\r\n" );
 	//req.WriteString( "value3=789\r\n" );
 
-	//���N�G�X�g�𑗐M
+	//リクエストを送信
 	if( !req.Execute( 0 ) )
 	{
 		return 4;
 	}
 
-	//���N�G�X�g���M��ɁAPOST����f�[�^���������ނ��Ƃ��ł���
-	//�������A���̏ꍇ��Execute()�ɏ������ރo�C�g���𐳊m�Ɏw�肷��K�v������
-	//�����ς�t�@�C����o�C�i���f�[�^�̑��M�Ɏg��
+	//リクエスト送信後に、POSTするデータを書き込むこともできる
+	//ただし、この場合はExecute()に書き込むバイト数を正確に指定する必要がある
+	//もっぱらファイルやバイナリデータの送信に使う
 	//BYTE data[ 1024 ];
 	//req.WriteBinary( data , sizeof( data ) );
 
-	//���X�|���X�҂�
+	//レスポンス待ち
 	do
 	{
 		if( req.IsEOF() )
 		{
-			//�w�b�_������O��IsEOF()���^�ɂȂ�����ʐM�G���[
-			printf( "�ʐM�G���[\n" );
+			//ヘッダが来る前にIsEOF()が真になったら通信エラー
+			printf( "通信エラー\n" );
 			return 6;
 		}
 		SleepEx( 1000 , true );
 	} while( !req.IsHeaderAvailable() );
 
-	//�X�e�[�^�X�R�[�h���擾
+	//ステータスコードを取得
 	DWORD status_code = req.GetStatusCode();
 
-	//���ʎ擾���R���\�[���ɏo��
+	//結果取得しコンソールに出力
 	while( !req.IsEOF() )
 	{
 		AString str;

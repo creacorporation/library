@@ -1,10 +1,10 @@
-//----------------------------------------------------------------------------
-// AESˆÃ†‰»ƒNƒ‰ƒX
+ï»¿//----------------------------------------------------------------------------
+// AESæš—å·åŒ–ã‚¯ãƒ©ã‚¹
 // Copyright (C) 2013-2016 Fingerling. All rights reserved. 
 // Copyright (C) 2018- Crea Inc. All rights reserved.
 // This program is released under the MIT License. 
 // see http://opensource.org/licenses/mit-license.php
-// 2013/10/09`
+// 2013/10/09ã€œ
 //----------------------------------------------------------------------------
 
 
@@ -15,18 +15,18 @@
 #include <wincrypt.h>
 #include "../General/mTCHAR.h"
 
-//AESê—pˆÃ†‰»ƒNƒ‰ƒX
-//EŠÈ’PŽd—l
-//EAES256bitê—p
-//EŒ®‚Í256ƒrƒbƒg‚ÌƒoƒCƒiƒŠ‚©ƒpƒXƒ[ƒhƒeƒLƒXƒg
-//EƒpƒXƒ[ƒhƒeƒLƒXƒg‚Å“ü—Í‚µ‚½ê‡‚ÍASHA256(ƒpƒXƒ[ƒh + salt )‚Å“¾‚ç‚ê‚éƒoƒCƒiƒŠ‚ðŒ®‚Æ‚·‚éB
+//AESå°‚ç”¨æš—å·åŒ–ã‚¯ãƒ©ã‚¹
+//ãƒ»ç°¡å˜ä»•æ§˜
+//ãƒ»AES256bitå°‚ç”¨
+//ãƒ»éµã¯256ãƒ“ãƒƒãƒˆã®ãƒã‚¤ãƒŠãƒªã‹ãƒ‘ã‚¹ãƒ¯ãƒ¼ãƒ‰ãƒ†ã‚­ã‚¹ãƒˆ
+//ãƒ»ãƒ‘ã‚¹ãƒ¯ãƒ¼ãƒ‰ãƒ†ã‚­ã‚¹ãƒˆã§å…¥åŠ›ã—ãŸå ´åˆã¯ã€SHA256(ãƒ‘ã‚¹ãƒ¯ãƒ¼ãƒ‰ + salt )ã§å¾—ã‚‰ã‚Œã‚‹ãƒã‚¤ãƒŠãƒªã‚’éµã¨ã™ã‚‹ã€‚
 
-//¦ƒƒ‚
-//PKCS#5ƒpƒfƒBƒ“ƒO‚Æ‚ÍH
-//ƒpƒfƒBƒ“ƒO‚·‚éƒoƒCƒg”‚Ì’l‚ÅƒpƒfƒBƒ“ƒO‚·‚éB
-//16ƒoƒCƒgƒuƒƒbƒN‚Å12ƒoƒCƒgŽg‚Á‚Ä‚¢‚é‚È‚çA4ƒoƒCƒgƒpƒfƒBƒ“ƒO‚·‚é‚Ì‚ÅA
-//‚»‚Ì4ƒoƒCƒg‚ðu0x04v‚ÅƒpƒfƒBƒ“ƒO‚·‚éB
-//ƒuƒƒbƒN’·‚Ò‚Á‚½‚è‚È‚çAŽŸ‚Ì1ƒuƒƒbƒN‚ðŠÛ‚²‚ÆƒpƒfƒBƒ“ƒO‚·‚éB
+//â€»ãƒ¡ãƒ¢
+//PKCS#5ãƒ‘ãƒ‡ã‚£ãƒ³ã‚°ã¨ã¯ï¼Ÿ
+//ãƒ‘ãƒ‡ã‚£ãƒ³ã‚°ã™ã‚‹ãƒã‚¤ãƒˆæ•°ã®å€¤ã§ãƒ‘ãƒ‡ã‚£ãƒ³ã‚°ã™ã‚‹ã€‚
+//16ãƒã‚¤ãƒˆãƒ–ãƒ­ãƒƒã‚¯ã§12ãƒã‚¤ãƒˆä½¿ã£ã¦ã„ã‚‹ãªã‚‰ã€4ãƒã‚¤ãƒˆãƒ‘ãƒ‡ã‚£ãƒ³ã‚°ã™ã‚‹ã®ã§ã€
+//ãã®4ãƒã‚¤ãƒˆã‚’ã€Œ0x04ã€ã§ãƒ‘ãƒ‡ã‚£ãƒ³ã‚°ã™ã‚‹ã€‚
+//ãƒ–ãƒ­ãƒƒã‚¯é•·ã´ã£ãŸã‚Šãªã‚‰ã€æ¬¡ã®1ãƒ–ãƒ­ãƒƒã‚¯ã‚’ä¸¸ã”ã¨ãƒ‘ãƒ‡ã‚£ãƒ³ã‚°ã™ã‚‹ã€‚
 
 class mAES
 {
@@ -34,28 +34,28 @@ public:
 	mAES();
 	virtual ~mAES();
 
-	//‰Šú‰»
-	//key : ˆÃ†‰»ƒL[(‚R‚QƒoƒCƒg‚ÌƒoƒCƒiƒŠ)
-	//ret : ¬Œ÷Žž^
+	//åˆæœŸåŒ–
+	//key : æš—å·åŒ–ã‚­ãƒ¼(ï¼“ï¼’ãƒã‚¤ãƒˆã®ãƒã‚¤ãƒŠãƒª)
+	//ret : æˆåŠŸæ™‚çœŸ
 	bool Init( const BYTE* key );
 
-	//‰Šú‰»
-	// key : ˆÃ†‰»ƒL[(•¶Žš—ñ)
-	// salt : ˆÃ†‰»ƒL[‚ÉŠÜ‚ß‚éƒ\ƒ‹ƒg
-	// saltsize : ƒ\ƒ‹ƒg‚ÌƒoƒCƒg”
-	//ret : ¬Œ÷Žž^
+	//åˆæœŸåŒ–
+	// key : æš—å·åŒ–ã‚­ãƒ¼(æ–‡å­—åˆ—)
+	// salt : æš—å·åŒ–ã‚­ãƒ¼ã«å«ã‚ã‚‹ã‚½ãƒ«ãƒˆ
+	// saltsize : ã‚½ãƒ«ãƒˆã®ãƒã‚¤ãƒˆæ•°
+	//ret : æˆåŠŸæ™‚çœŸ
 	bool Init( const SecureAString& key , const BYTE* salt = nullptr , DWORD saltsize = 0 );
 
-	//ˆÃ†‰»ƒL[‚ð‰ð•ú‚µA‰Šúó‘Ô‚É–ß‚µ‚Ü‚·
+	//æš—å·åŒ–ã‚­ãƒ¼ã‚’è§£æ”¾ã—ã€åˆæœŸçŠ¶æ…‹ã«æˆ»ã—ã¾ã™
 	void Deinit( void );
 
-	//IV‚ðƒZƒbƒg‚·‚é
-	// iv ‚Í16ƒoƒCƒg‚ÌƒoƒCƒiƒŠ
-	//ret : ¬Œ÷Žž^
+	//IVã‚’ã‚»ãƒƒãƒˆã™ã‚‹
+	// iv ã¯16ãƒã‚¤ãƒˆã®ãƒã‚¤ãƒŠãƒª
+	//ret : æˆåŠŸæ™‚çœŸ
 	bool SetIV( const BYTE* iv );
 
-	//ˆÃ†‰»ƒL[‚ªƒZƒbƒg‚³‚ê‚Ä‚¢‚é‚©‚ð•Ô‚·
-	//ret : ƒZƒbƒg‚³‚ê‚Ä‚¢‚é‚Æ‚«^
+	//æš—å·åŒ–ã‚­ãƒ¼ãŒã‚»ãƒƒãƒˆã•ã‚Œã¦ã„ã‚‹ã‹ã‚’è¿”ã™
+	//ret : ã‚»ãƒƒãƒˆã•ã‚Œã¦ã„ã‚‹ã¨ãçœŸ
 	bool IsInitialized( void )const;
 
 private:
@@ -64,16 +64,16 @@ private:
 
 protected:
 
-	HCRYPTPROV	MyCryptProv;	//ˆÃ†‰»ƒvƒƒoƒCƒ_‚Ìƒnƒ“ƒhƒ‹
-	HCRYPTKEY	MyCryptKey;		//ˆÃ†‰»ƒL[‚Ìƒnƒ“ƒhƒ‹
+	HCRYPTPROV	MyCryptProv;	//æš—å·åŒ–ãƒ—ãƒ­ãƒã‚¤ãƒ€ã®ãƒãƒ³ãƒ‰ãƒ«
+	HCRYPTKEY	MyCryptKey;		//æš—å·åŒ–ã‚­ãƒ¼ã®ãƒãƒ³ãƒ‰ãƒ«
 
-	//ƒvƒƒoƒCƒ_‚Ì‰Šú‰»
-	//ret : ¬Œ÷Žž^
+	//ãƒ—ãƒ­ãƒã‚¤ãƒ€ã®åˆæœŸåŒ–
+	//ret : æˆåŠŸæ™‚çœŸ
 	bool InitProvider( void );
 
-	//‰Šú‰»ŠÖ”i“à•”—pj
-	// hash : ƒL[‚ðƒnƒbƒVƒ…‚µ‚½ƒIƒuƒWƒFƒNƒg
-	// ret : ¬Œ÷Žž^
+	//åˆæœŸåŒ–é–¢æ•°ï¼ˆå†…éƒ¨ç”¨ï¼‰
+	// hash : ã‚­ãƒ¼ã‚’ãƒãƒƒã‚·ãƒ¥ã—ãŸã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆ
+	// ret : æˆåŠŸæ™‚çœŸ
 	bool Init( HCRYPTHASH hash );
 
 };

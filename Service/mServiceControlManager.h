@@ -1,12 +1,12 @@
-//----------------------------------------------------------------------------
-// �T�[�r�X�n���h��
+﻿//----------------------------------------------------------------------------
+// サービスハンドラ
 // Copyright (C) 2016 Fingerling. All rights reserved. 
 // Copyright (C) 2019- Crea Inc. All rights reserved.
 // This program is released under the MIT License. 
 // see http://opensource.org/licenses/mit-license.php
-// ���쌠�\���⃉�C�Z���X�̉��ς͋֎~����Ă��܂��B
-// ���̃\�[�X�R�[�h�Ɋւ��āA��L���C�Z���X�ȊO�̌_�񓙂͈�ؑ��݂��܂���B
-// (���炩�̌_�񂪂���ꍇ�ł��A�{�\�[�X�R�[�h�͂��̑ΏۊO�ƂȂ�܂�)
+// 著作権表示やライセンスの改変は禁止されています。
+// このソースコードに関して、上記ライセンス以外の契約等は一切存在しません。
+// (何らかの契約がある場合でも、本ソースコードはその対象外となります)
 //----------------------------------------------------------------------------
 
 #ifndef MSERVICECONTROLMANAGER_H_INCLUDED
@@ -32,9 +32,9 @@ namespace Definitions_mServiceControlManager
 	};
 	enum ServiceProcessType
 	{
-		//�������g�̃v���Z�X�����B
+		//自分自身のプロセスを持つ。
 		SERVICE_OWN_PROCESS = 1,
-		//�z�X�g�v���Z�X�����B
+		//ホストプロセスを持つ。
 		SERVICE_SHARE_PROCESS = 2,
 	};
 
@@ -47,35 +47,35 @@ namespace Definitions_mServiceControlManager
 
 namespace mServiceControlManager
 {
-	//�I�v�V�����\����
-	//���ۂɃt�H���g���쐬����Ƃ��́AOption�\���̂𒼐ڎg�킸�ɁA��肽�����ɍ��킹�Ĉȉ����g���ĉ������B
-	//�EOption_UseOption �c �����o�ϐ��𖄂߂ăI�v�V������ݒ肵�����Ƃ�
+	//オプション構造体
+	//実際にフォントを作成するときは、Option構造体を直接使わずに、作りたい物に合わせて以下を使って下さい。
+	//・Option_UseOption … メンバ変数を埋めてオプションを設定したいとき
 	struct ServiceParam
 	{
 		using ServiceProcessUser = Definitions_mServiceControlManager::ServiceProcessUser;
-		const ServiceProcessUser method;	//RTTI�̑�p�ł��B�ύX�̕K�v�͂���܂���B
+		const ServiceProcessUser method;	//RTTIの代用です。変更の必要はありません。
 
 		using ServiceStartType = Definitions_mServiceControlManager::ServiceStartType;
 		using ServiceErrorControl = Definitions_mServiceControlManager::ServiceErrorControl;
 		using ServiceProcessType = Definitions_mServiceControlManager::ServiceProcessType;
 
-		//�T�[�r�X�̖��́i�T�[�r�X��ID�j
+		//サービスの名称（サービスのID）
 		WString ServiceName;
-		//�T�[�r�X�̕\����̖��O
+		//サービスの表示上の名前
 		WString DisplayName;
-		//�T�[�r�X�̐�����
+		//サービスの説明文
 		WString Description;
-		//�T�[�r�X�̃v���Z�X�̎��
+		//サービスのプロセスの種別
 		ServiceProcessType ProcessType;
-		//���[�U�[�Ƃ̒��ڑΘb�������邩(LocalSystem�A�J�E���g�Ŏ��s����Ƃ�����)
+		//ユーザーとの直接対話を許可するか(LocalSystemアカウントで実行するとき限定)
 		bool Interactive;
-		//�T�[�r�X�N�����[�h
+		//サービス起動モード
 		ServiceStartType StartType;
-		//�T�[�r�X�ɃG���[�����������Ƃ��̋���
+		//サービスにエラーが発生したときの挙動
 		ServiceErrorControl ErrorControl;
-		//�T�[�r�X�̃o�C�i��
+		//サービスのバイナリ
 		WString BinaryPathName;
-		//�ˑ���̃T�[�r�X��
+		//依存先のサービス名
 		WStringVector Dependencies;
 
 	protected:
@@ -90,14 +90,14 @@ namespace mServiceControlManager
 	};
 
 
-	//�T�[�r�X�쐬�p�����[�^�i�ʏ�̃T�[�r�X�j
-	//�E�T�[�r�X���g�p����A�J�E���g���w��ł���
-	//�E�V�X�e���N���Ɠ����ɋN���ł���
+	//サービス作成パラメータ（通常のサービス）
+	//・サービスが使用するアカウントを指定できる
+	//・システム起動と同時に起動できる
 	struct ServiceParam_System : public ServiceParam
 	{
-		//�T�[�r�X�����s���郆�[�U�[��
+		//サービスを実行するユーザー名
 		WString UserName;
-		//�T�[�r�X�����s���郆�[�U�[�̃p�X���[�h
+		//サービスを実行するユーザーのパスワード
 		WString Password;
 
 		ServiceParam_System() : ServiceParam( ServiceProcessUser::SYSTEM_PROCESS )
@@ -105,9 +105,9 @@ namespace mServiceControlManager
 		}
 	};
 
-	//�T�[�r�X�쐬�p�����[�^
-	//�E�T�[�r�X���g�p����A�J�E���g�͌��݃��O�I�����Ă��郆�[�U�[
-	//�E���[�U�[�����O�I�����Ă��Ȃ��Ǝg���Ȃ�
+	//サービス作成パラメータ
+	//・サービスが使用するアカウントは現在ログオンしているユーザー
+	//・ユーザーがログオンしていないと使えない
 	struct ServiceParam_LogonUser : public ServiceParam
 	{
 		ServiceParam_LogonUser() : ServiceParam( ServiceProcessUser::LOGONUSER_PROCESS )
@@ -115,38 +115,38 @@ namespace mServiceControlManager
 		}
 	};
 
-	//�V�����T�[�r�X���쐬����
+	//新しいサービスを作成する
 	bool CreateNewService( const ServiceParam& param );
 
-	//�����̃T�[�r�X���폜����
+	//既存のサービスを削除する
 	bool DeleteExistingService( const WString& ServiceName );
 
-	//�����̃T�[�r�X���J�n����
+	//既存のサービスを開始する
 	bool StartExistingService( const WString& ServiceName , const WStringDeque& args );
 
-	//�����̃T�[�r�X�𒆒f����
+	//既存のサービスを中断する
 	bool PauseExistingService( const WString& ServiceName );
 
-	//�����̃T�[�r�X���ĊJ����
+	//既存のサービスを再開する
 	bool ContinueExistingService( const WString& ServiceName );
 
-	//�����̃T�[�r�X���~����
+	//既存のサービスを停止する
 	bool StopExistingService( const WString& ServiceName , bool is_planed , const WString& reason );
 
-	//�����̃T�[�r�X�ɃR���g���[���R�[�h�𑗂�
+	//既存のサービスにコントロールコードを送る
 	bool ControlExistingService( const WString& ServiceName , DWORD code );
 
-	//���[�U�[�Z�b�V�����œ��삵�Ă���T�[�r�X�́A���Z�b�V�����ł̃T�[�r�X���𒲂ׂ�
-	//�@�����[�U�[�Z�b�V�����œ��삵�Ă���T�[�r�X�́A�^�X�N�}�l�[�W�����ł݂�ƁA
-	//�@�@�u<�T�[�r�X��>_xxxxxx�v�̖��O�ɂȂ��Ă��āAxxxxxx�̕����̓��O�C�����邽�тɕς��B
-	//�@�@���̕������擾����API�͔���J�̂悤�Ȃ̂ŁA�ȉ������̂��̂���������B
-	// (1)���쒆�̃T�[�r�X
-	// (2)���[�U�[�Z�b�V�����œ��삵�Ă���T�[�r�X
-	// (3)�T�[�r�X���̃A���_�[�o�[���O�̕������A�T���Ă���T�[�r�X���ƈ�v
-	// (4)���݂̃v���Z�X�����s���Ă���Z�b�V����ID�ƁA�T�[�r�X�����s���Ă���Z�b�V����ID������
-	// ServiceName = �����Ώۂ̃T�[�r�X
-	// retFound = ���������T�[�r�X
-	// ret = �������^
+	//ユーザーセッションで動作しているサービスの、現セッションでのサービス名を調べる
+	//　※ユーザーセッションで動作しているサービスは、タスクマネージャ等でみると、
+	//　　「<サービス名>_xxxxxx」の名前になっていて、xxxxxxの部分はログインするたびに変わる。
+	//　　この部分を取得するAPIは非公開のようなので、以下条件のものを検索する。
+	// (1)動作中のサービス
+	// (2)ユーザーセッションで動作しているサービス
+	// (3)サービス名のアンダーバーより前の部分が、探しているサービス名と一致
+	// (4)現在のプロセスを実行しているセッションIDと、サービスを実行しているセッションIDが同じ
+	// ServiceName = 検索対象のサービス
+	// retFound = 発見したサービス
+	// ret = 成功時真
 	bool SearchUserProcessService( const WString& ServiceName , WString& retFound );
 
 };

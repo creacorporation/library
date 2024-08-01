@@ -1,11 +1,11 @@
-//----------------------------------------------------------------------------
-// Microsoft Excel�n���h��
+﻿//----------------------------------------------------------------------------
+// Microsoft Excelハンドラ
 // Copyright (C) 2018- Crea Inc. All rights reserved.
 // This program is released under the MIT License. 
 // see http://opensource.org/licenses/mit-license.php
-// ���쌠�\���⃉�C�Z���X�̉��ς͋֎~����Ă��܂��B
-// ���̃\�[�X�R�[�h�Ɋւ��āA��L���C�Z���X�ȊO�̌_�񓙂͈�ؑ��݂��܂���B
-// (���炩�̌_�񂪂���ꍇ�ł��A�{�\�[�X�R�[�h�͂��̑ΏۊO�ƂȂ�܂�)
+// 著作権表示やライセンスの改変は禁止されています。
+// このソースコードに関して、上記ライセンス以外の契約等は一切存在しません。
+// (何らかの契約がある場合でも、本ソースコードはその対象外となります)
 //----------------------------------------------------------------------------
 
 #ifndef MEXCELCELLREF_H_INCLUDED
@@ -22,75 +22,75 @@ public:
 	mExcelCellRef( const mExcelCellRef& src );
 	const mExcelCellRef& operator=( const mExcelCellRef& src );
 
-	//�G�N�Z���͈͎̔w����
+	//エクセルの範囲指定情報
 	struct Position
 	{
-		//�s�S�̂��w���Ă��邩�H
-		//���s�E�񗼕���S�̎w�肷�邱�Ƃ͂ł��܂���B
-		//�@�i�w���[�N�V�[�g�S�́x���w�肷�邱�Ƃ͂ł��܂���j
+		//行全体を指しているか？
+		//※行・列両方を全体指定することはできません。
+		//　（『ワークシート全体』を指定することはできません）
 		bool WholeRow;
 
-		//��S�̂��w���Ă��邩�H
-		//���s�E�񗼕���S�̎w�肷�邱�Ƃ͂ł��܂���B
-		//�@�i�w���[�N�V�[�g�S�́x���w�肷�邱�Ƃ͂ł��܂���j
+		//列全体を指しているか？
+		//※行・列両方を全体指定することはできません。
+		//　（『ワークシート全体』を指定することはできません）
 		bool WholeCol;
 
-		//�s�͐�Ύw��H  �^�Ȃ��ΎQ�ƁA�U�Ȃ瑊�ΎQ��
-		// ��ΎQ��		$a$1	R1C1
-		// ���ΎQ��		a1		R[1]C[-1]
+		//行は絶対指定？  真なら絶対参照、偽なら相対参照
+		// 絶対参照		$a$1	R1C1
+		// 相対参照		a1		R[1]C[-1]
 		bool AbsRow;
 
-		//��͐�Ύw��H  �^�Ȃ��ΎQ�ƁA�U�Ȃ瑊�ΎQ��
-		// ��ΎQ��		$a$1	R1C1
-		// ���ΎQ��		a1		R[1]C[-1]
+		//列は絶対指定？  真なら絶対参照、偽なら相対参照
+		// 絶対参照		$a$1	R1C1
+		// 相対参照		a1		R[1]C[-1]
 		bool AbsCol;
 
-		//�s�ԍ�
-		// A1�`���̏ꍇ�AR1C1�`���Ő�ΎQ�Ƃ̏ꍇ��1�J�n
-		// R1C1�`���ő��ΎQ�Ƃ̏ꍇ��0�ȉ���OK
+		//行番号
+		// A1形式の場合、R1C1形式で絶対参照の場合は1開始
+		// R1C1形式で相対参照の場合は0以下もOK
 		INT Row;
 
-		//��ԍ�
-		// A1�`���̏ꍇ�AR1C1�`���Ő�ΎQ�Ƃ̏ꍇ��1�J�n
-		// R1C1�`���ő��ΎQ�Ƃ̏ꍇ��0�ȉ���OK
+		//列番号
+		// A1形式の場合、R1C1形式で絶対参照の場合は1開始
+		// R1C1形式で相対参照の場合は0以下もOK
 		INT Col;
 
-		//�f�t�H���g�ŏ�����
-		//���ǂ̃Z�����w���Ă��Ȃ���ԂɂȂ�܂�
+		//デフォルトで初期化
+		//※どのセルも指していない状態になります
 		Position()
 		{
 			Clear();
 		}
 
-		//������
-		//whole_row	�s�S�́H
-		//whole_col	��S�́H
-		//abs_row	�s�͐�Ύw��H  �^�Ȃ��ΎQ��($a$1)�A�U�Ȃ瑊�ΎQ��(a1)
-		//abs_col	��͐�Ύw��H  �^�Ȃ��ΎQ��($a$1)�A�U�Ȃ瑊�ΎQ��(a1)
-		//row		�s�ԍ�(1�J�n)
-		//col		��ԍ�(1�J�n)
+		//初期化
+		//whole_row	行全体？
+		//whole_col	列全体？
+		//abs_row	行は絶対指定？  真なら絶対参照($a$1)、偽なら相対参照(a1)
+		//abs_col	列は絶対指定？  真なら絶対参照($a$1)、偽なら相対参照(a1)
+		//row		行番号(1開始)
+		//col		列番号(1開始)
 		Position( bool whole_row , bool whole_col , bool abs_row , bool abs_col , INT row , INT col )
 		{
 			Set( whole_row , whole_col , abs_row , abs_col , row , col );
 		}
 
-		//������
-		//whole_row	�s�S�́H
-		//whole_col	��S�́H
-		//abs_row	�s�͐�Ύw��H  �^�Ȃ��ΎQ��($a$1)�A�U�Ȃ瑊�ΎQ��(a1)
-		//abs_col	��͐�Ύw��H  �^�Ȃ��ΎQ��($a$1)�A�U�Ȃ瑊�ΎQ��(a1)
-		//row		�s�ԍ�(1�J�n)
-		//col		��ԍ�(A1�`���̃A���t�@�x�b�g)
+		//初期化
+		//whole_row	行全体？
+		//whole_col	列全体？
+		//abs_row	行は絶対指定？  真なら絶対参照($a$1)、偽なら相対参照(a1)
+		//abs_col	列は絶対指定？  真なら絶対参照($a$1)、偽なら相対参照(a1)
+		//row		行番号(1開始)
+		//col		列番号(A1形式のアルファベット)
 		Position( bool whole_row , bool whole_col , bool abs_row , bool abs_col , INT row , const WString& col );
 
-		//�L���ȃZ�����w���Ă����Ԃ�
+		//有効なセルを指している状態か
 		inline bool IsValid( void )const
 		{
 			return !WholeRow || !WholeCol;
 		}
 
-		//�ʒu�����N���A���܂�
-		//���ǂ̃Z�����w���Ă��Ȃ���ԂɂȂ�܂�
+		//位置情報をクリアします
+		//※どのセルも指していない状態になります
 		inline void Clear( void )
 		{
 			WholeRow = true;
@@ -101,13 +101,13 @@ public:
 			AbsCol = false;
 		}
 
-		//�͈͂��w�肵�܂�
-		//whole_row	�s�S�́H
-		//whole_col	��S�́H
-		//abs_row	�s�͐�Ύw��H  �^�Ȃ��ΎQ��($a$1)�A�U�Ȃ瑊�ΎQ��(a1)
-		//abs_col	��͐�Ύw��H  �^�Ȃ��ΎQ��($a$1)�A�U�Ȃ瑊�ΎQ��(a1)
-		//row		�s�ԍ�(1�J�n)
-		//col		��ԍ�(1�J�n)
+		//範囲を指定します
+		//whole_row	行全体？
+		//whole_col	列全体？
+		//abs_row	行は絶対指定？  真なら絶対参照($a$1)、偽なら相対参照(a1)
+		//abs_col	列は絶対指定？  真なら絶対参照($a$1)、偽なら相対参照(a1)
+		//row		行番号(1開始)
+		//col		列番号(1開始)
 		inline void Set( bool whole_row , bool whole_col , bool abs_row , bool abs_col , INT row , INT col )
 		{
 			WholeRow = whole_row;
@@ -119,66 +119,66 @@ public:
 		}
 	};
 
-	//�w���1�̃Z���A�s�S�́A��S�̂��w���悤�ɃI�u�W�F�N�g�����������܂�
-	// src : �w�肵�����Z��
+	//指定の1つのセル、行全体、列全体を指すようにオブジェクトを初期化します
+	// src : 指定したいセル
 	mExcelCellRef( const Position& src );
 
-	//�w���2�̃Z���A�s�S�́A��S�̂ɂ��͈͂��w�肳���悤�ɃI�u�W�F�N�g�����������܂�
-	// src1 : �w�肵�����͈͂̑Ίp�����Ȃ�����̃Z��
-	// src2 : �w�肵�����͈͂̑Ίp�����Ȃ���������̃Z��
+	//指定の2つのセル、行全体、列全体により範囲が指定されるようにオブジェクトを初期化します
+	// src1 : 指定したい範囲の対角線をなす一方のセル
+	// src2 : 指定したい範囲の対角線をなすもう一方のセル
 	mExcelCellRef( const Position& src1 , const Position& src2 );
 
-	//�w���1�̃Z���A�s�S�́A��S�̂��w���悤�ɃI�u�W�F�N�g���Z�b�g���܂�
-	// src : �w�肵�����Z��
-	// ret : �������^
+	//指定の1つのセル、行全体、列全体を指すようにオブジェクトをセットします
+	// src : 指定したいセル
+	// ret : 成功時真
 	bool SetPosition( const Position& pos );
 
-	//�w���2�̃Z���A�s�S�́A��S�̂ɂ��͈͂��w�肳���悤�ɃI�u�W�F�N�g���Z�b�g���܂�
-	// src1 : �w�肵�����͈͂̑Ίp�����Ȃ�����̃Z��
-	// src2 : �w�肵�����͈͂̑Ίp�����Ȃ���������̃Z��
-	// ret : �������^
+	//指定の2つのセル、行全体、列全体により範囲が指定されるようにオブジェクトをセットします
+	// src1 : 指定したい範囲の対角線をなす一方のセル
+	// src2 : 指定したい範囲の対角線をなすもう一方のセル
+	// ret : 成功時真
 	bool SetPosition( const Position& pos1 , const Position& pos2 );
 
-	//�ێ����Ă���ʒu��Ԃ�
-	// retPos1 : �͈͂̈���̃Z��(�s�v�Ȃ�nullptr��)
-	// retPos2 : �͈͂̂�������̃Z��(�s�v�Ȃ�nullptr��)
-	// ret : �������^
+	//保持している位置を返す
+	// retPos1 : 範囲の一方のセル(不要ならnullptr可)
+	// retPos2 : 範囲のもう一方のセル(不要ならnullptr可)
+	// ret : 成功時真
 	bool GetPosition( Position* retPos1 , Position* retPos2 );
 
-	//�ێ����Ă���ʒu��Ԃ�
-	// ret : �������^
+	//保持している位置を返す
+	// ret : 成功時真
 	const Position& GetPos1( void )const;
 
-	//�ێ����Ă���ʒu��Ԃ�
-	// ret : �������^
+	//保持している位置を返す
+	// ret : 成功時真
 	const Position& GetPos2( void )const;
 
-	//�ێ����Ă���ʒu�A�͈͂𕶎���ŕԂ�
-	// IsRC : true : R1C1�`��
-	//        false : A1�`��
-	// ret : �������^
+	//保持している位置、範囲を文字列で返す
+	// IsRC : true : R1C1形式
+	//        false : A1形式
+	// ret : 成功時真
 	const WString& GetAddress( bool IsRC )const;
 
-	//�͈͂̍s����Ԃ�
-	//pos : ��ʒu
-	//	R1C1�`���ŁA��ΎQ�ƂƑ��ΎQ�Ƃ����݂���ꍇ�A���ΎQ�Ƃ���Ƃ���ʒu�ɂ���Č��ʂ��ς��܂�
-	//	���̂悤�ȏꍇ�́A��Ƃ���ʒu���w�肵�ĉ������B����ȊO�̏ꍇ�͌��ʂ��ς��Ȃ��̂Ŏw��s�v�ł��B
-	//	nullptr���w�肵���ꍇ�́Apos1(�w��͈͂̍���)����ɂȂ�܂��B
-	//ret : �͈͂Ɋ܂܂��s���B�G���[�̂Ƃ��O�B
+	//範囲の行数を返す
+	//pos : 基準位置
+	//	R1C1形式で、絶対参照と相対参照が混在する場合、相対参照が基準とする位置によって結果が変わります
+	//	このような場合は、基準とする位置を指定して下さい。それ以外の場合は結果が変わらないので指定不要です。
+	//	nullptrを指定した場合は、pos1(指定範囲の左上)が基準になります。
+	//ret : 範囲に含まれる行数。エラーのとき０。
 	DWORD GetRowCount( const Position* pos = nullptr )const;
 
-	//�͈̗͂񐔂�Ԃ�
-	//pos : ��ʒu
-	//	R1C1�`���ŁA��ΎQ�ƂƑ��ΎQ�Ƃ����݂���ꍇ�A���ΎQ�Ƃ���Ƃ���ʒu�ɂ���Č��ʂ��ς��܂�
-	//	���̂悤�ȏꍇ�́A��Ƃ���ʒu���w�肵�ĉ������B����ȊO�̏ꍇ�͌��ʂ��ς��Ȃ��̂Ŏw��s�v�ł��B
-	//	nullptr���w�肵���ꍇ�́Apos1(�w��͈͂̍���)����ɂȂ�܂��B
-	//ret : �͈͂Ɋ܂܂��s���B�G���[�̂Ƃ��O�B
+	//範囲の列数を返す
+	//pos : 基準位置
+	//	R1C1形式で、絶対参照と相対参照が混在する場合、相対参照が基準とする位置によって結果が変わります
+	//	このような場合は、基準とする位置を指定して下さい。それ以外の場合は結果が変わらないので指定不要です。
+	//	nullptrを指定した場合は、pos1(指定範囲の左上)が基準になります。
+	//ret : 範囲に含まれる行数。エラーのとき０。
 	DWORD GetColCount( const Position* pos = nullptr )const;
 
-	//�����w���Ă��Ȃ���Ԃɂ���
+	//何も指していない状態にする
 	void Clear( void );
 
-	//�L���ȃZ�����w���Ă��邩�H
+	//有効なセルを指しているか？
 	inline bool IsValid( void )const
 	{
 		return MyPos1.IsValid();
@@ -195,21 +195,21 @@ protected:
 
 	bool UpdateAddress( bool IsRC )const;
 
-	//�G�N�Z���̃��[�N�V�[�g��̈ʒu����Z�����̂𐶐����܂�
-	//��F��3�A�s2�Ȃ�R3C2�Ƃ�C2�Ƃ���Ԃ��܂�
-	// retCell : ���������Z���̖��O
-	// IsRC    : �^�Ȃ�R1C1�`���A�U�Ȃ��ΎQ��
-	// IsAbs   : �^�Ȃ��ΎQ��($a$1)�A�U�Ȃ瑊�ΎQ��(a1)
-	// row     : �s�ԍ�(1����J�n �G�N�Z����row()�Ɠ����l)
-	// col     : ��ԍ�(1����J�n �G�N�Z����col()�Ɠ����l)
-	// norow   : �s�͎w�肵�Ȃ��i���̏ꍇrow�͖�������܂��j��S�̂̎w��p
-	// nocol   : ��͎w�肵�Ȃ��i���̏ꍇcol�͖�������܂��j�s�S�̂̎w��p
-	// ret     : �����ł�����^�A���s������U
-	//           ��A1�`����row��-1�Ƃ��w�肵���肷��Ǝ��s���܂�
+	//エクセルのワークシート上の位置からセル名称を生成します
+	//例：列3、行2ならR3C2とかC2とかを返します
+	// retCell : 生成したセルの名前
+	// IsRC    : 真ならR1C1形式、偽なら絶対参照
+	// IsAbs   : 真なら絶対参照($a$1)、偽なら相対参照(a1)
+	// row     : 行番号(1から開始 エクセルのrow()と同じ値)
+	// col     : 列番号(1から開始 エクセルのcol()と同じ値)
+	// norow   : 行は指定しない（この場合rowは無視されます）列全体の指定用
+	// nocol   : 列は指定しない（この場合colは無視されます）行全体の指定用
+	// ret     : 生成できたら真、失敗したら偽
+	//           ※A1形式でrowに-1とか指定したりすると失敗します
 	static bool BuildCellName( WString& retCell , bool IsRC , bool IsAbsRow , bool IsAbsCol , INT row , INT col , bool norow = false , bool nocol = false );
-	//�Z�����̂𐶐�����i�������j
-	static bool BuildCellNameA1( WString& retCell , bool IsAbsRow , bool IsAbsCol , INT row , INT col , bool norow , bool nocol );	//A1�`���p
-	static bool BuildCellNameRC( WString& retCell , bool IsAbsRow , bool IsAbsCol , INT row , INT col , bool norow , bool nocol );	//R1C1�`���p
+	//セル名称を生成する（下請け）
+	static bool BuildCellNameA1( WString& retCell , bool IsAbsRow , bool IsAbsCol , INT row , INT col , bool norow , bool nocol );	//A1形式用
+	static bool BuildCellNameRC( WString& retCell , bool IsAbsRow , bool IsAbsCol , INT row , INT col , bool norow , bool nocol );	//R1C1形式用
 
 };
 

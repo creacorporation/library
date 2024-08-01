@@ -1,5 +1,5 @@
-//----------------------------------------------------------------------------
-// ƒEƒCƒ“ƒhƒEŠÇ—iƒCƒ[ƒWƒŠƒXƒgj
+ï»¿//----------------------------------------------------------------------------
+// ã‚¦ã‚¤ãƒ³ãƒ‰ã‚¦ç®¡ç†ï¼ˆã‚¤ãƒ¡ãƒ¼ã‚¸ãƒªã‚¹ãƒˆï¼‰
 // Copyright (C) 2016 Fingerling. All rights reserved. 
 // This program is released under the MIT License. 
 // see http://opensource.org/licenses/mit-license.php
@@ -21,7 +21,7 @@ mGdiImagelist::mGdiImagelist( const Option* option )throw( mException )
 		}
 	}
 
-	//ƒAƒCƒRƒ“‚ª‚Å‚«‚Ä‚È‚©‚Á‚½‚çƒGƒ‰[‚É‚·‚é
+	//ã‚¢ã‚¤ã‚³ãƒ³ãŒã§ãã¦ãªã‹ã£ãŸã‚‰ã‚¨ãƒ©ãƒ¼ã«ã™ã‚‹
 	if( MyHandle == nullptr )
 	{
 		throw EXCEPTION( 0 , L"Creating cursor failed" );
@@ -30,41 +30,41 @@ mGdiImagelist::mGdiImagelist( const Option* option )throw( mException )
 
 mGdiImagelist::~mGdiImagelist()
 {
-	//ƒnƒ“ƒhƒ‹‚Ì‰ğ•ú
+	//ãƒãƒ³ãƒ‰ãƒ«ã®è§£æ”¾
 	::ImageList_Destroy( MyHandle );
 	MyHandle = nullptr;
 }
 
-//ƒnƒ“ƒhƒ‹‚Ì’l‚ğæ“¾‚·‚é(ƒLƒƒƒXƒg‰‰Zqƒo[ƒWƒ‡ƒ“)
+//ãƒãƒ³ãƒ‰ãƒ«ã®å€¤ã‚’å–å¾—ã™ã‚‹(ã‚­ãƒ£ã‚¹ãƒˆæ¼”ç®—å­ãƒãƒ¼ã‚¸ãƒ§ãƒ³)
 mGdiImagelist::operator HIMAGELIST()const
 {
 	return MyHandle;
 }
 
-//ƒnƒ“ƒhƒ‹‚Ì’l‚ğæ“¾‚·‚é(•’Ê‚ÌŠÖ”ƒo[ƒWƒ‡ƒ“)
+//ãƒãƒ³ãƒ‰ãƒ«ã®å€¤ã‚’å–å¾—ã™ã‚‹(æ™®é€šã®é–¢æ•°ãƒãƒ¼ã‚¸ãƒ§ãƒ³)
 HGDIOBJ mGdiImagelist::GetHandle( void )const
 {
 	return MyHandle;
 }
 
-//ƒCƒ[ƒWƒŠƒXƒg‚ÉƒCƒ[ƒW‚Ì’Ç‰Á‚ğ‚·‚é
+//ã‚¤ãƒ¡ãƒ¼ã‚¸ãƒªã‚¹ãƒˆã«ã‚¤ãƒ¡ãƒ¼ã‚¸ã®è¿½åŠ ã‚’ã™ã‚‹
 bool mGdiImagelist::AddImage( const WString& id , const mGdiBitmap& img , const mGdiBitmap* mask )
 {
-	//ID‚ª‹ó—“‚Å‚Í‚È‚¢‚©ƒ`ƒFƒbƒN
+	//IDãŒç©ºæ¬„ã§ã¯ãªã„ã‹ãƒã‚§ãƒƒã‚¯
 	if( id == L"" )
 	{
 		RaiseAssert( g_ErrorLogger , 0 , L"Id not presented" );
 		return false;
 	}
 
-	//‚·‚Å‚É‘¶İ‚·‚éID‚Ìê‡‚ÍƒGƒ‰[‚É‚·‚é
+	//ã™ã§ã«å­˜åœ¨ã™ã‚‹IDã®å ´åˆã¯ã‚¨ãƒ©ãƒ¼ã«ã™ã‚‹
 	if( MyIdIndexMap.count( id ) )
 	{
 		RaiseAssert( g_ErrorLogger , 0 , L"Id already exist : " + id );
 		return false;
 	}
 
-	//‘¶İ‚µ‚È‚¢‚Ì‚ÅA’Ç‰Áˆ—‚ğs‚¤
+	//å­˜åœ¨ã—ãªã„ã®ã§ã€è¿½åŠ å‡¦ç†ã‚’è¡Œã†
 	int index = -1;
 	if( mask != nullptr )
 	{
@@ -75,146 +75,146 @@ bool mGdiImagelist::AddImage( const WString& id , const mGdiBitmap& img , const 
 		index = ::ImageList_Add( MyHandle , img , nullptr );
 	}
 
-	//ƒGƒ‰[‚¾‚Á‚½H
+	//ã‚¨ãƒ©ãƒ¼ã ã£ãŸï¼Ÿ
 	if( index < 0 )
 	{
-		//ƒGƒ‰[‚È‚Ì‚ÅI—¹
+		//ã‚¨ãƒ©ãƒ¼ãªã®ã§çµ‚äº†
 		RaiseAssert( g_ErrorLogger , 0 , L"ImageList_Add failed" );
 		return false;
 	}
 
-	//³íI—¹‚¾‚Á‚½‚Ì‚ÅID‚ğƒ}ƒbƒv‚É’Ç‰Á
+	//æ­£å¸¸çµ‚äº†ã ã£ãŸã®ã§IDã‚’ãƒãƒƒãƒ—ã«è¿½åŠ 
 	MyIdIndexMap.insert( IdIndexMap::value_type( id , index ) );
 	return true;
 }
 
-//ƒCƒ[ƒWƒŠƒXƒg‚ÉƒCƒ[ƒW‚Ì’Ç‰Á‚ğ‚·‚é
+//ã‚¤ãƒ¡ãƒ¼ã‚¸ãƒªã‚¹ãƒˆã«ã‚¤ãƒ¡ãƒ¼ã‚¸ã®è¿½åŠ ã‚’ã™ã‚‹
 bool mGdiImagelist::AddImageBitmap( const mGdiResource& res , const WString& id , const WString& img , const WString& mask )
 {
-	//mGdiResource‚©‚çw’è‚ÌƒCƒ[ƒW‚ğ’Šo‚·‚é
+	//mGdiResourceã‹ã‚‰æŒ‡å®šã®ã‚¤ãƒ¡ãƒ¼ã‚¸ã‚’æŠ½å‡ºã™ã‚‹
 	const mGdiBitmap* bmp_img = res.GetItem< mGdiBitmap >( img );
 	if( bmp_img == nullptr )
 	{
-		//’Šo¸”sBƒCƒ[ƒW‚ªæ“¾‚Å‚«‚È‚¢ê‡‚ÍƒGƒ‰[‚ÅI—¹
+		//æŠ½å‡ºå¤±æ•—ã€‚ã‚¤ãƒ¡ãƒ¼ã‚¸ãŒå–å¾—ã§ããªã„å ´åˆã¯ã‚¨ãƒ©ãƒ¼ã§çµ‚äº†
 		RaiseError( g_ErrorLogger , 0 , L"Image id not found : " + img );
 		return false;
 	}
-	//“¯—l‚Éƒ}ƒXƒN‚ğæ“¾‚·‚éBƒ}ƒXƒN‚Í‘¶İ‚µ‚È‚­‚Ä‚àƒGƒ‰[‚É‚Í‚µ‚È‚¢B
+	//åŒæ§˜ã«ãƒã‚¹ã‚¯ã‚’å–å¾—ã™ã‚‹ã€‚ãƒã‚¹ã‚¯ã¯å­˜åœ¨ã—ãªãã¦ã‚‚ã‚¨ãƒ©ãƒ¼ã«ã¯ã—ãªã„ã€‚
 	const mGdiBitmap* bmp_mask = nullptr;
 	if( mask != L"" )
 	{
 		bmp_mask = res.GetItem< mGdiBitmap >( mask );
 	}
 
-	//’Ç‰Áˆ—B
+	//è¿½åŠ å‡¦ç†ã€‚
 	return AddImage( id , *bmp_img , bmp_mask );
 }
 
-//ƒCƒ[ƒWƒŠƒXƒg‚ÉƒCƒ[ƒW‚Ì’Ç‰Á‚ğ‚·‚é
+//ã‚¤ãƒ¡ãƒ¼ã‚¸ãƒªã‚¹ãƒˆã«ã‚¤ãƒ¡ãƒ¼ã‚¸ã®è¿½åŠ ã‚’ã™ã‚‹
 bool mGdiImagelist::AddImage( const WString& id , const mGdiBitmap& img , COLORREF mask )
 {
-	//ID‚ª‹ó—“‚Å‚Í‚È‚¢‚©ƒ`ƒFƒbƒN
+	//IDãŒç©ºæ¬„ã§ã¯ãªã„ã‹ãƒã‚§ãƒƒã‚¯
 	if( id == L"" )
 	{
 		RaiseAssert( g_ErrorLogger , 0 , L"Id not presented" );
 		return false;
 	}
 
-	//‚·‚Å‚É‘¶İ‚·‚éID‚Ìê‡‚ÍƒGƒ‰[‚É‚·‚é
+	//ã™ã§ã«å­˜åœ¨ã™ã‚‹IDã®å ´åˆã¯ã‚¨ãƒ©ãƒ¼ã«ã™ã‚‹
 	if( MyIdIndexMap.count( id ) )
 	{
 		RaiseAssert( g_ErrorLogger , 0 , L"Id already exist : " + id );
 		return false;
 	}
 
-	//‘¶İ‚µ‚È‚¢‚Ì‚ÅA’Ç‰Áˆ—‚ğs‚¤
+	//å­˜åœ¨ã—ãªã„ã®ã§ã€è¿½åŠ å‡¦ç†ã‚’è¡Œã†
 	int index = -1;
 	index = ::ImageList_AddMasked( MyHandle , img , mask );
 
-	//ƒGƒ‰[‚¾‚Á‚½H
+	//ã‚¨ãƒ©ãƒ¼ã ã£ãŸï¼Ÿ
 	if( index < 0 )
 	{
-		//ƒGƒ‰[‚È‚Ì‚ÅI—¹
+		//ã‚¨ãƒ©ãƒ¼ãªã®ã§çµ‚äº†
 		RaiseAssert( g_ErrorLogger , 0 , L"ImageList_AddMasked failed" );
 		return false;
 	}
 
-	//³íI—¹‚¾‚Á‚½‚Ì‚ÅID‚ğƒ}ƒbƒv‚É’Ç‰Á
+	//æ­£å¸¸çµ‚äº†ã ã£ãŸã®ã§IDã‚’ãƒãƒƒãƒ—ã«è¿½åŠ 
 	MyIdIndexMap.insert( IdIndexMap::value_type( id , index ) );
 	return true;
 }
 
-//ƒCƒ[ƒWƒŠƒXƒg‚ÉƒCƒ[ƒW‚Ì’Ç‰Á‚ğ‚·‚é
+//ã‚¤ãƒ¡ãƒ¼ã‚¸ãƒªã‚¹ãƒˆã«ã‚¤ãƒ¡ãƒ¼ã‚¸ã®è¿½åŠ ã‚’ã™ã‚‹
 bool mGdiImagelist::AddImageBitmap( const mGdiResource& res , const WString& id , const WString& img , COLORREF mask )
 {
-	//mGdiResource‚©‚çw’è‚ÌƒCƒ[ƒW‚ğ’Šo‚·‚é
+	//mGdiResourceã‹ã‚‰æŒ‡å®šã®ã‚¤ãƒ¡ãƒ¼ã‚¸ã‚’æŠ½å‡ºã™ã‚‹
 	const mGdiBitmap* bmp_img = res.GetItem< mGdiBitmap >( img );
 	if( bmp_img == nullptr )
 	{
-		//’Šo¸”sBƒCƒ[ƒW‚ªæ“¾‚Å‚«‚È‚¢ê‡‚ÍƒGƒ‰[‚ÅI—¹
+		//æŠ½å‡ºå¤±æ•—ã€‚ã‚¤ãƒ¡ãƒ¼ã‚¸ãŒå–å¾—ã§ããªã„å ´åˆã¯ã‚¨ãƒ©ãƒ¼ã§çµ‚äº†
 		RaiseError( g_ErrorLogger , 0 , L"Image id not found : " + img );
 		return false;
 	}
 
-	//’Ç‰Áˆ—B
+	//è¿½åŠ å‡¦ç†ã€‚
 	return AddImage( id , *bmp_img , mask );
 }
 
 
-//ƒCƒ[ƒWƒŠƒXƒg‚ÉƒCƒ[ƒW‚Ì’Ç‰Á‚ğ‚·‚é
+//ã‚¤ãƒ¡ãƒ¼ã‚¸ãƒªã‚¹ãƒˆã«ã‚¤ãƒ¡ãƒ¼ã‚¸ã®è¿½åŠ ã‚’ã™ã‚‹
 bool mGdiImagelist::AddImage( const WString& id , const mGdiIcon& img )
 {
-	//ID‚ª‹ó—“‚Å‚Í‚È‚¢‚©ƒ`ƒFƒbƒN
+	//IDãŒç©ºæ¬„ã§ã¯ãªã„ã‹ãƒã‚§ãƒƒã‚¯
 	if( id == L"" )
 	{
 		RaiseAssert( g_ErrorLogger , 0 , L"Id not presented" );
 		return false;
 	}
 
-	//‚·‚Å‚É‘¶İ‚·‚éID‚Ìê‡‚ÍƒGƒ‰[‚É‚·‚é
+	//ã™ã§ã«å­˜åœ¨ã™ã‚‹IDã®å ´åˆã¯ã‚¨ãƒ©ãƒ¼ã«ã™ã‚‹
 	if( MyIdIndexMap.count( id ) )
 	{
 		RaiseAssert( g_ErrorLogger , 0 , L"Id already exist : " + id );
 		return false;
 	}
 
-	//‘¶İ‚µ‚È‚¢‚Ì‚ÅA’Ç‰Áˆ—‚ğs‚¤
+	//å­˜åœ¨ã—ãªã„ã®ã§ã€è¿½åŠ å‡¦ç†ã‚’è¡Œã†
 	int index = -1;
 	index = ::ImageList_AddIcon( MyHandle , img );
 
-	//ƒGƒ‰[‚¾‚Á‚½H
+	//ã‚¨ãƒ©ãƒ¼ã ã£ãŸï¼Ÿ
 	if( index < 0 )
 	{
-		//ƒGƒ‰[‚È‚Ì‚ÅI—¹
+		//ã‚¨ãƒ©ãƒ¼ãªã®ã§çµ‚äº†
 		RaiseAssert( g_ErrorLogger , 0 , L"ImageList_AddIcon failed" );
 		return false;
 	}
 
-	//³íI—¹‚¾‚Á‚½‚Ì‚ÅID‚ğƒ}ƒbƒv‚É’Ç‰Á
+	//æ­£å¸¸çµ‚äº†ã ã£ãŸã®ã§IDã‚’ãƒãƒƒãƒ—ã«è¿½åŠ 
 	MyIdIndexMap.insert( IdIndexMap::value_type( id , index ) );
 	return true;
 }
 
-//ƒCƒ[ƒWƒŠƒXƒg‚ÉƒCƒ[ƒW‚Ì’Ç‰Á‚ğ‚·‚é
+//ã‚¤ãƒ¡ãƒ¼ã‚¸ãƒªã‚¹ãƒˆã«ã‚¤ãƒ¡ãƒ¼ã‚¸ã®è¿½åŠ ã‚’ã™ã‚‹
 bool mGdiImagelist::AddImageIcon( const mGdiResource& res , const WString& id , const WString& img )
 {
-	//mGdiResource‚©‚çw’è‚ÌƒCƒ[ƒW‚ğ’Šo‚·‚é
+	//mGdiResourceã‹ã‚‰æŒ‡å®šã®ã‚¤ãƒ¡ãƒ¼ã‚¸ã‚’æŠ½å‡ºã™ã‚‹
 	const mGdiIcon* icon_img = res.GetItem< mGdiIcon >( img );
 	if( icon_img == nullptr )
 	{
-		//’Šo¸”sBƒCƒ[ƒW‚ªæ“¾‚Å‚«‚È‚¢ê‡‚ÍƒGƒ‰[‚ÅI—¹
+		//æŠ½å‡ºå¤±æ•—ã€‚ã‚¤ãƒ¡ãƒ¼ã‚¸ãŒå–å¾—ã§ããªã„å ´åˆã¯ã‚¨ãƒ©ãƒ¼ã§çµ‚äº†
 		RaiseError( g_ErrorLogger , 0 , L"Icon id not found : " + img );
 		return false;
 	}
 
-	//’Ç‰Áˆ—B
+	//è¿½åŠ å‡¦ç†ã€‚
 	return AddImage( id , *icon_img );
 }
 
-//ƒCƒ[ƒWƒŠƒXƒg‚©‚çƒCƒ[ƒW‚ğíœ‚·‚é
+//ã‚¤ãƒ¡ãƒ¼ã‚¸ãƒªã‚¹ãƒˆã‹ã‚‰ã‚¤ãƒ¡ãƒ¼ã‚¸ã‚’å‰Šé™¤ã™ã‚‹
 bool mGdiImagelist::RemoveImage( const WString& id )
 {
-	//íœ‘ÎÛ‚ğ’T‚·
+	//å‰Šé™¤å¯¾è±¡ã‚’æ¢ã™
 	IdIndexMap::iterator itr = MyIdIndexMap.find( id );
 	if( itr == MyIdIndexMap.end() )
 	{
@@ -222,21 +222,21 @@ bool mGdiImagelist::RemoveImage( const WString& id )
 		return false;
 	}
 
-	//íœ‚·‚éƒCƒ[ƒWƒŠƒXƒg‚ÌƒCƒ“ƒfƒbƒNƒX
+	//å‰Šé™¤ã™ã‚‹ã‚¤ãƒ¡ãƒ¼ã‚¸ãƒªã‚¹ãƒˆã®ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹
 	INT index = itr->second;
 
-	//ƒCƒ[ƒWƒŠƒXƒg‚©‚çíœ
+	//ã‚¤ãƒ¡ãƒ¼ã‚¸ãƒªã‚¹ãƒˆã‹ã‚‰å‰Šé™¤
 	if( !::ImageList_Remove( MyHandle , index ) )
 	{
 		RaiseAssert( g_ErrorLogger , 0 , L"ImageList_Remove failed" );
 		return false;
 	}
 
-	//•¶š—ñID--ƒCƒ“ƒfƒbƒNƒX‚Ìƒ}ƒbƒv‚©‚çŠY“–‚Ì‚ğíœ
+	//æ–‡å­—åˆ—ID--ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹ã®ãƒãƒƒãƒ—ã‹ã‚‰è©²å½“ã®ã‚’å‰Šé™¤
 	MyIdIndexMap.erase( itr );
 
-	//íœ‚·‚é‚Æ–³‚­‚È‚Á‚½•ª‚ÌƒCƒ“ƒfƒbƒNƒX‚ª1‚¸‚Â‚¸‚ê‚é‚Ì‚Å‚»‚Ì•â³‚ğ‚·‚é
-	//ƒCƒ[ƒWƒŠƒXƒg‚Á‚Ä“à•”“I‚É‚Ívector“I‚È\‘¢‚È‚ñ‚Å‚·‚©‚ËH
+	//å‰Šé™¤ã™ã‚‹ã¨ç„¡ããªã£ãŸåˆ†ã®ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹ãŒ1ãšã¤ãšã‚Œã‚‹ã®ã§ãã®è£œæ­£ã‚’ã™ã‚‹
+	//ã‚¤ãƒ¡ãƒ¼ã‚¸ãƒªã‚¹ãƒˆã£ã¦å†…éƒ¨çš„ã«ã¯vectorçš„ãªæ§‹é€ ãªã‚“ã§ã™ã‹ã­ï¼Ÿ
 	for( itr = MyIdIndexMap.begin() ; itr != MyIdIndexMap.end() ; itr++ )
 	{
 		if( index < itr->second )
@@ -247,33 +247,33 @@ bool mGdiImagelist::RemoveImage( const WString& id )
 	return true;
 }
 
-//ID‚©‚çƒCƒ“ƒfƒbƒNƒX‚ğæ“¾‚·‚é
+//IDã‹ã‚‰ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹ã‚’å–å¾—ã™ã‚‹
 INT mGdiImagelist::GetIndex( const WString& id )const
 {
-	//ID‚ª‹ó•¶š—ñ‚Ìê‡‚ÍAƒGƒ‰[‚É‚·‚é
+	//IDãŒç©ºæ–‡å­—åˆ—ã®å ´åˆã¯ã€ã‚¨ãƒ©ãƒ¼ã«ã™ã‚‹
 	if( id == L"" )
 	{
 		RaiseError( g_ErrorLogger , 0 , L"Id not specified" );
 		return -1;
 	}
 
-	//‘ÎÛ‚ğ’T‚·
+	//å¯¾è±¡ã‚’æ¢ã™
 	IdIndexMap::const_iterator itr = MyIdIndexMap.find( id );
 	if( itr == MyIdIndexMap.end() )
 	{
-		//—L‚è‚Ü‚¹‚ñ‚Å‚µ‚½
+		//æœ‰ã‚Šã¾ã›ã‚“ã§ã—ãŸ
 		RaiseError( g_ErrorLogger , 0 , L"Id not found : " + id );
 		return -1;
 	}
 	return itr->second;
 }
 
-//Option‚Éw’è‚µ‚½“à—e‚ÉŒ©‡‚¤ƒIƒuƒWƒFƒNƒg‚ğ¶¬‚µAMyHandle‚É“o˜^‚·‚é
-//ƒRƒ“ƒXƒgƒ‰ƒNƒ^‚©‚çŒÄ‚Ño‚³‚ê‚é‘z’è
+//Optionã«æŒ‡å®šã—ãŸå†…å®¹ã«è¦‹åˆã†ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã‚’ç”Ÿæˆã—ã€MyHandleã«ç™»éŒ²ã™ã‚‹
+//ã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿ã‹ã‚‰å‘¼ã³å‡ºã•ã‚Œã‚‹æƒ³å®š
 bool mGdiImagelist::CreateMyHandle( const Option_UseOption& opt )
 {
 	UINT flag = 0;
-	//g—p‚·‚éF”‚É‰‚¶‚ÄAƒtƒ‰ƒO‚ğİ’è
+	//ä½¿ç”¨ã™ã‚‹è‰²æ•°ã«å¿œã˜ã¦ã€ãƒ•ãƒ©ã‚°ã‚’è¨­å®š
 	switch( opt.color )
 	{
 	case Option::ColorDepth::COLOR4:
@@ -289,14 +289,14 @@ bool mGdiImagelist::CreateMyHandle( const Option_UseOption& opt )
 		flag |= ILC_COLOR24;
 		break;
 	default:
-		//–¢’è‹`‚Ìê‡AƒfƒtƒHƒ‹ƒg‚ğŒˆ‚ß‚é‚Ì‚Í¢“ï‚»‚¤‚È‚Ì‚ÅƒGƒ‰[‚É‚·‚é
+		//æœªå®šç¾©ã®å ´åˆã€ãƒ‡ãƒ•ã‚©ãƒ«ãƒˆã‚’æ±ºã‚ã‚‹ã®ã¯å›°é›£ãã†ãªã®ã§ã‚¨ãƒ©ãƒ¼ã«ã™ã‚‹
 		RaiseAssert( g_ErrorLogger , 0 , L"Invalid color depth" );
 		return false;
 	}
-	//ƒ}ƒXƒN‚ğg—p‚·‚é‚½‚ßƒtƒ‰ƒO‚ğ—§‚Ä‚é
+	//ãƒã‚¹ã‚¯ã‚’ä½¿ç”¨ã™ã‚‹ãŸã‚ãƒ•ãƒ©ã‚°ã‚’ç«‹ã¦ã‚‹
 	flag |= ILC_MASK;
 
-	//ƒnƒ“ƒhƒ‹‚Ì¶¬
+	//ãƒãƒ³ãƒ‰ãƒ«ã®ç”Ÿæˆ
 	MyHandle = ::ImageList_Create( opt.width , opt.height , flag , opt.initial_size , opt.grow_size );
 
 	return MyHandle != nullptr;

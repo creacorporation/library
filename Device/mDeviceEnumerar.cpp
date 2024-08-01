@@ -1,11 +1,11 @@
-//----------------------------------------------------------------------------
-// ƒfƒoƒCƒX—ñ‹“ƒNƒ‰ƒX
+ï»¿//----------------------------------------------------------------------------
+// ãƒ‡ãƒã‚¤ã‚¹åˆ—æŒ™ã‚¯ãƒ©ã‚¹
 // Copyright (C) 2019-2024 Crea Inc. All rights reserved.
 // This program is released under the MIT License. 
 // see http://opensource.org/licenses/mit-license.php
-// ’˜ìŒ •\¦‚âƒ‰ƒCƒZƒ“ƒX‚Ì‰ü•Ï‚Í‹Ö~‚³‚ê‚Ä‚¢‚Ü‚·B
-// ‚±‚Ìƒ\[ƒXƒR[ƒh‚ÉŠÖ‚µ‚ÄAã‹Lƒ‰ƒCƒZƒ“ƒXˆÈŠO‚ÌŒ_–ñ“™‚ÍˆêØ‘¶İ‚µ‚Ü‚¹‚ñB
-// (‰½‚ç‚©‚ÌŒ_–ñ‚ª‚ ‚éê‡‚Å‚àA–{ƒ\[ƒXƒR[ƒh‚Í‚»‚Ì‘ÎÛŠO‚Æ‚È‚è‚Ü‚·)
+// è‘—ä½œæ¨©è¡¨ç¤ºã‚„ãƒ©ã‚¤ã‚»ãƒ³ã‚¹ã®æ”¹å¤‰ã¯ç¦æ­¢ã•ã‚Œã¦ã„ã¾ã™ã€‚
+// ã“ã®ã‚½ãƒ¼ã‚¹ã‚³ãƒ¼ãƒ‰ã«é–¢ã—ã¦ã€ä¸Šè¨˜ãƒ©ã‚¤ã‚»ãƒ³ã‚¹ä»¥å¤–ã®å¥‘ç´„ç­‰ã¯ä¸€åˆ‡å­˜åœ¨ã—ã¾ã›ã‚“ã€‚
+// (ä½•ã‚‰ã‹ã®å¥‘ç´„ãŒã‚ã‚‹å ´åˆã§ã‚‚ã€æœ¬ã‚½ãƒ¼ã‚¹ã‚³ãƒ¼ãƒ‰ã¯ãã®å¯¾è±¡å¤–ã¨ãªã‚Šã¾ã™)
 //----------------------------------------------------------------------------
 
 #include "mStandard.h"
@@ -28,7 +28,7 @@ mDeviceEnumerar::~mDeviceEnumerar()
 
 bool mDeviceEnumerar::Reload( void )
 {
-	//Šù‘¶î•ñ‚Ì”jŠü
+	//æ—¢å­˜æƒ…å ±ã®ç ´æ£„
 	MyDeviceCatalog.clear();
 
 	if( !CreateCatalog( true ) )
@@ -42,14 +42,14 @@ bool mDeviceEnumerar::Reload( void )
 		DeviceCatalogEntry entry;
 
 		entry.index = DWORD( i );
-		result &= GetProperty( i , SPDRP_FRIENDLYNAME , entry.FriendlyName );	//ƒRƒ“ƒgƒ[ƒ‹ƒpƒlƒ‹‚ÌuƒtƒŒƒ“ƒhƒŠ–¼v‚Æ“¯‚¶
-		result &= GetProperty( i , SPDRP_DEVICEDESC , entry.Description );		//ƒRƒ“ƒgƒ[ƒ‹ƒpƒlƒ‹‚ÌuƒfƒoƒCƒX‚Ìà–¾v‚Æ“¯‚¶
-		result &= GetProperty( i , SPDRP_HARDWAREID , entry.HardwareId );		//ƒRƒ“ƒgƒ[ƒ‹ƒpƒlƒ‹‚Ìuƒn[ƒhƒEƒGƒAIDv‚Æ“¯‚¶
+		result &= GetProperty( i , SPDRP_FRIENDLYNAME , entry.FriendlyName );	//ã‚³ãƒ³ãƒˆãƒ­ãƒ¼ãƒ«ãƒ‘ãƒãƒ«ã®ã€Œãƒ•ãƒ¬ãƒ³ãƒ‰ãƒªåã€ã¨åŒã˜
+		result &= GetProperty( i , SPDRP_DEVICEDESC , entry.Description );		//ã‚³ãƒ³ãƒˆãƒ­ãƒ¼ãƒ«ãƒ‘ãƒãƒ«ã®ã€Œãƒ‡ãƒã‚¤ã‚¹ã®èª¬æ˜ã€ã¨åŒã˜
+		result &= GetProperty( i , SPDRP_HARDWAREID , entry.HardwareId );		//ã‚³ãƒ³ãƒˆãƒ­ãƒ¼ãƒ«ãƒ‘ãƒãƒ«ã®ã€Œãƒãƒ¼ãƒ‰ã‚¦ã‚¨ã‚¢IDã€ã¨åŒã˜
 		entry.DevicePath = MyDevInfoData[ i ].DevicePath;
 
 		if( !result )
 		{
-			RaiseError( g_ErrorLogger , 0 , L"î•ñæ“¾‚ª¸”s‚µ‚Ü‚µ‚½" );
+			RaiseError( g_ErrorLogger , 0 , L"æƒ…å ±å–å¾—ãŒå¤±æ•—ã—ã¾ã—ãŸ" );
 			return false;
 		}
 		MyDeviceCatalog.push_back( entry );

@@ -1,15 +1,15 @@
-//----------------------------------------------------------------------------
-// �������N���X
+﻿//----------------------------------------------------------------------------
+// 乱数基底クラス
 // Copyright (C) 2018- Crea Inc. All rights reserved.
 // This program is released under the MIT License. 
 // see http://opensource.org/licenses/mit-license.php
 //----------------------------------------------------------------------------
 
-//�������C�u����
-//�EWindowsAPI�𗘗p���ė����𓾂܂�
-//�ECryptGenRandom()���g�p
-//�E�Í��Ɏg�p�\
-//�E��Ԃ̃Z�[�u�͕s��
+//乱数ライブラリ
+//・WindowsAPIを利用して乱数を得ます
+//・CryptGenRandom()を使用
+//・暗号に使用可能
+//・状態のセーブは不可
 
 #ifndef MRAND_H_INCLUDED
 #define MRAND_H_INCLUDED
@@ -23,37 +23,37 @@ public:
 	mRand();
 	virtual ~mRand();
 
-	//UINT�`���A32�r�b�g�̗���
+	//UINT形式、32ビットの乱数
 	UINT  RandInt32( void );
 
-	//���̐�����A31�r�b�g�̗���
+	//正の数限定、31ビットの乱数
 	INT   RandUInt31( void );
 
-	//���[0,1]�̎���(0�ȏ�1�ȉ�)
+	//閉区間[0,1]の実数(0以上1以下)
 	DOUBLE RandDouble1( void );
 
-	//���J���[0,1)�̎���(0�ȏ�1����)
+	//半開区間[0,1)の実数(0以上1未満)
 	DOUBLE RandDouble2( void );
 
-	//�J���(0,1)�̎���(0���傫��1��菬����)
+	//開区間(0,1)の実数(0より大きく1より小さい)
 	DOUBLE RandDouble3( void );
 
-	//���[0,1]�̎���(0�ȏ�1�ȉ�)
+	//閉区間[0,1]の実数(0以上1以下)
 	DOUBLE RandClose( void );
 
-	//���J���[0,1)�̎���(0�ȏ�1����)
+	//半開区間[0,1)の実数(0以上1未満)
 	DOUBLE RandSemiOpen( void );
 
-	//�J���(0,1)�̎���(0���傫��1��菬����)
+	//開区間(0,1)の実数(0より大きく1より小さい)
 	DOUBLE RandOpen( void );
 
-	//�n�����o�b�t�@�𗐐��l�Ŗ��߂�
-	//buffer : �����f�[�^�̊i�[��
-	//bufferlen : �i�[����o�C�g��
+	//渡したバッファを乱数値で埋める
+	//buffer : 乱数データの格納先
+	//bufferlen : 格納するバイト数
 	void RandFill( BYTE* buffer , DWORD bufferlen );
 
-	//�w�肵��2�l�Ԃɋϓ����z����l
-	// ret : val1�`val2�̒l�ɕ��z����l(val1�Aval2�Ƃ��o�����܂�)
+	//指定した2値間に均等分布する値
+	// ret : val1〜val2の値に分布する値(val1、val2とも出現します)
 	UINT RandBetween( UINT val1 , UINT val2 );
 
 private:
@@ -62,13 +62,13 @@ private:
 
 protected:
 
-	//���������p�v���o�C�_
+	//乱数生成用プロバイダ
 	HCRYPTPROV MyCryptProv;
 
-	//�v���o�C�_�̏�����
+	//プロバイダの初期化
 	bool InitProvider( void );
 
-	//�v���o�C�_�̉��
+	//プロバイダの解放
 	bool FreeProvider( void );
 
 };

@@ -1,5 +1,5 @@
-//----------------------------------------------------------------------------
-// ƒEƒCƒ“ƒhƒEŠÇ—iƒ`ƒFƒbƒNƒ{ƒbƒNƒXŒnj
+ï»¿//----------------------------------------------------------------------------
+// ã‚¦ã‚¤ãƒ³ãƒ‰ã‚¦ç®¡ç†ï¼ˆãƒã‚§ãƒƒã‚¯ãƒœãƒƒã‚¯ã‚¹ç³»ï¼‰
 // Copyright (C) 2016 Fingerling. All rights reserved. 
 // This program is released under the MIT License. 
 // see http://opensource.org/licenses/mit-license.php
@@ -23,22 +23,22 @@ mCheckboxFamily::CheckStatus mCheckboxFamily::GetCheck( void )const
 	LRESULT rc = ::SendMessageW( GetMyHwnd() , BM_GETCHECK , 0 , 0 );
 	if( rc == BST_CHECKED )
 	{
-		//ƒ`ƒFƒbƒN‚³‚ê‚Ä‚¢‚é
+		//ãƒã‚§ãƒƒã‚¯ã•ã‚Œã¦ã„ã‚‹
 		return mCheckboxFamily::CheckStatus::CHECKED;
 	}
 	else if( rc == BST_UNCHECKED )
 	{
-		//ƒ`ƒFƒbƒN‚³‚ê‚Ä‚¢‚È‚¢
+		//ãƒã‚§ãƒƒã‚¯ã•ã‚Œã¦ã„ãªã„
 		return mCheckboxFamily::CheckStatus::UNCHECKED;
 	}
 	else if( rc == BST_INDETERMINATE )
 	{
-		//ƒOƒŒ[‚Èó‘Ôi3ƒXƒe[ƒg—pj
+		//ã‚°ãƒ¬ãƒ¼ãªçŠ¶æ…‹ï¼ˆ3ã‚¹ãƒ†ãƒ¼ãƒˆç”¨ï¼‰
 		return mCheckboxFamily::CheckStatus::INDETERMINATE;
 	}
 
-	//‚È‚ñ‚©‘z’èŠO‚Ì’l‚ª•Ô‚Á‚Ä‚«‚½ê‡
-	RaiseAssert( g_ErrorLogger , 0 , L"‘z’èŠO‚Ì’l‚ª•Ô‚è‚Ü‚µ‚½" , rc );
+	//ãªã‚“ã‹æƒ³å®šå¤–ã®å€¤ãŒè¿”ã£ã¦ããŸå ´åˆ
+	RaiseAssert( g_ErrorLogger , 0 , L"æƒ³å®šå¤–ã®å€¤ãŒè¿”ã‚Šã¾ã—ãŸ" , rc );
 	return mCheckboxFamily::CheckStatus::UNKNOWN;
 }
 

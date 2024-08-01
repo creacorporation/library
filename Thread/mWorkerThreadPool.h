@@ -1,11 +1,11 @@
-//----------------------------------------------------------------------------
-// ���[�J�[�X���b�h���^�X�N�n���h��
+﻿//----------------------------------------------------------------------------
+// ワーカースレッド＆タスクハンドラ
 // Copyright (C) 2019- Crea Inc. All rights reserved.
 // This program is released under the MIT License. 
 // see http://opensource.org/licenses/mit-license.php
-// ���쌠�\���⃉�C�Z���X�̉��ς͋֎~����Ă��܂��B
-// ���̃\�[�X�R�[�h�Ɋւ��āA��L���C�Z���X�ȊO�̌_�񓙂͈�ؑ��݂��܂���B
-// (���炩�̌_�񂪂���ꍇ�ł��A�{�\�[�X�R�[�h�͂��̑ΏۊO�ƂȂ�܂�)
+// 著作権表示やライセンスの改変は禁止されています。
+// このソースコードに関して、上記ライセンス以外の契約等は一切存在しません。
+// (何らかの契約がある場合でも、本ソースコードはその対象外となります)
 //----------------------------------------------------------------------------
 
 #ifndef MWORKERTHREADPOOL_H_INCLUDED
@@ -24,67 +24,67 @@ public:
 	mWorkerThreadPool();
 	virtual ~mWorkerThreadPool();
 
-	//�_���R�A�̐����1���Ȃ��������X���b�h���쐬����(�_���R�A��1�����Ȃ�1�N������)
+	//論理コアの数より1個少ない数だけスレッドを作成する(論理コアが1個だけなら1個起動する)
 	static const int THREAD_LOGICAL_CORE_MINUS1 = 0;
-	//�_���R�A�̐��Ɠ����������X���b�h���쐬����
+	//論理コアの数と同じ数だけスレッドを作成する
 	static const int THREAD_LOGICAL_CORE = -1;
-	//�����R�A�̐����1���Ȃ��������X���b�h���쐬����(�����R�A��1�����Ȃ�1�N������)
+	//物理コアの数より1個少ない数だけスレッドを作成する(物理コアが1個だけなら1個起動する)
 	static const int THREAD_PHYSICAL_CORE_MINUS1 = -2;
-	//�����R�A�̐��Ɠ����������X���b�h���쐬����
+	//物理コアの数と同じ数だけスレッドを作成する
 	static const int THREAD_PHYSICAL_CORE = -3;
 
-	//���[�J�[�X���b�h�̐���
-	// threads : �������郏�[�J�[�X���b�h�̐�
-	// �@���̐����Ȃ�΁A�w�肵�����̃��[�J�[�X���b�h���쐬����B
-	// �@0�ȉ��̒l�Ȃ�΁A��L�萔�̏����Ń��[�J�[�X���b�h���쐬����B
-	// min_threads : �蓮�܂��͎����ݒ肵���X���b�h�����A���̐��������ꍇ�́A���̐��ɕ␳����
-	//		0�ȉ��̏ꍇ�͕␳�͍s��Ȃ�
-	// max_threads : �蓮�܂��͎����ݒ肵���X���b�h�����A���̐�������ꍇ�́A���̐��ɕ␳����
-	//		0�ȉ��̏ꍇ�͕␳�͍s��Ȃ�
-	// ret : �������^
-	//�Emin_threads��max_threads���Ƃ��Ɏw�肷��ꍇ�A�召�֌W�����������ƃG���[�ɂȂ�
-	//�Ethread��0�ȉ��̒l���w�肵�āA�����ݒ肵���X���b�h����0�ȉ��ɂȂ����ꍇ�Amin_thread�����w�肾������1�ɕ␳����
+	//ワーカースレッドの生成
+	// threads : 生成するワーカースレッドの数
+	// 　正の整数ならば、指定した数のワーカースレッドを作成する。
+	// 　0以下の値ならば、上記定数の条件でワーカースレッドを作成する。
+	// min_threads : 手動または自動設定したスレッド数が、この数を下回る場合は、この数に補正する
+	//		0以下の場合は補正は行わない
+	// max_threads : 手動または自動設定したスレッド数が、この数を上回る場合は、この数に補正する
+	//		0以下の場合は補正は行わない
+	// ret : 成功時真
+	//・min_threadsとmax_threadsをともに指定する場合、大小関係がおかしいとエラーになる
+	//・threadに0以下の値を指定して、自動設定したスレッド数が0以下になった場合、min_threadが無指定だったら1に補正する
 	bool Begin( int threads , int min_threads = 0 , int max_threads = 0 );
 
-	//���[�J�[�X���b�h�̏I��
-	//���������ԂŏI�����Ȃ��ƁA�c��̃^�X�N����������Ȃ����߁A
-	//������(���\�[�X)���[�N�ɂȂ�܂��B
-	//�菇1:�֘A�t�����t�@�C���n���h����������΁A�����̓ǂݏ�����S�ďI������
-	//      �E�n���h����j������Ƃ���܂ł�邱��
-	//      �E���̎菇���T�{���Ă��N���b�V���͂��Ȃ����f�[�^����������\������
-	//�菇2:GetTaskCount()��0�ɂȂ�܂őҋ@����
-	//      �EAddTask�Œǉ������^�X�N��S�Ċ��������邱��
-	//      �E�I���菇�J�n��Ƀ^�X�N��ǉ�����ꍇ�͓��ɒ���
-	//�菇3:End()���Ăяo��
+	//ワーカースレッドの終了
+	//正しい順番で終了しないと、残りのタスクが処理されないため、
+	//メモリ(リソース)リークになります。
+	//手順1:関連付けたファイルハンドル等があれば、それらの読み書きを全て終了する
+	//      ・ハンドルを破棄するところまでやること
+	//      ・この手順をサボってもクラッシュはしないがデータが欠落する可能性あり
+	//手順2:GetTaskCount()が0になるまで待機する
+	//      ・AddTaskで追加したタスクを全て完了させること
+	//      ・終了手順開始後にタスクを追加する場合は特に注意
+	//手順3:End()を呼び出す
 	threadsafe bool End( void );
 
-	//IO�����|�[�g�ƁA�n���h�����֘A�t����
-	// handle : FILE_FLAG_OVERLAPPED�t���O�����ĊJ���ꂽ�t�@�C���Ȃǂ̃n���h��
-	// callback : IO�������ɌĂяo���R�[���o�b�N�֐�
+	//IO完了ポートと、ハンドルを関連付ける
+	// handle : FILE_FLAG_OVERLAPPEDフラグをつけて開かれたファイルなどのハンドル
+	// callback : IO完了時に呼び出すコールバック関数
 	bool Attach( HANDLE handle , LPOVERLAPPED_COMPLETION_ROUTINE callback );
 
-	//�^�X�N�����p�R�[���o�b�N�֐��̒�`
-	// pool : �R�[���o�b�N�֐����Ăяo�������[�J�[�X���b�h�v�[��
-	// Param1 : AddTask���ɓn�����p�����[�^
-	// Param2 : AddTask���ɓn�����p�����[�^
-	// ret : �^�X�N�����������ꍇ�^�B�^�X�N���s��Ȃ������i��ł�����x�Ăяo���j�ꍇ�U�B
+	//タスク処理用コールバック関数の定義
+	// pool : コールバック関数を呼び出したワーカースレッドプール
+	// Param1 : AddTask時に渡したパラメータ
+	// Param2 : AddTask時に渡したパラメータ
+	// ret : タスクを完了した場合真。タスクを行わなかった（後でもう一度呼び出す）場合偽。
 	using CallbackFunction = bool(*)( mWorkerThreadPool& pool , DWORD Param1 , DWORD_PTR Param2 );
 
-	//�^�X�N�̒ǉ�
-	// callback : �X���b�h�v�[������Ăяo���R�[���o�b�N�֐�
-	// Param1 : �R�[���o�b�N�֐��ɓn�����l�i�C�ӂ̒l��OK�j
-	// Param2 : �R�[���o�b�N�֐��ɓn�����l�i�C�ӂ̒l��OK�j
-	// LoadbalanceKey : �Ȃ�ׂ��قȂ�L�[�����^�X�N���������s�����悤�ɂ���
+	//タスクの追加
+	// callback : スレッドプールから呼び出すコールバック関数
+	// Param1 : コールバック関数に渡される値（任意の値でOK）
+	// Param2 : コールバック関数に渡される値（任意の値でOK）
+	// LoadbalanceKey : なるべく異なるキーを持つタスクが同時実行されるようにする
 	threadsafe bool AddTask( CallbackFunction callback , DWORD Param1, DWORD_PTR Param2 , DWORD_PTR LoadbalanceKey = 0 );
 
-	//���ݕێ����Ă��関�����^�X�N�̐����擾����
-	//��Attach�Ŋ֘A�t����IO�̊����͊܂܂Ȃ�
+	//現在保持している未完了タスクの数を取得する
+	//※Attachで関連付けたIOの完了は含まない
 	threadsafe DWORD GetTaskCount( void )const;
 
-	//�X���b�h�̐��𓾂�
+	//スレッドの数を得る
 	DWORD GetThreadCount( void )const;
 
-	//���̊֐����Ăяo�����X���b�h���X���b�h�v�[���̃����o�[�����肷��
+	//この関数を呼び出したスレッドがスレッドプールのメンバーか判定する
 	bool IsPoolMember( void )const;
 
 private:
@@ -93,17 +93,17 @@ private:
 
 private:
 
-	//�X���b�h�{��
+	//スレッド本体
 	using ThreadPool = std::deque<mWorkerThread>;
 	ThreadPool MyThreadPool;
 
-	//�N���e�B�J���Z�N�V����
+	//クリティカルセクション
 	mutable mCriticalSectionContainer MyCriticalSection;
 
-	//IO�����|�[�g
+	//IO完了ポート
 	HANDLE MyIoPort;
 
-	//�^�X�N���
+	//タスク情報
 	struct TaskInfoEntry
 	{
 		CallbackFunction TaskFunction;
@@ -119,7 +119,7 @@ private:
 	};
 	using TaskInfo = std::deque<TaskInfoEntry>;
 
-	//�^�X�N�L�[�ʃ^�X�N���
+	//タスクキー別タスク情報
 	struct TaskArrayEntry
 	{
 		DWORD_PTR LoadbalanceKey;
@@ -132,13 +132,13 @@ private:
 	TaskArray MyTaskArray;
 
 protected:
-	friend class mWorkerThread;		//�A�N�Z�X������N���X
+	friend class mWorkerThread;		//アクセス許可するクラス
 
-	//IO�|�[�g�̃n���h�����擾����
+	//IOポートのハンドルを取得する
 	HANDLE GetHandle( void )const;
 
 private:
-	//�������[�`�� �^�X�N�p
+	//完了ルーチン タスク用
 	static VOID CALLBACK CompleteRoutine( DWORD ec , DWORD len , LPOVERLAPPED ov );
 
 };

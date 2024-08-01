@@ -1,10 +1,10 @@
-//----------------------------------------------------------------------------
-// AESˆÃ†‰»ƒNƒ‰ƒX
+ï»¿//----------------------------------------------------------------------------
+// AESæš—å·åŒ–ã‚¯ãƒ©ã‚¹
 // Copyright (C) 2013-2016 Fingerling. All rights reserved. 
 // Copyright (C) 2018- Crea Inc. All rights reserved.
 // This program is released under the MIT License. 
 // see http://opensource.org/licenses/mit-license.php
-// 2013/10/09`
+// 2013/10/09ã€œ
 //----------------------------------------------------------------------------
 
 #include "mAESDecrypter.h"
@@ -22,27 +22,27 @@ mAESDecrypter::~mAESDecrypter()
 
 bool mAESDecrypter::Decrypt( bool isfinal , const BYTE* data , DWORD datalen , EncryptData& retData , DWORD& retWritten )const
 {
-	//“ü—Íƒ`ƒFƒbƒN
+	//å…¥åŠ›ãƒã‚§ãƒƒã‚¯
 	if( !data )
 	{
-		RaiseAssert( g_ErrorLogger , 0 , L"ƒoƒbƒtƒ@‚ª–¢w’è‚Å‚·" );
+		RaiseAssert( g_ErrorLogger , 0 , L"ãƒãƒƒãƒ•ã‚¡ãŒæœªæŒ‡å®šã§ã™" );
 		return false;
 	}
 	if( !MyCryptKey )
 	{
-		RaiseAssert( g_ErrorLogger , 0 , L"Œ®‚ªİ’è‚³‚ê‚Ä‚¢‚Ü‚¹‚ñ" );
+		RaiseAssert( g_ErrorLogger , 0 , L"éµãŒè¨­å®šã•ã‚Œã¦ã„ã¾ã›ã‚“" );
 		return false;
 	}
 
-	//ƒoƒbƒtƒ@‚ÌŠm•Û
+	//ãƒãƒƒãƒ•ã‚¡ã®ç¢ºä¿
 	retData.reset( mNew BYTE[ datalen ] );
 	MoveMemory( retData.get() , data , datalen );
 
-	//ˆÃ†‰»‰ğœ
+	//æš—å·åŒ–è§£é™¤
 	retWritten = datalen;
 	if( !CryptDecrypt( MyCryptKey , 0 , isfinal , 0 , retData.get() , &retWritten ) )
 	{
-		RaiseAssert( g_ErrorLogger , 0 , L"‰ğ“Ç‚É¸”s‚µ‚Ü‚µ‚½" );
+		RaiseAssert( g_ErrorLogger , 0 , L"è§£èª­ã«å¤±æ•—ã—ã¾ã—ãŸ" );
 		return false;
 	}
 	return true;

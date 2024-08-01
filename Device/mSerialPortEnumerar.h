@@ -1,11 +1,11 @@
-//----------------------------------------------------------------------------
-// �f�o�C�X�񋓃N���X
+﻿//----------------------------------------------------------------------------
+// デバイス列挙クラス
 // Copyright (C) 2019- Crea Inc. All rights reserved.
 // This program is released under the MIT License. 
 // see http://opensource.org/licenses/mit-license.php
-// ���쌠�\���⃉�C�Z���X�̉��ς͋֎~����Ă��܂��B
-// ���̃\�[�X�R�[�h�Ɋւ��āA��L���C�Z���X�ȊO�̌_�񓙂͈�ؑ��݂��܂���B
-// (���炩�̌_�񂪂���ꍇ�ł��A�{�\�[�X�R�[�h�͂��̑ΏۊO�ƂȂ�܂�)
+// 著作権表示やライセンスの改変は禁止されています。
+// このソースコードに関して、上記ライセンス以外の契約等は一切存在しません。
+// (何らかの契約がある場合でも、本ソースコードはその対象外となります)
 //----------------------------------------------------------------------------
 
 #ifndef MSERIALPORTENUMERAR_H_INCLUDED
@@ -17,30 +17,30 @@
 class mSerialPortEnumerar : protected mDeviceEnumerarBase
 {
 public:
-	//IsSetupClass : true=�Z�b�g�A�b�v�N���X false=�C���^�[�t�F�C�X�N���X
+	//IsSetupClass : true=セットアップクラス false=インターフェイスクラス
 	mSerialPortEnumerar( bool IsSetupClass = true );
 	virtual ~mSerialPortEnumerar();
 
 	struct SerialPortCatalogEntry
 	{
 		DWORD index;
-		WString FriendlyName;	//�R���g���[���p�l���́u�t�����h�����v�Ɠ���
-		WString Description;	//�R���g���[���p�l���́u�f�o�C�X�̐����v�Ɠ���
-		WString HardwareId;		//�R���g���[���p�l���́u�n�[�h�E�G�AID�v�Ɠ��� �����zCOM�|�[�g�̏ꍇUSBID������
-		WString DevicePath;		//�C���^�t�F�[�X�N���X���擾�����ꍇ�A�C���X�^���X�̃p�X���Ƃ��
-		WString PortName;		//�|�[�g��(COMxx)
+		WString FriendlyName;	//コントロールパネルの「フレンドリ名」と同じ
+		WString Description;	//コントロールパネルの「デバイスの説明」と同じ
+		WString HardwareId;		//コントロールパネルの「ハードウエアID」と同じ ※仮想COMポートの場合USBIDが取れる
+		WString DevicePath;		//インタフェースクラスを取得した場合、インスタンスのパスがとれる
+		WString PortName;		//ポート名(COMxx)
 	};
 	using SerialPortCatalog = std::deque< SerialPortCatalogEntry >;
 
-	//���݂���V���A���|�[�g�̈ꗗ���擾����
-	// retInfo : ���ʊi�[��
-	// reload : �^�̎��ēǂݍ��݂���B�U�̎��L���b�V��������΂�����g���B
-	// ret : �������^
+	//存在するシリアルポートの一覧を取得する
+	// retInfo : 結果格納先
+	// reload : 真の時再読み込みする。偽の時キャッシュがあればそれを使う。
+	// ret : 成功時真
 	bool GetSerialPortCatalog( SerialPortCatalog& retInfo , bool reload = true );
 
-	//���݂���V���A���|�[�g�̈ꗗ���擾����
-	// reload : �^�̎��ēǂݍ��݂���B�U�̎��L���b�V��������΂�����g���B
-	// ret : ���ʂւ̎Q��
+	//存在するシリアルポートの一覧を取得する
+	// reload : 真の時再読み込みする。偽の時キャッシュがあればそれを使う。
+	// ret : 結果への参照
 	const SerialPortCatalog& GetSerialPortCatalog( bool reload = true );
 
 

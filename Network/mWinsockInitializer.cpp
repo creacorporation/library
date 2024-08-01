@@ -1,11 +1,11 @@
-//----------------------------------------------------------------------------
-// Winsockƒ†[ƒeƒBƒŠƒeƒB
+ï»¿//----------------------------------------------------------------------------
+// Winsockãƒ¦ãƒ¼ãƒ†ã‚£ãƒªãƒ†ã‚£
 // Copyright (C) 2024 Crea Inc. All rights reserved.
 // This program is released under the MIT License. 
 // see http://opensource.org/licenses/mit-license.php
-// ’˜ìŒ •\¦‚âƒ‰ƒCƒZƒ“ƒX‚Ì‰ü•Ï‚Í‹Ö~‚³‚ê‚Ä‚¢‚Ü‚·B
-// ‚±‚Ìƒ\[ƒXƒR[ƒh‚ÉŠÖ‚µ‚ÄAã‹Lƒ‰ƒCƒZƒ“ƒXˆÈŠO‚ÌŒ_–ñ“™‚ÍˆêØ‘¶İ‚µ‚Ü‚¹‚ñB
-// (‰½‚ç‚©‚ÌŒ_–ñ‚ª‚ ‚éê‡‚Å‚àA–{ƒ\[ƒXƒR[ƒh‚Í‚»‚Ì‘ÎÛŠO‚Æ‚È‚è‚Ü‚·)
+// è‘—ä½œæ¨©è¡¨ç¤ºã‚„ãƒ©ã‚¤ã‚»ãƒ³ã‚¹ã®æ”¹å¤‰ã¯ç¦æ­¢ã•ã‚Œã¦ã„ã¾ã™ã€‚
+// ã“ã®ã‚½ãƒ¼ã‚¹ã‚³ãƒ¼ãƒ‰ã«é–¢ã—ã¦ã€ä¸Šè¨˜ãƒ©ã‚¤ã‚»ãƒ³ã‚¹ä»¥å¤–ã®å¥‘ç´„ç­‰ã¯ä¸€åˆ‡å­˜åœ¨ã—ã¾ã›ã‚“ã€‚
+// (ä½•ã‚‰ã‹ã®å¥‘ç´„ãŒã‚ã‚‹å ´åˆã§ã‚‚ã€æœ¬ã‚½ãƒ¼ã‚¹ã‚³ãƒ¼ãƒ‰ã¯ãã®å¯¾è±¡å¤–ã¨ãªã‚Šã¾ã™)
 //----------------------------------------------------------------------------
 
 #include "mWinsockInitializer.h"
@@ -17,28 +17,28 @@ static WSADATA g_WsaData = { 0 };
 
 mWinsockInitializer::mWinsockInitializer()
 {
-	//ƒNƒŠƒeƒBƒJƒ‹ƒZƒNƒVƒ‡ƒ“
+	//ã‚¯ãƒªãƒ†ã‚£ã‚«ãƒ«ã‚»ã‚¯ã‚·ãƒ§ãƒ³
 	mCriticalSectionTicket cs( g_CriticalSection );
 	MyIsInitialized = false;
 
 	if( g_WinsockInitializeCount == 0 )
 	{
-		//Winsock‚Ì‰Šú‰»‚ğs‚¤
+		//Winsockã®åˆæœŸåŒ–ã‚’è¡Œã†
 		int err = WSAStartup( MAKEWORD( 2 , 2 ) , &g_WsaData );
 		if( err )
 		{
-			//‰Šú‰»¸”s
-			RaiseErrorF( g_ErrorLogger , 0 , L"Winsock‚Ì‰Šú‰»‚ª¸”s‚µ‚Ü‚µ‚½" , L"%d" , err );
+			//åˆæœŸåŒ–å¤±æ•—
+			RaiseErrorF( g_ErrorLogger , 0 , L"Winsockã®åˆæœŸåŒ–ãŒå¤±æ•—ã—ã¾ã—ãŸ" , L"%d" , err );
 			return;
 		}
 		if( LOBYTE( g_WsaData.wVersion ) != 2 || HIBYTE( g_WsaData.wVersion ) != 2 )
 		{
-			//‰Šú‰»¸”s
-			RaiseErrorF( g_ErrorLogger , 0 , L"Winsock‚Ìƒo[ƒWƒ‡ƒ“‚ªˆá‚¢‚Ü‚·" , L"%d" , g_WsaData.wVersion );
+			//åˆæœŸåŒ–å¤±æ•—
+			RaiseErrorF( g_ErrorLogger , 0 , L"Winsockã®ãƒãƒ¼ã‚¸ãƒ§ãƒ³ãŒé•ã„ã¾ã™" , L"%d" , g_WsaData.wVersion );
 			WSACleanup();
 			return;
 		}
-		CreateLogEntry( g_ErrorLogger , 0 , L"Winsock‚ª‰Šú‰»‚³‚ê‚Ü‚µ‚½" );
+		CreateLogEntry( g_ErrorLogger , 0 , L"WinsockãŒåˆæœŸåŒ–ã•ã‚Œã¾ã—ãŸ" );
 	}
 
 	g_WinsockInitializeCount++;
@@ -47,7 +47,7 @@ mWinsockInitializer::mWinsockInitializer()
 
 mWinsockInitializer::~mWinsockInitializer()
 {
-	//ƒNƒŠƒeƒBƒJƒ‹ƒZƒNƒVƒ‡ƒ“
+	//ã‚¯ãƒªãƒ†ã‚£ã‚«ãƒ«ã‚»ã‚¯ã‚·ãƒ§ãƒ³
 	mCriticalSectionTicket cs( g_CriticalSection );
 	MyIsInitialized = false;
 
@@ -60,7 +60,7 @@ mWinsockInitializer::~mWinsockInitializer()
 	{
 		WSACleanup();
 		ZeroMemory( &g_WsaData , sizeof( g_WsaData ) );
-		CreateLogEntry( g_ErrorLogger , 0 , L"Winsock‚ªƒAƒ“ƒ[ƒh‚³‚ê‚Ü‚µ‚½" );
+		CreateLogEntry( g_ErrorLogger , 0 , L"WinsockãŒã‚¢ãƒ³ãƒ­ãƒ¼ãƒ‰ã•ã‚Œã¾ã—ãŸ" );
 	}
 }
 

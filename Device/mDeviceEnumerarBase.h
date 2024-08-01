@@ -1,11 +1,11 @@
-//----------------------------------------------------------------------------
-// �f�o�C�X�񋓃N���X
+﻿//----------------------------------------------------------------------------
+// デバイス列挙クラス
 // Copyright (C) 2019-2024 Crea Inc. All rights reserved.
 // This program is released under the MIT License. 
 // see http://opensource.org/licenses/mit-license.php
-// ���쌠�\���⃉�C�Z���X�̉��ς͋֎~����Ă��܂��B
-// ���̃\�[�X�R�[�h�Ɋւ��āA��L���C�Z���X�ȊO�̌_�񓙂͈�ؑ��݂��܂���B
-// (���炩�̌_�񂪂���ꍇ�ł��A�{�\�[�X�R�[�h�͂��̑ΏۊO�ƂȂ�܂�)
+// 著作権表示やライセンスの改変は禁止されています。
+// このソースコードに関して、上記ライセンス以外の契約等は一切存在しません。
+// (何らかの契約がある場合でも、本ソースコードはその対象外となります)
 //----------------------------------------------------------------------------
 
 #ifndef MDEVICEENUMERARBASE_H_INCLUDED
@@ -21,18 +21,18 @@
 class mDeviceEnumerarBase
 {
 public:
-	//�N���X����p���ăf�o�C�X�̈ꗗ���擾����
-	//ClassName : �ΏۂƂ���N���X
-	//IsSetupClass : true=�Z�b�g�A�b�v�N���X false=�C���^�[�t�F�C�X�N���X
+	//クラス名を用いてデバイスの一覧を取得する
+	//ClassName : 対象とするクラス
+	//IsSetupClass : true=セットアップクラス false=インターフェイスクラス
 	mDeviceEnumerarBase( const WString& ClassName , bool IsSetupClass = true );
 
-	//GUID��p���ăf�o�C�X�̈ꗗ���擾����
-	//�E�w�肷�ׂ�GUID�́A�uGUID_DEVCLASS_xxxx�v�Ƃ����}�N����devguid.h�ɒ�`����Ă���
-	//  ��FGUID_DEVCLASS_PORTS���V���A���|�[�g
-	//�EBluetooth�ł́Abthdef.h�Abthledef.h�ɂ��C���^�[�t�F�C�X��GUID��`������
-	//�@��FGUID_BLUETOOTHLE_DEVICE_INTERFACE��Bluetooth�̃f�o�C�X�C���^�[�t�F�C�X
-	//ClassGuid : �ΏۂƂ���N���X
-	//IsSetupClass : true=�Z�b�g�A�b�v�N���X false=�C���^�[�t�F�C�X�N���X
+	//GUIDを用いてデバイスの一覧を取得する
+	//・指定すべきGUIDは、「GUID_DEVCLASS_xxxx」というマクロでdevguid.hに定義されている
+	//  例：GUID_DEVCLASS_PORTS→シリアルポート
+	//・Bluetoothでは、bthdef.h、bthledef.hにもインターフェイスのGUID定義がある
+	//　例：GUID_BLUETOOTHLE_DEVICE_INTERFACE→Bluetoothのデバイスインターフェイス
+	//ClassGuid : 対象とするクラス
+	//IsSetupClass : true=セットアップクラス false=インターフェイスクラス
 	mDeviceEnumerarBase( const GUID& ClassGuid , bool IsSetupClass = true );
 
 	virtual ~mDeviceEnumerarBase();
@@ -44,25 +44,25 @@ private:
 	mDeviceEnumerarBase( const mDeviceEnumerarBase& src ) = delete;
 	const mDeviceEnumerarBase& operator=( const mDeviceEnumerarBase& src ) = delete;
 	
-	//���擾�p�̃n���h��
+	//情報取得用のハンドル
 	HDEVINFO MyHandle;
 
 protected:
 
-	//�n���h�����J������
+	//ハンドルを開放する
 	void FreeDevHandle( void );
 
-	//�Ώۂ̃N���X�ɑ��݂���f�o�C�X�̈ꗗ�����ۂɎ擾����
-	// ret : �������^
+	//対象のクラスに存在するデバイスの一覧を実際に取得する
+	// ret : 成功時真
 	bool CreateCatalog( bool reload = true );
 
-	//����ێ����Ă���f�o�C�X�N���X��GUID
+	//情報を保持しているデバイスクラスのGUID
 	GUID MyClassGuid;
 
-	//MyClassGuid���Z�b�g�A�b�v�N���X�̂��̂��C���^�[�t�F�C�X�N���X�̂��̂�
+	//MyClassGuidがセットアップクラスのものかインターフェイスクラスのものか
 	bool MyIsSetupClass;
 
-	//�擾�������
+	//取得した情報
 	struct DevInfoDataEntry
 	{
 		SP_DEVINFO_DATA DevInfo;
@@ -71,26 +71,26 @@ protected:
 	using DevInfoData = std::vector< DevInfoDataEntry >;
 	DevInfoData MyDevInfoData;
 
-	//�������(DevInfoData)�\�z�@�Z�b�g�A�b�v�N���X�p
+	//内部情報(DevInfoData)構築　セットアップクラス用
 	bool BuildDevInfoData_Setup( void );
-	//�������(DevInfoData)�\�z�@�C���^�[�t�F�C�X�N���X�p
+	//内部情報(DevInfoData)構築　インターフェイスクラス用
 	bool BuildDevInfoData_Interface( void );
 
-	//���W�X�g���̎擾
-	// index : �J�^���O�̃C���f�b�N�X
-	// retReg : �擾�������W�X�g���̃n���h��
+	//レジストリの取得
+	// index : カタログのインデックス
+	// retReg : 取得したレジストリのハンドル
 	bool GetDeviceRegistry( DWORD index , mDeviceRegistry& retReg )const;
 
-	//�v���p�e�B�̎擾
-	// index : �J�^���O�̃C���f�b�N�X
-	// prop_id : �擾����v���p�e�B
-	// retProp : �擾��������
+	//プロパティの取得
+	// index : カタログのインデックス
+	// prop_id : 取得するプロパティ
+	// retProp : 取得した結果
 	bool GetProperty( DWORD index , DWORD prop_id , WString& retProp)const;
 
-	//�v���p�e�B�̎擾
-	// info : �f�o�C�X���Z�b�g
-	// prop_id : �擾����v���p�e�B
-	// retProp : �擾��������
+	//プロパティの取得
+	// info : デバイス情報セット
+	// prop_id : 取得するプロパティ
+	// retProp : 取得した結果
 	bool GetProperty( const SP_DEVINFO_DATA& info , DWORD prop_id , WString& retProp)const;
 
 };

@@ -1,5 +1,5 @@
-//----------------------------------------------------------------------------
-// ƒEƒCƒ“ƒhƒEŠÇ—iƒfƒoƒCƒXƒRƒ“ƒeƒLƒXƒgj
+ï»¿//----------------------------------------------------------------------------
+// ã‚¦ã‚¤ãƒ³ãƒ‰ã‚¦ç®¡ç†ï¼ˆãƒ‡ãƒã‚¤ã‚¹ã‚³ãƒ³ãƒ†ã‚­ã‚¹ãƒˆï¼‰
 // Copyright (C) 2016 Fingerling. All rights reserved. 
 // This program is released under the MIT License. 
 // see http://opensource.org/licenses/mit-license.php
@@ -18,36 +18,36 @@ mGdiDC::mGdiDC()
 
 mGdiDC::~mGdiDC()
 {
-	//MyHdc‚Ìƒnƒ“ƒhƒ‹‚ğ‰ğ•ú‚·‚éÓ”C‚Í”h¶ƒNƒ‰ƒX‘¤‚É‚ ‚è‚Ü‚·
+	//MyHdcã®ãƒãƒ³ãƒ‰ãƒ«ã‚’è§£æ”¾ã™ã‚‹è²¬ä»»ã¯æ´¾ç”Ÿã‚¯ãƒ©ã‚¹å´ã«ã‚ã‚Šã¾ã™
 
-	//ƒfƒoƒCƒXƒRƒ“ƒeƒLƒXƒg‚Ìƒnƒ“ƒhƒ‹‚ª‰ğ•ú‚³‚ê‚½‚Ì‚ÉAƒfƒtƒHƒ‹ƒg‚ÌƒIƒuƒWƒFƒNƒg‚ª
-	//c—¯‚µ‚Ä‚¢‚éê‡‚ÍƒŠƒ\[ƒXƒŠ[ƒN‚µ‚Ä‚¢‚»‚¤‚È‚Ì‚ÅƒGƒ‰[‚ğ‹L˜^‚µ‚Ü‚·B
+	//ãƒ‡ãƒã‚¤ã‚¹ã‚³ãƒ³ãƒ†ã‚­ã‚¹ãƒˆã®ãƒãƒ³ãƒ‰ãƒ«ãŒè§£æ”¾ã•ã‚ŒãŸã®ã«ã€ãƒ‡ãƒ•ã‚©ãƒ«ãƒˆã®ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆãŒ
+	//æ®‹ç•™ã—ã¦ã„ã‚‹å ´åˆã¯ãƒªã‚½ãƒ¼ã‚¹ãƒªãƒ¼ã‚¯ã—ã¦ã„ãã†ãªã®ã§ã‚¨ãƒ©ãƒ¼ã‚’è¨˜éŒ²ã—ã¾ã™ã€‚
 	if( MyDefaultObj.size() != 0 )
 	{
-		//ResetSelectedObject()‚ğŒÄ‚Ño‚µ–Y‚ê‚Ä‚¢‚é
+		//ResetSelectedObject()ã‚’å‘¼ã³å‡ºã—å¿˜ã‚Œã¦ã„ã‚‹
 		RaiseAssert( g_ErrorLogger , MyDefaultObj.size() , L"HGDIOBJ is not detached" );
 	}
 }
 
-//ƒIƒuƒWƒFƒNƒg(ƒyƒ“Aƒuƒ‰ƒVAƒtƒHƒ“ƒg‚È‚Ç)‚ğ‘I‘ğ‚·‚é
+//ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆ(ãƒšãƒ³ã€ãƒ–ãƒ©ã‚·ã€ãƒ•ã‚©ãƒ³ãƒˆãªã©)ã‚’é¸æŠã™ã‚‹
 bool mGdiDC::Select( const mGdiHandle& handle )
 {
 	return Select( handle.GetHandle() );
 }
 
-//ƒIƒuƒWƒFƒNƒg(ƒyƒ“Aƒuƒ‰ƒVAƒtƒHƒ“ƒg‚È‚Ç)‚ğ‘I‘ğ‚·‚é
-//ƒSelectObjectŒã‚Ìƒnƒ“ƒhƒ‹‚Ìˆµ‚¢„
-//E¡‚©‚çŠÖ˜A•t‚¯‚æ‚¤‚Æ‚µ‚Ä‚¢‚éƒIƒuƒWƒFƒNƒg‚Ì‘f«‚ÍH
-// [A]MyAttachedObj‚ÉÚ‚Á‚Ä‚éË‚·‚Å‚ÉŠÖ˜A•t‚¯Ï‚İB•Ê‚ÉSelectObject©‘Ì‚ª•K—v‚È‚¢
-// [B]MyDefaultObj‚ÉÚ‚Á‚Ä‚éËƒfƒtƒHƒ‹ƒg‚ÌƒIƒuƒWƒFƒNƒg‚É–ß‚é‚©‚çMyDefaultObj‚©‚çíœ
-// [C]‚Ç‚¿‚ç‚É‚àÚ‚Á‚Ä‚È‚¢ËV‹K‚ÌƒIƒuƒWƒFƒNƒg‚¾‚©‚çMyAttachedObj‚É“o˜^
+//ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆ(ãƒšãƒ³ã€ãƒ–ãƒ©ã‚·ã€ãƒ•ã‚©ãƒ³ãƒˆãªã©)ã‚’é¸æŠã™ã‚‹
+//ï¼œSelectObjectå¾Œã®ãƒãƒ³ãƒ‰ãƒ«ã®æ‰±ã„ï¼
+//ãƒ»ä»Šã‹ã‚‰é–¢é€£ä»˜ã‘ã‚ˆã†ã¨ã—ã¦ã„ã‚‹ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã®ç´ æ€§ã¯ï¼Ÿ
+// [A]MyAttachedObjã«è¼‰ã£ã¦ã‚‹â‡’ã™ã§ã«é–¢é€£ä»˜ã‘æ¸ˆã¿ã€‚åˆ¥ã«SelectObjectè‡ªä½“ãŒå¿…è¦ãªã„
+// [B]MyDefaultObjã«è¼‰ã£ã¦ã‚‹â‡’ãƒ‡ãƒ•ã‚©ãƒ«ãƒˆã®ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã«æˆ»ã‚‹ã‹ã‚‰MyDefaultObjã‹ã‚‰å‰Šé™¤
+// [C]ã©ã¡ã‚‰ã«ã‚‚è¼‰ã£ã¦ãªã„â‡’æ–°è¦ã®ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã ã‹ã‚‰MyAttachedObjã«ç™»éŒ²
 //
-//ESelectObject‚ÅŠÖ˜A•t‚¯‚½Œ‹‰Ê•Ô‚Á‚Ä‚«‚½ƒIƒuƒWƒFƒNƒg‚ÍH
-// [a]MyAttachedObj‚ÉÚ‚Á‚Ä‚éËƒ†[ƒU‚ª‘O‚ÉŠÖ˜A•t‚¯‚½‚à‚Ì‚¾‚©‚çMyAttachedObj‚©‚çíœ
-// [b]‚»‚¤‚¶‚á‚È‚¢ËƒfƒtƒHƒ‹ƒg‚ÌƒIƒuƒWƒFƒNƒg‚¾‚©‚çMyDefaultObj‚É“o˜^
+//ãƒ»SelectObjectã§é–¢é€£ä»˜ã‘ãŸçµæœè¿”ã£ã¦ããŸã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã¯ï¼Ÿ
+// [a]MyAttachedObjã«è¼‰ã£ã¦ã‚‹â‡’ãƒ¦ãƒ¼ã‚¶ãŒå‰ã«é–¢é€£ä»˜ã‘ãŸã‚‚ã®ã ã‹ã‚‰MyAttachedObjã‹ã‚‰å‰Šé™¤
+// [b]ãã†ã˜ã‚ƒãªã„â‡’ãƒ‡ãƒ•ã‚©ãƒ«ãƒˆã®ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã ã‹ã‚‰MyDefaultObjã«ç™»éŒ²
 bool mGdiDC::Select( HGDIOBJ new_object )
 {
-	//ID‚ª–³Œø‚¾‚Á‚½‚çƒGƒ‰[
+	//IDãŒç„¡åŠ¹ã ã£ãŸã‚‰ã‚¨ãƒ©ãƒ¼
 	if( new_object == nullptr )
 	{
 		RaiseAssert( g_ErrorLogger , 0 , L"Object null" );
@@ -57,82 +57,82 @@ bool mGdiDC::Select( HGDIOBJ new_object )
 	HGDIOBJ prev_object = ::SelectObject( MyHdc , new_object );
 	if( prev_object == nullptr || prev_object == HGDI_ERROR )
 	{
-		//SelectObject‚ª¸”s‚µ‚½ê‡
+		//SelectObjectãŒå¤±æ•—ã—ãŸå ´åˆ
 		RaiseAssert( g_ErrorLogger , 0 , L"SelectObject failed" );
 		return false;
 	}
 
-	//•ÏX‘O‚ÆŒã‚Ìƒnƒ“ƒhƒ‹‚Ì‘f«‚ğ’²‚×‚ÄAMyAttachedObj‚ğXV‚·‚é
+	//å¤‰æ›´å‰ã¨å¾Œã®ãƒãƒ³ãƒ‰ãƒ«ã®ç´ æ€§ã‚’èª¿ã¹ã¦ã€MyAttachedObjã‚’æ›´æ–°ã™ã‚‹
 	if( MyAttachedObj.count( new_object ) )
 	{
-		//‚·‚Å‚É‘I‘ğÏ‚İ‚ÌƒIƒuƒWƒFƒNƒg‚ğÄ‘I‘ğ‚µ‚Ä‚¢‚éê‡B
-		//‰½‚à•Ï‰»‚µ‚Ä‚È‚¢‚©‚ç‚»‚Ì‚Ü‚Ü–ß‚éB
-		return true;	//ã‚ÌƒRƒƒ“ƒg‚Ì[A]‚Ìƒpƒ^[ƒ“
+		//ã™ã§ã«é¸æŠæ¸ˆã¿ã®ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã‚’å†é¸æŠã—ã¦ã„ã‚‹å ´åˆã€‚
+		//ä½•ã‚‚å¤‰åŒ–ã—ã¦ãªã„ã‹ã‚‰ãã®ã¾ã¾æˆ»ã‚‹ã€‚
+		return true;	//ä¸Šã®ã‚³ãƒ¡ãƒ³ãƒˆã®[A]ã®ãƒ‘ã‚¿ãƒ¼ãƒ³
 	}
 	else if( MyDefaultObj.count( new_object ) )
 	{
-		MyDefaultObj.erase( new_object );	//ã‚ÌƒRƒƒ“ƒg‚Ì[B]‚Ìƒpƒ^[ƒ“
+		MyDefaultObj.erase( new_object );	//ä¸Šã®ã‚³ãƒ¡ãƒ³ãƒˆã®[B]ã®ãƒ‘ã‚¿ãƒ¼ãƒ³
 	}
 	else
 	{
 		if( MyAttachedObj.count( new_object ) == 0 )
 		{
-			MyAttachedObj.insert( new_object );	//ã‚ÌƒRƒƒ“ƒg‚Ì[C]‚Ìƒpƒ^[ƒ“
+			MyAttachedObj.insert( new_object );	//ä¸Šã®ã‚³ãƒ¡ãƒ³ãƒˆã®[C]ã®ãƒ‘ã‚¿ãƒ¼ãƒ³
 		}
 		else
 		{
-			//ƒƒWƒbƒNã—ˆ‚È‚¢‚Í‚¸c
+			//ãƒ­ã‚¸ãƒƒã‚¯ä¸Šæ¥ãªã„ã¯ãšâ€¦
 			RaiseAssert( g_ErrorLogger , 0 , L"AttachedObj dupe" );
 		}
 	}
-	//“¯—l‚ÉMyDefaultObj‚ğXV‚·‚é
+	//åŒæ§˜ã«MyDefaultObjã‚’æ›´æ–°ã™ã‚‹
 	if( MyAttachedObj.count( prev_object ) )
 	{
-		MyAttachedObj.erase( prev_object );	//ã‚ÌƒRƒƒ“ƒg‚Ì[a]‚Ìƒpƒ^[ƒ“
+		MyAttachedObj.erase( prev_object );	//ä¸Šã®ã‚³ãƒ¡ãƒ³ãƒˆã®[a]ã®ãƒ‘ã‚¿ãƒ¼ãƒ³
 	}
 	else
 	{
 		if( MyDefaultObj.count( prev_object ) == 0 )
 		{
-			MyDefaultObj.insert( prev_object );	//ã‚ÌƒRƒƒ“ƒg‚Ì[b]‚Ìƒpƒ^[ƒ“
+			MyDefaultObj.insert( prev_object );	//ä¸Šã®ã‚³ãƒ¡ãƒ³ãƒˆã®[b]ã®ãƒ‘ã‚¿ãƒ¼ãƒ³
 		}
 		else
 		{
-			//ƒƒWƒbƒNã—ˆ‚È‚¢‚Í‚¸c
+			//ãƒ­ã‚¸ãƒƒã‚¯ä¸Šæ¥ãªã„ã¯ãšâ€¦
 			RaiseAssert( g_ErrorLogger , 0 , L"DefaultObj dupe" );
 		}
 	}
 	return true;
 }
 
-//ƒIƒuƒWƒFƒNƒg(ƒyƒ“Aƒuƒ‰ƒVAƒtƒHƒ“ƒg‚È‚Ç)‚ğ‘I‘ğ‚·‚é
+//ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆ(ãƒšãƒ³ã€ãƒ–ãƒ©ã‚·ã€ãƒ•ã‚©ãƒ³ãƒˆãªã©)ã‚’é¸æŠã™ã‚‹
 bool mGdiDC::Select( const mGdiResource& res , const WString& id , const WString& subid )
 {
 	return Select( res.GetItem( id , subid ) );
 }
 
-//ƒfƒoƒCƒXƒRƒ“ƒeƒLƒXƒg‚ÉŠÖ˜A•t‚¯‚ç‚ê‚Ä‚¢‚éƒIƒuƒWƒFƒNƒg‚ğ‘S•”Œ³‚É–ß‚·
+//ãƒ‡ãƒã‚¤ã‚¹ã‚³ãƒ³ãƒ†ã‚­ã‚¹ãƒˆã«é–¢é€£ä»˜ã‘ã‚‰ã‚Œã¦ã„ã‚‹ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã‚’å…¨éƒ¨å…ƒã«æˆ»ã™
 bool mGdiDC::ResetSelectedObject( void )
 {
-	//‘S•”‚ÌƒIƒuƒWƒFƒNƒg‚ğƒfƒtƒHƒ‹ƒg‚É–ß‚·
+	//å…¨éƒ¨ã®ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã‚’ãƒ‡ãƒ•ã‚©ãƒ«ãƒˆã«æˆ»ã™
 	for( GdiObjectPool::iterator itr = MyDefaultObj.begin() ; itr != MyDefaultObj.end() ; itr++ )
 	{
 		::SelectObject( MyHdc , *itr );
 	}
 
-	//‘S‚Ä‚ªƒfƒtƒHƒ‹ƒg‚É–ß‚Á‚Ä‚¢‚é‚Í‚¸‚¾‚©‚çAƒv[ƒ‹‚µ‚Ä‚¢‚éƒIƒuƒWƒFƒNƒg‚Ì‚±‚Æ‚Í–Y‚ê‚é
+	//å…¨ã¦ãŒãƒ‡ãƒ•ã‚©ãƒ«ãƒˆã«æˆ»ã£ã¦ã„ã‚‹ã¯ãšã ã‹ã‚‰ã€ãƒ—ãƒ¼ãƒ«ã—ã¦ã„ã‚‹ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã®ã“ã¨ã¯å¿˜ã‚Œã‚‹
 	MyAttachedObj.clear();
 	MyDefaultObj.clear();
 	return true;
 }
 
-//ü‚ğ•`‰æ‚·‚é
+//ç·šã‚’æç”»ã™ã‚‹
 bool mGdiDC::Line( INT to_x , INT to_y )
 {
 	return ::LineTo( MyHdc , to_x , to_y ) != FALSE;
 }
 
-//ü‚ğ•`‰æ‚·‚é
+//ç·šã‚’æç”»ã™ã‚‹
 bool mGdiDC::Line( INT from_x , INT from_y , INT to_x , INT to_y )
 {
 	if( !::MoveToEx( MyHdc , from_x , from_y , nullptr ) )
@@ -149,15 +149,15 @@ bool mGdiDC::LineOffset( INT from_x , INT from_y , INT offset_x , INT offset_y )
 }
 
 
-//‹éŒ`‚ğ•`‰æ‚·‚é
+//çŸ©å½¢ã‚’æç”»ã™ã‚‹
 bool mGdiDC::Rectangle( INT x1 , INT y1 , INT x2 , INT y2 )
 {
-	//WindowsAPI‚ÌRectangle‚Í‰E•Ó‚Æ’ê•Ó‚ÍÀ•W‚ÉŠÜ‚Ü‚È‚¢i1ƒsƒNƒZƒ‹“à‘¤‚É‰E•Ó‚Æ’ê•Ó‚ğ•`‰æ‚·‚éj
-	//‚Æ‚¢‚¤d—l‚ç‚µ‚¢B‚È‚ñ‚¾‚©ƒsƒ“‚Æ‚±‚È‚¢‚Ì‚ÅA1ƒsƒNƒZƒ‹ŠO‘¤‚É‚¸‚ç‚µ‚Ä•â³‚·‚éB
-	//‚È‚ñ‚Â‚Á‚½‚Á‚ÄAè‘±‚«BASIC¢‘ã‚¾‚©‚ç‚ÈI
+	//WindowsAPIã®Rectangleã¯å³è¾ºã¨åº•è¾ºã¯åº§æ¨™ã«å«ã¾ãªã„ï¼ˆ1ãƒ”ã‚¯ã‚»ãƒ«å†…å´ã«å³è¾ºã¨åº•è¾ºã‚’æç”»ã™ã‚‹ï¼‰
+	//ã¨ã„ã†ä»•æ§˜ã‚‰ã—ã„ã€‚ãªã‚“ã ã‹ãƒ”ãƒ³ã¨ã“ãªã„ã®ã§ã€1ãƒ”ã‚¯ã‚»ãƒ«å¤–å´ã«ãšã‚‰ã—ã¦è£œæ­£ã™ã‚‹ã€‚
+	//ãªã‚“ã¤ã£ãŸã£ã¦ã€æ‰‹ç¶šãBASICä¸–ä»£ã ã‹ã‚‰ãªï¼
 	PositionConvert( x1 , y1 , x2 , y2 );
 
-	//•`‰æŒn‚ÌAPI‚ÅƒGƒ‰[‚ğ‹L˜^‚·‚é‚ÆA‚·‚®ƒƒO‚ª‚ ‚Ó‚ê‚é‚Ì‚Å‹L˜^‚µ‚È‚¢
+	//æç”»ç³»ã®APIã§ã‚¨ãƒ©ãƒ¼ã‚’è¨˜éŒ²ã™ã‚‹ã¨ã€ã™ããƒ­ã‚°ãŒã‚ãµã‚Œã‚‹ã®ã§è¨˜éŒ²ã—ãªã„
 	return ::Rectangle( MyHdc , x1 , y1 , x2 , y2 ) != FALSE;
 }
 
@@ -166,23 +166,23 @@ bool mGdiDC::RectangleOffset( INT x1 , INT y1 , INT offset_x , INT offset_y )
 	return Rectangle( x1 , y1 , x1 + offset_x , y1 + offset_y );
 }
 
-//‰~‚ğ•`‰æ‚·‚é
+//å††ã‚’æç”»ã™ã‚‹
 bool mGdiDC::Circle( INT x , INT y , INT radius )
 {
 	return Circle( x - radius , y - radius , x + radius , y + radius );
 }
 
-//‰~‚ğ•`‰æ‚·‚é
+//å††ã‚’æç”»ã™ã‚‹
 bool mGdiDC::Circle( INT x1 , INT y1 , INT x2 , INT y2 )
 {
-	//Rectangle‚Æ“¯‚¶‚ÅAEllipse‚à‰E•Ó‚Æ’ê•Ó‚ÍŠÜ‚Ü‚È‚¢‚Ì‚Å•â³‚·‚é
+	//Rectangleã¨åŒã˜ã§ã€Ellipseã‚‚å³è¾ºã¨åº•è¾ºã¯å«ã¾ãªã„ã®ã§è£œæ­£ã™ã‚‹
 	PositionConvert( x1 , y1 , x2 , y2 );
 
-	//•`‰æŒn‚ÌAPI‚ÅƒGƒ‰[‚ğ‹L˜^‚·‚é‚ÆA‚·‚®ƒƒO‚ª‚ ‚Ó‚ê‚é‚Ì‚Å‹L˜^‚µ‚È‚¢
+	//æç”»ç³»ã®APIã§ã‚¨ãƒ©ãƒ¼ã‚’è¨˜éŒ²ã™ã‚‹ã¨ã€ã™ããƒ­ã‚°ãŒã‚ãµã‚Œã‚‹ã®ã§è¨˜éŒ²ã—ãªã„
 	return ::Ellipse( MyHdc , x1 , y1 , x2 , y2 ) != FALSE;
 }
 
-//Œ»İ‚ÌˆÊ’u‚ÉƒeƒLƒXƒg‚ğ•`‰æ‚·‚é
+//ç¾åœ¨ã®ä½ç½®ã«ãƒ†ã‚­ã‚¹ãƒˆã‚’æç”»ã™ã‚‹
 bool mGdiDC::Print( const WString& str )
 {
 	POINT current;
@@ -193,13 +193,13 @@ bool mGdiDC::Print( const WString& str )
 	return Print( str , current.x ,  current.y );
 }
 
-//w’è‚ÌˆÊ’u‚ÉƒeƒLƒXƒg‚ğ•`‰æ‚·‚é
+//æŒ‡å®šã®ä½ç½®ã«ãƒ†ã‚­ã‚¹ãƒˆã‚’æç”»ã™ã‚‹
 bool mGdiDC::Print( const WString& str , INT x , INT y )
 {
 	return TextOutW( MyHdc , x , y , str.c_str() , (int)str.length() );
 }
 
-//À•W•ÏŠ·
+//åº§æ¨™å¤‰æ›
 void mGdiDC::PositionConvert( INT& x1 , INT& y1 , INT& x2 , INT&y2 )const
 {
 	INT left;
@@ -207,7 +207,7 @@ void mGdiDC::PositionConvert( INT& x1 , INT& y1 , INT& x2 , INT&y2 )const
 	if( x1 < x2 )
 	{
 		left = x1;
-		right = x2 + 1;	//©‚±‚Ì+1‚ª•â³•ª
+		right = x2 + 1;	//â†ã“ã®+1ãŒè£œæ­£åˆ†
 	}
 	else
 	{
@@ -235,42 +235,42 @@ void mGdiDC::PositionConvert( INT& x1 , INT& y1 , INT& x2 , INT&y2 )const
 	return;
 }
 
-//w’è”ÍˆÍ‚ğw’è”ÍˆÍ‚ÉƒRƒs[‚·‚é(‚»‚Ì‚P)
+//æŒ‡å®šç¯„å›²ã‚’æŒ‡å®šç¯„å›²ã«ã‚³ãƒ”ãƒ¼ã™ã‚‹(ãã®ï¼‘)
 bool mGdiDC::Copy( const mGdiDC& srcdc , 
 	INT src_x1 , INT src_y1 , INT src_x2 , INT src_y2 , 
 	INT dst_x1 , INT dst_y1 , INT dst_x2 , INT dst_y2 ,
 	DWORD raster )
 {
-	//À•W•ÏŠ·
+	//åº§æ¨™å¤‰æ›
 	PositionConvert( src_x1 , src_y1 , src_x2 , src_y2 );
 	PositionConvert( dst_x1 , dst_y1 , dst_x2 , dst_y2 );
 
-	INT src_w = src_x2 - src_x1;	//ƒ\[ƒX‚Ì•
-	INT src_h = src_y2 - src_y1;	//ƒ\[ƒX‚Ì‚‚³
-	INT dst_w = dst_x2 - dst_x1;	//“\‚è•t‚¯æ‚Ì•
-	INT dst_h = dst_y2 - dst_y1;	//“\‚è•t‚¯æ‚Ì‚‚³
+	INT src_w = src_x2 - src_x1;	//ã‚½ãƒ¼ã‚¹ã®å¹…
+	INT src_h = src_y2 - src_y1;	//ã‚½ãƒ¼ã‚¹ã®é«˜ã•
+	INT dst_w = dst_x2 - dst_x1;	//è²¼ã‚Šä»˜ã‘å…ˆã®å¹…
+	INT dst_h = dst_y2 - dst_y1;	//è²¼ã‚Šä»˜ã‘å…ˆã®é«˜ã•
 
-	//ƒRƒs[Œ³‚ÆƒRƒs[æ‚Å•‚ª“¯ˆê‚Å‚ ‚é‚©‚ğ”»’è‚µABitblt‚ğg‚¤‚©AStretchBlt‚ğg‚¤‚©Œˆ‚ß‚é
+	//ã‚³ãƒ”ãƒ¼å…ƒã¨ã‚³ãƒ”ãƒ¼å…ˆã§å¹…ãŒåŒä¸€ã§ã‚ã‚‹ã‹ã‚’åˆ¤å®šã—ã€Bitbltã‚’ä½¿ã†ã‹ã€StretchBltã‚’ä½¿ã†ã‹æ±ºã‚ã‚‹
 	if( ( src_w == dst_w ) && ( src_h == dst_h ) )
 	{
-		//•‚Æ‚‚³‚ª“¯‚¶‚Å‚ ‚é‚©‚çbitblt
+		//å¹…ã¨é«˜ã•ãŒåŒã˜ã§ã‚ã‚‹ã‹ã‚‰bitblt
 		return ::BitBlt( MyHdc, dst_x1 , dst_y1 , src_w , src_h , srcdc.MyHdc , src_x1 , src_y1 , raster ) != FALSE;
 	}
 	else
 	{
-		//•‚Æ‚‚³‚ªˆÙ‚È‚Á‚Ä‚¢‚é‚Ì‚ÅStretchBlt
+		//å¹…ã¨é«˜ã•ãŒç•°ãªã£ã¦ã„ã‚‹ã®ã§StretchBlt
 		return ::StretchBlt( MyHdc , dst_x1 , dst_y1 , dst_w , dst_h , srcdc.MyHdc , src_x1 , src_y1 , src_w , src_h , raster ) != FALSE;
 	}
 }
 
 
-//w’è”ÍˆÍ‚ğw’è”ÍˆÍ‚ÉƒRƒs[‚·‚é(‚»‚Ì‚Q)
+//æŒ‡å®šç¯„å›²ã‚’æŒ‡å®šç¯„å›²ã«ã‚³ãƒ”ãƒ¼ã™ã‚‹(ãã®ï¼’)
 bool mGdiDC::Copy( const mGdiDC& srcdc ,
 	INT src_x1 , INT src_y1 , INT src_x2 , INT src_y2 ,
 	INT dst_x1 , INT dst_y1 , DWORD raster )
 {
-	//ƒRƒs[æ‚Ì‰EE‰º‚ÌÀ•W‚ğAƒRƒs[Œ³‚Ì•E‚‚³‚ğg‚Á‚Ä‹‚ß‚é
-	INT width;	//•
+	//ã‚³ãƒ”ãƒ¼å…ˆã®å³ãƒ»ä¸‹ã®åº§æ¨™ã‚’ã€ã‚³ãƒ”ãƒ¼å…ƒã®å¹…ãƒ»é«˜ã•ã‚’ä½¿ã£ã¦æ±‚ã‚ã‚‹
+	INT width;	//å¹…
 	if( src_x1 < src_x2 )
 	{
 		width = src_x2 - src_x1 + 1;
@@ -279,7 +279,7 @@ bool mGdiDC::Copy( const mGdiDC& srcdc ,
 	{
 		width = src_x1 - src_x2 + 1;
 	}
-	INT height;	//‚‚³
+	INT height;	//é«˜ã•
 	if( src_x1 < src_x2 )
 	{
 		height = src_y2 - src_y1 + 1;
@@ -289,14 +289,14 @@ bool mGdiDC::Copy( const mGdiDC& srcdc ,
 		height = src_y1 - src_y2 + 1;
 	}
 
-	//‹‚ß‚½•E‚‚³‚ğ•â‚Á‚ÄAu‚»‚Ì‚Pv‚ğŒÄ‚Ño‚·B‚â‚â•sŒoÏ‚©H‚Ç‚¤‚Å‚à‚¢‚¢‚©B
+	//æ±‚ã‚ãŸå¹…ãƒ»é«˜ã•ã‚’è£œã£ã¦ã€ã€Œãã®ï¼‘ã€ã‚’å‘¼ã³å‡ºã™ã€‚ã‚„ã‚„ä¸çµŒæ¸ˆã‹ï¼Ÿã©ã†ã§ã‚‚ã„ã„ã‹ã€‚
 	return Copy( srcdc , src_x1 , src_y1 , src_x2 , src_y2 , dst_x1 , dst_y1 , dst_x1 + width , dst_y1 + height , raster );
 }
 
-//w’è”ÍˆÍ‚ğw’è”ÍˆÍ‚ÉƒRƒs[‚·‚é(‚»‚Ì‚R)
+//æŒ‡å®šç¯„å›²ã‚’æŒ‡å®šç¯„å›²ã«ã‚³ãƒ”ãƒ¼ã™ã‚‹(ãã®ï¼“)
 bool mGdiDC::Copy( const mGdiDC& srcdc , INT x1 , INT y1 , INT x2 , INT y2 , DWORD raster )
 {
-	//À•W‚Í“¯‚¶‚È‚Ì‚ÅAƒRƒs[æ‚É‚àƒRƒs[Œ³‚ÌÀ•W‚ğ‚»‚Ì‚Ü‚Üg‚Á‚¿‚á‚¢‚Ü‚·
+	//åº§æ¨™ã¯åŒã˜ãªã®ã§ã€ã‚³ãƒ”ãƒ¼å…ˆã«ã‚‚ã‚³ãƒ”ãƒ¼å…ƒã®åº§æ¨™ã‚’ãã®ã¾ã¾ä½¿ã£ã¡ã‚ƒã„ã¾ã™
 	return Copy( srcdc , x1 , y1 , x2 , y2 , x1 , y1 , x2 , y2 , raster );
 }
 
@@ -314,7 +314,7 @@ static bool MakeDrawTextParameter( const mGdiDC::PrintOptions& opt , UINT& retfo
 	retparams = { 0 };
 	retparams.cbSize = sizeof( DRAWTEXTPARAMS );
 
-	//‚’¼ˆÊ’u
+	//å‚ç›´ä½ç½®
 	switch( opt.VerticalAlign )
 	{
 	case mGdiDC::PrintOptions::PrintVerticalAlign::V_ALIGN_TOP:
@@ -329,12 +329,12 @@ static bool MakeDrawTextParameter( const mGdiDC::PrintOptions& opt , UINT& retfo
 		retformat |= DT_SINGLELINE;
 		break;
 	default:
-		RaiseError( g_ErrorLogger , 0 , L"‚’¼ˆÊ’u‚ª•s³‚Å‚·" );
+		RaiseError( g_ErrorLogger , 0 , L"å‚ç›´ä½ç½®ãŒä¸æ­£ã§ã™" );
 		result = false;
 		break;
 	}
 
-	//…•½ˆÊ’u
+	//æ°´å¹³ä½ç½®
 	switch( opt.HorizontalAlign )
 	{
 	case mGdiDC::PrintOptions::PrintHorizontalAlign::H_ALIGN_LEFT:
@@ -347,81 +347,81 @@ static bool MakeDrawTextParameter( const mGdiDC::PrintOptions& opt , UINT& retfo
 		retformat |= DT_RIGHT;
 		break;
 	default:
-		RaiseError( g_ErrorLogger , 0 , L"…•½ˆÊ’u‚ª•s³‚Å‚·" );
+		RaiseError( g_ErrorLogger , 0 , L"æ°´å¹³ä½ç½®ãŒä¸æ­£ã§ã™" );
 		result = false;
 		break;
 	}
 
-	//ƒ^ƒu‚Ì“WŠJ
+	//ã‚¿ãƒ–ã®å±•é–‹
 	if( 2 <= opt.TabSize )
 	{
 		retparams.iTabLength = opt.TabSize;
-		retformat |= DT_EXPANDTABS;		//ƒ^ƒu‚Ì“WŠJ‚ğs‚¤
-		retformat |= DT_TABSTOP;		//ƒ^ƒuƒTƒCƒY‚Ìİ’è‚ğs‚¤
+		retformat |= DT_EXPANDTABS;		//ã‚¿ãƒ–ã®å±•é–‹ã‚’è¡Œã†
+		retformat |= DT_TABSTOP;		//ã‚¿ãƒ–ã‚µã‚¤ã‚ºã®è¨­å®šã‚’è¡Œã†
 	}
 	return true;
 }
 
-//Œ»İ‚ÌˆÊ’u‚ÉƒeƒLƒXƒg‚ğ•`‰æ‚·‚é
+//ç¾åœ¨ã®ä½ç½®ã«ãƒ†ã‚­ã‚¹ãƒˆã‚’æç”»ã™ã‚‹
 bool mGdiDC::Print( const WString& str , const PrintOptions& opt )
 {
-	//Œ»İ‚ÌˆÊ’u‚ğæ“¾‚µ‚Ä
+	//ç¾åœ¨ã®ä½ç½®ã‚’å–å¾—ã—ã¦
 	POINT current;
 	if( !GetCurrentPositionEx( MyHdc , &current ) )
 	{
 		return false;
 	}
 
-	//•`‰æ
+	//æç”»
 	return Print( str , current.x , current.y , opt );
 }
 
-//w’è‚ÌˆÊ’u‚ÉƒeƒLƒXƒg‚ğ•`‰æ‚·‚é
+//æŒ‡å®šã®ä½ç½®ã«ãƒ†ã‚­ã‚¹ãƒˆã‚’æç”»ã™ã‚‹
 bool mGdiDC::Print( const WString& str , INT x , INT y , const PrintOptions& opt )
 {
-	//API‚É“n‚·ƒtƒH[ƒ}ƒbƒgî•ñ‚ğì¬
+	//APIã«æ¸¡ã™ãƒ•ã‚©ãƒ¼ãƒãƒƒãƒˆæƒ…å ±ã‚’ä½œæˆ
 	UINT format ;
 	DRAWTEXTPARAMS option;
 
 	MakeDrawTextParameter( opt , format , option );
-	format |= DT_NOCLIP;	//©¶ã‚µ‚©w’è‚³‚ê‚Ä‚¢‚È‚¢‚Ì‚ÅAƒNƒŠƒbƒv‚È‚µ
+	format |= DT_NOCLIP;	//â†å·¦ä¸Šã—ã‹æŒ‡å®šã•ã‚Œã¦ã„ãªã„ã®ã§ã€ã‚¯ãƒªãƒƒãƒ—ãªã—
 
-	//À•Ww’è‚µ‚Ä
+	//åº§æ¨™æŒ‡å®šã—ã¦
 	RECT rect;
 	rect.left = x;
 	rect.top = y;
 	rect.right = x;
 	rect.bottom = y;
 
-	//•`‰æ
+	//æç”»
 	return DrawTextEx( MyHdc , const_cast<LPWSTR>( str.c_str() ) , (int)str.length() ,  &rect , format , &option );
 }
 
-//w’è‚ÌˆÊ’u‚ÉƒeƒLƒXƒg‚ğ•`‰æ‚·‚é
+//æŒ‡å®šã®ä½ç½®ã«ãƒ†ã‚­ã‚¹ãƒˆã‚’æç”»ã™ã‚‹
 bool mGdiDC::Print( const WString& str , INT x1 , INT y1 , INT x2 , INT y2 , const PrintOptions& opt )
 {
-	//API‚É“n‚·ƒtƒH[ƒ}ƒbƒgî•ñ‚ğì¬
+	//APIã«æ¸¡ã™ãƒ•ã‚©ãƒ¼ãƒãƒƒãƒˆæƒ…å ±ã‚’ä½œæˆ
 	UINT format ;
 	DRAWTEXTPARAMS option;
 
 	MakeDrawTextParameter( opt , format , option );
-	//¶ãE‰E‰º‚Æ‚à‚Éw’è‚³‚ê‚Ä‚¢‚é‚Ì‚ÅAƒNƒŠƒbƒv‚ ‚èB
+	//å·¦ä¸Šãƒ»å³ä¸‹ã¨ã‚‚ã«æŒ‡å®šã•ã‚Œã¦ã„ã‚‹ã®ã§ã€ã‚¯ãƒªãƒƒãƒ—ã‚ã‚Šã€‚
 	format |= DT_NOCLIP;	
 
-	//À•Ww’è‚µ‚Ä
+	//åº§æ¨™æŒ‡å®šã—ã¦
 	RECT rect;
 	rect.left = x1;
 	rect.top = y1;
 	rect.right = x2;
 	rect.bottom = y2;
 
-	//•`‰æ
+	//æç”»
 	return DrawTextEx( MyHdc , const_cast<LPWSTR>( str.c_str() ) , (int)str.length() ,  &rect , format , &option );
 }
 
 bool mGdiDC::PrintMultiline( const WString& str , INT x1 , INT y1 , INT x2 , INT y2 , const PrintOptions& opt )
 {
-	//s’PˆÊ‚Éƒp[ƒX
+	//è¡Œå˜ä½ã«ãƒ‘ãƒ¼ã‚¹
 	WStringDeque lines;
 	ParseString( str , lines , false );
 
@@ -431,31 +431,31 @@ bool mGdiDC::PrintMultiline( const WString& str , INT x1 , INT y1 , INT x2 , INT
 
 bool mGdiDC::PrintMultiline( const WStringDeque& lines , INT x1 , INT y1 , INT x2 , INT y2 , const PrintOptions& opt )
 {
-	//ƒ†[ƒU[‚Ìw’è‚µ‚Ä‚«‚½À•W‚É‚Â‚¢‚Ä‰ÁH
-	int top = ( y1 < y2 ) ? ( y1 ) : ( y2 );		//ƒ†[ƒU[‚ªw’è‚µ‚Ä‚«‚½•`‰æˆÊ’u‚Ìã’[
-	int bottom = ( y1 < y2 ) ? ( y2 ) : ( y1 );		//ƒ†[ƒU[‚ªw’è‚µ‚Ä‚«‚½•`‰æˆÊ’u‚Ì‰º’[
-	SIZE areasize;									//ƒ†[ƒU[‚ªw’è‚µ‚Ä‚«‚½•`‰æƒTƒCƒY
+	//ãƒ¦ãƒ¼ã‚¶ãƒ¼ã®æŒ‡å®šã—ã¦ããŸåº§æ¨™ã«ã¤ã„ã¦åŠ å·¥
+	int top = ( y1 < y2 ) ? ( y1 ) : ( y2 );		//ãƒ¦ãƒ¼ã‚¶ãƒ¼ãŒæŒ‡å®šã—ã¦ããŸæç”»ä½ç½®ã®ä¸Šç«¯
+	int bottom = ( y1 < y2 ) ? ( y2 ) : ( y1 );		//ãƒ¦ãƒ¼ã‚¶ãƒ¼ãŒæŒ‡å®šã—ã¦ããŸæç”»ä½ç½®ã®ä¸‹ç«¯
+	SIZE areasize;									//ãƒ¦ãƒ¼ã‚¶ãƒ¼ãŒæŒ‡å®šã—ã¦ããŸæç”»ã‚µã‚¤ã‚º
 	areasize.cx = ( x1 < x2 ) ? ( x2 - x1 ) : ( x1 - x2 );
 	areasize.cy = bottom - top;
 
-	//Šes‚ÌƒTƒCƒY‚ğ‹‚ß‚é
-	SIZE reqsize = { 0 };		//‘ƒTƒCƒY
-	MultilineSize reqlinesize;	//s–ˆ‚ÌƒTƒCƒY
+	//å„è¡Œã®ã‚µã‚¤ã‚ºã‚’æ±‚ã‚ã‚‹
+	SIZE reqsize = { 0 };		//ç·ã‚µã‚¤ã‚º
+	MultilineSize reqlinesize;	//è¡Œæ¯ã®ã‚µã‚¤ã‚º
 	if( !GetPrintSizeMultiline( lines , reqsize , reqlinesize , opt ) )
 	{
 		return false;
 	}
 
-	//‹‚ß‚½‘S‘Ì‚Ì•`‰æ‚É•K—v‚È”ÍˆÍ‚ªAw’èƒGƒŠƒA‚É”[‚Ü‚Á‚Ä‚¢‚é‚©Šm”F‚µ‚ÄAû‚Ü‚Á‚Ä‚¢‚È‚¢‚È‚ç•â³‚·‚é
-	//Xi…•½j•ûŒü‚É‚Â‚¢‚Ä‚ÍAPI‚ª‚â‚Á‚Ä‚­‚ê‚é‚©‚çAYi‚’¼j•ûŒü‚É‚Ì‚İˆ—‚·‚é
-	RECT print_rect;	//ÀÛ‚É•`‰æ‚ğs‚¤”ÍˆÍ
+	//æ±‚ã‚ãŸå…¨ä½“ã®æç”»ã«å¿…è¦ãªç¯„å›²ãŒã€æŒ‡å®šã‚¨ãƒªã‚¢ã«ç´ã¾ã£ã¦ã„ã‚‹ã‹ç¢ºèªã—ã¦ã€åã¾ã£ã¦ã„ãªã„ãªã‚‰è£œæ­£ã™ã‚‹
+	//Xï¼ˆæ°´å¹³ï¼‰æ–¹å‘ã«ã¤ã„ã¦ã¯APIãŒã‚„ã£ã¦ãã‚Œã‚‹ã‹ã‚‰ã€Yï¼ˆå‚ç›´ï¼‰æ–¹å‘ã«ã®ã¿å‡¦ç†ã™ã‚‹
+	RECT print_rect;	//å®Ÿéš›ã«æç”»ã‚’è¡Œã†ç¯„å›²
 	print_rect.left = x1;
 	print_rect.right = x2;
 
 	if( areasize.cy < reqsize.cy )
 	{
-		//“ü‚ç‚È‚¢
-		int diff = reqsize.cy - areasize.cy;	//©•s‘«•ª
+		//å…¥ã‚‰ãªã„
+		int diff = reqsize.cy - areasize.cy;	//â†ä¸è¶³åˆ†
 		switch( opt.VerticalAlign )
 		{
 		case PrintOptions::PrintVerticalAlign::V_ALIGN_TOP:
@@ -476,8 +476,8 @@ bool mGdiDC::PrintMultiline( const WStringDeque& lines , INT x1 , INT y1 , INT x
 	}
 	else
 	{
-		//“ü‚é
-		int diff = areasize.cy - reqsize.cy;	//©—]‚Á‚½ƒXƒy[ƒX
+		//å…¥ã‚‹
+		int diff = areasize.cy - reqsize.cy;	//â†ä½™ã£ãŸã‚¹ãƒšãƒ¼ã‚¹
 		switch( opt.VerticalAlign )
 		{
 		case PrintOptions::PrintVerticalAlign::V_ALIGN_TOP:
@@ -497,16 +497,16 @@ bool mGdiDC::PrintMultiline( const WStringDeque& lines , INT x1 , INT y1 , INT x
 		}
 	}
 
-	//API‚É“n‚·ƒtƒH[ƒ}ƒbƒgî•ñ‚ğì¬
+	//APIã«æ¸¡ã™ãƒ•ã‚©ãƒ¼ãƒãƒƒãƒˆæƒ…å ±ã‚’ä½œæˆ
 	UINT format ;
 	DRAWTEXTPARAMS option;
 	MakeDrawTextParameter( opt , format , option );
 
-	//•`‰æ‚·‚é
+	//æç”»ã™ã‚‹
 	int current_y = print_rect.top;
 	for( size_t i = 0 ; i < lines.size() ; i++ )
 	{
-		//•`‰æˆÊ’u‚ğŒˆ’è
+		//æç”»ä½ç½®ã‚’æ±ºå®š
 		RECT area;
 		area.left = print_rect.left;
 		area.right = print_rect.right;
@@ -515,12 +515,12 @@ bool mGdiDC::PrintMultiline( const WStringDeque& lines , INT x1 , INT y1 , INT x
 
 		if( bottom < area.top )
 		{
-			//ˆÈ~ˆóü”ÍˆÍ’´‚¦‚É‚Â‚«ˆóü‚Å‚«‚È‚¢
+			//ä»¥é™å°åˆ·ç¯„å›²è¶…ãˆã«ã¤ãå°åˆ·ã§ããªã„
 			break;
 		}
 		if( top < area.bottom )
 		{
-			//ˆóü‰Â”\”ÍˆÍ
+			//å°åˆ·å¯èƒ½ç¯„å›²
 			if( !DrawTextEx( MyHdc , const_cast<LPWSTR>( lines[ i ].c_str() ) , (int)lines[ i ].length() , &area , format , &option ) )
 			{
 				return false;
@@ -532,16 +532,16 @@ bool mGdiDC::PrintMultiline( const WStringDeque& lines , INT x1 , INT y1 , INT x
 }
 
 
-//w’è‚ÌˆÊ’u‚ÉƒeƒLƒXƒg‚ğ•`‰æ‚·‚é
+//æŒ‡å®šã®ä½ç½®ã«ãƒ†ã‚­ã‚¹ãƒˆã‚’æç”»ã™ã‚‹
 bool mGdiDC::PrintOffset( const WString& str , INT x1 , INT y1 , INT offset_x , INT offset_y , const PrintOptions& opt )
 {
 	return Print( str , x1 , y1 , x1 + offset_x , y1 + offset_y , opt );
 }
 
-//•`‰æ‚µ‚½‚Æ‚«‚ÌƒTƒCƒY‚ğ“¾‚é
+//æç”»ã—ãŸã¨ãã®ã‚µã‚¤ã‚ºã‚’å¾—ã‚‹
 bool mGdiDC::GetPrintSize( const WString& str , SIZE& retSize , const PrintOptions& opt )
 {
-	//API‚É“n‚·ƒtƒH[ƒ}ƒbƒgî•ñ‚ğì¬
+	//APIã«æ¸¡ã™ãƒ•ã‚©ãƒ¼ãƒãƒƒãƒˆæƒ…å ±ã‚’ä½œæˆ
 	PrintOptions tmp_opt = opt;
 	tmp_opt.VerticalAlign = mGdiDC::PrintOptions::PrintVerticalAlign::V_ALIGN_TOP;
 	tmp_opt.HorizontalAlign = mGdiDC::PrintOptions::PrintHorizontalAlign::H_ALIGN_LEFT;
@@ -564,13 +564,13 @@ bool mGdiDC::GetPrintSize( const WString& str , SIZE& retSize , const PrintOptio
 	return true;
 }
 
-//w’è‚ÌˆÊ’u‚ÉƒeƒLƒXƒg‚ğ•`‰æ‚·‚é
+//æŒ‡å®šã®ä½ç½®ã«ãƒ†ã‚­ã‚¹ãƒˆã‚’æç”»ã™ã‚‹
 bool mGdiDC::PrintOffsetMultiline( const WString& str , INT x1 , INT y1 , INT offset_x , INT offset_y , const PrintOptions& opt )
 {
 	return PrintMultiline( str , x1 , y1 , x1 + offset_x , y1 + offset_y , opt );
 }
 
-//w’è‚ÌˆÊ’u‚ÉƒeƒLƒXƒg‚ğ•`‰æ‚·‚é
+//æŒ‡å®šã®ä½ç½®ã«ãƒ†ã‚­ã‚¹ãƒˆã‚’æç”»ã™ã‚‹
 bool mGdiDC::PrintOffsetMultiline( const WStringDeque& lines , INT x1 , INT y1 , INT offset_x , INT offset_y , const PrintOptions& opt )
 {
 	return PrintMultiline( lines , x1 , y1 , x1 + offset_x , y1 + offset_y , opt );
@@ -589,7 +589,7 @@ bool mGdiDC::GetPrintSizeMultiline( const WStringDeque& lines , SIZE& retSize , 
 	retSize.cy = 0;
 	retLineSize.clear();
 
-	//API‚É“n‚·ƒtƒH[ƒ}ƒbƒgî•ñ‚ğì¬
+	//APIã«æ¸¡ã™ãƒ•ã‚©ãƒ¼ãƒãƒƒãƒˆæƒ…å ±ã‚’ä½œæˆ
 	PrintOptions tmp_opt = opt;
 	tmp_opt.VerticalAlign = mGdiDC::PrintOptions::PrintVerticalAlign::V_ALIGN_TOP;
 	tmp_opt.HorizontalAlign = mGdiDC::PrintOptions::PrintHorizontalAlign::H_ALIGN_LEFT;
@@ -600,17 +600,17 @@ bool mGdiDC::GetPrintSizeMultiline( const WStringDeque& lines , SIZE& retSize , 
 	format |= DT_CALCRECT;
 	format |= DT_NOCLIP;
 
-	//•`‰æ‚É•K—v‚È‹éŒ`‚ğ‹‚ß‚é
+	//æç”»ã«å¿…è¦ãªçŸ©å½¢ã‚’æ±‚ã‚ã‚‹
 	for( WStringDeque::const_iterator itr = lines.begin() ; itr != lines.end() ; itr++ )
 	{
-		//1s•ª‚ÌƒTƒCƒY‚ğ‹‚ß‚é
+		//1è¡Œåˆ†ã®ã‚µã‚¤ã‚ºã‚’æ±‚ã‚ã‚‹
 		RECT rect = { 0 };
 		if( !DrawTextEx( MyHdc , const_cast<LPWSTR>( (*itr).c_str() ) , (int)(*itr).length() , &rect , format , &option ) )
 		{
 			return false;
 		}
 
-		//‚ÅA‚»‚ê‚ğ‡Œv‚µ‚ÄA‘S‘Ì‚Ì•`‰æ‚É•K—v‚È”ÍˆÍ‚ğ‹‚ß‚é
+		//ã§ã€ãã‚Œã‚’åˆè¨ˆã—ã¦ã€å…¨ä½“ã®æç”»ã«å¿…è¦ãªç¯„å›²ã‚’æ±‚ã‚ã‚‹
 		SIZE sz;
 		sz.cx = ( rect.left < rect.right ) ? ( rect.right - rect.left + 1 ) : ( rect.left - rect.right + 1 );
 		sz.cy = ( rect.top < rect.bottom ) ? ( rect.bottom - rect.top + 1 ) : ( rect.top - rect.bottom + 1 );
@@ -621,21 +621,21 @@ bool mGdiDC::GetPrintSizeMultiline( const WStringDeque& lines , SIZE& retSize , 
 		}
 		retSize.cy += sz.cy;
 
-		//‚³‚ç‚ÉAŠes‚ÌƒTƒCƒY‚àŒ‹‰Ê‚Æ‚µ‚Ä•Ô‚·
+		//ã•ã‚‰ã«ã€å„è¡Œã®ã‚µã‚¤ã‚ºã‚‚çµæœã¨ã—ã¦è¿”ã™
 		retLineSize.push_back( std::move( sz ) );
 	}
 	return true;
 }
 
 
-//ƒeƒLƒXƒg‚Ì•¶šF‚ğw’è
+//ãƒ†ã‚­ã‚¹ãƒˆã®æ–‡å­—è‰²ã‚’æŒ‡å®š
 bool mGdiDC::SetTextColor( COLORREF color )
 {
 	::SetTextColor( MyHdc , color );
 	return true;
 }
 
-//ƒeƒLƒXƒg‚ÌƒoƒbƒNƒOƒ‰ƒEƒ“ƒhF‚ğw’è
+//ãƒ†ã‚­ã‚¹ãƒˆã®ãƒãƒƒã‚¯ã‚°ãƒ©ã‚¦ãƒ³ãƒ‰è‰²ã‚’æŒ‡å®š
 bool mGdiDC::SetBackgroundColor( COLORREF color )
 {
 	SetBkMode( MyHdc , OPAQUE );
@@ -643,14 +643,14 @@ bool mGdiDC::SetBackgroundColor( COLORREF color )
 	return true;
 }
 
-//ƒeƒLƒXƒg‚ÌƒoƒbƒNƒOƒ‰ƒEƒ“ƒhF‚ğw’è
+//ãƒ†ã‚­ã‚¹ãƒˆã®ãƒãƒƒã‚¯ã‚°ãƒ©ã‚¦ãƒ³ãƒ‰è‰²ã‚’æŒ‡å®š
 bool mGdiDC::SetBackgroundColor( void )
 {
 	SetBkMode( MyHdc , TRANSPARENT );
 	return true;
 }
 
-//Œ»İ‚ÌƒeƒLƒXƒg‚Ì•¶šF‚ğæ“¾
+//ç¾åœ¨ã®ãƒ†ã‚­ã‚¹ãƒˆã®æ–‡å­—è‰²ã‚’å–å¾—
 bool mGdiDC::GetTextColor( COLORREF& retColor )const noexcept
 {
 	retColor = ::GetTextColor( MyHdc );
@@ -661,7 +661,7 @@ bool mGdiDC::GetTextColor( COLORREF& retColor )const noexcept
 	return true;
 }
 
-//Œ»İ‚Ì”wŒiF‚ğæ“¾
+//ç¾åœ¨ã®èƒŒæ™¯è‰²ã‚’å–å¾—
 bool mGdiDC::GetBackgroundColor( COLORREF& retColor , bool& retIsTransparent )const noexcept
 {
 	int IsTransparent = ::GetBkMode( MyHdc );
@@ -675,20 +675,20 @@ bool mGdiDC::GetBackgroundColor( COLORREF& retColor , bool& retIsTransparent )co
 	return true;
 }
 
-//“§–¾F‚Â‚«‚Åw’è”ÍˆÍ‚ğw’è”ÍˆÍ‚ÉƒRƒs[‚·‚é(‚»‚Ì‚P)
-bool mGdiDC::Copy( const mGdiDC& srcdc ,							//ƒRƒs[Œ³ƒfƒoƒCƒXƒRƒ“ƒeƒLƒXƒg
-	INT src_x1 , INT src_y1 , INT src_x2 , INT src_y2 ,		//ƒRƒs[Œ³’·•ûŒ`
-	INT dst_x1 , INT dst_y1 , INT dst_x2 , INT dst_y2 ,		//ƒRƒs[æ’·•ûŒ`
+//é€æ˜è‰²ã¤ãã§æŒ‡å®šç¯„å›²ã‚’æŒ‡å®šç¯„å›²ã«ã‚³ãƒ”ãƒ¼ã™ã‚‹(ãã®ï¼‘)
+bool mGdiDC::Copy( const mGdiDC& srcdc ,							//ã‚³ãƒ”ãƒ¼å…ƒãƒ‡ãƒã‚¤ã‚¹ã‚³ãƒ³ãƒ†ã‚­ã‚¹ãƒˆ
+	INT src_x1 , INT src_y1 , INT src_x2 , INT src_y2 ,		//ã‚³ãƒ”ãƒ¼å…ƒé•·æ–¹å½¢
+	INT dst_x1 , INT dst_y1 , INT dst_x2 , INT dst_y2 ,		//ã‚³ãƒ”ãƒ¼å…ˆé•·æ–¹å½¢
 	const RGBQUAD& transparent_color )
 {
-	//À•W•ÏŠ·
+	//åº§æ¨™å¤‰æ›
 	PositionConvert( src_x1 , src_y1 , src_x2 , src_y2 );
 	PositionConvert( dst_x1 , dst_y1 , dst_x2 , dst_y2 );
 
-	INT src_w = src_x2 - src_x1;	//ƒ\[ƒX‚Ì•
-	INT src_h = src_y2 - src_y1;	//ƒ\[ƒX‚Ì‚‚³
-	INT dst_w = dst_x2 - dst_x1;	//“\‚è•t‚¯æ‚Ì•
-	INT dst_h = dst_y2 - dst_y1;	//“\‚è•t‚¯æ‚Ì‚‚³
+	INT src_w = src_x2 - src_x1;	//ã‚½ãƒ¼ã‚¹ã®å¹…
+	INT src_h = src_y2 - src_y1;	//ã‚½ãƒ¼ã‚¹ã®é«˜ã•
+	INT dst_w = dst_x2 - dst_x1;	//è²¼ã‚Šä»˜ã‘å…ˆã®å¹…
+	INT dst_h = dst_y2 - dst_y1;	//è²¼ã‚Šä»˜ã‘å…ˆã®é«˜ã•
 
 	UINT transparent = ( transparent_color.rgbRed   << 16 ) |
 					   ( transparent_color.rgbGreen <<  8 ) |
@@ -697,14 +697,14 @@ bool mGdiDC::Copy( const mGdiDC& srcdc ,							//ƒRƒs[Œ³ƒfƒoƒCƒXƒRƒ“ƒeƒLƒXƒg
 	return ::TransparentBlt( MyHdc , dst_x1 , dst_y1 , dst_w , dst_h , srcdc.MyHdc , src_x1 , src_y1 , src_w , src_h , transparent );
 }
 
-//“§–¾F‚Â‚«‚Åw’è”ÍˆÍ‚ğw’è”ÍˆÍ‚ÉƒRƒs[‚·‚é(‚»‚Ì‚Q)
-bool mGdiDC::Copy( const mGdiDC& srcdc ,							//ƒRƒs[Œ³ƒfƒoƒCƒXƒRƒ“ƒeƒLƒXƒg
-	INT src_x1 , INT src_y1 , INT src_x2 , INT src_y2 ,		//ƒRƒs[Œ³’·•ûŒ`
-	INT dst_x1 , INT dst_y1 ,								//ƒRƒs[æÀ•W(¶ã)
+//é€æ˜è‰²ã¤ãã§æŒ‡å®šç¯„å›²ã‚’æŒ‡å®šç¯„å›²ã«ã‚³ãƒ”ãƒ¼ã™ã‚‹(ãã®ï¼’)
+bool mGdiDC::Copy( const mGdiDC& srcdc ,							//ã‚³ãƒ”ãƒ¼å…ƒãƒ‡ãƒã‚¤ã‚¹ã‚³ãƒ³ãƒ†ã‚­ã‚¹ãƒˆ
+	INT src_x1 , INT src_y1 , INT src_x2 , INT src_y2 ,		//ã‚³ãƒ”ãƒ¼å…ƒé•·æ–¹å½¢
+	INT dst_x1 , INT dst_y1 ,								//ã‚³ãƒ”ãƒ¼å…ˆåº§æ¨™(å·¦ä¸Š)
 	const RGBQUAD& transparent_color )
 {
-	//ƒRƒs[æ‚Ì‰EE‰º‚ÌÀ•W‚ğAƒRƒs[Œ³‚Ì•E‚‚³‚ğg‚Á‚Ä‹‚ß‚é
-	INT width;	//•
+	//ã‚³ãƒ”ãƒ¼å…ˆã®å³ãƒ»ä¸‹ã®åº§æ¨™ã‚’ã€ã‚³ãƒ”ãƒ¼å…ƒã®å¹…ãƒ»é«˜ã•ã‚’ä½¿ã£ã¦æ±‚ã‚ã‚‹
+	INT width;	//å¹…
 	if( src_x1 < src_x2 )
 	{
 		width = src_x2 - src_x1 + 1;
@@ -713,7 +713,7 @@ bool mGdiDC::Copy( const mGdiDC& srcdc ,							//ƒRƒs[Œ³ƒfƒoƒCƒXƒRƒ“ƒeƒLƒXƒg
 	{
 		width = src_x1 - src_x2 + 1;
 	}
-	INT height;	//‚‚³
+	INT height;	//é«˜ã•
 	if( src_x1 < src_x2 )
 	{
 		height = src_y2 - src_y1 + 1;
@@ -723,15 +723,15 @@ bool mGdiDC::Copy( const mGdiDC& srcdc ,							//ƒRƒs[Œ³ƒfƒoƒCƒXƒRƒ“ƒeƒLƒXƒg
 		height = src_y1 - src_y2 + 1;
 	}
 
-	//‹‚ß‚½•E‚‚³‚ğ•â‚Á‚ÄAu‚»‚Ì‚Pv‚ğŒÄ‚Ño‚·B
+	//æ±‚ã‚ãŸå¹…ãƒ»é«˜ã•ã‚’è£œã£ã¦ã€ã€Œãã®ï¼‘ã€ã‚’å‘¼ã³å‡ºã™ã€‚
 	return Copy( srcdc , src_x1 , src_y1 , src_x2 , src_y2 , dst_x1 , dst_y1 , dst_x1 + width , dst_y1 + height , transparent_color );
 }
 
 
-//“§–¾F‚Â‚«‚Åw’è”ÍˆÍ‚ğw’è”ÍˆÍ‚ÉƒRƒs[‚·‚é(‚»‚Ì‚R)
+//é€æ˜è‰²ã¤ãã§æŒ‡å®šç¯„å›²ã‚’æŒ‡å®šç¯„å›²ã«ã‚³ãƒ”ãƒ¼ã™ã‚‹(ãã®ï¼“)
 bool mGdiDC::Copy( const mGdiDC& srcdc , INT x1 , INT y1 , INT x2 , INT y2 , const RGBQUAD& transparent_color )
 {
-	//À•W‚Í“¯‚¶‚È‚Ì‚ÅAƒRƒs[æ‚É‚àƒRƒs[Œ³‚ÌÀ•W‚ğ‚»‚Ì‚Ü‚Üg‚Á‚¿‚á‚¢‚Ü‚·
+	//åº§æ¨™ã¯åŒã˜ãªã®ã§ã€ã‚³ãƒ”ãƒ¼å…ˆã«ã‚‚ã‚³ãƒ”ãƒ¼å…ƒã®åº§æ¨™ã‚’ãã®ã¾ã¾ä½¿ã£ã¡ã‚ƒã„ã¾ã™
 	return Copy( srcdc , x1 , y1 , x2 , y2 , x1 , y1 , x2 , y2 , transparent_color );
 }
 

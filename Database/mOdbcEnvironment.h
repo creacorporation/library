@@ -1,5 +1,5 @@
-//----------------------------------------------------------------------------
-// ODBC�ڑ��p���C�u����
+﻿//----------------------------------------------------------------------------
+// ODBC接続用ライブラリ
 // Copyright (C) 2018- Crea Inc. All rights reserved.
 // This program is released under the MIT License. 
 // see http://opensource.org/licenses/mit-license.php
@@ -21,10 +21,10 @@
 
 #pragma comment(lib, "odbc32.lib")
 
-//ODBC�̊��n���h�����v���Z�X���ŋ��p���邽�߂̃N���X�ł�
-//�����n���h���͂P�v���Z�X�P�����ł�
-//�E�ŏ��ɎQ�Ƃ��ꂽ�Ƃ��ɁAODBC3.0�̊��n���h���𐶐����A�ȍ~������g���܂킵�܂��B
-//�E���̃N���X�̃C���X�^���X���Ȃ��Ȃ����ꍇ�A���n���h����j�����܂�
+//ODBCの環境ハンドルをプロセス内で共用するためのクラスです
+//※環境ハンドルは１プロセス１個だけです
+//・最初に参照されたときに、ODBC3.0の環境ハンドルを生成し、以降それを使いまわします。
+//・このクラスのインスタンスがなくなった場合、環境ハンドルを破棄します
 
 class mOdbcEnvironment final
 {
@@ -33,51 +33,51 @@ public:
 	mOdbcEnvironment();
 	virtual ~mOdbcEnvironment();
 
-	//�f�[�^�x�[�X�ɐڑ�����Ƃ��̈������i�[����\����
+	//データベースに接続するときの引数を格納する構造体
 	struct ConnectInfo
 	{
-		WString DataSource;		//�f�[�^�x�[�X�\�[�X�̖��O
-		WString User;			//���[�U�[��
-		WString Password;		//�p�X���[�h
+		WString DataSource;		//データベースソースの名前
+		WString User;			//ユーザー名
+		WString Password;		//パスワード
 	};
 
-	//�f�[�^�x�[�X�ɐڑ�����
-	//info : �ڑ�����
-	//retConn : �ڑ��������ʓ���ꂽ�n���h��
-	//ret : �ڑ��������^
+	//データベースに接続する
+	//info : 接続先情報
+	//retConn : 接続した結果得られたハンドル
+	//ret : 接続成功時真
 	bool NewConnect( const ConnectInfo& info , mOdbcConnection& retConn );
 
-	//���n���h������������Ă��邩��Ԃ�
+	//環境ハンドルが生成されているかを返す
 	operator bool() const;
 
 private:
 
-	mOdbcEnvironment( const mOdbcEnvironment& source );			//�R�s�[�֎~�N���X
-	void operator=( const mOdbcEnvironment& source ) = delete;	//�R�s�[�֎~�N���X
+	mOdbcEnvironment( const mOdbcEnvironment& source );			//コピー禁止クラス
+	void operator=( const mOdbcEnvironment& source ) = delete;	//コピー禁止クラス
 
 private:
 
-	//ODBC���n���h��
+	//ODBC環境ハンドル
 	static HENV MyHenv;
 
-	//�Q�ƃJ�E���g
+	//参照カウント
 	static DWORD MyRefCount;
 
-	//���n���h���̊m��
+	//環境ハンドルの確保
 	bool CreateHandle( void );
 
-	//���n���h���̉��
+	//環境ハンドルの解放
 	void DisposeHandle( void );
 
-	//SQLRETURN�^�̌��ʃR�[�h������I�����ǂ����𔻒肷��
-	//�܂��ASQL�X�e�[�g�����g�̃����o��ݒ肵�܂�
-	//rc : ���ʃR�[�h
-	//ret : ���ʃR�[�h���������������̂ł���ΐ^
+	//SQLRETURN型の結果コードが正常終了かどうかを判定する
+	//また、SQLステートメントのメンバを設定します
+	//rc : 結果コード
+	//ret : 結果コードが成功を示すものであれば真
 	bool SQL_RESULT_CHECK( SQLRETURN rc );
 
 };
 
-//�O���[�o���I�u�W�F�N�g
+//グローバルオブジェクト
 #ifndef MODBCENVIRONMENT_CPP_COMPILING
 extern mOdbcEnvironment g_OdbcEnvironment;
 #else

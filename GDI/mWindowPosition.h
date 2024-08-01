@@ -1,15 +1,15 @@
-//----------------------------------------------------------------------------
-// �E�C���h�E�Ǘ��i�E�C���h�E�̈ʒu�w��N���X�j
+﻿//----------------------------------------------------------------------------
+// ウインドウ管理（ウインドウの位置指定クラス）
 // Copyright (C) 2016 Fingerling. All rights reserved. 
 // This program is released under the MIT License. 
 // see http://opensource.org/licenses/mit-license.php
 //----------------------------------------------------------------------------
 
 /*
-���p�r
-�E�C���h�E�̈ʒu���w�肷��N���X�ł��B
-�R���p�C�������ł̓s���ŁAmWindow���番������܂����B
-(mMenu.h��mWindow.h���z�C���N���[�h�ɂȂ�)
+●用途
+ウインドウの位置を指定するクラスです。
+コンパイルする上での都合で、mWindowから分離されました。
+(mMenu.hとmWindow.hが循環インクルードになる)
 */
 
 #ifndef MWINDOWPOSITION_H_INCLUDED
@@ -19,11 +19,11 @@
 
 namespace mWindowPosition
 {
-	//���ΓI�ɍ��W�����肷�邽�߂̏��
+	//相対的に座標を決定するための情報
 	struct POSITION
 	{
-		FLOAT rate;			//�e�̃N���C�A���g�G���A�̃T�C�Y�ɑ΂���䗦
-		INT offset;			//rate�ŎZ�o�����ʒu�ɑ΂���I�t�Z�b�g
+		FLOAT rate;			//親のクライアントエリアのサイズに対する比率
+		INT offset;			//rateで算出した位置に対するオフセット
 
 		POSITION( FLOAT rate , INT offset )
 		{
@@ -78,21 +78,21 @@ namespace mWindowPosition
 		}
 	};
 
-	//�E�C���h�E�̑��ΓI�Ȉʒu�ݒ�
-	//�E�C���h�E(���邢�̓{�^���Ȃǂ̃p�[�c��)��e�E�C���h�E�̃N���C�A���g�G���A���̂ǂ̂�����ɔz�u���邩���w�肵�܂��B
-	//�㉺���E�ɂ��āA�e�E�C���h�E�̏�[�E���[����̔䗦�{�I�t�Z�b�g�ŕ\���܂��B
-	//rate=0.0,offset=10	�����[����10�s�N�Z���̈ʒu
-	//rate=1.0,offset=-10	���E�[����10�s�N�Z���̈ʒu
-	//rate=0.5,offset=10	����������E��10�s�N�Z���̈ʒu
-	//���[(rate=0.1,offset=  10)+�E�[(rate=0.1,offset=110) �����񂹌Œ蕝100�s�N�Z��
-	//���[(rate=1.0,offset=-110)+�E�[(rate=1.0,offset=-10) ���E�񂹌Œ蕝100�s�N�Z��
-	//���[(rate=0.0,offset=  10)+�E�[(rate=0.5,offset=-10) �����͐e��50�p�[�Z���g�{10�s�N�Z���̃p�f�B���O�B
+	//ウインドウの相対的な位置設定
+	//ウインドウ(あるいはボタンなどのパーツ類)を親ウインドウのクライアントエリア内のどのあたりに配置するかを指定します。
+	//上下左右について、親ウインドウの上端・左端からの比率＋オフセットで表します。
+	//rate=0.0,offset=10	→左端から10ピクセルの位置
+	//rate=1.0,offset=-10	→右端から10ピクセルの位置
+	//rate=0.5,offset=10	→中央から右に10ピクセルの位置
+	//左端(rate=0.1,offset=  10)+右端(rate=0.1,offset=110) →左寄せ固定幅100ピクセル
+	//左端(rate=1.0,offset=-110)+右端(rate=1.0,offset=-10) →右寄せ固定幅100ピクセル
+	//左端(rate=0.0,offset=  10)+右端(rate=0.5,offset=-10) →幅は親の50パーセント＋10ピクセルのパディング。
 	struct WindowPosition
 	{
-		POSITION left;		//���[�̈ʒu
-		POSITION right;		//�E�[�̈ʒu
-		POSITION top;		//��[�̈ʒu
-		POSITION bottom;	//���[�̈ʒu
+		POSITION left;		//左端の位置
+		POSITION right;		//右端の位置
+		POSITION top;		//上端の位置
+		POSITION bottom;	//下端の位置
 		WindowPosition()
 		{
 			left = { 0.0f , 0 };

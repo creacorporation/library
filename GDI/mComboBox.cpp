@@ -1,5 +1,5 @@
-//----------------------------------------------------------------------------
-// ƒEƒCƒ“ƒhƒEŠÇ—iƒRƒ“ƒ{ƒ{ƒbƒNƒXj
+ï»¿//----------------------------------------------------------------------------
+// ã‚¦ã‚¤ãƒ³ãƒ‰ã‚¦ç®¡ç†ï¼ˆã‚³ãƒ³ãƒœãƒœãƒƒã‚¯ã‚¹ï¼‰
 // Copyright (C) 2016 Fingerling. All rights reserved. 
 // This program is released under the MIT License. 
 // see http://opensource.org/licenses/mit-license.php
@@ -17,57 +17,57 @@ mComboBox::~mComboBox()
 {
 }
 
-//ƒEƒCƒ“ƒhƒEƒNƒ‰ƒX‚Ì“o˜^‚ğ‚·‚é
+//ã‚¦ã‚¤ãƒ³ãƒ‰ã‚¦ã‚¯ãƒ©ã‚¹ã®ç™»éŒ²ã‚’ã™ã‚‹
 bool mComboBox::WindowClassSettingCallback( WindowClassSetting& retSetting , const void* opt )
 {
-	//Šù‘¶‚Ì•¨‚ğg—p‚·‚é‚Ì‚Åfalse‚ğ•Ô‚·‚Ì‚İB
+	//æ—¢å­˜ã®ç‰©ã‚’ä½¿ç”¨ã™ã‚‹ã®ã§falseã‚’è¿”ã™ã®ã¿ã€‚
 	return false;
 }
 
-//ƒEƒCƒ“ƒhƒE‚ğŠJ‚­
+//ã‚¦ã‚¤ãƒ³ãƒ‰ã‚¦ã‚’é–‹ã
 bool mComboBox::CreateWindowCallback( CreateWindowSetting& retSetting , const void* opt )
 {
 	retSetting.ClassName = L"COMBOBOX";
-	//‰½‚àƒIƒvƒVƒ‡ƒ“‚Ìw’è‚ª‚È‚¯‚ê‚ÎA“Á‚É‚·‚é‚±‚Æ‚à‚È‚¢‚Ì‚Å–ß‚é
+	//ä½•ã‚‚ã‚ªãƒ—ã‚·ãƒ§ãƒ³ã®æŒ‡å®šãŒãªã‘ã‚Œã°ã€ç‰¹ã«ã™ã‚‹ã“ã¨ã‚‚ãªã„ã®ã§æˆ»ã‚‹
 	if( opt == nullptr )
 	{
 		return true;
 	}
-	//ƒIƒvƒVƒ‡ƒ“‚ªw’è‚³‚ê‚Ä‚¢‚éê‡‚ÍA‚»‚ê‚ğ“K—p‚µ‚Äì¬
+	//ã‚ªãƒ—ã‚·ãƒ§ãƒ³ãŒæŒ‡å®šã•ã‚Œã¦ã„ã‚‹å ´åˆã¯ã€ãã‚Œã‚’é©ç”¨ã—ã¦ä½œæˆ
 	if( ( (const Option*)( opt ) )->method == Option::CreateMethod::USEOPTION )
 	{
 		const mComboBox::Option_UseOption* op = ( const mComboBox::Option_UseOption* )opt;
-		//—LŒøE–³Œø‚ÌØ‚è‘Ö‚¦
+		//æœ‰åŠ¹ãƒ»ç„¡åŠ¹ã®åˆ‡ã‚Šæ›¿ãˆ
 		retSetting.Style |= ( op->Enable ) ? ( WS_DISABLED ) : ( 0 );
-		//ƒXƒ^ƒCƒ‹‚Ì“K—p(İ’è‘ÎÛŠO)
+		//ã‚¹ã‚¿ã‚¤ãƒ«ã®é©ç”¨(è¨­å®šå¯¾è±¡å¤–)
 		switch( op->Style )
 		{
-		case mComboBox::Option::ControlStyle::SIMPLE:	//ƒVƒ“ƒvƒ‹
+		case mComboBox::Option::ControlStyle::SIMPLE:	//ã‚·ãƒ³ãƒ—ãƒ«
 			retSetting.Style |= CBS_SIMPLE;
 			break;
-		case mComboBox::Option::ControlStyle::DROPDOWN:	//ƒhƒƒbƒvƒ_ƒEƒ“
+		case mComboBox::Option::ControlStyle::DROPDOWN:	//ãƒ‰ãƒ­ãƒƒãƒ—ãƒ€ã‚¦ãƒ³
 			retSetting.Style |= CBS_DROPDOWN;
 			break;
-		case mComboBox::Option::ControlStyle::DROPDOWNLIST:	//ƒhƒƒbƒvƒ_ƒEƒ“ƒŠƒXƒg
+		case mComboBox::Option::ControlStyle::DROPDOWNLIST:	//ãƒ‰ãƒ­ãƒƒãƒ—ãƒ€ã‚¦ãƒ³ãƒªã‚¹ãƒˆ
 			retSetting.Style |= CBS_DROPDOWNLIST;
 			break;
-		default:	//‚»‚Ì‘¼BƒCƒŒƒMƒ…ƒ‰[‚È‚Ì‚ÅƒGƒ‰[‚É‚·‚éB
-			RaiseAssert( g_ErrorLogger , 0 , L"‘z’èŠO‚ÌƒXƒ^ƒCƒ‹‚ªw’è‚³‚ê‚Ü‚µ‚½" , op->Style );
+		default:	//ãã®ä»–ã€‚ã‚¤ãƒ¬ã‚®ãƒ¥ãƒ©ãƒ¼ãªã®ã§ã‚¨ãƒ©ãƒ¼ã«ã™ã‚‹ã€‚
+			RaiseAssert( g_ErrorLogger , 0 , L"æƒ³å®šå¤–ã®ã‚¹ã‚¿ã‚¤ãƒ«ãŒæŒ‡å®šã•ã‚Œã¾ã—ãŸ" , op->Style );
 			retSetting.Style |= CBS_DROPDOWNLIST;
 			break;
 		}
-		//©“®ƒ\[ƒg
+		//è‡ªå‹•ã‚½ãƒ¼ãƒˆ
 		retSetting.Style |= ( op->AutoSort ) ? ( CBS_SORT ) : ( 0 );
-		//ˆÊ’u‚Ì‹L‰¯
+		//ä½ç½®ã®è¨˜æ†¶
 		SetWindowPosition( op->Pos );
 	}
 	return true;
 }
 
-//ƒAƒCƒeƒ€‚ğ’Ç‰Á‚·‚é
+//ã‚¢ã‚¤ãƒ†ãƒ ã‚’è¿½åŠ ã™ã‚‹
 bool mComboBox::AddItem( const WString& caption )
 {
-	//€–Ú’Ç‰Á
+	//é …ç›®è¿½åŠ 
 	LRESULT result = ::SendMessageW( GetMyHwnd() , CB_ADDSTRING , 0 , (LPARAM)caption.c_str() );
 	switch( result )
 	{
@@ -83,20 +83,20 @@ bool mComboBox::AddItem( const WString& caption )
 
 bool mComboBox::AddItem( const WString& caption , const ItemDataEntry& data )
 {
-	//€–Ú’Ç‰Á
+	//é …ç›®è¿½åŠ 
 	if( !AddItem( caption ) )
 	{
 		return false;
 	}
 
-	//ƒLƒƒƒvƒVƒ‡ƒ“‚Æƒf[ƒ^‚ÌŠÖ˜A‚Ã‚¯
+	//ã‚­ãƒ£ãƒ—ã‚·ãƒ§ãƒ³ã¨ãƒ‡ãƒ¼ã‚¿ã®é–¢é€£ã¥ã‘
 	MyItemData[ caption ] = data;
 	return true;
 }
 
 bool mComboBox::AddItem( const WString& caption , INT index )
 {
-	//€–Ú’Ç‰Á
+	//é …ç›®è¿½åŠ 
 	LRESULT result = ::SendMessageW( GetMyHwnd() , CB_INSERTSTRING , index , (LPARAM)caption.c_str() );
 	switch( result )
 	{
@@ -112,31 +112,31 @@ bool mComboBox::AddItem( const WString& caption , INT index )
 
 bool mComboBox::AddItem( const WString& caption , const ItemDataEntry& data , INT index )
 {
-	//€–Ú’Ç‰Á
+	//é …ç›®è¿½åŠ 
 	if( !AddItem( caption , index ) )
 	{
 		return false;
 	}
 
-	//ƒLƒƒƒvƒVƒ‡ƒ“‚Æƒf[ƒ^‚ÌŠÖ˜A‚Ã‚¯
+	//ã‚­ãƒ£ãƒ—ã‚·ãƒ§ãƒ³ã¨ãƒ‡ãƒ¼ã‚¿ã®é–¢é€£ã¥ã‘
 	MyItemData[ caption ] = data;
 	return true;
 }
 
-//ƒAƒCƒeƒ€‚ğíœ‚·‚é
+//ã‚¢ã‚¤ãƒ†ãƒ ã‚’å‰Šé™¤ã™ã‚‹
 bool mComboBox::RemoveItem( INT index )
 {
-	//ƒAƒCƒeƒ€‚Ì”‚æ‚è‘å‚«‚¢’l‚Æ‚©A•‰‚ÌˆÊ’u‚Æ‚©•Ï‚È‚Ì‚ğw’è‚µ‚Ä‚¢‚ê‚ÎƒGƒ‰[‚É‚·‚é
+	//ã‚¢ã‚¤ãƒ†ãƒ ã®æ•°ã‚ˆã‚Šå¤§ãã„å€¤ã¨ã‹ã€è² ã®ä½ç½®ã¨ã‹å¤‰ãªã®ã‚’æŒ‡å®šã—ã¦ã„ã‚Œã°ã‚¨ãƒ©ãƒ¼ã«ã™ã‚‹
 	if( index < 0 || (INT)MyItemData.size() <= index )
 	{
 		RaiseAssert( g_ErrorLogger , index , L"Bad index" );
 		return false;
 	}
 
-	//‚±‚ê‚©‚çíœ‚·‚é€–Ú‚ÌƒLƒƒƒvƒVƒ‡ƒ“‚ğæ“¾‚·‚é
+	//ã“ã‚Œã‹ã‚‰å‰Šé™¤ã™ã‚‹é …ç›®ã®ã‚­ãƒ£ãƒ—ã‚·ãƒ§ãƒ³ã‚’å–å¾—ã™ã‚‹
 	WString caption = GetItemCaption( index );
 
-	//íœˆ—
+	//å‰Šé™¤å‡¦ç†
 	LRESULT result = ::SendMessageW( GetMyHwnd() , CB_DELETESTRING , (WPARAM)index , 0 );
 	switch( result )
 	{
@@ -148,27 +148,27 @@ bool mComboBox::RemoveItem( INT index )
 		break;
 	}
 
-	//íœ‚Å‚«‚½‚Ì‚ÅAƒLƒƒƒvƒVƒ‡ƒ“‚Æƒf[ƒ^‚ÌŠÖ˜A‚Ã‚¯‚ğíœ‚·‚é
-	//‘¼‚É“¯–¼‚ÌƒLƒƒƒvƒVƒ‡ƒ“‚ğ‚à‚Â€–Ú‚ª‘¶İ‚·‚éê‡‚ÍŠÖ˜A‚Ã‚¯‚ğíœ‚µ‚È‚¢
+	//å‰Šé™¤ã§ããŸã®ã§ã€ã‚­ãƒ£ãƒ—ã‚·ãƒ§ãƒ³ã¨ãƒ‡ãƒ¼ã‚¿ã®é–¢é€£ã¥ã‘ã‚’å‰Šé™¤ã™ã‚‹
+	//ä»–ã«åŒåã®ã‚­ãƒ£ãƒ—ã‚·ãƒ§ãƒ³ã‚’ã‚‚ã¤é …ç›®ãŒå­˜åœ¨ã™ã‚‹å ´åˆã¯é–¢é€£ã¥ã‘ã‚’å‰Šé™¤ã—ãªã„
 	if( MyItemData.count( caption ) == 0 )
 	{
-		//‚±‚ÌƒLƒƒƒvƒVƒ‡ƒ“‚É‘Î‚·‚éƒf[ƒ^‚Í‘¶İ‚µ‚È‚¢
+		//ã“ã®ã‚­ãƒ£ãƒ—ã‚·ãƒ§ãƒ³ã«å¯¾ã™ã‚‹ãƒ‡ãƒ¼ã‚¿ã¯å­˜åœ¨ã—ãªã„
 		return true;
 	}
 	for( INT i = GetItemCount() - 1 ; 0 <= i ; i-- )
 	{
 		if( GetItemCaption( i ) == caption )
 		{
-			//“¯–¼‚Ì•¨‚ª‚ ‚é‚Ì‚Åíœ–³‚µ
+			//åŒåã®ç‰©ãŒã‚ã‚‹ã®ã§å‰Šé™¤ç„¡ã—
 			return true;
 		}
 	}
-	//“¯–¼‚Ì•¨‚ª‚È‚¢‚©‚çíœ
+	//åŒåã®ç‰©ãŒãªã„ã‹ã‚‰å‰Šé™¤
 	MyItemData.erase( caption );
 	return true;
 }
 
-//‘I‘ğ‚³‚ê‚Ä‚¢‚éƒCƒ“ƒfƒbƒNƒX‚Ìˆê——‚ğæ“¾‚·‚é
+//é¸æŠã•ã‚Œã¦ã„ã‚‹ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹ã®ä¸€è¦§ã‚’å–å¾—ã™ã‚‹
 mComboBox::SelectedItems mComboBox::GetSelected( void )const
 {
 	LRESULT result = ::SendMessageW( GetMyHwnd() , CB_GETCURSEL , 0 , 0 );
@@ -182,10 +182,10 @@ mComboBox::SelectedItems mComboBox::GetSelected( void )const
 	return items;
 }
 
-//w’è‚µ‚½ƒCƒ“ƒfƒbƒNƒX‚ÌƒAƒCƒeƒ€‚ğ‘I‘ğó‘Ô‚É‚·‚é
+//æŒ‡å®šã—ãŸã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹ã®ã‚¢ã‚¤ãƒ†ãƒ ã‚’é¸æŠçŠ¶æ…‹ã«ã™ã‚‹
 bool mComboBox::SetSelected( const SelectedItems& items )
 {
-	//ƒRƒ“ƒ{ƒ{ƒbƒNƒX‚Í“¯‚É1ŒÂ‚µ‚©‘I‘ğ‚Å‚«‚È‚¢
+	//ã‚³ãƒ³ãƒœãƒœãƒƒã‚¯ã‚¹ã¯åŒæ™‚ã«1å€‹ã—ã‹é¸æŠã§ããªã„
 	if( items.size() != 1 )
 	{
 		RaiseAssert( g_ErrorLogger , items.size() , L"Bad size" );
@@ -194,10 +194,10 @@ bool mComboBox::SetSelected( const SelectedItems& items )
 	return SetSelected( items.front() );
 }
 
-//w’è‚µ‚½ƒCƒ“ƒfƒbƒNƒX‚ÌƒAƒCƒeƒ€‚ğ‘I‘ğó‘Ô‚É‚·‚é
+//æŒ‡å®šã—ãŸã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹ã®ã‚¢ã‚¤ãƒ†ãƒ ã‚’é¸æŠçŠ¶æ…‹ã«ã™ã‚‹
 bool mComboBox::SetSelected( INT item )
 {
-	//‘I‘ğˆ—
+	//é¸æŠå‡¦ç†
 	if( ::SendMessageW( GetMyHwnd() , CB_SETCURSEL , item , 0 ) == CB_ERR )
 	{
 		RaiseAssert( g_ErrorLogger , item , L"CB_SETCURSEL failed" );
@@ -207,24 +207,24 @@ bool mComboBox::SetSelected( INT item )
 	return true;
 }
 
-//w’è‚µ‚½ƒLƒƒƒvƒVƒ‡ƒ“‚ğ‚à‚ÂƒAƒCƒeƒ€‚ÌƒCƒ“ƒfƒbƒNƒX‚ğ•Ô‚·
+//æŒ‡å®šã—ãŸã‚­ãƒ£ãƒ—ã‚·ãƒ§ãƒ³ã‚’ã‚‚ã¤ã‚¢ã‚¤ãƒ†ãƒ ã®ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹ã‚’è¿”ã™
 INT mComboBox::SearchItem( const WString& caption )
 {
 	LRESULT result = ::SendMessageW( GetMyHwnd() , CB_FINDSTRINGEXACT , 0 , (LPARAM)caption.c_str() );
 	if( result == CB_ERR )
 	{
-		//w’èƒLƒƒƒvƒVƒ‡ƒ“‚ª‚È‚¢‚Ì‚Í‘z’è‚³‚ê‚Ä‚¢‚é‚©‚çAƒGƒ‰[‚Ì‹L˜^‚Í‚È‚µB
+		//æŒ‡å®šã‚­ãƒ£ãƒ—ã‚·ãƒ§ãƒ³ãŒãªã„ã®ã¯æƒ³å®šã•ã‚Œã¦ã„ã‚‹ã‹ã‚‰ã€ã‚¨ãƒ©ãƒ¼ã®è¨˜éŒ²ã¯ãªã—ã€‚
 		return -1;
 	}
 	return (INT)result;
 }
 
-//w’èƒCƒ“ƒfƒbƒNƒX‚ÌƒLƒƒƒvƒVƒ‡ƒ“‚ğæ“¾‚·‚é
+//æŒ‡å®šã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹ã®ã‚­ãƒ£ãƒ—ã‚·ãƒ§ãƒ³ã‚’å–å¾—ã™ã‚‹
 WString mComboBox::GetItemCaption( INT index )const
 {
-	LRESULT result;	//Œ‹‰Ê‚ÌˆêŠi”[—p
+	LRESULT result;	//çµæœã®ä¸€æ™‚æ ¼ç´ç”¨
 	
-	//ƒ‰ƒxƒ‹‚Ì•¶š—ñ‚Ì’·‚³‚ğæ“¾‚·‚é
+	//ãƒ©ãƒ™ãƒ«ã®æ–‡å­—åˆ—ã®é•·ã•ã‚’å–å¾—ã™ã‚‹
 	result = ::SendMessageW( GetMyHwnd() , CB_GETLBTEXTLEN , index , 0 );
 	if( result == CB_ERR )
 	{
@@ -232,10 +232,10 @@ WString mComboBox::GetItemCaption( INT index )const
 		return L"";
 	}
 
-	//Ši”[—p‚Ìƒoƒbƒtƒ@‚ğì¬
+	//æ ¼ç´ç”¨ã®ãƒãƒƒãƒ•ã‚¡ã‚’ä½œæˆ
 	WCHAR* str_buffer = mNew WCHAR[ (size_t)result ];
 
-	//ƒoƒbƒtƒ@‚É•¶š—ñ‚ğæ“¾‚·‚é
+	//ãƒãƒƒãƒ•ã‚¡ã«æ–‡å­—åˆ—ã‚’å–å¾—ã™ã‚‹
 	result = ::SendMessageW( GetMyHwnd() , CB_GETLBTEXT , index , (LPARAM)str_buffer );
 	if( result == CB_ERR )
 	{
@@ -244,42 +244,42 @@ WString mComboBox::GetItemCaption( INT index )const
 		return L"";
 	}
 
-	//æ“¾‚µ‚½•¶š—ñ‚©‚çWStringƒIƒuƒWƒFƒNƒg‚ğ\’z‚µ‚ÄŒ‹‰Ê‚É‚·‚é
+	//å–å¾—ã—ãŸæ–‡å­—åˆ—ã‹ã‚‰WStringã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã‚’æ§‹ç¯‰ã—ã¦çµæœã«ã™ã‚‹
 	WString result_string = str_buffer;
 	mDelete[] str_buffer;
 	return result_string;
 }
 
-//w’èƒCƒ“ƒfƒbƒNƒX‚ÉŠÖ˜A‚Ã‚¯‚ç‚ê‚Ä‚¢‚éƒf[ƒ^‚ğæ“¾‚·‚é
+//æŒ‡å®šã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹ã«é–¢é€£ã¥ã‘ã‚‰ã‚Œã¦ã„ã‚‹ãƒ‡ãƒ¼ã‚¿ã‚’å–å¾—ã™ã‚‹
 bool mComboBox::GetItemData( INT index , ItemDataEntry& retdata )const
 {
-	//w’è‚³‚ê‚½ƒCƒ“ƒfƒbƒNƒX‚ÌƒLƒƒƒvƒVƒ‡ƒ“‚ğæ“¾
+	//æŒ‡å®šã•ã‚ŒãŸã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹ã®ã‚­ãƒ£ãƒ—ã‚·ãƒ§ãƒ³ã‚’å–å¾—
 	WString caption = GetItemCaption( index );
 
-	//æ“¾‚µ‚½ƒLƒƒƒvƒVƒ‡ƒ“‚©‚çƒf[ƒ^‚ğæ“¾
+	//å–å¾—ã—ãŸã‚­ãƒ£ãƒ—ã‚·ãƒ§ãƒ³ã‹ã‚‰ãƒ‡ãƒ¼ã‚¿ã‚’å–å¾—
 	ItemData::const_iterator itr = MyItemData.find( caption );
 	if( itr == MyItemData.end() )
 	{
-		//w’èƒLƒƒƒvƒVƒ‡ƒ“‚ÉŠÖ˜A‚Ã‚¯‚ç‚ê‚Ä‚¢‚éƒf[ƒ^‚Í‚È‚¢
+		//æŒ‡å®šã‚­ãƒ£ãƒ—ã‚·ãƒ§ãƒ³ã«é–¢é€£ã¥ã‘ã‚‰ã‚Œã¦ã„ã‚‹ãƒ‡ãƒ¼ã‚¿ã¯ãªã„
 		return false;
 	}
 	retdata = itr->second;
 	return true;
 }
 
-//‚¢‚­‚ÂƒAƒCƒeƒ€‚ª‚ ‚é‚©‚ğƒJƒEƒ“ƒg‚·‚é
+//ã„ãã¤ã‚¢ã‚¤ãƒ†ãƒ ãŒã‚ã‚‹ã‹ã‚’ã‚«ã‚¦ãƒ³ãƒˆã™ã‚‹
 INT mComboBox::GetItemCount( void ) const
 {
 	return (INT)::SendMessage( GetMyHwnd() , CB_GETCOUNT , 0 , 0 );
 }
 
-//ƒAƒCƒeƒ€‚ğˆÚ“®‚·‚é
+//ã‚¢ã‚¤ãƒ†ãƒ ã‚’ç§»å‹•ã™ã‚‹
 bool mComboBox::MoveItem( INT index , INT moveto )
 {
 	INT itemcount = GetItemCount();
-	//EƒCƒ“ƒfƒbƒNƒX‚ª2‚ÂˆÈ‰º‚¾‚Æ“ü‚ê‘Ö‚¦‚Å‚«‚È‚¢‚Ì‚ÅƒGƒ‰[
-	//Eindex‚ª•‰‚Ì”‚¾‚Á‚½‚èAƒAƒCƒeƒ€‚Ì”‚ğ’´‚¦‚Ä‚¢‚éê‡‚ÍƒGƒ‰[
-	//Emoveto‚ª•‰‚Ì”‚¾‚Á‚½‚èAƒAƒCƒeƒ€‚Ì”‚ğ’´‚¦‚Ä‚¢‚éê‡‚ÍƒGƒ‰[
+	//ãƒ»ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹ãŒ2ã¤ä»¥ä¸‹ã ã¨å…¥ã‚Œæ›¿ãˆã§ããªã„ã®ã§ã‚¨ãƒ©ãƒ¼
+	//ãƒ»indexãŒè² ã®æ•°ã ã£ãŸã‚Šã€ã‚¢ã‚¤ãƒ†ãƒ ã®æ•°ã‚’è¶…ãˆã¦ã„ã‚‹å ´åˆã¯ã‚¨ãƒ©ãƒ¼
+	//ãƒ»movetoãŒè² ã®æ•°ã ã£ãŸã‚Šã€ã‚¢ã‚¤ãƒ†ãƒ ã®æ•°ã‚’è¶…ãˆã¦ã„ã‚‹å ´åˆã¯ã‚¨ãƒ©ãƒ¼
 	if( ( itemcount < 2 ) ||
 		( index  < 0 || itemcount <= index  ) ||
 		( moveto < 0 || itemcount <= moveto ) )
@@ -287,16 +287,16 @@ bool mComboBox::MoveItem( INT index , INT moveto )
 		RaiseAssert( g_ErrorLogger , ( index << 16 ) + moveto , L"" );
 		return false;
 	}
-	//index‚Æmoveto‚ª“¯‚¶‚¾‚Á‚½‚ç“ü‚ê‘Ö‚¦•K—v‚È‚µ
+	//indexã¨movetoãŒåŒã˜ã ã£ãŸã‚‰å…¥ã‚Œæ›¿ãˆå¿…è¦ãªã—
 	if( index == moveto )
 	{
 		return true;
 	}
-	//ƒAƒCƒeƒ€‚ÌƒLƒƒƒvƒVƒ‡ƒ“‚ğæ“¾‚·‚é
+	//ã‚¢ã‚¤ãƒ†ãƒ ã®ã‚­ãƒ£ãƒ—ã‚·ãƒ§ãƒ³ã‚’å–å¾—ã™ã‚‹
 	WString caption = GetItemCaption( index );
 
-	//Œ»İ‚ÌˆÊ’u‚©‚çƒAƒCƒeƒ€‚ğíœ‚µAV‚µ‚¢ˆÊ’u‚ÉƒAƒCƒeƒ€‚ğ‘}“ü‚·‚é
-	//¦MyItemData‚ÍƒAƒCƒeƒ€‚ÌˆÊ’u‚ª•Ï‚í‚é‚¾‚¯‚¾‚©‚ç•ÏX‚Í•s—v
+	//ç¾åœ¨ã®ä½ç½®ã‹ã‚‰ã‚¢ã‚¤ãƒ†ãƒ ã‚’å‰Šé™¤ã—ã€æ–°ã—ã„ä½ç½®ã«ã‚¢ã‚¤ãƒ†ãƒ ã‚’æŒ¿å…¥ã™ã‚‹
+	//â€»MyItemDataã¯ã‚¢ã‚¤ãƒ†ãƒ ã®ä½ç½®ãŒå¤‰ã‚ã‚‹ã ã‘ã ã‹ã‚‰å¤‰æ›´ã¯ä¸è¦
 	LRESULT result;
 	result = ::SendMessageW( GetMyHwnd() , CB_DELETESTRING , (WPARAM)index , 0 );
 	if( result == CB_ERR )

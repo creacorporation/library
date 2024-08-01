@@ -1,15 +1,15 @@
-//----------------------------------------------------------------------------
-// �E�C���h�E�Ǘ��iGDI�u���V�j
+﻿//----------------------------------------------------------------------------
+// ウインドウ管理（GDIブラシ）
 // Copyright (C) 2016 Fingerling. All rights reserved. 
 // This program is released under the MIT License. 
 // see http://opensource.org/licenses/mit-license.php
 //----------------------------------------------------------------------------
 
 /*
-���p�r
-GDI�̃u���V�ł��B
-�E�쐬����u���V�́AOption�\���̂Ŏw�肵�܂��B
-�E�t�@�N�g�����\�b�h��opt��nullptr��n���ƁA���̃\���b�h�u���V�ɂȂ�܂��B
+●用途
+GDIのブラシです。
+・作成するブラシは、Option構造体で指定します。
+・ファクトリメソッドのoptにnullptrを渡すと、白のソリッドブラシになります。
 */
 
 #ifndef MGDIBRUSH_H_INCLUDED
@@ -23,24 +23,24 @@ GDI�̃u���V�ł��B
 class mGdiBrush : public mGdiHandle
 {
 public:
-	//�u���V�����̃I�v�V����
-	//�u���V���쐬����Ƃ��́AOption�\���̂𒼐ڎg�킸�ɁA��肽�����ɍ��킹�Ĉȉ����g���ĉ������B
-	//�EOption_Solid �c �x�^�h��u���V���쐬�������Ƃ�
-	//�EOption_Hatch �c �n�b�`�u���V���쐬�������Ƃ�
-	//�EOption_Pattern �c �p�^�[���u���V���쐬�������Ƃ�(������)
-	//�EOption_Transparent �c �����u���V(NULL�u���V)���쐬�������Ƃ�
+	//ブラシ生成のオプション
+	//ブラシを作成するときは、Option構造体を直接使わずに、作りたい物に合わせて以下を使って下さい。
+	//・Option_Solid … ベタ塗りブラシを作成したいとき
+	//・Option_Hatch … ハッチブラシを作成したいとき
+	//・Option_Pattern … パターンブラシを作成したいとき(未実装)
+	//・Option_Transparent … 透明ブラシ(NULLブラシ)を作成したいとき
 	struct Option
 	{
-		//�u���V�̎��
+		//ブラシの種類
 		enum BrushKind
 		{
-			TRANSPARENT_BRUSH,	//�����ȃu���V
-			SOLID_BRUSH,		//�x�^�h��u���V
-			HATCH_BRUSH,		//�n�b�`�u���V(�`�F�b�N���Ƃ����p)
-			PATTERN_BRUSH,		//�r�b�g�}�b�v���g���ĕ������u���V
+			TRANSPARENT_BRUSH,	//透明なブラシ
+			SOLID_BRUSH,		//ベタ塗りブラシ
+			HATCH_BRUSH,		//ハッチブラシ(チェック柄とか作る用)
+			PATTERN_BRUSH,		//ビットマップを使って柄を作るブラシ
 		};
 
-		const BrushKind kind;	//RTTI�̑�p�ł��B�ύX�̕K�v�͂���܂���B
+		const BrushKind kind;	//RTTIの代用です。変更の必要はありません。
 	protected:
 		Option() = delete;
 		Option( BrushKind brush_kind ) : kind( brush_kind )
@@ -48,29 +48,29 @@ public:
 		}
 	};
 
-	//�x�^�h��u���V�p�ݒ�\����
+	//ベタ塗りブラシ用設定構造体
 	struct Option_Solid : public Option
 	{
-		COLORREF color;			//�x�^�h��Ɏg���F
+		COLORREF color;			//ベタ塗りに使う色
 		Option_Solid() : Option( BrushKind::SOLID_BRUSH )
 		{
-			//�f�t�H���g�͔��x�^�u���V
+			//デフォルトは白ベタブラシ
 			color = RGB( 0xFFu , 0xFFu , 0xFFu );
 		}
 	};
 
-	//�n�b�`�u���V�p�ݒ�\����
+	//ハッチブラシ用設定構造体
 	struct Option_Hatch : public Option
 	{
-		COLORREF color;		//�n�b�`�u���V�̕`��F
+		COLORREF color;		//ハッチブラシの描画色
 		enum HatchStyle
 		{
-			UP_DIAGONAL,		//�E�オ��̎ΐ�     �^�^�^�^�͗l
-			DOWN_DIAGONAL,		//�E������̎ΐ�	 �_�_�_�_�͗l
-			CROSS_DIAGONAL,		//�ΐ��̃N���X�n�b�` �~�~�~�~�͗l
-			HORIZONTAL,			//�������̃n�b�`     �\�\�\�\�͗l
-			VERTICAL,			//�������̃n�b�`     �b�b�b�b�͗l
-			CROSS,				//�\���̃n�b�`       �{�{�{�{�͗l
+			UP_DIAGONAL,		//右上がりの斜線     ／／／／模様
+			DOWN_DIAGONAL,		//右下がりの斜線	 ＼＼＼＼模様
+			CROSS_DIAGONAL,		//斜線のクロスハッチ ××××模様
+			HORIZONTAL,			//水平線のハッチ     ————模様
+			VERTICAL,			//垂直線のハッチ     ｜｜｜｜模様
+			CROSS,				//十字のハッチ       ＋＋＋＋模様
 		}style;
 
 		Option_Hatch() : Option( BrushKind::HATCH_BRUSH )
@@ -80,7 +80,7 @@ public:
 		}
 	};
 
-	//�p�^�[���u���V�p�ݒ�\����
+	//パターンブラシ用設定構造体
 	struct Option_Pattern : public Option
 	{
 		Option_Pattern() : Option( BrushKind::PATTERN_BRUSH )
@@ -88,7 +88,7 @@ public:
 		}
 	};
 
-	//�����ȃu���V�p�ݒ�\����
+	//透明なブラシ用設定構造体
 	struct Option_Transparent : public Option
 	{
 		Option_Transparent() : Option( BrushKind::TRANSPARENT_BRUSH )
@@ -96,64 +96,64 @@ public:
 		}
 	};
 
-	//�t�@�N�g�����\�b�h
+	//ファクトリメソッド
 	static mGdiHandle* Factory( const void* opt )throw( )
 	{
 		mGdiHandle* result;
 		try
 		{
-			//�u���V���R���X�g���N�^�Ő������邯�ǁ[
+			//ブラシをコンストラクタで生成するけどー
 			result = mNew mGdiBrush( (const Option*)opt );
 		}
 		catch( mException )
 		{
-			//��O�����������ꍇ��nullptr��Ԃ��i����ƁA�t�@�N�g�����\�b�h�̌Ăяo���������s����j
-			//��mNew�����Ƃ��낪���������[�N���Ă����Ɏv���Ă��܂����ǁA�����Ɖ��������B���Ȃ��B
-			//�@��EffectiveC++��O�ł�52��
+			//例外が発生した場合はnullptrを返す（すると、ファクトリメソッドの呼び出し側も失敗する）
+			//※mNewしたところがメモリリークしてそうに思えてしまうけど、ちゃんと解放されるよ。問題ない。
+			//　→EffectiveC++第三版の52項
 			result = nullptr;
 		}
 		return result;
 	}
 
-	//�R���X�g���N�^
-	//���̃R���X�g���N�^�́AMyHandle�Ɋi�[����u���V�̐������s���ɗ�O�𓊂��܂��B
+	//コンストラクタ
+	//このコンストラクタは、MyHandleに格納するブラシの生成失敗時に例外を投げます。
 	mGdiBrush( const Option* opt )throw( mException );
 
-	//�f�X�g���N�^
+	//デストラクタ
 	virtual ~mGdiBrush();
 	
-	//�n���h���̒l���擾����(�L���X�g���Z�q�o�[�W����)
+	//ハンドルの値を取得する(キャスト演算子バージョン)
 	operator HBRUSH()const;
 
-	//�n���h���̒l���擾����(���ʂ̊֐��o�[�W����)
+	//ハンドルの値を取得する(普通の関数バージョン)
 	virtual HGDIOBJ GetHandle( void )const override;
 
 private:
 
-	//�ȉ��A�f�t�H���g�n�͎̂g�p�s�Ƃ���
+	//以下、デフォルト系のは使用不可とする
 	mGdiBrush() = delete;
 	mGdiBrush( const mGdiBrush& src ) = delete;
 	mGdiBrush& operator=( const mGdiBrush& src ) = delete;
 
 private:
-	//�\���b�h�u���V���쐬���܂��B���������MyHandle�ɒl������܂��B
-	//opt : �ǂ�ȃu���V���쐬���邩�̏��
-	//ret : �������ɐ^
+	//ソリッドブラシを作成します。成功すればMyHandleに値が入ります。
+	//opt : どんなブラシを作成するかの情報
+	//ret : 成功時に真
 	bool CreateSolidBrush( const Option_Solid& opt );
 
-	//�n�b�`�u���V���쐬���܂��B���������MyHandle�ɒl������܂��B
-	//opt : �ǂ�ȃu���V���쐬���邩�̏��
-	//ret : �������ɐ^
+	//ハッチブラシを作成します。成功すればMyHandleに値が入ります。
+	//opt : どんなブラシを作成するかの情報
+	//ret : 成功時に真
 	bool CreateHatchBrush( const Option_Hatch& opt );
 
-	//�p�^�[���u���V���쐬���܂��B���������MyHandle�ɒl������܂��B
-	//opt : �ǂ�ȃu���V���쐬���邩�̏��
-	//ret : �������ɐ^
+	//パターンブラシを作成します。成功すればMyHandleに値が入ります。
+	//opt : どんなブラシを作成するかの情報
+	//ret : 成功時に真
 	bool CreatePatternBrush( const Option_Pattern& opt );
 
 
 protected:
-	//�n���h���̎���
+	//ハンドルの実体
 	HBRUSH MyHandle;
 };
 

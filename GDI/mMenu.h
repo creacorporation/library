@@ -1,16 +1,16 @@
-//----------------------------------------------------------------------------
-// �E�C���h�E�Ǘ��i���j���[�j
+﻿//----------------------------------------------------------------------------
+// ウインドウ管理（メニュー）
 // Copyright (C) 2016 Fingerling. All rights reserved. 
 // This program is released under the MIT License. 
 // see http://opensource.org/licenses/mit-license.php
 //----------------------------------------------------------------------------
 
 /*
-���p�r
-���j���[�̊Ǘ��N���X�ł�
+●用途
+メニューの管理クラスです
 
-�E���j���[�͐l�Ԃ����삽�Ƃ������쓮������́B
-�@�܂�l�Ԃ̑���ɕt���Ă����Α��x�͏\���Ƃ������ƂɂȂ邩��A�������x�̂��Ƃ͍l���Ă܂���B
+・メニューは人間が操作たときだけ駆動するもの。
+　つまり人間の操作に付いてこれれば速度は十分ということになるから、処理速度のことは考えてません。
 */
 
 #ifndef MMENU_H_INCLUDED
@@ -29,18 +29,18 @@ class mMenu
 {
 public:
 
-	//�R���g���[���������̃I�v�V����
-	//���ۂɍ쐬����Ƃ��́AOption�\���̂𒼐ڎg�킸�ɁA�V�`���G�[�V�����ɍ��킹�Ĉȉ����g���ĉ������B
-	//�EOption_UseOption �c �����o�ϐ��𖄂߂ăI�v�V������ݒ肵�����Ƃ�
+	//コントロール生成時のオプション
+	//実際に作成するときは、Option構造体を直接使わずに、シチュエーションに合わせて以下を使って下さい。
+	//・Option_UseOption … メンバ変数を埋めてオプションを設定したいとき
 	struct Option
 	{
-		//�����̕��@
+		//生成の方法
 		enum CreateMethod
 		{
-			USEOPTION,		//�ʏ�̕��@
+			USEOPTION,		//通常の方法
 		};
 
-		const CreateMethod method;	//RTTI�̑�p�ł��B�ύX�̕K�v�͂���܂���B
+		const CreateMethod method;	//RTTIの代用です。変更の必要はありません。
 
 	protected:
 		Option() = delete;
@@ -49,10 +49,10 @@ public:
 		}
 	};
 
-	//�R���g���[���������̃I�v�V����
+	//コントロール生成時のオプション
 	struct Option_UseOption : public Option
 	{
-		//�|�b�v�A�b�v�ȃ��j���[�ɂ���Ȃ�true�B���ʂ̃`�F�b�N������Ȃ�false�B
+		//ポップアップなメニューにするならtrue。普通のチェックをつけるならfalse。
 		bool IsPopup;
 
 		Option_UseOption() : Option( CreateMethod::USEOPTION )
@@ -61,41 +61,41 @@ public:
 		}
 	};
 
-	//�R���X�g���N�^
-	//opt : �R���g���[���������̃I�v�V����(nullptr��)
+	//コンストラクタ
+	//opt : コントロール生成時のオプション(nullptr可)
 	mMenu( const Option* opt );
 
-	//�f�X�g���N�^
+	//デストラクタ
 	virtual ~mMenu();
 
-	//���j���[�̍��ڂ��`�F�b�N�������ǂ����B���邢�̓Z�p���[�^���ǂ����B
-	//���W�I�{�^���^�C�v(����̕�)��I�������ꍇ�ł��A
-	//���j���[�I�����ɏ���ɑ��̍��ڂ̃`�F�b�N���������ꂽ��͂��܂���B
-	//����ɂ��恜��ɂ���A�`�F�b�N�̏�Ԃ��X�V����̂̓v���O���}���ōs���܂��B
+	//メニューの項目がチェックを持つかどうか。あるいはセパレータかどうか。
+	//ラジオボタンタイプ(●印の物)を選択した場合でも、
+	//メニュー選択時に勝手に他の項目のチェックが解除されたりはしません。
+	//レ印にせよ●印にせよ、チェックの状態を更新するのはプログラマ側で行います。
 	enum MenuType
 	{
-		NORMALCHECK,	//����`�F�b�N
-		RADIOCHECK,		//����`�F�b�N
-		SEPARATOR,		//�Z�p���[�^�ł���
+		NORMALCHECK,	//レ印チェック
+		RADIOCHECK,		//●印チェック
+		SEPARATOR,		//セパレータである
 	};
 	
-	//���j���[�̃f�[�^
+	//メニューのデータ
 	struct MenuOption
 	{
-		//��I����Ԃ̃r�b�g�}�b�v
-		//(�����Ŏw�肵����������L�[�ɂ���mGdiResource����HBITMAP�̃n���h�����擾���܂�)
+		//非選択状態のビットマップ
+		//(ここで指定した文字列をキーにしてmGdiResourceからHBITMAPのハンドルを取得します)
 		WString UncheckedBitmap;
 
-		//�I����Ԃ̃r�b�g�}�b�v
-		//(�����Ŏw�肵����������L�[�ɂ���mGdiResource����HBITMAP�̃n���h�����擾���܂�)
+		//選択状態のビットマップ
+		//(ここで指定した文字列をキーにしてmGdiResourceからHBITMAPのハンドルを取得します)
 		WString CheckedBitmap;
 
-		WStringVector Path;		//���ڂ̊K�w�������p�X
-		MenuType Type;			//���j���[�̑̍�
+		WStringVector Path;		//項目の階層を示すパス
+		MenuType Type;			//メニューの体裁
 
-		UINT FunctionId;		//���[�U�[��`�̋@�\ID�i�t��������Ƃ��ɂ��g���j
-		ULONG_PTR UserData;		//���[�U�[��`�̒l
-		WString OptString;		//���[�U�[��`�̕�����
+		UINT FunctionId;		//ユーザー定義の機能ID（逆検索するときにも使う）
+		ULONG_PTR UserData;		//ユーザー定義の値
+		WString OptString;		//ユーザー定義の文字列
 
 		MenuOption()
 		{
@@ -105,39 +105,39 @@ public:
 		}
 	};
 
-	//MenuOption�̃A���C
+	//MenuOptionのアレイ
 	typedef std::deque<MenuOption> MenuOptionArray;
 
-	//���j���[�ɃA�C�e����ǉ�����
-	//item : �ǉ����鍀��
-	//ret : ����������true
+	//メニューにアイテムを追加する
+	//item : 追加する項目
+	//ret : 成功したらtrue
 	bool AddItem( const MenuOption& item , const mGdiResource* res = nullptr );
 
-	//���j���[����A�C�e�����폜����
-	//Path : �폜����A�C�e��(MenuOption::Path�Ŏw�肵������)
-	//ret : ����������true
+	//メニューからアイテムを削除する
+	//Path : 削除するアイテム(MenuOption::Pathで指定したもの)
+	//ret : 成功したらtrue
 	bool RemoveItem( const WStringVector& Path );
 
-	//���j���[��L���E�����ɂ���
-	//FunctionId : �ݒ肷��@�\ID(MenuOption::FunctionId�Ŏw�肵������)
-	//enable : �^�ɂ���ƗL���ɂ���A�U�ɂ���Ɩ����ɂ���B
-	//checked : �^�ɂ���ƃ`�F�b�N����B�U�ɂ���ƃ`�F�b�N���O���B
-	//�����FunctionId�������j���[����������ꍇ�A�S�ĂɓK�p����܂��B
+	//メニューを有効・無効にする
+	//FunctionId : 設定する機能ID(MenuOption::FunctionIdで指定したもの)
+	//enable : 真にすると有効にする、偽にすると無効にする。
+	//checked : 真にするとチェックする。偽にするとチェックを外す。
+	//同一のFunctionIdを持つメニューが複数ある場合、全てに適用されます。
 	bool SetState( UINT FunctionId , bool enable , bool checked );
 
-	//�E�C���h�E���b�Z�[�W����I�����ꂽ���j���[�̃f�[�^���擾����
-	//wparam : �E�C���h�E���b�Z�[�W��WPARAM�p�����[�^
-	//retItem : �擾�����f�[�^
-	//ret : �f�[�^���擾�����Ƃ��^�B�Y���̃��j���[���ڂ��Ȃ������ꍇ�U�B
+	//ウインドウメッセージから選択されたメニューのデータを取得する
+	//wparam : ウインドウメッセージのWPARAMパラメータ
+	//retItem : 取得したデータ
+	//ret : データを取得したとき真。該当のメニュー項目がなかった場合偽。
 	bool QuerySelectedMenu( WPARAM wparam , MenuOption& retItem )const;
 
-	//FunctionId����I�����ꂽ���j���[�̃f�[�^���擾����
-	//function_id : �����������@�\ID
-	//retItem : �擾�����f�[�^(�Y�����鍀�ڑS�Ă��Ԃ�)
-	//ret : �f�[�^���擾�����Ƃ��^�B�Y���̃��j���[���ڂ�1���Ȃ������ꍇ�U�B
+	//FunctionIdから選択されたメニューのデータを取得する
+	//function_id : 検索したい機能ID
+	//retItem : 取得したデータ(該当する項目全てが返る)
+	//ret : データを取得したとき真。該当のメニュー項目が1個もなかった場合偽。
 	bool QueryItem( UINT function_id , MenuOptionArray& retItem )const;
 
-	//���j���[�̃n���h�����擾����
+	//メニューのハンドルを取得する
 	HMENU GetMenuHandle( void );
 
 private:
@@ -146,20 +146,20 @@ private:
 
 protected:
 	//-----------------------------------------------------------
-	// �f�[�^�\���ƃ����o�ϐ�
+	// データ構造とメンバ変数
 	//-----------------------------------------------------------
 	struct MenuItemEntry;
 	typedef std::deque<MenuItemEntry*> MenuItem;
 
-	//1�̃T�u���j���[�̏����i�[
+	//1つのサブメニューの情報を格納
 	struct MenuHandle
 	{
 		MenuHandle() = delete;
 		MenuHandle( const MenuHandle& src ) = delete;
 		MenuHandle& operator=( const MenuHandle& src ) = delete;
 
-		HMENU Handle;		//���j���[�̃n���h��
-		MenuItem Items;		//���j���[�Ɋ܂܂��A�C�e��
+		HMENU Handle;		//メニューのハンドル
+		MenuItem Items;		//メニューに含まれるアイテム
 
 		MenuHandle( bool IsPopup )
 		{
@@ -184,26 +184,26 @@ protected:
 		}
 	};
 
-	//���j���[�̊e���ڂɂ��Ă̏����i�[
+	//メニューの各項目についての情報を格納
 	struct MenuItemEntry
 	{
 		MenuItemEntry() = delete;
 		MenuItemEntry( MenuItemEntry& src ) = delete;
 		MenuItemEntry& operator=( const MenuItemEntry& src ) = delete;
 
-		WString SectionName;		//Ini�t�@�C���̃Z�N�V������
-		WString UnchedkedBitmap;	//��I����Ԃ̃r�b�g�}�b�v
-		WString CheckedBitmap;		//�I����Ԃ̃r�b�g�}�b�v
+		WString SectionName;		//Iniファイルのセクション名
+		WString UnchedkedBitmap;	//非選択状態のビットマップ
+		WString CheckedBitmap;		//選択状態のビットマップ
 
-		MenuType Type;				//���j���[�̃^�C�v
-		mMenu& Root;				//���[�g�I�u�W�F�N�g
-		MenuHandle& Parent;			//�e�I�u�W�F�N�g
-		WString Name;				//���ڂ̖���
-		USHORT InternalId;			//����ID�iWINAPI�ɓo�^����ID�j
-		UINT FunctionId;			//���[�U�[��`�̋@�\ID�i�t��������Ƃ��ɂ��g���j
-		ULONG_PTR UserData;			//���[�U�[��`�̒l
-		WString OptString;			//���[�U�[��`�̕�����
-		MenuHandle* Child;			//�T�u���j���[(�Ȃ��ꍇ��nullptr)
+		MenuType Type;				//メニューのタイプ
+		mMenu& Root;				//ルートオブジェクト
+		MenuHandle& Parent;			//親オブジェクト
+		WString Name;				//項目の名称
+		USHORT InternalId;			//内部ID（WINAPIに登録するID）
+		UINT FunctionId;			//ユーザー定義の機能ID（逆検索するときにも使う）
+		ULONG_PTR UserData;			//ユーザー定義の値
+		WString OptString;			//ユーザー定義の文字列
+		MenuHandle* Child;			//サブメニュー(ない場合はnullptr)
 
 		MenuItemEntry( MenuHandle& parent , mMenu& inst )
 			: Parent( parent )
@@ -222,54 +222,54 @@ protected:
 		}
 	};
 
-	//���[�g���j���[
+	//ルートメニュー
 	MenuHandle* MyRootMenu;
 
-	//����ID�̎g�p���̒l�ꗗ
+	//内部IDの使用中の値一覧
 	typedef mUniqueValue<USHORT> InternalIdStock;
 	InternalIdStock MyInternalIdStock;
 
 protected:
 	//-----------------------------------------------------------
-	// ���[�e�B���e�B�֐�
+	// ユーティリティ関数
 	//-----------------------------------------------------------
 
-	//�w�肵���p�X�����A�C�e���ւ̃|�C���^��Ԃ��܂�
-	//Path : �擾�������A�C�e���̃p�X
-	//Create : true = �w�肵���A�C�e�������݂��Ȃ��ꍇ�A�����V�K�ɍ쐬���ĕԂ��܂�
-	//         false = �w�肵���A�C�e�������݂��Ȃ��ꍇ�A�G���[�ƂȂ�܂�
-	//ret : ���������Ƃ��A�C�e���ւ̃|�C���^�B�G���[�̂Ƃ�nullptr�B
-	//�ECreate��false�̏ꍇ�A�����ϐ������������邱�Ƃ͂���܂���(const_cast����OK)�B
+	//指定したパスを持つアイテムへのポインタを返します
+	//Path : 取得したいアイテムのパス
+	//Create : true = 指定したアイテムが存在しない場合、それを新規に作成して返します
+	//         false = 指定したアイテムが存在しない場合、エラーとなります
+	//ret : 成功したときアイテムへのポインタ。エラーのときnullptr。
+	//・Createがfalseの場合、内部変数を書き換えることはありません(const_castしてOK)。
 	MenuItemEntry* SearchItemEntry( const WStringVector& Path , bool Create );
 
-	//ScanFunctionId����Ăяo���R�[���o�b�N�֐�
-	//entry : �����Ώۂ̍���
-	//ret : ���������������ꍇ�^
+	//ScanFunctionIdから呼び出すコールバック関数
+	//entry : 処理対象の項目
+	//ret : 処理が成功した場合真
 	typedef std::function< bool( MenuItemEntry* entry ) > ScanItemCallback;
 
-	//�w�肵�����ڔz�����X�L�������A�w�肵���@�\ID�������ڂɑ΂��āA�R�[���o�b�N�֐����Ăяo���܂��B
-	//menu : �X�L��������Ώ�(�S���ڂ�Ώۂɂ���Ȃ�MyRootMenu��n���܂�)
-	//functionid : �R�[���o�b�N���Ăяo���Ώۂɂ���@�\ID
-	//callback_func : �Ăяo���R�[���o�b�N�֐�
-	//ret : �R�[���o�b�N�֐���1�x���Ăяo����Ȃ�������true
-	//      �R�[���o�b�N�֐����S��true��Ԃ�����true
-	//      �R�[���o�b�N�֐���false��Ԃ������Ƃ����遨false
-	//�E�R�[���o�b�N�֐����U��Ԃ����ꍇ�ł��AScanFunctionId�̏����͒��f����܂���B
-	//  ���ɂ������Ώۂ̍��ڂ�����ƁA���̍��ڂɑ΂��čĂуR�[������܂��B
+	//指定した項目配下をスキャンし、指定した機能IDを持つ項目に対して、コールバック関数を呼び出します。
+	//menu : スキャンする対象(全項目を対象にするならMyRootMenuを渡します)
+	//functionid : コールバックを呼び出す対象にする機能ID
+	//callback_func : 呼び出すコールバック関数
+	//ret : コールバック関数が1度も呼び出されなかった→true
+	//      コールバック関数が全部trueを返した→true
+	//      コールバック関数がfalseを返したことがある→false
+	//・コールバック関数が偽を返した場合でも、ScanFunctionIdの処理は中断されません。
+	//  他にも処理対象の項目があると、その項目に対して再びコールされます。
 	bool ScanFunctionId( MenuHandle* menu , UINT functionid , ScanItemCallback callback_func )const;
 
-	//�w�肵�����ڔz�����X�L�������A�w�肵������ID�������ڂ̃p�X��T���܂��B
-	//menu : �X�L��������Ώ�(�S���ڂ�Ώۂɂ���Ȃ�MyRootMenu��n���܂�)
-	//internalid : �R�[���o�b�N���Ăяo���Ώۂɂ������ID
-	//ret : ����ID���������ꂽ�ꍇ�^
+	//指定した項目配下をスキャンし、指定した内部IDを持つ項目のパスを探します。
+	//menu : スキャンする対象(全項目を対象にするならMyRootMenuを渡します)
+	//internalid : コールバックを呼び出す対象にする内部ID
+	//ret : 内部IDが発見された場合真
 	bool ScanInternalId( MenuHandle* menu , USHORT internalid , WStringDeque& retPath )const;
 
-	//MenuItemEntry�̓��e��MENUITEMINFOW�ɓW�J����
-	//src : �W�J����MenuItemEntry�\����
-	//retDst : �W�J���MENUITEMINFOW�\����
-	//sec : �ǉ������擾���邽�߂̃Z�N�V����(nullptr��)
-	//res : ���j���[�ɕt�^����r�b�g�}�b�v���擾���郊�\�[�X�v�[��(nullptr��)
-	//ret : �������^
+	//MenuItemEntryの内容をMENUITEMINFOWに展開する
+	//src : 展開元のMenuItemEntry構造体
+	//retDst : 展開先のMENUITEMINFOW構造体
+	//sec : 追加情報を取得するためのセクション(nullptr可)
+	//res : メニューに付与するビットマップを取得するリソースプール(nullptr可)
+	//ret : 成功時真
 	bool SetMenuItemInfoStruct( const MenuItemEntry& src , MENUITEMINFOW& retDst , const mGdiResource* res )const;
 
 };
@@ -290,19 +290,19 @@ protected:
 		switch( msg )
 		{
 		case WM_DESTROY:
-			//�E�C���h�E��������I��
+			//ウインドウが閉じたら終了
 			PostQuitMessage( 0 );
 			return 0;
 		case WM_COMMAND:
 		{
-			if( lparam == 0 )	//���j���[���ڂ��I�����ꂽ�Ƃ���lparam=0
+			if( lparam == 0 )	//メニュー項目が選択されたときはlparam=0
 			{
-				//�I�����ꂽ���j���[���擾
+				//選択されたメニューを取得
 				mMenu::MenuOption item;
 				if( MyMenu->QuerySelectedMenu( wparam , item ) )
 				{
 					WString str;
-					sprintf( str , L"FunctionId=%d���I������܂���" , item.FunctionId );
+					sprintf( str , L"FunctionId=%dが選択されました" , item.FunctionId );
 					MessageBoxW( GetMyHwnd() , str.c_str() , L"" , 0 );
 				}
 			}
@@ -336,26 +336,26 @@ protected:
 
 			mMenu::MenuOption opt;
 			opt.FunctionId = 1;
-			opt.Path.push_back( L"���j���[�P" );
+			opt.Path.push_back( L"メニュー１" );
 			MyMenu->AddItem( opt );
 
 			opt.FunctionId = 2;
-			opt.Path[ 0 ] = L"���j���[�Q";
+			opt.Path[ 0 ] = L"メニュー２";
 			MyMenu->AddItem( opt );
 
 			opt.FunctionId = 3;
-			opt.Path[ 0 ] = L"���j���[�R";
+			opt.Path[ 0 ] = L"メニュー３";
 			MyMenu->AddItem( opt );
 
 			opt.FunctionId = 4;
-			opt.Path[ 0 ] = L"���j���[�R";
-			opt.Path.push_back( L"�T�u���j���[�P" );
+			opt.Path[ 0 ] = L"メニュー３";
+			opt.Path.push_back( L"サブメニュー１" );
 			MyMenu->AddItem( opt );
 
 			opt.FunctionId = 5;
-			opt.Path[ 0 ] = L"���j���[�R";
-			opt.Path[ 1 ] = L"�T�u���j���[�P";
-			opt.Path.push_back( L"�T�u���j���[�Q" );
+			opt.Path[ 0 ] = L"メニュー３";
+			opt.Path[ 1 ] = L"サブメニュー１";
+			opt.Path.push_back( L"サブメニュー２" );
 			MyMenu->AddItem( opt );
 
 			DrawMenuBar( GetMyHwnd() );
@@ -369,7 +369,7 @@ int main( int argc , char** argv )
 {
 	InitializeLibrary();
 
-	//�E�C���h�E�̐���
+	//ウインドウの生成
 	mWindowCollection root_collection( nullptr );
 	root_collection.AddControl<TestWindow>( L"TEST" );
 

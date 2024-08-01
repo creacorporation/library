@@ -1,5 +1,5 @@
-//----------------------------------------------------------------------------
-// ƒEƒCƒ“ƒhƒEŠÇ—iƒc[ƒ‹ƒo[j
+ï»¿//----------------------------------------------------------------------------
+// ã‚¦ã‚¤ãƒ³ãƒ‰ã‚¦ç®¡ç†ï¼ˆãƒ„ãƒ¼ãƒ«ãƒãƒ¼ï¼‰
 // Copyright (C) 2016 Fingerling. All rights reserved. 
 // This program is released under the MIT License. 
 // see http://opensource.org/licenses/mit-license.php
@@ -14,7 +14,7 @@
 
 mToolBar::mToolBar()
 {
-	//‚·‚®‚ÉƒCƒ“ƒXƒ^ƒ“ƒX‚ğì‚é–ó‚¾‚ªA‚Æ‚è‚ ‚¦‚¸‚Ínullptr‚É‰Šú‰»‚µ‚Ä‚¨‚­B
+	//ã™ãã«ã‚¤ãƒ³ã‚¹ã‚¿ãƒ³ã‚¹ã‚’ä½œã‚‹è¨³ã ãŒã€ã¨ã‚Šã‚ãˆãšã¯nullptrã«åˆæœŸåŒ–ã—ã¦ãŠãã€‚
 	MyImgage = nullptr;
 }
 
@@ -23,14 +23,14 @@ mToolBar::~mToolBar()
 	mDelete MyImgage;
 }
 
-//ƒEƒCƒ“ƒhƒEƒNƒ‰ƒX‚Ì“o˜^‚ğ‚·‚é
+//ã‚¦ã‚¤ãƒ³ãƒ‰ã‚¦ã‚¯ãƒ©ã‚¹ã®ç™»éŒ²ã‚’ã™ã‚‹
 bool mToolBar::WindowClassSettingCallback( WindowClassSetting& retSetting , const void* opt )
 {
 	::InitCommonControls();
-	return false;	//V‚½‚ÈƒEƒCƒ“ƒhƒEƒNƒ‰ƒX‚Ì“o˜^‚Í‚µ‚È‚¢
+	return false;	//æ–°ãŸãªã‚¦ã‚¤ãƒ³ãƒ‰ã‚¦ã‚¯ãƒ©ã‚¹ã®ç™»éŒ²ã¯ã—ãªã„
 }
 
-//ƒEƒCƒ“ƒhƒE‚ğŠJ‚­
+//ã‚¦ã‚¤ãƒ³ãƒ‰ã‚¦ã‚’é–‹ã
 bool mToolBar::CreateWindowCallback( CreateWindowSetting& retSetting , const void* opt )
 {
 	retSetting.ClassName = TOOLBARCLASSNAMEW;
@@ -39,31 +39,31 @@ bool mToolBar::CreateWindowCallback( CreateWindowSetting& retSetting , const voi
 
 bool mToolBar::OnCreate( const void* opt )
 {
-	//TBBUTTON\‘¢‘Ì‚ÌƒTƒCƒY‚ğİ’è
+	//TBBUTTONæ§‹é€ ä½“ã®ã‚µã‚¤ã‚ºã‚’è¨­å®š
 	::SendMessageW( GetMyHwnd() , TB_BUTTONSTRUCTSIZE , sizeof( TBBUTTON ) , 0 );
 
 
-	//ƒIƒvƒVƒ‡ƒ“w’è‚ ‚èH
+	//ã‚ªãƒ—ã‚·ãƒ§ãƒ³æŒ‡å®šã‚ã‚Šï¼Ÿ
 	if( opt != nullptr )
 	{
-		//ƒIƒvƒVƒ‡ƒ“‚Ìw’è‚ª‚ ‚éê‡A‚»‚ê‚É‰ˆ‚Á‚½İ’è‚ğ‚·‚é
+		//ã‚ªãƒ—ã‚·ãƒ§ãƒ³ã®æŒ‡å®šãŒã‚ã‚‹å ´åˆã€ãã‚Œã«æ²¿ã£ãŸè¨­å®šã‚’ã™ã‚‹
 
-		//ƒIƒvƒVƒ‡ƒ“’Ê‚è‚ÌƒCƒ[ƒWƒŠƒXƒg‚ğ¶¬
+		//ã‚ªãƒ—ã‚·ãƒ§ãƒ³é€šã‚Šã®ã‚¤ãƒ¡ãƒ¼ã‚¸ãƒªã‚¹ãƒˆã‚’ç”Ÿæˆ
 		const mToolBar::Option_UseOption* op = (const mToolBar::Option_UseOption*)opt;
 		MyImgage = mNew mGdiDualImagelist( &op->ImgOpt );
 
-		//ƒtƒ‰ƒbƒgƒXƒ^ƒCƒ‹‚É‚·‚éH
+		//ãƒ•ãƒ©ãƒƒãƒˆã‚¹ã‚¿ã‚¤ãƒ«ã«ã™ã‚‹ï¼Ÿ
 		LPARAM style = ::SendMessageW( GetMyHwnd() , TB_GETSTYLE , 0 , 0 );
 		if( op->IsFlat )
 		{
 			style |= TBSTYLE_FLAT;
 		}
-		//ƒŠƒXƒgƒXƒ^ƒCƒ‹‚É‚·‚éH
+		//ãƒªã‚¹ãƒˆã‚¹ã‚¿ã‚¤ãƒ«ã«ã™ã‚‹ï¼Ÿ
 		if( op->IsListStyle )
 		{
 			style |= TBSTYLE_LIST;
 		}
-		//ƒc[ƒ‹ƒ`ƒbƒv‚ğg‚¤H
+		//ãƒ„ãƒ¼ãƒ«ãƒãƒƒãƒ—ã‚’ä½¿ã†ï¼Ÿ
 		if( op->IsTooltipReq )
 		{
 			style |= TBSTYLE_TOOLTIPS;
@@ -72,20 +72,20 @@ bool mToolBar::OnCreate( const void* opt )
 	}
 	else
 	{
-		//opt‚ªƒkƒ‹‚¾‚Á‚½ê‡AƒfƒtƒHƒ‹ƒg‚Åì¬B
-		//ƒtƒ@ƒNƒgƒŠƒƒ\ƒbƒh‚Åopt‚ªƒkƒ‹‚¾‚Á‚½ê‡‚ğ‚Í‚¶‚¢‚Ä‚¢‚é‚Ì‚ÅA
-		//¡‚Ì‚Æ‚±‚ë‚Í‚±‚±‚É—ˆ‚é‚±‚Æ‚Í‚È‚¢‚ªA
-		//–Y‚ê‚½‚±‚ë‚ÉŒp³‚Æ‚©‚µ‚Äƒkƒ‹‚Å—ˆ‚é‚æ‚¤‚É‚È‚é‚©‚à‚µ‚ê‚È‚¢‚Ì‚ÅB
+		//optãŒãƒŒãƒ«ã ã£ãŸå ´åˆã€ãƒ‡ãƒ•ã‚©ãƒ«ãƒˆã§ä½œæˆã€‚
+		//ãƒ•ã‚¡ã‚¯ãƒˆãƒªãƒ¡ã‚½ãƒƒãƒ‰ã§optãŒãƒŒãƒ«ã ã£ãŸå ´åˆã‚’ã¯ã˜ã„ã¦ã„ã‚‹ã®ã§ã€
+		//ä»Šã®ã¨ã“ã‚ã¯ã“ã“ã«æ¥ã‚‹ã“ã¨ã¯ãªã„ãŒã€
+		//å¿˜ã‚ŒãŸã“ã‚ã«ç¶™æ‰¿ã¨ã‹ã—ã¦ãƒŒãƒ«ã§æ¥ã‚‹ã‚ˆã†ã«ãªã‚‹ã‹ã‚‚ã—ã‚Œãªã„ã®ã§ã€‚
 		mGdiImagelist::Option_UseOption Option;
 		MyImgage = mNew mGdiDualImagelist( &Option );
 	}
 
-	//ƒhƒƒbƒvƒ_ƒEƒ“o—ˆ‚é‚æ‚¤‚É
+	//ãƒ‰ãƒ­ãƒƒãƒ—ãƒ€ã‚¦ãƒ³å‡ºæ¥ã‚‹ã‚ˆã†ã«
 	LPARAM exstyle = ::SendMessageW( GetMyHwnd() , TB_GETEXTENDEDSTYLE , 0 , 0 );
-	exstyle |= TBSTYLE_EX_DRAWDDARROWS;	//‰E‘¤‚É¥ƒ}[ƒN‚ğo‚¹‚é‚æ‚¤‚É‚·‚é
+	exstyle |= TBSTYLE_EX_DRAWDDARROWS;	//å³å´ã«â–¼ãƒãƒ¼ã‚¯ã‚’å‡ºã›ã‚‹ã‚ˆã†ã«ã™ã‚‹
 	::SendMessageW( GetMyHwnd() , TB_SETEXTENDEDSTYLE , 0 , exstyle );
 
-	//ƒCƒ[ƒWƒŠƒXƒg‚ğƒc[ƒ‹ƒo[‚É‘Î‚µ‚Ä“o˜^‚·‚éB
+	//ã‚¤ãƒ¡ãƒ¼ã‚¸ãƒªã‚¹ãƒˆã‚’ãƒ„ãƒ¼ãƒ«ãƒãƒ¼ã«å¯¾ã—ã¦ç™»éŒ²ã™ã‚‹ã€‚
 	::SendMessageW( GetMyHwnd() , TB_SETIMAGELIST , 0 , (LPARAM)MyImgage->GetHandle() );
 	::SendMessageW( GetMyHwnd() , TB_SETHOTIMAGELIST , 0 , (LPARAM)MyImgage->GetHandle2() );
 
@@ -94,39 +94,39 @@ bool mToolBar::OnCreate( const void* opt )
 
 bool mToolBar::ExecUpdate( void )
 {
-	//‚Ü‚¸A‘SƒAƒCƒeƒ€‚ğíœ‚·‚é
+	//ã¾ãšã€å…¨ã‚¢ã‚¤ãƒ†ãƒ ã‚’å‰Šé™¤ã™ã‚‹
 	ExecClear();
 	MyInternalIdStock.Clear();
 
-	//’Ç‰Á‚·‚éƒAƒCƒeƒ€‚Ì”‚ÍH
+	//è¿½åŠ ã™ã‚‹ã‚¢ã‚¤ãƒ†ãƒ ã®æ•°ã¯ï¼Ÿ
 	size_t item_count = MyItemOption.size();
 	if( item_count == 0 )
 	{
-		//’Ç‰Á‚·‚é•¨‚ª‚È‚¢ê‡‚ÍA‚»‚êˆÈã‚·‚é‚±‚Æ‚ª‚È‚¢‚©‚ç–ß‚é
+		//è¿½åŠ ã™ã‚‹ç‰©ãŒãªã„å ´åˆã¯ã€ãã‚Œä»¥ä¸Šã™ã‚‹ã“ã¨ãŒãªã„ã‹ã‚‰æˆ»ã‚‹
 		return true;
 	}
 
-	//ƒ{ƒ^ƒ“‚Ìî•ñ—ÌˆæŠm•Û
+	//ãƒœã‚¿ãƒ³ã®æƒ…å ±é ˜åŸŸç¢ºä¿
 	std::vector<TBBUTTON> button( item_count );
 
-	//TBBUTTON‚Ì’†g‚ğ–„‚ß‚éB
+	//TBBUTTONã®ä¸­èº«ã‚’åŸ‹ã‚ã‚‹ã€‚
 	for( size_t i = 0 ; i < item_count ; i++ )
 	{
-		//g—p‚·‚éƒAƒCƒRƒ“‚ÌƒCƒ“ƒfƒbƒNƒX‚ğæ“¾‚·‚é‚ªAŠY“––³‚µ‚Ìê‡‚ÍƒAƒCƒRƒ“‚È‚µ‚É‚·‚éB
+		//ä½¿ç”¨ã™ã‚‹ã‚¢ã‚¤ã‚³ãƒ³ã®ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹ã‚’å–å¾—ã™ã‚‹ãŒã€è©²å½“ç„¡ã—ã®å ´åˆã¯ã‚¢ã‚¤ã‚³ãƒ³ãªã—ã«ã™ã‚‹ã€‚
 		INT img_index = MyImgage->GetIndex( MyItemOption[ i ].ImageId );
 		button[ i ].iBitmap = ( 0 <= img_index ) ? ( img_index ) : ( I_IMAGENONE );
 
-		//ƒ{ƒ^ƒ“‚Í—LŒø
+		//ãƒœã‚¿ãƒ³ã¯æœ‰åŠ¹
 		button[ i ].fsState = TBSTATE_ENABLED;
 
-		//ƒ{ƒ^ƒ“‚ÌƒLƒƒƒvƒVƒ‡ƒ“
+		//ãƒœã‚¿ãƒ³ã®ã‚­ãƒ£ãƒ—ã‚·ãƒ§ãƒ³
 		button[ i ].iString = (INT_PTR)MyItemOption[ i ].Caption.c_str();
 
-		//ˆÈ‰º‚Q‚Â‚ÍAƒc[ƒ‹ƒo[‚ªƒNƒŠƒbƒN‚³‚ê‚½‚Æ‚«‚ÉWM_NOTIFY‚ÌNMMOUSE‚©‚çæ“¾‚Å‚«‚é
-		button[ i ].idCommand = (INT)i;						//(NMMOUSE::dwItemSpec)0ƒx[ƒX‚ÌƒCƒ“ƒfƒbƒNƒX
+		//ä»¥ä¸‹ï¼’ã¤ã¯ã€ãƒ„ãƒ¼ãƒ«ãƒãƒ¼ãŒã‚¯ãƒªãƒƒã‚¯ã•ã‚ŒãŸã¨ãã«WM_NOTIFYã®NMMOUSEã‹ã‚‰å–å¾—ã§ãã‚‹
+		button[ i ].idCommand = (INT)i;						//(NMMOUSE::dwItemSpec)0ãƒ™ãƒ¼ã‚¹ã®ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹
 		button[ i ].dwData = MyItemOption[ i ].FunctionId;	//(NMMOUSE::dwItemData)FunctionID
 
-		//ƒXƒ^ƒCƒ‹BƒZƒpƒŒ[ƒ^‚ÍAUTOSIZE‚Í—v‚ç‚È‚¢B
+		//ã‚¹ã‚¿ã‚¤ãƒ«ã€‚ã‚»ãƒ‘ãƒ¬ãƒ¼ã‚¿ã¯AUTOSIZEã¯è¦ã‚‰ãªã„ã€‚
 		switch( MyItemOption[ i ].Type )
 		{
 		case ItemType::BUTTONTYPE:
@@ -154,8 +154,8 @@ bool mToolBar::ExecUpdate( void )
 
 bool mToolBar::ExecClear( void )
 {
-	//‘Sƒ{ƒ^ƒ“‚ğíœ‚·‚éB‘S•”‚Ü‚Æ‚ß‚ÄÁ‚·•û–@‚ªŒ©“–‚½‚ç‚È‚¢‚Ì‚ÅA
-	//ƒGƒ‰[‚É‚È‚é‚Ü‚ÅA‡Ÿæ“ª‚Ìƒ{ƒ^ƒ“‚ğÁ‚µ‚Ä‚¢‚­B
+	//å…¨ãƒœã‚¿ãƒ³ã‚’å‰Šé™¤ã™ã‚‹ã€‚å…¨éƒ¨ã¾ã¨ã‚ã¦æ¶ˆã™æ–¹æ³•ãŒè¦‹å½“ãŸã‚‰ãªã„ã®ã§ã€
+	//ã‚¨ãƒ©ãƒ¼ã«ãªã‚‹ã¾ã§ã€é †æ¬¡å…ˆé ­ã®ãƒœã‚¿ãƒ³ã‚’æ¶ˆã—ã¦ã„ãã€‚
 	bool result;
 	do
 	{
@@ -165,17 +165,17 @@ bool mToolBar::ExecClear( void )
 	return true;
 }
 
-//ƒAƒCƒRƒ“‚ğ—LŒøE–³Œø‚É‚·‚é
+//ã‚¢ã‚¤ã‚³ãƒ³ã‚’æœ‰åŠ¹ãƒ»ç„¡åŠ¹ã«ã™ã‚‹
 bool mToolBar::SetState( UINT FunctionId , bool enable , bool checked )
 {
 	for( size_t i = 0 ; i < MyItemOption.size() ; i++ )
 	{
-		//FunctionID‚ªˆê’v‚·‚éê‡‚ÍA
+		//FunctionIDãŒä¸€è‡´ã™ã‚‹å ´åˆã¯ã€
 		if( MyItemOption[ i ].FunctionId == FunctionId )
 		{
-			//Œ»İ‚ÌƒXƒe[ƒ^ƒX‚ğæ“¾
+			//ç¾åœ¨ã®ã‚¹ãƒ†ãƒ¼ã‚¿ã‚¹ã‚’å–å¾—
 			LRESULT state = ::SendMessageW( GetMyHwnd() , TB_GETSTATE , i , 0 );
-			//—LŒø‚É‚·‚éH
+			//æœ‰åŠ¹ã«ã™ã‚‹ï¼Ÿ
 			if( enable )
 			{
 				state |= TBSTATE_ENABLED;
@@ -184,9 +184,9 @@ bool mToolBar::SetState( UINT FunctionId , bool enable , bool checked )
 			{
 				state &= ~TBSTATE_ENABLED;
 			}
-			//ƒ`ƒFƒbƒNó‘Ô‚É‚·‚éH
-			//¦BTNS_CHECK‚Å‚È‚­‚Ä‚àƒ`ƒFƒbƒNó‘Ô‚É‚Ío—ˆ‚é‚ªAƒ†[ƒU[‚ª‰Ÿ‚¹‚È‚­‚È‚éB
-			//  Ä“xİ’è‚·‚ê‚ÎŒ³‚É–ß‚é‚Ì‚ÅA‚ ‚¦‚ÄƒGƒ‰[‚É‚Í‚µ‚È‚¢B
+			//ãƒã‚§ãƒƒã‚¯çŠ¶æ…‹ã«ã™ã‚‹ï¼Ÿ
+			//â€»BTNS_CHECKã§ãªãã¦ã‚‚ãƒã‚§ãƒƒã‚¯çŠ¶æ…‹ã«ã¯å‡ºæ¥ã‚‹ãŒã€ãƒ¦ãƒ¼ã‚¶ãƒ¼ãŒæŠ¼ã›ãªããªã‚‹ã€‚
+			//  å†åº¦è¨­å®šã™ã‚Œã°å…ƒã«æˆ»ã‚‹ã®ã§ã€ã‚ãˆã¦ã‚¨ãƒ©ãƒ¼ã«ã¯ã—ãªã„ã€‚
 			if( checked )
 			{
 				state |= TBSTATE_CHECKED;
@@ -195,7 +195,7 @@ bool mToolBar::SetState( UINT FunctionId , bool enable , bool checked )
 			{
 				state &= ~TBSTATE_CHECKED;
 			}
-			//VƒXƒe[ƒ^ƒX‚ğİ’è
+			//æ–°ã‚¹ãƒ†ãƒ¼ã‚¿ã‚¹ã‚’è¨­å®š
 			if( !::SendMessageW( GetMyHwnd() , TB_SETSTATE , i , LOWORD( state ) ) )
 			{
 				RaiseAssert( g_ErrorLogger , i , L"TB_SETSTATE failed" );
@@ -205,7 +205,7 @@ bool mToolBar::SetState( UINT FunctionId , bool enable , bool checked )
 	return true;
 }
 
-//ƒAƒCƒeƒ€‚Ìî•ñ‚ğæ“¾‚·‚é
+//ã‚¢ã‚¤ãƒ†ãƒ ã®æƒ…å ±ã‚’å–å¾—ã™ã‚‹
 bool mToolBar::QueryItem( INT index , ItemOptionEntry& retInfo )const
 {
 	if( index < 0 || (INT)MyItemOption.size() <= index )
@@ -217,7 +217,7 @@ bool mToolBar::QueryItem( INT index , ItemOptionEntry& retInfo )const
 	return true;
 }
 
-//ƒAƒCƒeƒ€‚Ìî•ñ‚ğæ“¾‚·‚é
+//ã‚¢ã‚¤ãƒ†ãƒ ã®æƒ…å ±ã‚’å–å¾—ã™ã‚‹
 bool mToolBar::QueryItem( const LPNMMOUSE mouse , ItemOptionEntry& retInfo )const
 {
 	if( mouse == nullptr )
@@ -226,14 +226,14 @@ bool mToolBar::QueryItem( const LPNMMOUSE mouse , ItemOptionEntry& retInfo )cons
 		return false;
 	}
 
-	//dwItemSpec‚Í‚±‚ÌƒNƒ‰ƒX‚Åİ’è‚µ‚Ä‚¢‚ÄAINT‚©‚ç‚Í‚İo‚é‚Ì‚Í‚ ‚è“¾‚È‚¢
-	//(’l‚ÍTBBUTTON‚Ì—v‘f”)‚Ì‚ÅAINT‚ÉƒLƒƒƒXƒg‚µ‚ÄOK
+	//dwItemSpecã¯ã“ã®ã‚¯ãƒ©ã‚¹ã§è¨­å®šã—ã¦ã„ã¦ã€INTã‹ã‚‰ã¯ã¿å‡ºã‚‹ã®ã¯ã‚ã‚Šå¾—ãªã„
+	//(å€¤ã¯TBBUTTONã®è¦ç´ æ•°)ã®ã§ã€INTã«ã‚­ãƒ£ã‚¹ãƒˆã—ã¦OK
 	return QueryItem( (INT)mouse->dwItemSpec , retInfo );
 }
 
 
 //-------------------------------------------------------------
-// ‚±‚±‚©‚çAToolbarUpdateHandle‚ÌÀ‘•
+// ã“ã“ã‹ã‚‰ã€ToolbarUpdateHandleã®å®Ÿè£…
 //-------------------------------------------------------------
 mToolBar::ToolbarUpdateHandle::ToolbarUpdateHandle( mToolBar& toolbar )
 {
@@ -248,7 +248,7 @@ mToolBar::ToolbarUpdateHandle::~ToolbarUpdateHandle()
 	return;
 }
 
-//ƒc[ƒ‹ƒo[‚ÌƒAƒCƒRƒ“‚É‚·‚éƒCƒ[ƒWƒŠƒXƒg‚ğæ“¾
+//ãƒ„ãƒ¼ãƒ«ãƒãƒ¼ã®ã‚¢ã‚¤ã‚³ãƒ³ã«ã™ã‚‹ã‚¤ãƒ¡ãƒ¼ã‚¸ãƒªã‚¹ãƒˆã‚’å–å¾—
 mGdiDualImagelist& mToolBar::ToolbarUpdateHandle::Image()const
 {
 	return *MyImgage;

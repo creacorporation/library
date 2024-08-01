@@ -1,5 +1,5 @@
-//----------------------------------------------------------------------------
-// ODBCÚ‘±—pƒ‰ƒCƒuƒ‰ƒŠ
+ï»¿//----------------------------------------------------------------------------
+// ODBCæ¥ç¶šç”¨ãƒ©ã‚¤ãƒ–ãƒ©ãƒª
 // Copyright (C) 2018- Crea Inc. All rights reserved.
 // This program is released under the MIT License. 
 // see http://opensource.org/licenses/mit-license.php
@@ -24,11 +24,11 @@ mOdbcQuery::~mOdbcQuery()
 	{
 		if( !SQL_RESULT_CHECK( SQLFreeStmt( MyStmt , SQL_CLOSE ) ) )
 		{
-			RaiseAssert( g_ErrorLogger , 0 , L"ƒXƒe[ƒgƒƒ“ƒg‚Ì‰ğ•ú‚É¸”s‚µ‚Ü‚µ‚½" );
+			RaiseAssert( g_ErrorLogger , 0 , L"ã‚¹ãƒ†ãƒ¼ãƒˆãƒ¡ãƒ³ãƒˆã®è§£æ”¾ã«å¤±æ•—ã—ã¾ã—ãŸ" );
 		}
 		if( !SQL_RESULT_CHECK( SQLFreeHandle( SQL_HANDLE_STMT , MyStmt ) ) )
 		{
-			RaiseAssert( g_ErrorLogger , 0 , L"ƒXƒe[ƒgƒƒ“ƒgƒnƒ“ƒhƒ‹‚Ì‰ğ•ú‚É¸”s‚µ‚Ü‚µ‚½" );
+			RaiseAssert( g_ErrorLogger , 0 , L"ã‚¹ãƒ†ãƒ¼ãƒˆãƒ¡ãƒ³ãƒˆãƒãƒ³ãƒ‰ãƒ«ã®è§£æ”¾ã«å¤±æ•—ã—ã¾ã—ãŸ" );
 		}
 	}
 	return;
@@ -36,7 +36,7 @@ mOdbcQuery::~mOdbcQuery()
 
 bool mOdbcQuery::SQL_RESULT_CHECK( SQLRETURN rc )
 {
-	//¬Œ÷ˆÈŠO‚Ìê‡‚É‚ÍA‰½‚ç‚©‚Ì’Ç‰Áî•ñ‚ª‚ ‚é‚Æ‚İ‚ÄAæ“¾‚ğ‚İ‚éB
+	//æˆåŠŸä»¥å¤–ã®å ´åˆã«ã¯ã€ä½•ã‚‰ã‹ã®è¿½åŠ æƒ…å ±ãŒã‚ã‚‹ã¨ã¿ã¦ã€å–å¾—ã‚’è©¦ã¿ã‚‹ã€‚
 	if( rc != SQL_SUCCESS )
 	{
 		mOdbcSqlState::AppendLog( MyStmt , mOdbcSqlState::HandleKind::Statement );
@@ -44,12 +44,12 @@ bool mOdbcQuery::SQL_RESULT_CHECK( SQLRETURN rc )
 	return SQL_SUCCEEDED( rc );
 }
 
-//mOdbcDescriptionEntry‚É’l‚ğİ’è‚·‚é
-// retDesc : İ’èæ
-// DataType : SQLƒf[ƒ^Œ^
-// ParameterSize : ƒpƒ‰ƒ[ƒ^‚ÌƒTƒCƒY(Œ…”)
-// DecimalDigits : ¬”“_ˆÈ‰º‚ÌŒ…”
-// Nullable : ƒkƒ‹‚ğ‹–—e‚·‚é‚©
+//mOdbcDescriptionEntryã«å€¤ã‚’è¨­å®šã™ã‚‹
+// retDesc : è¨­å®šå…ˆ
+// DataType : SQLãƒ‡ãƒ¼ã‚¿å‹
+// ParameterSize : ãƒ‘ãƒ©ãƒ¡ãƒ¼ã‚¿ã®ã‚µã‚¤ã‚º(æ¡æ•°)
+// DecimalDigits : å°æ•°ç‚¹ä»¥ä¸‹ã®æ¡æ•°
+// Nullable : ãƒŒãƒ«ã‚’è¨±å®¹ã™ã‚‹ã‹
 static void SetDescriptionEntry(
 	mOdbcDescriptionEntry& retDesc , 
 	SQLSMALLINT DataType,
@@ -98,8 +98,8 @@ static void SetDescriptionEntry(
 		break;
 	}
 
-	case SQL_FLOAT:				//DOUBLE(”{¸“x•‚“®¬”“_Œ^)©ODBC‚ÌFLOAT‚ÍCŒ¾Œê‚ÅŒ¾‚¤‚Æ‚±‚ë‚ÌDOUBLE
-	case SQL_DOUBLE: 			//DOUBLE(”{¸“x•‚“®¬”“_Œ^)
+	case SQL_FLOAT:				//DOUBLE(å€ç²¾åº¦æµ®å‹•å°æ•°ç‚¹å‹)â†ODBCã®FLOATã¯Cè¨€èªã§è¨€ã†ã¨ã“ã‚ã®DOUBLE
+	case SQL_DOUBLE: 			//DOUBLE(å€ç²¾åº¦æµ®å‹•å°æ•°ç‚¹å‹)
 	{
 		retDesc.ParamType = mOdbc::ParameterType::Float;
 		retDesc.Fixed = true;
@@ -189,7 +189,7 @@ static void SetDescriptionEntry(
 	}
 
 	default:
-		RaiseAssert( g_ErrorLogger , 0 , L"ƒpƒ‰ƒ[ƒ^‚Ìí—Ş‚ª”F¯‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½" , DataType );
+		RaiseAssert( g_ErrorLogger , 0 , L"ãƒ‘ãƒ©ãƒ¡ãƒ¼ã‚¿ã®ç¨®é¡ãŒèªè­˜ã§ãã¾ã›ã‚“ã§ã—ãŸ" , DataType );
 		retDesc.ParamType = mOdbc::ParameterType::Binary;
 		retDesc.Fixed = true;
 		retDesc.Available = false;
@@ -202,23 +202,23 @@ bool mOdbcQuery::Prepare( const WString& query )
 	SQLFreeStmt( MyStmt , SQL_CLOSE );
 	if( !SQL_RESULT_CHECK( SQLPrepare( MyStmt , const_cast<SQLWCHAR*>( query.c_str() ) , (SQLINTEGER)query.size() ) ) )
 	{
-		RaiseAssert( g_ErrorLogger , 0 , L"SQL•¶‚ğƒZƒbƒg‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½" );
+		RaiseAssert( g_ErrorLogger , 0 , L"SQLæ–‡ã‚’ã‚»ãƒƒãƒˆã§ãã¾ã›ã‚“ã§ã—ãŸ" );
 		return false;
 	}
 
-	//Šù‘¶‚ÌŒ‹‰Ê‚ğÁ‹
+	//æ—¢å­˜ã®çµæœã‚’æ¶ˆå»
 	MyParameterDescription.clear();
 
-	//ƒpƒ‰ƒ[ƒ^‚Ì”‚ğæ“¾
+	//ãƒ‘ãƒ©ãƒ¡ãƒ¼ã‚¿ã®æ•°ã‚’å–å¾—
 	SQLSMALLINT cols;
 	if( !SQL_RESULT_CHECK( SQLNumParams( MyStmt , &cols ) ) )
 	{
-		RaiseAssert( g_ErrorLogger , 0 , L"ƒpƒ‰ƒ[ƒ^”‚Ìæ“¾‚É¸”s‚µ‚Ü‚µ‚½" );
+		RaiseAssert( g_ErrorLogger , 0 , L"ãƒ‘ãƒ©ãƒ¡ãƒ¼ã‚¿æ•°ã®å–å¾—ã«å¤±æ•—ã—ã¾ã—ãŸ" );
 		return false;
 	}
 	MyParameterDescription.reserve( cols );
 
-	//î•ñ‚Ìæ“¾
+	//æƒ…å ±ã®å–å¾—
 	SQLSMALLINT DataType;
 	SQLULEN ParameterSize;
 	SQLSMALLINT DecimalDigits;
@@ -227,7 +227,7 @@ bool mOdbcQuery::Prepare( const WString& query )
 	{
 		if( !SQL_RESULT_CHECK( SQLDescribeParam( MyStmt , i , &DataType , &ParameterSize , &DecimalDigits , &Nullable ) ) )
 		{
-			RaiseAssert( g_ErrorLogger , 0 , L"ƒpƒ‰ƒ[ƒ^î•ñ‚Ìæ“¾‚É¸”s‚µ‚Ü‚µ‚½" );
+			RaiseAssert( g_ErrorLogger , 0 , L"ãƒ‘ãƒ©ãƒ¡ãƒ¼ã‚¿æƒ…å ±ã®å–å¾—ã«å¤±æ•—ã—ã¾ã—ãŸ" );
 			return false;
 		}
 
@@ -243,11 +243,11 @@ bool mOdbcQuery::Prepare( const WString& query , const mOdbcParameterDescription
 	SQLFreeStmt( MyStmt , SQL_CLOSE );
 	if( !SQL_RESULT_CHECK( SQLPrepare( MyStmt , const_cast<SQLWCHAR*>( query.c_str() ) , (SQLINTEGER)query.size() ) ) )
 	{
-		RaiseAssert( g_ErrorLogger , 0 , L"SQL•¶‚ğƒZƒbƒg‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½" );
+		RaiseAssert( g_ErrorLogger , 0 , L"SQLæ–‡ã‚’ã‚»ãƒƒãƒˆã§ãã¾ã›ã‚“ã§ã—ãŸ" );
 		return false;
 	}
 
-	//vector‘¤‚Åƒ`ƒFƒbƒN‚µ‚Ä‚¢‚é‚Ì‚ÅAdesc‚ªMyParameterDescription‚Æ“¯‚¶À‘Ì‚Å‚àOK
+	//vectorå´ã§ãƒã‚§ãƒƒã‚¯ã—ã¦ã„ã‚‹ã®ã§ã€descãŒMyParameterDescriptionã¨åŒã˜å®Ÿä½“ã§ã‚‚OK
 	MyParameterDescription = desc;
 	return true;
 }
@@ -256,28 +256,28 @@ bool mOdbcQuery::Prepare( const WString& query , const mOdbcParameterDescription
 bool mOdbcQuery::Execute( void )
 {
 
-	//SQL‚ÌÀs
+	//SQLã®å®Ÿè¡Œ
 	MyIsDataExist = false;
 	SQLRETURN rc = SQLExecute( MyStmt );
 	if( !SQL_RESULT_CHECK( rc ) )
 	{
-		RaiseAssert( g_ErrorLogger , 0 , L"SQL•¶‚ğÀs‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½" );
+		RaiseAssert( g_ErrorLogger , 0 , L"SQLæ–‡ã‚’å®Ÿè¡Œã§ãã¾ã›ã‚“ã§ã—ãŸ" );
 		return false;
 	}
 
 
-	//Šù‘¶‚ÌŒ‹‰Ê‚ğÁ‹
+	//æ—¢å­˜ã®çµæœã‚’æ¶ˆå»
 	MyResultDescription.clear();
 
-	//Œ‹‰ÊƒZƒbƒg‚Ìæ“¾
+	//çµæœã‚»ãƒƒãƒˆã®å–å¾—
 	SQLSMALLINT cols = 0;
 	if( !SQL_RESULT_CHECK( SQLNumResultCols( MyStmt , &cols ) ) )
 	{
-		RaiseAssert( g_ErrorLogger , 0 , L"Œ‹‰Ê‚Ì—ñ”‚ğæ“¾‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½" );
+		RaiseAssert( g_ErrorLogger , 0 , L"çµæœã®åˆ—æ•°ã‚’å–å¾—ã§ãã¾ã›ã‚“ã§ã—ãŸ" );
 		return false;
 	}
 
-	//ƒpƒ‰ƒ[ƒ^‚Ìİ’è
+	//ãƒ‘ãƒ©ãƒ¡ãƒ¼ã‚¿ã®è¨­å®š
 	WCHAR colname_static[ 100 ];
 	std::unique_ptr<WCHAR> colname_dynamic;
 	WCHAR* colname_ptr = colname_static;
@@ -290,33 +290,33 @@ bool mOdbcQuery::Execute( void )
 		SQLSMALLINT scale;
 		SQLSMALLINT nullable;
 
-		//—ñî•ñ‚Ìæ“¾
+		//åˆ—æƒ…å ±ã®å–å¾—
 		if( !SQL_RESULT_CHECK( SQLDescribeCol( MyStmt , index + 1 , colname_static , (SQLSMALLINT)array_count_of( colname_static ) , &colnamelen , &sqltype , &coldef , &scale , &nullable ) ) )
 		{
-			RaiseAssert( g_ErrorLogger , 0 , L"Œ‹‰Ê‚Ì—ñî•ñ‚ğæ“¾‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½" );
+			RaiseAssert( g_ErrorLogger , 0 , L"çµæœã®åˆ—æƒ…å ±ã‚’å–å¾—ã§ãã¾ã›ã‚“ã§ã—ãŸ" );
 			return false;
 		}
 
-		//—ñ–¼‚Í‚ ‚ç‚©‚¶‚ßŠm•Û‚µ‚½ƒoƒbƒtƒ@‚É“ü‚èØ‚Á‚½‚©H
-		colnamelen++;	//––’[‚Ìƒkƒ‹‚Ì•ª
+		//åˆ—åã¯ã‚ã‚‰ã‹ã˜ã‚ç¢ºä¿ã—ãŸãƒãƒƒãƒ•ã‚¡ã«å…¥ã‚Šåˆ‡ã£ãŸã‹ï¼Ÿ
+		colnamelen++;	//æœ«ç«¯ã®ãƒŒãƒ«ã®åˆ†
 		if( array_count_of( colname_static ) < static_cast<size_t>( colnamelen ) )
 		{
-			//—ñ–¼‚ª’·‚·‚¬‚éê‡‚ÍA“®“I‚Éƒoƒbƒtƒ@‚ğŠm•Û‚µ‚ÄÄƒ`ƒƒƒŒƒ“ƒW‚·‚é
+			//åˆ—åãŒé•·ã™ãã‚‹å ´åˆã¯ã€å‹•çš„ã«ãƒãƒƒãƒ•ã‚¡ã‚’ç¢ºä¿ã—ã¦å†ãƒãƒ£ãƒ¬ãƒ³ã‚¸ã™ã‚‹
 			colname_dynamic.reset( mNew WCHAR[ colnamelen ] );
 
 			if( !SQL_RESULT_CHECK( SQLDescribeCol( MyStmt , index + 1 , colname_dynamic.get() , colnamelen , nullptr , nullptr , nullptr , nullptr , nullptr ) ) )
 			{
-				RaiseAssert( g_ErrorLogger , 0 , L"Œ‹‰Ê‚Ì—ñ–¼‚ğæ“¾‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½" );
+				RaiseAssert( g_ErrorLogger , 0 , L"çµæœã®åˆ—åã‚’å–å¾—ã§ãã¾ã›ã‚“ã§ã—ãŸ" );
 				return false;
 			}
-			colname_ptr = colname_dynamic.get();	//—ñ–¼‚Í“®“I‚ÉŠm•Û‚µ‚½
+			colname_ptr = colname_dynamic.get();	//åˆ—åã¯å‹•çš„ã«ç¢ºä¿ã—ãŸ
 		}
 		else
 		{
-			colname_ptr = colname_static;			//—ñ–¼‚ÍÃ“I‚ÉŠm•Û‚µ‚½
+			colname_ptr = colname_static;			//åˆ—åã¯é™çš„ã«ç¢ºä¿ã—ãŸ
 		}
 
-		//—ñî•ñ‚Ì’Ç‹L
+		//åˆ—æƒ…å ±ã®è¿½è¨˜
 		mOdbcDescriptionEntry desc;
 		SetDescriptionEntry( desc , sqltype , coldef , scale , nullable , index );
 
@@ -326,7 +326,7 @@ bool mOdbcQuery::Execute( void )
 		}
 		else
 		{
-			//‚à‚µA“¯–¼‚Ì—ñ‚ª‘¶İ‚·‚éê‡‚Í–¼‘O‚É"_n"‚ğ‚Â‚¯‚Ä‰ñ”ğ‚·‚é
+			//ã‚‚ã—ã€åŒåã®åˆ—ãŒå­˜åœ¨ã™ã‚‹å ´åˆã¯åå‰ã«"_n"ã‚’ã¤ã‘ã¦å›é¿ã™ã‚‹
 			WString colname_changed;
 			int num = 0;
 			do
@@ -335,15 +335,15 @@ bool mOdbcQuery::Execute( void )
 				sprintf( colname_changed , L"%s_%d" , colname_ptr , num );
 			}while( MyResultDescription.count( colname_changed ) );
 
-			CreateLogEntryF( g_ErrorLogger , 0 , L"—ñ–¼‚ªd•¡‚µ‚Ä‚¢‚é‚½‚ß•ÏX‚³‚ê‚Ü‚µ‚½" , L"[%s]¨[%s]" , colname_ptr , colname_changed.c_str() );
+			CreateLogEntryF( g_ErrorLogger , 0 , L"åˆ—åãŒé‡è¤‡ã—ã¦ã„ã‚‹ãŸã‚å¤‰æ›´ã•ã‚Œã¾ã—ãŸ" , L"[%s]â†’[%s]" , colname_ptr , colname_changed.c_str() );
 			MyResultDescription.insert( std::make_pair( colname_changed , desc ) ); 
 		}
 	}
 
-	//ƒoƒbƒtƒ@‚ÌŠm•Û
+	//ãƒãƒƒãƒ•ã‚¡ã®ç¢ºä¿
 	if( !CreateFetchBuffer( MyResultDescription ) )
 	{
-		RaiseAssert( g_ErrorLogger , 0 , L"ƒoƒbƒtƒ@‚ğŠm•Û‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½" );
+		RaiseAssert( g_ErrorLogger , 0 , L"ãƒãƒƒãƒ•ã‚¡ã‚’ç¢ºä¿ã§ãã¾ã›ã‚“ã§ã—ãŸ" );
 		return false;
 	}
 
@@ -353,26 +353,26 @@ bool mOdbcQuery::Execute( void )
 
 bool mOdbcQuery::Execute( const mOdbcQueryParams& params )
 {
-	bool result = false;	//ÀsŒ‹‰Ê
+	bool result = false;	//å®Ÿè¡Œçµæœ
 
-	SQLSMALLINT ctype;		//CŒ¾Œê“IŒ^
-	SQLSMALLINT sqltype;	//ODBC“IŒ^
-	SQLULEN coldef;			//ƒpƒ‰ƒ[ƒ^[‚Ì¸“xiƒTƒCƒYj
-	SQLSMALLINT scale;		//¬”“_‚ÌˆÊ’uiƒfƒVƒ}ƒ‹‚âƒ^ƒCƒ€ƒXƒ^ƒ“ƒv‚Å—LŒøj
-	SQLPOINTER dataptr;		//ÀÛ‚Ìƒf[ƒ^‚Ö‚Ìƒ|ƒCƒ“ƒ^
-	SQLLEN datalen;			//ƒf[ƒ^‚ÌƒoƒCƒg”
+	SQLSMALLINT ctype;		//Cè¨€èªçš„å‹
+	SQLSMALLINT sqltype;	//ODBCçš„å‹
+	SQLULEN coldef;			//ãƒ‘ãƒ©ãƒ¡ãƒ¼ã‚¿ãƒ¼ã®ç²¾åº¦ï¼ˆã‚µã‚¤ã‚ºï¼‰
+	SQLSMALLINT scale;		//å°æ•°ç‚¹ã®ä½ç½®ï¼ˆãƒ‡ã‚·ãƒãƒ«ã‚„ã‚¿ã‚¤ãƒ ã‚¹ã‚¿ãƒ³ãƒ—ã§æœ‰åŠ¹ï¼‰
+	SQLPOINTER dataptr;		//å®Ÿéš›ã®ãƒ‡ãƒ¼ã‚¿ã¸ã®ãƒã‚¤ãƒ³ã‚¿
+	SQLLEN datalen;			//ãƒ‡ãƒ¼ã‚¿ã®ãƒã‚¤ãƒˆæ•°
 
-	//ƒpƒ‰ƒ[ƒ^‚Ì”‚ğƒ`ƒFƒbƒN
+	//ãƒ‘ãƒ©ãƒ¡ãƒ¼ã‚¿ã®æ•°ã‚’ãƒã‚§ãƒƒã‚¯
 	if( params.size() != MyParameterDescription.size() )
 	{
-		RaiseAssert( g_ErrorLogger , 0 , L"ƒpƒ‰ƒ[ƒ^‚Ì”‚ªƒNƒGƒŠ‚ÆˆÙ‚È‚è‚Ü‚·" );
+		RaiseAssert( g_ErrorLogger , 0 , L"ãƒ‘ãƒ©ãƒ¡ãƒ¼ã‚¿ã®æ•°ãŒã‚¯ã‚¨ãƒªã¨ç•°ãªã‚Šã¾ã™" );
 		goto end;
 	}
 
-	//StrLen_or_IndPtr‚É“n‚·ƒoƒbƒtƒ@‚ğÄŠm•Û
+	//StrLen_or_IndPtrã«æ¸¡ã™ãƒãƒƒãƒ•ã‚¡ã‚’å†ç¢ºä¿
 	MyParameterLenArray.resize( params.size() );
 
-	//ƒpƒ‰ƒ[ƒ^‚Ìİ’è
+	//ãƒ‘ãƒ©ãƒ¡ãƒ¼ã‚¿ã®è¨­å®š
 	for( size_t index = 0 ; index < params.size() ; index++ )
 	{
 		sqltype = (SQLSMALLINT)( MyParameterDescription[ index ].MetaType );
@@ -386,62 +386,62 @@ bool mOdbcQuery::Execute( const mOdbcQueryParams& params )
 		{
 			switch( param.GetParameterType() )
 			{
-			case mOdbc::ParameterType::Int64:		//•„†‚ ‚è64ƒrƒbƒg®”Œ^(•„†‚È‚µ‚Í‚ ‚è‚Ü‚¹‚ñ)
+			case mOdbc::ParameterType::Int64:		//ç¬¦å·ã‚ã‚Š64ãƒ“ãƒƒãƒˆæ•´æ•°å‹(ç¬¦å·ãªã—ã¯ã‚ã‚Šã¾ã›ã‚“)
 				dataptr = (SQLPOINTER)&( param.MyDataEntry.deInt64 );
 				datalen = sizeof( param.MyDataEntry.deInt64 );
 				MyParameterLenArray[ index ] = datalen;
 				break;
-			case mOdbc::ParameterType::Int32:		//•„†‚ ‚è32ƒrƒbƒg®”Œ^(•„†‚È‚µ‚Í‚ ‚è‚Ü‚¹‚ñ)
+			case mOdbc::ParameterType::Int32:		//ç¬¦å·ã‚ã‚Š32ãƒ“ãƒƒãƒˆæ•´æ•°å‹(ç¬¦å·ãªã—ã¯ã‚ã‚Šã¾ã›ã‚“)
 				dataptr = (SQLPOINTER)&( param.MyDataEntry.deInt32 );
 				datalen = sizeof( param.MyDataEntry.deInt32 );
 				MyParameterLenArray[ index ] = datalen;
 				break;
-			case mOdbc::ParameterType::Int16:		//•„†‚ ‚è16ƒrƒbƒg®”Œ^(•„†‚È‚µ‚Í‚ ‚è‚Ü‚¹‚ñ)
+			case mOdbc::ParameterType::Int16:		//ç¬¦å·ã‚ã‚Š16ãƒ“ãƒƒãƒˆæ•´æ•°å‹(ç¬¦å·ãªã—ã¯ã‚ã‚Šã¾ã›ã‚“)
 				dataptr = (SQLPOINTER)&( param.MyDataEntry.deInt16 );
 				datalen = sizeof( param.MyDataEntry.deInt16 );
 				MyParameterLenArray[ index ] = datalen;
 				break;
-			case mOdbc::ParameterType::Int8:		//•„†‚ ‚è8ƒrƒbƒg®”Œ^(•„†‚È‚µ‚Í‚ ‚è‚Ü‚¹‚ñ)
+			case mOdbc::ParameterType::Int8:		//ç¬¦å·ã‚ã‚Š8ãƒ“ãƒƒãƒˆæ•´æ•°å‹(ç¬¦å·ãªã—ã¯ã‚ã‚Šã¾ã›ã‚“)
 				dataptr = (SQLPOINTER)&( param.MyDataEntry.deInt8 );
 				datalen = sizeof( param.MyDataEntry.deInt8 );
 				MyParameterLenArray[ index ] = datalen;
 				break;
-			case mOdbc::ParameterType::Float:		//’P¸“x•‚“®¬”“_
+			case mOdbc::ParameterType::Float:		//å˜ç²¾åº¦æµ®å‹•å°æ•°ç‚¹
 				dataptr = (SQLPOINTER)&( param.MyDataEntry.deFloat );
 				datalen = sizeof( param.MyDataEntry.deFloat );
 				MyParameterLenArray[ index ] = datalen;
 				break;
-			case mOdbc::ParameterType::Double:		//”{¸“x•‚“®¬”“_
+			case mOdbc::ParameterType::Double:		//å€ç²¾åº¦æµ®å‹•å°æ•°ç‚¹
 				dataptr = (SQLPOINTER)&( param.MyDataEntry.deDouble );
 				datalen = sizeof( param.MyDataEntry.deDouble );
 				MyParameterLenArray[ index ] = datalen;
 				break;
-			case mOdbc::ParameterType::AString:		//ANSI•¶š—ñ
+			case mOdbc::ParameterType::AString:		//ANSIæ–‡å­—åˆ—
 				dataptr = (SQLPOINTER)( param.MyDataEntry.deAString.c_str() );
 				datalen = param.MyDataEntry.deAString.size();
 				MyParameterLenArray[ index ] = datalen;
 				break;
-			case mOdbc::ParameterType::WString:		//UNICODE•¶š—ñ
+			case mOdbc::ParameterType::WString:		//UNICODEæ–‡å­—åˆ—
 				dataptr = (SQLPOINTER)( param.MyDataEntry.deWString.c_str() );
-				datalen = param.MyDataEntry.deWString.size() * sizeof( WString::value_type );	//ƒoƒCƒg’PˆÊ‚È‚Ì‚Å
+				datalen = param.MyDataEntry.deWString.size() * sizeof( WString::value_type );	//ãƒã‚¤ãƒˆå˜ä½ãªã®ã§
 				MyParameterLenArray[ index ] = datalen;
 				break;
-			case mOdbc::ParameterType::Binary:		//ƒoƒCƒiƒŠ
+			case mOdbc::ParameterType::Binary:		//ãƒã‚¤ãƒŠãƒª
 				dataptr = (SQLPOINTER)( param.MyDataEntry.deBinary.data() );
 				datalen = param.MyDataEntry.deBinary.size();
 				MyParameterLenArray[ index ] = datalen;
 				break;
-			case mOdbc::ParameterType::Date:		//“ú•t
+			case mOdbc::ParameterType::Date:		//æ—¥ä»˜
 				dataptr = (SQLPOINTER)&( param.MyDataEntry.deDate );
 				datalen = sizeof( param.MyDataEntry.deDate );
 				MyParameterLenArray[ index ] = datalen;
 				break;
-			case mOdbc::ParameterType::Time:		//
+			case mOdbc::ParameterType::Time:		//æ™‚åˆ»
 				dataptr = (SQLPOINTER)&( param.MyDataEntry.deTime );
 				datalen = sizeof( param.MyDataEntry.deTime );
 				MyParameterLenArray[ index ] = datalen;
 				break;
-			case mOdbc::ParameterType::Timestamp:	//ƒ^ƒCƒ€ƒXƒ^ƒ“ƒv
+			case mOdbc::ParameterType::Timestamp:	//ã‚¿ã‚¤ãƒ ã‚¹ã‚¿ãƒ³ãƒ—
 				dataptr = (SQLPOINTER)&( param.MyDataEntry.deTimestamp );
 				datalen = sizeof( param.MyDataEntry.deTimestamp );
 				scale = 3;
@@ -449,7 +449,7 @@ bool mOdbcQuery::Execute( const mOdbcQueryParams& params )
 				break;
 
 			default:
-				RaiseAssert( g_ErrorLogger , 0 , L"ƒpƒ‰ƒ[ƒ^‚ª•s³‚Å‚·" );
+				RaiseAssert( g_ErrorLogger , 0 , L"ãƒ‘ãƒ©ãƒ¡ãƒ¼ã‚¿ãŒä¸æ­£ã§ã™" );
 				goto end;
 			}
 		}
@@ -463,13 +463,13 @@ bool mOdbcQuery::Execute( const mOdbcQueryParams& params )
 
 		if( !SQL_RESULT_CHECK( SQLBindParameter( MyStmt , (SQLSMALLINT)( index + 1 ) , SQL_PARAM_INPUT , ctype , sqltype , coldef , scale , dataptr , datalen , &MyParameterLenArray[ index ] ) ) )
 		{
-			RaiseAssert( g_ErrorLogger , 0 , L"ƒpƒ‰ƒ[ƒ^İ’è‚É¸”s‚µ‚Ü‚µ‚½" , index );
+			RaiseAssert( g_ErrorLogger , 0 , L"ãƒ‘ãƒ©ãƒ¡ãƒ¼ã‚¿è¨­å®šã«å¤±æ•—ã—ã¾ã—ãŸ" , index );
 			goto end;
 		}
 	}
 	result = Execute();
 end:
-	SQLFreeStmt( MyStmt , SQL_RESET_PARAMS );	// ©Execute()‚ÌƒGƒ‰[‚ğc‚µ‚½‚¢‚Ì‚Å‚±‚±‚Å‚ÍƒGƒ‰[ƒ`ƒFƒbƒN‚ğ‚µ‚È‚¢
+	SQLFreeStmt( MyStmt , SQL_RESET_PARAMS );	// â†Execute()ã®ã‚¨ãƒ©ãƒ¼ã‚’æ®‹ã—ãŸã„ã®ã§ã“ã“ã§ã¯ã‚¨ãƒ©ãƒ¼ãƒã‚§ãƒƒã‚¯ã‚’ã—ãªã„
 	return result;
 }
 
@@ -477,32 +477,32 @@ SQLSMALLINT mOdbcQuery::ParameterType2CType( mOdbc::ParameterType type )const
 {
 	switch( type )
 	{
-	case mOdbc::ParameterType::Int64:		//•„†‚ ‚è64ƒrƒbƒg®”Œ^(•„†‚È‚µ‚Í‚ ‚è‚Ü‚¹‚ñ)
+	case mOdbc::ParameterType::Int64:		//ç¬¦å·ã‚ã‚Š64ãƒ“ãƒƒãƒˆæ•´æ•°å‹(ç¬¦å·ãªã—ã¯ã‚ã‚Šã¾ã›ã‚“)
 		return SQL_C_SBIGINT;
-	case mOdbc::ParameterType::Int32:		//•„†‚ ‚è32ƒrƒbƒg®”Œ^(•„†‚È‚µ‚Í‚ ‚è‚Ü‚¹‚ñ)
+	case mOdbc::ParameterType::Int32:		//ç¬¦å·ã‚ã‚Š32ãƒ“ãƒƒãƒˆæ•´æ•°å‹(ç¬¦å·ãªã—ã¯ã‚ã‚Šã¾ã›ã‚“)
 		return SQL_C_LONG;
-	case mOdbc::ParameterType::Int16:		//•„†‚ ‚è16ƒrƒbƒg®”Œ^(•„†‚È‚µ‚Í‚ ‚è‚Ü‚¹‚ñ)
+	case mOdbc::ParameterType::Int16:		//ç¬¦å·ã‚ã‚Š16ãƒ“ãƒƒãƒˆæ•´æ•°å‹(ç¬¦å·ãªã—ã¯ã‚ã‚Šã¾ã›ã‚“)
 		return SQL_C_SHORT;
-	case mOdbc::ParameterType::Int8:		//•„†‚ ‚è8ƒrƒbƒg®”Œ^(•„†‚È‚µ‚Í‚ ‚è‚Ü‚¹‚ñ)
+	case mOdbc::ParameterType::Int8:		//ç¬¦å·ã‚ã‚Š8ãƒ“ãƒƒãƒˆæ•´æ•°å‹(ç¬¦å·ãªã—ã¯ã‚ã‚Šã¾ã›ã‚“)
 		return SQL_C_TINYINT;
-	case mOdbc::ParameterType::Float:		//’P¸“x•‚“®¬”“_
+	case mOdbc::ParameterType::Float:		//å˜ç²¾åº¦æµ®å‹•å°æ•°ç‚¹
 		return SQL_C_FLOAT;
-	case mOdbc::ParameterType::Double:		//”{¸“x•‚“®¬”“_
+	case mOdbc::ParameterType::Double:		//å€ç²¾åº¦æµ®å‹•å°æ•°ç‚¹
 		return SQL_C_DOUBLE;
-	case mOdbc::ParameterType::AString:		//ANSI•¶š—ñ
+	case mOdbc::ParameterType::AString:		//ANSIæ–‡å­—åˆ—
 		return SQL_C_CHAR;
-	case mOdbc::ParameterType::WString:		//UNICODE•¶š—ñ
+	case mOdbc::ParameterType::WString:		//UNICODEæ–‡å­—åˆ—
 		return SQL_C_WCHAR;
-	case mOdbc::ParameterType::Binary:		//ƒoƒCƒiƒŠ
+	case mOdbc::ParameterType::Binary:		//ãƒã‚¤ãƒŠãƒª
 		return SQL_C_BINARY;
-	case mOdbc::ParameterType::Date:		//“ú•t
+	case mOdbc::ParameterType::Date:		//æ—¥ä»˜
 		return SQL_C_TYPE_DATE;
-	case mOdbc::ParameterType::Time:		//
+	case mOdbc::ParameterType::Time:		//æ™‚åˆ»
 		return SQL_C_TYPE_TIME;
-	case mOdbc::ParameterType::Timestamp:	//ƒ^ƒCƒ€ƒXƒ^ƒ“ƒv
+	case mOdbc::ParameterType::Timestamp:	//ã‚¿ã‚¤ãƒ ã‚¹ã‚¿ãƒ³ãƒ—
 		return SQL_C_TYPE_TIMESTAMP;
 	default:
-		RaiseAssert( g_ErrorLogger , 0 , L"•s–¾‚Èƒpƒ‰ƒ[ƒ^‚Å‚·" , type );
+		RaiseAssert( g_ErrorLogger , 0 , L"ä¸æ˜ãªãƒ‘ãƒ©ãƒ¡ãƒ¼ã‚¿ã§ã™" , type );
 		break;
 	}
 	return SQL_C_BINARY;
@@ -535,10 +535,10 @@ mOdbcQuery::FetchResult mOdbcQuery::Fetch( mOdbcResultParam& retResult )
 {
 	FetchResult result = FetchResult::FETCH_SUCCEEDED;
 
-	//Šù‘¶‚Ìƒf[ƒ^‚ğ”jŠü
+	//æ—¢å­˜ã®ãƒ‡ãƒ¼ã‚¿ã‚’ç ´æ£„
 	retResult.clear();
 
-	//ƒtƒFƒbƒ`À{
+	//ãƒ•ã‚§ãƒƒãƒå®Ÿæ–½
 	SQLRETURN rc = SQLFetch( MyStmt );
 	switch( rc )
 	{
@@ -549,65 +549,65 @@ mOdbcQuery::FetchResult mOdbcQuery::Fetch( mOdbcResultParam& retResult )
 		break;
 	}
 
-	//Še—ñ‚Ìƒf[ƒ^‚ğæ“¾‚µ‚ÄƒZƒbƒg
+	//å„åˆ—ã®ãƒ‡ãƒ¼ã‚¿ã‚’å–å¾—ã—ã¦ã‚»ãƒƒãƒˆ
 	for( mOdbcResultDescription::const_iterator descitr = MyResultDescription.begin() ; descitr != MyResultDescription.end() ; descitr++ )
 	{
 		FetchBufferEntry& buff = MyFetchBuffer.at( descitr->second.Index );
 		if( buff.value == SQL_NULL_DATA )
 		{
-			//æ“¾‚µ‚½ƒf[ƒ^‚Íƒkƒ‹‚Å‚µ‚½
+			//å–å¾—ã—ãŸãƒ‡ãƒ¼ã‚¿ã¯ãƒŒãƒ«ã§ã—ãŸ
 			retResult[ descitr->first ].SetNull();
 		}
 		else
 		{
-			//ƒkƒ‹ˆÈŠO‚Ì‰½‚ç‚©‚Ìƒf[ƒ^‚ğæ“¾‚µ‚½
+			//ãƒŒãƒ«ä»¥å¤–ã®ä½•ã‚‰ã‹ã®ãƒ‡ãƒ¼ã‚¿ã‚’å–å¾—ã—ãŸ
 			if( buff.size < buff.value )
 			{
-				//ƒoƒbƒtƒ@‚ÌƒTƒCƒY‚ª‘«‚è‚È‚¢ê‡‚ÍƒGƒ‰[‚ğ‹L˜^‚·‚é
-				RaiseError( g_ErrorLogger , 0 , L"ƒoƒbƒtƒ@ƒTƒCƒY‚ª•s‘«‚µ‚½‚½‚ßAƒf[ƒ^‚ğØ‚è‹l‚ß‚Ü‚µ‚½" , descitr->first );
+				//ãƒãƒƒãƒ•ã‚¡ã®ã‚µã‚¤ã‚ºãŒè¶³ã‚Šãªã„å ´åˆã¯ã‚¨ãƒ©ãƒ¼ã‚’è¨˜éŒ²ã™ã‚‹
+				RaiseError( g_ErrorLogger , 0 , L"ãƒãƒƒãƒ•ã‚¡ã‚µã‚¤ã‚ºãŒä¸è¶³ã—ãŸãŸã‚ã€ãƒ‡ãƒ¼ã‚¿ã‚’åˆ‡ã‚Šè©°ã‚ã¾ã—ãŸ" , descitr->first );
 				result = FetchResult::FETCH_TRUNCATED;
 			}
 
-			//ƒtƒFƒbƒ`‚µ‚½ƒf[ƒ^‚ğİ’è
+			//ãƒ•ã‚§ãƒƒãƒã—ãŸãƒ‡ãƒ¼ã‚¿ã‚’è¨­å®š
 			switch( descitr->second.ParamType )
 			{
-			case mOdbc::ParameterType::Int64:		//•„†‚ ‚è64ƒrƒbƒg®”Œ^(•„†‚È‚µ‚Í‚ ‚è‚Ü‚¹‚ñ)
+			case mOdbc::ParameterType::Int64:		//ç¬¦å·ã‚ã‚Š64ãƒ“ãƒƒãƒˆæ•´æ•°å‹(ç¬¦å·ãªã—ã¯ã‚ã‚Šã¾ã›ã‚“)
 				retResult[ descitr->first ].Set( *(int64_t*)buff.ptr.get() );
 				break;
-			case mOdbc::ParameterType::Int32:		//•„†‚ ‚è32ƒrƒbƒg®”Œ^(•„†‚È‚µ‚Í‚ ‚è‚Ü‚¹‚ñ)
+			case mOdbc::ParameterType::Int32:		//ç¬¦å·ã‚ã‚Š32ãƒ“ãƒƒãƒˆæ•´æ•°å‹(ç¬¦å·ãªã—ã¯ã‚ã‚Šã¾ã›ã‚“)
 				retResult[ descitr->first ].Set( *(int32_t*)buff.ptr.get() );
 				break;
-			case mOdbc::ParameterType::Int16:		//•„†‚ ‚è16ƒrƒbƒg®”Œ^(•„†‚È‚µ‚Í‚ ‚è‚Ü‚¹‚ñ)
+			case mOdbc::ParameterType::Int16:		//ç¬¦å·ã‚ã‚Š16ãƒ“ãƒƒãƒˆæ•´æ•°å‹(ç¬¦å·ãªã—ã¯ã‚ã‚Šã¾ã›ã‚“)
 				retResult[ descitr->first ].Set( *(int16_t*)buff.ptr.get() );
 				break;
-			case mOdbc::ParameterType::Int8:		//•„†‚ ‚è8ƒrƒbƒg®”Œ^(•„†‚È‚µ‚Í‚ ‚è‚Ü‚¹‚ñ)
+			case mOdbc::ParameterType::Int8:		//ç¬¦å·ã‚ã‚Š8ãƒ“ãƒƒãƒˆæ•´æ•°å‹(ç¬¦å·ãªã—ã¯ã‚ã‚Šã¾ã›ã‚“)
 				retResult[ descitr->first ].Set( *(int8_t*)buff.ptr.get() );
 				break;
-			case mOdbc::ParameterType::Float:		//’P¸“x•‚“®¬”“_
+			case mOdbc::ParameterType::Float:		//å˜ç²¾åº¦æµ®å‹•å°æ•°ç‚¹
 				retResult[ descitr->first ].Set( *(float*)buff.ptr.get() );
 				break;
-			case mOdbc::ParameterType::Double:		//”{¸“x•‚“®¬”“_
+			case mOdbc::ParameterType::Double:		//å€ç²¾åº¦æµ®å‹•å°æ•°ç‚¹
 				retResult[ descitr->first ].Set( *(double*)buff.ptr.get() );
 				break;
-			case mOdbc::ParameterType::AString:		//ANSI•¶š—ñ
+			case mOdbc::ParameterType::AString:		//ANSIæ–‡å­—åˆ—
 				retResult[ descitr->first ].Set( (CHAR*)buff.ptr.get() );
 				break;
-			case mOdbc::ParameterType::WString:		//UNICODE•¶š—ñ
+			case mOdbc::ParameterType::WString:		//UNICODEæ–‡å­—åˆ—
 				retResult[ descitr->first ].Set( (WCHAR*)buff.ptr.get() );
 				break;
-			case mOdbc::ParameterType::Binary:		//ƒoƒCƒiƒŠ
+			case mOdbc::ParameterType::Binary:		//ãƒã‚¤ãƒŠãƒª
 				break;
-			case mOdbc::ParameterType::Date:		//“ú•t
+			case mOdbc::ParameterType::Date:		//æ—¥ä»˜
 				retResult[ descitr->first ].Set( *(SQL_DATE_STRUCT*)buff.ptr.get() );
 				break;
-			case mOdbc::ParameterType::Time:		//
+			case mOdbc::ParameterType::Time:		//æ™‚åˆ»
 				retResult[ descitr->first ].Set( *(SQL_TIME_STRUCT*)buff.ptr.get() );
 				break;
-			case mOdbc::ParameterType::Timestamp:	//ƒ^ƒCƒ€ƒXƒ^ƒ“ƒv
+			case mOdbc::ParameterType::Timestamp:	//ã‚¿ã‚¤ãƒ ã‚¹ã‚¿ãƒ³ãƒ—
 				retResult[ descitr->first ].Set( *(SQL_TIMESTAMP_STRUCT*)buff.ptr.get() );
 				break;
 			default:
-				RaiseAssert( g_ErrorLogger , 0 , L"•s–¾‚Èƒpƒ‰ƒ[ƒ^‚Å‚·" , descitr->second.ParamType );
+				RaiseAssert( g_ErrorLogger , 0 , L"ä¸æ˜ãªãƒ‘ãƒ©ãƒ¡ãƒ¼ã‚¿ã§ã™" , descitr->second.ParamType );
 				return FetchResult::FETCH_UNKNOWNTYPE;
 			}
 		}
@@ -618,61 +618,61 @@ mOdbcQuery::FetchResult mOdbcQuery::Fetch( mOdbcResultParam& retResult )
 
 bool mOdbcQuery::CreateFetchBuffer( const mOdbcResultDescription& desc )
 {
-	//ƒXƒe[ƒgƒƒ“ƒgƒnƒ“ƒhƒ‹‚©‚çƒoƒbƒtƒ@‚ğƒAƒ“ƒoƒCƒ“ƒh‚·‚é
-	//¦SQLExecute‚ÌÀsƒGƒ‰[‚ğc‚µ‚½‚¢‚Ì‚ÅAƒGƒ‰[‚É‚Í‚µ‚È‚¢
+	//ã‚¹ãƒ†ãƒ¼ãƒˆãƒ¡ãƒ³ãƒˆãƒãƒ³ãƒ‰ãƒ«ã‹ã‚‰ãƒãƒƒãƒ•ã‚¡ã‚’ã‚¢ãƒ³ãƒã‚¤ãƒ³ãƒ‰ã™ã‚‹
+	//â€»SQLExecuteã®å®Ÿè¡Œã‚¨ãƒ©ãƒ¼ã‚’æ®‹ã—ãŸã„ã®ã§ã€ã‚¨ãƒ©ãƒ¼ã«ã¯ã—ãªã„
 	if( !SQL_RESULT_CHECK( SQLFreeStmt( MyStmt , SQL_UNBIND ) ) )
 	{
-		RaiseAssert( g_ErrorLogger , 0 , L"ƒpƒ‰ƒ[ƒ^‚ÌƒŠƒZƒbƒg‚ª¸”s‚µ‚Ü‚µ‚½" );
+		RaiseAssert( g_ErrorLogger , 0 , L"ãƒ‘ãƒ©ãƒ¡ãƒ¼ã‚¿ã®ãƒªã‚»ãƒƒãƒˆãŒå¤±æ•—ã—ã¾ã—ãŸ" );
 		return false;
 	}
 	
-	//Šù‘¶‚Ìƒoƒbƒtƒ@‚ğ”pŠü/ÄŠm•Û‚·‚é
+	//æ—¢å­˜ã®ãƒãƒƒãƒ•ã‚¡ã‚’å»ƒæ£„/å†ç¢ºä¿ã™ã‚‹
 	MyFetchBuffer.clear();
 	MyFetchBuffer.resize( desc.size() );
 
-	//—ñî•ñ‚ğİ’è‚µ‚Ä‚¢‚­c
+	//åˆ—æƒ…å ±ã‚’è¨­å®šã—ã¦ã„ãâ€¦
 	for( mOdbcResultDescription::const_iterator itr = desc.begin() ; itr != desc.end() ; itr++ )
 	{
 		SQLLEN req_size;
-		//Œ…”¨ƒoƒCƒg”•ÏŠ·
+		//æ¡æ•°â†’ãƒã‚¤ãƒˆæ•°å¤‰æ›
 		switch( itr->second.ParamType )
 		{
-		case mOdbc::ParameterType::Int64:		//•„†‚ ‚è64ƒrƒbƒg®”Œ^(•„†‚È‚µ‚Í‚ ‚è‚Ü‚¹‚ñ)
+		case mOdbc::ParameterType::Int64:		//ç¬¦å·ã‚ã‚Š64ãƒ“ãƒƒãƒˆæ•´æ•°å‹(ç¬¦å·ãªã—ã¯ã‚ã‚Šã¾ã›ã‚“)
 			req_size = sizeof( int64_t );
 			break;
-		case mOdbc::ParameterType::Int32:		//•„†‚ ‚è32ƒrƒbƒg®”Œ^(•„†‚È‚µ‚Í‚ ‚è‚Ü‚¹‚ñ)
+		case mOdbc::ParameterType::Int32:		//ç¬¦å·ã‚ã‚Š32ãƒ“ãƒƒãƒˆæ•´æ•°å‹(ç¬¦å·ãªã—ã¯ã‚ã‚Šã¾ã›ã‚“)
 			req_size = sizeof( int32_t );
 			break;
-		case mOdbc::ParameterType::Int16:		//•„†‚ ‚è16ƒrƒbƒg®”Œ^(•„†‚È‚µ‚Í‚ ‚è‚Ü‚¹‚ñ)
+		case mOdbc::ParameterType::Int16:		//ç¬¦å·ã‚ã‚Š16ãƒ“ãƒƒãƒˆæ•´æ•°å‹(ç¬¦å·ãªã—ã¯ã‚ã‚Šã¾ã›ã‚“)
 			req_size = sizeof( int16_t );
 			break;
-		case mOdbc::ParameterType::Int8:		//•„†‚ ‚è8ƒrƒbƒg®”Œ^(•„†‚È‚µ‚Í‚ ‚è‚Ü‚¹‚ñ)
+		case mOdbc::ParameterType::Int8:		//ç¬¦å·ã‚ã‚Š8ãƒ“ãƒƒãƒˆæ•´æ•°å‹(ç¬¦å·ãªã—ã¯ã‚ã‚Šã¾ã›ã‚“)
 			req_size = sizeof( int8_t );
 			break;
-		case mOdbc::ParameterType::Float:		//’P¸“x•‚“®¬”“_
+		case mOdbc::ParameterType::Float:		//å˜ç²¾åº¦æµ®å‹•å°æ•°ç‚¹
 			req_size = sizeof( float );
 			break;
-		case mOdbc::ParameterType::Double:		//”{¸“x•‚“®¬”“_
+		case mOdbc::ParameterType::Double:		//å€ç²¾åº¦æµ®å‹•å°æ•°ç‚¹
 			req_size = sizeof( double );
 			break;
-		case mOdbc::ParameterType::AString:		//ANSI•¶š—ñ
+		case mOdbc::ParameterType::AString:		//ANSIæ–‡å­—åˆ—
 			req_size = ( MAX_FETCH_BUFFER_SIZE < itr->second.Size ) ? ( MAX_FETCH_BUFFER_SIZE ) : ( itr->second.Size + 1 );
 			req_size *= sizeof( CHAR );
 			break;
-		case mOdbc::ParameterType::WString:		//UNICODE•¶š—ñ
+		case mOdbc::ParameterType::WString:		//UNICODEæ–‡å­—åˆ—
 			req_size = ( MAX_FETCH_BUFFER_SIZE < itr->second.Size ) ? ( MAX_FETCH_BUFFER_SIZE ) : ( itr->second.Size + 1 );
 			req_size *= sizeof( WCHAR );
 			break;
-		case mOdbc::ParameterType::Date:		//“ú•t
+		case mOdbc::ParameterType::Date:		//æ—¥ä»˜
 			req_size = sizeof( SQL_DATE_STRUCT );
 			break;
-		case mOdbc::ParameterType::Time:		//
+		case mOdbc::ParameterType::Time:		//æ™‚åˆ»
 			req_size = sizeof( SQL_TIME_STRUCT );
 			break;
-		case mOdbc::ParameterType::Timestamp:	//ƒ^ƒCƒ€ƒXƒ^ƒ“ƒv
+		case mOdbc::ParameterType::Timestamp:	//ã‚¿ã‚¤ãƒ ã‚¹ã‚¿ãƒ³ãƒ—
 			req_size = sizeof( SQL_TIMESTAMP_STRUCT );
 			break;
-		case mOdbc::ParameterType::Binary:		//ƒoƒCƒiƒŠ
+		case mOdbc::ParameterType::Binary:		//ãƒã‚¤ãƒŠãƒª
 		default:
 			req_size = ( MAX_FETCH_BUFFER_SIZE < itr->second.Size ) ? ( MAX_FETCH_BUFFER_SIZE ) : ( itr->second.Size );
 			req_size *= sizeof( BYTE );
@@ -681,7 +681,7 @@ bool mOdbcQuery::CreateFetchBuffer( const mOdbcResultDescription& desc )
 
 		if( !SetFetchBuffer( itr->second , req_size ) )
 		{
-			RaiseAssert( g_ErrorLogger , 0 , L"ƒpƒ‰ƒ[ƒ^‚ÌƒZƒbƒg‚ª¸”s‚µ‚Ü‚µ‚½" , itr->first );
+			RaiseAssert( g_ErrorLogger , 0 , L"ãƒ‘ãƒ©ãƒ¡ãƒ¼ã‚¿ã®ã‚»ãƒƒãƒˆãŒå¤±æ•—ã—ã¾ã—ãŸ" , itr->first );
 			return false;
 		}
 	}
@@ -694,7 +694,7 @@ bool mOdbcQuery::ResizeFetchBuffer( const WString colname , size_t buffsize )
 	mOdbcResultDescription::const_iterator itr = MyResultDescription.find( colname );
 	if( itr == MyResultDescription.end() )
 	{
-		RaiseError( g_ErrorLogger , 0 , L"w’è‚³‚ê‚½—ñ‚Í‘¶İ‚µ‚Ü‚¹‚ñ" , colname );
+		RaiseError( g_ErrorLogger , 0 , L"æŒ‡å®šã•ã‚ŒãŸåˆ—ã¯å­˜åœ¨ã—ã¾ã›ã‚“" , colname );
 		return false;
 	}
 
@@ -703,18 +703,18 @@ bool mOdbcQuery::ResizeFetchBuffer( const WString colname , size_t buffsize )
 
 bool mOdbcQuery::SetFetchBuffer( const mOdbcDescriptionEntry& desc , SQLLEN size )
 {
-	//CTYPE‚Ìæ“¾
-	SQLSMALLINT ctype;	//Cƒf[ƒ^Œ^
+	//CTYPEã®å–å¾—
+	SQLSMALLINT ctype;	//Cãƒ‡ãƒ¼ã‚¿å‹
 	ctype = ParameterType2CType( desc.ParamType );
 
-	//ƒoƒbƒtƒ@‚ÌŠm•Û
+	//ãƒãƒƒãƒ•ã‚¡ã®ç¢ºä¿
 	MyFetchBuffer[ desc.Index ].size = size;
 	MyFetchBuffer[ desc.Index ].ptr.reset( mNew BYTE[ size ] );
 
-	//ƒoƒCƒ“ƒhB
+	//ãƒã‚¤ãƒ³ãƒ‰ã€‚
 	if( !SQL_RESULT_CHECK( SQLBindCol( MyStmt , desc.Index + 1 , ctype , MyFetchBuffer[ desc.Index ].ptr.get() , size ,  &MyFetchBuffer[ desc.Index ].value ) ) )
 	{
-		RaiseAssert( g_ErrorLogger , 0 , L"Œ‹‰Ê—ñ‚ÌƒoƒCƒ“ƒh‚É¸”s‚µ‚Ü‚µ‚½" , desc.Size );
+		RaiseAssert( g_ErrorLogger , 0 , L"çµæœåˆ—ã®ãƒã‚¤ãƒ³ãƒ‰ã«å¤±æ•—ã—ã¾ã—ãŸ" , desc.Size );
 		return false;
 	}
 
@@ -733,7 +733,7 @@ bool mOdbcQuery::Recycle( void )
 	{
 		if( !SQL_RESULT_CHECK( SQLCloseCursor( MyStmt ) ) )
 		{
-			RaiseAssert( g_ErrorLogger , 0 , L"ƒJ[ƒ\ƒ‹‚ÌƒNƒ[ƒY‚É¸”s‚µ‚Ü‚µ‚½" );
+			RaiseAssert( g_ErrorLogger , 0 , L"ã‚«ãƒ¼ã‚½ãƒ«ã®ã‚¯ãƒ­ãƒ¼ã‚ºã«å¤±æ•—ã—ã¾ã—ãŸ" );
 		}
 		return false;
 	}

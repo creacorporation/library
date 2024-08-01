@@ -1,5 +1,5 @@
-//----------------------------------------------------------------------------
-// �E�C���h�E�Ǘ��i�J�[�\���j
+﻿//----------------------------------------------------------------------------
+// ウインドウ管理（カーソル）
 // Copyright (C) 2016 Fingerling. All rights reserved. 
 // This program is released under the MIT License. 
 // see http://opensource.org/licenses/mit-license.php
@@ -18,20 +18,20 @@ class mGdiCursor : public mGdiHandle
 {
 public:
 
-	//�I�v�V�����\����
-	//�J�[�\���쐬����Ƃ��́AOption�\���̂𒼐ڎg�킸�ɁA��肽�����ɍ��킹�Ĉȉ����g���ĉ������B
-	//�EOption_LoadFile �c �r�b�g�}�b�v�t�@�C����ǂݍ��݂����Ƃ�
-	//�EOption_Resource �c ���\�[�X�����[�h�������Ƃ�
+	//オプション構造体
+	//カーソル作成するときは、Option構造体を直接使わずに、作りたい物に合わせて以下を使って下さい。
+	//・Option_LoadFile … ビットマップファイルを読み込みたいとき
+	//・Option_Resource … リソースをロードしたいとき
 	struct Option
 	{
-		//�J�[�\�������̕��@
+		//カーソル生成の方法
 		enum CreateMethod
 		{
-			LOADFILE,	//�t�@�C�������[�h����
-			RESOURCE,	//���\�[�X�����[�h����
+			LOADFILE,	//ファイルをロードする
+			RESOURCE,	//リソースをロードする
 		};
 
-		const CreateMethod method;	//RTTI�̑�p�ł��B�ύX�̕K�v�͂���܂���B
+		const CreateMethod method;	//RTTIの代用です。変更の必要はありません。
 	protected:
 		Option() = delete;
 		Option( CreateMethod create_method ) : method( create_method )
@@ -39,19 +39,19 @@ public:
 		}
 	};
 
-	//�t�@�C�������[�h���ăJ�[�\���쐬����Ƃ��̃I�v�V����
+	//ファイルをロードしてカーソル作成するときのオプション
 	struct Option_LoadFile : public Option
 	{
-		WString path;			//���[�h����t�@�C����
+		WString path;			//ロードするファイル名
 		Option_LoadFile() : Option( CreateMethod::LOADFILE )
 		{
 		}
 	};
 
-	//���\�[�X�����[�h���ăJ�[�\���쐬����Ƃ��̃I�v�V����
+	//リソースをロードしてカーソル作成するときのオプション
 	struct Option_Resource : public Option
 	{
-		WString name;			//���[�h���郊�\�[�X��
+		WString name;			//ロードするリソース名
 		Option_Resource() : Option( CreateMethod::RESOURCE )
 		{
 		}
@@ -59,8 +59,8 @@ public:
 
 public:
 
-	//�t�@�N�g�����\�b�h
-	//opt�͕K���w�肵�Ă��������B�G���[�ɂȂ�nullptr��Ԃ��܂��B
+	//ファクトリメソッド
+	//optは必ず指定してください。エラーになりnullptrを返します。
 	static mGdiHandle* Factory( const void* opt )throw( )
 	{
 		mGdiHandle* result;
@@ -70,44 +70,44 @@ public:
 		}
 		catch( mException )
 		{
-			//nullptr��Ԃ��ƁA�t�@�N�g�����\�b�h�̌Ăяo���������s����
+			//nullptrを返すと、ファクトリメソッドの呼び出し側も失敗する
 			result = nullptr;
 		}
 		return result;
 	}
 
-	//�R���X�g���N�^
-	//���̃R���X�g���N�^�́AMyHandle�Ɋi�[����r�b�g�}�b�v�̐������s���ɗ�O�𓊂��܂��B
-	//�Eopt�͕K���w�肵�ĉ������Bnullptr��n���Ɨ�O�𓊂��܂��B
+	//コンストラクタ
+	//このコンストラクタは、MyHandleに格納するビットマップの生成失敗時に例外を投げます。
+	//・optは必ず指定して下さい。nullptrを渡すと例外を投げます。
 	mGdiCursor( const Option* opt )throw( mException );
 
-	//�f�X�g���N�^
+	//デストラクタ
 	virtual ~mGdiCursor();
 	
-	//�n���h���̒l���擾����(�L���X�g���Z�q�o�[�W����)
+	//ハンドルの値を取得する(キャスト演算子バージョン)
 	operator HCURSOR()const;
 
-	//�n���h���̒l���擾����(���ʂ̊֐��o�[�W����)
+	//ハンドルの値を取得する(普通の関数バージョン)
 	virtual HGDIOBJ GetHandle( void )const override;
 
 private:
 
-	//�ȉ��A�f�t�H���g�n�͎̂g�p�s�Ƃ���
+	//以下、デフォルト系のは使用不可とする
 	mGdiCursor() = delete;
 	mGdiCursor( const mGdiCursor& src ) = delete;
 	mGdiCursor& operator=( const mGdiCursor& src ) = delete;
 
-	//�J�[�\������
-	//�EOption_LoadFile���g�p����Ƃ��p
+	//カーソル生成
+	//・Option_LoadFileを使用するとき用
 	bool CreateHandle( const Option_LoadFile& opt );
 
-	//�J�[�\������
-	//�EOption_Resource���g�p����Ƃ��p
+	//カーソル生成
+	//・Option_Resourceを使用するとき用
 	bool CreateHandle( const Option_Resource& opt );
 
 protected:
 
-	//�n���h���̎���
+	//ハンドルの実体
 	HCURSOR MyHandle;
 
 };

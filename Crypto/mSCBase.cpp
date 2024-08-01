@@ -1,11 +1,11 @@
-//----------------------------------------------------------------------------
-// ƒXƒ}[ƒgƒJ[ƒhƒnƒ“ƒhƒ‰ƒx[ƒX
+ï»¿//----------------------------------------------------------------------------
+// ã‚¹ãƒãƒ¼ãƒˆã‚«ãƒ¼ãƒ‰ãƒãƒ³ãƒ‰ãƒ©ãƒ™ãƒ¼ã‚¹
 // Copyright (C) 2021- Crea Inc. All rights reserved.
 // This program is released under the MIT License. 
 // see http://opensource.org/licenses/mit-license.php
-// ’˜ìŒ •\¦‚âƒ‰ƒCƒZƒ“ƒX‚Ì‰ü•Ï‚Í‹Ö~‚³‚ê‚Ä‚¢‚Ü‚·B
-// ‚±‚Ìƒ\[ƒXƒR[ƒh‚ÉŠÖ‚µ‚ÄAã‹Lƒ‰ƒCƒZƒ“ƒXˆÈŠO‚ÌŒ_–ñ“™‚ÍˆêØ‘¶İ‚µ‚Ü‚¹‚ñB
-// (‰½‚ç‚©‚ÌŒ_–ñ‚ª‚ ‚éê‡‚Å‚àA–{ƒ\[ƒXƒR[ƒh‚Í‚»‚Ì‘ÎÛŠO‚Æ‚È‚è‚Ü‚·)
+// è‘—ä½œæ¨©è¡¨ç¤ºã‚„ãƒ©ã‚¤ã‚»ãƒ³ã‚¹ã®æ”¹å¤‰ã¯ç¦æ­¢ã•ã‚Œã¦ã„ã¾ã™ã€‚
+// ã“ã®ã‚½ãƒ¼ã‚¹ã‚³ãƒ¼ãƒ‰ã«é–¢ã—ã¦ã€ä¸Šè¨˜ãƒ©ã‚¤ã‚»ãƒ³ã‚¹ä»¥å¤–ã®å¥‘ç´„ç­‰ã¯ä¸€åˆ‡å­˜åœ¨ã—ã¾ã›ã‚“ã€‚
+// (ä½•ã‚‰ã‹ã®å¥‘ç´„ãŒã‚ã‚‹å ´åˆã§ã‚‚ã€æœ¬ã‚½ãƒ¼ã‚¹ã‚³ãƒ¼ãƒ‰ã¯ãã®å¯¾è±¡å¤–ã¨ãªã‚Šã¾ã™)
 //----------------------------------------------------------------------------
 
 
@@ -43,14 +43,14 @@ bool mSCBase::Connect( const WString& reader , ReaderMaker maker )
 {
 	LONG result;
 
-	//‰Šú‰»Ï‚İƒ`ƒFƒbƒN
+	//åˆæœŸåŒ–æ¸ˆã¿ãƒã‚§ãƒƒã‚¯
 	if( MySCard )
 	{
-		RaiseAssert( g_ErrorLogger , 0 , L"ƒIƒuƒWƒFƒNƒg‚Í‰Šú‰»Ï‚İ‚Å‚·" );
+		RaiseAssert( g_ErrorLogger , 0 , L"ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã¯åˆæœŸåŒ–æ¸ˆã¿ã§ã™" );
 		return false;
 	}
 
-	//ƒRƒ“ƒeƒLƒXƒg‚ª‚È‚¯‚ê‚Îæ“¾
+	//ã‚³ãƒ³ãƒ†ã‚­ã‚¹ãƒˆãŒãªã‘ã‚Œã°å–å¾—
 	if( !MySCardContext )
 	{
 		result = SCardEstablishContext( SCARD_SCOPE_USER , nullptr , nullptr , &MySCardContext );
@@ -59,15 +59,15 @@ bool mSCBase::Connect( const WString& reader , ReaderMaker maker )
 		case SCARD_S_SUCCESS:
 			break;
 		case SCARD_E_NO_SERVICE:
-			RaiseError( g_ErrorLogger , result , L"ƒXƒ}[ƒgƒJ[ƒhƒT[ƒrƒX‚ª‹N“®‚µ‚Ä‚¢‚Ü‚¹‚ñ" );
+			RaiseError( g_ErrorLogger , result , L"ã‚¹ãƒãƒ¼ãƒˆã‚«ãƒ¼ãƒ‰ã‚µãƒ¼ãƒ“ã‚¹ãŒèµ·å‹•ã—ã¦ã„ã¾ã›ã‚“" );
 			return false;
 		default:
-			RaiseError( g_ErrorLogger , result , L"ƒXƒ}[ƒgƒJ[ƒh‚Ì‰Šú‰»‚ª¸”s‚µ‚Ü‚µ‚½" );
+			RaiseError( g_ErrorLogger , result , L"ã‚¹ãƒãƒ¼ãƒˆã‚«ãƒ¼ãƒ‰ã®åˆæœŸåŒ–ãŒå¤±æ•—ã—ã¾ã—ãŸ" );
 			return false;
 		}
 	}
 
-	//ƒXƒ}[ƒgƒJ[ƒh‚Ö‚ÌÚ‘±
+	//ã‚¹ãƒãƒ¼ãƒˆã‚«ãƒ¼ãƒ‰ã¸ã®æ¥ç¶š
 	DWORD proto = 0;
 	result = SCardConnectW( MySCardContext , reader.c_str() , SCARD_SHARE_SHARED , SCARD_PROTOCOL_T0 | SCARD_PROTOCOL_T1 , &MySCard , &proto );
 	switch( result )
@@ -75,11 +75,11 @@ bool mSCBase::Connect( const WString& reader , ReaderMaker maker )
 	case SCARD_S_SUCCESS:
 		break;
 	default:
-		RaiseError( g_ErrorLogger , result , L"ƒJ[ƒh‚Æ‚ÌÚ‘±‚ª¸”s‚µ‚Ü‚µ‚½" );
+		RaiseError( g_ErrorLogger , result , L"ã‚«ãƒ¼ãƒ‰ã¨ã®æ¥ç¶šãŒå¤±æ•—ã—ã¾ã—ãŸ" );
 		return false;
 	}
 
-	//ƒvƒƒgƒRƒ‹‚ÍH
+	//ãƒ—ãƒ­ãƒˆã‚³ãƒ«ã¯ï¼Ÿ
 	switch( proto )
 	{
 	case SCARD_PROTOCOL_T0:
@@ -89,12 +89,12 @@ bool mSCBase::Connect( const WString& reader , ReaderMaker maker )
 		MyActiveProtocol = Protocol::T1;
 		break;
 	default:
-		RaiseError( g_ErrorLogger , result , L"’ÊMƒvƒƒgƒRƒ‹‚ª•s–¾‚Å‚·" );
+		RaiseError( g_ErrorLogger , result , L"é€šä¿¡ãƒ—ãƒ­ãƒˆã‚³ãƒ«ãŒä¸æ˜ã§ã™" );
 		MyActiveProtocol = Protocol::Unknwon;
 		break;
 	}
 
-	//ƒJ[ƒhID‚ğæ“¾‚·‚é
+	//ã‚«ãƒ¼ãƒ‰IDã‚’å–å¾—ã™ã‚‹
 	{
 		TransmitDataLen dt;
 		dt.cla = 0xFFu;
@@ -106,52 +106,52 @@ bool mSCBase::Connect( const WString& reader , ReaderMaker maker )
 		ResponseData res;
 		if( !Communicate( dt , res ) )
 		{
-			RaiseError( g_ErrorLogger , 0 , L"ƒJ[ƒhID‚ªæ“¾‚Å‚«‚Ü‚¹‚ñ" );
+			RaiseError( g_ErrorLogger , 0 , L"ã‚«ãƒ¼ãƒ‰IDãŒå–å¾—ã§ãã¾ã›ã‚“" );
 			return false;
 		}
 		if( ( res.data.size() == 2 ) &&
 			( res.data[ 0 ] == 0x63 && res.data[ 1 ] == 0x00 ) )
 		{
-			//¸”s‰“š
-			RaiseError( g_ErrorLogger , 0 , L"ƒXƒ}[ƒgƒJ[ƒh‚Æ‚Ì‘€ì‚ª¸”s‚µ‚Ü‚µ‚½" );
+			//å¤±æ•—å¿œç­”
+			RaiseError( g_ErrorLogger , 0 , L"ã‚¹ãƒãƒ¼ãƒˆã‚«ãƒ¼ãƒ‰ã¨ã®æ“ä½œãŒå¤±æ•—ã—ã¾ã—ãŸ" );
 			return false;
 		}
 		else if( ( 6 <= res.data.size() ) &&
 			( res.data[ res.data.size() - 2 ] == 0x90 && res.data[ res.data.size() - 1 ] == 0x00 ) )
 		{
-			//¬Œ÷‰“š
+			//æˆåŠŸå¿œç­”
 			MyCardID = res.data.subdata( 0 , res.data.size() - 2 );
 		}
 		else
 		{
-			RaiseError( g_ErrorLogger , 0 , L"ƒXƒ}[ƒgƒJ[ƒh‚Ì‰“š‚ª•s³‚Å‚·" );
+			RaiseError( g_ErrorLogger , 0 , L"ã‚¹ãƒãƒ¼ãƒˆã‚«ãƒ¼ãƒ‰ã®å¿œç­”ãŒä¸æ­£ã§ã™" );
 			return false;
 		}
 	}
 
-	//ƒŠ[ƒ_[‚Ìƒ[ƒJ[ƒZƒbƒg
+	//ãƒªãƒ¼ãƒ€ãƒ¼ã®ãƒ¡ãƒ¼ã‚«ãƒ¼ã‚»ãƒƒãƒˆ
 	if( maker == ReaderMaker::READER_MAKER_GENERAL )
 	{
 		WString name = ToLower( reader );
 		if( name.find( L"sony" ) != WString::npos )
 		{
-			MyReaderMaker = ReaderMaker::READER_MAKER_SONY;	//ƒ\ƒj[‚Ì‰½‚©‚Á‚Û‚¢
+			MyReaderMaker = ReaderMaker::READER_MAKER_SONY;	//ã‚½ãƒ‹ãƒ¼ã®ä½•ã‹ã£ã½ã„
 		}
 		else if( name.find( L"pasori" ) != WString::npos )
 		{
-			MyReaderMaker = ReaderMaker::READER_MAKER_SONY;	//ƒpƒ\ƒŠ‚Á‚Û‚¢
+			MyReaderMaker = ReaderMaker::READER_MAKER_SONY;	//ãƒ‘ã‚½ãƒªã£ã½ã„
 		}
 		else if( name.find( L"acs" ) != WString::npos )
 		{
-			MyReaderMaker = ReaderMaker::READER_MAKER_ACS;	//ACS‚Á‚Û‚¢
+			MyReaderMaker = ReaderMaker::READER_MAKER_ACS;	//ACSã£ã½ã„
 		}
 		else if( name.find( L"acr" ) != WString::npos )
 		{
-			MyReaderMaker = ReaderMaker::READER_MAKER_ACS;	//ACRƒVƒŠ[ƒY‚Á‚Û‚¢
+			MyReaderMaker = ReaderMaker::READER_MAKER_ACS;	//ACRã‚·ãƒªãƒ¼ã‚ºã£ã½ã„
 		}
 		else
 		{
-			MyReaderMaker = ReaderMaker::READER_MAKER_GENERAL;	//‚í‚©‚ñ‚Ë
+			MyReaderMaker = ReaderMaker::READER_MAKER_GENERAL;	//ã‚ã‹ã‚“ã­
 		}
 	}
 	else
@@ -159,10 +159,10 @@ bool mSCBase::Connect( const WString& reader , ReaderMaker maker )
 		MyReaderMaker = maker;
 	}
 
-	//ƒJ[ƒhŒÂ•Ê‚Ìˆ—‚ğÀs
+	//ã‚«ãƒ¼ãƒ‰å€‹åˆ¥ã®å‡¦ç†ã‚’å®Ÿè¡Œ
 	if( !OnConnectCallback() )
 	{
-		RaiseError( g_ErrorLogger , 0 , L"“à•”‰Šú‰»ˆ—‚ª¸”s‚µ‚Ü‚µ‚½" );
+		RaiseError( g_ErrorLogger , 0 , L"å†…éƒ¨åˆæœŸåŒ–å‡¦ç†ãŒå¤±æ•—ã—ã¾ã—ãŸ" );
 		MyCardID.clear();
 		return false;
 	}
@@ -173,15 +173,15 @@ bool mSCBase::Communicate( const TransmitData& dt , ResponseData& retResponse )c
 {
 	retResponse.data.clear();
 
-	//ƒf[ƒ^‚Ìƒ`ƒFƒbƒN
+	//ãƒ‡ãƒ¼ã‚¿ã®ãƒã‚§ãƒƒã‚¯
 	if( 255 < dt.data.size() )
 	{
-		//’Ç‰Áƒf[ƒ^‚ª’·‚·‚¬‚é
-		RaiseError( g_ErrorLogger , dt.data.size() , L"’Ç‰Áƒf[ƒ^‚ª’·‚·‚¬‚Ü‚·" );
+		//è¿½åŠ ãƒ‡ãƒ¼ã‚¿ãŒé•·ã™ãã‚‹
+		RaiseError( g_ErrorLogger , dt.data.size() , L"è¿½åŠ ãƒ‡ãƒ¼ã‚¿ãŒé•·ã™ãã¾ã™" );
 		return false;
 	}
 
-	//‘—Mƒf[ƒ^‚Ìì¬
+	//é€ä¿¡ãƒ‡ãƒ¼ã‚¿ã®ä½œæˆ
 	mSecureBinary senddata;
 	LPCSCARD_IO_REQUEST protocol;
 	senddata.push_back( dt.cla );
@@ -211,22 +211,22 @@ bool mSCBase::Communicate( const TransmitData& dt , ResponseData& retResponse )c
 		protocol = SCARD_PCI_T1;
 		break;
 	default:
-		RaiseError( g_ErrorLogger , MyActiveProtocol , L"ƒvƒƒgƒRƒ‹‚ª•s–¾‚Å‚·" );
+		RaiseError( g_ErrorLogger , MyActiveProtocol , L"ãƒ—ãƒ­ãƒˆã‚³ãƒ«ãŒä¸æ˜ã§ã™" );
 		return false;
 	}
 
-	//‘—Mˆ—
-	BYTE response[ 256 ];	//Œ‹‰ÊŠi”[ƒoƒbƒtƒ@
+	//é€ä¿¡å‡¦ç†
+	BYTE response[ 256 ];	//çµæœæ ¼ç´ãƒãƒƒãƒ•ã‚¡
 	DWORD response_size = sizeof( response );
 	LONG result = SCardTransmit( MySCard , protocol , senddata.data() , (DWORD)senddata.size() , nullptr , response , &response_size );
 	if( result != SCARD_S_SUCCESS )
 	{
-		RaiseError( g_ErrorLogger , result , L"ƒXƒ}[ƒgƒJ[ƒh‚Æ‚Ì’ÊM‚ª¸”s‚µ‚Ü‚µ‚½" );
+		RaiseError( g_ErrorLogger , result , L"ã‚¹ãƒãƒ¼ãƒˆã‚«ãƒ¼ãƒ‰ã¨ã®é€šä¿¡ãŒå¤±æ•—ã—ã¾ã—ãŸ" );
 		SecureZeroMemory( response , sizeof( response ) );
 		return false;
 	}
 
-	//Œ‹‰Ê‚Ìƒp[ƒX
+	//çµæœã®ãƒ‘ãƒ¼ã‚¹
 	retResponse.data.reserve( response_size );
 	for( DWORD i = 0 ; i < response_size ; i++ )
 	{
@@ -241,7 +241,7 @@ bool mSCBase::Communicate( const TransmitDataLen& dt , ResponseData& retResponse
 {
 	retResponse.data.clear();
 
-	//‘—Mƒf[ƒ^‚Ìì¬
+	//é€ä¿¡ãƒ‡ãƒ¼ã‚¿ã®ä½œæˆ
 	mSecureBinary senddata;
 	LPCSCARD_IO_REQUEST protocol;
 	senddata.push_back( dt.cla );
@@ -261,18 +261,18 @@ bool mSCBase::Communicate( const TransmitDataLen& dt , ResponseData& retResponse
 		return false;
 	}
 
-	//‘—Mˆ—
-	BYTE response[ 256 ];	//Œ‹‰ÊŠi”[ƒoƒbƒtƒ@
+	//é€ä¿¡å‡¦ç†
+	BYTE response[ 256 ];	//çµæœæ ¼ç´ãƒãƒƒãƒ•ã‚¡
 	DWORD response_size = sizeof( response );
 	LONG result = SCardTransmit( MySCard , protocol , senddata.data() , (DWORD)senddata.size() , nullptr , response , &response_size );
 	if( result != SCARD_S_SUCCESS )
 	{
-		RaiseError( g_ErrorLogger , result , L"ƒXƒ}[ƒgƒJ[ƒh‚Æ‚Ì’ÊM‚ª¸”s‚µ‚Ü‚µ‚½" );
+		RaiseError( g_ErrorLogger , result , L"ã‚¹ãƒãƒ¼ãƒˆã‚«ãƒ¼ãƒ‰ã¨ã®é€šä¿¡ãŒå¤±æ•—ã—ã¾ã—ãŸ" );
 		SecureZeroMemory( response , sizeof( response ) );
 		return false;
 	}
 
-	//Œ‹‰Ê‚Ìƒp[ƒX
+	//çµæœã®ãƒ‘ãƒ¼ã‚¹
 	retResponse.data.reserve( response_size );
 	for( DWORD i = 0 ; i < response_size ; i++ )
 	{
@@ -285,17 +285,17 @@ bool mSCBase::Communicate( const TransmitDataLen& dt , ResponseData& retResponse
 bool mSCBase::Control( DWORD controlcode , const mBinary& senddata , mBinary* retResponse )const
 {
 	
-	//‘—Mˆ—
-	BYTE response[ 256 ];	//Œ‹‰ÊŠi”[ƒoƒbƒtƒ@
+	//é€ä¿¡å‡¦ç†
+	BYTE response[ 256 ];	//çµæœæ ¼ç´ãƒãƒƒãƒ•ã‚¡
 	DWORD response_size = 0;
 	LONG result = SCardControl( MySCard , SCARD_CTL_CODE( controlcode ) , senddata.data() , (DWORD)senddata.size() , response , sizeof( response ) , &response_size );
 	if( result != SCARD_S_SUCCESS )
 	{
-		RaiseError( g_ErrorLogger , result , L"ƒXƒ}[ƒgƒJ[ƒh‚Æ‚Ì’ÊM‚ª¸”s‚µ‚Ü‚µ‚½" );
+		RaiseError( g_ErrorLogger , result , L"ã‚¹ãƒãƒ¼ãƒˆã‚«ãƒ¼ãƒ‰ã¨ã®é€šä¿¡ãŒå¤±æ•—ã—ã¾ã—ãŸ" );
 		return false;
 	}
 
-	//Œ‹‰Ê‚Ìƒp[ƒX
+	//çµæœã®ãƒ‘ãƒ¼ã‚¹
 	if( retResponse )
 	{
 		retResponse->clear();
@@ -324,7 +324,7 @@ mSCBase::ReaderMaker mSCBase::QueryMaker( void )const
 	return MyReaderMaker;
 }
 
-//ƒXƒ}[ƒgƒJ[ƒhƒŠ[ƒ_[‚Ìí—Ş‚É‘Î‰‚µ‚½’¼Ú’ÊMƒRƒ}ƒ“ƒh‚ğİ’è‚·‚é
+//ã‚¹ãƒãƒ¼ãƒˆã‚«ãƒ¼ãƒ‰ãƒªãƒ¼ãƒ€ãƒ¼ã®ç¨®é¡ã«å¯¾å¿œã—ãŸç›´æ¥é€šä¿¡ã‚³ãƒãƒ³ãƒ‰ã‚’è¨­å®šã™ã‚‹
 void mSCBase::SetDirectCommand( TransmitData& retPacket ) const
 {
 	switch( QueryMaker() )
@@ -345,7 +345,7 @@ void mSCBase::SetDirectCommand( TransmitData& retPacket ) const
 	}
 }
 
-//ƒXƒ}[ƒgƒJ[ƒhƒŠ[ƒ_[‚Ìí—Ş‚É‘Î‰‚µ‚½’¼Ú’ÊMƒRƒ}ƒ“ƒh‚ğİ’è‚·‚é
+//ã‚¹ãƒãƒ¼ãƒˆã‚«ãƒ¼ãƒ‰ãƒªãƒ¼ãƒ€ãƒ¼ã®ç¨®é¡ã«å¯¾å¿œã—ãŸç›´æ¥é€šä¿¡ã‚³ãƒãƒ³ãƒ‰ã‚’è¨­å®šã™ã‚‹
 void mSCBase::SetDirectCommand( TransmitDataLen& retPacket ) const
 {
 	switch( QueryMaker() )
@@ -367,11 +367,11 @@ void mSCBase::SetDirectCommand( TransmitDataLen& retPacket ) const
 }
 
 /*
-//yƒJ[ƒhƒŠ[ƒ_[‚Ì‹@íˆË‘¶z
-//‚à‚µ‰Â”\‚È‚çƒXƒ}[ƒgƒJ[ƒhƒŠ[ƒ_[‚©‚çƒuƒU[‚ğ–Â‚ç‚µ‚Ü‚·
-// activate_time : ƒuƒU[‚ğ–Â‚ç‚·ŠÔ(1ms’PˆÊ)
-//  ¦ŠÔ‚Í“K‹XŠÛ‚ß‚é‚±‚Æ‚ª‚ ‚è‚Ü‚·
-// ret : –Â‚ç‚·‚±‚Æ‚ª‚Å‚«‚½‚ç^
+//ã€ã‚«ãƒ¼ãƒ‰ãƒªãƒ¼ãƒ€ãƒ¼ã®æ©Ÿç¨®ä¾å­˜ã€‘
+//ã‚‚ã—å¯èƒ½ãªã‚‰ã‚¹ãƒãƒ¼ãƒˆã‚«ãƒ¼ãƒ‰ãƒªãƒ¼ãƒ€ãƒ¼ã‹ã‚‰ãƒ–ã‚¶ãƒ¼ã‚’é³´ã‚‰ã—ã¾ã™
+// activate_time : ãƒ–ã‚¶ãƒ¼ã‚’é³´ã‚‰ã™æ™‚é–“(1mså˜ä½)
+//  â€»æ™‚é–“ã¯é©å®œä¸¸ã‚ã‚‹ã“ã¨ãŒã‚ã‚Šã¾ã™
+// ret : é³´ã‚‰ã™ã“ã¨ãŒã§ããŸã‚‰çœŸ
 bool mSCBase::Beep( DWORD activate_time )
 {
 	mBinary dt;

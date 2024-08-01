@@ -1,17 +1,17 @@
-//----------------------------------------------------------------------------
-// �A�T�[�g�^�G���[����
+﻿//----------------------------------------------------------------------------
+// アサート／エラー処理
 // Copyright (C) 2016 Fingerling. All rights reserved. 
 // Copyright (C) 2020-2023 Crea Inc. All rights reserved. 
 // This program is released under the MIT License. 
 // see http://opensource.org/licenses/mit-license.php
-// ���쌠�\���⃉�C�Z���X�̉��ς͋֎~����Ă��܂��B
-// ���̃\�[�X�R�[�h�Ɋւ��āA��L���C�Z���X�ȊO�̌_�񓙂͈�ؑ��݂��܂���B
+// 著作権表示やライセンスの改変は禁止されています。
+// このソースコードに関して、上記ライセンス以外の契約等は一切存在しません。
 //----------------------------------------------------------------------------
 
 /*
 
-���p�r
-�A�T�[�g�������܂��̓G���[�������̏����ł��B
+●用途
+アサート発生時またはエラー発生時の処理です。
 
 */
 
@@ -33,72 +33,72 @@ class mErrorLogger
 {
 public:
 
-	//�G���[����������ێ�����ő吔(�f�t�H���g)
+	//エラー発生履歴を保持する最大数(デフォルト)
 	static const DWORD DefaultMaxErrorLogEntry = 512;
 
-	//�R���X�g���N�^
-	//max_error : �G���[����������ێ�����ő吔
+	//コンストラクタ
+	//max_error : エラー発生履歴を保持する最大数
 	mErrorLogger( DWORD max_error = DefaultMaxErrorLogEntry );
 
 	virtual ~mErrorLogger();
 
-	//���O���R���\�[���ɏo�͂��邩
+	//ログをコンソールに出力するか
 	enum LogOutputMode
 	{
-		LOG_OUTPUT_CONSOLE,		//�R�}���h���C��(stderr)�ɏo�͂���
-		LOG_OUTPUT_DEBUGGER,	//�f�o�b�K�ɏo�͂���
-		LOG_OUTPUT_FILE,		//�w��t�@�C���ɏo�͂���
-		LOG_OUTPUT_EVENTLOG,	//Windows�̃C�x���g���O�ɏo�͂���(������)
-		LOG_OUTPUT_CALLBACK,	//�R�[���o�b�N�֐����Ă�
-		LOG_OUTPUT_NONE,		//�������Ȃ�
+		LOG_OUTPUT_CONSOLE,		//コマンドライン(stderr)に出力する
+		LOG_OUTPUT_DEBUGGER,	//デバッガに出力する
+		LOG_OUTPUT_FILE,		//指定ファイルに出力する
+		LOG_OUTPUT_EVENTLOG,	//Windowsのイベントログに出力する(未実装)
+		LOG_OUTPUT_CALLBACK,	//コールバック関数を呼ぶ
+		LOG_OUTPUT_NONE,		//何もしない
 	};
 
-	//�G���[�̃��x��
+	//エラーのレベル
 	enum ErrorLevel
 	{
-		//�A�T�[�g�����������Ƃ�(�ʏ푀��Ŕ������Ȃ��z��̃G���[�p)
-		//Windows���O�ɋL�^�����ꍇ�́A�u�G���[�C�x���g�v�ƂȂ�܂��B
+		//アサートが発生したとき(通常操作で発生しない想定のエラー用)
+		//Windowsログに記録した場合は、「エラーイベント」となります。
 		LEVEL_ASSERT = 0,
-		//��ʓI�G���[�����������Ƃ�(�t�@�C��������������)
-		//Windows���O�ɋL�^�����ꍇ�́A�u�x���C�x���g�v�ƂȂ�܂��B
+		//一般的エラーが発生したとき(ファイルが無かった等)
+		//Windowsログに記録した場合は、「警告イベント」となります。
 		LEVEL_ERROR = 1,
-		//����I���ł��L�^���Ă����������������������Ƃ�(�ڑ������Ȃǂ̃C�x���g)
-		//Windows���O�ɋL�^�����ꍇ�́A�u���C�x���g�v�ƂȂ�܂��B
+		//正常終了でも記録しておきたい事柄が発生したとき(接続完了などのイベント)
+		//Windowsログに記録した場合は、「情報イベント」となります。
 		LEVEL_LOGGING = 2,
-		//��O���X���[���ꂽ�Ƃ�(mException���g�p���܂�)
-		//Windows���O�ɋL�^�����ꍇ�́A�u�G���[�C�x���g�v�ƂȂ�܂��B
+		//例外がスローされたとき(mExceptionが使用します)
+		//Windowsログに記録した場合は、「エラーイベント」となります。
 		LEVEL_EXCEPTION = 3,
 	};
 
-	//�G���[���O�̃G���g��
+	//エラーログのエントリ
 	struct LogEntry
 	{
-		DWORD Id;			//���O�̘A��
-		ErrorLevel Level;	//�G���[���x��
-		WString File;		//�G���[�����������t�@�C����
-		DWORD Line;			//�G���[�����������s
-		DWORD Code1;		//�G���[�R�[�h(GetLastError�Ŏ擾������)
-		ULONG_PTR Code2;	//�G���[�R�[�h(���[�U�[��`)
-		WString Message1;	//���[�U�[��`�̃��b�Z�[�W
-		WString Message2;	//���[�U�[��`�̃��b�Z�[�W
-		DWORD Time;			//��������
-		DWORD ThreadId;		//���O���L�^�����X���b�h��ID
+		DWORD Id;			//ログの連番
+		ErrorLevel Level;	//エラーレベル
+		WString File;		//エラーが発生したファイル名
+		DWORD Line;			//エラーが発生した行
+		DWORD Code1;		//エラーコード(GetLastErrorで取得した物)
+		ULONG_PTR Code2;	//エラーコード(ユーザー定義)
+		WString Message1;	//ユーザー定義のメッセージ
+		WString Message2;	//ユーザー定義のメッセージ
+		DWORD Time;			//発生時刻
+		DWORD ThreadId;		//ログを記録したスレッドのID
 	};
 	typedef std::deque<LogEntry> Log;
 
-	//�I�v�V�����\����
+	//オプション構造体
 	struct LogOutputModeOpt
 	{
 	public:
 		const LogOutputMode Mode;
 
-		//���I�u�W�F�N�g�Ƀ��O���L�^������A�w�肵���I�u�W�F�N�g�����O�̓��e��]������
-		//�]���s�v�ł����nullptr
+		//自オブジェクトにログを記録した後、指定したオブジェクトもログの内容を転送する
+		//転送不要であればnullptr
 		mErrorLogger* Proxy;
 
-		//true�̏ꍇ�A���������ɏ���ێ����Ȃ�
-		//���̃I�v�V������ύX���Ă��A���łɃ��������ɕێ����Ă�����ɂ͉e�����Ȃ�
-		//�i�ǉ��̃I���I�t��ύX���邾���j
+		//trueの場合、メモリ内に情報を保持しない
+		//このオプションを変更しても、すでにメモリ内に保持している情報には影響しない
+		//（追加のオンオフを変更するだけ）
 		bool NoTrace;
 
 	protected:
@@ -109,45 +109,45 @@ public:
 			NoTrace = false;
 		}
 	};
-	//���O���R���\�[���ɏo�͂���ꍇ�̐ݒ�I�u�W�F�N�g
+	//ログをコンソールに出力する場合の設定オブジェクト
 	struct LogOutputModeOpt_Console : public LogOutputModeOpt
 	{
 		LogOutputModeOpt_Console() : LogOutputModeOpt( LogOutputMode::LOG_OUTPUT_CONSOLE )
 		{
 		}
 	};
-	//���O���f�o�b�K�ɏo�͂���ꍇ�̐ݒ�I�u�W�F�N�g
+	//ログをデバッガに出力する場合の設定オブジェクト
 	struct LogOutputModeOpt_Debugger : public LogOutputModeOpt
 	{
 		LogOutputModeOpt_Debugger() : LogOutputModeOpt( LogOutputMode::LOG_OUTPUT_DEBUGGER )
 		{
 		}
 	};
-	//���O���t�@�C���ɏo�͂���ꍇ�̐ݒ�I�u�W�F�N�g
+	//ログをファイルに出力する場合の設定オブジェクト
 	struct LogOutputModeOpt_File : public LogOutputModeOpt
 	{
-		WString FileName;	//�t�@�C����
-		bool IsAppend;		//true=�����̃t�@�C���ɒǋL���� false=�����̃t�@�C���̒��g�͏���
+		WString FileName;	//ファイル名
+		bool IsAppend;		//true=既存のファイルに追記する false=既存のファイルの中身は消す
 		LogOutputModeOpt_File() : LogOutputModeOpt( LogOutputMode::LOG_OUTPUT_FILE )
 		{
 			IsAppend = true;
 		}
 	};
-	//���O��Windows�̃C�x���g�ɏo�͂���ꍇ�̐ݒ�I�u�W�F�N�g
+	//ログをWindowsのイベントに出力する場合の設定オブジェクト
 	struct LogOutputModeOpt_EventLog : public LogOutputModeOpt
 	{
-		WString ServerName;	//�L�^��̃T�[�o���i�󕶎���ɂ���ƃ��[�J���ƌ��Ȃ��܂��j
-		WString SourceName;	//�C�x���g�̃\�[�X��
+		WString ServerName;	//記録先のサーバ名（空文字列にするとローカルと見なします）
+		WString SourceName;	//イベントのソース名
 
 		LogOutputModeOpt_EventLog() : LogOutputModeOpt( LogOutputMode::LOG_OUTPUT_EVENTLOG )
 		{
 		}
 	};
 
-	//���O���ɌĂяo���R�[���o�b�N
+	//ログ時に呼び出すコールバック
 	using LogCallback = void (*)( const LogEntry& entry );
 
-	//���O���ɃR�[���o�b�N����ꍇ�̐ݒ�I�u�W�F�N�g
+	//ログ時にコールバックする場合の設定オブジェクト
 	struct LogOutputModeOpt_Callback : public LogOutputModeOpt
 	{
 		LogCallback Callback;
@@ -156,7 +156,7 @@ public:
 			Callback = nullptr;
 		}
 	};
-	//���O���o�͂��Ȃ��ꍇ�̐ݒ�I�u�W�F�N�g
+	//ログを出力しない場合の設定オブジェクト
 	struct LogOutputModeOpt_None : public LogOutputModeOpt
 	{
 		LogOutputModeOpt_None() : LogOutputModeOpt( LogOutputMode::LOG_OUTPUT_NONE )
@@ -164,97 +164,97 @@ public:
 		}
 	};
 
-	//���O�o�͂̃��[�h��ύX����
-	// setting : �V�����ݒ�
-	// ret : �������^
+	//ログ出力のモードを変更する
+	// setting : 新しい設定
+	// ret : 成功時真
 	[[deprecated("Please use LogOutputModeOpt structure instead.")]]
 	bool ChangeLogOutputMode( LogOutputMode setting );
 
-	//���O�o�͂̃��[�h��ύX����
-	//������Ɍ��炸�A�C�ӂ̃^�C�~���O�ŕύX���邱�Ƃ��ł��܂�
+	//ログ出力のモードを変更する
+	//※初回に限らず、任意のタイミングで変更することができます
 	threadsafe bool ChangeLogOutputMode( const LogOutputModeOpt& setting );
 
-	//�G���[�𔭐����܂�
-	//file : �G���[�����������t�@�C����
-	//line : �G���[�����������s
-	//ec1 : �G���[�R�[�h(GetLastError�Ŏ擾������)
-	//ec2 : �G���[�R�[�h(���[�U�[��`)
-	//mes : ���[�U�[��`�̃��b�Z�[�W
-	//ret : �ǉ������G���[�̃��O�A��(���s�͂���܂���)
-	//�@�@�@Proxy��ݒ肵�Ă���ꍇ�̒��ӓ_�F�Ԃ���郍�O�A�Ԃ́A���̃C���X�^���X�ɑ΂���ԍ��ƂȂ�܂��BProxy��̔ԍ��ł͂���܂���B
+	//エラーを発生します
+	//file : エラーが発生したファイル名
+	//line : エラーが発生した行
+	//ec1 : エラーコード(GetLastErrorで取得した物)
+	//ec2 : エラーコード(ユーザー定義)
+	//mes : ユーザー定義のメッセージ
+	//ret : 追加したエラーのログ連番(失敗はありません)
+	//　　　Proxyを設定している場合の注意点：返されるログ連番は、このインスタンスに対する番号となります。Proxy先の番号ではありません。
 	threadsafe DWORD AddEntry( ErrorLevel level , const WString& file , DWORD line , DWORD ec1 , ULONG_PTR ec2 , const WString& mes1 , const WString& mes2 );
 
-	//�G���[�𔭐����܂�
-	//file : �G���[�����������t�@�C����
-	//line : �G���[�����������s
-	//ec1 : �G���[�R�[�h(GetLastError�Ŏ擾������)
-	//ec2 : �G���[�R�[�h(���[�U�[��`)
-	//mes : ���[�U�[��`�̃��b�Z�[�W
-	//ret : �ǉ������G���[�̃��O�A��(���s�͂���܂���)
-	//�@�@�@Proxy��ݒ肵�Ă���ꍇ�̒��ӓ_�F�Ԃ���郍�O�A�Ԃ́A���̃C���X�^���X�ɑ΂���ԍ��ƂȂ�܂��BProxy��̔ԍ��ł͂���܂���B
+	//エラーを発生します
+	//file : エラーが発生したファイル名
+	//line : エラーが発生した行
+	//ec1 : エラーコード(GetLastErrorで取得した物)
+	//ec2 : エラーコード(ユーザー定義)
+	//mes : ユーザー定義のメッセージ
+	//ret : 追加したエラーのログ連番(失敗はありません)
+	//　　　Proxyを設定している場合の注意点：返されるログ連番は、このインスタンスに対する番号となります。Proxy先の番号ではありません。
 	threadsafe DWORD AddEntry( ErrorLevel level , const WString& file , DWORD line , DWORD ec1 , ULONG_PTR ec2 , const WString& mes1 , const WStringDeque& mes2 );
 
-	//�G���[�𔭐����܂�
-	//file : �G���[�����������t�@�C����
-	//line : �G���[�����������s
-	//ec1 : �G���[�R�[�h(GetLastError�Ŏ擾������)
-	//ec2 : �G���[�R�[�h(���[�U�[��`)
-	//mes : ���[�U�[��`�̃��b�Z�[�W
-	//ret : �ǉ������G���[�̃��O�A��(���s�͂���܂���)
-	//�@�@�@Proxy��ݒ肵�Ă���ꍇ�̒��ӓ_�F�Ԃ���郍�O�A�Ԃ́A���̃C���X�^���X�ɑ΂���ԍ��ƂȂ�܂��BProxy��̔ԍ��ł͂���܂���B
+	//エラーを発生します
+	//file : エラーが発生したファイル名
+	//line : エラーが発生した行
+	//ec1 : エラーコード(GetLastErrorで取得した物)
+	//ec2 : エラーコード(ユーザー定義)
+	//mes : ユーザー定義のメッセージ
+	//ret : 追加したエラーのログ連番(失敗はありません)
+	//　　　Proxyを設定している場合の注意点：返されるログ連番は、このインスタンスに対する番号となります。Proxy先の番号ではありません。
 	threadsafe DWORD AddEntry( ErrorLevel level , const WString& file , DWORD line , DWORD ec1 , ULONG_PTR ec2 , const WString& mes1 , const WStringVector& mes2 );
 
-	//�G���[���O��ǉ����܂�
-	//toAppend : �ǋL���������O
-	//ret : �ǉ������G���[�̃��O�A��(���s�͂���܂���)
-	//�E���̕��@�Ń��O��ǉ������ꍇ�A�R���\�[�����ւ̏o�͂͂���܂���B
-	//�E���̕��@�Ń��O��ǉ������ꍇ�AProxy��ݒ肵�Ă��Ă��]������܂���B
+	//エラーログを追加します
+	//toAppend : 追記したいログ
+	//ret : 追加したエラーのログ連番(失敗はありません)
+	//・この方法でログを追加した場合、コンソール等への出力はありません。
+	//・この方法でログを追加した場合、Proxyを設定していても転送されません。
 	threadsafe DWORD AddEntry( const Log& toAppend );
 
-	//���݂̃��O�A�Ԃ̒l�𒲂ׂ�@
-	//�����Ƀ��O�̒ǉ����������ꍇ�Ɏg�p�����A�Ԃ̒l
+	//現在のログ連番の値を調べる　
+	//※次にログの追加があった場合に使用される連番の値
 	DWORD GetCurrentId( void )const;
 
-	//���O����������
-	//�w�肵��Id�ȍ~�ŁA���̃��\�b�h���Ăяo�����X���b�h���L�^�������O�̈ꗗ��Ԃ�
-	// Id : �����͈�(���w�肵��ID�ƈ�v���郍�O���܂݂܂�)
-	// file : �����͈�(���O���L�^�����t�@�C���̖��́B�󕶎���Ȃ�ΑS��)
-	// retLog : �擾�������O�̊i�[��
+	//ログを検索する
+	//指定したId以降で、このメソッドを呼び出したスレッドが記録したログの一覧を返す
+	// Id : 検索範囲(※指定したIDと一致するログも含みます)
+	// file : 検索範囲(ログを記録したファイルの名称。空文字列ならば全部)
+	// retLog : 取得したログの格納先
 	threadsafe void SearchLog( DWORD Id , Log& retLog , const WString& file = L"" )const;
 
-	//���O����������
-	//�w�肵��Id�ȍ~�ŁA���̃��\�b�h���Ăяo�����X���b�h���L�^�������O�̒��ɁA�w�肵��code�̃��O�����邩�Ȃ�����Ԃ��܂�
-	// Id : �����͈�(���w�肵��ID�ƈ�v���郍�O���܂݂܂�)
-	// code : �L���𔻒肷��R�[�h
-	// file : �����͈�(���O���L�^�����t�@�C���̖��́B�󕶎���Ȃ�ΑS��)
-	// retLog : �擾�������O�̊i�[��
+	//ログを検索する
+	//指定したId以降で、このメソッドを呼び出したスレッドが記録したログの中に、指定したcodeのログがあるかないかを返します
+	// Id : 検索範囲(※指定したIDと一致するログも含みます)
+	// code : 有無を判定するコード
+	// file : 検索範囲(ログを記録したファイルの名称。空文字列ならば全部)
+	// retLog : 取得したログの格納先
 	threadsafe bool SearchLog( DWORD Id , ULONG_PTR code , const WString& file = L"" )const;
 
-	//���O���擾����
-	//�w�肵��Id�ȍ~�̃��O���R�s�[����(�L�^�����X���b�h�Ɋ֌W�Ȃ��S�Ď擾���܂�)
-	// Id : �����͈�(���w�肵��ID�ƈ�v���郍�O���܂݂܂�)
-	// retLog : �R�s�[��
-	// file : �����͈�(���O���L�^�����t�@�C���̖��́B�󕶎���Ȃ�ΑS��)
+	//ログを取得する
+	//指定したId以降のログをコピーする(記録したスレッドに関係なく全て取得します)
+	// Id : 検索範囲(※指定したIDと一致するログも含みます)
+	// retLog : コピー先
+	// file : 検索範囲(ログを記録したファイルの名称。空文字列ならば全部)
 	threadsafe void GetLog( DWORD Id , Log& retLog , const WString& file = L"" )const;
 
-	//���O���擾����
-	//�w�肵��Id�ȍ~�̃��O���R�s�[����(�L�^�����X���b�h�Ɋ֌W�Ȃ��S�Ď擾���܂�)
-	// Id : �����͈�(���w�肵��ID�ƈ�v���郍�O���܂݂܂�)
-	// retLog : �R�s�[��
-	// file : �����͈�(���O���L�^�����t�@�C���̖��́B�󕶎���Ȃ�ΑS��)
+	//ログを取得する
+	//指定したId以降のログをコピーする(記録したスレッドに関係なく全て取得します)
+	// Id : 検索範囲(※指定したIDと一致するログも含みます)
+	// retLog : コピー先
+	// file : 検索範囲(ログを記録したファイルの名称。空文字列ならば全部)
 	threadsafe void GetLog( DWORD Id_from , DWORD Id_to , Log& retLog , const WString& file = L"" )const;
 
-	//�G���[�̔����񐔂��擾����
+	//エラーの発生回数を取得する
 	DWORD GetErrorCount( ErrorLevel level )const;
 
-	//���O����������
-	//�������񐔂���������
+	//ログを消去する
+	//※発生回数も消去する
 	void Clear( void );
 
-	//���O�̋L�^�𖳌�������
+	//ログの記録を無効化する
 	void Disable( void );
 
-	//���O�̋L�^��L��������
+	//ログの記録を有効化する
 	void Enable( void );
 
 private:
@@ -263,78 +263,78 @@ private:
 
 protected:
 
-	//�R���\�[���Ƀ��O���o�͂���
-	// entry : �o�͂��郍�O
+	//コンソールにログを出力する
+	// entry : 出力するログ
 	void OutputLogToConsole( const LogEntry& entry );
 
-	//�f�o�b�K�Ƀ��O���o�͂���
-	// entry : �o�͂��郍�O
+	//デバッガにログを出力する
+	// entry : 出力するログ
 	void OutputLogToDebugger( const LogEntry& entry );
 
-	//�t�@�C���Ƀ��O���o�͂���
-	// entry : �o�͂��郍�O
+	//ファイルにログを出力する
+	// entry : 出力するログ
 	void OutputLogToFile( const LogEntry& entry );
 
-	//�G���[�𔭐����܂�
-	//public��AddEntry�ɁA����C���X�^���X�̃|�C���^��t�^�������ɂȂ�܂��BProxy�����邮����Ȃ��悤�ɂ��邽�߂̂��̂ł��B
-	//origin : Proxy����̌Ăяo���ł͂Ȃ��ꍇ(��ԍŏ��̌Ăяo���̏ꍇ)�́Anullptr
-	//         Proxy����̌Ăяo���ł���ꍇ�́A��ԍŏ��ɌĂяo�����I�u�W�F�N�g�̃|�C���^
-	//ret : origin��nullptr�̏ꍇ�A�ǉ������G���[�̃��O�A��
-	//      origin��nullptr�ł͂Ȃ��ꍇ�A0
+	//エラーを発生します
+	//publicのAddEntryに、初回インスタンスのポインタを付与した物になります。Proxyがぐるぐる回らないようにするためのものです。
+	//origin : Proxyからの呼び出しではない場合(一番最初の呼び出しの場合)は、nullptr
+	//         Proxyからの呼び出しである場合は、一番最初に呼び出したオブジェクトのポインタ
+	//ret : originがnullptrの場合、追加したエラーのログ連番
+	//      originがnullptrではない場合、0
 	threadsafe DWORD AddEntry( ErrorLevel level , const WString& file , DWORD line , DWORD ec1 , ULONG_PTR ec2 , const WString& mes1 , const WString& mes2 , const mErrorLogger* origin );
 
-	//�G���[�𔭐����܂�
-	//public��AddEntry�ɁA����C���X�^���X�̃|�C���^��t�^�������ɂȂ�܂��BProxy�����邮����Ȃ��悤�ɂ��邽�߂̂��̂ł��B
-	//origin : Proxy����̌Ăяo���ł͂Ȃ��ꍇ(��ԍŏ��̌Ăяo���̏ꍇ)�́Anullptr
-	//         Proxy����̌Ăяo���ł���ꍇ�́A��ԍŏ��ɌĂяo�����I�u�W�F�N�g�̃|�C���^
-	//ret : origin��nullptr�̏ꍇ�A�ǉ������G���[�̃��O�A��
-	//      origin��nullptr�ł͂Ȃ��ꍇ�A0
+	//エラーを発生します
+	//publicのAddEntryに、初回インスタンスのポインタを付与した物になります。Proxyがぐるぐる回らないようにするためのものです。
+	//origin : Proxyからの呼び出しではない場合(一番最初の呼び出しの場合)は、nullptr
+	//         Proxyからの呼び出しである場合は、一番最初に呼び出したオブジェクトのポインタ
+	//ret : originがnullptrの場合、追加したエラーのログ連番
+	//      originがnullptrではない場合、0
 	threadsafe DWORD AddEntry( ErrorLevel level , const WString& file , DWORD line , DWORD ec1 , ULONG_PTR ec2 , const WString& mes1 , const WStringDeque& mes2 , const mErrorLogger* origin );
 
-	//�G���[�𔭐����܂�
-	//public��AddEntry�ɁA����C���X�^���X�̃|�C���^��t�^�������ɂȂ�܂��BProxy�����邮����Ȃ��悤�ɂ��邽�߂̂��̂ł��B
-	//origin : Proxy����̌Ăяo���ł͂Ȃ��ꍇ(��ԍŏ��̌Ăяo���̏ꍇ)�́Anullptr
-	//         Proxy����̌Ăяo���ł���ꍇ�́A��ԍŏ��ɌĂяo�����I�u�W�F�N�g�̃|�C���^
-	//ret : origin��nullptr�̏ꍇ�A�ǉ������G���[�̃��O�A��
-	//      origin��nullptr�ł͂Ȃ��ꍇ�A0
+	//エラーを発生します
+	//publicのAddEntryに、初回インスタンスのポインタを付与した物になります。Proxyがぐるぐる回らないようにするためのものです。
+	//origin : Proxyからの呼び出しではない場合(一番最初の呼び出しの場合)は、nullptr
+	//         Proxyからの呼び出しである場合は、一番最初に呼び出したオブジェクトのポインタ
+	//ret : originがnullptrの場合、追加したエラーのログ連番
+	//      originがnullptrではない場合、0
 	threadsafe DWORD AddEntry( ErrorLevel level , const WString& file , DWORD line , DWORD ec1 , ULONG_PTR ec2 , const WString& mes1 , const WStringVector& mes2 , const mErrorLogger* origin );
 
 protected:
 
-	DWORD MyErrorCount[ 4 ];	//�G���[������
+	DWORD MyErrorCount[ 4 ];	//エラー発生回数
 
-	Log MyLogError;		//�G���[���O
+	Log MyLogError;		//エラーログ
 
-	//�o�͐�n���h��(�t�@�C���o��/�C�x���g���O�p)
+	//出力先ハンドル(ファイル出力/イベントログ用)
 	HANDLE MyHandle;
 
-	//�R�[���o�b�N�̏ꍇ�̃R�[���o�b�N�֐�
+	//コールバックの場合のコールバック関数
 	LogCallback MyCallback;
 
-	//�v���N�V��
+	//プロクシ先
 	mErrorLogger* MyProxy;
 
-	//���O�̋L�^���s����
+	//ログの記録を行うか
 	bool MyIsEnabled;
 
-	//�������L�^���s����
+	//メモリ記録を行うか
 	bool MyIsNoTrace;
 
-	//���݂̘A��
+	//現在の連番
 	DWORD MyCurrentId;
 
-	//�G���[���O�̍ő�T�C�Y
+	//エラーログの最大サイズ
 	DWORD MyMaxErrorSize;
 
-	//�����A�N�Z�X�΍��p�N���e�B�J���Z�N�V����
+	//同時アクセス対策用クリティカルセクション
 	mutable mCriticalSectionContainer MyCritical;
 
-	//���O�R���\�[���o�̓��[�h
+	//ログコンソール出力モード
 	LogOutputMode MyLogOutputMode;
 
 };
 
-//�O���[�o���I�u�W�F�N�g
+//グローバルオブジェクト
 #ifndef MERRORLOGGER_CPP_COMPILING
 extern mErrorLogger g_ErrorLogger;
 #else
@@ -343,12 +343,12 @@ extern mErrorLogger g_ErrorLogger;
 mErrorLogger g_ErrorLogger;
 #endif
 
-//RaiseError��mErrorLogger���|�C���^�œn����Ă��Q�Ƃœn����Ă��ǂ��悤�ɂ��邽�߂̃v���N�V�i�|�C���^Ver�j
+//RaiseErrorにmErrorLoggerがポインタで渡されても参照で渡されても良いようにするためのプロクシ（ポインタVer）
 inline DWORD RaiseErrorInternal( mErrorLogger* obj , mErrorLogger::ErrorLevel level , const WString& file , DWORD line , DWORD ec1 , ULONG_PTR ec2 , const WString& mes1 , DWORD_PTR val )
 {
 	if( obj == nullptr )
 	{
-		g_ErrorLogger.AddEntry( mErrorLogger::ErrorLevel::LEVEL_ASSERT , file , line , 0 , 0 , L"�G���[�o�^��I�u�W�F�N�g��NULL�ł�" , L"" );
+		g_ErrorLogger.AddEntry( mErrorLogger::ErrorLevel::LEVEL_ASSERT , file , line , 0 , 0 , L"エラー登録先オブジェクトがNULLです" , L"" );
 		obj = &g_ErrorLogger;
 	}
 
@@ -370,7 +370,7 @@ inline DWORD RaiseErrorInternal( mErrorLogger* obj , mErrorLogger::ErrorLevel le
 {
 	if( obj == nullptr )
 	{
-		g_ErrorLogger.AddEntry( mErrorLogger::ErrorLevel::LEVEL_ASSERT , L"" , 0 , 0 , 0 , L"�G���[�o�^��I�u�W�F�N�g��NULL�ł�" , L"" );
+		g_ErrorLogger.AddEntry( mErrorLogger::ErrorLevel::LEVEL_ASSERT , L"" , 0 , 0 , 0 , L"エラー登録先オブジェクトがNULLです" , L"" );
 		obj = &g_ErrorLogger;
 	}
 	return obj->AddEntry( level , file , line , ec1 , ec2 , mes1 , mes2 );
@@ -384,7 +384,7 @@ inline DWORD RaiseErrorInternal( mErrorLogger* obj , mErrorLogger::ErrorLevel le
 DWORD RaiseErrorInternalF( mErrorLogger* obj , mErrorLogger::ErrorLevel level , const WString& file , DWORD line , DWORD ec1 , ULONG_PTR ec2 , const AString& mes1 , const AString mes2 , ... );
 DWORD RaiseErrorInternalF( mErrorLogger* obj , mErrorLogger::ErrorLevel level , const WString& file , DWORD line , DWORD ec1 , ULONG_PTR ec2 , const WString& mes1 , const WString mes2 , ... );
 
-//RaiseError��mErrorLogger���|�C���^�œn����Ă��Q�Ƃœn����Ă��ǂ��悤�ɂ��邽�߂̃v���N�V�i�Q��Ver�j
+//RaiseErrorにmErrorLoggerがポインタで渡されても参照で渡されても良いようにするためのプロクシ（参照Ver）
 inline DWORD RaiseErrorInternal( mErrorLogger& obj , mErrorLogger::ErrorLevel level , const WString& file , DWORD line , DWORD ec1 , ULONG_PTR ec2 , const WString& mes1 , DWORD_PTR val )
 {
 	WString mes2;
@@ -414,11 +414,11 @@ inline DWORD RaiseErrorInternal( mErrorLogger& obj , mErrorLogger::ErrorLevel le
 DWORD RaiseErrorInternalF( mErrorLogger& obj , mErrorLogger::ErrorLevel level , const WString& file , DWORD line , DWORD ec1 , ULONG_PTR ec2 , const AString& mes1 , const AString mes2 , ... );
 DWORD RaiseErrorInternalF( mErrorLogger& obj , mErrorLogger::ErrorLevel level , const WString& file , DWORD line , DWORD ec1 , ULONG_PTR ec2 , const WString& mes1 , const WString mes2 , ... );
 
-//���샍�O
-//obj : �G���[���̓o�^��
-//error_code : �G���[�R�[�h(���[�U�[��`)
-//mes : ���[�U�[��`�̃��b�Z�[�W
-//�E���M���O�͐��퓮��ł��L�^���Ă��������C�x���g�i�ڑ������Ƃ��j�ɑ΂��Đ������܂�
+//動作ログ
+//obj : エラー情報の登録先
+//error_code : エラーコード(ユーザー定義)
+//mes : ユーザー定義のメッセージ
+//・ロギングは正常動作でも記録しておきたいイベント（接続完了とか）に対して生成します
 #define CreateLogEntry(obj,error_code,...)			\
 {													\
 	DWORD tmp_error_code = GetLastError();			\
@@ -433,14 +433,14 @@ DWORD RaiseErrorInternalF( mErrorLogger& obj , mErrorLogger::ErrorLevel level , 
 }													\
 /*CreateLogEntry*/
 
-//���샍�O
-//obj : �G���[���̓o�^��
-//error_code : �G���[�R�[�h(���[�U�[��`)
-// ...(�ϒ�����)�͈ȉ��̒ʂ�ł�
-//  1�v�f�� ���b�Z�[�W(�����w�蕶���g�p�s��)
-//  2�v�f�� �����w�蕶����
-//  3�v�f�ڈȍ~ �����w�蕶����ɖ��ߍ��ޒl
-//�E���M���O�͐��퓮��ł��L�^���Ă��������C�x���g�i�ڑ������Ƃ��j�ɑ΂��Đ������܂�
+//動作ログ
+//obj : エラー情報の登録先
+//error_code : エラーコード(ユーザー定義)
+// ...(可変長引数)は以下の通りです
+//  1要素目 メッセージ(書式指定文字使用不可)
+//  2要素目 書式指定文字列
+//  3要素目以降 書式指定文字列に埋め込む値
+//・ロギングは正常動作でも記録しておきたいイベント（接続完了とか）に対して生成します
 #define CreateLogEntryF(obj,error_code,...)			\
 {													\
 	DWORD tmp_error_code = GetLastError();			\
@@ -455,11 +455,11 @@ DWORD RaiseErrorInternalF( mErrorLogger& obj , mErrorLogger::ErrorLevel level , 
 }													\
 /*CreateLogEntryF*/
 
-//�G���[����
-//obj : �G���[���̓o�^��
-//error_code : �G���[�R�[�h(���[�U�[��`)
-//mes : ���[�U�[��`�̃��b�Z�[�W
-//�E�G���[�͒ʏ푀��ŋN���肤��G���[�i�t�@�C�����Ȃ������Ƃ��j�ɑ΂��Đ������܂��B
+//エラー発生
+//obj : エラー情報の登録先
+//error_code : エラーコード(ユーザー定義)
+//mes : ユーザー定義のメッセージ
+//・エラーは通常操作で起こりうるエラー（ファイルがなかったとか）に対して生成します。
 #define RaiseError(obj,error_code,...)				\
 {													\
 	DWORD tmp_error_code = GetLastError();			\
@@ -474,14 +474,14 @@ DWORD RaiseErrorInternalF( mErrorLogger& obj , mErrorLogger::ErrorLevel level , 
 }													\
 /*RaiseError*/
 
-//�G���[����
-//obj : �G���[���̓o�^��
-//error_code : �G���[�R�[�h(���[�U�[��`)
-// ...(�ϒ�����)�͈ȉ��̒ʂ�ł�
-//  1�v�f�� ���b�Z�[�W(�����w�蕶���g�p�s��)
-//  2�v�f�� �����w�蕶����
-//  3�v�f�ڈȍ~ �����w�蕶����ɖ��ߍ��ޒl
-//�E�G���[�͒ʏ푀��ŋN���肤��G���[�i�t�@�C�����Ȃ������Ƃ��j�ɑ΂��Đ������܂��B
+//エラー発生
+//obj : エラー情報の登録先
+//error_code : エラーコード(ユーザー定義)
+// ...(可変長引数)は以下の通りです
+//  1要素目 メッセージ(書式指定文字使用不可)
+//  2要素目 書式指定文字列
+//  3要素目以降 書式指定文字列に埋め込む値
+//・エラーは通常操作で起こりうるエラー（ファイルがなかったとか）に対して生成します。
 #define RaiseErrorF(obj,error_code,...)				\
 {													\
 	DWORD tmp_error_code = GetLastError();			\
@@ -497,11 +497,11 @@ DWORD RaiseErrorInternalF( mErrorLogger& obj , mErrorLogger::ErrorLevel level , 
 /*RaiseErrorF*/
 
 
-//�A�T�[�g����
-//obj : �A�T�[�g���̓o�^��
-//error_code : �G���[�R�[�h(���[�U�[��`)
-//mes : ���[�U�[��`�̃��b�Z�[�W
-//�E�A�T�[�g�͒ʏ푀��ł͋N���肦�Ȃ��͂��̃G���[�i�o�O�Z���̂��́j�ɑ΂��Đ������܂��B
+//アサート発生
+//obj : アサート情報の登録先
+//error_code : エラーコード(ユーザー定義)
+//mes : ユーザー定義のメッセージ
+//・アサートは通常操作では起こりえないはずのエラー（バグ濃厚のもの）に対して生成します。
 #define RaiseAssert(obj,error_code,...)				\
 {													\
 	DWORD tmp_error_code = GetLastError();			\
@@ -517,14 +517,14 @@ DWORD RaiseErrorInternalF( mErrorLogger& obj , mErrorLogger::ErrorLevel level , 
 /*RaiseAssert*/
 
 
-//�A�T�[�g����
-//obj : �A�T�[�g���̓o�^��
-//error_code : �G���[�R�[�h(���[�U�[��`)
-// ...(�ϒ�����)�͈ȉ��̒ʂ�ł�
-//  1�v�f�� ���b�Z�[�W(�����w�蕶���g�p�s��)
-//  2�v�f�� �����w�蕶����
-//  3�v�f�ڈȍ~ �����w�蕶����ɖ��ߍ��ޒl
-//�E�A�T�[�g�͒ʏ푀��ł͋N���肦�Ȃ��͂��̃G���[�i�o�O�Z���̂��́j�ɑ΂��Đ������܂��B
+//アサート発生
+//obj : アサート情報の登録先
+//error_code : エラーコード(ユーザー定義)
+// ...(可変長引数)は以下の通りです
+//  1要素目 メッセージ(書式指定文字使用不可)
+//  2要素目 書式指定文字列
+//  3要素目以降 書式指定文字列に埋め込む値
+//・アサートは通常操作では起こりえないはずのエラー（バグ濃厚のもの）に対して生成します。
 #define RaiseAssertF(obj,error_code,...)			\
 {													\
 	DWORD tmp_error_code = GetLastError();			\

@@ -1,11 +1,11 @@
-//----------------------------------------------------------------------------
-// �v�����^���
+﻿//----------------------------------------------------------------------------
+// プリンタ情報
 // Copyright (C) 2019- Crea Inc. All rights reserved.
 // This program is released under the MIT License. 
 // see http://opensource.org/licenses/mit-license.php
-// ���쌠�\���⃉�C�Z���X�̉��ς͋֎~����Ă��܂��B
-// ���̃\�[�X�R�[�h�Ɋւ��āA��L���C�Z���X�ȊO�̌_�񓙂͈�ؑ��݂��܂���B
-// (���炩�̌_�񂪂���ꍇ�ł��A�{�\�[�X�R�[�h�͂��̑ΏۊO�ƂȂ�܂�)
+// 著作権表示やライセンスの改変は禁止されています。
+// このソースコードに関して、上記ライセンス以外の契約等は一切存在しません。
+// (何らかの契約がある場合でも、本ソースコードはその対象外となります)
 //----------------------------------------------------------------------------
 
 #ifndef MPRINTERINFO_H_INCLUDED
@@ -17,54 +17,54 @@
 
 namespace mPrinterInfo
 {
-	//�V�X�e���ɑ��݂���v�����^�̈ꗗ���
+	//システムに存在するプリンタの一覧情報
 	struct PrinterInfoEntry
 	{
-		//�v�����^�̖��O
-		//�v�����^�̃n���h�����J���ȂǁA�I������Ƃ��͂��̕�������g�p
+		//プリンタの名前
+		//プリンタのハンドルを開くなど、選択するときはこの文字列を使用
 		WString Name;
 
-		//�v�����^�̐���
+		//プリンタの説明
 		WString Description;
 
-		//�f�t�H���g�v�����^�Ȃ�true
+		//デフォルトプリンタならtrue
 		bool IsDefault;
 	};
 
-	//�V�X�e���ɑ��݂���v�����^�̈ꗗ���
+	//システムに存在するプリンタの一覧情報
 	using PrinterInfo = std::vector< PrinterInfoEntry >;
 
-	//�p���̎��ID
+	//用紙の種類ID
 	using PaperId = DWORD;
 
-	//�p���̏��
+	//用紙の情報
 	struct PaperInfoEntry
 	{
-		//�p���̖��O�i�ǂ̂��́j
+		//用紙の名前（可読のもの）
 		WString FriendlyName;
-		//�p���h�c
-		//�E�v�����^�̗p���ݒ�ł��̒l���g��
-		//�����Ԃ�wingdi.h�Œ�`����Ă���"DMPAPER_"�Ŏn�܂�}�N���̒l
+		//用紙ＩＤ
+		//・プリンタの用紙設定でこの値を使う
+		//※実態はwingdi.hで定義されている"DMPAPER_"で始まるマクロの値
 		PaperId Id;
-		//�p���̕�(0.1�~���P�� / 1cm = 100)
+		//用紙の幅(0.1ミリ単位 / 1cm = 100)
 		DWORD Width;
-		//�p���̍���(0.1�~���P�� / 1cm = 100)
+		//用紙の高さ(0.1ミリ単位 / 1cm = 100)
 		DWORD Height;
 	};
 
-	//�p���̈ꗗ���
+	//用紙の一覧情報
 	using PaperInfo = std::vector< PaperInfoEntry >;
 
-	//�v�����^�̏��
+	//プリンタの情報
 	struct PrinterProperty
 	{
-		//�J���[�v�����^�ł���ΐ^
+		//カラープリンタであれば真
 		bool IsColor;
-		//���ʃv�����^�[�ł���ΐ^
+		//両面プリンターであれば真
 		bool IsDuplex;
-		//�𑜓x
+		//解像度
 		DWORD Dpi;
-		//��t�\�ȗp���̎��
+		//受付可能な用紙の種類
 		PaperInfo AcceptablePaper;
 	};
 };

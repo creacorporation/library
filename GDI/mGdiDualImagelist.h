@@ -1,13 +1,13 @@
-//----------------------------------------------------------------------------
-// ƒEƒCƒ“ƒhƒEŠÇ—i‚QƒCƒ[ƒW‚ÌƒCƒ[ƒWƒŠƒXƒgj
+ï»¿//----------------------------------------------------------------------------
+// ã‚¦ã‚¤ãƒ³ãƒ‰ã‚¦ç®¡ç†ï¼ˆï¼’ã‚¤ãƒ¡ãƒ¼ã‚¸ã®ã‚¤ãƒ¡ãƒ¼ã‚¸ãƒªã‚¹ãƒˆï¼‰
 // Copyright (C) 2016 Fingerling. All rights reserved. 
 // This program is released under the MIT License. 
 // see http://opensource.org/licenses/mit-license.php
 //----------------------------------------------------------------------------
 
 /*
-œ—p“r
-ƒCƒ[ƒWƒŠƒXƒg‚ð‚Q‚ÂŠÇ—‚µ‚Ü‚·B
+â—ç”¨é€”
+ã‚¤ãƒ¡ãƒ¼ã‚¸ãƒªã‚¹ãƒˆã‚’ï¼’ã¤ç®¡ç†ã—ã¾ã™ã€‚
 */
 
 #ifndef MGDIDUALIMAGELIST_H_INCLUDED
@@ -21,26 +21,26 @@ class mGdiDualImagelist : public mGdiHandle
 {
 public:
 
-	//ƒIƒvƒVƒ‡ƒ“\‘¢‘Ì
+	//ã‚ªãƒ—ã‚·ãƒ§ãƒ³æ§‹é€ ä½“
 	typedef mGdiImagelist::Option Option;
 
-	//ƒCƒ[ƒWƒŠƒXƒg‚ÉƒCƒ[ƒW‚Ì’Ç‰Á‚ð‚·‚é
-	//id : ’Ç‰Á‚·‚éƒCƒ[ƒW‚É•t—^‚·‚éID(“¯ˆê‚ÌƒCƒ[ƒWƒŠƒXƒg“à‚Åd•¡•s‰Â)
-	//img1,img2 : ’Ç‰Á‚·‚éƒCƒ[ƒW
-	//mask1,mask2 : ƒCƒ[ƒW‚Ì“§‰ßƒ}ƒXƒN(nullptr‚Ü‚½‚ÍÈ—ª‚Ìê‡‚Íƒ}ƒXƒN‚È‚µ)
-	//ret : ¬Œ÷Žž^
+	//ã‚¤ãƒ¡ãƒ¼ã‚¸ãƒªã‚¹ãƒˆã«ã‚¤ãƒ¡ãƒ¼ã‚¸ã®è¿½åŠ ã‚’ã™ã‚‹
+	//id : è¿½åŠ ã™ã‚‹ã‚¤ãƒ¡ãƒ¼ã‚¸ã«ä»˜ä¸Žã™ã‚‹ID(åŒä¸€ã®ã‚¤ãƒ¡ãƒ¼ã‚¸ãƒªã‚¹ãƒˆå†…ã§é‡è¤‡ä¸å¯)
+	//img1,img2 : è¿½åŠ ã™ã‚‹ã‚¤ãƒ¡ãƒ¼ã‚¸
+	//mask1,mask2 : ã‚¤ãƒ¡ãƒ¼ã‚¸ã®é€éŽãƒžã‚¹ã‚¯(nullptrã¾ãŸã¯çœç•¥ã®å ´åˆã¯ãƒžã‚¹ã‚¯ãªã—)
+	//ret : æˆåŠŸæ™‚çœŸ
 	bool AddImage( const WString& id ,
 		const mGdiBitmap& img1 ,
 		const mGdiBitmap& img2 , 
 		const mGdiBitmap* mask1 = nullptr ,
 		const mGdiBitmap* mask2 = nullptr );
 
-	//ƒCƒ[ƒWƒŠƒXƒg‚ÉƒCƒ[ƒW‚Ì’Ç‰Á‚ð‚·‚é(mGdiResource‚©‚çƒCƒ[ƒW‚ð’Šo‚·‚éVer)
-	//res : ƒCƒ[ƒW’ŠoŒ³
-	//id : ’Ç‰Á‚·‚éƒCƒ[ƒW‚É•t—^‚·‚éID(ƒCƒ[ƒWƒŠƒXƒg‚É“o˜^‚·‚é‚Æ‚«‚ÌID)
-	//img1,img2 : ’Ç‰Á‚·‚éƒCƒ[ƒW‚ÌID(mGdiResource‚©‚ç’Šo‚·‚é‚Æ‚«‚ÌID)
-	//mask1,mask2 : ƒCƒ[ƒW‚Ì“§‰ßƒ}ƒXƒN‚ÌID(mGdiResource‚©‚ç’Šo‚·‚é‚Æ‚«‚ÌIDB‹ó•¶Žš—ñ‚Ìê‡‚Íƒ}ƒXƒN‚È‚µ)
-	//ret : ¬Œ÷Žž^
+	//ã‚¤ãƒ¡ãƒ¼ã‚¸ãƒªã‚¹ãƒˆã«ã‚¤ãƒ¡ãƒ¼ã‚¸ã®è¿½åŠ ã‚’ã™ã‚‹(mGdiResourceã‹ã‚‰ã‚¤ãƒ¡ãƒ¼ã‚¸ã‚’æŠ½å‡ºã™ã‚‹Ver)
+	//res : ã‚¤ãƒ¡ãƒ¼ã‚¸æŠ½å‡ºå…ƒ
+	//id : è¿½åŠ ã™ã‚‹ã‚¤ãƒ¡ãƒ¼ã‚¸ã«ä»˜ä¸Žã™ã‚‹ID(ã‚¤ãƒ¡ãƒ¼ã‚¸ãƒªã‚¹ãƒˆã«ç™»éŒ²ã™ã‚‹ã¨ãã®ID)
+	//img1,img2 : è¿½åŠ ã™ã‚‹ã‚¤ãƒ¡ãƒ¼ã‚¸ã®ID(mGdiResourceã‹ã‚‰æŠ½å‡ºã™ã‚‹ã¨ãã®ID)
+	//mask1,mask2 : ã‚¤ãƒ¡ãƒ¼ã‚¸ã®é€éŽãƒžã‚¹ã‚¯ã®ID(mGdiResourceã‹ã‚‰æŠ½å‡ºã™ã‚‹ã¨ãã®IDã€‚ç©ºæ–‡å­—åˆ—ã®å ´åˆã¯ãƒžã‚¹ã‚¯ãªã—)
+	//ret : æˆåŠŸæ™‚çœŸ
 	bool AddImageBitmap( const mGdiResource& res , 
 		const WString& id ,
 		const WString& img1 ,
@@ -48,23 +48,23 @@ public:
 		const WString& mask1 = L"" ,
 		const WString& mask2 = L"" );
 
-	//ƒCƒ[ƒWƒŠƒXƒg‚ÉƒCƒ[ƒW‚Ì’Ç‰Á‚ð‚·‚é
-	//id : ’Ç‰Á‚·‚éƒCƒ[ƒW‚É•t—^‚·‚éID(“¯ˆê‚ÌƒCƒ[ƒWƒŠƒXƒg“à‚Åd•¡•s‰Â)
-	//img1,img2 : ’Ç‰Á‚·‚éƒCƒ[ƒW
-	//mask1,img2 : ƒCƒ[ƒW‚Ì“§‰ßƒ}ƒXƒN(F‚ðŽw’è) ¦È—ª‚Å‚«‚Ü‚¹‚ñ
-	//ret : ¬Œ÷Žž^
+	//ã‚¤ãƒ¡ãƒ¼ã‚¸ãƒªã‚¹ãƒˆã«ã‚¤ãƒ¡ãƒ¼ã‚¸ã®è¿½åŠ ã‚’ã™ã‚‹
+	//id : è¿½åŠ ã™ã‚‹ã‚¤ãƒ¡ãƒ¼ã‚¸ã«ä»˜ä¸Žã™ã‚‹ID(åŒä¸€ã®ã‚¤ãƒ¡ãƒ¼ã‚¸ãƒªã‚¹ãƒˆå†…ã§é‡è¤‡ä¸å¯)
+	//img1,img2 : è¿½åŠ ã™ã‚‹ã‚¤ãƒ¡ãƒ¼ã‚¸
+	//mask1,img2 : ã‚¤ãƒ¡ãƒ¼ã‚¸ã®é€éŽãƒžã‚¹ã‚¯(è‰²ã‚’æŒ‡å®š) â€»çœç•¥ã§ãã¾ã›ã‚“
+	//ret : æˆåŠŸæ™‚çœŸ
 	bool AddImage( const WString& id ,
 		const mGdiBitmap& img1 ,
 		const mGdiBitmap& img2 ,
 		COLORREF mask1 ,
 		COLORREF mask2 );
 
-	//ƒCƒ[ƒWƒŠƒXƒg‚ÉƒCƒ[ƒW‚Ì’Ç‰Á‚ð‚·‚é(mGdiResource‚©‚çƒCƒ[ƒW‚ð’Šo‚·‚éVer)
-	//res : ƒCƒ[ƒW’ŠoŒ³
-	//id : ’Ç‰Á‚·‚éƒCƒ[ƒW‚É•t—^‚·‚éID(ƒCƒ[ƒWƒŠƒXƒg‚É“o˜^‚·‚é‚Æ‚«‚ÌID)
-	//img1,img2 : ’Ç‰Á‚·‚éƒCƒ[ƒW‚ÌID(mGdiResource‚©‚ç’Šo‚·‚é‚Æ‚«‚ÌID)
-	//mask1,img2 : ƒCƒ[ƒW‚Ì“§‰ßƒ}ƒXƒN(F‚ðŽw’è) ¦È—ª‚Å‚«‚Ü‚¹‚ñ
-	//ret : ¬Œ÷Žž^
+	//ã‚¤ãƒ¡ãƒ¼ã‚¸ãƒªã‚¹ãƒˆã«ã‚¤ãƒ¡ãƒ¼ã‚¸ã®è¿½åŠ ã‚’ã™ã‚‹(mGdiResourceã‹ã‚‰ã‚¤ãƒ¡ãƒ¼ã‚¸ã‚’æŠ½å‡ºã™ã‚‹Ver)
+	//res : ã‚¤ãƒ¡ãƒ¼ã‚¸æŠ½å‡ºå…ƒ
+	//id : è¿½åŠ ã™ã‚‹ã‚¤ãƒ¡ãƒ¼ã‚¸ã«ä»˜ä¸Žã™ã‚‹ID(ã‚¤ãƒ¡ãƒ¼ã‚¸ãƒªã‚¹ãƒˆã«ç™»éŒ²ã™ã‚‹ã¨ãã®ID)
+	//img1,img2 : è¿½åŠ ã™ã‚‹ã‚¤ãƒ¡ãƒ¼ã‚¸ã®ID(mGdiResourceã‹ã‚‰æŠ½å‡ºã™ã‚‹ã¨ãã®ID)
+	//mask1,img2 : ã‚¤ãƒ¡ãƒ¼ã‚¸ã®é€éŽãƒžã‚¹ã‚¯(è‰²ã‚’æŒ‡å®š) â€»çœç•¥ã§ãã¾ã›ã‚“
+	//ret : æˆåŠŸæ™‚çœŸ
 	bool AddImageBitmap( const mGdiResource& res , 
 		const WString& id ,
 		const WString& img1 ,
@@ -72,38 +72,38 @@ public:
 		COLORREF mask1 ,
 		COLORREF mask2 );
 
-	//ƒCƒ[ƒWƒŠƒXƒg‚ÉƒCƒ[ƒW‚Ì’Ç‰Á‚ð‚·‚é
-	//id : ’Ç‰Á‚·‚éƒCƒ[ƒW‚É•t—^‚·‚éID(“¯ˆê‚ÌƒCƒ[ƒWƒŠƒXƒg“à‚Åd•¡•s‰Â)
-	//img1,img2 : ’Ç‰Á‚·‚éƒCƒ[ƒW
-	//ret : ¬Œ÷Žž^
+	//ã‚¤ãƒ¡ãƒ¼ã‚¸ãƒªã‚¹ãƒˆã«ã‚¤ãƒ¡ãƒ¼ã‚¸ã®è¿½åŠ ã‚’ã™ã‚‹
+	//id : è¿½åŠ ã™ã‚‹ã‚¤ãƒ¡ãƒ¼ã‚¸ã«ä»˜ä¸Žã™ã‚‹ID(åŒä¸€ã®ã‚¤ãƒ¡ãƒ¼ã‚¸ãƒªã‚¹ãƒˆå†…ã§é‡è¤‡ä¸å¯)
+	//img1,img2 : è¿½åŠ ã™ã‚‹ã‚¤ãƒ¡ãƒ¼ã‚¸
+	//ret : æˆåŠŸæ™‚çœŸ
 	bool AddImage( const WString& id , 
 		const mGdiIcon& img1 ,
 		const mGdiIcon& img2 );
 
-	//ƒCƒ[ƒWƒŠƒXƒg‚ÉƒCƒ[ƒW‚Ì’Ç‰Á‚ð‚·‚é(mGdiResource‚©‚çƒCƒ[ƒW‚ð’Šo‚·‚éVer)
-	//res : ƒCƒ[ƒW’ŠoŒ³
-	//id : ’Ç‰Á‚·‚éƒCƒ[ƒW‚É•t—^‚·‚éID(ƒCƒ[ƒWƒŠƒXƒg‚É“o˜^‚·‚é‚Æ‚«‚ÌID)
-	//img1,img2 : ’Ç‰Á‚·‚éƒCƒ[ƒW‚ÌID(mGdiResource‚©‚ç’Šo‚·‚é‚Æ‚«‚ÌID)
-	//ret : ¬Œ÷Žž^
+	//ã‚¤ãƒ¡ãƒ¼ã‚¸ãƒªã‚¹ãƒˆã«ã‚¤ãƒ¡ãƒ¼ã‚¸ã®è¿½åŠ ã‚’ã™ã‚‹(mGdiResourceã‹ã‚‰ã‚¤ãƒ¡ãƒ¼ã‚¸ã‚’æŠ½å‡ºã™ã‚‹Ver)
+	//res : ã‚¤ãƒ¡ãƒ¼ã‚¸æŠ½å‡ºå…ƒ
+	//id : è¿½åŠ ã™ã‚‹ã‚¤ãƒ¡ãƒ¼ã‚¸ã«ä»˜ä¸Žã™ã‚‹ID(ã‚¤ãƒ¡ãƒ¼ã‚¸ãƒªã‚¹ãƒˆã«ç™»éŒ²ã™ã‚‹ã¨ãã®ID)
+	//img1,img2 : è¿½åŠ ã™ã‚‹ã‚¤ãƒ¡ãƒ¼ã‚¸ã®ID(mGdiResourceã‹ã‚‰æŠ½å‡ºã™ã‚‹ã¨ãã®ID)
+	//ret : æˆåŠŸæ™‚çœŸ
 	bool AddImageIcon( const mGdiResource& res , 
 		const WString& id , 
 		const WString& img1 ,
 		const WString& img2 );
 
-	//ƒCƒ[ƒWƒŠƒXƒg‚©‚çƒCƒ[ƒW‚ðíœ‚·‚é
-	//id : íœ‚·‚éƒCƒ[ƒW‚ÌID
-	//ret : ¬Œ÷Žž^
+	//ã‚¤ãƒ¡ãƒ¼ã‚¸ãƒªã‚¹ãƒˆã‹ã‚‰ã‚¤ãƒ¡ãƒ¼ã‚¸ã‚’å‰Šé™¤ã™ã‚‹
+	//id : å‰Šé™¤ã™ã‚‹ã‚¤ãƒ¡ãƒ¼ã‚¸ã®ID
+	//ret : æˆåŠŸæ™‚çœŸ
 	bool RemoveImage( const WString& id );
 
-	//ID‚©‚çƒCƒ“ƒfƒbƒNƒX‚ðŽæ“¾‚·‚é
-	//id : Žæ“¾‚µ‚½‚¢ID
-	//ret : ƒCƒ“ƒfƒbƒNƒXBƒGƒ‰[‚Ìê‡•‰‚Ì”
+	//IDã‹ã‚‰ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹ã‚’å–å¾—ã™ã‚‹
+	//id : å–å¾—ã—ãŸã„ID
+	//ret : ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹ã€‚ã‚¨ãƒ©ãƒ¼ã®å ´åˆè² ã®æ•°
 	INT GetIndex( const WString& id )const;
 
 public:
 
-	//ƒtƒ@ƒNƒgƒŠƒƒ\ƒbƒh
-	//opt‚Í•K‚¸Žw’è‚µ‚Ä‚­‚¾‚³‚¢BƒGƒ‰[‚É‚È‚ènullptr‚ð•Ô‚µ‚Ü‚·B
+	//ãƒ•ã‚¡ã‚¯ãƒˆãƒªãƒ¡ã‚½ãƒƒãƒ‰
+	//optã¯å¿…ãšæŒ‡å®šã—ã¦ãã ã•ã„ã€‚ã‚¨ãƒ©ãƒ¼ã«ãªã‚Šnullptrã‚’è¿”ã—ã¾ã™ã€‚
 	static mGdiHandle* Factory( const void* opt )throw( )
 	{
 		mGdiDualImagelist* result;
@@ -113,39 +113,39 @@ public:
 		}
 		catch( mException )
 		{
-			//nullptr‚ð•Ô‚·‚ÆAƒtƒ@ƒNƒgƒŠƒƒ\ƒbƒh‚ÌŒÄ‚Ño‚µ‘¤‚àŽ¸”s‚·‚é
+			//nullptrã‚’è¿”ã™ã¨ã€ãƒ•ã‚¡ã‚¯ãƒˆãƒªãƒ¡ã‚½ãƒƒãƒ‰ã®å‘¼ã³å‡ºã—å´ã‚‚å¤±æ•—ã™ã‚‹
 			result = nullptr;
 		}
 		return result;
 	}
 
-	//ƒRƒ“ƒXƒgƒ‰ƒNƒ^
-	//‚±‚ÌƒRƒ“ƒXƒgƒ‰ƒNƒ^‚ÍAMyHandle‚ÉŠi”[‚·‚éƒrƒbƒgƒ}ƒbƒv‚Ì¶¬Ž¸”sŽž‚É—áŠO‚ð“Š‚°‚Ü‚·B
-	//Eopt‚Í•K‚¸Žw’è‚µ‚Ä‰º‚³‚¢Bnullptr‚ð“n‚·‚Æ—áŠO‚ð“Š‚°‚Ü‚·B
+	//ã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
+	//ã“ã®ã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿ã¯ã€MyHandleã«æ ¼ç´ã™ã‚‹ãƒ“ãƒƒãƒˆãƒžãƒƒãƒ—ã®ç”Ÿæˆå¤±æ•—æ™‚ã«ä¾‹å¤–ã‚’æŠ•ã’ã¾ã™ã€‚
+	//ãƒ»optã¯å¿…ãšæŒ‡å®šã—ã¦ä¸‹ã•ã„ã€‚nullptrã‚’æ¸¡ã™ã¨ä¾‹å¤–ã‚’æŠ•ã’ã¾ã™ã€‚
 	mGdiDualImagelist( const Option* opt )throw( mException );
 
-	//ƒfƒXƒgƒ‰ƒNƒ^
+	//ãƒ‡ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
 	virtual ~mGdiDualImagelist();
 	
-	//ƒnƒ“ƒhƒ‹‚Ì’l‚ðŽæ“¾‚·‚éi‚P‚Â‚ß‚ÌƒCƒ[ƒWƒŠƒXƒg‚Ìƒnƒ“ƒhƒ‹‚ðŽæ“¾‚·‚éj
+	//ãƒãƒ³ãƒ‰ãƒ«ã®å€¤ã‚’å–å¾—ã™ã‚‹ï¼ˆï¼‘ã¤ã‚ã®ã‚¤ãƒ¡ãƒ¼ã‚¸ãƒªã‚¹ãƒˆã®ãƒãƒ³ãƒ‰ãƒ«ã‚’å–å¾—ã™ã‚‹ï¼‰
 	virtual HGDIOBJ GetHandle( void )const override;
 
-	//ƒnƒ“ƒhƒ‹‚Ì’l‚ðŽæ“¾‚·‚éi‚Q‚Â‚ß‚ÌƒCƒ[ƒWƒŠƒXƒg‚Ìƒnƒ“ƒhƒ‹‚ðŽæ“¾‚·‚éj
+	//ãƒãƒ³ãƒ‰ãƒ«ã®å€¤ã‚’å–å¾—ã™ã‚‹ï¼ˆï¼’ã¤ã‚ã®ã‚¤ãƒ¡ãƒ¼ã‚¸ãƒªã‚¹ãƒˆã®ãƒãƒ³ãƒ‰ãƒ«ã‚’å–å¾—ã™ã‚‹ï¼‰
 	HGDIOBJ GetHandle2( void )const;
 
 private:
 
-	//ˆÈ‰ºAƒfƒtƒHƒ‹ƒgŒn‚Ì‚ÍŽg—p•s‰Â‚Æ‚·‚é
+	//ä»¥ä¸‹ã€ãƒ‡ãƒ•ã‚©ãƒ«ãƒˆç³»ã®ã¯ä½¿ç”¨ä¸å¯ã¨ã™ã‚‹
 	mGdiDualImagelist() = delete;
 	mGdiDualImagelist( const mGdiDualImagelist& src ) = delete;
 	mGdiDualImagelist& operator=( const mGdiDualImagelist& src ) = delete;
 
 protected:
 
-	//ƒnƒ“ƒhƒ‹‚ÌŽÀ‘Ìiƒm[ƒ}ƒ‹j
+	//ãƒãƒ³ãƒ‰ãƒ«ã®å®Ÿä½“ï¼ˆãƒŽãƒ¼ãƒžãƒ«ï¼‰
 	mGdiImagelist* MyHandle;
 
-	//ƒnƒ“ƒhƒ‹‚ÌŽÀ‘Ìiƒzƒbƒgj
+	//ãƒãƒ³ãƒ‰ãƒ«ã®å®Ÿä½“ï¼ˆãƒ›ãƒƒãƒˆï¼‰
 	HIMAGELIST MyHandle2;
 
 };

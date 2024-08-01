@@ -1,30 +1,30 @@
-//----------------------------------------------------------------------------
-// �X�g���[�~���O�t�@�C���������ݑ���
+﻿//----------------------------------------------------------------------------
+// ストリーミングファイル書き込み操作
 // Copyright (C) 2013,2016 Fingerling. All rights reserved. 
 // Copyright (C) 2019- Crea Inc. All rights reserved.
 // This program is released under the MIT License. 
 // see http://opensource.org/licenses/mit-license.php
-// ���쌠�\���⃉�C�Z���X�̉��ς͋֎~����Ă��܂��B
-// ���̃\�[�X�R�[�h�Ɋւ��āA��L���C�Z���X�ȊO�̌_�񓙂͈�ؑ��݂��܂���B
-// (���炩�̌_�񂪂���ꍇ�ł��A�{�\�[�X�R�[�h�͂��̑ΏۊO�ƂȂ�܂�)
+// 著作権表示やライセンスの改変は禁止されています。
+// このソースコードに関して、上記ライセンス以外の契約等は一切存在しません。
+// (何らかの契約がある場合でも、本ソースコードはその対象外となります)
 //----------------------------------------------------------------------------
 
 /*
-���p�r
-�X�g���[�~���O�I�Ƀt�@�C�����������݂܂��B
+●用途
+ストリーミング的にファイルを書き込みます。
 
-�g�����F
+使い方：
 void TestFunction( void )
 {
-	//�t�@�C�����J���Ƃ��̏��
-	//�������I�ɃL���b�V���������Ă��邽�߁A
-	//  ������̏������݃A�N�Z�X������ƌ��ʂ����������Ȃ�܂��B
+	//ファイルを開くときの情報
+	//※内部的にキャッシュをもっているため、
+	//  他からの書き込みアクセスがあると結果がおかしくなります。
 	mFile::Option opt;
-	opt.Path = L"d:\\test.dat";	//�t�@�C����
-	opt.AccessWrite = true;		//�������݃A�N�Z�X�͕K�{
-	opt.ShareWrite = false;		//������̏������݃A�N�Z�X���֎~
+	opt.Path = L"d:\\test.dat";	//ファイル名
+	opt.AccessWrite = true;		//書き込みアクセスは必須
+	opt.ShareWrite = false;		//他からの書き込みアクセスを禁止
 
-	//�t�@�C�����J��
+	//ファイルを開く
 	mFileReadStream fp;
 	fp.Open( opt );
 
@@ -48,7 +48,7 @@ void TestFunction( void )
 #include "mFile.h"
 #include "mTCHAR.h"
 
-//�X�g���[�~���O�t�@�C���ǂݍ��ݑ���
+//ストリーミングファイル読み込み操作
 
 class mFileWriteStream : public mFileWriteStreamBase
 {
@@ -56,64 +56,64 @@ public:
 	mFileWriteStream();
 	virtual ~mFileWriteStream();
 
-	//�t�@�C�����J���Ƃ��̏��
+	//ファイルを開くときの情報
 	typedef mFile::CreateMode CreateMode;
 	typedef mFile::Option Option;
 
-	//���̃V�X�e���R�[���œǂݎ��t�@�C���T�C�Y�B
+	//一回のシステムコールで読み取るファイルサイズ。
 	static const DWORD MAX_BUFFER_SIZE = 65536;
 
-	//�t�@�C�����J���܂��B
-	// opt : �t�@�C�����J���Ƃ��̃I�v�V����
-	//       �������݃X�g���[���̂��߁Aopt.AccessRead = true�Ƃ��邱��
+	//ファイルを開きます。
+	// opt : ファイルを開くときのオプション
+	//       書き込みストリームのため、opt.AccessRead = trueとすること
 	virtual bool Open( const mFile::Option& opt );
 
-	//�t�@�C������܂�
+	//ファイルを閉じます
 	virtual bool Close( void );
 
-	//�P������������
+	//１文字書き込み
 	virtual bool Write( INT data );
 
-	//�w��̈ʒu�Ƀ|�C���^���ړ����܂�
-	//�w�肷��̂́A�t�@�C���̐擪����̈ʒu�ɂȂ�܂��B
+	//指定の位置にポインタを移動します
+	//指定するのは、ファイルの先頭からの位置になります。
 	bool SetPointer( ULONGLONG pos );
 
-	//�t�@�C���|�C���^��O��Ɉړ�
-	//distance : �ړ�����
-	//ret : ������true
-	//�w��ʒu��EOF�𒴂���ꍇ���G���[�ɂȂ�܂���B
+	//ファイルポインタを前後に移動
+	//distance : 移動距離
+	//ret : 成功時true
+	//指定位置がEOFを超える場合もエラーになりません。
 	bool MovePointer( LONGLONG distance );
 
-	//�t�@�C���|�C���^���t�@�C���̖����Ɉړ�
+	//ファイルポインタをファイルの末尾に移動
 	bool SetPointerToEnd( void );
 
-	//�t�@�C���|�C���^���t�@�C���̐擪�Ɉړ�
+	//ファイルポインタをファイルの先頭に移動
 	bool SetPointerToBegin( void );
 
-	//���݂̏������݈ʒu�𓾂܂�
+	//現在の書き込み位置を得ます
 	ULONGLONG GetPointer( void )const;
 
-	//�t�@�C�����J���Ă��邩�𔻒肵�܂�
-	//�J���Ă���ꍇ�͐^���Ԃ�܂�
+	//ファイルが開いているかを判定します
+	//開いている場合は真が返ります
 	virtual bool IsOpen( void )const;
 
-	//�J���Ă���p�X��Ԃ��܂�
-	// fullpath : true�̏ꍇ�A�J���Ă���p�X���t���p�X�ɕϊ����悤�Ƃ��܂�
-	//            false�̏ꍇ�Atrue�ł��ϊ��Ɏ��s�����ꍇ�́A�t�@�C���I�[�v�����ɓn�����p�X�����̂܂ܕԂ�܂�
+	//開いているパスを返します
+	// fullpath : trueの場合、開いているパスをフルパスに変換しようとします
+	//            falseの場合、trueでも変換に失敗した場合は、ファイルオープン時に渡したパスがそのまま返ります
 	WString GetPath( bool fullpath )const;
 
-	//�t�@�C���̃T�C�Y���擾
+	//ファイルのサイズを取得
 	bool GetFileSize( ULONGLONG& retSize )const;
 
-	//�t�@�C���̃T�C�Y���擾
-	// high �͕s�v�ȏꍇ�k���ł��B������high�ɓ���ׂ����ʂ�1�ȏ�̎��G���[�ɂȂ�B
+	//ファイルのサイズを取得
+	// high は不要な場合ヌルでも可。ただしhighに入るべき結果が1以上の時エラーになる。
 	bool GetFileSize( DWORD* high , DWORD& low )const;
 
-	//�t�@�C���̃T�C�Y���擾
-	// �G���[�̏ꍇ�͂O
+	//ファイルのサイズを取得
+	// エラーの場合は０
 	ULONGLONG GetFileSize( void )const;
 
-	//���݂̈ʒu��EOF�ɂ��܂�
+	//現在の位置をEOFにします
 	bool SetEof( void );
 
 private:
@@ -122,13 +122,13 @@ private:
 
 protected:
 
-	//�L���b�V������������
+	//キャッシュを書き込み
 	virtual bool FlushCache( void );
 
-	//�L���b�V����j��
+	//キャッシュを破棄
 	void ResetCache( void );
 
-	mFile MyHandle;			//�t�@�C���̃n���h��
+	mFile MyHandle;			//ファイルのハンドル
 
 };
 

@@ -1,5 +1,5 @@
-//----------------------------------------------------------------------------
-// ŠÂ‹«•Ï”
+ï»¿//----------------------------------------------------------------------------
+// ç’°å¢ƒå¤‰æ•°
 // Copyright (C) 2023- Crea Inc. All rights reserved.
 // This program is released under the MIT License. 
 // see http://opensource.org/licenses/mit-license.php

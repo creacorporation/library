@@ -1,11 +1,11 @@
-//----------------------------------------------------------------------------
-// Felica Light-S ƒJ[ƒhƒnƒ“ƒhƒ‰
+ï»¿//----------------------------------------------------------------------------
+// Felica Light-S ã‚«ãƒ¼ãƒ‰ãƒãƒ³ãƒ‰ãƒ©
 // Copyright (C) 2021- Crea Inc. All rights reserved.
 // This program is released under the MIT License. 
 // see http://opensource.org/licenses/mit-license.php
-// ’˜ìŒ •\¦‚âƒ‰ƒCƒZƒ“ƒX‚Ì‰ü•Ï‚Í‹Ö~‚³‚ê‚Ä‚¢‚Ü‚·B
-// ‚±‚Ìƒ\[ƒXƒR[ƒh‚ÉŠÖ‚µ‚ÄAã‹Lƒ‰ƒCƒZƒ“ƒXˆÈŠO‚ÌŒ_–ñ“™‚ÍˆêØ‘¶İ‚µ‚Ü‚¹‚ñB
-// (‰½‚ç‚©‚ÌŒ_–ñ‚ª‚ ‚éê‡‚Å‚àA–{ƒ\[ƒXƒR[ƒh‚Í‚»‚Ì‘ÎÛŠO‚Æ‚È‚è‚Ü‚·)
+// è‘—ä½œæ¨©è¡¨ç¤ºã‚„ãƒ©ã‚¤ã‚»ãƒ³ã‚¹ã®æ”¹å¤‰ã¯ç¦æ­¢ã•ã‚Œã¦ã„ã¾ã™ã€‚
+// ã“ã®ã‚½ãƒ¼ã‚¹ã‚³ãƒ¼ãƒ‰ã«é–¢ã—ã¦ã€ä¸Šè¨˜ãƒ©ã‚¤ã‚»ãƒ³ã‚¹ä»¥å¤–ã®å¥‘ç´„ç­‰ã¯ä¸€åˆ‡å­˜åœ¨ã—ã¾ã›ã‚“ã€‚
+// (ä½•ã‚‰ã‹ã®å¥‘ç´„ãŒã‚ã‚‹å ´åˆã§ã‚‚ã€æœ¬ã‚½ãƒ¼ã‚¹ã‚³ãƒ¼ãƒ‰ã¯ãã®å¯¾è±¡å¤–ã¨ãªã‚Šã¾ã™)
 //----------------------------------------------------------------------------
 
 #include "mSCFelica.h"
@@ -24,62 +24,62 @@ mSCFelica::~mSCFelica()
 
 bool mSCFelica::OnConnectCallback( void )
 {
-	//ƒ|[ƒŠƒ“ƒO‚ğs‚¢AƒZƒbƒg‚³‚ê‚½ƒJ[ƒh‚ªFelica Lite-S‚©‚Ç‚¤‚©“¯’è‚ğs‚¤
+	//ãƒãƒ¼ãƒªãƒ³ã‚°ã‚’è¡Œã„ã€ã‚»ãƒƒãƒˆã•ã‚ŒãŸã‚«ãƒ¼ãƒ‰ãŒFelica Lite-Sã‹ã©ã†ã‹åŒå®šã‚’è¡Œã†
 
-	//‘—Mƒf[ƒ^‚Ì\’z
+	//é€ä¿¡ãƒ‡ãƒ¼ã‚¿ã®æ§‹ç¯‰
 	TransmitData dt;
 	SetDirectCommand( dt );
-	dt.data.push_back( 0x06u );	//ƒf[ƒ^’·(‚±‚ÌƒoƒCƒg‚àŠÜ‚Ş)
-	dt.data.push_back( 0x00u );	//pollingƒRƒ}ƒ“ƒh
-	dt.data.push_back( 0xFFu );	//‰“š‘ÎÛƒVƒXƒeƒ€ƒR[ƒh(FFFFH=‘S‚Ä‚ÌƒJ[ƒh)‚ÌãˆÊ
-	dt.data.push_back( 0xFFu );	//‰“š‘ÎÛƒVƒXƒeƒ€ƒR[ƒh(FFFFH=‘S‚Ä‚ÌƒJ[ƒh)‚Ì‰ºˆÊ
-	dt.data.push_back( 0x01u );	//ƒVƒXƒeƒ€ƒR[ƒh‚ğƒŠƒNƒGƒXƒg
-	dt.data.push_back( 0x00u );	//‰“š‰Â”\‚Èƒ^ƒCƒ€ƒXƒƒbƒg‚Í#0‚Ì‚İ
-	//’ÊMÀ{
+	dt.data.push_back( 0x06u );	//ãƒ‡ãƒ¼ã‚¿é•·(ã“ã®ãƒã‚¤ãƒˆã‚‚å«ã‚€)
+	dt.data.push_back( 0x00u );	//pollingã‚³ãƒãƒ³ãƒ‰
+	dt.data.push_back( 0xFFu );	//å¿œç­”å¯¾è±¡ã‚·ã‚¹ãƒ†ãƒ ã‚³ãƒ¼ãƒ‰(FFFFH=å…¨ã¦ã®ã‚«ãƒ¼ãƒ‰)ã®ä¸Šä½
+	dt.data.push_back( 0xFFu );	//å¿œç­”å¯¾è±¡ã‚·ã‚¹ãƒ†ãƒ ã‚³ãƒ¼ãƒ‰(FFFFH=å…¨ã¦ã®ã‚«ãƒ¼ãƒ‰)ã®ä¸‹ä½
+	dt.data.push_back( 0x01u );	//ã‚·ã‚¹ãƒ†ãƒ ã‚³ãƒ¼ãƒ‰ã‚’ãƒªã‚¯ã‚¨ã‚¹ãƒˆ
+	dt.data.push_back( 0x00u );	//å¿œç­”å¯èƒ½ãªã‚¿ã‚¤ãƒ ã‚¹ãƒ­ãƒƒãƒˆã¯#0ã®ã¿
+	//é€šä¿¡å®Ÿæ–½
 	ResponseData rsp;
 	if( !Communicate( dt , rsp ) )
 	{
-		RaiseError( g_ErrorLogger , 0 , L"ƒXƒ}[ƒgƒJ[ƒh‚Æ‚Ì’ÊM‚ª¸”s‚µ‚Ü‚µ‚½" );
+		RaiseError( g_ErrorLogger , 0 , L"ã‚¹ãƒãƒ¼ãƒˆã‚«ãƒ¼ãƒ‰ã¨ã®é€šä¿¡ãŒå¤±æ•—ã—ã¾ã—ãŸ" );
 		return false;
 	}
-	//¸”s‚µ‚½ê‡‚Í‚QƒoƒCƒg‚Å‚­‚é‚Í‚¸
+	//å¤±æ•—ã—ãŸå ´åˆã¯ï¼’ãƒã‚¤ãƒˆã§ãã‚‹ã¯ãš
 	if( rsp.data.size() == 2 )
 	{
 		if( rsp.data[ 0 ] == 0x63 && rsp.data[ 1 ] == 0x00 )
 		{
-			//¸”s‰“š
-			RaiseError( g_ErrorLogger , 0 , L"ƒXƒ}[ƒgƒJ[ƒh‚Æ‚Ì‘€ì‚ª¸”s‚µ‚Ü‚µ‚½" );
+			//å¤±æ•—å¿œç­”
+			RaiseError( g_ErrorLogger , 0 , L"ã‚¹ãƒãƒ¼ãƒˆã‚«ãƒ¼ãƒ‰ã¨ã®æ“ä½œãŒå¤±æ•—ã—ã¾ã—ãŸ" );
 			return false;
 		}
 	}
-	//ƒf[ƒ^’·‚ÌŒŸØ
+	//ãƒ‡ãƒ¼ã‚¿é•·ã®æ¤œè¨¼
 	if( rsp.data.size() != 22 )
 	{
-		RaiseError( g_ErrorLogger , 0 , L"ƒXƒ}[ƒgƒJ[ƒh‰“šƒTƒCƒY‚ª•s³‚Å‚·" );
+		RaiseError( g_ErrorLogger , 0 , L"ã‚¹ãƒãƒ¼ãƒˆã‚«ãƒ¼ãƒ‰å¿œç­”ã‚µã‚¤ã‚ºãŒä¸æ­£ã§ã™" );
 		return false;
 	}
-	//ŒÅ’è‚Ìƒf[ƒ^‚ª‘z’è’Ê‚è‚©ŒŸØ
-	if( rsp.data[ 0 ] != 0x14u ||	//‘z’èƒf[ƒ^’·
-		rsp.data[ 1 ] != 0x01u ||	//ƒŒƒXƒ|ƒ“ƒXƒR[ƒh
-		rsp.data[ 20 ] != 0x90u ||	//¬Œ÷‰“š‚PƒoƒCƒg–Ú
-		rsp.data[ 21 ] != 0x00u )	//¬Œ÷‰“š‚QƒoƒCƒg–Ú
+	//å›ºå®šã®ãƒ‡ãƒ¼ã‚¿ãŒæƒ³å®šé€šã‚Šã‹æ¤œè¨¼
+	if( rsp.data[ 0 ] != 0x14u ||	//æƒ³å®šãƒ‡ãƒ¼ã‚¿é•·
+		rsp.data[ 1 ] != 0x01u ||	//ãƒ¬ã‚¹ãƒãƒ³ã‚¹ã‚³ãƒ¼ãƒ‰
+		rsp.data[ 20 ] != 0x90u ||	//æˆåŠŸå¿œç­”ï¼‘ãƒã‚¤ãƒˆç›®
+		rsp.data[ 21 ] != 0x00u )	//æˆåŠŸå¿œç­”ï¼’ãƒã‚¤ãƒˆç›®
 	{
-		RaiseError( g_ErrorLogger , 0 , L"ƒXƒ}[ƒgƒJ[ƒh‚Ì‰“š‚ª•s³‚Å‚·" );
+		RaiseError( g_ErrorLogger , 0 , L"ã‚¹ãƒãƒ¼ãƒˆã‚«ãƒ¼ãƒ‰ã®å¿œç­”ãŒä¸æ­£ã§ã™" );
 		return false;
 	}
-	//‚±‚Ìƒ‰ƒCƒuƒ‰ƒŠ‚ÍFelica Lite-S‚Ì‚İ‚Ì‘Î‰‚È‚Ì‚ÅA‚»‚êˆÈŠO‚ğ‚Í‚¶‚­
-	if( rsp.data[ 18 ] != 0x88u ||	//Felica Lite-S ‚ÌƒVƒXƒeƒ€ƒR[ƒh‚ÌãˆÊƒoƒCƒg
-		rsp.data[ 19 ] != 0xB4u )	//Felica Lite-S ‚ÌƒVƒXƒeƒ€ƒR[ƒh‚Ì‰ºˆÊƒoƒCƒg
+	//ã“ã®ãƒ©ã‚¤ãƒ–ãƒ©ãƒªã¯Felica Lite-Sã®ã¿ã®å¯¾å¿œãªã®ã§ã€ãã‚Œä»¥å¤–ã‚’ã¯ã˜ã
+	if( rsp.data[ 18 ] != 0x88u ||	//Felica Lite-S ã®ã‚·ã‚¹ãƒ†ãƒ ã‚³ãƒ¼ãƒ‰ã®ä¸Šä½ãƒã‚¤ãƒˆ
+		rsp.data[ 19 ] != 0xB4u )	//Felica Lite-S ã®ã‚·ã‚¹ãƒ†ãƒ ã‚³ãƒ¼ãƒ‰ã®ä¸‹ä½ãƒã‚¤ãƒˆ
 	{
-		RaiseError( g_ErrorLogger , 0 , L"Felica Lite‚Å‚Í‚ ‚è‚Ü‚¹‚ñ" );
+		RaiseError( g_ErrorLogger , 0 , L"Felica Liteã§ã¯ã‚ã‚Šã¾ã›ã‚“" );
 		return false;
 	}
-	//»‘¢ƒpƒ‰ƒ[ƒ^‚Ìƒ`ƒFƒbƒN
-	// Felica Lite  ‚ÌICí•Ê‚Í 0xF0
-	// Felica Lite-S‚ÌICí•Ê‚Í 0xF1`0xF7
+	//è£½é€ ãƒ‘ãƒ©ãƒ¡ãƒ¼ã‚¿ã®ãƒã‚§ãƒƒã‚¯
+	// Felica Lite  ã®ICç¨®åˆ¥ã¯ 0xF0
+	// Felica Lite-Sã®ICç¨®åˆ¥ã¯ 0xF1ã€œ0xF7
 	if( rsp.data[ 11 ] < 0xF1u || 0xF7u < rsp.data[ 11 ] )
 	{
-		RaiseError( g_ErrorLogger , 0 , L"Felica Lite-S‚Å‚Í‚ ‚è‚Ü‚¹‚ñ" );
+		RaiseError( g_ErrorLogger , 0 , L"Felica Lite-Sã§ã¯ã‚ã‚Šã¾ã›ã‚“" );
 		return false;
 	}
 	return true;
@@ -90,88 +90,88 @@ bool mSCFelica::RawRead( const ReadRequestBlock& request , DataBlock& retRespons
 	retResponse.clear();
 	if( request.size() == 0 || 4 < request.size() )
 	{
-		RaiseError( g_ErrorLogger , request.size() , L"“Ç‚İo‚µ—v‹‚ÌƒuƒƒbƒN”‚ª³‚µ‚­‚ ‚è‚Ü‚¹‚ñ" );
+		RaiseError( g_ErrorLogger , request.size() , L"èª­ã¿å‡ºã—è¦æ±‚ã®ãƒ–ãƒ­ãƒƒã‚¯æ•°ãŒæ­£ã—ãã‚ã‚Šã¾ã›ã‚“" );
 		return false;
 	}
 
-	//‘—Mƒf[ƒ^‚Ì\’z
+	//é€ä¿¡ãƒ‡ãƒ¼ã‚¿ã®æ§‹ç¯‰
 	TransmitData dt;
 	SetDirectCommand( dt );
-	dt.data.push_back( 0x00u );	//ƒf[ƒ^’·(‚±‚ÌƒoƒCƒg‚àŠÜ‚Ş) ¦‰¼“ü—ÍBÅŒã‚É‘‚«Š·‚¦‚éB
-	dt.data.push_back( 0x06u );	//Read Without EncryptionƒRƒ}ƒ“ƒh
-	dt.data.append( MyCardID );	//—v‹æ‚ÌƒJ[ƒhUID
-	dt.data.push_back( 0x01u );	//ƒT[ƒrƒX”B‚PŒÅ’èB
-	dt.data.push_back( 0x0Bu );	//ƒT[ƒrƒX‚Ì‚PŒÂ’†‚PŒÂ–Úi‰ºˆÊƒoƒCƒgj¦RW‚ÆROƒuƒƒbƒN‚ÉƒAƒNƒZƒX‰Â”\0x000B
-	dt.data.push_back( 0x00u );	//ƒT[ƒrƒX‚Ì‚PŒÂ’†‚PŒÂ–ÚiãˆÊƒoƒCƒgj  RWƒuƒƒbƒN‚Ì‚İ‚ÉƒAƒNƒZƒX‰Â”\0x0009
-	dt.data.push_back( (BYTE)request.size() );	//—v‹‚·‚éƒuƒƒbƒN‚Ì”
+	dt.data.push_back( 0x00u );	//ãƒ‡ãƒ¼ã‚¿é•·(ã“ã®ãƒã‚¤ãƒˆã‚‚å«ã‚€) â€»ä»®å…¥åŠ›ã€‚æœ€å¾Œã«æ›¸ãæ›ãˆã‚‹ã€‚
+	dt.data.push_back( 0x06u );	//Read Without Encryptionã‚³ãƒãƒ³ãƒ‰
+	dt.data.append( MyCardID );	//è¦æ±‚å…ˆã®ã‚«ãƒ¼ãƒ‰UID
+	dt.data.push_back( 0x01u );	//ã‚µãƒ¼ãƒ“ã‚¹æ•°ã€‚ï¼‘å›ºå®šã€‚
+	dt.data.push_back( 0x0Bu );	//ã‚µãƒ¼ãƒ“ã‚¹ã®ï¼‘å€‹ä¸­ï¼‘å€‹ç›®ï¼ˆä¸‹ä½ãƒã‚¤ãƒˆï¼‰â€»RWã¨ROãƒ–ãƒ­ãƒƒã‚¯ã«ã‚¢ã‚¯ã‚»ã‚¹å¯èƒ½ï¼0x000B
+	dt.data.push_back( 0x00u );	//ã‚µãƒ¼ãƒ“ã‚¹ã®ï¼‘å€‹ä¸­ï¼‘å€‹ç›®ï¼ˆä¸Šä½ãƒã‚¤ãƒˆï¼‰  RWãƒ–ãƒ­ãƒƒã‚¯ã®ã¿ã«ã‚¢ã‚¯ã‚»ã‚¹å¯èƒ½ï¼0x0009
+	dt.data.push_back( (BYTE)request.size() );	//è¦æ±‚ã™ã‚‹ãƒ–ãƒ­ãƒƒã‚¯ã®æ•°
 	for( ReadRequestBlock::const_iterator itr = request.begin() ; itr != request.end() ; itr++ )
 	{
-		dt.data.push_back( 0x80u );	//‚QƒoƒCƒgƒGƒŒƒƒ“ƒgBƒŠƒXƒg‡‚ÆƒAƒNƒZƒXƒ‚[ƒh‚ÍFeilcaLiteS‚Å‚Íí‚É0‚Æ‚·‚éB
+		dt.data.push_back( 0x80u );	//ï¼’ãƒã‚¤ãƒˆã‚¨ãƒ¬ãƒ¡ãƒ³ãƒˆã€‚ãƒªã‚¹ãƒˆé †ã¨ã‚¢ã‚¯ã‚»ã‚¹ãƒ¢ãƒ¼ãƒ‰ã¯FeilcaLiteSã§ã¯å¸¸ã«0ã¨ã™ã‚‹ã€‚
 		if( 0xFFu < *itr )
 		{
-			RaiseError( g_ErrorLogger , *itr , L"ƒuƒƒbƒN”Ô†‚ª•s³‚Å‚·" );
+			RaiseError( g_ErrorLogger , *itr , L"ãƒ–ãƒ­ãƒƒã‚¯ç•ªå·ãŒä¸æ­£ã§ã™" );
 			return false;
 		}
-		dt.data.push_back( (BYTE)*itr );	//“Ç‚İ‚İ‚½‚¢ƒuƒƒbƒN‚Ì”Ô†
+		dt.data.push_back( (BYTE)*itr );	//èª­ã¿è¾¼ã¿ãŸã„ãƒ–ãƒ­ãƒƒã‚¯ã®ç•ªå·
 	}
-	//‰¼“ü—Í‚µ‚½ƒf[ƒ^’·‚ğÀÛ‚Ì’l‚É‘‚«Š·‚¦‚é
+	//ä»®å…¥åŠ›ã—ãŸãƒ‡ãƒ¼ã‚¿é•·ã‚’å®Ÿéš›ã®å€¤ã«æ›¸ãæ›ãˆã‚‹
 	dt.data[ 0 ] = (BYTE)dt.data.size();
 
-	//’ÊMÀ{
+	//é€šä¿¡å®Ÿæ–½
 	ResponseData rsp;
 	if( !Communicate( dt , rsp ) )
 	{
-		RaiseError( g_ErrorLogger , 0 , L"ƒXƒ}[ƒgƒJ[ƒh‚Æ‚Ì’ÊM‚ª¸”s‚µ‚Ü‚µ‚½" );
+		RaiseError( g_ErrorLogger , 0 , L"ã‚¹ãƒãƒ¼ãƒˆã‚«ãƒ¼ãƒ‰ã¨ã®é€šä¿¡ãŒå¤±æ•—ã—ã¾ã—ãŸ" );
 		return false;
 	}
-	//¸”s‚µ‚½ê‡‚Í‚QƒoƒCƒg‚Å‚­‚é‚Í‚¸
+	//å¤±æ•—ã—ãŸå ´åˆã¯ï¼’ãƒã‚¤ãƒˆã§ãã‚‹ã¯ãš
 	if( rsp.data.size() == 2 )
 	{
 		if( rsp.data[ 0 ] == 0x63 && rsp.data[ 1 ] == 0x00 )
 		{
-			//¸”s‰“š
-			RaiseError( g_ErrorLogger , 0 , L"ƒXƒ}[ƒgƒJ[ƒh‚Æ‚Ì‘€ì‚ª¸”s‚µ‚Ü‚µ‚½" );
+			//å¤±æ•—å¿œç­”
+			RaiseError( g_ErrorLogger , 0 , L"ã‚¹ãƒãƒ¼ãƒˆã‚«ãƒ¼ãƒ‰ã¨ã®æ“ä½œãŒå¤±æ•—ã—ã¾ã—ãŸ" );
 			return false;
 		}
 	}
-	//ƒf[ƒ^’·‚ÌŒŸØ
-	// 1 = ƒf[ƒ^’·‚PƒoƒCƒg
-	// 11 = ƒŒƒXƒ|ƒ“ƒXƒR[ƒh‚PƒoƒCƒg{IDm‚WƒoƒCƒg{ƒXƒe[ƒ^ƒXƒtƒ‰ƒO1/2Še‚PƒoƒCƒg
-	// 1 = ƒuƒƒbƒN”‚PƒoƒCƒg(¬Œ÷‚Ì‚İ)
-	// 16n = Àƒf[ƒ^‚P‚UƒoƒCƒg~“Ç‚İæ‚Á‚½ƒuƒƒbƒN”(¬Œ÷‚Ì‚İ)
-	// 2 = PC/SC‚Ì¬Œ÷‰“š(9000H)‚QƒoƒCƒg
+	//ãƒ‡ãƒ¼ã‚¿é•·ã®æ¤œè¨¼
+	// 1 = ãƒ‡ãƒ¼ã‚¿é•·ï¼‘ãƒã‚¤ãƒˆ
+	// 11 = ãƒ¬ã‚¹ãƒãƒ³ã‚¹ã‚³ãƒ¼ãƒ‰ï¼‘ãƒã‚¤ãƒˆï¼‹IDmï¼˜ãƒã‚¤ãƒˆï¼‹ã‚¹ãƒ†ãƒ¼ã‚¿ã‚¹ãƒ•ãƒ©ã‚°1/2å„ï¼‘ãƒã‚¤ãƒˆ
+	// 1 = ãƒ–ãƒ­ãƒƒã‚¯æ•°ï¼‘ãƒã‚¤ãƒˆ(æˆåŠŸæ™‚ã®ã¿)
+	// 16n = å®Ÿãƒ‡ãƒ¼ã‚¿ï¼‘ï¼–ãƒã‚¤ãƒˆÃ—èª­ã¿å–ã£ãŸãƒ–ãƒ­ãƒƒã‚¯æ•°(æˆåŠŸæ™‚ã®ã¿)
+	// 2 = PC/SCã®æˆåŠŸå¿œç­”(9000H)ï¼’ãƒã‚¤ãƒˆ
 	DWORD correct_size_success = 1 + 11 + 1 + ( 16 * (DWORD)request.size() ) + 2;
 	DWORD correct_size_fail = 1 + 11 + 2;
 	if( rsp.data.size() == correct_size_fail )
 	{
-		RaiseError( g_ErrorLogger , ( rsp.data[ 10 ] << 8 ) + ( rsp.data[ 11 ] ) , L"ƒXƒ}[ƒgƒJ[ƒh‚ª¸”s‚ğ•Ô‚µ‚Ü‚µ‚½" );
+		RaiseError( g_ErrorLogger , ( rsp.data[ 10 ] << 8 ) + ( rsp.data[ 11 ] ) , L"ã‚¹ãƒãƒ¼ãƒˆã‚«ãƒ¼ãƒ‰ãŒå¤±æ•—ã‚’è¿”ã—ã¾ã—ãŸ" );
 		return false;
 	}
 	else if( rsp.data.size() != correct_size_success )
 	{
-		RaiseError( g_ErrorLogger , 0 , L"ƒXƒ}[ƒgƒJ[ƒh‰“šƒTƒCƒY‚ª•s³‚Å‚·" );
+		RaiseError( g_ErrorLogger , 0 , L"ã‚¹ãƒãƒ¼ãƒˆã‚«ãƒ¼ãƒ‰å¿œç­”ã‚µã‚¤ã‚ºãŒä¸æ­£ã§ã™" );
 		return false;
 	}
-	//ƒwƒbƒ_î•ñ‚ÌŒŸØ
-	if( ( rsp.data[ 0 ] != (BYTE)( correct_size_success - 2 ) ) ||	//ƒf[ƒ^’·
-		( rsp.data[ 1 ] != 0x07u ) ||								//ƒŒƒXƒ|ƒ“ƒXƒR[ƒh
-		( rsp.data[ 12 ] != request.size() ) ||						//ƒuƒƒbƒN”
-		( rsp.data[ rsp.data.size() - 2 ] != 0x90u ) ||				//PC/SC‚Ì¬Œ÷‰“š
-		( rsp.data[ rsp.data.size() - 1 ] != 0x00u ) )				//PC/SC‚Ì¬Œ÷‰“š
+	//ãƒ˜ãƒƒãƒ€æƒ…å ±ã®æ¤œè¨¼
+	if( ( rsp.data[ 0 ] != (BYTE)( correct_size_success - 2 ) ) ||	//ãƒ‡ãƒ¼ã‚¿é•·
+		( rsp.data[ 1 ] != 0x07u ) ||								//ãƒ¬ã‚¹ãƒãƒ³ã‚¹ã‚³ãƒ¼ãƒ‰
+		( rsp.data[ 12 ] != request.size() ) ||						//ãƒ–ãƒ­ãƒƒã‚¯æ•°
+		( rsp.data[ rsp.data.size() - 2 ] != 0x90u ) ||				//PC/SCã®æˆåŠŸå¿œç­”
+		( rsp.data[ rsp.data.size() - 1 ] != 0x00u ) )				//PC/SCã®æˆåŠŸå¿œç­”
 	{
-		RaiseError( g_ErrorLogger , 0 , L"ƒXƒ}[ƒgƒJ[ƒh‚Ì‰“š‚ª•s³‚Å‚·" );
+		RaiseError( g_ErrorLogger , 0 , L"ã‚¹ãƒãƒ¼ãƒˆã‚«ãƒ¼ãƒ‰ã®å¿œç­”ãŒä¸æ­£ã§ã™" );
 		return false;
 	}
-	//IDm‚ª‡’v‚µ‚Ä‚¢‚é‚©
+	//IDmãŒåˆè‡´ã—ã¦ã„ã‚‹ã‹
 	for( DWORD i = 0 ; i < 8 ; i++ )
 	{
 		if( MyCardID[ i ] != rsp.data[ i + 2 ] )
 		{
-			RaiseError( g_ErrorLogger , 0 , L"ƒŒƒXƒ|ƒ“ƒX‚ÌID‚ªˆê’v‚µ‚Ü‚¹‚ñ" );
+			RaiseError( g_ErrorLogger , 0 , L"ãƒ¬ã‚¹ãƒãƒ³ã‚¹ã®IDãŒä¸€è‡´ã—ã¾ã›ã‚“" );
 			return false;
 		}
 	}
-	//ŒŸØ‚n‚j‚È‚Ì‚ÅƒuƒƒbƒNƒf[ƒ^‚ğİ’è
+	//æ¤œè¨¼ï¼¯ï¼«ãªã®ã§ãƒ–ãƒ­ãƒƒã‚¯ãƒ‡ãƒ¼ã‚¿ã‚’è¨­å®š
 	retResponse.resize( request.size() );
 	for( DWORD i = 0 ; i < request.size() ; i++ )
 	{
@@ -182,42 +182,42 @@ bool mSCFelica::RawRead( const ReadRequestBlock& request , DataBlock& retRespons
 	return true;
 }
 
-//ƒf[ƒ^‚Ì‘‚«‚İ
+//ãƒ‡ãƒ¼ã‚¿ã®æ›¸ãè¾¼ã¿
 bool mSCFelica::RawWrite( const DataBlock& data )const
 {
 	bool result = false;
 	if( data.size() == 0 || 4 < data.size() )
 	{
-		RaiseError( g_ErrorLogger , data.size() , L"‘‚«‚İ—v‹‚ÌƒuƒƒbƒN”‚ª³‚µ‚­‚ ‚è‚Ü‚¹‚ñ" );
+		RaiseError( g_ErrorLogger , data.size() , L"æ›¸ãè¾¼ã¿è¦æ±‚ã®ãƒ–ãƒ­ãƒƒã‚¯æ•°ãŒæ­£ã—ãã‚ã‚Šã¾ã›ã‚“" );
 		return false;
 	}
 
-	//‘—Mƒf[ƒ^‚Ì\’z
+	//é€ä¿¡ãƒ‡ãƒ¼ã‚¿ã®æ§‹ç¯‰
 	TransmitData dt;
 	SetDirectCommand( dt );
-	dt.data.push_back( 0x00u );	//ƒf[ƒ^’·(‚±‚ÌƒoƒCƒg‚àŠÜ‚Ş) ¦‰¼“ü—ÍBÅŒã‚É‘‚«Š·‚¦‚éB
-	dt.data.push_back( 0x08u );	//Write Without EncryptionƒRƒ}ƒ“ƒh
-	dt.data.append( MyCardID );	//—v‹æ‚ÌƒJ[ƒhUID
-	dt.data.push_back( 0x01u );	//ƒT[ƒrƒX”B‚PŒÅ’èB
-	dt.data.push_back( 0x09u );	//ƒT[ƒrƒX‚Ì‚PŒÂ’†‚PŒÂ–Úi‰ºˆÊƒoƒCƒgj¦RW‚ÆROƒuƒƒbƒN‚ÉƒAƒNƒZƒX‰Â”\0x000B
-	dt.data.push_back( 0x00u );	//ƒT[ƒrƒX‚Ì‚PŒÂ’†‚PŒÂ–ÚiãˆÊƒoƒCƒgj  RWƒuƒƒbƒN‚Ì‚İ‚ÉƒAƒNƒZƒX‰Â”\0x0009
-	dt.data.push_back( (BYTE)data.size() );	//—v‹‚·‚éƒuƒƒbƒN‚Ì”
+	dt.data.push_back( 0x00u );	//ãƒ‡ãƒ¼ã‚¿é•·(ã“ã®ãƒã‚¤ãƒˆã‚‚å«ã‚€) â€»ä»®å…¥åŠ›ã€‚æœ€å¾Œã«æ›¸ãæ›ãˆã‚‹ã€‚
+	dt.data.push_back( 0x08u );	//Write Without Encryptionã‚³ãƒãƒ³ãƒ‰
+	dt.data.append( MyCardID );	//è¦æ±‚å…ˆã®ã‚«ãƒ¼ãƒ‰UID
+	dt.data.push_back( 0x01u );	//ã‚µãƒ¼ãƒ“ã‚¹æ•°ã€‚ï¼‘å›ºå®šã€‚
+	dt.data.push_back( 0x09u );	//ã‚µãƒ¼ãƒ“ã‚¹ã®ï¼‘å€‹ä¸­ï¼‘å€‹ç›®ï¼ˆä¸‹ä½ãƒã‚¤ãƒˆï¼‰â€»RWã¨ROãƒ–ãƒ­ãƒƒã‚¯ã«ã‚¢ã‚¯ã‚»ã‚¹å¯èƒ½ï¼0x000B
+	dt.data.push_back( 0x00u );	//ã‚µãƒ¼ãƒ“ã‚¹ã®ï¼‘å€‹ä¸­ï¼‘å€‹ç›®ï¼ˆä¸Šä½ãƒã‚¤ãƒˆï¼‰  RWãƒ–ãƒ­ãƒƒã‚¯ã®ã¿ã«ã‚¢ã‚¯ã‚»ã‚¹å¯èƒ½ï¼0x0009
+	dt.data.push_back( (BYTE)data.size() );	//è¦æ±‚ã™ã‚‹ãƒ–ãƒ­ãƒƒã‚¯ã®æ•°
 	for( DataBlock::const_iterator itr = data.begin() ; itr != data.end() ; itr++ )
 	{
-		dt.data.push_back( 0x80u );	//‚QƒoƒCƒgƒGƒŒƒƒ“ƒgBƒŠƒXƒg‡‚ÆƒAƒNƒZƒXƒ‚[ƒh‚ÍFeilcaLiteS‚Å‚Íí‚É0‚Æ‚·‚éB
+		dt.data.push_back( 0x80u );	//ï¼’ãƒã‚¤ãƒˆã‚¨ãƒ¬ãƒ¡ãƒ³ãƒˆã€‚ãƒªã‚¹ãƒˆé †ã¨ã‚¢ã‚¯ã‚»ã‚¹ãƒ¢ãƒ¼ãƒ‰ã¯FeilcaLiteSã§ã¯å¸¸ã«0ã¨ã™ã‚‹ã€‚
 		if( 0xFFu < itr->BlockNumber )
 		{
-			RaiseError( g_ErrorLogger , itr->BlockNumber , L"ƒuƒƒbƒN”Ô†‚ª•s³‚Å‚·" );
+			RaiseError( g_ErrorLogger , itr->BlockNumber , L"ãƒ–ãƒ­ãƒƒã‚¯ç•ªå·ãŒä¸æ­£ã§ã™" );
 			return false;
 		}
-		dt.data.push_back( (BYTE)itr->BlockNumber );	//“Ç‚İ‚İ‚½‚¢ƒuƒƒbƒN‚Ì”Ô†
+		dt.data.push_back( (BYTE)itr->BlockNumber );	//èª­ã¿è¾¼ã¿ãŸã„ãƒ–ãƒ­ãƒƒã‚¯ã®ç•ªå·
 	}
 	for( DataBlock::const_iterator itr = data.begin() ; itr != data.end() ; itr++ )
 	{
 		DWORD length = (DWORD)itr->Data.size();
 		if( length <= 16 )
 		{
-			//‚P‚UƒoƒCƒgˆÈ‰º‚Ìê‡‚ÍAƒf[ƒ^‚ğƒRƒs[‚µ‚P‚UƒoƒCƒg‚É–‚½‚È‚¢•”•ª‚ğ‚O‚Å–„‚ß‚é
+			//ï¼‘ï¼–ãƒã‚¤ãƒˆä»¥ä¸‹ã®å ´åˆã¯ã€ãƒ‡ãƒ¼ã‚¿ã‚’ã‚³ãƒ”ãƒ¼ã—ï¼‘ï¼–ãƒã‚¤ãƒˆã«æº€ãŸãªã„éƒ¨åˆ†ã‚’ï¼ã§åŸ‹ã‚ã‚‹
 			dt.data.append( itr->Data );
 			for( ; length < 16 ; length++ )
 			{
@@ -226,62 +226,62 @@ bool mSCFelica::RawWrite( const DataBlock& data )const
 		}
 		else
 		{
-			//‚P‚UƒoƒCƒg‚æ‚è‘½‚¢ê‡‚ÍAæ“ª‚Ì‚P‚UƒoƒCƒg‚ğƒRƒs[‚·‚é
+			//ï¼‘ï¼–ãƒã‚¤ãƒˆã‚ˆã‚Šå¤šã„å ´åˆã¯ã€å…ˆé ­ã®ï¼‘ï¼–ãƒã‚¤ãƒˆã‚’ã‚³ãƒ”ãƒ¼ã™ã‚‹
 			dt.data.append( itr->Data.subdata( 0 , 16 ) );
 		}
 	}
-	//‰¼“ü—Í‚µ‚½ƒf[ƒ^’·‚ğÀÛ‚Ì’l‚É‘‚«Š·‚¦‚é
+	//ä»®å…¥åŠ›ã—ãŸãƒ‡ãƒ¼ã‚¿é•·ã‚’å®Ÿéš›ã®å€¤ã«æ›¸ãæ›ãˆã‚‹
 	dt.data[ 0 ] = (BYTE)dt.data.size();
 
-	//’ÊMÀ{
+	//é€šä¿¡å®Ÿæ–½
 	ResponseData rsp;
 	if( !Communicate( dt , rsp ) )
 	{
-		RaiseError( g_ErrorLogger , 0 , L"ƒXƒ}[ƒgƒJ[ƒh‚Æ‚Ì’ÊM‚ª¸”s‚µ‚Ü‚µ‚½" );
+		RaiseError( g_ErrorLogger , 0 , L"ã‚¹ãƒãƒ¼ãƒˆã‚«ãƒ¼ãƒ‰ã¨ã®é€šä¿¡ãŒå¤±æ•—ã—ã¾ã—ãŸ" );
 		goto ending;
 	}
-	//¸”s‚µ‚½ê‡‚Í‚QƒoƒCƒg‚Å‚­‚é‚Í‚¸
+	//å¤±æ•—ã—ãŸå ´åˆã¯ï¼’ãƒã‚¤ãƒˆã§ãã‚‹ã¯ãš
 	if( rsp.data.size() == 2 )
 	{
 		if( rsp.data[ 0 ] == 0x63 && rsp.data[ 1 ] == 0x00 )
 		{
-			//¸”s‰“š
-			RaiseError( g_ErrorLogger , 0 , L"ƒXƒ}[ƒgƒJ[ƒh‚Æ‚Ì‘€ì‚ª¸”s‚µ‚Ü‚µ‚½" );
+			//å¤±æ•—å¿œç­”
+			RaiseError( g_ErrorLogger , 0 , L"ã‚¹ãƒãƒ¼ãƒˆã‚«ãƒ¼ãƒ‰ã¨ã®æ“ä½œãŒå¤±æ•—ã—ã¾ã—ãŸ" );
 			goto ending;
 		}
 	}
-	//ƒf[ƒ^’·‚ÌŒŸØ
-	// 1 = ƒf[ƒ^’·‚PƒoƒCƒg
-	// 11 = ƒŒƒXƒ|ƒ“ƒXƒR[ƒh‚PƒoƒCƒg{IDm‚WƒoƒCƒg{ƒXƒe[ƒ^ƒXƒtƒ‰ƒO1/2Še‚PƒoƒCƒg
-	// 2 = PC/SC‚Ì¬Œ÷‰“š(9000H)‚QƒoƒCƒg
+	//ãƒ‡ãƒ¼ã‚¿é•·ã®æ¤œè¨¼
+	// 1 = ãƒ‡ãƒ¼ã‚¿é•·ï¼‘ãƒã‚¤ãƒˆ
+	// 11 = ãƒ¬ã‚¹ãƒãƒ³ã‚¹ã‚³ãƒ¼ãƒ‰ï¼‘ãƒã‚¤ãƒˆï¼‹IDmï¼˜ãƒã‚¤ãƒˆï¼‹ã‚¹ãƒ†ãƒ¼ã‚¿ã‚¹ãƒ•ãƒ©ã‚°1/2å„ï¼‘ãƒã‚¤ãƒˆ
+	// 2 = PC/SCã®æˆåŠŸå¿œç­”(9000H)ï¼’ãƒã‚¤ãƒˆ
 	if( rsp.data.size() != ( 1 + 11 + 2 ) )
 	{
-		RaiseError( g_ErrorLogger , 0 , L"ƒXƒ}[ƒgƒJ[ƒh‰“šƒTƒCƒY‚ª•s³‚Å‚·" );
+		RaiseError( g_ErrorLogger , 0 , L"ã‚¹ãƒãƒ¼ãƒˆã‚«ãƒ¼ãƒ‰å¿œç­”ã‚µã‚¤ã‚ºãŒä¸æ­£ã§ã™" );
 		goto ending;
 	}
-	//ƒwƒbƒ_î•ñ‚ÌŒŸØ
-	if( ( rsp.data[ 0 ] != 12 ) ||					//ƒf[ƒ^’·
-		( rsp.data[ 1 ] != 0x09u ) ||				//ƒŒƒXƒ|ƒ“ƒXƒR[ƒh
-		( rsp.data[ 12 ] != 0x90u ) ||				//PC/SC‚Ì¬Œ÷‰“š
-		( rsp.data[ 13 ] != 0x00u ) )				//PC/SC‚Ì¬Œ÷‰“š
+	//ãƒ˜ãƒƒãƒ€æƒ…å ±ã®æ¤œè¨¼
+	if( ( rsp.data[ 0 ] != 12 ) ||					//ãƒ‡ãƒ¼ã‚¿é•·
+		( rsp.data[ 1 ] != 0x09u ) ||				//ãƒ¬ã‚¹ãƒãƒ³ã‚¹ã‚³ãƒ¼ãƒ‰
+		( rsp.data[ 12 ] != 0x90u ) ||				//PC/SCã®æˆåŠŸå¿œç­”
+		( rsp.data[ 13 ] != 0x00u ) )				//PC/SCã®æˆåŠŸå¿œç­”
 	{
-		RaiseError( g_ErrorLogger , 0 , L"ƒXƒ}[ƒgƒJ[ƒh‚Ì‰“š‚ª•s³‚Å‚·" );
+		RaiseError( g_ErrorLogger , 0 , L"ã‚¹ãƒãƒ¼ãƒˆã‚«ãƒ¼ãƒ‰ã®å¿œç­”ãŒä¸æ­£ã§ã™" );
 		goto ending;
 	}
-	//IDm‚ª‡’v‚µ‚Ä‚¢‚é‚©
+	//IDmãŒåˆè‡´ã—ã¦ã„ã‚‹ã‹
 	for( DWORD i = 0 ; i < 8 ; i++ )
 	{
 		if( MyCardID[ i ] != rsp.data[ i + 2 ] )
 		{
-			RaiseError( g_ErrorLogger , 0 , L"ƒŒƒXƒ|ƒ“ƒX‚ÌID‚ªˆê’v‚µ‚Ü‚¹‚ñ" );
+			RaiseError( g_ErrorLogger , 0 , L"ãƒ¬ã‚¹ãƒãƒ³ã‚¹ã®IDãŒä¸€è‡´ã—ã¾ã›ã‚“" );
 			goto ending;
 		}
 	}
-	//ƒwƒbƒ_î•ñ‚ÌŒŸØ
-	if( ( rsp.data[ 10 ] != 0x00u ) ||				//ƒXƒe[ƒ^ƒXƒtƒ‰ƒO‚P
-		( rsp.data[ 11 ] != 0x00u ) )				//ƒXƒe[ƒ^ƒXƒtƒ‰ƒO‚Q
+	//ãƒ˜ãƒƒãƒ€æƒ…å ±ã®æ¤œè¨¼
+	if( ( rsp.data[ 10 ] != 0x00u ) ||				//ã‚¹ãƒ†ãƒ¼ã‚¿ã‚¹ãƒ•ãƒ©ã‚°ï¼‘
+		( rsp.data[ 11 ] != 0x00u ) )				//ã‚¹ãƒ†ãƒ¼ã‚¿ã‚¹ãƒ•ãƒ©ã‚°ï¼’
 	{
-		RaiseError( g_ErrorLogger , ( rsp.data[ 10 ] << 8 ) + ( rsp.data[ 11 ] ) , L"ƒXƒ}[ƒgƒJ[ƒh‚ª¸”s‚ğ•Ô‚µ‚Ü‚µ‚½" );
+		RaiseError( g_ErrorLogger , ( rsp.data[ 10 ] << 8 ) + ( rsp.data[ 11 ] ) , L"ã‚¹ãƒãƒ¼ãƒˆã‚«ãƒ¼ãƒ‰ãŒå¤±æ•—ã‚’è¿”ã—ã¾ã—ãŸ" );
 		goto ending;
 	}
 
@@ -300,23 +300,23 @@ bool mSCFelica::MacReadInternal( const ReadRequestBlock& request , DataBlock& re
 	retResponse.clear();
 	if( request.size() == 0 || 3 < request.size() )
 	{
-		RaiseError( g_ErrorLogger , request.size() , L"“Ç‚İ‚İ—v‹‚ÌƒuƒƒbƒN”‚ª³‚µ‚­‚ ‚è‚Ü‚¹‚ñ" );
+		RaiseError( g_ErrorLogger , request.size() , L"èª­ã¿è¾¼ã¿è¦æ±‚ã®ãƒ–ãƒ­ãƒƒã‚¯æ•°ãŒæ­£ã—ãã‚ã‚Šã¾ã›ã‚“" );
 		return false;
 	}
 
-	//“Ç‚İæ‚è‚ÌÀs
+	//èª­ã¿å–ã‚Šã®å®Ÿè¡Œ
 	ReadRequestBlock req = request;
 	req.push_back( 0x91 );	//MAC_A
 	if( !RawRead( req , retResponse ) )
 	{
-		RaiseError( g_ErrorLogger , 0 , L"“Ç‚İæ‚è‚ª¸”s‚µ‚Ü‚µ‚½" );
+		RaiseError( g_ErrorLogger , 0 , L"èª­ã¿å–ã‚ŠãŒå¤±æ•—ã—ã¾ã—ãŸ" );
 		return false;
 	}
 
-	//MAC‚ÌŒŸØ
+	//MACã®æ¤œè¨¼
 	if( !MyFelicaMac.ValidateMacA( retResponse ) )
 	{
-		RaiseError( g_ErrorLogger , 0 , L"MAC_A‚ÌŒŸØ‚ª¸”s‚µ‚Ü‚µ‚½" );
+		RaiseError( g_ErrorLogger , 0 , L"MAC_Aã®æ¤œè¨¼ãŒå¤±æ•—ã—ã¾ã—ãŸ" );
 		retResponse.pop_back();
 		return false;
 	}
@@ -330,7 +330,7 @@ bool mSCFelica::GetUserID( mBinary& retVal , bool macauth )const
 	DataBlock dt;
 	retVal.clear();
 
-	//“Ç‚İ‚İ
+	//èª­ã¿è¾¼ã¿
 	ReadRequestBlock req;
 	req.push_back( 0x82 );
 
@@ -346,7 +346,7 @@ bool mSCFelica::GetUserID( mBinary& retVal , bool macauth )const
 
 	if( !result )
 	{
-		RaiseError( g_ErrorLogger , 0 , L"ID‚ğ“Ç‚İæ‚ê‚Ü‚¹‚ñ" );
+		RaiseError( g_ErrorLogger , 0 , L"IDã‚’èª­ã¿å–ã‚Œã¾ã›ã‚“" );
 		return false;
 	}
 	retVal = dt[ 0 ].Data.subdata( 10 , 6 );
@@ -358,7 +358,7 @@ bool mSCFelica::GetKeyVersion( uint16_t& retVal , bool macauth )const
 	DataBlock dt;
 	retVal = 0;
 
-	//“Ç‚İ‚İ
+	//èª­ã¿è¾¼ã¿
 	ReadRequestBlock req;
 	req.push_back( 0x86 );
 
@@ -374,7 +374,7 @@ bool mSCFelica::GetKeyVersion( uint16_t& retVal , bool macauth )const
 
 	if( !result )
 	{
-		RaiseError( g_ErrorLogger , 0 , L"Œ®ƒo[ƒWƒ‡ƒ“‚ğ“Ç‚İæ‚ê‚Ü‚¹‚ñ" );
+		RaiseError( g_ErrorLogger , 0 , L"éµãƒãƒ¼ã‚¸ãƒ§ãƒ³ã‚’èª­ã¿å–ã‚Œã¾ã›ã‚“" );
 		return false;
 	}
 	retVal = ( dt[ 0 ].Data[ 1 ] << 8 ) + dt[ 0 ].Data[ 0 ];
@@ -383,17 +383,17 @@ bool mSCFelica::GetKeyVersion( uint16_t& retVal , bool macauth )const
 
 bool mSCFelica::ExecFirstIssuance( bool lock , const IssuanceParam& param )
 {
-	//Œ®‚Ìƒ`ƒFƒbƒN
+	//éµã®ãƒã‚§ãƒƒã‚¯
 	if( !MyFelicaMac.CheckIsWeakKey( param.Key ) )
 	{
-		RaiseError( g_ErrorLogger , 0 , L"w’è‚µ‚½Œ®‚ÍÆãŒ®‚ÌƒŠƒXƒg‚ÉŒfÚ‚³‚ê‚Ä‚¢‚Ü‚·" );
+		RaiseError( g_ErrorLogger , 0 , L"æŒ‡å®šã—ãŸéµã¯è„†å¼±éµã®ãƒªã‚¹ãƒˆã«æ²è¼‰ã•ã‚Œã¦ã„ã¾ã™" );
 		return false;
 	}
 
-	//ID‚Ìİ’è‚ğs‚¤
+	//IDã®è¨­å®šã‚’è¡Œã†
 	mBinary IdBlockData;
 	{
-		//‘‚«‚İ
+		//æ›¸ãè¾¼ã¿
 		DataBlock writedata;
 		writedata.resize( 1 );
 		writedata[ 0 ].BlockNumber = 0x82;
@@ -408,37 +408,37 @@ bool mSCFelica::ExecFirstIssuance( bool lock , const IssuanceParam& param )
 		}
 		if( !RawWrite( writedata ) )
 		{
-			RaiseError( g_ErrorLogger , 0 , L"ID‚ğ‘‚«‚ß‚Ü‚¹‚ñ" );
+			RaiseError( g_ErrorLogger , 0 , L"IDã‚’æ›¸ãè¾¼ã‚ã¾ã›ã‚“" );
 			return false;
 		}
-		//Œ®‚Ì‘‚«‚İ‚Ég‚¤‚Ì‚Å•Û‘¶
+		//éµã®æ›¸ãè¾¼ã¿ã«ä½¿ã†ã®ã§ä¿å­˜
 		IdBlockData = writedata[ 0 ].Data;
-		//ƒxƒŠƒtƒ@ƒC
+		//ãƒ™ãƒªãƒ•ã‚¡ã‚¤
 		ReadRequestBlock req;
 		req.push_back( 0x82 );	//ID
 		if( !RawRead( req , writedata ) )
 		{
-			RaiseError( g_ErrorLogger , 0 , L"ID‚ğ“Ç‚İ‚ß‚Ü‚¹‚ñ" );
+			RaiseError( g_ErrorLogger , 0 , L"IDã‚’èª­ã¿è¾¼ã‚ã¾ã›ã‚“" );
 			return false;
 		}
 		for( DWORD i = 0 ; i < 16 ; i++ )
 		{
 			if( IdBlockData[ i ] != writedata[ 0 ].Data[ i ] )
 			{
-				RaiseError( g_ErrorLogger , 0 , L"IDƒxƒŠƒtƒ@ƒCƒGƒ‰[" );
+				RaiseError( g_ErrorLogger , 0 , L"IDãƒ™ãƒªãƒ•ã‚¡ã‚¤ã‚¨ãƒ©ãƒ¼" );
 				return false;
 			}
 		}
 	}
-	//Œ®‚Ì‘‚«‚İ‚ğs‚¤
+	//éµã®æ›¸ãè¾¼ã¿ã‚’è¡Œã†
 	{
-		//‘‚«‚İ
+		//æ›¸ãè¾¼ã¿
 		DataBlock writedata;
 		writedata.resize( 1 );
 		writedata[ 0 ].BlockNumber = 0x87;	//CK
 		if( param.Key.size() == 16 )
 		{
-			//ƒJ[ƒhŒ®
+			//ã‚«ãƒ¼ãƒ‰éµ
 			writedata[ 0 ].Data.assign( 16 , 0x00u );
 			for( DWORD i = 0 ; i < 16 ; i++ )
 			{
@@ -447,11 +447,11 @@ bool mSCFelica::ExecFirstIssuance( bool lock , const IssuanceParam& param )
 		}
 		else if( param.Key.size() == 24 )
 		{
-			//ƒ}ƒXƒ^[Œ®
+			//ãƒã‚¹ã‚¿ãƒ¼éµ
 			mSecureBinary ck;
 			if( !mSCFelicaMac::CalcDiversifiedKey( param.Key , IdBlockData , ck ) )
 			{
-				RaiseError( g_ErrorLogger , 0 , L"ŒÂ•Ê‰»ƒJ[ƒhŒ®‚Ì¶¬‚ª¸”s‚µ‚Ü‚µ‚½" );
+				RaiseError( g_ErrorLogger , 0 , L"å€‹åˆ¥åŒ–ã‚«ãƒ¼ãƒ‰éµã®ç”ŸæˆãŒå¤±æ•—ã—ã¾ã—ãŸ" );
 				return false;
 			}
 			for( DWORD i = 0 ; i < 16 ; i++ )
@@ -461,26 +461,26 @@ bool mSCFelica::ExecFirstIssuance( bool lock , const IssuanceParam& param )
 		}
 		else
 		{
-			RaiseError( g_ErrorLogger , 0 , L"ƒL[‚Ì’·‚³‚ªˆá‚¢‚Ü‚·" );
+			RaiseError( g_ErrorLogger , 0 , L"ã‚­ãƒ¼ã®é•·ã•ãŒé•ã„ã¾ã™" );
 			return false;
 		}
 		if( !RawWrite( writedata ) )
 		{
 			writedata[ 0 ].Data.secure_erase();
-			RaiseError( g_ErrorLogger , 0 , L"ƒL[‚ğ‘‚«‚ß‚Ü‚¹‚ñ" );
+			RaiseError( g_ErrorLogger , 0 , L"ã‚­ãƒ¼ã‚’æ›¸ãè¾¼ã‚ã¾ã›ã‚“" );
 			return false;
 		}
 		writedata[ 0 ].Data.secure_erase();
-		//ƒxƒŠƒtƒ@ƒC‚ğs‚¤
+		//ãƒ™ãƒªãƒ•ã‚¡ã‚¤ã‚’è¡Œã†
 		if( !ExecAuthenticationInternal( param.Key , true ) )
 		{
-			RaiseError( g_ErrorLogger , 0 , L"ƒL[ƒxƒŠƒtƒ@ƒCƒGƒ‰[" );
+			RaiseError( g_ErrorLogger , 0 , L"ã‚­ãƒ¼ãƒ™ãƒªãƒ•ã‚¡ã‚¤ã‚¨ãƒ©ãƒ¼" );
 			return false;
 		}
 	}
-	//ƒJ[ƒhŒ®‚Ìƒo[ƒWƒ‡ƒ“‚ğ‘‚Ş
+	//ã‚«ãƒ¼ãƒ‰éµã®ãƒãƒ¼ã‚¸ãƒ§ãƒ³ã‚’æ›¸è¾¼ã‚€
 	{
-		//‘‚«‚İ
+		//æ›¸ãè¾¼ã¿
 		DataBlock writedata;
 		writedata.resize( 1 );
 		writedata[ 0 ].BlockNumber = 0x86;	//CK
@@ -488,60 +488,60 @@ bool mSCFelica::ExecFirstIssuance( bool lock , const IssuanceParam& param )
 		writedata[ 0 ].Data.push_back( ( param.KeyVersion >> 8 ) & 0xFFu );
 		if( !RawWrite( writedata ) )
 		{
-			RaiseError( g_ErrorLogger , 0 , L"ƒL[ƒo[ƒWƒ‡ƒ“‚ğ‘‚«‚ß‚Ü‚¹‚ñ" );
+			RaiseError( g_ErrorLogger , 0 , L"ã‚­ãƒ¼ãƒãƒ¼ã‚¸ãƒ§ãƒ³ã‚’æ›¸ãè¾¼ã‚ã¾ã›ã‚“" );
 			return false;
 		}
 		uint16_t readversion;
 		if( !GetKeyVersion( readversion , false ) ||
 			( readversion != param.KeyVersion ) )
 		{
-			RaiseError( g_ErrorLogger , 0 , L"ƒL[ƒo[ƒWƒ‡ƒ“ƒxƒŠƒtƒ@ƒCƒGƒ‰[" );
+			RaiseError( g_ErrorLogger , 0 , L"ã‚­ãƒ¼ãƒãƒ¼ã‚¸ãƒ§ãƒ³ãƒ™ãƒªãƒ•ã‚¡ã‚¤ã‚¨ãƒ©ãƒ¼" );
 			return false;
 		}
 	}
-	//ƒƒ‚ƒŠƒRƒ“ƒtƒBƒOƒŒ[ƒVƒ‡ƒ“ƒuƒƒbƒN
+	//ãƒ¡ãƒ¢ãƒªã‚³ãƒ³ãƒ•ã‚£ã‚°ãƒ¬ãƒ¼ã‚·ãƒ§ãƒ³ãƒ–ãƒ­ãƒƒã‚¯
 	{
-		//Eƒƒ‚ƒŠƒRƒ“ƒtƒBƒOƒŒ[ƒVƒ‡ƒ“ƒuƒƒbƒN‚ÍAŒ»İ’l‚ğXV‚·‚éŒ`‚Å‘‚Ş‚Ì‚ÅA‚Ü‚¸‚ÍŒ»İ‚Ìİ’è‚ğ“Ç‚İ‚Ş
+		//ãƒ»ãƒ¡ãƒ¢ãƒªã‚³ãƒ³ãƒ•ã‚£ã‚°ãƒ¬ãƒ¼ã‚·ãƒ§ãƒ³ãƒ–ãƒ­ãƒƒã‚¯ã¯ã€ç¾åœ¨å€¤ã‚’æ›´æ–°ã™ã‚‹å½¢ã§æ›¸è¾¼ã‚€ã®ã§ã€ã¾ãšã¯ç¾åœ¨ã®è¨­å®šã‚’èª­ã¿è¾¼ã‚€
 		DataBlock writedata;
 		ReadRequestBlock req;
-		req.push_back( 0x88 );	//ƒƒ‚ƒŠƒRƒ“ƒtƒBƒOƒŒ[ƒVƒ‡ƒ“ƒuƒƒbƒN
+		req.push_back( 0x88 );	//ãƒ¡ãƒ¢ãƒªã‚³ãƒ³ãƒ•ã‚£ã‚°ãƒ¬ãƒ¼ã‚·ãƒ§ãƒ³ãƒ–ãƒ­ãƒƒã‚¯
 		if( !RawRead( req , writedata ) )
 		{
-			RaiseError( g_ErrorLogger , 0 , L"ƒƒ‚ƒŠƒRƒ“ƒtƒBƒOƒŒ[ƒVƒ‡ƒ“‚ğ“Ç‚İæ‚ê‚Ü‚¹‚ñ" );
+			RaiseError( g_ErrorLogger , 0 , L"ãƒ¡ãƒ¢ãƒªã‚³ãƒ³ãƒ•ã‚£ã‚°ãƒ¬ãƒ¼ã‚·ãƒ§ãƒ³ã‚’èª­ã¿å–ã‚Œã¾ã›ã‚“" );
 			return false;
 		}
-		//ƒƒ‚ƒŠƒRƒ“ƒtƒBƒOƒŒ[ƒVƒ‡ƒ“ƒuƒƒbƒN‚Ìƒf[ƒ^XV
+		//ãƒ¡ãƒ¢ãƒªã‚³ãƒ³ãƒ•ã‚£ã‚°ãƒ¬ãƒ¼ã‚·ãƒ§ãƒ³ãƒ–ãƒ­ãƒƒã‚¯ã®ãƒ‡ãƒ¼ã‚¿æ›´æ–°
 		//byte12 MemoryConfig
 		writedata[ 0 ].Data[ 12 ] = ( param.EnableStateMacReq ) ? ( 1 ) : ( 0 );
-		//byte5 CKACKV‚Ö‚Ì‘‚«‚İ‰Â”Û
+		//byte5 CKã€CKVã¸ã®æ›¸ãè¾¼ã¿å¯å¦
 		writedata[ 0 ].Data[ 5 ] = ( param.EnableKeyChange ) ? ( 1 ) : ( 0 );
-		//byte4 RFƒpƒ‰ƒ[ƒ^
-		//¦‘‚«‚İ‚Í•K‚¸07H‚ğ‘‚ß‚Æ‘‚¢‚Ä‚ ‚é
+		//byte4 RFãƒ‘ãƒ©ãƒ¡ãƒ¼ã‚¿
+		//â€»æ›¸ãè¾¼ã¿æ™‚ã¯å¿…ãš07Hã‚’æ›¸è¾¼ã‚ã¨æ›¸ã„ã¦ã‚ã‚‹
 		writedata[ 0 ].Data[ 4 ] = 7;
-		//byte3 NDEFİ’è
-		//¦‘Î‰‚È‚ç01HA”ñ‘Î‰‚È‚ç00H
+		//byte3 NDEFè¨­å®š
+		//â€»å¯¾å¿œãªã‚‰01Hã€éå¯¾å¿œãªã‚‰00H
 		writedata[ 0 ].Data[ 3 ] = 0;
-		//byte2 ƒAƒNƒZƒXŒ İ’è
+		//byte2 ã‚¢ã‚¯ã‚»ã‚¹æ¨©è¨­å®š
 		writedata[ 0 ].Data[ 2 ] = ( lock ) ? ( 0x00u ) : ( 0xFFu );
 
-		//‘‚«‚İ
+		//æ›¸ãè¾¼ã¿
 		if( !RawWrite( writedata ) )
 		{
-			RaiseError( g_ErrorLogger , 0 , L"ƒƒ‚ƒŠƒRƒ“ƒtƒBƒOƒŒ[ƒVƒ‡ƒ“‚ğ‘‚«‚ß‚Ü‚¹‚ñ" );
+			RaiseError( g_ErrorLogger , 0 , L"ãƒ¡ãƒ¢ãƒªã‚³ãƒ³ãƒ•ã‚£ã‚°ãƒ¬ãƒ¼ã‚·ãƒ§ãƒ³ã‚’æ›¸ãè¾¼ã‚ã¾ã›ã‚“" );
 			return false;
 		}
-		//ƒxƒŠƒtƒ@ƒC‚ğs‚¤
+		//ãƒ™ãƒªãƒ•ã‚¡ã‚¤ã‚’è¡Œã†
 		DataBlock response;
 		if( !RawRead( req , response ) )
 		{
-			RaiseError( g_ErrorLogger , 0 , L"ƒƒ‚ƒŠƒRƒ“ƒtƒBƒOƒŒ[ƒVƒ‡ƒ“‚ğ“Ç‚İ‚ß‚Ü‚¹‚ñ" );
+			RaiseError( g_ErrorLogger , 0 , L"ãƒ¡ãƒ¢ãƒªã‚³ãƒ³ãƒ•ã‚£ã‚°ãƒ¬ãƒ¼ã‚·ãƒ§ãƒ³ã‚’èª­ã¿è¾¼ã‚ã¾ã›ã‚“" );
 			return false;
 		}
 		for( DWORD i = 0 ; i < 16 ; i++ )
 		{
 			if( response[ 0 ].Data[ i ] != writedata[ 0 ].Data[ i ] )
 			{
-				RaiseError( g_ErrorLogger , 0 , L"ƒƒ‚ƒŠƒRƒ“ƒtƒBƒOƒŒ[ƒVƒ‡ƒ“ƒxƒŠƒtƒ@ƒCƒGƒ‰[" );
+				RaiseError( g_ErrorLogger , 0 , L"ãƒ¡ãƒ¢ãƒªã‚³ãƒ³ãƒ•ã‚£ã‚°ãƒ¬ãƒ¼ã‚·ãƒ§ãƒ³ãƒ™ãƒªãƒ•ã‚¡ã‚¤ã‚¨ãƒ©ãƒ¼" );
 				return false;
 			}
 		}
@@ -552,13 +552,13 @@ bool mSCFelica::ExecFirstIssuance( bool lock , const IssuanceParam& param )
 bool mSCFelica::ExecSecondIssuance( bool lock , const Permission& param )
 {
 
-	uint16_t ReadWriteAccess = 0;	//byte0-1 “Ç‚İæ‚èê—p
-	uint16_t ReqAuthR = 0;			//byte6-7 “Ç‚İæ‚è‚ÉŠO•””FØ‚ª•K—v
-	uint16_t ReqAuthW = 0;			//byte8-9 ‘‚«‚İ‚ÉŠO•””FØ‚ª•K—v
-	uint16_t ReqMacW = 0;			//byte10-11 ‘‚«‚İ‚ÉMAC‚Â‚«ƒAƒNƒZƒX‚ª•K—v
-	bool ReqMacStateBlock = false;	//byte12 STATEƒuƒƒbƒN‚Ö‚Ì‘‚«‚İ‚ÉMAC‚Â‚«ƒAƒNƒZƒX‚ª•K—v
+	uint16_t ReadWriteAccess = 0;	//byte0-1 èª­ã¿å–ã‚Šå°‚ç”¨
+	uint16_t ReqAuthR = 0;			//byte6-7 èª­ã¿å–ã‚Šã«å¤–éƒ¨èªè¨¼ãŒå¿…è¦
+	uint16_t ReqAuthW = 0;			//byte8-9 æ›¸ãè¾¼ã¿ã«å¤–éƒ¨èªè¨¼ãŒå¿…è¦
+	uint16_t ReqMacW = 0;			//byte10-11 æ›¸ãè¾¼ã¿ã«MACã¤ãã‚¢ã‚¯ã‚»ã‚¹ãŒå¿…è¦
+	bool ReqMacStateBlock = false;	//byte12 STATEãƒ–ãƒ­ãƒƒã‚¯ã¸ã®æ›¸ãè¾¼ã¿ã«MACã¤ãã‚¢ã‚¯ã‚»ã‚¹ãŒå¿…è¦
 
-	//‘‚İ—pƒf[ƒ^‚ÌƒXƒLƒƒƒ“
+	//æ›¸è¾¼ã¿ç”¨ãƒ‡ãƒ¼ã‚¿ã®ã‚¹ã‚­ãƒ£ãƒ³
 	for( int i = 14 ; 0 <= i ; i-- )
 	{
 		ReqAuthR <<= 1;
@@ -570,7 +570,7 @@ bool mSCFelica::ExecSecondIssuance( bool lock , const Permission& param )
 			ReqAuthR |= 0x0001u;
 			break;
 		default:
-			RaiseError( g_ErrorLogger , i , L"“Ç‚İæ‚èƒAƒNƒZƒXŒ ‚Ìw’è‚ª³‚µ‚­‚ ‚è‚Ü‚¹‚ñ" );
+			RaiseError( g_ErrorLogger , i , L"èª­ã¿å–ã‚Šã‚¢ã‚¯ã‚»ã‚¹æ¨©ã®æŒ‡å®šãŒæ­£ã—ãã‚ã‚Šã¾ã›ã‚“" );
 			return false;
 		}
 
@@ -594,18 +594,18 @@ bool mSCFelica::ExecSecondIssuance( bool lock , const Permission& param )
 			ReqMacW |= 0x0001u;
 			break;
 		default:
-			RaiseError( g_ErrorLogger , i , L"‘‚«‚İƒAƒNƒZƒXŒ ‚Ìw’è‚ª³‚µ‚­‚ ‚è‚Ü‚¹‚ñ" );
+			RaiseError( g_ErrorLogger , i , L"æ›¸ãè¾¼ã¿ã‚¢ã‚¯ã‚»ã‚¹æ¨©ã®æŒ‡å®šãŒæ­£ã—ãã‚ã‚Šã¾ã›ã‚“" );
 			return false;
 		}
 	}
 
-	//MCƒuƒƒbƒN©‘Ì‚ÌƒAƒNƒZƒXŒ (ƒƒbƒN‚È‚µ‚È‚çRW‚Æ‚µ‚Ä1‚ğ—§‚Ä‚é)
+	//MCãƒ–ãƒ­ãƒƒã‚¯è‡ªä½“ã®ã‚¢ã‚¯ã‚»ã‚¹æ¨©(ãƒ­ãƒƒã‚¯ãªã—ãªã‚‰RWã¨ã—ã¦1ã‚’ç«‹ã¦ã‚‹)
 	if( !lock )
 	{
 		ReadWriteAccess |= 0x8000u;
 	}
 
-	//STATEƒuƒƒbƒN‚ÉMAC‚ª•K—v‚©”»’è
+	//STATEãƒ–ãƒ­ãƒƒã‚¯ã«MACãŒå¿…è¦ã‹åˆ¤å®š
 	if( ReqAuthR || ReqAuthW )
 	{
 		ReqMacStateBlock = true;
@@ -615,18 +615,18 @@ bool mSCFelica::ExecSecondIssuance( bool lock , const Permission& param )
 		ReqMacStateBlock = false;
 	}
 
-	//ƒƒ‚ƒŠƒRƒ“ƒtƒBƒOƒŒ[ƒVƒ‡ƒ“ƒuƒƒbƒN‚ÌXV
+	//ãƒ¡ãƒ¢ãƒªã‚³ãƒ³ãƒ•ã‚£ã‚°ãƒ¬ãƒ¼ã‚·ãƒ§ãƒ³ãƒ–ãƒ­ãƒƒã‚¯ã®æ›´æ–°
 	{
-		//Eƒƒ‚ƒŠƒRƒ“ƒtƒBƒOƒŒ[ƒVƒ‡ƒ“ƒuƒƒbƒN‚ÍAŒ»İ’l‚ğXV‚·‚éŒ`‚Å‘‚Ş‚Ì‚ÅA‚Ü‚¸‚ÍŒ»İ‚Ìİ’è‚ğ“Ç‚İ‚Ş
+		//ãƒ»ãƒ¡ãƒ¢ãƒªã‚³ãƒ³ãƒ•ã‚£ã‚°ãƒ¬ãƒ¼ã‚·ãƒ§ãƒ³ãƒ–ãƒ­ãƒƒã‚¯ã¯ã€ç¾åœ¨å€¤ã‚’æ›´æ–°ã™ã‚‹å½¢ã§æ›¸è¾¼ã‚€ã®ã§ã€ã¾ãšã¯ç¾åœ¨ã®è¨­å®šã‚’èª­ã¿è¾¼ã‚€
 		DataBlock writedata;
 		ReadRequestBlock req;
-		req.push_back( 0x88 );	//ƒƒ‚ƒŠƒRƒ“ƒtƒBƒOƒŒ[ƒVƒ‡ƒ“ƒuƒƒbƒN
+		req.push_back( 0x88 );	//ãƒ¡ãƒ¢ãƒªã‚³ãƒ³ãƒ•ã‚£ã‚°ãƒ¬ãƒ¼ã‚·ãƒ§ãƒ³ãƒ–ãƒ­ãƒƒã‚¯
 		if( !RawRead( req , writedata ) )
 		{
-			RaiseError( g_ErrorLogger , 0 , L"ƒƒ‚ƒŠƒRƒ“ƒtƒBƒOƒŒ[ƒVƒ‡ƒ“‚ğ“Ç‚İæ‚ê‚Ü‚¹‚ñ" );
+			RaiseError( g_ErrorLogger , 0 , L"ãƒ¡ãƒ¢ãƒªã‚³ãƒ³ãƒ•ã‚£ã‚°ãƒ¬ãƒ¼ã‚·ãƒ§ãƒ³ã‚’èª­ã¿å–ã‚Œã¾ã›ã‚“" );
 			return false;
 		}
-		//ƒƒ‚ƒŠƒRƒ“ƒtƒBƒOƒŒ[ƒVƒ‡ƒ“ƒuƒƒbƒN‚Ìƒf[ƒ^XV
+		//ãƒ¡ãƒ¢ãƒªã‚³ãƒ³ãƒ•ã‚£ã‚°ãƒ¬ãƒ¼ã‚·ãƒ§ãƒ³ãƒ–ãƒ­ãƒƒã‚¯ã®ãƒ‡ãƒ¼ã‚¿æ›´æ–°
 		//byte12 MemoryConfig
 		writedata[ 0 ].Data[ 12 ] = ( ReqMacStateBlock ) ? ( 1 ) : ( 0 );
 		writedata[ 0 ].Data[ 11 ] = (BYTE)( ( ReqMacW >> 8 ) & 0xFFu );
@@ -638,24 +638,24 @@ bool mSCFelica::ExecSecondIssuance( bool lock , const Permission& param )
 		writedata[ 0 ].Data[  1 ] = (BYTE)( ( ReadWriteAccess >> 8 ) & 0xFFu );
 		writedata[ 0 ].Data[  0 ] = (BYTE)( ( ReadWriteAccess >> 0 ) & 0xFFu );
 
-		//‘‚«‚İ
+		//æ›¸ãè¾¼ã¿
 		if( !RawWrite( writedata ) )
 		{
-			RaiseError( g_ErrorLogger , 0 , L"ƒƒ‚ƒŠƒRƒ“ƒtƒBƒOƒŒ[ƒVƒ‡ƒ“‚ğ‘‚«‚ß‚Ü‚¹‚ñ" );
+			RaiseError( g_ErrorLogger , 0 , L"ãƒ¡ãƒ¢ãƒªã‚³ãƒ³ãƒ•ã‚£ã‚°ãƒ¬ãƒ¼ã‚·ãƒ§ãƒ³ã‚’æ›¸ãè¾¼ã‚ã¾ã›ã‚“" );
 			return false;
 		}
-		//ƒxƒŠƒtƒ@ƒC‚ğs‚¤
+		//ãƒ™ãƒªãƒ•ã‚¡ã‚¤ã‚’è¡Œã†
 		DataBlock response;
 		if( !RawRead( req , response ) )
 		{
-			RaiseError( g_ErrorLogger , 0 , L"ƒƒ‚ƒŠƒRƒ“ƒtƒBƒOƒŒ[ƒVƒ‡ƒ“‚ğ“Ç‚İ‚ß‚Ü‚¹‚ñ" );
+			RaiseError( g_ErrorLogger , 0 , L"ãƒ¡ãƒ¢ãƒªã‚³ãƒ³ãƒ•ã‚£ã‚°ãƒ¬ãƒ¼ã‚·ãƒ§ãƒ³ã‚’èª­ã¿è¾¼ã‚ã¾ã›ã‚“" );
 			return false;
 		}
 		for( DWORD i = 0 ; i < 16 ; i++ )
 		{
 			if( response[ 0 ].Data[ i ] != writedata[ 0 ].Data[ i ] )
 			{
-				RaiseError( g_ErrorLogger , 0 , L"ƒƒ‚ƒŠƒRƒ“ƒtƒBƒOƒŒ[ƒVƒ‡ƒ“ƒxƒŠƒtƒ@ƒCƒGƒ‰[" );
+				RaiseError( g_ErrorLogger , 0 , L"ãƒ¡ãƒ¢ãƒªã‚³ãƒ³ãƒ•ã‚£ã‚°ãƒ¬ãƒ¼ã‚·ãƒ§ãƒ³ãƒ™ãƒªãƒ•ã‚¡ã‚¤ã‚¨ãƒ©ãƒ¼" );
 				return false;
 			}
 		}
@@ -668,18 +668,18 @@ bool mSCFelica::ExecAuthentication( const mSecureBinary& key , bool int_auth_onl
 {
 	if( key.size() == 16 )
 	{
-		//ƒJ[ƒhŒ®‚È‚Ì‚Å‚»‚Ì‚Ü‚Üg‚¤
+		//ã‚«ãƒ¼ãƒ‰éµãªã®ã§ãã®ã¾ã¾ä½¿ã†
 		return ExecAuthenticationInternal( key , int_auth_only );
 	}
 	else if( key.size() == 24 )
 	{
-		//ƒ}ƒXƒ^[Œ®‚È‚Ì‚ÅƒJ[ƒhŒ®‚ğ“±o
+		//ãƒã‚¹ã‚¿ãƒ¼éµãªã®ã§ã‚«ãƒ¼ãƒ‰éµã‚’å°å‡º
 		ReadRequestBlock idreq;
 		DataBlock idrsp;
 		idreq.push_back( 0x82u );
 		if( !RawRead( idreq , idrsp ) )
 		{
-			RaiseError( g_ErrorLogger , 0 , L"ID‚ğ“Ç‚İæ‚ê‚Ü‚¹‚ñ" );
+			RaiseError( g_ErrorLogger , 0 , L"IDã‚’èª­ã¿å–ã‚Œã¾ã›ã‚“" );
 			MyFelicaMac.ClearKey();
 			return false;
 		}
@@ -687,7 +687,7 @@ bool mSCFelica::ExecAuthentication( const mSecureBinary& key , bool int_auth_onl
 		mSecureBinary cardkey;
 		if( !mSCFelicaMac::CalcDiversifiedKey( key , idrsp[ 0 ].Data , cardkey ) )
 		{
-			RaiseError( g_ErrorLogger , 0 , L"ŒÂ•Ê‰»ƒJ[ƒhŒ®‚ğ“±o‚Å‚«‚Ü‚¹‚ñ" );
+			RaiseError( g_ErrorLogger , 0 , L"å€‹åˆ¥åŒ–ã‚«ãƒ¼ãƒ‰éµã‚’å°å‡ºã§ãã¾ã›ã‚“" );
 			MyFelicaMac.ClearKey();
 			return false;
 		}
@@ -695,7 +695,7 @@ bool mSCFelica::ExecAuthentication( const mSecureBinary& key , bool int_auth_onl
 	}
 	else
 	{
-		RaiseError( g_ErrorLogger , 0 , L"Œ®‚ÌƒTƒCƒY‚ªˆá‚¢‚Ü‚·" );
+		RaiseError( g_ErrorLogger , 0 , L"éµã®ã‚µã‚¤ã‚ºãŒé•ã„ã¾ã™" );
 		MyFelicaMac.ClearKey();
 		return false;
 	}
@@ -706,30 +706,30 @@ bool mSCFelica::ExecAuthenticationInternal( const mSecureBinary& key , bool int_
 
 	if( key.size() != 16 )
 	{
-		RaiseError( g_ErrorLogger , 0 , L"Œ®‚ÌƒTƒCƒY‚ªˆá‚¢‚Ü‚·" );
+		RaiseError( g_ErrorLogger , 0 , L"éµã®ã‚µã‚¤ã‚ºãŒé•ã„ã¾ã™" );
 		MyFelicaMac.ClearKey();
 		return false;
 	}
 
-	//Œ®‚Ìİ’è‚ÆAƒJ[ƒh‚É‘—‚éƒ`ƒƒƒŒƒ“ƒW‚Ìæ“¾
+	//éµã®è¨­å®šã¨ã€ã‚«ãƒ¼ãƒ‰ã«é€ã‚‹ãƒãƒ£ãƒ¬ãƒ³ã‚¸ã®å–å¾—
 	mBinary challenge;
 	MyFelicaMac.SetKey( key , challenge );
 
-	//ƒ`ƒƒƒŒƒ“ƒW‚Ì‘‚«‚İ
+	//ãƒãƒ£ãƒ¬ãƒ³ã‚¸ã®æ›¸ãè¾¼ã¿
 	{
 		DataBlock writedata;
 		writedata.resize( 1 );
-		writedata[ 0 ].BlockNumber = 0x80;	//RC(ƒ‰ƒ“ƒ_ƒ€ƒ`ƒƒƒŒƒ“ƒW)
+		writedata[ 0 ].BlockNumber = 0x80;	//RC(ãƒ©ãƒ³ãƒ€ãƒ ãƒãƒ£ãƒ¬ãƒ³ã‚¸)
 		writedata[ 0 ].Data = challenge;
 		if( !RawWrite( writedata ) )
 		{
-			RaiseError( g_ErrorLogger , 0 , L"ƒ`ƒƒƒŒƒ“ƒW’l‚ğ‘‚«‚ß‚Ü‚¹‚ñ" );
+			RaiseError( g_ErrorLogger , 0 , L"ãƒãƒ£ãƒ¬ãƒ³ã‚¸å€¤ã‚’æ›¸ãè¾¼ã‚ã¾ã›ã‚“" );
 			MyFelicaMac.ClearKey();
 			return false;
 		}
 	}
 
-	//ŒŸØƒf[ƒ^‚ÆMAC_A‚ğæ“¾‚µ‚Ä“à•””FØ‚ğs‚¤B‚Â‚¢‚Å‚ÉWCNT‚ğæ“¾‚·‚éB
+	//æ¤œè¨¼ãƒ‡ãƒ¼ã‚¿ã¨MAC_Aã‚’å–å¾—ã—ã¦å†…éƒ¨èªè¨¼ã‚’è¡Œã†ã€‚ã¤ã„ã§ã«WCNTã‚’å–å¾—ã™ã‚‹ã€‚
 	DWORD wcnt = 0;
 	{
 		ReadRequestBlock req;
@@ -737,28 +737,28 @@ bool mSCFelica::ExecAuthenticationInternal( const mSecureBinary& key , bool int_
 		req.push_back( 0x86u );	//CKV
 		if( !int_auth_only )
 		{
-			req.push_back( 0x90u );	//WCNTiŠO•””FØ‚Ìê‡‚Ì‚İ•K—vj
+			req.push_back( 0x90u );	//WCNTï¼ˆå¤–éƒ¨èªè¨¼ã®å ´åˆã®ã¿å¿…è¦ï¼‰
 		}
 		DataBlock response;
 		if( !MacReadInternal( req , response ) )
 		{
-			RaiseError( g_ErrorLogger , 0 , L"“à•””FØ‚ª¸”s‚µ‚Ü‚µ‚½" );
+			RaiseError( g_ErrorLogger , 0 , L"å†…éƒ¨èªè¨¼ãŒå¤±æ•—ã—ã¾ã—ãŸ" );
 			MyFelicaMac.ClearKey();
 			return false;
 		}
 
-		//“à•””FØ‚Ì‚İs‚¤ê‡‚Í‚±‚±‚Å‚¨‚µ‚Ü‚¢
+		//å†…éƒ¨èªè¨¼ã®ã¿è¡Œã†å ´åˆã¯ã“ã“ã§ãŠã—ã¾ã„
 		if( int_auth_only )
 		{
-			//“à•””FØ‚Ì‚İ¬Œ÷
+			//å†…éƒ¨èªè¨¼ã®ã¿æˆåŠŸ
 			return true;
 		}
 
-		//WCNT‚Ì’l
+		//WCNTã®å€¤
 		wcnt = ( response[ 2 ].Data[ 2 ] << 16 ) + ( response[ 2 ].Data[ 1 ] << 8 ) + ( response[ 2 ].Data[ 0 ] << 0 );
 	}
 
-	//STATE‚ÌEXT_AUTH‚É01H‚ğ‘‚ŞB‘‚«‚İ¬Œ÷‚ÅŠO•””FØ¬Œ÷i‘ŠŒİ”FØ¬—§j
+	//STATEã®EXT_AUTHã«01Hã‚’æ›¸è¾¼ã‚€ã€‚æ›¸ãè¾¼ã¿æˆåŠŸã§å¤–éƒ¨èªè¨¼æˆåŠŸï¼ˆï¼ç›¸äº’èªè¨¼æˆç«‹ï¼‰
 	{
 		DataBlockEntry extdata;
 		extdata.BlockNumber = 0x92u; //STATE
@@ -766,13 +766,13 @@ bool mSCFelica::ExecAuthenticationInternal( const mSecureBinary& key , bool int_
 		extdata.Data[ 0 ] = 1;
 		if( !MacWriteInternal( extdata , wcnt ) )
 		{
-			RaiseError( g_ErrorLogger , 0 , L"ŠO•””FØ‚ª¸”s‚µ‚Ü‚µ‚½" );
+			RaiseError( g_ErrorLogger , 0 , L"å¤–éƒ¨èªè¨¼ãŒå¤±æ•—ã—ã¾ã—ãŸ" );
 			MyFelicaMac.ClearKey();
 			return false;
 		}
 	}
 
-	//‘ŠŒİ”FØ¬—§
+	//ç›¸äº’èªè¨¼æˆç«‹
 	return true;
 }
 
@@ -780,37 +780,37 @@ bool mSCFelica::CalcHash( const mBinary& in , mBinary& rethash )
 {
 	rethash.clear();
 
-	//–¢”FØó‘ÔH
+	//æœªèªè¨¼çŠ¶æ…‹ï¼Ÿ
 	if( MyFelicaMac.IsKeyExist() )
 	{
-		RaiseError( g_ErrorLogger , 0 , L"”FØÏ‚İ‚Å‚·" );
+		RaiseError( g_ErrorLogger , 0 , L"èªè¨¼æ¸ˆã¿ã§ã™" );
 		return false;
 	}
 
-	//ƒ`ƒƒƒŒƒ“ƒW‚Ì‘‚«‚İ
+	//ãƒãƒ£ãƒ¬ãƒ³ã‚¸ã®æ›¸ãè¾¼ã¿
 	DataBlock writedata;
 	writedata.resize( 1 );
-	writedata[ 0 ].BlockNumber = 0x80;	//RC(ƒ‰ƒ“ƒ_ƒ€ƒ`ƒƒƒŒƒ“ƒW)
+	writedata[ 0 ].BlockNumber = 0x80;	//RC(ãƒ©ãƒ³ãƒ€ãƒ ãƒãƒ£ãƒ¬ãƒ³ã‚¸)
 	writedata[ 0 ].Data = in;
 	if( !RawWrite( writedata ) )
 	{
-		RaiseError( g_ErrorLogger , 0 , L"ƒnƒbƒVƒ…ƒf[ƒ^‚ğ‘‚«‚ß‚Ü‚¹‚ñ" );
+		RaiseError( g_ErrorLogger , 0 , L"ãƒãƒƒã‚·ãƒ¥ãƒ‡ãƒ¼ã‚¿ã‚’æ›¸ãè¾¼ã‚ã¾ã›ã‚“" );
 		MyFelicaMac.ClearKey();
 		return false;
 	}
 
-	//Œ‹‰Ê‚Ìæ“¾
+	//çµæœã®å–å¾—
 	ReadRequestBlock req;
 	req.push_back( 0x82u );	//ID
 	req.push_back( 0x81u );	//MAC
 	DataBlock response;
 	if( !RawRead( req , response ) )
 	{
-		RaiseError( g_ErrorLogger , 0 , L"ƒnƒbƒVƒ…’læ“¾‚ª¸”s‚µ‚Ü‚µ‚½" );
+		RaiseError( g_ErrorLogger , 0 , L"ãƒãƒƒã‚·ãƒ¥å€¤å–å¾—ãŒå¤±æ•—ã—ã¾ã—ãŸ" );
 		return false;
 	}
 
-	//Œ‹‰Ê‚ÌŠi”[
+	//çµæœã®æ ¼ç´
 	rethash = response[ 1 ].Data.subdata( 0 , 8 );
 	return true;
 }
@@ -820,17 +820,17 @@ bool mSCFelica::MacWriteInternal( const DataBlockEntry& data , DWORD wcnt )const
 	DataBlockEntry mac;
 	if( !MyFelicaMac.CreateMacA( data , mac , wcnt ) )
 	{
-		RaiseError( g_ErrorLogger , 0 , L"MAC_A‚Ì¶¬‚ª¸”s‚µ‚Ü‚µ‚½" );
+		RaiseError( g_ErrorLogger , 0 , L"MAC_Aã®ç”ŸæˆãŒå¤±æ•—ã—ã¾ã—ãŸ" );
 		return false;
 	}
 
 	DataBlock datablock;
-	datablock.push_back( data );	//©STATE
-	datablock.push_back( mac );		//©Zo‚µ‚½MAC
+	datablock.push_back( data );	//â†STATE
+	datablock.push_back( mac );		//â†ç®—å‡ºã—ãŸMAC
 
 	if( !RawWrite( datablock ) )
 	{
-		RaiseError( g_ErrorLogger , 0 , L"MAC‚Â‚«‘‚«‚İ‚ª¸”s‚µ‚Ü‚µ‚½" );
+		RaiseError( g_ErrorLogger , 0 , L"MACã¤ãæ›¸ãè¾¼ã¿ãŒå¤±æ•—ã—ã¾ã—ãŸ" );
 		return false;
 	}
 	return true;
@@ -838,7 +838,7 @@ bool mSCFelica::MacWriteInternal( const DataBlockEntry& data , DWORD wcnt )const
 
 bool mSCFelica::GetChecksumResult( bool macauth )const
 {
-	//“Ç‚İ‚İ
+	//èª­ã¿è¾¼ã¿
 	ReadRequestBlock req;
 	DataBlock dt;
 	req.push_back( 0xA0u );	//CRC_CHECK
@@ -855,7 +855,7 @@ bool mSCFelica::GetChecksumResult( bool macauth )const
 
 	if( !result )
 	{
-		RaiseError( g_ErrorLogger , 0 , L"CRCŒŸØŒ‹‰Ê‚ğ“Ç‚İæ‚ê‚Ü‚¹‚ñ" );
+		RaiseError( g_ErrorLogger , 0 , L"CRCæ¤œè¨¼çµæœã‚’èª­ã¿å–ã‚Œã¾ã›ã‚“" );
 		return false;
 	}
 
@@ -864,34 +864,34 @@ bool mSCFelica::GetChecksumResult( bool macauth )const
 
 mSCFelica::AuthStatus mSCFelica::GetAuthStatus( void )const
 {
-	//“Ç‚İ‚İ
+	//èª­ã¿è¾¼ã¿
 	ReadRequestBlock req;
 	DataBlock dt;
 	req.push_back( 0x92u );	//STATE
 
 	if( !MacReadInternal( req , dt ) )
 	{
-		//Mac‚Â‚«“Ç‚İ‚İ‚ª¸”s‚·‚éê‡A”FØ‚³‚ê‚Ä‚È‚¢
+		//Macã¤ãèª­ã¿è¾¼ã¿ãŒå¤±æ•—ã™ã‚‹å ´åˆã€èªè¨¼ã•ã‚Œã¦ãªã„
 		return mSCFelica::AuthStatus::Unauthorized;
 	}
 	if( dt[ 0 ].Data[ 0 ] == 0x01u )
 	{
-		//Mac‚Â‚«“Ç‚İ‚İi“à•””FØÏ‚İ‚Ì—vŒj‚ª¬Œ÷‚µAEXT_AUTHƒtƒ‰ƒO‚ª‚P‚È‚çŠO•””FØÏ‚İ
+		//Macã¤ãèª­ã¿è¾¼ã¿ï¼ˆï¼å†…éƒ¨èªè¨¼æ¸ˆã¿ã®è¦ä»¶ï¼‰ãŒæˆåŠŸã—ã€EXT_AUTHãƒ•ãƒ©ã‚°ãŒï¼‘ãªã‚‰å¤–éƒ¨èªè¨¼æ¸ˆã¿
 		return mSCFelica::AuthStatus::ExtAuthorized;
 	}
 
-	//‚»‚êˆÈŠO‚Í“à•””FØ‚Ì‚İ‚ªÏ‚İ
+	//ãã‚Œä»¥å¤–ã¯å†…éƒ¨èªè¨¼ã®ã¿ãŒæ¸ˆã¿
 	return mSCFelica::AuthStatus::IntAuthorized;
 }
 
-//ƒf[ƒ^‚Ì“Ç‚İæ‚è
+//ãƒ‡ãƒ¼ã‚¿ã®èª­ã¿å–ã‚Š
 bool mSCFelica::Read( const ReadRequestBlock& request , DataBlock& retResponse , bool macauth )const
 {
-	//‘O‚Ìƒf[ƒ^‚ğÁ‚·
+	//å‰ã®ãƒ‡ãƒ¼ã‚¿ã‚’æ¶ˆã™
 	retResponse.clear();
 
-	//“¯ˆê‚ÌƒuƒƒbƒN‚ğ‰½“x‚à“Ç‚à‚¤‚Æ‚µ‚Ä‚¢‚È‚¢‚©ƒ`ƒFƒbƒN‚·‚é
-	//ƒ†[ƒU[ƒuƒƒbƒNˆÈŠO‚ğ“Ç‚à‚¤‚Æ‚µ‚Ä‚¢‚È‚¢‚©‚àƒ`ƒFƒbƒN‚·‚é
+	//åŒä¸€ã®ãƒ–ãƒ­ãƒƒã‚¯ã‚’ä½•åº¦ã‚‚èª­ã‚‚ã†ã¨ã—ã¦ã„ãªã„ã‹ãƒã‚§ãƒƒã‚¯ã™ã‚‹
+	//ãƒ¦ãƒ¼ã‚¶ãƒ¼ãƒ–ãƒ­ãƒƒã‚¯ä»¥å¤–ã‚’èª­ã‚‚ã†ã¨ã—ã¦ã„ãªã„ã‹ã‚‚ãƒã‚§ãƒƒã‚¯ã™ã‚‹
 	{
 		using Blocks = std::unordered_set<DWORD>;
 		Blocks blocks;
@@ -899,19 +899,19 @@ bool mSCFelica::Read( const ReadRequestBlock& request , DataBlock& retResponse ,
 		{
 			if( blocks.count( *itr ) )
 			{
-				RaiseError( g_ErrorLogger , *itr , L"“¯ˆêƒuƒƒbƒN‚ğ•¡”‰ñ“Ç‚İo‚»‚¤‚Æ‚µ‚Ü‚µ‚½" );
+				RaiseError( g_ErrorLogger , *itr , L"åŒä¸€ãƒ–ãƒ­ãƒƒã‚¯ã‚’è¤‡æ•°å›èª­ã¿å‡ºãã†ã¨ã—ã¾ã—ãŸ" );
 				return false;
 			}
 			if( 0x0Eu < *itr )
 			{
-				RaiseError( g_ErrorLogger , *itr , L"ƒ†[ƒU[ƒuƒƒbƒNˆÈŠO‚ğ“Ç‚İæ‚ë‚¤‚Æ‚µ‚Ü‚µ‚½" );
+				RaiseError( g_ErrorLogger , *itr , L"ãƒ¦ãƒ¼ã‚¶ãƒ¼ãƒ–ãƒ­ãƒƒã‚¯ä»¥å¤–ã‚’èª­ã¿å–ã‚ã†ã¨ã—ã¾ã—ãŸ" );
 				return false;
 			}
 			blocks.insert( *itr );
 		}
 	}
 
-	//‡Ÿ“Ç‚İ‚İ
+	//é †æ¬¡èª­ã¿è¾¼ã¿
 	{
 		auto execread = [&retResponse,macauth,this]( const ReadRequestBlock& req )->bool
 		{
@@ -928,7 +928,7 @@ bool mSCFelica::Read( const ReadRequestBlock& request , DataBlock& retResponse ,
 			}
 			if( !result )
 			{
-				RaiseError( g_ErrorLogger , 0 , L"ƒf[ƒ^‚ğ“Ç‚İæ‚ê‚Ü‚¹‚ñ" );
+				RaiseError( g_ErrorLogger , 0 , L"ãƒ‡ãƒ¼ã‚¿ã‚’èª­ã¿å–ã‚Œã¾ã›ã‚“" );
 				return false;
 			}
 
@@ -937,7 +937,7 @@ bool mSCFelica::Read( const ReadRequestBlock& request , DataBlock& retResponse ,
 		};
 
 		ReadRequestBlock req;
-		DWORD max_blocks = ( macauth ) ? ( 3 ) : ( 4 );	//MAC•t‚«‚Ìê‡‚Íˆê“x‚É‚RƒuƒƒbƒNA‚Â‚¢‚Ä‚È‚¢ê‡‚Í‚SƒuƒƒbƒN“Ç‚ß‚é
+		DWORD max_blocks = ( macauth ) ? ( 3 ) : ( 4 );	//MACä»˜ãã®å ´åˆã¯ä¸€åº¦ã«ï¼“ãƒ–ãƒ­ãƒƒã‚¯ã€ã¤ã„ã¦ãªã„å ´åˆã¯ï¼”ãƒ–ãƒ­ãƒƒã‚¯èª­ã‚ã‚‹
 
 		for( ReadRequestBlock::const_iterator itr = request.begin() ; itr != request.end() ; itr++ )
 		{
@@ -964,14 +964,14 @@ bool mSCFelica::Read( const ReadRequestBlock& request , DataBlock& retResponse ,
 
 DWORD mSCFelica::GetWCNT( void )const
 {
-	//“Ç‚İ‚İ
+	//èª­ã¿è¾¼ã¿
 	ReadRequestBlock req;
 	req.push_back( 0x90u );
 
 	DataBlock dt;
 	if( !RawRead( req , dt ) )
 	{
-		RaiseError( g_ErrorLogger , 0 , L"WCNT‚ğ“Ç‚İæ‚ê‚Ü‚¹‚ñ" );
+		RaiseError( g_ErrorLogger , 0 , L"WCNTã‚’èª­ã¿å–ã‚Œã¾ã›ã‚“" );
 		return 0xFFFF'FFFFu;
 	}
 
@@ -983,11 +983,11 @@ DWORD mSCFelica::GetWCNT( void )const
 }
 
 
-//ƒf[ƒ^‚Ì‘‚«‚İ
+//ãƒ‡ãƒ¼ã‚¿ã®æ›¸ãè¾¼ã¿
 bool mSCFelica::Write( const DataBlock& data , bool macauth )const
 {
-	//“¯ˆê‚ÌƒuƒƒbƒN‚ğ‰½“x‚à‘‚±‚¤‚Æ‚µ‚Ä‚¢‚È‚¢‚©ƒ`ƒFƒbƒN‚·‚é
-	//ƒ†[ƒU[ƒuƒƒbƒNˆÈŠO‚ğ‘‚±‚¤‚Æ‚µ‚Ä‚¢‚È‚¢‚©‚àƒ`ƒFƒbƒN‚·‚é
+	//åŒä¸€ã®ãƒ–ãƒ­ãƒƒã‚¯ã‚’ä½•åº¦ã‚‚æ›¸ã“ã†ã¨ã—ã¦ã„ãªã„ã‹ãƒã‚§ãƒƒã‚¯ã™ã‚‹
+	//ãƒ¦ãƒ¼ã‚¶ãƒ¼ãƒ–ãƒ­ãƒƒã‚¯ä»¥å¤–ã‚’æ›¸ã“ã†ã¨ã—ã¦ã„ãªã„ã‹ã‚‚ãƒã‚§ãƒƒã‚¯ã™ã‚‹
 	{
 		using Blocks = std::unordered_set<DWORD>;
 		Blocks blocks;
@@ -995,20 +995,20 @@ bool mSCFelica::Write( const DataBlock& data , bool macauth )const
 		{
 			if( blocks.count( itr->BlockNumber ) )
 			{
-				RaiseError( g_ErrorLogger , itr->BlockNumber , L"“¯ˆêƒuƒƒbƒN‚ğ•¡”‰ñ‘‚à‚¤‚Æ‚µ‚Ü‚µ‚½" );
+				RaiseError( g_ErrorLogger , itr->BlockNumber , L"åŒä¸€ãƒ–ãƒ­ãƒƒã‚¯ã‚’è¤‡æ•°å›æ›¸è¾¼ã‚‚ã†ã¨ã—ã¾ã—ãŸ" );
 				return false;
 			}
 			if( 0x0Eu < itr->BlockNumber )
 			{
-				RaiseError( g_ErrorLogger , itr->BlockNumber , L"ƒ†[ƒU[ƒuƒƒbƒNˆÈŠO‚ğ‘‚à‚¤‚Æ‚µ‚Ü‚µ‚½" );
+				RaiseError( g_ErrorLogger , itr->BlockNumber , L"ãƒ¦ãƒ¼ã‚¶ãƒ¼ãƒ–ãƒ­ãƒƒã‚¯ä»¥å¤–ã‚’æ›¸è¾¼ã‚‚ã†ã¨ã—ã¾ã—ãŸ" );
 				return false;
 			}
 			blocks.insert( itr->BlockNumber );
 		}
 	}
 
-	//‡Ÿ‘‚«‚İ
-	DWORD wcnt = ( macauth ) ? ( GetWCNT() ) : ( 0 );	//Œ»İ‚ÌWCNT’l
+	//é †æ¬¡æ›¸ãè¾¼ã¿
+	DWORD wcnt = ( macauth ) ? ( GetWCNT() ) : ( 0 );	//ç¾åœ¨ã®WCNTå€¤
 	for( DataBlock::const_iterator itr = data.begin() ; itr != data.end() ; itr++ )
 	{
 		bool result;
@@ -1025,7 +1025,7 @@ bool mSCFelica::Write( const DataBlock& data , bool macauth )const
 		}
 		if( !result )
 		{
-			RaiseError( g_ErrorLogger , itr->BlockNumber , L"‘‚«‚İ‚ª¸”s‚µ‚Ü‚µ‚½" );
+			RaiseError( g_ErrorLogger , itr->BlockNumber , L"æ›¸ãè¾¼ã¿ãŒå¤±æ•—ã—ã¾ã—ãŸ" );
 			return false;
 		}
 	}
@@ -1034,41 +1034,41 @@ bool mSCFelica::Write( const DataBlock& data , bool macauth )const
 
 bool mSCFelica::UpdateKey( const mSecureBinary& key , uint16_t keyver )
 {
-	//Œ®‚Ì“±o
+	//éµã®å°å‡º
 	mSecureBinary cardkey;
 	if( key.size() == 16 )
 	{
-		//ƒJ[ƒhŒ®‚È‚Ì‚Å‚»‚Ì‚Ü‚Üg‚¤
+		//ã‚«ãƒ¼ãƒ‰éµãªã®ã§ãã®ã¾ã¾ä½¿ã†
 		cardkey = key;
 	}
 	else if( key.size() == 24 )
 	{
-		//ƒ}ƒXƒ^[Œ®‚È‚Ì‚ÅƒJ[ƒhŒ®‚ğ“±o
+		//ãƒã‚¹ã‚¿ãƒ¼éµãªã®ã§ã‚«ãƒ¼ãƒ‰éµã‚’å°å‡º
 		ReadRequestBlock idreq;
 		DataBlock idrsp;
 		idreq.push_back( 0x82u );
 		if( !RawRead( idreq , idrsp ) )
 		{
-			RaiseError( g_ErrorLogger , 0 , L"ID‚ğ“Ç‚İæ‚ê‚Ü‚¹‚ñ" );
+			RaiseError( g_ErrorLogger , 0 , L"IDã‚’èª­ã¿å–ã‚Œã¾ã›ã‚“" );
 			MyFelicaMac.ClearKey();
 			return false;
 		}
 		if( !mSCFelicaMac::CalcDiversifiedKey( key , idrsp[ 0 ].Data , cardkey ) )
 		{
-			RaiseError( g_ErrorLogger , 0 , L"ŒÂ•Ê‰»ƒJ[ƒhŒ®‚ğ“±o‚Å‚«‚Ü‚¹‚ñ" );
+			RaiseError( g_ErrorLogger , 0 , L"å€‹åˆ¥åŒ–ã‚«ãƒ¼ãƒ‰éµã‚’å°å‡ºã§ãã¾ã›ã‚“" );
 			MyFelicaMac.ClearKey();
 			return false;
 		}
 	}
 	else
 	{
-		RaiseError( g_ErrorLogger , 0 , L"Œ®‚ÌƒTƒCƒY‚ªˆá‚¢‚Ü‚·" );
+		RaiseError( g_ErrorLogger , 0 , L"éµã®ã‚µã‚¤ã‚ºãŒé•ã„ã¾ã™" );
 		MyFelicaMac.ClearKey();
 		return false;
 	}
 
-	//ƒJ[ƒhŒ®‚Ì‘‚«‚İ
-	DWORD wcnt = GetWCNT();	//Œ»İ‚ÌWCNT’l
+	//ã‚«ãƒ¼ãƒ‰éµã®æ›¸ãè¾¼ã¿
+	DWORD wcnt = GetWCNT();	//ç¾åœ¨ã®WCNTå€¤
 	DataBlockEntry writedata;
 	writedata.BlockNumber = 0x87;	//CK
 	writedata.Data.assign( 16 , 0x00u );
@@ -1078,20 +1078,20 @@ bool mSCFelica::UpdateKey( const mSecureBinary& key , uint16_t keyver )
 	}
 	if( !MacWriteInternal( writedata , wcnt ) )
 	{
-		RaiseError( g_ErrorLogger , 0 , L"ƒL[‚ÌXV‚ª¸”s‚µ‚Ü‚µ‚½" );
+		RaiseError( g_ErrorLogger , 0 , L"ã‚­ãƒ¼ã®æ›´æ–°ãŒå¤±æ•—ã—ã¾ã—ãŸ" );
 		writedata.Data.secure_erase();
 		return false;
 	}
 	writedata.Data.secure_erase();
 
-	//V‚µ‚¢ƒJ[ƒhŒ®‚ÅŠO•””FØ‚ğ’Ê‚·
+	//æ–°ã—ã„ã‚«ãƒ¼ãƒ‰éµã§å¤–éƒ¨èªè¨¼ã‚’é€šã™
 	if( !ExecAuthenticationInternal( cardkey , false ) )
 	{
-		RaiseError( g_ErrorLogger , 0 , L"V‚µ‚¢ƒL[‚Å‚Ì”FØ‚ª¬Œ÷‚µ‚Ü‚¹‚ñ‚Å‚µ‚½" );
+		RaiseError( g_ErrorLogger , 0 , L"æ–°ã—ã„ã‚­ãƒ¼ã§ã®èªè¨¼ãŒæˆåŠŸã—ã¾ã›ã‚“ã§ã—ãŸ" );
 		return false;
 	}
 
-	//ƒJ[ƒhŒ®ƒo[ƒWƒ‡ƒ“‚Ì‘‚«‚İ
+	//ã‚«ãƒ¼ãƒ‰éµãƒãƒ¼ã‚¸ãƒ§ãƒ³ã®æ›¸ãè¾¼ã¿
 	wcnt = GetWCNT();
 	writedata.BlockNumber = 0x86;	//CKV
 	writedata.Data.assign( 16 , 0x00u );
@@ -1100,14 +1100,14 @@ bool mSCFelica::UpdateKey( const mSecureBinary& key , uint16_t keyver )
 
 	if( !MacWriteInternal( writedata , wcnt ) )
 	{
-		RaiseError( g_ErrorLogger , 0 , L"ƒL[ƒo[ƒWƒ‡ƒ“‚ÌXV‚ª¸”s‚µ‚Ü‚µ‚½" );
+		RaiseError( g_ErrorLogger , 0 , L"ã‚­ãƒ¼ãƒãƒ¼ã‚¸ãƒ§ãƒ³ã®æ›´æ–°ãŒå¤±æ•—ã—ã¾ã—ãŸ" );
 		return false;
 	}
 
 	return true;
 }
 
-//DataBlockEntry‚ğRegData‚É•ÏŠ·
+//DataBlockEntryã‚’RegDataã«å¤‰æ›
 mSCFelica::RegData mSCFelica::DataBlockEntryToRegData( const DataBlockEntry& src )
 {
 	RegData result;
@@ -1137,13 +1137,13 @@ mSCFelica::RegData mSCFelica::DataBlockEntryToRegData( const DataBlockEntry& src
 	return result;
 }
 
-//DataBlockEntry‚ğRegData‚É•ÏŠ·
+//DataBlockEntryã‚’RegDataã«å¤‰æ›
 void mSCFelica::DataBlockEntryToRegData( const DataBlockEntry& src , RegData& retRegData )
 {
 	retRegData = DataBlockEntryToRegData( src );
 }
 
-//RegData‚ğDataBlockEntry‚É•ÏŠ·
+//RegDataã‚’DataBlockEntryã«å¤‰æ›
 mSCFelica::DataBlockEntry mSCFelica::RegDataToDataBlockEntry( const RegData& src )
 {
 	DataBlockEntry result;
@@ -1168,7 +1168,7 @@ mSCFelica::DataBlockEntry mSCFelica::RegDataToDataBlockEntry( const RegData& src
 	return result;
 }
 
-//RegData‚ğDataBlockEntry‚É•ÏŠ·
+//RegDataã‚’DataBlockEntryã«å¤‰æ›
 void mSCFelica::RegDataToDataBlockEntry( const RegData& src , DataBlockEntry& retDataBlockEntry )
 {
 	retDataBlockEntry = RegDataToDataBlockEntry( src );

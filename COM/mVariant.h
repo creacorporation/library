@@ -1,11 +1,11 @@
-//----------------------------------------------------------------------------
-// Variant�^�n���h��
+﻿//----------------------------------------------------------------------------
+// Variant型ハンドラ
 // Copyright (C) 2019- Crea Inc. All rights reserved.
 // This program is released under the MIT License. 
 // see http://opensource.org/licenses/mit-license.php
-// ���쌠�\���⃉�C�Z���X�̉��ς͋֎~����Ă��܂��B
-// ���̃\�[�X�R�[�h�Ɋւ��āA��L���C�Z���X�ȊO�̌_�񓙂͈�ؑ��݂��܂���B
-// (���炩�̌_�񂪂���ꍇ�ł��A�{�\�[�X�R�[�h�͂��̑ΏۊO�ƂȂ�܂�)
+// 著作権表示やライセンスの改変は禁止されています。
+// このソースコードに関して、上記ライセンス以外の契約等は一切存在しません。
+// (何らかの契約がある場合でも、本ソースコードはその対象外となります)
 //----------------------------------------------------------------------------
 
 #ifndef MVARIANT_H_INCLUDED
@@ -78,10 +78,10 @@ public:
 	void Get( bool& retresult , WString& retval )const;
 	void Get( bool& retresult , AString& retval )const;
 
-	//�ێ����Ă���l���e���v���[�g�Ŏw�肵���^�ŕԂ��܂�
-	//retValid : �L���Ȓl���擾�����ꍇ�͐^
-	//			 �ێ����Ă���l�̌^���قȂ邽�ߕϊ��o���Ȃ��ꍇ�͋U���Ԃ�܂�
-	//ret : �ێ����Ă���l
+	//保持している値をテンプレートで指定した型で返します
+	//retValid : 有効な値を取得した場合は真
+	//			 保持している値の型が異なるため変換出来ない場合は偽が返ります
+	//ret : 保持している値
 	template< class T > T Get( bool& retValid )const
 	{
 		T Dummy;
@@ -89,9 +89,9 @@ public:
 		return Dummy;
 	}
 
-	//�ێ����Ă���l���e���v���[�g�Ŏw�肵���^�ŕԂ��܂�
-	//ret : �ێ����Ă���l
-	//���ӁF�G���[�̏ꍇ�͕s��l�ƂȂ�܂�
+	//保持している値をテンプレートで指定した型で返します
+	//ret : 保持している値
+	//注意：エラーの場合は不定値となります
 	template< class T > T Get( void )const
 	{
 		bool Dummy;
@@ -101,9 +101,9 @@ public:
 	WString Get( const wchar_t* defvalue )const;
 	AString Get( const char* defvalue )const;
 
-	//�ێ����Ă���l���e���v���[�g�Ŏw�肵���^�ŕԂ��܂�
-	//defvalue : �G���[�̏ꍇ�ɕԂ��l
-	//ret : �ێ����Ă���l�i�G���[�̏ꍇ��defvalue�̒l�j
+	//保持している値をテンプレートで指定した型で返します
+	//defvalue : エラーの場合に返す値
+	//ret : 保持している値（エラーの場合はdefvalueの値）
 	template< class T > T Get( T defvalue )const
 	{
 		T value;
@@ -117,10 +117,10 @@ public:
 		return defvalue;
 	}
 
-	//�ێ����Ă���l���e���v���[�g�Ŏw�肵���^�ŕԂ��܂�
-	//ret : �ێ����Ă���l
-	//���s����ƁA�e���v���[�g�̑��p�����[�^�Ŏw�肵���^�̗�O�𓊂���B��O�N���X��mExceptionBase����h���������̂ł��邱�ƁB
-	// �Q�l using ExceptionIfFailed = class ErrorClass : mExceptionBase{};
+	//保持している値をテンプレートで指定した型で返します
+	//ret : 保持している値
+	//失敗すると、テンプレートの第二パラメータで指定した型の例外を投げる。例外クラスはmExceptionBaseから派生したものであること。
+	// 参考 using ExceptionIfFailed = class ErrorClass : mExceptionBase{};
 	template< class T , class ExceptionIfFailed > T Get( void )const
 	{
 		static_assert( std::is_base_of<mExceptionBase,ExceptionIfFailed>::value == true , "Exception class is not derived from mExceptionBase" );

@@ -1,11 +1,11 @@
-//----------------------------------------------------------------------------
-// �W�����͓ǂݍ��ݑ���
+﻿//----------------------------------------------------------------------------
+// 標準入力読み込み操作
 // Copyright (C) 2019- Crea Inc. All rights reserved.
 // This program is released under the MIT License. 
 // see http://opensource.org/licenses/mit-license.php
-// ���쌠�\���⃉�C�Z���X�̉��ς͋֎~����Ă��܂��B
-// ���̃\�[�X�R�[�h�Ɋւ��āA��L���C�Z���X�ȊO�̌_�񓙂͈�ؑ��݂��܂���B
-// (���炩�̌_�񂪂���ꍇ�ł��A�{�\�[�X�R�[�h�͂��̑ΏۊO�ƂȂ�܂�)
+// 著作権表示やライセンスの改変は禁止されています。
+// このソースコードに関して、上記ライセンス以外の契約等は一切存在しません。
+// (何らかの契約がある場合でも、本ソースコードはその対象外となります)
 //----------------------------------------------------------------------------
 
 
@@ -16,8 +16,8 @@
 #include "mFileReadStreamBase.h"
 
 /*
-���p�r
-�X�g���[�~���O�I�ɕW�����͂�ǂݎ��܂��B
+●用途
+ストリーミング的に標準入力を読み取ります。
 */
 
 class mStdInStream : public mFileReadStreamBase
@@ -26,18 +26,18 @@ public:
 	mStdInStream();
 	virtual ~mStdInStream();
 
-	//�P�����i�P�o�C�g�j�ǂݍ��݂܂�
-	//ret : �ǂݎ��������
-	//��EOF�̏ꍇ�A���ݓǂݎ���f�[�^���Ȃ����Ƃ������܂�
-	//�i���Ԃ��o�Ă΍ēx�ǂݎ��邩������Ȃ��j
-	//���X�g���[�������S�ɏI�����Ă��邩��m��ɂ�IsEOF���g���܂�
+	//１文字（１バイト）読み込みます
+	//ret : 読み取った文字
+	//※EOFの場合、現在読み取れるデータがないことを示します
+	//（時間が経てば再度読み取れるかもしれない）
+	//※ストリームが完全に終了しているかを知るにはIsEOFを使います
 	virtual INT Read( void );
 
-	//EOF�ɒB���Ă��邩�𒲂ׂ܂�
+	//EOFに達しているかを調べます
 	virtual bool IsEOF( void )const;
 
-	//�t�@�C�����J���Ă��邩�𔻒肵�܂�
-	//�J���Ă���ꍇ�͐^���Ԃ�܂�
+	//ファイルが開いているかを判定します
+	//開いている場合は真が返ります
 	virtual bool IsOpen( void )const;
 
 protected:

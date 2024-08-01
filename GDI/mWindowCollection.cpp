@@ -1,5 +1,5 @@
-//----------------------------------------------------------------------------
-// ƒEƒCƒ“ƒhƒEŠÇ—iŽqƒEƒCƒ“ƒhƒEŠÇ—j
+ï»¿//----------------------------------------------------------------------------
+// ã‚¦ã‚¤ãƒ³ãƒ‰ã‚¦ç®¡ç†ï¼ˆå­ã‚¦ã‚¤ãƒ³ãƒ‰ã‚¦ç®¡ç†ï¼‰
 // Copyright (C) 2016 Fingerling. All rights reserved. 
 // This program is released under the MIT License. 
 // see http://opensource.org/licenses/mit-license.php
@@ -17,7 +17,7 @@ mWindowCollection::mWindowCollection( mWindow* parent )
 
 mWindowCollection::~mWindowCollection()
 {
-	//ŽqƒIƒuƒWƒFƒNƒg‚ð‘S•””jŠü‚·‚é
+	//å­ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã‚’å…¨éƒ¨ç ´æ£„ã™ã‚‹
 	for( IdMap::iterator itr = MyIdMap.begin() ; itr != MyIdMap.end() ; itr++ )
 	{
 		itr->second->OnDestroy();
@@ -27,96 +27,96 @@ mWindowCollection::~mWindowCollection()
 
 mWindow* mWindowCollection::AddControlInternal( mWindowFactory factory , const WString& id , const void* opt )
 {
-	//Žg—p•s”\‚ÈID‚Å‚È‚¢‚©‚ðŠm”F
-	//‚·‚Å‚É‘¶Ý‚·‚éID‚Å‚Í‚È‚¢‚©AID‚ª‹ó•¶Žš—ñ‚Å‚Í‚È‚¢‚©‚ðŠm”F‚·‚é
+	//ä½¿ç”¨ä¸èƒ½ãªIDã§ãªã„ã‹ã‚’ç¢ºèª
+	//ã™ã§ã«å­˜åœ¨ã™ã‚‹IDã§ã¯ãªã„ã‹ã€IDãŒç©ºæ–‡å­—åˆ—ã§ã¯ãªã„ã‹ã‚’ç¢ºèªã™ã‚‹
 	if( id == L"" || MyIdMap.count( id ) )
 	{
-		//Žg—p•s”\‚ÈID‚¾‚Á‚½
-		RaiseAssert( g_ErrorLogger , (ULONG_PTR)factory , L"ID‚ªŽg—p•s‰Â”\‚Å‚·" + id );
+		//ä½¿ç”¨ä¸èƒ½ãªIDã ã£ãŸ
+		RaiseAssert( g_ErrorLogger , (ULONG_PTR)factory , L"IDãŒä½¿ç”¨ä¸å¯èƒ½ã§ã™" + id );
 		return nullptr;
 	}
 
-	//ƒCƒ“ƒXƒ^ƒ“ƒX‚Ìƒnƒ“ƒhƒ‹‚ðŽæ“¾
+	//ã‚¤ãƒ³ã‚¹ã‚¿ãƒ³ã‚¹ã®ãƒãƒ³ãƒ‰ãƒ«ã‚’å–å¾—
 	HINSTANCE instance = GetModuleHandleW( 0 );
 
-	//ƒEƒCƒ“ƒhƒE‚ÌƒCƒ“ƒXƒ^ƒ“ƒX‚ðì¬‚·‚é
+	//ã‚¦ã‚¤ãƒ³ãƒ‰ã‚¦ã®ã‚¤ãƒ³ã‚¹ã‚¿ãƒ³ã‚¹ã‚’ä½œæˆã™ã‚‹
 	mWindow* win = factory( opt );
 	if( win == nullptr )
 	{
-		//ƒtƒ@ƒNƒgƒŠƒƒ\ƒbƒh‚ªŽ¸”s‚µ‚½
-		RaiseAssert( g_ErrorLogger , (ULONG_PTR)factory , L"ƒtƒ@ƒNƒgƒŠƒƒ\ƒbƒh‚ªŽ¸”s‚µ‚Ü‚µ‚½" );
+		//ãƒ•ã‚¡ã‚¯ãƒˆãƒªãƒ¡ã‚½ãƒƒãƒ‰ãŒå¤±æ•—ã—ãŸ
+		RaiseAssert( g_ErrorLogger , (ULONG_PTR)factory , L"ãƒ•ã‚¡ã‚¯ãƒˆãƒªãƒ¡ã‚½ãƒƒãƒ‰ãŒå¤±æ•—ã—ã¾ã—ãŸ" );
 		return nullptr;
 	}
 
-	//ƒEƒCƒ“ƒhƒEƒNƒ‰ƒX‚Ì“o˜^
+	//ã‚¦ã‚¤ãƒ³ãƒ‰ã‚¦ã‚¯ãƒ©ã‚¹ã®ç™»éŒ²
 	mWindow::WindowClassSetting wndclass;
 	bool need_wndcls_register = win->WindowClassSettingCallback( wndclass , opt );
 	if( need_wndcls_register )
 	{
-		//“o˜^‚ð‚·‚éê‡
+		//ç™»éŒ²ã‚’ã™ã‚‹å ´åˆ
 		WNDCLASSEXW wc;
-		wc.cbSize = sizeof( WNDCLASSEXW );				//\‘¢‘Ì‚ÌƒTƒCƒY
-		wc.style = wndclass.Style;						//ƒXƒ^ƒCƒ‹B
-		wc.lpfnWndProc = mGlobalWindowFunc::MessageProcedure;	//ƒEƒCƒ“ƒhƒEƒvƒƒV[ƒWƒƒ
-		wc.cbClsExtra = 0;								//•’Ê0
-		wc.cbWndExtra = 0;								//•’Ê0
-		wc.hInstance = instance;						//ƒCƒ“ƒXƒ^ƒ“ƒXƒnƒ“ƒhƒ‹
-		wc.hIcon = wndclass.Icon;						//ƒEƒCƒ“ƒhƒE‚ÌƒAƒCƒRƒ“BŒã‚Å•Ï‚¦‚ê‚éB
-		wc.hCursor = wndclass.Cursor;					//ƒJ[ƒ\ƒ‹BŒã‚Å•Ï‚¦‚ê‚éB
-		wc.hbrBackground = wndclass.Background;			//ƒoƒbƒNƒOƒ‰ƒEƒ“ƒh‚Ìƒuƒ‰ƒVBŒã‚Å•Ï‚¦‚ê‚éB
-		wc.lpszMenuName = nullptr;						//ƒƒjƒ…[‚Ì–¼‘OBŒã‚Å(ry
-		wc.lpszClassName = wndclass.ClassName.c_str();	//ƒNƒ‰ƒX–¼
-		wc.hIconSm = wndclass.IconSmall;				//¬‚³‚¢Žž‚ÌƒAƒCƒRƒ“BŒã‚Å(ry
+		wc.cbSize = sizeof( WNDCLASSEXW );				//æ§‹é€ ä½“ã®ã‚µã‚¤ã‚º
+		wc.style = wndclass.Style;						//ã‚¹ã‚¿ã‚¤ãƒ«ã€‚
+		wc.lpfnWndProc = mGlobalWindowFunc::MessageProcedure;	//ã‚¦ã‚¤ãƒ³ãƒ‰ã‚¦ãƒ—ãƒ­ã‚·ãƒ¼ã‚¸ãƒ£
+		wc.cbClsExtra = 0;								//æ™®é€š0
+		wc.cbWndExtra = 0;								//æ™®é€š0
+		wc.hInstance = instance;						//ã‚¤ãƒ³ã‚¹ã‚¿ãƒ³ã‚¹ãƒãƒ³ãƒ‰ãƒ«
+		wc.hIcon = wndclass.Icon;						//ã‚¦ã‚¤ãƒ³ãƒ‰ã‚¦ã®ã‚¢ã‚¤ã‚³ãƒ³ã€‚å¾Œã§å¤‰ãˆã‚Œã‚‹ã€‚
+		wc.hCursor = wndclass.Cursor;					//ã‚«ãƒ¼ã‚½ãƒ«ã€‚å¾Œã§å¤‰ãˆã‚Œã‚‹ã€‚
+		wc.hbrBackground = wndclass.Background;			//ãƒãƒƒã‚¯ã‚°ãƒ©ã‚¦ãƒ³ãƒ‰ã®ãƒ–ãƒ©ã‚·ã€‚å¾Œã§å¤‰ãˆã‚Œã‚‹ã€‚
+		wc.lpszMenuName = nullptr;						//ãƒ¡ãƒ‹ãƒ¥ãƒ¼ã®åå‰ã€‚å¾Œã§(ry
+		wc.lpszClassName = wndclass.ClassName.c_str();	//ã‚¯ãƒ©ã‚¹å
+		wc.hIconSm = wndclass.IconSmall;				//å°ã•ã„æ™‚ã®ã‚¢ã‚¤ã‚³ãƒ³ã€‚å¾Œã§(ry
 
 		ATOM atom = ::RegisterClassExW( &wc );
 		if( atom == 0 )
 		{
-			//“o˜^Ž¸”s‚µ‚½‚ªA‚»‚Ì——R‚ÍH
+			//ç™»éŒ²å¤±æ•—ã—ãŸãŒã€ãã®ç†ç”±ã¯ï¼Ÿ
 			DWORD err_code = GetLastError();
-			//‚·‚Å‚É“o˜^Ï‚Ý‚Å‚µ‚½¨–â‘è‚È‚µ
-			//‚»‚Ì‘¼‚È‚ñ‚©‚ÌƒGƒ‰[‚Å‚µ‚½¨ƒGƒ‰[
+			//ã™ã§ã«ç™»éŒ²æ¸ˆã¿ã§ã—ãŸâ†’å•é¡Œãªã—
+			//ãã®ä»–ãªã‚“ã‹ã®ã‚¨ãƒ©ãƒ¼ã§ã—ãŸâ†’ã‚¨ãƒ©ãƒ¼
 			if( err_code != ERROR_CLASS_ALREADY_EXISTS )
 			{
-				RaiseAssert( g_ErrorLogger , 0 , L"ƒEƒCƒ“ƒhƒEƒNƒ‰ƒX‚Ì“o˜^‚ª‚Å‚«‚Ü‚¹‚ñ" );
+				RaiseAssert( g_ErrorLogger , 0 , L"ã‚¦ã‚¤ãƒ³ãƒ‰ã‚¦ã‚¯ãƒ©ã‚¹ã®ç™»éŒ²ãŒã§ãã¾ã›ã‚“" );
 				mDelete win;
 				return nullptr;
 			}
 		}
 	}
 
-	//ƒEƒCƒ“ƒhƒEƒNƒ‰ƒX‚Ì“o˜^‚ª‚Å‚«‚½‚©‚çAŽŸ‚ÍƒEƒCƒ“ƒhƒE‚Ì¶¬‚ðs‚¤
+	//ã‚¦ã‚¤ãƒ³ãƒ‰ã‚¦ã‚¯ãƒ©ã‚¹ã®ç™»éŒ²ãŒã§ããŸã‹ã‚‰ã€æ¬¡ã¯ã‚¦ã‚¤ãƒ³ãƒ‰ã‚¦ã®ç”Ÿæˆã‚’è¡Œã†
 	mWindow::CreateWindowSetting wndsetting;
 	wndsetting.ClassName = wndclass.ClassName;
 	bool window_create = win->CreateWindowCallback( wndsetting , opt );
 
-	//eƒIƒuƒWƒFƒNƒg‚ª‘¶Ý‚·‚é‚©‚Ç‚¤‚©‚ÅWS_CHILD‚ðƒZƒbƒg‚µ‚½‚è‰ðœ‚µ‚½‚è‚·‚é
+	//è¦ªã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆãŒå­˜åœ¨ã™ã‚‹ã‹ã©ã†ã‹ã§WS_CHILDã‚’ã‚»ãƒƒãƒˆã—ãŸã‚Šè§£é™¤ã—ãŸã‚Šã™ã‚‹
 	if( MyParent == nullptr )
 	{
-		wndsetting.Style &= ~WS_CHILD;	//eƒEƒCƒ“ƒhƒE‚Í‚È‚¢
+		wndsetting.Style &= ~WS_CHILD;	//è¦ªã‚¦ã‚¤ãƒ³ãƒ‰ã‚¦ã¯ãªã„
 	}
 	else
 	{
-		wndsetting.Style |= WS_CHILD;	//eƒEƒCƒ“ƒhƒE‚ ‚è
+		wndsetting.Style |= WS_CHILD;	//è¦ªã‚¦ã‚¤ãƒ³ãƒ‰ã‚¦ã‚ã‚Š
 	}
 
 	if( window_create )
 	{
-		//ƒEƒCƒ“ƒhƒE¶¬
+		//ã‚¦ã‚¤ãƒ³ãƒ‰ã‚¦ç”Ÿæˆ
 		HWND hwnd = ::CreateWindowExW(
-			wndsetting.ExStyle,				//Šg’£ƒXƒ^ƒCƒ‹
-			wndsetting.ClassName.c_str(),	//“o˜^‚³‚ê‚Ä‚¢‚éƒNƒ‰ƒX–¼
-			wndsetting.WindowName.c_str(),	//ƒLƒƒƒvƒVƒ‡ƒ“
-			wndsetting.Style ,				//ƒXƒ^ƒCƒ‹
-			wndsetting.x ,					//XÀ•W
-			wndsetting.y ,					//YÀ•W
-			wndsetting.Width ,				//•
-			wndsetting.Height ,				//‚‚³
-			( MyParent == nullptr ) ? ( 0 ) : ( MyParent->MyHwnd ),		//eƒEƒBƒ“ƒhƒE
-			nullptr ,						//ƒƒjƒ…[ƒnƒ“ƒhƒ‹
-			instance ,						//ƒCƒ“ƒXƒ^ƒ“ƒX‚Ìƒnƒ“ƒhƒ‹
-			0 );							//ƒEƒBƒ“ƒhƒEì¬ƒf[ƒ^(MDI) or ”CˆÓ‚Ìƒf[ƒ^
+			wndsetting.ExStyle,				//æ‹¡å¼µã‚¹ã‚¿ã‚¤ãƒ«
+			wndsetting.ClassName.c_str(),	//ç™»éŒ²ã•ã‚Œã¦ã„ã‚‹ã‚¯ãƒ©ã‚¹å
+			wndsetting.WindowName.c_str(),	//ã‚­ãƒ£ãƒ—ã‚·ãƒ§ãƒ³
+			wndsetting.Style ,				//ã‚¹ã‚¿ã‚¤ãƒ«
+			wndsetting.x ,					//Xåº§æ¨™
+			wndsetting.y ,					//Yåº§æ¨™
+			wndsetting.Width ,				//å¹…
+			wndsetting.Height ,				//é«˜ã•
+			( MyParent == nullptr ) ? ( 0 ) : ( MyParent->MyHwnd ),		//è¦ªã‚¦ã‚£ãƒ³ãƒ‰ã‚¦
+			nullptr ,						//ãƒ¡ãƒ‹ãƒ¥ãƒ¼ãƒãƒ³ãƒ‰ãƒ«
+			instance ,						//ã‚¤ãƒ³ã‚¹ã‚¿ãƒ³ã‚¹ã®ãƒãƒ³ãƒ‰ãƒ«
+			0 );							//ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ä½œæˆãƒ‡ãƒ¼ã‚¿(MDI) or ä»»æ„ã®ãƒ‡ãƒ¼ã‚¿
 
-		//‚Å‚«‚ ‚ª‚Á‚½ƒEƒCƒ“ƒhƒE‚Ìƒvƒ‰ƒCƒx[ƒgƒƒ“ƒo‚ð‘‚¢‚Ä‚â‚é
+		//ã§ãã‚ãŒã£ãŸã‚¦ã‚¤ãƒ³ãƒ‰ã‚¦ã®ãƒ—ãƒ©ã‚¤ãƒ™ãƒ¼ãƒˆãƒ¡ãƒ³ãƒã‚’æ›¸ã„ã¦ã‚„ã‚‹
 		win->MyIsWindowClassOriginal = need_wndcls_register;
 		win->MyWindowClass = wndsetting.ClassName;
 		win->MyParent = ( MyParent == nullptr ) ? ( 0 ) : ( MyParent->MyHwnd );
@@ -124,23 +124,23 @@ mWindow* mWindowCollection::AddControlInternal( mWindowFactory factory , const W
 		win->MyHwnd = hwnd;
 		win->MyDefWndproc = nullptr;
 
-		//‚Æ‚±‚ë‚ÅACreateWindow¬Œ÷‚µ‚Ä‚½‚ñ‚¾‚Á‚¯H
+		//ã¨ã“ã‚ã§ã€CreateWindowæˆåŠŸã—ã¦ãŸã‚“ã ã£ã‘ï¼Ÿ
 		if( hwnd == nullptr )
 		{
-			//Ž¸”s‚µ‚Ä‚¢‚é‚Ì‚Å”jŠü‚·‚é
-			RaiseAssert( g_ErrorLogger , (ULONG_PTR)factory , L"ƒEƒCƒ“ƒhƒE‚ðŠJ‚¯‚Ü‚¹‚ñ" + wndsetting.WindowName );
+			//å¤±æ•—ã—ã¦ã„ã‚‹ã®ã§ç ´æ£„ã™ã‚‹
+			RaiseAssert( g_ErrorLogger , (ULONG_PTR)factory , L"ã‚¦ã‚¤ãƒ³ãƒ‰ã‚¦ã‚’é–‹ã‘ã¾ã›ã‚“" + wndsetting.WindowName );
 			mDelete win;
 			return nullptr;
 		}
 
-		//ƒTƒuƒNƒ‰ƒX‰»‚·‚éH
+		//ã‚µãƒ–ã‚¯ãƒ©ã‚¹åŒ–ã™ã‚‹ï¼Ÿ
 		if( wndsetting.ProcedureChange )
 		{
-			//ƒTƒuƒNƒ‰ƒX‰»‚·‚éB
+			//ã‚µãƒ–ã‚¯ãƒ©ã‚¹åŒ–ã™ã‚‹ã€‚
 			if( need_wndcls_register )
 			{
-				//ƒEƒCƒ“ƒhƒEƒNƒ‰ƒX‚ðŽ©ì‚µ‚Ä‚éê‡AÅ‰‚©‚ç‚»‚¤‚È‚Á‚Ä‚é‚ñ‚Å
-				//•Ê‚ÉƒTƒuƒNƒ‰ƒX‰»‚µ‚È‚­‚Ä‚àA‚¿‚á‚ñ‚ÆƒƒbƒZ[ƒWŽóM‚Å‚«‚é‚æI
+				//ã‚¦ã‚¤ãƒ³ãƒ‰ã‚¦ã‚¯ãƒ©ã‚¹ã‚’è‡ªä½œã—ã¦ã‚‹å ´åˆã€æœ€åˆã‹ã‚‰ãã†ãªã£ã¦ã‚‹ã‚“ã§
+				//åˆ¥ã«ã‚µãƒ–ã‚¯ãƒ©ã‚¹åŒ–ã—ãªãã¦ã‚‚ã€ã¡ã‚ƒã‚“ã¨ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸å—ä¿¡ã§ãã‚‹ã‚ˆï¼
 				;
 			}
 			else
@@ -149,24 +149,24 @@ mWindow* mWindowCollection::AddControlInternal( mWindowFactory factory , const W
 				win->MyDefWndproc = (WNDPROC)::SetWindowLongPtrW( hwnd , GWLP_WNDPROC , (LONG_PTR)mGlobalWindowFunc::MessageProcedure );
 				if( win->MyDefWndproc == nullptr && GetLastError() != 0 )
 				{
-					//’u‚«Š·‚¦‚ÉŽ¸”s
-					RaiseAssert( g_ErrorLogger , 0 , L"ƒTƒuƒNƒ‰ƒX‰»‚ªŽ¸”s‚µ‚Ü‚µ‚½" );
+					//ç½®ãæ›ãˆã«å¤±æ•—
+					RaiseAssert( g_ErrorLogger , 0 , L"ã‚µãƒ–ã‚¯ãƒ©ã‚¹åŒ–ãŒå¤±æ•—ã—ã¾ã—ãŸ" );
 					mDelete win;
 					return nullptr;
 				}
 			}
 		}
 
-		//ƒ}ƒbƒv‚É“o˜^(1)@`ƒOƒ[ƒoƒ‹ƒEƒCƒ“ƒhƒEŠÖ”`
+		//ãƒžãƒƒãƒ—ã«ç™»éŒ²(1)ã€€ã€œã‚°ãƒ­ãƒ¼ãƒãƒ«ã‚¦ã‚¤ãƒ³ãƒ‰ã‚¦é–¢æ•°ã€œ
 		if( !mGlobalWindowFunc::Attach( mGlobalWindowFunc::AttachAccessPermission() , hwnd , win ) )
 		{
-			//“o˜^‚Å‚«‚È‚¢
-			RaiseAssert( g_ErrorLogger , (ULONG_PTR)factory , L"ƒOƒ[ƒoƒ‹ƒEƒCƒ“ƒhƒEŠÖ”‚É“o˜^‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½" + wndsetting.WindowName );
+			//ç™»éŒ²ã§ããªã„
+			RaiseAssert( g_ErrorLogger , (ULONG_PTR)factory , L"ã‚°ãƒ­ãƒ¼ãƒãƒ«ã‚¦ã‚¤ãƒ³ãƒ‰ã‚¦é–¢æ•°ã«ç™»éŒ²ã§ãã¾ã›ã‚“ã§ã—ãŸ" + wndsetting.WindowName );
 			mDelete win;
 			return nullptr;
 		}
 
-		//ƒ}ƒbƒv‚É“o˜^(2)@`IDƒ}ƒbƒv`
+		//ãƒžãƒƒãƒ—ã«ç™»éŒ²(2)ã€€ã€œIDãƒžãƒƒãƒ—ã€œ
 		MyIdMap.insert( IdMap::value_type( id , win ) );
 		MyHwndMap.insert( HwndMap::value_type( hwnd , id ) );
 	}
@@ -181,10 +181,10 @@ mWindow* mWindowCollection::AddControlInternal( mWindowFactory factory , const W
 		MyIdMap.insert( IdMap::value_type( id , win ) );
 	}
 
-	//ì¬Š®—¹‚È‚Ì‚ÅƒR[ƒ‹ƒoƒbƒN‚ðŒÄ‚Ño‚·
+	//ä½œæˆå®Œäº†ãªã®ã§ã‚³ãƒ¼ãƒ«ãƒãƒƒã‚¯ã‚’å‘¼ã³å‡ºã™
 	if( !win->OnCreate( opt ) )
 	{
-		RaiseAssert( g_ErrorLogger , 0 , L"OnCreate‚ªŽ¸”s‚µ‚Ü‚µ‚½" );
+		RaiseAssert( g_ErrorLogger , 0 , L"OnCreateãŒå¤±æ•—ã—ã¾ã—ãŸ" );
 		mDelete win;
 		return nullptr;
 	}
@@ -194,25 +194,25 @@ mWindow* mWindowCollection::AddControlInternal( mWindowFactory factory , const W
 
 bool mWindowCollection::RemoveControl( const WString& id )
 {
-	//íœ‘ÎÛ‚ðŒŸõ
+	//å‰Šé™¤å¯¾è±¡ã‚’æ¤œç´¢
 	IdMap::iterator itr = MyIdMap.find( id );
 	if( itr == MyIdMap.end() )
 	{
-		//–³‚¢‚ñ‚Å‚·‚¯‚ÇH
+		//ç„¡ã„ã‚“ã§ã™ã‘ã©ï¼Ÿ
 		RaiseError( g_ErrorLogger , 0 , L"ID not found : " + id );
 		return false;
 	}
 
 	HWND del_hwnd = itr->second->GetMyHwnd();
 
-	//íœˆ—
+	//å‰Šé™¤å‡¦ç†
 	itr->second->OnDestroy();
 	mDelete itr->second;
 	MyIdMap.erase( id );
 
 	if( MyHwndMap.count( del_hwnd ) == 0 )
 	{
-		//–³‚¢‚ñ‚Å‚·‚¯‚ÇH
+		//ç„¡ã„ã‚“ã§ã™ã‘ã©ï¼Ÿ
 		RaiseError( g_ErrorLogger , 0 , L"Associated hwnd is not found : " + id );
 		return false;
 	}
@@ -243,14 +243,14 @@ mWindow* mWindowCollection::Query( const WString& id )const
 
 bool mWindowCollection::AdjustSize( const RECT& world )
 {
-	//ŽqƒIƒuƒWƒFƒNƒg‘S•”‚ÉƒTƒCƒY•ÏX‚³‚¹‚é
+	//å­ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆå…¨éƒ¨ã«ã‚µã‚¤ã‚ºå¤‰æ›´ã•ã›ã‚‹
 	for( IdMap::iterator itr = MyIdMap.begin() ; itr != MyIdMap.end() ; itr++ )
 	{
-		//•ÏXŒã‚ÌˆÊ’u‚ð‹‚ß‚é
+		//å¤‰æ›´å¾Œã®ä½ç½®ã‚’æ±‚ã‚ã‚‹
 		RECT abspos;
 		CalcAbsolutePosition( itr->second->MyPosition , abspos , world );
 
-		//ˆÊ’u•ÏX
+		//ä½ç½®å¤‰æ›´
 		itr->second->MoveWindowPosition( abspos );
 	}
 	return true;
@@ -269,19 +269,19 @@ bool mWindowCollection::AdjustSize( HWND hwnd )
 
 bool mWindowCollection::CalcAbsolutePosition( const mWindow::WindowPosition& srcpos , RECT& retPos , const RECT& world )
 {
-	INT width = world.right - world.left;	//•
-	INT height = world.bottom - world.top;	//‚‚³
+	INT width = world.right - world.left;	//å¹…
+	INT height = world.bottom - world.top;	//é«˜ã•
 
-	retPos.left = (LONG)( srcpos.left.rate * width ) + srcpos.left.offset;			//¶’[‚ÌÀ•W
-	retPos.right = (LONG)( srcpos.right.rate * width ) + srcpos.right.offset;		//‰E’[‚ÌÀ•W
-	retPos.top = (LONG)( srcpos.top.rate * height ) + srcpos.top.offset;			//ã’[‚ÌÀ•W
-	retPos.bottom = (LONG)( srcpos.bottom.rate * height ) + srcpos.bottom.offset;	//‰º’[‚ÌÀ•W
+	retPos.left = (LONG)( srcpos.left.rate * width ) + srcpos.left.offset;			//å·¦ç«¯ã®åº§æ¨™
+	retPos.right = (LONG)( srcpos.right.rate * width ) + srcpos.right.offset;		//å³ç«¯ã®åº§æ¨™
+	retPos.top = (LONG)( srcpos.top.rate * height ) + srcpos.top.offset;			//ä¸Šç«¯ã®åº§æ¨™
+	retPos.bottom = (LONG)( srcpos.bottom.rate * height ) + srcpos.bottom.offset;	//ä¸‹ç«¯ã®åº§æ¨™
 	return true;
 }
 
 bool mWindowCollection::ReflectMessage( UINT msg , WPARAM wparam , LPARAM lparam )
 {
-	//ŽqƒIƒuƒWƒFƒNƒg‘S•”‚ÉƒƒbƒZ[ƒW‚ð‘—M‚·‚é
+	//å­ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆå…¨éƒ¨ã«ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸ã‚’é€ä¿¡ã™ã‚‹
 	for( IdMap::iterator itr = MyIdMap.begin() ; itr != MyIdMap.end() ; itr++ )
 	{
 		itr->second->WindowProcedure( msg , wparam , lparam );

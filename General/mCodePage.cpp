@@ -1,5 +1,5 @@
-//----------------------------------------------------------------------------
-// ƒR[ƒhƒy[ƒWƒnƒ“ƒhƒ‰
+ï»¿//----------------------------------------------------------------------------
+// ã‚³ãƒ¼ãƒ‰ãƒšãƒ¼ã‚¸ãƒãƒ³ãƒ‰ãƒ©
 // Copyright (C) 2020 Crea Inc. All rights reserved.
 // This program is released under the MIT License. 
 // see http://opensource.org/licenses/mit-license.php
@@ -27,7 +27,7 @@ static UINT CodePage2WinDefinition( mCodePage::CodePage cp )
 		code = 1200;
 		break;
 	default:
-		RaiseError( g_ErrorLogger , 0 , L"ƒR[ƒhƒy[ƒW‚Ì’l‚ª•s³‚Å‚·" );
+		RaiseError( g_ErrorLogger , 0 , L"ã‚³ãƒ¼ãƒ‰ãƒšãƒ¼ã‚¸ã®å€¤ãŒä¸æ­£ã§ã™" );
 		code = 0;
 		break;
 	}
@@ -52,43 +52,43 @@ static mCodePage::CodePage WinDefinition2CodePage( UINT cp )
 		code = mCodePage::CodePage::UTF16;
 		break;
 	default:
-		RaiseError( g_ErrorLogger , 0 , L"ƒR[ƒhƒy[ƒW‚Ì’l‚ª•s–¾‚Å‚·" );
+		RaiseError( g_ErrorLogger , 0 , L"ã‚³ãƒ¼ãƒ‰ãƒšãƒ¼ã‚¸ã®å€¤ãŒä¸æ˜ã§ã™" );
 		code = mCodePage::CodePage::UNKNOWN;
 		break;
 	}
 	return code;
 }
 
-//ƒR[ƒhƒy[ƒW‚ğİ’è‚µ‚Ü‚·
+//ã‚³ãƒ¼ãƒ‰ãƒšãƒ¼ã‚¸ã‚’è¨­å®šã—ã¾ã™
 bool mCodePage::SetConsoleInputCodePage( CodePage cp )
 {
 	if( !SetConsoleCP( CodePage2WinDefinition( cp ) ) )
 	{
-		RaiseError( g_ErrorLogger , 0 , L"ƒR[ƒhƒy[ƒW‚Ìİ’è‚Í¸”s‚µ‚Ü‚µ‚½" );
+		RaiseError( g_ErrorLogger , 0 , L"ã‚³ãƒ¼ãƒ‰ãƒšãƒ¼ã‚¸ã®è¨­å®šã¯å¤±æ•—ã—ã¾ã—ãŸ" );
 		return false;
 	}
 	return true;
 }
 
-//ƒR[ƒhƒy[ƒW‚ğæ“¾‚µ‚Ü‚·
+//ã‚³ãƒ¼ãƒ‰ãƒšãƒ¼ã‚¸ã‚’å–å¾—ã—ã¾ã™
 bool mCodePage::GetConsoleInputCodePage( CodePage& retCp )
 {
 	retCp = WinDefinition2CodePage( GetConsoleCP() );
 	return retCp != mCodePage::CodePage::UNKNOWN;
 }
 
-//ƒR[ƒhƒy[ƒW‚ğİ’è‚µ‚Ü‚·
+//ã‚³ãƒ¼ãƒ‰ãƒšãƒ¼ã‚¸ã‚’è¨­å®šã—ã¾ã™
 bool mCodePage::SetConsoleOutputCodePage( CodePage cp )
 {
 	if( !SetConsoleOutputCP( CodePage2WinDefinition( cp ) ) )
 	{
-		RaiseError( g_ErrorLogger , 0 , L"ƒR[ƒhƒy[ƒW‚Ìİ’è‚Í¸”s‚µ‚Ü‚µ‚½" );
+		RaiseError( g_ErrorLogger , 0 , L"ã‚³ãƒ¼ãƒ‰ãƒšãƒ¼ã‚¸ã®è¨­å®šã¯å¤±æ•—ã—ã¾ã—ãŸ" );
 		return false;
 	}
 	return true;
 }
 
-//ƒR[ƒhƒy[ƒW‚ğæ“¾‚µ‚Ü‚·
+//ã‚³ãƒ¼ãƒ‰ãƒšãƒ¼ã‚¸ã‚’å–å¾—ã—ã¾ã™
 bool mCodePage::GetConsoleOutputCodePage( CodePage& retCp )
 {
 	retCp = WinDefinition2CodePage( GetConsoleOutputCP() );

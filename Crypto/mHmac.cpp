@@ -1,16 +1,16 @@
-//----------------------------------------------------------------------------
-// ƒnƒbƒVƒ…ˆ—ƒNƒ‰ƒX
+ï»¿//----------------------------------------------------------------------------
+// ãƒãƒƒã‚·ãƒ¥å‡¦ç†ã‚¯ãƒ©ã‚¹
 // Copyright (C) 2018- Crea Inc. All rights reserved.
 // This program is released under the MIT License. 
 // see http://opensource.org/licenses/mit-license.php
 //----------------------------------------------------------------------------
 
-//QlURL
+//å‚è€ƒURL
 // https://www.ipa.go.jp/security/rfc/RFC2104JA.html
 
 #include "mHmac.h"
 
-//warning C4200: ”ñ•W€‚ÌŠg’£‹@”\‚ªg—p‚³‚ê‚Ä‚¢‚Ü‚·: \‘¢‘Ì‚Ü‚½‚Í‹¤—p‘Ì’†‚ÉƒTƒCƒY‚ª 0 ‚Ì”z—ñ‚ª‚ ‚è‚Ü‚·B
+//warning C4200: éæ¨™æº–ã®æ‹¡å¼µæ©Ÿèƒ½ãŒä½¿ç”¨ã•ã‚Œã¦ã„ã¾ã™: æ§‹é€ ä½“ã¾ãŸã¯å…±ç”¨ä½“ä¸­ã«ã‚µã‚¤ã‚ºãŒ 0 ã®é…åˆ—ãŒã‚ã‚Šã¾ã™ã€‚
 #pragma warning(disable : 4200)  
 
 mHmac::mHmac()
@@ -28,7 +28,7 @@ void mHmac::ReleaseHashObject( void )
 {
 	if( MyCryptKey )
 	{
-		//‚·‚Å‚ÉƒL[‚ª‚ ‚éê‡‚Í”jŠü‚·‚é
+		//ã™ã§ã«ã‚­ãƒ¼ãŒã‚ã‚‹å ´åˆã¯ç ´æ£„ã™ã‚‹
 		CryptDestroyKey( MyCryptKey );
 		MyCryptKey = 0;
 	}
@@ -36,7 +36,7 @@ void mHmac::ReleaseHashObject( void )
 
 bool mHmac::Init( mHash::HashAlgorithm alg , const BYTE* key , DWORD keylen , bool openssl )
 {
-	//HMACƒL[ƒCƒ“ƒ|[ƒg—p‚Ì\‘¢‘Ì
+	//HMACã‚­ãƒ¼ã‚¤ãƒ³ãƒãƒ¼ãƒˆç”¨ã®æ§‹é€ ä½“
 	struct HashKey{
 		BLOBHEADER Header;
 		DWORD Length;
@@ -45,24 +45,24 @@ bool mHmac::Init( mHash::HashAlgorithm alg , const BYTE* key , DWORD keylen , bo
 	HashKey* hmac_key = nullptr;
 	DWORD hmac_key_size = 0;
 
-	//HMACƒIƒuƒWƒFƒNƒg‰Šú‰»
+	//HMACã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆåˆæœŸåŒ–
 	if( !MyHashObject.Init( alg ) )
 	{
-		RaiseAssert( g_ErrorLogger , 0 , L"HMACƒL[‚Ì‰Šú‰»‚É¸”s‚µ‚Ü‚µ‚½" );
+		RaiseAssert( g_ErrorLogger , 0 , L"HMACã‚­ãƒ¼ã®åˆæœŸåŒ–ã«å¤±æ•—ã—ã¾ã—ãŸ" );
 		goto errorend;
 	}
 
-	//HMACƒL[İ’è
+	//HMACã‚­ãƒ¼è¨­å®š
 	if( openssl )
 	{
-		//OpenSSL‚ÆŒİŠ·‚Ìƒ‚[ƒh
-		//¦RFC2202‚ğ‘f’¼‚ÉÀ‘•‚µ‚½‚à‚Ì
+		//OpenSSLã¨äº’æ›ã®ãƒ¢ãƒ¼ãƒ‰
+		//â€»RFC2202ã‚’ç´ ç›´ã«å®Ÿè£…ã—ãŸã‚‚ã®
 		if( keylen < MyHashObject.GetBlockSize() )
 		{
-			//ƒL[‚Ì’·‚³‚ªƒuƒƒbƒN’·‚æ‚è’·‚¢ê‡‚ÍƒnƒbƒVƒ…‚ğæ‚é
+			//ã‚­ãƒ¼ã®é•·ã•ãŒãƒ–ãƒ­ãƒƒã‚¯é•·ã‚ˆã‚Šé•·ã„å ´åˆã¯ãƒãƒƒã‚·ãƒ¥ã‚’å–ã‚‹
 			if( !MyHashObject.Hash( key , keylen ) )
 			{
-				RaiseAssert( g_ErrorLogger , 0 , L"HMACƒL[‚Ì¶¬‚ª¸”s‚µ‚Ü‚µ‚½" );
+				RaiseAssert( g_ErrorLogger , 0 , L"HMACã‚­ãƒ¼ã®ç”ŸæˆãŒå¤±æ•—ã—ã¾ã—ãŸ" );
 				return false;
 			}
 			hmac_key_size = sizeof( HashKey ) + MyHashObject.GetResultLen();
@@ -76,7 +76,7 @@ bool mHmac::Init( mHash::HashAlgorithm alg , const BYTE* key , DWORD keylen , bo
 		}
 		else
 		{
-			//ƒuƒƒbƒN’·‚æ‚è’Z‚¢ê‡‚Í‚»‚Ì‚Ü‚Üg‚¤
+			//ãƒ–ãƒ­ãƒƒã‚¯é•·ã‚ˆã‚ŠçŸ­ã„å ´åˆã¯ãã®ã¾ã¾ä½¿ã†
 			hmac_key_size = sizeof( HashKey ) + keylen;
 			hmac_key = (HashKey*)malloc( hmac_key_size );
 			hmac_key->Header.bType = PLAINTEXTKEYBLOB;
@@ -87,31 +87,31 @@ bool mHmac::Init( mHash::HashAlgorithm alg , const BYTE* key , DWORD keylen , bo
 			MoveMemory( hmac_key->Key , key , keylen );
 		}
 
-		//ƒL[ƒIƒuƒWƒFƒNƒg‚Ì¶¬
+		//ã‚­ãƒ¼ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã®ç”Ÿæˆ
 		ReleaseHashObject();
 		if( !CryptImportKey( MyHashObject.MyCryptProvider , (BYTE*)hmac_key , hmac_key_size , 0 , CRYPT_IPSEC_HMAC_KEY , &MyCryptKey ) )
 		{
-			RaiseAssert( g_ErrorLogger , 0 , L"HMACƒL[ƒIƒuƒWƒFƒNƒg‚ğ¶¬‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½" );
+			RaiseAssert( g_ErrorLogger , 0 , L"HMACã‚­ãƒ¼ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã‚’ç”Ÿæˆã§ãã¾ã›ã‚“ã§ã—ãŸ" );
 			goto errorend;
 		}
 		SecureZeroMemory( &hmac_key , hmac_key_size );
 	}
 	else
 	{
-		//ƒL[‚ğƒXƒNƒ‰ƒ“ƒuƒ‹‚·‚éƒ‚[ƒh
-		//¦ƒ}ƒCƒNƒƒ\ƒtƒg‚ÌHMAC¶¬ƒTƒ“ƒvƒ‹‚Æ“¯‚¶Œ‹‰Ê‚ğ•Ô‚·‚à‚Ì
-		//@https://msdn.microsoft.com/ja-jp/library/windows/desktop/aa382379(v=vs.85).aspx
+		//ã‚­ãƒ¼ã‚’ã‚¹ã‚¯ãƒ©ãƒ³ãƒ–ãƒ«ã™ã‚‹ãƒ¢ãƒ¼ãƒ‰
+		//â€»ãƒã‚¤ã‚¯ãƒ­ã‚½ãƒ•ãƒˆã®HMACç”Ÿæˆã‚µãƒ³ãƒ—ãƒ«ã¨åŒã˜çµæœã‚’è¿”ã™ã‚‚ã®
+		//ã€€https://msdn.microsoft.com/ja-jp/library/windows/desktop/aa382379(v=vs.85).aspx
 		if( !CryptDeriveKey( MyHashObject.MyCryptProvider, CALG_RC4, MyHashObject.MyCryptHash, 0, &MyCryptKey ) )
 		{
-			RaiseAssert( g_ErrorLogger , 0 , L"HMACƒL[—p‚ÌƒnƒbƒVƒ…‚ğæ‚èo‚¹‚Ü‚¹‚ñ" );
+			RaiseAssert( g_ErrorLogger , 0 , L"HMACã‚­ãƒ¼ç”¨ã®ãƒãƒƒã‚·ãƒ¥ã‚’å–ã‚Šå‡ºã›ã¾ã›ã‚“" );
 			goto errorend;
 		}
 	}
 
-	//ƒIƒuƒWƒFƒNƒg‰Šú‰»
+	//ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆåˆæœŸåŒ–
 	if( !Reset() )
 	{
-		RaiseAssert( g_ErrorLogger , 0 , L"ƒnƒbƒVƒ…ƒIƒuƒWƒFƒNƒg‚Ì‰Šú‰»‚É¸”s‚µ‚Ü‚µ‚½" );
+		RaiseAssert( g_ErrorLogger , 0 , L"ãƒãƒƒã‚·ãƒ¥ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã®åˆæœŸåŒ–ã«å¤±æ•—ã—ã¾ã—ãŸ" );
 		goto errorend;
 	}
 
@@ -130,32 +130,32 @@ errorend:
 
 bool mHmac::Reset( void )
 {
-	//ƒIƒuƒWƒFƒNƒg‰Šú‰»
+	//ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆåˆæœŸåŒ–
 	MyHashObject.ReleaseHashObject();
 	if( !CryptCreateHash( MyHashObject.MyCryptProvider , CALG_HMAC , MyCryptKey , 0 , &MyHashObject.MyCryptHash ) )
 	{
-		RaiseAssert( g_ErrorLogger , 0 , L"ƒnƒbƒVƒ…ƒIƒuƒWƒFƒNƒg‚Ì‰Šú‰»‚É¸”s‚µ‚Ü‚µ‚½" );
+		RaiseAssert( g_ErrorLogger , 0 , L"ãƒãƒƒã‚·ãƒ¥ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã®åˆæœŸåŒ–ã«å¤±æ•—ã—ã¾ã—ãŸ" );
 		return false;
 	}
 
-	//ƒnƒbƒVƒ…ƒAƒ‹ƒSƒŠƒYƒ€æ“¾
+	//ãƒãƒƒã‚·ãƒ¥ã‚¢ãƒ«ã‚´ãƒªã‚ºãƒ å–å¾—
 	ALG_ID alg_id;
 	DWORD datalen = sizeof( alg_id );
 	if( !CryptGetHashParam( MyHashObject.MyCryptHash , HP_ALGID , (BYTE*)&alg_id , &datalen , 0 ) )
 	{
-		RaiseAssert( g_ErrorLogger , 0 , L"ƒnƒbƒVƒ…ƒAƒ‹ƒSƒŠƒYƒ€‚ğæ“¾‚Å‚«‚Ü‚¹‚ñ" );
+		RaiseAssert( g_ErrorLogger , 0 , L"ãƒãƒƒã‚·ãƒ¥ã‚¢ãƒ«ã‚´ãƒªã‚ºãƒ ã‚’å–å¾—ã§ãã¾ã›ã‚“" );
 		return false;
 	}
 
-	//HMAC‚Ì‚½‚ß‚Ìî•ñ\‘¢‘Ì‚ğİ’è
+	//HMACã®ãŸã‚ã®æƒ…å ±æ§‹é€ ä½“ã‚’è¨­å®š
 	MyHmacInfo.HashAlgid = alg_id;
-	MyHmacInfo.cbInnerString = 0;	//ƒfƒtƒHƒ‹ƒg‚ğg—p(0x36 * 64)
-	MyHmacInfo.cbOuterString = 0;	//ƒfƒtƒHƒ‹ƒg‚ğg—p(0x5C * 64)
+	MyHmacInfo.cbInnerString = 0;	//ãƒ‡ãƒ•ã‚©ãƒ«ãƒˆã‚’ä½¿ç”¨(0x36 * 64)
+	MyHmacInfo.cbOuterString = 0;	//ãƒ‡ãƒ•ã‚©ãƒ«ãƒˆã‚’ä½¿ç”¨(0x5C * 64)
 	MyHmacInfo.pbInnerString = 0;
 	MyHmacInfo.pbOuterString = 0;
 	if( !CryptSetHashParam( MyHashObject.MyCryptHash, HP_HMAC_INFO, (BYTE*)&MyHmacInfo, 0 ) )
 	{
-		RaiseAssert( g_ErrorLogger , 0 , L"HMACî•ñ\‘¢‘Ì‚ğİ’è‚Å‚«‚Ü‚¹‚ñ" );
+		RaiseAssert( g_ErrorLogger , 0 , L"HMACæƒ…å ±æ§‹é€ ä½“ã‚’è¨­å®šã§ãã¾ã›ã‚“" );
 		return false;
 	}
 

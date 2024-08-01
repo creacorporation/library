@@ -1,25 +1,25 @@
-//----------------------------------------------------------------------------
-// �E�C���h�E�Ǘ��i�X�e�[�^�X�o�[�j
+﻿//----------------------------------------------------------------------------
+// ウインドウ管理（ステータスバー）
 // Copyright (C) 2016 Fingerling. All rights reserved. 
 // This program is released under the MIT License. 
 // see http://opensource.org/licenses/mit-license.php
 //----------------------------------------------------------------------------
 
 /*
-���p�r
-�X�e�[�^�X�o�[�̎����ł�
-�E�{�^����`�F�b�N�{�b�N�X�Ɠ����悤�ȃJ���W�œ\��t���ł��܂��B
-�E�c�[���o�[���������̃p�[�c�ɋ�؂��āA���ꂼ��ɕ�����Ƃ��ݒ�ł��܂��B
-�E�������������c�[���o�[�̍����ɔz�u���āA�c����E���ɔz�u�ł��܂��B
-	��mStatusBar::Option::RightJustifyIndex
-�E���ō����ɔz�u�������̂ƉE���ɔz�u�������̂�������ꍇ�A�ǂ������ɂ��邩�w��ł��܂��B
-	��mStatusBar::Option::RightUpper
+●用途
+ステータスバーの実装です
+・ボタンやチェックボックスと同じようなカンジで貼り付けできます。
+・ツールバーをいくつかのパーツに区切って、それぞれに文字列とか設定できます。
+・左側いくつかをツールバーの左側に配置して、残りを右側に配置できます。
+	⇒mStatusBar::Option::RightJustifyIndex
+・↑で左側に配置したものと右側に配置したものが被った場合、どちらを上にするか指定できます。
+	⇒mStatusBar::Option::RightUpper
 */
 
-//���T���v���R�[�h
+//●サンプルコード
 #ifdef SAMPLE_CODE
-//���g�p�T���v���i�ʃt�@�C���ɃR�s�y���ĉ������j
-//����F�X�e�[�^�X�o�[���t���Ă���E�C���h�E�𐶐����܂��B
+//●使用サンプル（別ファイルにコピペして下さい）
+//動作：ステータスバーが付いているウインドウを生成します。
 #include "GDI/mStatusBar.h"
 class TestWindow : public mWindow
 {
@@ -34,7 +34,7 @@ protected:
 		switch( msg )
 		{
 		case WM_DESTROY:
-			//�E�C���h�E��������I��
+			//ウインドウが閉じたら終了
 			PostQuitMessage( 0 );
 			return 0;
 		case WM_SIZE:
@@ -70,7 +70,7 @@ protected:
 
 		mStatusBar::Option opt;
 		mStatusBar::PartsOptionEntry entry;
-		entry.Width = 100;			//��100�s�N�Z���̃p�[�c�����������
+		entry.Width = 100;			//幅100ピクセルのパーツをいくつも作る
 		entry.Id = L"1";
 		opt.Parts.push_back( entry );
 		entry.Id = L"2";
@@ -86,9 +86,9 @@ protected:
 		entry.Id = L"7";
 		opt.Parts.push_back( entry );
 
-		opt.RightJustifyIndex = 2;	//2�͍��񂹁A�c��͉E��
-		opt.RightUpper = true;	//�E�񂹂̃p�[�c����ɂ���
-		MyChild->AddControl<mStatusBar>( L"STATUS" , &opt );	//�X�e�[�^�X�o�[����
+		opt.RightJustifyIndex = 2;	//2個は左寄せ、残りは右寄せ
+		opt.RightUpper = true;	//右寄せのパーツを上にする
+		MyChild->AddControl<mStatusBar>( L"STATUS" , &opt );	//ステータスバー生成
 	}
 };
 
@@ -122,23 +122,23 @@ class mStatusBar : public mWindow
 {
 public:
 
-	//�{�[�_�[���C���̎��
+	//ボーダーラインの種類
 	enum BorderType
 	{
-		Normal,		//���ʂ̋��E��
-		NoBorder,	//���E���Ȃ�
-		Popout,		//����オ�鋫�E��
+		Normal,		//普通の境界線
+		NoBorder,	//境界線なし
+		Popout,		//盛り上がる境界線
 	};
 
-	//�p�[�c�̐ݒ�
+	//パーツの設定
 	struct PartsOptionEntry
 	{
 
-		WString Id;			//���̃p�[�c�ɂ���ID
-		WString Str;		//�ݒ肷�镶����
-		UINT Width;			//�p�[�c�̃T�C�Y
-		bool Notab;			//�^�u�𖳎�����ꍇtrue
-		BorderType Border;	//�{�[�_�[���C���̎��
+		WString Id;			//このパーツにつけるID
+		WString Str;		//設定する文字列
+		UINT Width;			//パーツのサイズ
+		bool Notab;			//タブを無視する場合true
+		BorderType Border;	//ボーダーラインの種類
 		PartsOptionEntry()
 		{
 			Width = 100;
@@ -147,20 +147,20 @@ public:
 		}
 	};
 
-	//�e�p�[�c�̏����i�[����^
+	//各パーツの情報を格納する型
 	typedef std::vector<PartsOptionEntry> PartsOption;
 
-	//�R���g���[���������̃I�v�V����
-	//���ۂɍ쐬����Ƃ��́AOption�\���̂𒼐ڎg�킸�ɁA�V�`���G�[�V�����ɍ��킹�Ĉȉ����g���ĉ������B
-	//�EOption_UseOption �c �����o�ϐ��𖄂߂ăI�v�V������ݒ肵�����Ƃ�
+	//コントロール生成時のオプション
+	//実際に作成するときは、Option構造体を直接使わずに、シチュエーションに合わせて以下を使って下さい。
+	//・Option_UseOption … メンバ変数を埋めてオプションを設定したいとき
 	struct Option
 	{
-		//�����̕��@
+		//生成の方法
 		enum CreateMethod
 		{
-			USEOPTION,		//�ʏ�̕��@
+			USEOPTION,		//通常の方法
 		};
-		const CreateMethod method;	//RTTI�̑�p�ł��B�ύX�̕K�v�͂���܂���B
+		const CreateMethod method;	//RTTIの代用です。変更の必要はありません。
 
 	protected:
 		Option() = delete;
@@ -169,24 +169,24 @@ public:
 		}
 	};
 
-	//�R���g���[���������̃I�v�V����
+	//コントロール生成時のオプション
 	struct Option_UseOption : public Option
 	{
-		//�c�[���o�[�̉E�[�ɁA�T�C�Y�ύX�p�̃}�[�N������
+		//ツールバーの右端に、サイズ変更用のマークをつける
 		bool SizeGrip;
 
-		//�c�[���`�b�v���o����悤�ɂ���
+		//ツールチップを出せるようにする
 		bool Tooltip;				
 
-		//�e�p�[�c�̃v���p�e�B
+		//各パーツのプロパティ
 		PartsOption Parts;
 	
-		//�E�񂹁E���񂹂Ɋւ�����
-		//���̗v�f�̒l��菬�����ʒu�̃p�[�c�����񂹁A����ȏと�E��
+		//右寄せ・左寄せに関する情報
+		//この要素の値より小さい位置のパーツ→左寄せ、これ以上→右寄せ
 		INT RightJustifyIndex;
 
-		//�E�񂹁E���񂹂Ɋւ�����
-		//���񂹂ƉE�񂹂̃p�[�c��������Ƃ��Atrue=�E�񂹂���ɂ��� false=���񂹂���ɂ���
+		//右寄せ・左寄せに関する情報
+		//左寄せと右寄せのパーツが被ったとき、true=右寄せを上にする false=左寄せを上にする
 		bool RightUpper;
 
 		Option_UseOption() : Option( CreateMethod::USEOPTION )
@@ -198,48 +198,48 @@ public:
 		}
 	};
 
-	//�t�@�N�g�����\�b�h
+	//ファクトリメソッド
 	static mWindow* Factory( const void* option )throw( )
 	{
 		return mNew mStatusBar;
 	}
 
-	//�p�[�c�ɕ������ݒ肷��
-	//id : �ݒ��̃p�[�c(PartsOptionEntry::Id�ɃZ�b�g����������)
-	//str : �Z�b�g������������
-	//notab : �^�u�𖳎�����ꍇtrue
-	//ret : �����ɐ���������true
-	//����ID�̍��ڂ������������ꍇ�A�S���ɃZ�b�g����܂��B
+	//パーツに文字列を設定する
+	//id : 設定先のパーツ(PartsOptionEntry::Idにセットした文字列)
+	//str : セットしたい文字列
+	//notab : タブを無視する場合true
+	//ret : 処理に成功したらtrue
+	//同一IDの項目が複数あった場合、全部にセットされます。
 	bool SetText( const WString& id , const WString& str , bool notab = true );
 
-	//�{�[�_�[���C���̎�ނ�ύX����
-	//id : �ݒ��̃p�[�c(PartsOptionEntry::Id�ɃZ�b�g����������)
-	//border : �ݒ肵�����{�[�_�[���C���̎��
-	//ret : �����ɐ���������true
-	//����ID�̍��ڂ������������ꍇ�A�S���ɃZ�b�g����܂��B
+	//ボーダーラインの種類を変更する
+	//id : 設定先のパーツ(PartsOptionEntry::Idにセットした文字列)
+	//border : 設定したいボーダーラインの種類
+	//ret : 処理に成功したらtrue
+	//同一IDの項目が複数あった場合、全部にセットされます。
 	bool SetBorder( const WString& id , BorderType border );
 
-	//����ύX����
-	//id : �ݒ��̃p�[�c(PartsOptionEntry::Id�ɃZ�b�g����������)
-	//width : �ݒ肵������
-	//ret : �����ɐ���������true
-	//����ID�̍��ڂ������������ꍇ�A�S���ɃZ�b�g����܂��B
+	//幅を変更する
+	//id : 設定先のパーツ(PartsOptionEntry::Idにセットした文字列)
+	//width : 設定したい幅
+	//ret : 処理に成功したらtrue
+	//同一IDの項目が複数あった場合、全部にセットされます。
 	bool SetWidth( const WString& id , UINT width );
 
 protected:
 	mStatusBar();
 	virtual ~mStatusBar();
 
-	//�E�C���h�E�N���X�̓o�^������
+	//ウインドウクラスの登録をする
 	virtual bool WindowClassSettingCallback( WindowClassSetting& retSetting , const void* opt )override;
 
-	//�E�C���h�E���J��
+	//ウインドウを開く
 	virtual bool CreateWindowCallback( CreateWindowSetting& retSetting , const void* opt )override;
 
-	//�E�C���h�E���������������ꍇ�ɃR�[�������
+	//ウインドウ生成を完了した場合にコールされる
 	virtual bool OnCreate( const void* opt )override;
 
-	//�E�C���h�E�v���V�[�W��
+	//ウインドウプロシージャ
 	virtual LRESULT WindowProcedure( UINT msg , WPARAM wparam , LPARAM lparam )override;
 
 private:
@@ -249,40 +249,40 @@ private:
 
 protected:
 
-	//�e�p�[�c�̏��
+	//各パーツの情報
 	PartsOption MyPartsOption;
 
-	//�p�[�c��(�E�[��)�ʒu
+	//パーツの(右端の)位置
 	INT MyPartsPos[ 255 ];
 
-	//���񂹂ƉE�񂹂̃p�[�c��������Ƃ��A�ǂ���̃p�[�c����ɂ��邩
+	//左寄せと右寄せのパーツが被ったとき、どちらのパーツを上にするか
 	bool MyRightUpper;
 
-	//�p�[�c�T�C�Y���X�V����
-	//MyPartsSize�̒l���X�V���܂��B
-	//ret : ���������Ƃ�true
+	//パーツサイズを更新する
+	//MyPartsSizeの値を更新します。
+	//ret : 成功したときtrue
 	bool ModifyPartsSize( void );
 
-	//���Ԗڂ̃p�[�c����E�񂹂ɂ��邩
+	//何番目のパーツから右寄せにするか
 	INT MyRightJustifyIndex;
 
-	//ScanItem����Ăяo�����R�[���o�b�N�֐�
-	//index : ���Ԗڂ̃p�[�c�ɑ΂���R�[���o�b�N�̌Ăяo���ł��邩
-	//ret : ����I���ł����true
+	//ScanItemから呼び出されるコールバック関数
+	//index : 何番目のパーツに対するコールバックの呼び出しであるか
+	//ret : 正常終了であればtrue
 	typedef std::function< bool( INT index ) > ScanItemCallback;
 
-	//�S�p�[�c���X�L�������AID����v���镨�ɑ΂��ăR�[���o�b�N���Ăяo��
-	//id : �R�[���o�b�N�֐��Ăяo���Ώۂ�ID
-	//ret : �R�[���o�b�N�֐���1�x���Ăяo����Ȃ�������true
-	//      �R�[���o�b�N�֐����S��true��Ԃ�����true
-	//      �R�[���o�b�N�֐���false��Ԃ������Ƃ����遨false
-	//�E�R�[���o�b�N�֐���false��Ԃ����ꍇ�ł��AScanItem�̏����͒��f����܂���B
-	//  ���ɂ������Ώۂ̍��ڂ�����ƁA���̍��ڂɑ΂��čĂуR�[������܂��B
+	//全パーツをスキャンし、IDが一致する物に対してコールバックを呼び出す
+	//id : コールバック関数呼び出し対象のID
+	//ret : コールバック関数が1度も呼び出されなかった→true
+	//      コールバック関数が全部trueを返した→true
+	//      コールバック関数がfalseを返したことがある→false
+	//・コールバック関数がfalseを返した場合でも、ScanItemの処理は中断されません。
+	//  他にも処理対象の項目があると、その項目に対して再びコールされます。
 	bool ScanItem( const WString& id , ScanItemCallback callback );
 
-	//�w�肵���C���f�b�N�X�̃p�[�c���Đݒ肷��
-	//index : �Đݒ�Ώۂ̃p�[�c
-	//ret : �������^
+	//指定したインデックスのパーツを再設定する
+	//index : 再設定対象のパーツ
+	//ret : 成功時真
 	bool ModifyParts( INT index );
 
 };

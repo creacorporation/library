@@ -1,5 +1,5 @@
-//----------------------------------------------------------------------------
-// ODBCÚ‘±—pƒ‰ƒCƒuƒ‰ƒŠ
+ï»¿//----------------------------------------------------------------------------
+// ODBCæ¥ç¶šç”¨ãƒ©ã‚¤ãƒ–ãƒ©ãƒª
 // Copyright (C) 2018- Crea Inc. All rights reserved.
 // This program is released under the MIT License. 
 // see http://opensource.org/licenses/mit-license.php
@@ -10,13 +10,13 @@
 #include "../General/mCriticalSectionContainer.h"
 #include "../General/mErrorLogger.h"
 
-//Ã“I•Ï”‚ÌÀ‘ÔéŒ¾
+//é™çš„å¤‰æ•°ã®å®Ÿæ…‹å®£è¨€
 HENV mOdbcEnvironment::MyHenv = 0;
 DWORD mOdbcEnvironment::MyRefCount = 0;
 
 mOdbcEnvironment::mOdbcEnvironment()
 {
-	//ƒNƒŠƒeƒBƒJƒ‹ƒZƒNƒVƒ‡ƒ“
+	//ã‚¯ãƒªãƒ†ã‚£ã‚«ãƒ«ã‚»ã‚¯ã‚·ãƒ§ãƒ³
 	mCriticalSectionTicket cs( g_CriticalSection );
 	MyRefCount++;
 	return;
@@ -24,17 +24,17 @@ mOdbcEnvironment::mOdbcEnvironment()
 
 mOdbcEnvironment::~mOdbcEnvironment()
 {
-	//ƒNƒŠƒeƒBƒJƒ‹ƒZƒNƒVƒ‡ƒ“
+	//ã‚¯ãƒªãƒ†ã‚£ã‚«ãƒ«ã‚»ã‚¯ã‚·ãƒ§ãƒ³
 	mCriticalSectionTicket cs( g_CriticalSection );
 
-	//QÆƒJƒEƒ“ƒg‚ğXV‚µA‚O‚É‚È‚Á‚Ä‚¢‚ê‚Îƒnƒ“ƒhƒ‹‚ğ‰ğ•ú‚·‚é
+	//å‚ç…§ã‚«ã‚¦ãƒ³ãƒˆã‚’æ›´æ–°ã—ã€ï¼ã«ãªã£ã¦ã„ã‚Œã°ãƒãƒ³ãƒ‰ãƒ«ã‚’è§£æ”¾ã™ã‚‹
 	MyRefCount--;
 	if( MyRefCount )
 	{
-		return;	//‚O‚¶‚á‚È‚¢‚Ì‚Å‰½‚à‚µ‚È‚¢
+		return;	//ï¼ã˜ã‚ƒãªã„ã®ã§ä½•ã‚‚ã—ãªã„
 	}
 
-	//‚O‚É‚È‚Á‚½‚Ì‚ÅAƒnƒ“ƒhƒ‹‚ğ‰ğ•ú
+	//ï¼ã«ãªã£ãŸã®ã§ã€ãƒãƒ³ãƒ‰ãƒ«ã‚’è§£æ”¾
 	DisposeHandle();
 	return;
 }
@@ -46,69 +46,69 @@ mOdbcEnvironment::operator bool() const
 
 bool mOdbcEnvironment::NewConnect( const ConnectInfo& info , mOdbcConnection& retConn )
 {
-	//ŠÂ‹«ƒnƒ“ƒhƒ‹‚Ì¶¬
+	//ç’°å¢ƒãƒãƒ³ãƒ‰ãƒ«ã®ç”Ÿæˆ
 	if( !CreateHandle() )
 	{
-		RaiseAssert( g_ErrorLogger , 0 , L"ŠÂ‹«ƒnƒ“ƒhƒ‹‚Ì¶¬ƒGƒ‰[" );
+		RaiseAssert( g_ErrorLogger , 0 , L"ç’°å¢ƒãƒãƒ³ãƒ‰ãƒ«ã®ç”Ÿæˆã‚¨ãƒ©ãƒ¼" );
 		return false;
 	}
 
-	//ƒRƒlƒNƒVƒ‡ƒ“ƒnƒ“ƒhƒ‹‚Ìì¬
+	//ã‚³ãƒã‚¯ã‚·ãƒ§ãƒ³ãƒãƒ³ãƒ‰ãƒ«ã®ä½œæˆ
 	HDBC hdbc = 0;
 	if( !SQL_RESULT_CHECK( SQLAllocHandle( SQL_HANDLE_DBC , MyHenv , &hdbc ) ) )
 	{
-		RaiseAssert( g_ErrorLogger , 0 , L"ƒRƒlƒNƒVƒ‡ƒ“ƒnƒ“ƒhƒ‹‚ğ¶¬‚Å‚«‚Ü‚¹‚ñ" );
+		RaiseAssert( g_ErrorLogger , 0 , L"ã‚³ãƒã‚¯ã‚·ãƒ§ãƒ³ãƒãƒ³ãƒ‰ãƒ«ã‚’ç”Ÿæˆã§ãã¾ã›ã‚“" );
 		return false;
 	}
 	retConn.MyDBCHandle = std::make_shared<mOdbcConnectionHandleContents>( hdbc );
 
-	//ODBCƒhƒ‰ƒCƒo‚ÉÚ‘±
+	//ODBCãƒ‰ãƒ©ã‚¤ãƒã«æ¥ç¶š
 	if( !retConn.SQL_RESULT_CHECK( SQLConnectW(
 		*retConn.MyDBCHandle.get(),
-		const_cast<SQLWCHAR*>( info.DataSource.c_str() ),	//ƒf[ƒ^ƒ\[ƒX–¼
+		const_cast<SQLWCHAR*>( info.DataSource.c_str() ),	//ãƒ‡ãƒ¼ã‚¿ã‚½ãƒ¼ã‚¹å
 		(SQLSMALLINT)info.DataSource.size(),
-		const_cast<SQLWCHAR*>( info.User.c_str() ),			//ƒ†[ƒU[–¼
+		const_cast<SQLWCHAR*>( info.User.c_str() ),			//ãƒ¦ãƒ¼ã‚¶ãƒ¼å
 		(SQLSMALLINT)info.User.size(),
-		const_cast<SQLWCHAR*>( info.Password.c_str() ),		//ƒpƒXƒ[ƒh
+		const_cast<SQLWCHAR*>( info.Password.c_str() ),		//ãƒ‘ã‚¹ãƒ¯ãƒ¼ãƒ‰
 		(SQLSMALLINT)info.Password.size()
 	) ) )
 	{
-		//ƒGƒ‰[î•ñ‚ÍÚ‘±ƒnƒ“ƒhƒ‹‘¤‚É‹L˜^‚³‚ê‚é‚½‚ßAƒIƒuƒWƒFƒNƒg‚Ìì¬©‘Ì‚Í¬Œ÷‚·‚é
-		RaiseError( g_ErrorLogger , 0 , L"ƒf[ƒ^ƒx[ƒX‚ÉÚ‘±‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½" , info.DataSource );
+		//ã‚¨ãƒ©ãƒ¼æƒ…å ±ã¯æ¥ç¶šãƒãƒ³ãƒ‰ãƒ«å´ã«è¨˜éŒ²ã•ã‚Œã‚‹ãŸã‚ã€ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã®ä½œæˆè‡ªä½“ã¯æˆåŠŸã™ã‚‹
+		RaiseError( g_ErrorLogger , 0 , L"ãƒ‡ãƒ¼ã‚¿ãƒ™ãƒ¼ã‚¹ã«æ¥ç¶šã§ãã¾ã›ã‚“ã§ã—ãŸ" , info.DataSource );
 	}
 	else
 	{
-		CreateLogEntry( g_ErrorLogger , 0 , L"ƒf[ƒ^ƒx[ƒX‚ÉÚ‘±‚µ‚Ü‚µ‚½" , info.DataSource );
+		CreateLogEntry( g_ErrorLogger , 0 , L"ãƒ‡ãƒ¼ã‚¿ãƒ™ãƒ¼ã‚¹ã«æ¥ç¶šã—ã¾ã—ãŸ" , info.DataSource );
 	}
 	return true;
 }
 
 bool mOdbcEnvironment::CreateHandle( void )
 {
-	//ƒNƒŠƒeƒBƒJƒ‹ƒZƒNƒVƒ‡ƒ“
+	//ã‚¯ãƒªãƒ†ã‚£ã‚«ãƒ«ã‚»ã‚¯ã‚·ãƒ§ãƒ³
 	mCriticalSectionTicket cs( g_CriticalSection );
 
-	//‚·‚Å‚ÉŠÂ‹«ƒnƒ“ƒhƒ‹‚ª‘¶İ‚·‚éê‡‚Í‚±‚ê‚ğ•Ô‚·
+	//ã™ã§ã«ç’°å¢ƒãƒãƒ³ãƒ‰ãƒ«ãŒå­˜åœ¨ã™ã‚‹å ´åˆã¯ã“ã‚Œã‚’è¿”ã™
 	if( MyHenv )
 	{
 		return true;
 	}
 
-	//‘¶İ‚µ‚È‚¢ê‡‚ÍV‚½‚ÉŠÂ‹«ƒnƒ“ƒhƒ‹‚ğŠm•Û‚·‚é
+	//å­˜åœ¨ã—ãªã„å ´åˆã¯æ–°ãŸã«ç’°å¢ƒãƒãƒ³ãƒ‰ãƒ«ã‚’ç¢ºä¿ã™ã‚‹
 	if( !SQL_SUCCEEDED( SQLAllocHandle( SQL_HANDLE_ENV , SQL_NULL_HANDLE , &MyHenv ) ) )
 	{
-		RaiseAssert( g_ErrorLogger , 0 , L"ŠÂ‹«ƒnƒ“ƒhƒ‹‚ğŠm•Û‚Å‚«‚Ü‚¹‚ñ" );
+		RaiseAssert( g_ErrorLogger , 0 , L"ç’°å¢ƒãƒãƒ³ãƒ‰ãƒ«ã‚’ç¢ºä¿ã§ãã¾ã›ã‚“" );
 		goto end;
 	}
 
-	//ODBCƒo[ƒWƒ‡ƒ“‚Ì’Ê’m
+	//ODBCãƒãƒ¼ã‚¸ãƒ§ãƒ³ã®é€šçŸ¥
 	if( !SQL_SUCCEEDED( SQLSetEnvAttr( MyHenv , SQL_ATTR_ODBC_VERSION , (SQLPOINTER)SQL_OV_ODBC3_80 , SQL_IS_UINTEGER ) ) )
 	{
-		RaiseAssert( g_ErrorLogger , 0 , L"ODBCƒo[ƒWƒ‡ƒ“‚Ìİ’èƒGƒ‰[‚Å‚·" );
+		RaiseAssert( g_ErrorLogger , 0 , L"ODBCãƒãƒ¼ã‚¸ãƒ§ãƒ³ã®è¨­å®šã‚¨ãƒ©ãƒ¼ã§ã™" );
 		goto end;
 	}
 
-	CreateLogEntry( g_ErrorLogger , 0  , L"ODBCŠÂ‹«ƒnƒ“ƒhƒ‹‚ğV‹K‚Éì¬‚µ‚Ü‚µ‚½" );
+	CreateLogEntry( g_ErrorLogger , 0  , L"ODBCç’°å¢ƒãƒãƒ³ãƒ‰ãƒ«ã‚’æ–°è¦ã«ä½œæˆã—ã¾ã—ãŸ" );
 	return true;
 
 end:
@@ -122,11 +122,11 @@ void mOdbcEnvironment::DisposeHandle( void )
 	{
 		if( !SQL_SUCCEEDED( SQLFreeHandle( SQL_HANDLE_ENV , MyHenv ) ) )
 		{
-			RaiseAssert( g_ErrorLogger , 0 , L"ODBCŠÂ‹«ƒnƒ“ƒhƒ‹‚Ì‰ğ•ú‚É¸”s‚µ‚Ü‚µ‚½" );
+			RaiseAssert( g_ErrorLogger , 0 , L"ODBCç’°å¢ƒãƒãƒ³ãƒ‰ãƒ«ã®è§£æ”¾ã«å¤±æ•—ã—ã¾ã—ãŸ" );
 		}
 		else
 		{
-			CreateLogEntry( g_ErrorLogger , 0  , L"ODBCŠÂ‹«ƒnƒ“ƒhƒ‹‚ª‰ğ•ú‚³‚ê‚Ü‚µ‚½" );
+			CreateLogEntry( g_ErrorLogger , 0  , L"ODBCç’°å¢ƒãƒãƒ³ãƒ‰ãƒ«ãŒè§£æ”¾ã•ã‚Œã¾ã—ãŸ" );
 		}
 		MyHenv = 0;
 	}
@@ -135,7 +135,7 @@ void mOdbcEnvironment::DisposeHandle( void )
 
 bool mOdbcEnvironment::SQL_RESULT_CHECK( SQLRETURN rc )
 {
-	//¬Œ÷ˆÈŠO‚Ìê‡‚É‚ÍA‰½‚ç‚©‚Ì’Ç‰Áî•ñ‚ª‚ ‚é‚Æ‚İ‚ÄAæ“¾‚ğ‚İ‚éB
+	//æˆåŠŸä»¥å¤–ã®å ´åˆã«ã¯ã€ä½•ã‚‰ã‹ã®è¿½åŠ æƒ…å ±ãŒã‚ã‚‹ã¨ã¿ã¦ã€å–å¾—ã‚’è©¦ã¿ã‚‹ã€‚
 	if( rc != SQL_SUCCESS )
 	{
 		mOdbcSqlState::AppendLog( MyHenv , mOdbcSqlState::HandleKind::Environment );

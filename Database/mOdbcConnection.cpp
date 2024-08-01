@@ -1,10 +1,10 @@
-//----------------------------------------------------------------------------
-// ODBCÚ‘±—pƒ‰ƒCƒuƒ‰ƒŠ
+ï»¿//----------------------------------------------------------------------------
+// ODBCæ¥ç¶šç”¨ãƒ©ã‚¤ãƒ–ãƒ©ãƒª
 // Copyright (C) 2005 Fingerling. All rights reserved. 
 // Copyright (C) 2018- Crea Inc. All rights reserved.
 // This program is released under the MIT License. 
 // see http://opensource.org/licenses/mit-license.php
-// 2005/08/19`
+// 2005/08/19ã€œ
 //----------------------------------------------------------------------------
 
 #define MODBCCONNECTION_CPP_COMPILING
@@ -27,14 +27,14 @@ bool mOdbcConnection::NewQuery( mOdbcQuery& retQuery )
 	HSTMT stmt = 0;
 	if( !SQL_RESULT_CHECK( SQLAllocHandle( SQL_HANDLE_STMT , *MyDBCHandle.get() , &stmt ) ) )
 	{
-		RaiseAssert( g_ErrorLogger , 0 , L"ƒXƒe[ƒgƒƒ“ƒgƒnƒ“ƒhƒ‹‚ğ¶¬‚Å‚«‚Ü‚¹‚ñ" );
+		RaiseAssert( g_ErrorLogger , 0 , L"ã‚¹ãƒ†ãƒ¼ãƒˆãƒ¡ãƒ³ãƒˆãƒãƒ³ãƒ‰ãƒ«ã‚’ç”Ÿæˆã§ãã¾ã›ã‚“" );
 		return false;
 	}
 
-	//ì¬‚µ‚½ƒXƒe[ƒgƒƒ“ƒgƒnƒ“ƒhƒ‹‚ğİ’è
+	//ä½œæˆã—ãŸã‚¹ãƒ†ãƒ¼ãƒˆãƒ¡ãƒ³ãƒˆãƒãƒ³ãƒ‰ãƒ«ã‚’è¨­å®š
 	retQuery.MyStmt = stmt;
 
-	//‚ ‚Æ‚ÅƒNƒGƒŠ‚ÌŠ®—¹‚ğ”»’f‚·‚é‚½‚ß‚Ì”F¯î•ñ‚ğ’Ç‰Á
+	//ã‚ã¨ã§ã‚¯ã‚¨ãƒªã®å®Œäº†ã‚’åˆ¤æ–­ã™ã‚‹ãŸã‚ã®èªè­˜æƒ…å ±ã‚’è¿½åŠ 
 	retQuery.MyDogtag.reset( mNew ULONG_PTR( (ULONG_PTR)&retQuery ) );
 	MyQueries.push_back( retQuery.MyDogtag );
 
@@ -60,7 +60,7 @@ bool mOdbcConnection::IsActive( void ) const noexcept
 
 bool mOdbcConnection::SQL_RESULT_CHECK( SQLRETURN rc )
 {
-	//¬Œ÷ˆÈŠO‚Ìê‡‚É‚ÍA‰½‚ç‚©‚Ì’Ç‰Áî•ñ‚ª‚ ‚é‚Æ‚İ‚ÄAæ“¾‚ğ‚İ‚éB
+	//æˆåŠŸä»¥å¤–ã®å ´åˆã«ã¯ã€ä½•ã‚‰ã‹ã®è¿½åŠ æƒ…å ±ãŒã‚ã‚‹ã¨ã¿ã¦ã€å–å¾—ã‚’è©¦ã¿ã‚‹ã€‚
 	if( rc != SQL_SUCCESS )
 	{
 		mOdbcSqlState::AppendLog( *MyDBCHandle.get() , mOdbcSqlState::HandleKind::Connection );
@@ -73,11 +73,11 @@ bool mOdbcConnection::SetAutoCommit( bool enable )
 	ULONG mode = ( enable ) ? ( SQL_AUTOCOMMIT_ON ) : ( SQL_AUTOCOMMIT_OFF );
 	if( !SQL_RESULT_CHECK( SQLSetConnectAttr( *MyDBCHandle , SQL_ATTR_AUTOCOMMIT, 0 , SQL_AUTOCOMMIT_OFF ) ) )
 	{
-		RaiseAssert( g_ErrorLogger , 0 , L"ƒI[ƒgƒRƒ~ƒbƒg‚Ìİ’è‚ª¸”s‚µ‚Ü‚µ‚½" );
+		RaiseAssert( g_ErrorLogger , 0 , L"ã‚ªãƒ¼ãƒˆã‚³ãƒŸãƒƒãƒˆã®è¨­å®šãŒå¤±æ•—ã—ã¾ã—ãŸ" );
 		return false;
 	}
 
-	CreateLogEntry( g_ErrorLogger , 0 , L"ƒI[ƒgƒRƒ~ƒbƒg‚Ìİ’è‚ª•ÏX‚³‚ê‚Ü‚µ‚½" , enable );
+	CreateLogEntry( g_ErrorLogger , 0 , L"ã‚ªãƒ¼ãƒˆã‚³ãƒŸãƒƒãƒˆã®è¨­å®šãŒå¤‰æ›´ã•ã‚Œã¾ã—ãŸ" , enable );
 	return true;
 }
 
@@ -85,7 +85,7 @@ bool mOdbcConnection::Commit( void )
 {
 	if( !SQL_RESULT_CHECK( SQLEndTran( SQL_HANDLE_DBC , *MyDBCHandle , SQL_COMMIT ) ) )
 	{
-		RaiseAssert( g_ErrorLogger , 0 , L"ƒRƒ~ƒbƒg‚ª¸”s‚µ‚Ü‚µ‚½" );
+		RaiseAssert( g_ErrorLogger , 0 , L"ã‚³ãƒŸãƒƒãƒˆãŒå¤±æ•—ã—ã¾ã—ãŸ" );
 		return false;
 	}
 	return true;
@@ -95,7 +95,7 @@ bool mOdbcConnection::Rollback( void )
 {
 	if( !SQL_RESULT_CHECK( SQLEndTran( SQL_HANDLE_DBC , *MyDBCHandle , SQL_ROLLBACK ) ) )
 	{
-		RaiseAssert( g_ErrorLogger , 0 , L"ƒ[ƒ‹ƒoƒbƒN‚ª¸”s‚µ‚Ü‚µ‚½" );
+		RaiseAssert( g_ErrorLogger , 0 , L"ãƒ­ãƒ¼ãƒ«ãƒãƒƒã‚¯ãŒå¤±æ•—ã—ã¾ã—ãŸ" );
 		return false;
 	}
 	return true;

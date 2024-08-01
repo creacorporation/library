@@ -1,10 +1,10 @@
-//----------------------------------------------------------------------------
-// Microsoft Excel�n���h��
+﻿//----------------------------------------------------------------------------
+// Microsoft Excelハンドラ
 // Copyright (C) 2018- Crea Inc. All rights reserved.
 // This program is released under the MIT License. 
 // see http://opensource.org/licenses/mit-license.php
-// ���쌠�\���⃉�C�Z���X�̉��ς͋֎~����Ă��܂��B
-// ���̃\�[�X�R�[�h�Ɋւ��āA��L���C�Z���X�ȊO�̌_�񓙂͈�ؑ��݂��܂���B
+// 著作権表示やライセンスの改変は禁止されています。
+// このソースコードに関して、上記ライセンス以外の契約等は一切存在しません。
 //----------------------------------------------------------------------------
 
 #ifndef MEXCELHANDLER_H_INCLUDED
@@ -16,22 +16,22 @@
 #endif
 #endif
 
-//�ȉ��G���[�΍�̂��߁A�C���N���[�h�����Awinsock2��import��mStandard�̏��ɂ��Ă���܂��B
-//�Ewinsock2.h���ɃC���N���[�h���Ă����Ȃ��ƃG���[�ɂȂ�
-//�EmStandard.h��GetOffset�}�N���������ŃG���[�ɂȂ�
+//以下エラー対策のため、インクルード順を、winsock2→import→mStandardの順にしてあります。
+//・winsock2.hを先にインクルードしておかないとエラーになる
+//・mStandard.hのGetOffsetマクロが原因でエラーになる
 #include <winsock2.h>
 
-// �G�N�Z���̃^�C�v���C�u�������C���|�[�g
+// エクセルのタイプライブラリをインポート
 #import "progid:Excel.Sheet" auto_search auto_rename rename_search_namespace("Office") \
 	raw_method_prefix( "XL" ) \
 	exclude( "IFont","IPicture") \
 	no_dual_interfaces
 
-//��L�̃C���|�[�g���@���ƁA�C���e���Z���X�������Ȃ��̂ŁA�����I�ɃC���N���[�h����
-//���C���N���[�h�f�B���N�g���ɁA���ԃt�@�C���o�͐�(�^�C�v���C�u�����̏o�͐�)��ǉ����Ă����K�v����
+//上記のインポート方法だと、インテリセンスが動かないので、明示的にインクルードする
+//※インクルードディレクトリに、中間ファイル出力先(タイプライブラリの出力先)を追加しておく必要あり
 #include <Excel.tlh>
 
-// �ȉ��N���X��`
+// 以下クラス定義
 #include <mStandard.h>
 #include <COM/mComObject.h>
 #include <COM/mVariant.h>
@@ -39,98 +39,98 @@
 
 namespace Definitions_mExcelHandler
 {
-	//�����͈�
+	//検索範囲
 	enum SearchAreaEntry
 	{
-		Worksheet,	//���[�N�V�[�g
-		Range		//�w��͈�
+		Worksheet,	//ワークシート
+		Range		//指定範囲
 	};
 
-	//�ǂ̕����ƈ�v�H
+	//どの部分と一致？
 	enum MatchTypeEntry
 	{
-		Comment,	//�R�����g�ƈ�v
-		Formula,	//�����ƈ�v
-		Value,		//�l�ƈ�v
+		Comment,	//コメントと一致
+		Formula,	//数式と一致
+		Value,		//値と一致
 	};
 
-	//��������
+	//検索方向
 	enum SearchDirectionEntry
 	{
-		BYCOLUMN,		//��ԍ��̗񂩂珇�ɏォ�牺�Ɍ���
-		BYROW			//��ԏ�̍s���珇�ɍ�����E�Ɍ���
+		BYCOLUMN,		//一番左の列から順に上から下に検索
+		BYROW			//一番上の行から順に左から右に検索
 	};
 		
-	//�ǂݎ�����
+	//読み取り方向
 	enum ScanOrder
 	{
-		//��̍s���珇�ɁA������(������E)�ɃX�L����
-		//[1] 1��2��3
-		//[2] 4��5��6
-		//[3] 7��8��9
+		//上の行から順に、横方向(左から右)にスキャン
+		//[1] 1→2→3
+		//[2] 4→5→6
+		//[3] 7→8→9
 		SCANORDER_ROW_MAJOR,
 
-		//���̗񂩂珇�ɁA�c����(�ォ�牺)�ɃX�L����
+		//左の列から順に、縦方向(上から下)にスキャン
 		//[1] [2] [3]
-		//1�� 4�� 7��
-		//2�� 5�� 8��
-		//3�� 6�� 9�� 
+		//1↓ 4↓ 7↓
+		//2↓ 5↓ 8↓
+		//3↓ 6↓ 9↓ 
 		SCANORDER_COL_MAJOR,
 
-		//��̍s���珇�ɁA������(�E���獶)�ɃX�L����
-		//���E���̃Z���̈ʒu�ɒ��ӂ��A����ȃ��[�v�����Ȃ��悤�ɂ��Ă�������
-		//[1] 3��2��1
-		//[2] 6��5��4
-		//[3] 9��8��7
+		//上の行から順に、横方向(右から左)にスキャン
+		//※右下のセルの位置に注意し、巨大なループを作らないようにしてください
+		//[1] 3←2←1
+		//[2] 6←5←4
+		//[3] 9←8←7
 		SCANORDER_ROW_REVERSE,
 
-		//���̗񂩂珇�ɁA�c����(�������)�ɃX�L����
-		//���E���̃Z���̈ʒu�ɒ��ӂ��A����ȃ��[�v�����Ȃ��悤�ɂ��Ă�������
+		//左の列から順に、縦方向(下から上)にスキャン
+		//※右下のセルの位置に注意し、巨大なループを作らないようにしてください
 		//[1] [2] [3]
-		//3�� 6�� 9��
-		//2�� 5�� 8��
-		//1�� 4�� 7�� 
+		//3↑ 6↑ 9↑
+		//2↑ 5↑ 8↑
+		//1↑ 4↑ 7↑ 
 		SCANORDER_COL_REVERSE,
 
-		//���̍s���珇�ɁA������(������E)�ɃX�L����
-		//���E���̃Z���̈ʒu�ɒ��ӂ��A����ȃ��[�v�����Ȃ��悤�ɂ��Ă�������
-		//[3] 7��8��9
-		//[2] 4��5��6
-		//[1] 1��2��3
+		//下の行から順に、横方向(左から右)にスキャン
+		//※右下のセルの位置に注意し、巨大なループを作らないようにしてください
+		//[3] 7→8→9
+		//[2] 4→5→6
+		//[1] 1→2→3
 		SCANORDER_ROW_MAJOR_BOTTOMUP,
 
-		//�E�̗񂩂珇�ɁA�c����(�ォ�牺)�ɃX�L����
-		//���E���̃Z���̈ʒu�ɒ��ӂ��A����ȃ��[�v�����Ȃ��悤�ɂ��Ă�������
+		//右の列から順に、縦方向(上から下)にスキャン
+		//※右下のセルの位置に注意し、巨大なループを作らないようにしてください
 		//[3] [2] [1]
-		//7�� 4�� 1��
-		//8�� 5�� 2��
-		//9�� 6�� 3�� 
+		//7↓ 4↓ 1↓
+		//8↓ 5↓ 2↓
+		//9↓ 6↓ 3↓ 
 		SCANORDER_COL_MAJOR_RIGHTTOLEFT,
 
-		//���̍s���珇�ɁA������(�E���獶)�ɃX�L����
-		//���E���̃Z���̈ʒu�ɒ��ӂ��A����ȃ��[�v�����Ȃ��悤�ɂ��Ă�������
-		//[3] 9��8��7
-		//[2] 6��5��4
-		//[1] 3��2��1
+		//下の行から順に、横方向(右から左)にスキャン
+		//※右下のセルの位置に注意し、巨大なループを作らないようにしてください
+		//[3] 9←8←7
+		//[2] 6←5←4
+		//[1] 3←2←1
 		SCANORDER_ROW_REVERSE_BOTTOMUP,
 
-		//�E�̗񂩂珇�ɁA�c����(�������)�ɃX�L����
-		//���E���̃Z���̈ʒu�ɒ��ӂ��A����ȃ��[�v�����Ȃ��悤�ɂ��Ă�������
+		//右の列から順に、縦方向(下から上)にスキャン
+		//※右下のセルの位置に注意し、巨大なループを作らないようにしてください
 		//[3] [2] [1]
-		//9�� 6�� 3��
-		//8�� 5�� 2��
-		//7�� 4�� 1�� 
+		//9↑ 6↑ 3↑
+		//8↑ 5↑ 2↑
+		//7↑ 4↑ 1↑ 
 		SCANORDER_COL_REVERSE_RIGHTTOLEFT,
 
 	};
 
-	//�ǂݎ��t���O
+	//読み取りフラグ
 	enum ScanContinue
 	{
-		SCAN_FINISH_TRUE = 0,	//�ǂݎ����I�����AReadArray��true��Ԃ��܂�
-		SCAN_FINISH_FALSE,		//�ǂݎ����I�����AReadArray��false��Ԃ��܂�
-		SCAN_NEXTCELL,			//���̃Z����ǂݎ��܂�
-		SCAN_NEXTGROUP,			//���݂̍s�܂��͗�̓ǂݎ��͏I�����A���̍s�܂��͗񂩂�ǂݎ��܂�
+		SCAN_FINISH_TRUE = 0,	//読み取りを終了し、ReadArrayはtrueを返します
+		SCAN_FINISH_FALSE,		//読み取りを終了し、ReadArrayはfalseを返します
+		SCAN_NEXTCELL,			//次のセルを読み取ります
+		SCAN_NEXTGROUP,			//現在の行または列の読み取りは終了し、次の行または列から読み取ります
 	};
 };
 
@@ -141,89 +141,89 @@ public:
 	virtual ~mExcelHandler();
 
 	//-------------------------------------------------------
-	// �V�X�e��
+	// システム
 	//-------------------------------------------------------
 
-	//������
-	//���̃��\�b�h���R�[������ƁA���ۂ�Excel���N�����܂�
-	//true : ����������
-	//false: ���������s
+	//初期化
+	//このメソッドをコールすると、実際にExcelが起動します
+	//true : 初期化成功
+	//false: 初期化失敗
 	bool Initialize( void );
 
-	//�������ς݂��H
-	// ret : �^�Ȃ珉�����ς�
+	//初期化済みか？
+	// ret : 真なら初期化済み
 	bool IsInitialized( void )const;
 
-	//�������ς݂��H
-	// ret : �^�Ȃ珉�����ς�
+	//初期化済みか？
+	// ret : 真なら初期化済み
 	operator bool()const;
 
-	//�N���[���A�b�v
-	//���̃��\�b�h���R�[������ƁAExcel���I�����܂�
-	//true : ����
-	//false: ���s
+	//クリーンアップ
+	//このメソッドをコールすると、Excelが終了します
+	//true : 成功
+	//false: 失敗
 	bool UnInitialize( void );
 
-	//���E�s���̕ύX
-	//newstate true : ��
-	//         false: �s���i�f�t�H���g�j
+	//可視・不可視の変更
+	//newstate true : 可視
+	//         false: 不可視（デフォルト）
 	bool SetVisible( bool newstate );
 
-	//�A���[�g�𔭐����邩�ۂ���ݒ肷��
-	//���u�t�@�C����ۑ����܂����v�̂悤�ȃ��b�Z�[�W
-	//newval : true : �\������
-	//         false : �\�����Ȃ�
+	//アラートを発生するか否かを設定する
+	//※「ファイルを保存しますか」のようなメッセージ
+	//newval : true : 表示する
+	//         false : 表示しない
 	bool SetAlertEnable( bool newval );
 
-	//�A���[�g�𔭐����邩�ۂ��̏�Ԃ��擾����
-	//���u�t�@�C����ۑ����܂����v�̂悤�ȃ��b�Z�[�W
-	//ret : true : �\������
-	//      false : �\�����Ȃ�
+	//アラートを発生するか否かの状態を取得する
+	//※「ファイルを保存しますか」のようなメッセージ
+	//ret : true : 表示する
+	//      false : 表示しない
 	bool GetAlertEnable( void );
 
-	//�����Čv�Z���[�h
+	//自動再計算モード
 	typedef Excel::XlCalculation XlsCalculation;
 
-	//�����Čv�Z���[�h��ݒ肷��
-	// newval : �V�����ݒ�l
-	// ret : �������^
+	//自動再計算モードを設定する
+	// newval : 新しい設定値
+	// ret : 成功時真
 	bool SetCalculation( XlsCalculation newval );
 
-	//���݂̎����Čv�Z���[�h���擾����
-	// ret : ���݂̐ݒ�l
+	//現在の自動再計算モードを取得する
+	// ret : 現在の設定値
 	XlsCalculation GetCalculation( void );
 
-	//�蓮�Čv�Z���s��(�S���[�N�u�b�N)
-	// ret : �������^
+	//手動再計算を行う(全ワークブック)
+	// ret : 成功時真
 	bool CalcAll( void );
 
-	//�蓮�Čv�Z���s��(���݂̃��[�N�V�[�g)
-	// ret : �������^
+	//手動再計算を行う(現在のワークシート)
+	// ret : 成功時真
 	bool CalcWorksheet( void );
 
-	//�C�x���g�̗L���E�����ݒ�
-	//�������ɂ����Workbook_Open�v���V�[�W�������s����Ȃ��Ȃ�܂�
-	//newval : true : �L���ɂ���
-	//      false : �����ɂ���
-	//ret : �������^
+	//イベントの有効・無効設定
+	//※無効にするとWorkbook_Openプロシージャ等実行されなくなります
+	//newval : true : 有効にする
+	//      false : 無効にする
+	//ret : 成功時真
 	bool SetEventEnable( bool newval );
 
-	//�C�x���g�̗L���E������Ԃ��擾����
-	//�������̏ꍇWorkbook_Open�v���V�[�W�������s����܂���
-	//ret : true : �L���ł���
-	//      false : �����ł���
+	//イベントの有効・無効状態を取得する
+	//※無効の場合Workbook_Openプロシージャ等実行されません
+	//ret : true : 有効である
+	//      false : 無効である
 	bool SetEventEnable( void );
 
 
 	//-------------------------------------------------------
-	// ���[�N�u�b�N�֌W�|�t�@�C������n
+	// ワークブック関係−ファイル操作系
 	//-------------------------------------------------------
 
-	//���[�N�u�b�N���J���Ƃ��̃I�v�V����
+	//ワークブックを開くときのオプション
 	struct OpenWorkbookOption
 	{
-		bool IsReadOnly;	//true�ɂ���Ɠǂݎ���p�ŊJ��
-		bool IsSelect;		//�J�����瑁���I������
+		bool IsReadOnly;	//trueにすると読み取り専用で開く
+		bool IsSelect;		//開いたら早速選択する
 
 		OpenWorkbookOption()
 		{
@@ -232,300 +232,300 @@ public:
 		}
 	};
 
-	//�����̃��[�N�u�b�N���J��
-	// filename : �J���t�@�C����
-	// opt      : �t�@�C�����J���Ƃ��̃I�v�V����
-	// ret : �������^
+	//既存のワークブックを開く
+	// filename : 開くファイル名
+	// opt      : ファイルを開くときのオプション
+	// ret : 成功時真
 	bool OpenWorkbook( const WString& filename , const OpenWorkbookOption* opt = 0 );
 
-	//�㏑���ۑ�
-	// ret : �������^
+	//上書き保存
+	// ret : 成功時真
 	bool Save( void );
 
-	//�d���������t�@�C���̃t�H�[�}�b�g
+	//Ｅｘｃｅｌファイルのフォーマット
 	typedef Excel::XlFileFormat XlsFileFormat;
 
-	//���O��t���ĕۑ�
-	//filename : �ۑ�����t�@�C����
-	//format : �d���������t�@�C���̃t�H�[�}�b�g
-	// ret : �������^
+	//名前を付けて保存
+	//filename : 保存するファイル名
+	//format : Ｅｘｃｅｌファイルのフォーマット
+	// ret : 成功時真
 	bool SaveAs( const WString& filename , XlsFileFormat format );
 
-	//����
-	// force : true  �ύX������ꍇ���A�ύX��j�����ĕ���
-	//         false �ύX������ꍇ�́A�_�C�A���O��\�����ă��[�U�Ɏw�������߂�
-	// bookname : �t�@�C�������w�肵���ꍇ�A���̃t�@�C���Bnullptr���w�肵���ꍇ�A���݂̃t�@�C���B
-	// ret : �������^
+	//閉じる
+	// force : true  変更がある場合も、変更を破棄して閉じる
+	//         false 変更がある場合は、ダイアログを表示してユーザに指示を求める
+	// bookname : ファイル名を指定した場合、そのファイル。nullptrを指定した場合、現在のファイル。
+	// ret : 成功時真
 	bool Close( bool force , const WString* bookname = 0 );
 
-	//���[�N�u�b�N���X�V����Ă��邩�𓾂�
-	//�X�V����Ă����true
+	//ワークブックが更新されているかを得る
+	//更新されていればtrue
 	bool IsModified( void )const;
 
 	//-------------------------------------------------------
-	// ���[�N�u�b�N�֌W
+	// ワークブック関係
 	//-------------------------------------------------------
 
-	//���[�N�u�b�N�̐V�K�쐬
-	// ret : �������^
+	//ワークブックの新規作成
+	// ret : 成功時真
 	bool AddNewWorkbook( void );
 
-	//�J���Ă��郏�[�N�u�b�N���������邩��Ԃ�
-	// ret : �J���Ă��郏�[�N�u�b�N�̐�
+	//開いているワークブックがいくつあるかを返す
+	// ret : 開いているワークブックの数
 	DWORD GetWorkbookCount( void );
 
-	//���݂̃��[�N�u�b�N��ύX���܂�
-	// index : �I�����郏�[�N�u�b�N�̃C���f�b�N�X
-	// ret : �ύX�ɐ��������ꍇ��true�B���݂��Ȃ����[�N�u�b�N���w�肵���ꍇ�ȂǁA���s������false�B
+	//現在のワークブックを変更します
+	// index : 選択するワークブックのインデックス
+	// ret : 変更に成功した場合はtrue。実在しないワークブックを指定した場合など、失敗したらfalse。
 	bool SetCurrentWorkbook( DWORD index );
 
-	//���݂̃��[�N�u�b�N��ύX���܂�
-	// name  : �I�����郏�[�N�u�b�N�̖��O
-	// isFuzzyMatch : �󔒂̗L���A�S�p���p�A�啶���������̈Ⴂ�𖳎����Č�������
-	//                �������������ʁA��������v�����ꍇ�͂��̂Ȃ��ōŏ��Ɍ��������̂��̗p����
-	// ret : �ύX�ɐ��������ꍇ��true�B���݂��Ȃ����[�N�u�b�N���w�肵���ꍇ�ȂǁA���s������false�B
+	//現在のワークブックを変更します
+	// name  : 選択するワークブックの名前
+	// isFuzzyMatch : 空白の有無、全角半角、大文字小文字の違いを無視して検索する
+	//                ※無視した結果、複数が一致した場合はそのなかで最初に見つけたものを採用する
+	// ret : 変更に成功した場合はtrue。実在しないワークブックを指定した場合など、失敗したらfalse。
 	bool SetCurrentWorkbook( const WString& name , bool isFuzzyMatch = false );
 
-	//���݂̃��[�N�u�b�N�𓾂�
-	// ret : ���݂̃��[�N�u�b�N���B�w�肳��Ă��Ȃ��ꍇ�͋󕶎���
+	//現在のワークブックを得る
+	// ret : 現在のワークブック名。指定されていない場合は空文字列
 	WString GetWorkbookName( void )const;
 
-	//���[�N�u�b�N�̖��O�𓾂�
-	// index : ���O��m�肽�����[�N�u�b�N�̃C���f�b�N�X
-	// retName : index�Ŏw�肵�����[�N�u�b�N�̖��O
-	//  ��index�Ŏw�肵�����[�N�u�b�N���Ȃ��ꍇ�͋󕶎���
+	//ワークブックの名前を得る
+	// index : 名前を知りたいワークブックのインデックス
+	// retName : indexで指定したワークブックの名前
+	//  ※indexで指定したワークブックがない場合は空文字列
 	WString GetWorkbookName( DWORD index );
 
-	//���[�N�u�b�N�̖��O�𓾂�
-	// retNames : �S�Ẵ��[�N�u�b�N�̖��O
-	// ret : �������^
+	//ワークブックの名前を得る
+	// retNames : 全てのワークブックの名前
+	// ret : 成功時真
 	bool GetWorkbookNames( WStringDeque& retNames );
 
 	//-------------------------------------------------------
-	// ���[�N�V�[�g�֌W
+	// ワークシート関係
 	//-------------------------------------------------------
 
-	//���[�N�V�[�g�̐V�K�쐬
-	// ret : �������^
+	//ワークシートの新規作成
+	// ret : 成功時真
 	bool AddNewWorksheet( void );
 
-	//���݂̃��[�N�u�b�N�ɃV�[�g���������邩��Ԃ�
-	// ret : ���݂̃��[�N�u�b�N�ɑ��݂���V�[�g�̐�
+	//現在のワークブックにシートがいくつあるかを返す
+	// ret : 現在のワークブックに存在するシートの数
 	DWORD GetWorksheetCount( void );
 
-	//���݂̃��[�N�V�[�g��ύX����
-	// index : �I�����郏�[�N�V�[�g�̃C���f�b�N�X(1�J�n)
-	// ret : �ύX�ɐ��������ꍇ��true�B���݂��Ȃ����[�N�V�[�g���w�肵���ꍇ�ȂǁA���s������false�B
+	//現在のワークシートを変更する
+	// index : 選択するワークシートのインデックス(1開始)
+	// ret : 変更に成功した場合はtrue。実在しないワークシートを指定した場合など、失敗したらfalse。
 	bool SetCurrentWorksheet( DWORD index );
 
-	//���݂̃��[�N�V�[�g��ύX����
-	// name  : �I�����郏�[�N�V�[�g�̖��O
-	// isFuzzyMatch : �󔒂̗L���A�S�p���p�A�啶���������̈Ⴂ�𖳎����Č�������
-	//                �������������ʁA��������v�����ꍇ�͂��̂Ȃ��ōŏ��Ɍ��������̂��̗p����
-	// ret : �ύX�ɐ��������ꍇ��true�B���݂��Ȃ����[�N�V�[�g���w�肵���ꍇ�ȂǁA���s������false�B
+	//現在のワークシートを変更する
+	// name  : 選択するワークシートの名前
+	// isFuzzyMatch : 空白の有無、全角半角、大文字小文字の違いを無視して検索する
+	//                ※無視した結果、複数が一致した場合はそのなかで最初に見つけたものを採用する
+	// ret : 変更に成功した場合はtrue。実在しないワークシートを指定した場合など、失敗したらfalse。
 	bool SetCurrentWorksheet( const WString& name , bool isFuzzyMatch = false );
 
-	//���[�N�V�[�g�̖��O�𓾂�
-	// ret : ���݂̃��[�N�V�[�g���B�w�肳��Ă��Ȃ��ꍇ�͋󕶎���
+	//ワークシートの名前を得る
+	// ret : 現在のワークシート名。指定されていない場合は空文字列
 	WString GetWorksheetName( void );
 
-	//���[�N�V�[�g�̖��O�𓾂�
-	// index : ���O��m�肽�����[�N�V�[�g�̃C���f�b�N�X(1�J�n)
-	// ret : ���[�N�V�[�g�̖��O
-	// ��index�Ŏw�肵�����[�N�V�[�g���Ȃ��ꍇ�͋󕶎���
+	//ワークシートの名前を得る
+	// index : 名前を知りたいワークシートのインデックス(1開始)
+	// ret : ワークシートの名前
+	// ※indexで指定したワークシートがない場合は空文字列
 	WString GetWorksheetName( DWORD index );
 
-	//���݂̃��[�N�u�b�N�ɂ��郏�[�N�V�[�g�̖��O�̈ꗗ�𓾂�
-	// retNames : �S�Ẵ��[�N�V�[�g�̖��O
-	// ret : �������^
+	//現在のワークブックにあるワークシートの名前の一覧を得る
+	// retNames : 全てのワークシートの名前
+	// ret : 成功時真
 	bool GetWorksheetNames( WStringDeque& retNames );
 
-	//���[�N�V�[�g�̌��݂̃T�C�Y�𓾂�
-	//���[�N�V�[�g�̃f�[�^�����͂���Ă���͈͂�Ԃ�
+	//ワークシートの現在のサイズを得る
+	//ワークシートのデータが入力されている範囲を返す
 	// ActiveSheet.Cells.SpecialCells(xlLastCell).Row
 	// ActiveSheet.Cells.SpecialCells(xlLastCell).Columns
-	//�œ�����l��Ԃ��܂��B
-	// retRow : (ret)�s���@�l���s�v�Ȃ�nullptr��
-	// retCol : (ret)�񐔁@�l���s�v�Ȃ�nullptr��
-	// ret : �������^
+	//で得られる値を返します。
+	// retRow : (ret)行数　値が不要ならnullptr可
+	// retCol : (ret)列数　値が不要ならnullptr可
+	// ret : 成功時真
 	bool GetLastCell( DWORD* retRow , DWORD* retCol );
 
 	//-------------------------------------------------------
-	// �͈͊֌W
+	// 範囲関係
 	//-------------------------------------------------------
 
-	//���݂̃��[�N�V�[�g�͈̔͂��w�肷��
-	//range : �w�肵�����͈�
-	// ret : �������^
+	//現在のワークシートの範囲を指定する
+	//range : 指定したい範囲
+	// ret : 成功時真
 	bool SetCurrentRange( const mExcelCellRef& range );
 
-	//���݂̃��[�N�V�[�g�͈̔͂��w�肷��
-	//range : �w�肵�����͈�
-	// ret : �������^
+	//現在のワークシートの範囲を指定する
+	//range : 指定したい範囲
+	// ret : 成功時真
 	bool SetCurrentRange( const WString& range );
 
-	//���݂͈̔͂̍s���𓾂�
-	//ret : ���݂͈̔͂Ɋ܂ލs��
+	//現在の範囲の行数を得る
+	//ret : 現在の範囲に含む行数
 	DWORD GetRangeRow( void );
 
-	//���݂͈̗̔͂񐔂𓾂�
-	//ret : ���݂͈̔͂Ɋ܂ޗ�
+	//現在の範囲の列数を得る
+	//ret : 現在の範囲に含む列数
 	DWORD GetRangeCol( void );
 
-	//�����Z�����𓾂�
-	// ret : �����Z���ł���ΐ^
+	//結合セルかを得る
+	// ret : 結合セルであれば真
 	bool IsMerged( void )const;
 
-	//�����Z���͈̔͂𓾂�
-	// retrange : �����Z���͈̔�
-	// ret : �������^
+	//結合セルの範囲を得る
+	// retrange : 結合セルの範囲
+	// ret : 成功時真
 	bool GetMergeRange( mExcelCellRef& retrange );
 
 	//-------------------------------------------------------
-	// �����֌W
+	// 検索関係
 	//-------------------------------------------------------
 
-	//Search�ɓn���R�[���o�b�N�֐�
-	// dataptr : Search�ɓn�����l�i�����ɓǂݎ�茋�ʂ��i�[�j
-	// row,col : Search�ɓn�����͈͂̍��ォ��̃I�t�Z�b�g(����̃Z����row=0,col=0)
-	// ret     : �����𑱍s����Ƃ�true�A�I������Ƃ�false
+	//Searchに渡すコールバック関数
+	// dataptr : Searchに渡した値（ここに読み取り結果を格納）
+	// row,col : Searchに渡した範囲の左上からのオフセット(左上のセルがrow=0,col=0)
+	// ret     : 検索を続行するときtrue、終了するときfalse
 	typedef bool (*fpSearchFindCallback)( void* dataptr , DWORD row , DWORD col );
 
-	//Search�ɓn����������
+	//Searchに渡す検索条件
 	struct SearchOption
 	{
-		WString What;	//�������镶����
+		WString What;	//検索する文字列
 
-		//�����͈�
+		//検索範囲
 		using SearchAreaEntry = Definitions_mExcelHandler::SearchAreaEntry;
 		SearchAreaEntry SearchArea;
 
-		//�ǂ̕����ƈ�v�H
+		//どの部分と一致？
 		using MatchTypeEntry = Definitions_mExcelHandler::MatchTypeEntry;
 		MatchTypeEntry MatchType;
 
-		//true = �啶���Ə���������ʂ���
-		//false= �啶���Ə���������ʂ��Ȃ�
+		//true = 大文字と小文字を区別する
+		//false= 大文字と小文字を区別しない
 		bool MatchCase;
 
-		//true = ���S��v
-		//false= ������v
+		//true = 完全一致
+		//false= 部分一致
 		bool MatchWhole;
 
-		//��������
+		//検索方向
 		using SearchDirectionEntry = Definitions_mExcelHandler::SearchDirectionEntry;
 		SearchDirectionEntry SearchDirection;
 
 	};
 
-	//�w��͈͓̔�����������
-	// opt      : ��������
-	// callback : �������邽�тɌĂяo���R�[���o�b�N�֐�
-	// dataptr  : �R�[���o�b�N�֐��ɁA�q�b�g�����Z���ƂƂ��Ɉ����n���|�C���^�i���e�͔C�Ӂj
-	// retCount : �R�[���o�b�N�֐����Ăяo������(�s�v�Ȃ�nullptr��)
-	// ret      : ����I����true
+	//指定の範囲内を検索する
+	// opt      : 検索条件
+	// callback : 発見するたびに呼び出すコールバック関数
+	// dataptr  : コールバック関数に、ヒットしたセルとともに引き渡すポインタ（内容は任意）
+	// retCount : コールバック関数を呼び出した回数(不要ならnullptr可)
+	// ret      : 正常終了時true
 	bool Search( const SearchOption& opt , fpSearchFindCallback callback , void* dataptr , DWORD* retCount = nullptr );
 
-	//���������Z���̃A�h���X�ꗗ
+	//発見したセルのアドレス一覧
 	typedef std::deque<mExcelCellRef::Position> PositionArray;
 
-	//�w��͈͓̔����������A���������Z���̃A�h���X�ꗗ��Ԃ�
-	// opt       : ��������
-	// retPos    : ���������Z���̃A�h���X�i�[��
-	// max_found : �ő傢���܂ŒT�����邩
-	// ret       : �������^
+	//指定の範囲内を検索し、発見したセルのアドレス一覧を返す
+	// opt       : 検索条件
+	// retPos    : 発見したセルのアドレス格納先
+	// max_found : 最大いくつまで探索するか
+	// ret       : 成功時真
 	bool Search( const SearchOption& opt , PositionArray& retPos , DWORD max_found = MAXDWORD32 );
 
 	//-------------------------------------------------------
-	// �l�ǂݏ����n�i�P�i�u�����j
+	// 値読み書き系（単品Ｖｅｒ）
 	//-------------------------------------------------------
 
-	//���݂̃��[�N�V�[�g�̎w��Z���̒l�𕶎���œ���
-	//�����Z����ݒ肷��ƒl����������Ȃ�
-	// ret : ����ꂽ�Z���̒l
+	//現在のワークシートの指定セルの値を文字列で得る
+	//複数セルを設定すると値が何も入らない
+	// ret : 得られたセルの値
 	WString GetValue( void );
 
-	//���݂̃��[�N�V�[�g�̎w��Z���̒l��variant�^�œ���
-	// retResult : �w��Z���̒l
-	// ret : �������^
+	//現在のワークシートの指定セルの値をvariant型で得る
+	// retResult : 指定セルの値
+	// ret : 成功時真
 	bool GetValue( _variant_t& retResult );
 
-	//���݂͈̔͂ɒl��ݒ肷��
-	// newval : �ݒ肵�����l
-	// ret : �������^
+	//現在の範囲に値を設定する
+	// newval : 設定したい値
+	// ret : 成功時真
 	bool SetValue( const _variant_t& newval );
 
 	//-------------------------------------------------------
-	// �l�ǂݏ����n�i�܂Ƃ߂Ău�����j
+	// 値読み書き系（まとめてＶｅｒ）
 	//-------------------------------------------------------
 
-	//�ǂݎ�����
+	//読み取り方向
 	using ScanOrder = Definitions_mExcelHandler::ScanOrder;
 
-	//�ǂݎ��t���O
+	//読み取りフラグ
 	using ScanContinue = Definitions_mExcelHandler::ScanContinue;
 
-	//ReadArray�ɓn���R�[���o�b�N�֐�
-	// value   : �e�Z���̒l(�����ɓn���ꂽ�l��ǂݎ��̂����̊֐��̖��)
-	// dataptr : ReadArray�ɓn�����l�i�����ɓǂݎ�茋�ʂ��i�[�j
-	// row,col : ReadArray�ɓn�����͈͂̍��ォ��̃I�t�Z�b�g(����̃Z����row=0,col=0)
-	// ret     : �Ԃ����l�ɉ����āA���ȍ~�̃Z���̃X�L�����𑱂��邩�����܂�܂�
-	//�����̃R�[���o�b�N�֐����ŗ�O�𔭐����Ă����S�ł�(���ɒ��ӂ������Ă��܂�)
+	//ReadArrayに渡すコールバック関数
+	// value   : 各セルの値(ここに渡された値を読み取るのがこの関数の役目)
+	// dataptr : ReadArrayに渡した値（ここに読み取り結果を格納）
+	// row,col : ReadArrayに渡した範囲の左上からのオフセット(左上のセルがrow=0,col=0)
+	// ret     : 返した値に応じて、次以降のセルのスキャンを続けるかが決まります
+	//※このコールバック関数内で例外を発生しても安全です(特に注意が払われています)
 	typedef ScanContinue (*fpCellReadCallback)( const _variant_t& value , void* dataptr , DWORD row , DWORD col , DWORD max_row , DWORD max_col );
 
-	//ReadArray�ɓn���R�[���o�b�N�֐�
-	// value   : �e�Z���̒l(�����ɓn���ꂽ�l��ǂݎ��̂����̊֐��̖��)
-	// dataptr : ReadArray�ɓn�����l�i�����ɓǂݎ�茋�ʂ��i�[�j
-	// row,col : ReadArray�ɓn�����͈͂̍��ォ��̃I�t�Z�b�g(����̃Z����row=0,col=0)
-	// ret     : �Ԃ����l�ɉ����āA���ȍ~�̃Z���̃X�L�����𑱂��邩�����܂�܂�
-	//�����̃R�[���o�b�N�֐����ŗ�O�𔭐����Ă����S�ł�(���ɒ��ӂ������Ă��܂�)
+	//ReadArrayに渡すコールバック関数
+	// value   : 各セルの値(ここに渡された値を読み取るのがこの関数の役目)
+	// dataptr : ReadArrayに渡した値（ここに読み取り結果を格納）
+	// row,col : ReadArrayに渡した範囲の左上からのオフセット(左上のセルがrow=0,col=0)
+	// ret     : 返した値に応じて、次以降のセルのスキャンを続けるかが決まります
+	//※このコールバック関数内で例外を発生しても安全です(特に注意が払われています)
 	typedef ScanContinue (*fpCellReadCallbackV)( const mVariant& value , void* dataptr , DWORD row , DWORD col , DWORD max_row , DWORD max_col );
 
-	//arr�Ɏw�肵��SAFEARRAY�̊e�Z���ɑ΂���fpCellReadCallback���Ăяo��
-	// arr     : SAFEARRAY���܂�variant�^�̕ϐ�
-	// reader  : arr�̊e�Z���ɑ΂��Ă��̃R�[���o�b�N�֐����Ă΂�܂�
-	//           reader��1��ł�false��Ԃ��ƁA�����őł��؂��܂�
-	// dataptr : reader�Ɏw�肵���֐��ɓn����܂�
-	// ret     : reader���S�Z���ɑ΂���true��Ԃ����Ƃ��Atrue
-	//           reader��1��ł�false��Ԃ����Ƃ��Afalse
-	//��reader�ɓn���R�[���o�b�N�֐����ŗ�O�𔭐����Ă����S�ł�(���ɒ��ӂ������Ă��܂�)
+	//arrに指定したSAFEARRAYの各セルに対してfpCellReadCallbackを呼び出す
+	// arr     : SAFEARRAYを含んだvariant型の変数
+	// reader  : arrの各セルに対してこのコールバック関数が呼ばれます
+	//           readerが1回でもfalseを返すと、そこで打ち切られます
+	// dataptr : readerに指定した関数に渡されます
+	// ret     : readerが全セルに対してtrueを返したとき、true
+	//           readerが1回でもfalseを返したとき、false
+	//※readerに渡すコールバック関数内で例外を発生しても安全です(特に注意が払われています)
 	bool ReadArray( const _variant_t& arr , fpCellReadCallback reader , void* dataptr , ScanOrder order = ScanOrder::SCANORDER_ROW_MAJOR );
 
-	//arr�Ɏw�肵��SAFEARRAY�̊e�Z���ɑ΂���fpCellReadCallback���Ăяo��
-	// arr     : SAFEARRAY���܂�variant�^�̕ϐ�
-	// reader  : arr�̊e�Z���ɑ΂��Ă��̃R�[���o�b�N�֐����Ă΂�܂�
-	//           reader��1��ł�false��Ԃ��ƁA�����őł��؂��܂�
-	// dataptr : reader�Ɏw�肵���֐��ɓn����܂�
-	// ret     : reader���S�Z���ɑ΂���true��Ԃ����Ƃ��Atrue
-	//           reader��1��ł�false��Ԃ����Ƃ��Afalse
-	//��reader�ɓn���R�[���o�b�N�֐����ŗ�O�𔭐����Ă����S�ł�(���ɒ��ӂ������Ă��܂�)
+	//arrに指定したSAFEARRAYの各セルに対してfpCellReadCallbackを呼び出す
+	// arr     : SAFEARRAYを含んだvariant型の変数
+	// reader  : arrの各セルに対してこのコールバック関数が呼ばれます
+	//           readerが1回でもfalseを返すと、そこで打ち切られます
+	// dataptr : readerに指定した関数に渡されます
+	// ret     : readerが全セルに対してtrueを返したとき、true
+	//           readerが1回でもfalseを返したとき、false
+	//※readerに渡すコールバック関数内で例外を発生しても安全です(特に注意が払われています)
 	bool ReadArray( const _variant_t& arr , fpCellReadCallbackV reader , void* dataptr , ScanOrder order = ScanOrder::SCANORDER_ROW_MAJOR );
 
-	//���ݑI�������͈͂̊e�Z���ɑ΂���fpCellReadCallback���Ăяo��
-	// reader  : arr�̊e�Z���ɑ΂��Ă��̃R�[���o�b�N�֐����Ă΂�܂�
-	//           reader��1��ł�false��Ԃ��ƁA�����őł��؂��܂�
-	// dataptr : reader�Ɏw�肵���֐��ɓn����܂�
-	// ret     : reader���S�Z���ɑ΂���true��Ԃ����Ƃ��Atrue
-	//           reader��1��ł�false��Ԃ����Ƃ��Afalse
-	//��reader�ɓn���R�[���o�b�N�֐����ŗ�O�𔭐����Ă����S�ł�(���ɒ��ӂ������Ă��܂�)
+	//現在選択した範囲の各セルに対してfpCellReadCallbackを呼び出す
+	// reader  : arrの各セルに対してこのコールバック関数が呼ばれます
+	//           readerが1回でもfalseを返すと、そこで打ち切られます
+	// dataptr : readerに指定した関数に渡されます
+	// ret     : readerが全セルに対してtrueを返したとき、true
+	//           readerが1回でもfalseを返したとき、false
+	//※readerに渡すコールバック関数内で例外を発生しても安全です(特に注意が払われています)
 	bool ReadArray( fpCellReadCallback reader , void* dataptr , ScanOrder order = ScanOrder::SCANORDER_ROW_MAJOR );
 
-	//���ݑI�������͈͂̊e�Z���ɑ΂���fpCellReadCallback���Ăяo��
-	// reader  : arr�̊e�Z���ɑ΂��Ă��̃R�[���o�b�N�֐����Ă΂�܂�
-	//           reader��1��ł�false��Ԃ��ƁA�����őł��؂��܂�
-	// dataptr : reader�Ɏw�肵���֐��ɓn����܂�
-	// ret     : reader���S�Z���ɑ΂���true��Ԃ����Ƃ��Atrue
-	//           reader��1��ł�false��Ԃ����Ƃ��Afalse
-	//��reader�ɓn���R�[���o�b�N�֐����ŗ�O�𔭐����Ă����S�ł�(���ɒ��ӂ������Ă��܂�)
+	//現在選択した範囲の各セルに対してfpCellReadCallbackを呼び出す
+	// reader  : arrの各セルに対してこのコールバック関数が呼ばれます
+	//           readerが1回でもfalseを返すと、そこで打ち切られます
+	// dataptr : readerに指定した関数に渡されます
+	// ret     : readerが全セルに対してtrueを返したとき、true
+	//           readerが1回でもfalseを返したとき、false
+	//※readerに渡すコールバック関数内で例外を発生しても安全です(特に注意が払われています)
 	bool ReadArray( fpCellReadCallbackV reader , void* dataptr , ScanOrder order = ScanOrder::SCANORDER_ROW_MAJOR );
 
 	//-------------------------------------------------------
-	// ����
+	// 書式
 	//-------------------------------------------------------
 
-	//�w��Z���̔w�i�F��RGBQUAD�l�Ŏ擾����
-	// ret : �Y���Z���̔w�i�F�B�G���[�̏ꍇ��0xFFFFFFFF�ɂȂ�܂��B
-	//       ��ARGB��A�̕�����0�ȊO���ǂ����Ŕ��f�ł��܂�
+	//指定セルの背景色をRGBQUAD値で取得する
+	// ret : 該当セルの背景色。エラーの場合は0xFFFFFFFFになります。
+	//       ※ARGBのAの部分が0以外かどうかで判断できます
 	RGBQUAD GetBackgroundColor( void );
 
 private:
@@ -533,18 +533,18 @@ private:
 	mExcelHandler( const mExcelHandler& src );
 	const mExcelHandler& operator=( const mExcelHandler& src );
 
-	//�G�N�Z���ŗL�̌^�ɖ��O�t��
-	typedef Excel::_ApplicationPtr XlsApplication;		//�A�v���P�[�V����
-	typedef Excel::WorkbooksPtr XlsWorkbooks;			//���[�N�u�b�N
-	typedef Excel::_WorkbookPtr XlsWorkbook;			//���[�N�u�b�N
-	typedef Excel::SheetsPtr XlsWorksheets;				//���[�N�V�[�g
-	typedef Excel::_WorksheetPtr XlsWorksheet;			//���[�N�V�[�g
-	typedef Excel::RangePtr XlsRange;					//�͈�
+	//エクセル固有の型に名前付け
+	typedef Excel::_ApplicationPtr XlsApplication;		//アプリケーション
+	typedef Excel::WorkbooksPtr XlsWorkbooks;			//ワークブック
+	typedef Excel::_WorkbookPtr XlsWorkbook;			//ワークブック
+	typedef Excel::SheetsPtr XlsWorksheets;				//ワークシート
+	typedef Excel::_WorksheetPtr XlsWorksheet;			//ワークシート
+	typedef Excel::RangePtr XlsRange;					//範囲
 
-	XlsApplication MyApplication;		//�A�v���P�[�V�����n���h��
-	XlsWorkbook MyCurrentWorkbook;		//���݂̃��[�N�u�b�N
-	XlsWorksheet MyCurrentWorksheet;	//���݂̃��[�N�V�[�g
-	XlsRange MyCurrentRange;			//���݂͈̔�
+	XlsApplication MyApplication;		//アプリケーションハンドル
+	XlsWorkbook MyCurrentWorkbook;		//現在のワークブック
+	XlsWorksheet MyCurrentWorksheet;	//現在のワークシート
+	XlsRange MyCurrentRange;			//現在の範囲
 
 };
 

@@ -1,11 +1,11 @@
-//----------------------------------------------------------------------------
-// �V���A���|�[�g�n���h��
+﻿//----------------------------------------------------------------------------
+// シリアルポートハンドラ
 // Copyright (C) 2019- Crea Inc. All rights reserved.
 // This program is released under the MIT License. 
 // see http://opensource.org/licenses/mit-license.php
-// ���쌠�\���⃉�C�Z���X�̉��ς͋֎~����Ă��܂��B
-// ���̃\�[�X�R�[�h�Ɋւ��āA��L���C�Z���X�ȊO�̌_�񓙂͈�ؑ��݂��܂���B
-// (���炩�̌_�񂪂���ꍇ�ł��A�{�\�[�X�R�[�h�͂��̑ΏۊO�ƂȂ�܂�)
+// 著作権表示やライセンスの改変は禁止されています。
+// このソースコードに関して、上記ライセンス以外の契約等は一切存在しません。
+// (何らかの契約がある場合でも、本ソースコードはその対象外となります)
 //----------------------------------------------------------------------------
 
 #ifndef MASYNCSERIALPORT_H_INCLUDED
@@ -21,7 +21,7 @@
 #include <memory>
 
 /*
-�g����
+使い方
 
 int main( int argc , char** argv )
 {
@@ -29,57 +29,57 @@ int main( int argc , char** argv )
 	mWorkerThreadPool ThreadPool;
 
 	//---------------
-	//����
+	//準備
 	//---------------
 
-	//�X���b�h�v�[���쐬
-	//�E���̃N���X�̓X���b�h�v�[���ƘA�g���ē����̂ŕK�{
+	//スレッドプール作成
+	//・このクラスはスレッドプールと連携して動くので必須
 	ThreadPool.Begin( 1 );
 
-	//COM�|�[�g
+	//COMポート
 	{
-		mASyncSerialPort::Option opt;				//���e��ݒ�
-		mASyncSerialPort::NotifyOption notifier;	//���C�x���g���ɃR�[���o�b�N�����K�v�Ȃ�
+		mASyncSerialPort::Option opt;				//←各種設定
+		mASyncSerialPort::NotifyOption notifier;	//←イベント時にコールバック等が必要なら
 
 		opt.Fileinfo.Path = LR"(\\.\COM5)";
 		SerialPort.Open( ThreadPool , opt , notifier );
 	}
 
 	//---------------
-	//���C�����[�v
+	//メインループ
 	//---------------
 
 	while( 1 )
 	{
-		//�ǂݏ����֘A�̃C�x���g����������ƁA�ݒ肵�����e�ɉ�����
-		//�E�R�[���o�b�N�֐����Ă΂��
-		//�E�C�x���g�I�u�W�F�N�g���V�O�i����ԂɂȂ�
-		//�E�E�C���h�E���b�Z�[�W���|�X�g�����
-		//�Ƃ��������Ƃ��N����̂ŁA������g���K�ɂ��ăA�v���𓮍삳����
+		//読み書き関連のイベントが発生すると、設定した内容に応じて
+		//・コールバック関数が呼ばれる
+		//・イベントオブジェクトがシグナル状態になる
+		//・ウインドウメッセージがポストされる
+		//といったことが起きるので、これをトリガにしてアプリを動作させる
 
-		//�C�x���g������������A�ȉ��̂悤�Ȋ����Ńf�[�^��ǂ�
-		INT read_one_byte = SerialPort.read();	//1�����P��
+		//イベントが発生したら、以下のような感じでデータを読む
+		INT read_one_byte = SerialPort.read();	//1文字単位
 
 		AString read_as_string;
-		SerialPort.ReadLine( read_as_string );	//1�s�P��
+		SerialPort.ReadLine( read_as_string );	//1行単位
 
-		//��1�s�P�ʂœǂނƂ��A�ʐM�G���[���ɖ����ɑ҂������Ȃ��悤�ɒ���
-		//  ��莞�Ԏ�M���Ȃ��Ƃ���1�������Ƃɓǂ�ł݂�Ƃ����đ΍�
+		//※1行単位で読むとき、通信エラー時に無限に待ち続けないように注意
+		//  一定時間受信がないときは1文字ごとに読んでみるとかして対策
 	}
 
 	//---------------
-	//�N���[���A�b�v
+	//クリーンアップ
 	//---------------
 
-	//EOF��ݒ�(�V���A���|�[�g�͏I�[���Ȃ��̂Ŗ����I�ɐݒ肵�Ȃ��Ɖi�v�ɓǂ߂Ă��܂�)
+	//EOFを設定(シリアルポートは終端がないので明示的に設定しないと永久に読めてしまう)
 	SerialPort.SetEOF();
 
-	//��M�ς݂̃f�[�^��S�ď�������(IsEOF��true�ɂȂ�܂�)
-	//�����ł́A�P�Ɏ�M�ς݂̃f�[�^��S���̂ĂĂ���
+	//受信済みのデータを全て処理する(IsEOFがtrueになるまで)
+	//ここでは、単に受信済みのデータを全部捨てている
 	while( !SerialPort.IsEOF() )
 	{
-		//Read()��EOF��Ԃ��Ă��A�u�����_�̍Ō�܂œǂ񂾁v������������Ȃ�(����f�[�^���͂���������Ȃ�)
-		//IsEOF��true�̏ꍇ�́A�ȍ~�f�[�^���͂����Ƃ͂Ȃ�
+		//Read()がEOFを返しても、「現時点の最後まで読んだ」だけかもしれない(今後データが届くかもしれない)
+		//IsEOFがtrueの場合は、以降データが届くことはない
 
 		while( SerialPort.Read() != EOF )
 		{
@@ -87,14 +87,14 @@ int main( int argc , char** argv )
 		Sleep( 100 );
 	}
 
-	//�X���b�h�v�[���̃^�X�N���͂���̂�҂�
-	//���̃T���v���ł̓^�X�N��ǉ����Ă��Ȃ��̂ŁA�����ɔ�����
+	//スレッドプールのタスクがはけるのを待つ
+	//このサンプルではタスクを追加していないので、すぐに抜ける
 	while( ThreadPool.GetTaskCount() )
 	{
 		Sleep( 100 );
 	}
 
-	//�X���b�h�v�[���I��
+	//スレッドプール終了
 	ThreadPool.End();
 
 	return 0;
@@ -106,32 +106,32 @@ namespace Definitions_ASyncSerialPort
 {
 	enum ParityType
 	{
-		PARITYTYPE_NOPARITY ,	//�p���e�B�Ȃ�
-		PARITYTYPE_EVEN ,		//�����p���e�B
-		PARITYTYPE_ODD ,		//��p���e�B
+		PARITYTYPE_NOPARITY ,	//パリティなし
+		PARITYTYPE_EVEN ,		//偶数パリティ
+		PARITYTYPE_ODD ,		//奇数パリティ
 	};
 
 	enum StopBitType
 	{
-		STOPBIT_ONE ,			//1�r�b�g
-		STOPBIT_ONEFIVE ,		//1.5�r�b�g
-		STOPBIT_TWO ,			//2�r�b�g
+		STOPBIT_ONE ,			//1ビット
+		STOPBIT_ONEFIVE ,		//1.5ビット
+		STOPBIT_TWO ,			//2ビット
 	};
 
-	//�G���[�����������^�C�~���O
+	//エラーが発生したタイミング
 	enum ErrorAction
 	{
-		ERROR_ON_CONNECT,	//�ڑ��������̃G���[
-		ERROR_ON_READ,		//�ǂݍ��ݒ��̃G���[
-		ERROR_ON_WRITE,		//�������ݒ��̃G���[
+		ERROR_ON_CONNECT,	//接続処理中のエラー
+		ERROR_ON_READ,		//読み込み中のエラー
+		ERROR_ON_WRITE,		//書き込み中のエラー
 	};
 };
 
 class mSerialReadStream : public mFileReadStreamBase
 {
 public:
-	//�ǂݎ�葤�̌o�H���J���Ă��邩�𔻒肵�܂�
-	//�J���Ă���ꍇ�͐^���Ԃ�܂�
+	//読み取り側の経路が開いているかを判定します
+	//開いている場合は真が返ります
 	virtual bool IsOpen( void )const
 	{
 		return !IsEOF();
@@ -146,8 +146,8 @@ public:
 		MyIsClosed = false;
 	}
 
-	//�������ݑ��̌o�H���J���Ă��邩�𔻒肵�܂�
-	//�J���Ă���ꍇ�͐^���Ԃ�܂�
+	//書き込み側の経路が開いているかを判定します
+	//開いている場合は真が返ります
 	virtual bool IsOpen( void )const
 	{
 		return !MyIsClosed;
@@ -161,54 +161,54 @@ protected:
 	bool MyIsClosed;
 };
 
-//COM�|�[�g�n���h���̃��b�p�[
+//COMポートハンドルのラッパー
 class mASyncSerialPort : public mSerialReadStream , public mSerialWriteStream
 {
 public:
 	mASyncSerialPort();
 	virtual ~mASyncSerialPort();
 
-	//�G���[�������̗��R�R�[�h
+	//エラー発生時の理由コード
 	enum ErrorCode
 	{
 	};
 
-	//�p���e�B�̐ݒ�
+	//パリティの設定
 	using ParityType = Definitions_ASyncSerialPort::ParityType;
 
-	//�X�g�b�v�r�b�g��
+	//ストップビット長
 	using StopBitType = Definitions_ASyncSerialPort::StopBitType;
 
-	//�t�@�C���ݒ�
+	//ファイル設定
 	using FileOption = mFile::Option;
 
-	//�t�@�C�����J���Ƃ��̃��[�h
+	//ファイルを開くときのモード
 	using CreateMode = mFile::CreateMode;
 
-	//�I�v�V�����\����
+	//オプション構造体
 	struct Option
 	{
 		//-----------
-		//����M�ݒ�
+		//送受信設定
 		//-----------
 		FileOption Fileinfo;
-		DWORD BaudRate;			//�{�[���[�g
-		ParityType Parity;		//�p���e�B
-		StopBitType StopBit;	//�X�g�b�v�r�b�g
-		DWORD ByteSize;			//1�o�C�g�����r�b�g���B���ʂ�8�B
+		DWORD BaudRate;			//ボーレート
+		ParityType Parity;		//パリティ
+		StopBitType StopBit;	//ストップビット
+		DWORD ByteSize;			//1バイトが何ビットか。普通は8。
 
 		//-----------
-		//�o�b�t�@�����O�ݒ�
+		//バッファリング設定
 		//-----------
-		DWORD ReadPacketSize;			//�ǂݍ��݃p�P�b�g�̃T�C�Y
-		DWORD ReadPacketCount;			//�ǂݍ��݃p�P�b�g���m�ۂ��鐔
-		DWORD WritePacketSize;			//�������݃p�P�b�g�̃T�C�Y
-		DWORD WritePacketNotifyCount;	//�������ݑ҂��p�P�b�g�����̎q�Ŏw�肵��������������ꍇ�ɒʒm����
-		DWORD WritePacketLimit;			//�������ݑ҂��p�P�b�g�̐��̏���i������Ə������݃G���[�j
-		DWORD ReadBufferTimeout;		//�C�ӂ̃o�C�g�̎�M�Ԋu(�~���b)�����̒l�����������M�ʒm�𐶐�����
+		DWORD ReadPacketSize;			//読み込みパケットのサイズ
+		DWORD ReadPacketCount;			//読み込みパケットを確保する数
+		DWORD WritePacketSize;			//書き込みパケットのサイズ
+		DWORD WritePacketNotifyCount;	//書き込み待ちパケットがこの子で指定した数を下回った場合に通知する
+		DWORD WritePacketLimit;			//書き込み待ちパケットの数の上限（超えると書き込みエラー）
+		DWORD ReadBufferTimeout;		//任意のバイトの受信間隔(ミリ秒)がこの値を上回ったら受信通知を生成する
 
 		//-----------
-		//�����l
+		//初期値
 		//-----------
 		Option()
 		{
@@ -243,13 +243,13 @@ public:
 		}OnError;
 	};
 
-	//�R�[���o�b�N�Œʒm����ꍇ�̃v���g�^�C�v
-	//req : �R�[���o�b�N�𔭐��������I�u�W�F�N�g�̎Q��
-	//parameter : �I�u�W�F�N�g�������ɓn�����C�ӂ̒l(NotifierInfo::Parameter�̒l)
-	//opt : �g�����
+	//コールバックで通知する場合のプロトタイプ
+	//req : コールバックを発生させたオブジェクトの参照
+	//parameter : オブジェクト生成時に渡した任意の値(NotifierInfo::Parameterの値)
+	//opt : 拡張情報
 	using NotifyFunction = void(*)( mASyncSerialPort& port , DWORD_PTR parameter , const NotifyFunctionOpt& opt );
 
-	//�ʒm�ݒ�
+	//通知設定
 	class NotifyOption : public mNotifyOption< NotifyFunction >
 	{
 	public:
@@ -258,45 +258,45 @@ public:
 		NotifierInfo OnError;
 	};
 
-	//�V���A���|�[�g���J��
+	//シリアルポートを開く
 	bool Open( mWorkerThreadPool& wtp , const Option& opt , const NotifyOption& notifier );
 
-	//�P�����i�P�o�C�g�j�ǂݍ��݂܂�
-	//ret : �ǂݎ��������
-	//EOF�͌��ݓǂݎ���f�[�^���Ȃ����Ƃ������܂�
-	//�i���Ԃ��o�Ă΍ēx�ǂݎ��邩������Ȃ��j
+	//１文字（１バイト）読み込みます
+	//ret : 読み取った文字
+	//EOFは現在読み取れるデータがないことを示します
+	//（時間が経てば再度読み取れるかもしれない）
 	virtual INT Read( void );
 
-	//EOF�ɒB���Ă��邩�𒲂ׂ܂�
-	//�ESetEOF()���R�[����A���̎��_�܂łɎ�M�ς݂̃f�[�^��S�ēǂݏo����true�ɂȂ�܂�
+	//EOFに達しているかを調べます
+	//・SetEOF()をコール後、その時点までに受信済みのデータを全て読み出すとtrueになります
 	virtual bool IsEOF( void )const;
 
-	//�P������������
+	//１文字書き込み
 	virtual bool Write( INT data );
 
-	//�L���b�V������������
-	//������Ă΂Ȃ��Ǝ��ۂ̑��M�͔������܂���
+	//キャッシュを書き込み
+	//これを呼ばないと実際の送信は発生しません
 	virtual bool FlushCache( void );
 
-	//�������ݑ��̌o�H����܂�
+	//書き込み側の経路を閉じます
 	virtual bool Close( void );
 
-	//���M�������̃f�[�^��j�����܂�
+	//送信未完了のデータを破棄します
 	bool Cancel( void );
 
-	//���ݖ������̒ʐM(����M�Ƃ�)��S�Ĕj�����A�ڑ�����܂�
+	//現在未完了の通信(送受信とも)を全て破棄し、接続を閉じます
 	bool Abort( void );
 
-	//�ǂݍ��ݑ��̌o�H����܂�
+	//読み込み側の経路を閉じます
 	virtual bool SetEOF( void );
 
-	//���M�������̃f�[�^�����邩��Ԃ��܂�
-	// ret : ���M�������̃f�[�^�̐�(�L���[�̃G���g���P��)
+	//送信未完了のデータがあるかを返します
+	// ret : 送信未完了のデータの数(キューのエントリ単位)
 	DWORD IsWriting( void )const;
 
-	//�ǂݍ��ݗp�̓����o�b�t�@���m�ۂ��܂�
-	//�Վ��Ƀo�b�t�@���K�v�ɂȂ�Ƃ��Ɏg�p���܂�
-	// count : �����o�b�t�@���w�肵���������ł���΁A���̐��ɂȂ�悤�ɓ����o�b�t�@��V���ɍ쐬���܂�
+	//読み込み用の内部バッファを確保します
+	//臨時にバッファが必要になるときに使用します
+	// count : 内部バッファが指定した数未満であれば、その数になるように内部バッファを新たに作成します
 	bool PrepareReadBuffer( DWORD count );
 
 private:
@@ -306,73 +306,73 @@ private:
 
 protected:
 	
-	//COM�|�[�g�̃n���h��
+	//COMポートのハンドル
 	HANDLE MyHandle;
 
-	//�ݒ�l
+	//設定値
 	Option MyOption;
 
-	//�ʒm�ݒ�l
+	//通知設定値
 	NotifyOption MyNotifyOption;
 
-	//�N���e�B�J���Z�N�V����
+	//クリティカルセクション
 	mutable mCriticalSectionContainer MyCritical;
 
-	//Notify�Ăяo�����̃C�x���g��
+	//Notify呼び出し中のイベント数
 	using NotifyEventToken = std::shared_ptr<int>;
 	NotifyEventToken MyNotifyEventToken;
 
-	//�������e�t���O
+	//処理内容フラグ
 	enum QueueType
 	{
 		WRITE_QUEUE_ENTRY,
 		READ_QUEUE_ENTRY
 	};
 
-	//�L���[
+	//キュー
 	struct BufferQueueEntry
 	{
-		//�e�I�u�W�F�N�g�ւ̃|�C���^
-		//�������A�񓯊�����̊������_�Őe�I�u�W�F�N�g���j������Ă���ꍇ�̓k���|�C���^
+		//親オブジェクトへのポインタ
+		//ただし、非同期操作の完了時点で親オブジェクトが破棄されている場合はヌルポインタ
 		mASyncSerialPort* Parent;
 
-		//���M�L���[�̃G���g�����A��M�L���[�̃G���g����
+		//送信キューのエントリか、受信キューのエントリか
 		QueueType Type;
 
-		//�����Ώۃo�b�t�@
+		//処理対象バッファ
 		BYTE* Buffer;
 
-		//�񓯊��p��OVERLAPPED�\���́iWindows�ɓn���p�j
+		//非同期用のOVERLAPPED構造体（Windowsに渡す用）
 		OVERLAPPED Ov;
 
-		//�����ς݂Ȃ��true(IO�������ɐݒ�)
+		//完了済みならばtrue(IO完了時に設定)
 		bool Completed;
 
-		//�������̃G���[�R�[�h(IO�������ɐݒ�)
+		//完了時のエラーコード(IO完了時に設定)
 		DWORD ErrorCode;
 
-		//�������̏����ς݃o�C�g��(IO�������ɐݒ�)
+		//完了時の処理済みバイト数(IO完了時に設定)
 		DWORD BytesTransfered;
 
 	};
 
 	typedef std::deque<BufferQueueEntry*> BufferQueue;
 
-	//���C�g�o�b�t�@
+	//ライトバッファ
 	BufferQueue MyWriteQueue;
 
-	//���[�h�o�b�t�@
+	//リードバッファ
 	BufferQueue MyReadQueue;
 
 protected:
 
-	//�������[�`��
+	//完了ルーチン
 	static VOID CALLBACK CompleteRoutine( DWORD ec , DWORD len , LPOVERLAPPED ov );
 
-	//��M�������̊������[�`��
+	//受信完了時の完了ルーチン
 	static VOID CALLBACK ReadCompleteRoutine( DWORD ec , DWORD len , LPOVERLAPPED ov );
 
-	//���M�������̊������[�`��
+	//送信完了時の完了ルーチン
 	static VOID CALLBACK WriteCompleteRoutine( DWORD ec , DWORD len , LPOVERLAPPED ov );
 
 };

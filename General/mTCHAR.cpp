@@ -1,5 +1,5 @@
-//----------------------------------------------------------------------------
-// •¶šŒ^’è‹`
+ï»¿//----------------------------------------------------------------------------
+// æ–‡å­—å‹å®šç¾©
 // Copyright (C) 2012,2016 Fingerling. All rights reserved. 
 // Copyright (C) 2018- Crea Inc. All rights reserved.
 // This program is released under the MIT License. 
@@ -267,7 +267,7 @@ AString WString2AString( const WString& src )
 
 INT sprintf_va( AString& ret_dest , const CHAR* format , va_list args )
 {
-	//•K—v•¶š”‚ğƒJƒEƒ“ƒg‚µ‚Äƒoƒbƒtƒ@‚ğŠm•Û
+	//å¿…è¦æ–‡å­—æ•°ã‚’ã‚«ã‚¦ãƒ³ãƒˆã—ã¦ãƒãƒƒãƒ•ã‚¡ã‚’ç¢ºä¿
 	INT bufflen = _vscprintf( format , args ) + 1;
 	if( bufflen == -1 )
 	{
@@ -275,10 +275,10 @@ INT sprintf_va( AString& ret_dest , const CHAR* format , va_list args )
 	}
 	CHAR* buffer = mNew CHAR[ bufflen ];
 
-	//ƒtƒH[ƒ}ƒbƒg‚µ‚½•¶š—ñ‚ğ‘‚«‚İ
+	//ãƒ•ã‚©ãƒ¼ãƒãƒƒãƒˆã—ãŸæ–‡å­—åˆ—ã‚’æ›¸ãè¾¼ã¿
 	INT result = vsprintf( buffer , format , args );
 
-	//Œ‹‰Ê‚ğƒZƒbƒg‚µ‚Äƒeƒ“ƒ|ƒ‰ƒŠƒƒ‚ƒŠ‚ğ”jŠü
+	//çµæœã‚’ã‚»ãƒƒãƒˆã—ã¦ãƒ†ãƒ³ãƒãƒ©ãƒªãƒ¡ãƒ¢ãƒªã‚’ç ´æ£„
 	ret_dest = buffer;
 	mDelete[] buffer;
 
@@ -288,14 +288,14 @@ INT sprintf_va( AString& ret_dest , const CHAR* format , va_list args )
 INT sprintf_va( AString& ret_dest , const WCHAR* format , va_list args )
 {
 
-	//o—Í‚ªCHARŒ^‚È‚Ì‚ÅAformat‚ğˆê’UCHARŒ^‚É•ÏŠ·‚·‚é
+	//å‡ºåŠ›ãŒCHARå‹ãªã®ã§ã€formatã‚’ä¸€æ—¦CHARå‹ã«å¤‰æ›ã™ã‚‹
 	CHAR* CHAR_format = WCHAR2CHAR( format );
 	if( CHAR_format == nullptr )
 	{
 		return -1;
 	}
 
-	//•K—v•¶š”‚ğƒJƒEƒ“ƒg‚µ‚Äƒoƒbƒtƒ@‚ğŠm•Û
+	//å¿…è¦æ–‡å­—æ•°ã‚’ã‚«ã‚¦ãƒ³ãƒˆã—ã¦ãƒãƒƒãƒ•ã‚¡ã‚’ç¢ºä¿
 	INT bufflen = _vscprintf( CHAR_format , args ) + 1;
 	if( bufflen == -1 )
 	{
@@ -303,10 +303,10 @@ INT sprintf_va( AString& ret_dest , const WCHAR* format , va_list args )
 	}
 	CHAR* buffer = mNew CHAR[ bufflen ];
 
-	//ƒtƒH[ƒ}ƒbƒg‚µ‚½•¶š—ñ‚ğ‘‚«‚İ
+	//ãƒ•ã‚©ãƒ¼ãƒãƒƒãƒˆã—ãŸæ–‡å­—åˆ—ã‚’æ›¸ãè¾¼ã¿
 	INT result = vsprintf( buffer , CHAR_format , args );
 
-	//Œ‹‰Ê‚ğƒZƒbƒg‚µ‚Äƒeƒ“ƒ|ƒ‰ƒŠƒƒ‚ƒŠ‚ğ”jŠü
+	//çµæœã‚’ã‚»ãƒƒãƒˆã—ã¦ãƒ†ãƒ³ãƒãƒ©ãƒªãƒ¡ãƒ¢ãƒªã‚’ç ´æ£„
 	ret_dest = buffer;
 
 	mDelete[] buffer;
@@ -323,14 +323,14 @@ INT sprintf_va( WString& ret_dest , const CHAR* format , va_list args )
 		return -1;
 	}
 
-	//o—Í‚ªWCHARŒ^‚È‚Ì‚ÅAformat‚ğˆê’UWCHARŒ^‚É•ÏŠ·‚·‚é
+	//å‡ºåŠ›ãŒWCHARå‹ãªã®ã§ã€formatã‚’ä¸€æ—¦WCHARå‹ã«å¤‰æ›ã™ã‚‹
 	WCHAR* wCHAR_format = CHAR2WCHAR( format );
 	if( wCHAR_format == nullptr )
 	{
 		return -1;
 	}
 
-	//•K—v•¶š”‚ğƒJƒEƒ“ƒg‚µ‚Äƒoƒbƒtƒ@‚ğŠm•Û
+	//å¿…è¦æ–‡å­—æ•°ã‚’ã‚«ã‚¦ãƒ³ãƒˆã—ã¦ãƒãƒƒãƒ•ã‚¡ã‚’ç¢ºä¿
 	INT bufflen = _vscwprintf( wCHAR_format , args ) + 1;
 	if( bufflen == -1 )
 	{
@@ -338,10 +338,10 @@ INT sprintf_va( WString& ret_dest , const CHAR* format , va_list args )
 	}
 	WCHAR* buffer = mNew WCHAR[ bufflen ];
 
-	//ƒtƒH[ƒ}ƒbƒg‚µ‚½•¶š—ñ‚ğ‘‚«‚İ
+	//ãƒ•ã‚©ãƒ¼ãƒãƒƒãƒˆã—ãŸæ–‡å­—åˆ—ã‚’æ›¸ãè¾¼ã¿
 	INT result = vswprintf( buffer , wCHAR_format , args );
 
-	//Œ‹‰Ê‚ğƒZƒbƒg‚µ‚Äƒeƒ“ƒ|ƒ‰ƒŠƒƒ‚ƒŠ‚ğ”jŠü
+	//çµæœã‚’ã‚»ãƒƒãƒˆã—ã¦ãƒ†ãƒ³ãƒãƒ©ãƒªãƒ¡ãƒ¢ãƒªã‚’ç ´æ£„
 	ret_dest = buffer;
 
 	mDelete[] buffer;
@@ -358,7 +358,7 @@ INT sprintf_va( WString& ret_dest , const WCHAR* format , va_list args )
 		return -1;
 	}
 
-	//•K—v•¶š”‚ğƒJƒEƒ“ƒg‚µ‚Äƒoƒbƒtƒ@‚ğŠm•Û
+	//å¿…è¦æ–‡å­—æ•°ã‚’ã‚«ã‚¦ãƒ³ãƒˆã—ã¦ãƒãƒƒãƒ•ã‚¡ã‚’ç¢ºä¿
 	INT bufflen = _vscwprintf( format , args ) + 1;
 	if( bufflen == -1 )
 	{
@@ -366,10 +366,10 @@ INT sprintf_va( WString& ret_dest , const WCHAR* format , va_list args )
 	}
 	WCHAR* buffer = mNew WCHAR[ bufflen ];
 
-	//ƒtƒH[ƒ}ƒbƒg‚µ‚½•¶š—ñ‚ğ‘‚«‚İ
+	//ãƒ•ã‚©ãƒ¼ãƒãƒƒãƒˆã—ãŸæ–‡å­—åˆ—ã‚’æ›¸ãè¾¼ã¿
 	INT result = vswprintf( buffer , format , args );
 
-	//Œ‹‰Ê‚ğƒZƒbƒg‚µ‚Äƒeƒ“ƒ|ƒ‰ƒŠƒƒ‚ƒŠ‚ğ”jŠü
+	//çµæœã‚’ã‚»ãƒƒãƒˆã—ã¦ãƒ†ãƒ³ãƒãƒ©ãƒªãƒ¡ãƒ¢ãƒªã‚’ç ´æ£„
 	ret_dest = buffer;
 	mDelete[] buffer;
 
@@ -390,7 +390,7 @@ INT sprintf_va( AString* ret_dest , const CHAR* format , va_list args )
 		return -1;
 	}
 
-	//•K—v•¶š”‚ğƒJƒEƒ“ƒg‚µ‚Äƒoƒbƒtƒ@‚ğŠm•Û
+	//å¿…è¦æ–‡å­—æ•°ã‚’ã‚«ã‚¦ãƒ³ãƒˆã—ã¦ãƒãƒƒãƒ•ã‚¡ã‚’ç¢ºä¿
 	INT bufflen = _vscprintf( format , args ) + 1;
 	if( bufflen == -1 )
 	{
@@ -398,10 +398,10 @@ INT sprintf_va( AString* ret_dest , const CHAR* format , va_list args )
 	}
 	CHAR* buffer = mNew CHAR[ bufflen ];
 
-	//ƒtƒH[ƒ}ƒbƒg‚µ‚½•¶š—ñ‚ğ‘‚«‚İ
+	//ãƒ•ã‚©ãƒ¼ãƒãƒƒãƒˆã—ãŸæ–‡å­—åˆ—ã‚’æ›¸ãè¾¼ã¿
 	INT result = vsprintf( buffer , format , args );
 
-	//Œ‹‰Ê‚ğƒZƒbƒg‚µ‚Äƒeƒ“ƒ|ƒ‰ƒŠƒƒ‚ƒŠ‚ğ”jŠü
+	//çµæœã‚’ã‚»ãƒƒãƒˆã—ã¦ãƒ†ãƒ³ãƒãƒ©ãƒªãƒ¡ãƒ¢ãƒªã‚’ç ´æ£„
 	*ret_dest = buffer;
 	mDelete[] buffer;
 
@@ -421,14 +421,14 @@ INT sprintf_va( AString* ret_dest , const WCHAR* format , va_list args )
 		return -1;
 	}
 
-	//o—Í‚ªCHARŒ^‚È‚Ì‚ÅAformat‚ğˆê’UCHARŒ^‚É•ÏŠ·‚·‚é
+	//å‡ºåŠ›ãŒCHARå‹ãªã®ã§ã€formatã‚’ä¸€æ—¦CHARå‹ã«å¤‰æ›ã™ã‚‹
 	CHAR* CHAR_format = WCHAR2CHAR( format );
 	if( CHAR_format == nullptr )
 	{
 		return -1;
 	}
 
-	//•K—v•¶š”‚ğƒJƒEƒ“ƒg‚µ‚Äƒoƒbƒtƒ@‚ğŠm•Û
+	//å¿…è¦æ–‡å­—æ•°ã‚’ã‚«ã‚¦ãƒ³ãƒˆã—ã¦ãƒãƒƒãƒ•ã‚¡ã‚’ç¢ºä¿
 	INT bufflen = _vscprintf( CHAR_format , args ) + 1;
 	if( bufflen == -1 )
 	{
@@ -436,10 +436,10 @@ INT sprintf_va( AString* ret_dest , const WCHAR* format , va_list args )
 	}
 	CHAR* buffer = mNew CHAR[ bufflen ];
 
-	//ƒtƒH[ƒ}ƒbƒg‚µ‚½•¶š—ñ‚ğ‘‚«‚İ
+	//ãƒ•ã‚©ãƒ¼ãƒãƒƒãƒˆã—ãŸæ–‡å­—åˆ—ã‚’æ›¸ãè¾¼ã¿
 	INT result = vsprintf( buffer , CHAR_format , args );
 
-	//Œ‹‰Ê‚ğƒZƒbƒg‚µ‚Äƒeƒ“ƒ|ƒ‰ƒŠƒƒ‚ƒŠ‚ğ”jŠü
+	//çµæœã‚’ã‚»ãƒƒãƒˆã—ã¦ãƒ†ãƒ³ãƒãƒ©ãƒªãƒ¡ãƒ¢ãƒªã‚’ç ´æ£„
 	*ret_dest = buffer;
 
 	mDelete[] buffer;
@@ -461,14 +461,14 @@ INT sprintf_va( WString* ret_dest , const CHAR* format , va_list args )
 		return -1;
 	}
 
-	//o—Í‚ªWCHARŒ^‚È‚Ì‚ÅAformat‚ğˆê’UWCHARŒ^‚É•ÏŠ·‚·‚é
+	//å‡ºåŠ›ãŒWCHARå‹ãªã®ã§ã€formatã‚’ä¸€æ—¦WCHARå‹ã«å¤‰æ›ã™ã‚‹
 	WCHAR* wCHAR_format = CHAR2WCHAR( format );
 	if( wCHAR_format == nullptr )
 	{
 		return -1;
 	}
 
-	//•K—v•¶š”‚ğƒJƒEƒ“ƒg‚µ‚Äƒoƒbƒtƒ@‚ğŠm•Û
+	//å¿…è¦æ–‡å­—æ•°ã‚’ã‚«ã‚¦ãƒ³ãƒˆã—ã¦ãƒãƒƒãƒ•ã‚¡ã‚’ç¢ºä¿
 	INT bufflen = _vscwprintf( wCHAR_format , args ) + 1;
 	if( bufflen == -1 )
 	{
@@ -476,10 +476,10 @@ INT sprintf_va( WString* ret_dest , const CHAR* format , va_list args )
 	}
 	WCHAR* buffer = mNew WCHAR[ bufflen ];
 
-	//ƒtƒH[ƒ}ƒbƒg‚µ‚½•¶š—ñ‚ğ‘‚«‚İ
+	//ãƒ•ã‚©ãƒ¼ãƒãƒƒãƒˆã—ãŸæ–‡å­—åˆ—ã‚’æ›¸ãè¾¼ã¿
 	INT result = vswprintf( buffer , wCHAR_format , args );
 
-	//Œ‹‰Ê‚ğƒZƒbƒg‚µ‚Äƒeƒ“ƒ|ƒ‰ƒŠƒƒ‚ƒŠ‚ğ”jŠü
+	//çµæœã‚’ã‚»ãƒƒãƒˆã—ã¦ãƒ†ãƒ³ãƒãƒ©ãƒªãƒ¡ãƒ¢ãƒªã‚’ç ´æ£„
 	*ret_dest = buffer;
 
 	mDelete[] buffer;
@@ -501,7 +501,7 @@ INT sprintf_va( WString* ret_dest , const WCHAR* format , va_list args )
 		return -1;
 	}
 
-	//•K—v•¶š”‚ğƒJƒEƒ“ƒg‚µ‚Äƒoƒbƒtƒ@‚ğŠm•Û
+	//å¿…è¦æ–‡å­—æ•°ã‚’ã‚«ã‚¦ãƒ³ãƒˆã—ã¦ãƒãƒƒãƒ•ã‚¡ã‚’ç¢ºä¿
 	INT bufflen = _vscwprintf( format , args ) + 1;
 	if( bufflen == -1 )
 	{
@@ -509,10 +509,10 @@ INT sprintf_va( WString* ret_dest , const WCHAR* format , va_list args )
 	}
 	WCHAR* buffer = mNew WCHAR[ bufflen ];
 
-	//ƒtƒH[ƒ}ƒbƒg‚µ‚½•¶š—ñ‚ğ‘‚«‚İ
+	//ãƒ•ã‚©ãƒ¼ãƒãƒƒãƒˆã—ãŸæ–‡å­—åˆ—ã‚’æ›¸ãè¾¼ã¿
 	INT result = vswprintf( buffer , format , args );
 
-	//Œ‹‰Ê‚ğƒZƒbƒg‚µ‚Äƒeƒ“ƒ|ƒ‰ƒŠƒƒ‚ƒŠ‚ğ”jŠü
+	//çµæœã‚’ã‚»ãƒƒãƒˆã—ã¦ãƒ†ãƒ³ãƒãƒ©ãƒªãƒ¡ãƒ¢ãƒªã‚’ç ´æ£„
 	*ret_dest = buffer;
 	mDelete[] buffer;
 
@@ -567,7 +567,7 @@ bool Binary2String( AString& ret_dest , const BYTE* dat , DWORD len )
 }
 
 
-//•¶š—ñ‚ğ‘å•¶š‚É•ÏŠ·‚·‚é
+//æ–‡å­—åˆ—ã‚’å¤§æ–‡å­—ã«å¤‰æ›ã™ã‚‹
 AString ToUpper( const AString& src )
 {
 	AString dst;
@@ -577,7 +577,7 @@ AString ToUpper( const AString& src )
 	return dst;
 }
 
-//•¶š—ñ‚ğ‘å•¶š‚É•ÏŠ·‚·‚é
+//æ–‡å­—åˆ—ã‚’å¤§æ–‡å­—ã«å¤‰æ›ã™ã‚‹
 WString ToUpper( const WString& src )
 {
 	WString dst;
@@ -587,7 +587,7 @@ WString ToUpper( const WString& src )
 	return dst;
 }
 
-//•¶š—ñ‚ğ¬•¶š‚É•ÏŠ·‚·‚é
+//æ–‡å­—åˆ—ã‚’å°æ–‡å­—ã«å¤‰æ›ã™ã‚‹
 AString ToLower( const AString& src )
 {
 	AString dst;
@@ -597,7 +597,7 @@ AString ToLower( const AString& src )
 	return dst;
 }
 
-//•¶š—ñ‚ğ¬•¶š‚É•ÏŠ·‚·‚é
+//æ–‡å­—åˆ—ã‚’å°æ–‡å­—ã«å¤‰æ›ã™ã‚‹
 WString ToLower( const WString& src )
 {
 	WString dst;
@@ -628,7 +628,7 @@ static void ParseStringTemplate( const std::basic_string<c>& str , c delimiter ,
 
 		if( prev_idx == next_idx )
 		{
-			//‹ó
+			//ç©º
 			if( !noempty )
 			{
 				retResult.push_back( std::basic_string<c>() );
@@ -771,7 +771,7 @@ void ParseString( const WString& str , WStringDeque& retParsed , bool noemptylin
 	ParseStringReturnTemplate( str , retParsed , noemptyline );
 }
 
-//•¶š—ñ‚ğ‰üs‚Åƒp[ƒX‚·‚é
+//æ–‡å­—åˆ—ã‚’æ”¹è¡Œã§ãƒ‘ãƒ¼ã‚¹ã™ã‚‹
 void ParseStringNewLine( const AString& str , AStringVector& retParsed , bool noemptyline )
 {
 	ParseString( str , retParsed , noemptyline );
@@ -792,7 +792,7 @@ void ParseStringNewLine( const WString& str , WStringDeque& retParsed , bool noe
 	ParseString( str , retParsed , noemptyline );
 }
 
-//•¶š—ñ‚ğ‹ó”’•¶š‚Åƒp[ƒX‚·‚é
+//æ–‡å­—åˆ—ã‚’ç©ºç™½æ–‡å­—ã§ãƒ‘ãƒ¼ã‚¹ã™ã‚‹
 static bool QueryIsSpace( char c )
 {
 	return isascii( c ) && isspace( c );
@@ -916,7 +916,7 @@ static void ParseStringTemplate( const std::basic_string<c>& str , const std::ba
 
 		if( prev_idx == next_idx )
 		{
-			//‹ó
+			//ç©º
 			if( !noempty )
 			{
 				retResult.push_back( std::basic_string<c>() );
@@ -1079,13 +1079,13 @@ static T ReplaceStringTemplate( const T& src , const T& findat , const T replace
 	return result;
 }
 
-//•¶š—ñ’†‚Ì“Á’è•¶š—ñ‚ğ’uŠ·‚·‚é
+//æ–‡å­—åˆ—ä¸­ã®ç‰¹å®šæ–‡å­—åˆ—ã‚’ç½®æ›ã™ã‚‹
 AString ReplaceString( const AString& src , const AString& findat , const AString& replaceto , DWORD* ret_count )
 {
 	return ReplaceStringTemplate( src , findat , replaceto , ret_count );
 }
 
-//•¶š—ñ’†‚Ì“Á’è•¶š—ñ‚ğ’uŠ·‚·‚é
+//æ–‡å­—åˆ—ä¸­ã®ç‰¹å®šæ–‡å­—åˆ—ã‚’ç½®æ›ã™ã‚‹
 WString ReplaceString( const WString& src , const WString& findat , const WString& replaceto , DWORD* ret_count )
 {
 	return ReplaceStringTemplate( src , findat , replaceto , ret_count );
@@ -1110,13 +1110,13 @@ static T ReplaceStringRecursiveTemplate( const T& src , const T& findat , const 
 	return result;
 }
 
-//•¶š—ñ’†‚Ì“Á’è•¶š—ñ‚ğ’uŠ·‚·‚é
+//æ–‡å­—åˆ—ä¸­ã®ç‰¹å®šæ–‡å­—åˆ—ã‚’ç½®æ›ã™ã‚‹
 AString ReplaceStringRecursive( const AString& src , const AString& findat , const AString& replaceto , DWORD* ret_count )
 {
 	return ReplaceStringRecursiveTemplate( src , findat , replaceto , ret_count );
 }
 
-//•¶š—ñ’†‚Ì“Á’è•¶š—ñ‚ğ’uŠ·‚·‚é
+//æ–‡å­—åˆ—ä¸­ã®ç‰¹å®šæ–‡å­—åˆ—ã‚’ç½®æ›ã™ã‚‹
 WString ReplaceStringRecursive( const WString& src , const WString& findat , const WString& replaceto , DWORD* ret_count )
 {
 	return ReplaceStringRecursiveTemplate( src , findat , replaceto , ret_count );
@@ -1541,7 +1541,7 @@ int StrCmp( const char* s1 , const char* s2 )
 }
 
 
-//‰üs‚ªƒkƒ‹•¶šAÅIs‚ªƒkƒ‹•¶š~2‚É‚È‚Á‚Ä‚¢‚é•¶š—ñ‚ğ“Ç‚İæ‚Á‚ÄAƒAƒŒƒC‚É“WŠJ‚·‚é
+//æ”¹è¡ŒãŒãƒŒãƒ«æ–‡å­—ã€æœ€çµ‚è¡ŒãŒãƒŒãƒ«æ–‡å­—Ã—2ã«ãªã£ã¦ã„ã‚‹æ–‡å­—åˆ—ã‚’èª­ã¿å–ã£ã¦ã€ã‚¢ãƒ¬ã‚¤ã«å±•é–‹ã™ã‚‹
 template< typename T , class U >
 static void ReadDoubleNullStringTemplate( const T* str , U& arr )
 {
@@ -1597,7 +1597,7 @@ void ReadDoubleNullString( const CHAR* str , AStringDeque& retArray )
 	ReadDoubleNullStringTemplate( str , retArray );
 }
 
-//‰üs‚ªƒkƒ‹•¶šAÅIs‚ªƒkƒ‹•¶š~2‚É‚È‚Á‚Ä‚¢‚é•¶š—ñ‚ğ“Ç‚İæ‚Á‚ÄAƒAƒŒƒC‚É“WŠJ‚·‚é
+//æ”¹è¡ŒãŒãƒŒãƒ«æ–‡å­—ã€æœ€çµ‚è¡ŒãŒãƒŒãƒ«æ–‡å­—Ã—2ã«ãªã£ã¦ã„ã‚‹æ–‡å­—åˆ—ã‚’èª­ã¿å–ã£ã¦ã€ã‚¢ãƒ¬ã‚¤ã«å±•é–‹ã™ã‚‹
 template< class c_array , typename c_char >
 static void ReadDoubleNullStringTemplate( const std::basic_string< c_char >& str , c_array& arr )
 {
@@ -1632,7 +1632,7 @@ void ReadDoubleNullString( const AString& str , AStringDeque& retArray )
 	ReadDoubleNullStringTemplate( str , retArray );
 }
 
-//ƒAƒŒƒC‚É‚©‚ç‰üs‚ªƒkƒ‹•¶šAÅIs‚ªƒkƒ‹•¶š~2‚É‚È‚Á‚Ä‚¢‚é•¶š—ñ‚ğì¬‚·‚é
+//ã‚¢ãƒ¬ã‚¤ã«ã‹ã‚‰æ”¹è¡ŒãŒãƒŒãƒ«æ–‡å­—ã€æœ€çµ‚è¡ŒãŒãƒŒãƒ«æ–‡å­—Ã—2ã«ãªã£ã¦ã„ã‚‹æ–‡å­—åˆ—ã‚’ä½œæˆã™ã‚‹
 template< class c_array , typename c_char >
 static void MakeDoubleNullStringTemplate( const c_array& arr , std::basic_string< c_char >& str )
 {
@@ -1729,7 +1729,7 @@ WString SwitchEndian( const WString& src )
 	return result;
 }
 
-//•¶š—ñ‚Ì—¼’[‚É‚ ‚é‹ó”’‚ğ‚·‚×‚Äíœ‚·‚é
+//æ–‡å­—åˆ—ã®ä¸¡ç«¯ã«ã‚ã‚‹ç©ºç™½ã‚’ã™ã¹ã¦å‰Šé™¤ã™ã‚‹
 AString TrimString( const AString& str )
 {
 	DWORD begin = 0;
@@ -1757,7 +1757,7 @@ AString TrimString( const AString& str )
 	return str.substr( begin , end - begin );
 }
 
-//•¶š—ñ‚Ì—¼’[‚É‚ ‚é‹ó”’‚ğ‚·‚×‚Äíœ‚·‚é
+//æ–‡å­—åˆ—ã®ä¸¡ç«¯ã«ã‚ã‚‹ç©ºç™½ã‚’ã™ã¹ã¦å‰Šé™¤ã™ã‚‹
 WString TrimString( const WString& str )
 {
 	DWORD begin = 0;
@@ -1785,7 +1785,7 @@ WString TrimString( const WString& str )
 	return str.substr( begin , end - begin );
 }
 
-//•¶š—ñ‚Ì‹ó”’‚ğ‚·‚×‚Äíœ‚·‚é
+//æ–‡å­—åˆ—ã®ç©ºç™½ã‚’ã™ã¹ã¦å‰Šé™¤ã™ã‚‹
 AString RemoveSpace( const AString& str )
 {
 	AString ret;
@@ -1799,7 +1799,7 @@ AString RemoveSpace( const AString& str )
 	return ret;
 }
 
-//•¶š—ñ‚Ì‹ó”’‚ğ‚·‚×‚Äíœ‚·‚é
+//æ–‡å­—åˆ—ã®ç©ºç™½ã‚’ã™ã¹ã¦å‰Šé™¤ã™ã‚‹
 WString RemoveSpace( const WString& str )
 {
 	WString ret;

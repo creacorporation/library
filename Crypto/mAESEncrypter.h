@@ -1,10 +1,10 @@
-//----------------------------------------------------------------------------
-// AESˆÃ†‰»ƒNƒ‰ƒX
+ï»¿//----------------------------------------------------------------------------
+// AESæš—å·åŒ–ã‚¯ãƒ©ã‚¹
 // Copyright (C) 2013-2016 Fingerling. All rights reserved. 
 // Copyright (C) 2018- Crea Inc. All rights reserved.
 // This program is released under the MIT License. 
 // see http://opensource.org/licenses/mit-license.php
-// 2013/10/09`
+// 2013/10/09ã€œ
 //----------------------------------------------------------------------------
 
 #ifndef MAESENCRYPTER_H_INCLUDED
@@ -20,23 +20,23 @@ public:
 	mAESEncrypter();
 	virtual ~mAESEncrypter();
 
-	//bufflenƒoƒCƒgˆÈ‰º‚Ìƒ‰ƒ“ƒ_ƒ€‚ÈƒTƒCƒY‚Ì•¶š—ñ‚ğ•t‰Á‚·‚é
-	//¶¬‚³‚ê‚é•¶š—ñ‚ÌÅŒã‚Ì•¶š‚Í\0‚Å‚ ‚èA‚»‚ê‚æ‚è‘O‚É\0‚ÍŠÜ‚Ü‚È‚¢B
-	// data : ƒ‰ƒ“ƒ_ƒ€‚ÈƒoƒCƒg—ñ‚ğ‘‚«‚Şƒ|ƒCƒ“ƒ^
-	// bufflen : data‚ÌƒTƒCƒY(32ˆÈã‚ğ„§)
-	// retwritten : ÀÛ‚É‘‚«‚Ü‚ê‚½ƒoƒCƒg”
+	//bufflenãƒã‚¤ãƒˆä»¥ä¸‹ã®ãƒ©ãƒ³ãƒ€ãƒ ãªã‚µã‚¤ã‚ºã®æ–‡å­—åˆ—ã‚’ä»˜åŠ ã™ã‚‹
+	//ç”Ÿæˆã•ã‚Œã‚‹æ–‡å­—åˆ—ã®æœ€å¾Œã®æ–‡å­—ã¯\0ã§ã‚ã‚Šã€ãã‚Œã‚ˆã‚Šå‰ã«\0ã¯å«ã¾ãªã„ã€‚
+	// data : ãƒ©ãƒ³ãƒ€ãƒ ãªãƒã‚¤ãƒˆåˆ—ã‚’æ›¸ãè¾¼ã‚€ãƒã‚¤ãƒ³ã‚¿
+	// bufflen : dataã®ã‚µã‚¤ã‚º(32ä»¥ä¸Šã‚’æ¨å¥¨)
+	// retwritten : å®Ÿéš›ã«æ›¸ãè¾¼ã¾ã‚ŒãŸãƒã‚¤ãƒˆæ•°
 	bool CreateRandomHeader( BYTE* data , DWORD bufflen , DWORD& retwritten );
 
-	//ˆÃ†‰»ƒf[ƒ^‚ÌŠi”[æ
+	//æš—å·åŒ–ãƒ‡ãƒ¼ã‚¿ã®æ ¼ç´å…ˆ
 	typedef std::unique_ptr<BYTE> EncryptData;
 
-	//ˆÃ†‰»‚µ‚Ü‚·
-	//¦isfinal=true‚Ìê‡Ao—Í‚ÌƒTƒCƒY‚ª“ü—Í‚æ‚è‘‚¦‚é‚±‚Æ‚ª‚ ‚è‚Ü‚·B
-	// isfinal : ÅŒã‚Ìƒf[ƒ^‚Å‚ ‚éê‡‚Éw’è‚µ‚Ü‚·(true‚Ìê‡AƒpƒfƒBƒ“ƒO‚Ìˆ—‚ğs‚¢‚Ü‚·)
-	// data : ˆÃ†‰»‚µ‚½‚¢ƒf[ƒ^‚Ö‚Ìƒ|ƒCƒ“ƒ^
-	// datalen : data‚ÌƒTƒCƒY(•½•¶‚Ìƒf[ƒ^ƒTƒCƒY)
-	// retEncryptData : ˆÃ†‰»ƒf[ƒ^‚Ì‘‚«‚İæ
-	// retwritten : ˆÃ†‰»Œã‚ÌƒTƒCƒYB
+	//æš—å·åŒ–ã—ã¾ã™
+	//â€»isfinal=trueã®å ´åˆã€å‡ºåŠ›ã®ã‚µã‚¤ã‚ºãŒå…¥åŠ›ã‚ˆã‚Šå¢—ãˆã‚‹ã“ã¨ãŒã‚ã‚Šã¾ã™ã€‚
+	// isfinal : æœ€å¾Œã®ãƒ‡ãƒ¼ã‚¿ã§ã‚ã‚‹å ´åˆã«æŒ‡å®šã—ã¾ã™(trueã®å ´åˆã€ãƒ‘ãƒ‡ã‚£ãƒ³ã‚°ã®å‡¦ç†ã‚’è¡Œã„ã¾ã™)
+	// data : æš—å·åŒ–ã—ãŸã„ãƒ‡ãƒ¼ã‚¿ã¸ã®ãƒã‚¤ãƒ³ã‚¿
+	// datalen : dataã®ã‚µã‚¤ã‚º(å¹³æ–‡ã®ãƒ‡ãƒ¼ã‚¿ã‚µã‚¤ã‚º)
+	// retEncryptData : æš—å·åŒ–ãƒ‡ãƒ¼ã‚¿ã®æ›¸ãè¾¼ã¿å…ˆ
+	// retwritten : æš—å·åŒ–å¾Œã®ã‚µã‚¤ã‚ºã€‚
 	bool Encrypt( bool isfinal , const BYTE* data , DWORD datalen , EncryptData& retEncryptData , DWORD& retWritten )const;
 
 private:

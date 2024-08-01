@@ -1,11 +1,11 @@
-//----------------------------------------------------------------------------
-// Felica Light-S �J�[�h�n���h��
+﻿//----------------------------------------------------------------------------
+// Felica Light-S カードハンドラ
 // Copyright (C) 2021- Crea Inc. All rights reserved.
 // This program is released under the MIT License. 
 // see http://opensource.org/licenses/mit-license.php
-// ���쌠�\���⃉�C�Z���X�̉��ς͋֎~����Ă��܂��B
-// ���̃\�[�X�R�[�h�Ɋւ��āA��L���C�Z���X�ȊO�̌_�񓙂͈�ؑ��݂��܂���B
-// (���炩�̌_�񂪂���ꍇ�ł��A�{�\�[�X�R�[�h�͂��̑ΏۊO�ƂȂ�܂�)
+// 著作権表示やライセンスの改変は禁止されています。
+// このソースコードに関して、上記ライセンス以外の契約等は一切存在しません。
+// (何らかの契約がある場合でも、本ソースコードはその対象外となります)
 //----------------------------------------------------------------------------
 
 #ifndef MSCDEFINITIONS_H_INCLUDED
@@ -16,7 +16,7 @@
 
 namespace mSCFelicaDefinitions
 {
-	//REG�u���b�N�̃f�[�^�\��
+	//REGブロックのデータ構造
 	struct RegData
 	{
 		DWORD RegA;
@@ -34,61 +34,61 @@ namespace mSCFelicaDefinitions
 		}
 	};
 
-	//�ǂݏ������s���u���b�N�̃G���g��
+	//読み書きを行うブロックのエントリ
 	struct DataBlockEntry
 	{
-		//�u���b�N�̔ԍ�
+		//ブロックの番号
 		DWORD BlockNumber;
-		//�f�[�^�i�P�U�o�C�g�j
+		//データ（１６バイト）
 		mBinary Data;
 	};
 
-	//�ǂݏ������s���u���b�N�̃f�[�^
+	//読み書きを行うブロックのデータ
 	using DataBlock = std::vector< DataBlockEntry >;
 
-	//�ǂݎ����s�������u���b�N�̔ԍ�
+	//読み取りを行いたいブロックの番号
 	using ReadRequestBlock = std::vector< DWORD >;
 
-	//�F�؏��
+	//認証状態
 	enum AuthStatus
 	{
-		//�F�؂͍s���Ă��܂���
+		//認証は行われていません
 		Unauthorized,
-		//�����F�؂��s���Ă��܂��B�O���F�؁i���ݔF�؁j�͍s���Ă��܂���B
-		//�����[�_�[���A�J�[�h���^���Ȃ��̂ł���ƔF�肵�Ă��܂�
-		//���J�[�h�́A���[�_�[���^���Ȃ��̂ł��邩�͖��m�F�ł�
+		//内部認証が行われています。外部認証（相互認証）は行われていません。
+		//※リーダーが、カードが真正なものであると認定しています
+		//※カードは、リーダーが真正なものであるかは未確認です
 		IntAuthorized,
-		//�����F�؁E�O���F�؁i���ݔF�؁j���s���Ă��܂�
+		//内部認証・外部認証（相互認証）が行われています
 		ExtAuthorized,
 	};
 
-	//�ǂݎ��̃p�[�~�b�V����
+	//読み取りのパーミッション
 	enum ReadPermission
 	{
-		//�F�ؕs�v�œǂݏo����������
-		//���O���F�؁AMAC�Ƃ��ɂ����Ă��Ȃ��Ă��悢
+		//認証不要で読み出しを許可する
+		//※外部認証、MACともにあってもなくてもよい
 		ReadEveryone,
-		//�ǂݏo���ɂ͊O���F�؂��K�v
-		//���O���F�؂͕K�{�����AMAC�͂����Ă��Ȃ��Ă��悢
+		//読み出しには外部認証が必要
+		//※外部認証は必須だが、MACはあってもなくてもよい
 		ReadAuthUser,
 	};
 
-	//�������݂̃p�[�~�b�V����
+	//書き込みのパーミッション
 	enum WritePermission
 	{
-		//�������݋֎~
+		//書き込み禁止
 		NotWritable,
-		//�F�ؕs�v�ŏ������݂�������
-		//���O���F�؁AMAC�Ƃ��ɂ����Ă��Ȃ��Ă��悢
+		//認証不要で書き込みを許可する
+		//※外部認証、MACともにあってもなくてもよい
 		WriteEveryone,
-		//�������݂ɂ͊O���F�؂��K�v
-		//���O���F�؂͕K�{�����AMAC�͂����Ă��Ȃ��Ă��悢
+		//書き込みには外部認証が必要
+		//※外部認証は必須だが、MACはあってもなくてもよい
 		WriteAuthUser,
-		//�������݂ɂ͊O���F�؂�MAC���K�v
+		//書き込みには外部認証とMACが必要
 		WriteAuthUserAndMac,
 	};
 
-	//���[�U�[�u���b�N�̖��O
+	//ユーザーブロックの名前
 	enum UserBlock
 	{
 		S_PAD0 = 0,

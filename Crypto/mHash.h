@@ -1,5 +1,5 @@
-//----------------------------------------------------------------------------
-// �n�b�V�������N���X
+﻿//----------------------------------------------------------------------------
+// ハッシュ処理クラス
 // Copyright (C) 2018- Crea Inc. All rights reserved.
 // This program is released under the MIT License. 
 // see http://opensource.org/licenses/mit-license.php
@@ -16,13 +16,13 @@
 #include <memory>
 
 /*
-�g�p�@
-(1)Init()�ŏ��������܂�
-(2)Hash()�Ńn�b�V�����Z�o�������f�[�^��^���܂�
-(3)GetResultLen()�Ńn�b�V���l�̃o�C�g���𒲂ׁA���ʊi�[��̃o�b�t�@���m�ۂ��܂�
-(4)GetResult()�Ńn�b�V���l���擾���܂�
-(5)���������n�b�V�������߂����ꍇ�́A(1)����J��Ԃ��Ă��������B
-�@�I�u�W�F�N�g�͍ė��p�\�ł��B
+使用法
+(1)Init()で初期化します
+(2)Hash()でハッシュを算出したいデータを与えます
+(3)GetResultLen()でハッシュ値のバイト数を調べ、結果格納先のバッファを確保します
+(4)GetResult()でハッシュ値を取得します
+(5)引き続きハッシュを求めたい場合は、(1)から繰り返してください。
+　オブジェクトは再利用可能です。
 */
 
 class mHash
@@ -32,7 +32,7 @@ public:
 	mHash();
 	virtual ~mHash();
 
-	//�Ή�����n�b�V���A���S���Y��
+	//対応するハッシュアルゴリズム
 	enum HashAlgorithm
 	{
 		MD5,		//MD5   128bit
@@ -41,75 +41,75 @@ public:
 		SHA512,		//SHA512   512bit
 	};
 
-	//������
-	//algo : �g�p�������n�b�V���A���S���Y��
-	//ret : �������^
+	//初期化
+	//algo : 使用したいハッシュアルゴリズム
+	//ret : 成功時真
 	bool Init( HashAlgorithm algo );
 
-	//�n�b�V�������s
-	//�傫�ȃf�[�^�̏ꍇ�̓R�}�؂�ɂ��ČĂяo���Ă悢�B
-	// len : �f�[�^�̃o�C�g��
-	// data : �f�[�^�ւ̃|�C���^
-	// ret : �������^
+	//ハッシュを実行
+	//大きなデータの場合はコマ切れにして呼び出してよい。
+	// len : データのバイト数
+	// data : データへのポインタ
+	// ret : 成功時真
 	bool Hash( const BYTE* data , DWORD len );
 
-	//�n�b�V�������s
-	// filename : �n�b�V�����擾����t�@�C����
-	//�@�E�ǂݎ��\�ł���K�v������܂�.
-	//�@�EEOF�ɂȂ�܂Ő��䂪�Ԃ��Ă��܂���B�p�C�v�̖��O�Ƃ���n���Ȃ��ł��������B
-	// ret : �������^
+	//ハッシュを実行
+	// filename : ハッシュを取得するファイル名
+	//　・読み取り可能である必要があります.
+	//　・EOFになるまで制御が返ってきません。パイプの名前とかを渡さないでください。
+	// ret : 成功時真
 	bool Hash( const WString& filename );
 
-	//�n�b�V�������s
-	// opt : �t�@�C���J���Ƃ��̃I�v�V����
-	//�@�E�ǂݎ��\�ł���K�v������܂�.
-	//�@�EEOF�ɂȂ�܂Ő��䂪�Ԃ��Ă��܂���B�p�C�v�̖��O�Ƃ���n���Ȃ��ł��������B
-	// ret : �������^
+	//ハッシュを実行
+	// opt : ファイル開くときのオプション
+	//　・読み取り可能である必要があります.
+	//　・EOFになるまで制御が返ってきません。パイプの名前とかを渡さないでください。
+	// ret : 成功時真
 	bool Hash( mFile::Option opt );
 
-	//�n�b�V�������s
-	// fp : �n�b�V�����擾����X�g���[���I�u�W�F�N�g
-	//�@�E�n�����Ƃ��̓ǂݎ��ʒu����Ō�܂ł��n�b�V�����܂�
-	//�@�EEOF�ɂȂ�܂Ő��䂪�Ԃ��Ă��܂���
-	// ret : �������^
+	//ハッシュを実行
+	// fp : ハッシュを取得するストリームオブジェクト
+	//　・渡したときの読み取り位置から最後までをハッシュします
+	//　・EOFになるまで制御が返ってきません
+	// ret : 成功時真
 	bool Hash( mFileReadStream& fp );
 
-	//�n�b�V�������s
-	// fp : �n�b�V�����擾����X�g���[���I�u�W�F�N�g
-	//�@�E�n�����Ƃ��̓ǂݎ��ʒu����len�Ŏw�肵�������A�܂��͍Ō�܂ł��n�b�V�����܂�
-	//�@�EEOF�ɂȂ�܂Ő��䂪�Ԃ��Ă��܂���
-	// len : �n�b�V�����钷��
-	// ret : �������^
+	//ハッシュを実行
+	// fp : ハッシュを取得するストリームオブジェクト
+	//　・渡したときの読み取り位置からlenで指定した長さ、または最後までをハッシュします
+	//　・EOFになるまで制御が返ってきません
+	// len : ハッシュする長さ
+	// ret : 成功時真
 	bool Hash( mFileReadStream& fp , uint32_t len );
 
-	//���ʂ̃T�C�Y�𓾂�
-	//ret : ���ʂ̃o�C�g��(�G���[�̏ꍇ0)
+	//結果のサイズを得る
+	//ret : 結果のバイト数(エラーの場合0)
 	DWORD GetResultLen( void )const;
 
-	//�n�b�V���֐��̃u���b�N�T�C�Y�𓾂�
-	//ret : �u���b�N�T�C�Y(�G���[�̏ꍇ0)
+	//ハッシュ関数のブロックサイズを得る
+	//ret : ブロックサイズ(エラーの場合0)
 	DWORD GetBlockSize( void )const;
 
-	//�n�b�V���l�o�C�i���̊i�[��
+	//ハッシュ値バイナリの格納先
 	typedef std::unique_ptr<BYTE> HashData;
 
-	//���ʂ𓾂�
-	//���ʊi�[��̃o�b�t�@�͎����I�Ɋm�ۂ���A�X�}�[�g�|�C���^�ɐݒ肳��܂��B
-	//retResult:���ʊi�[��
-	//retLen:���ʂ̃o�C�g��
-	//ret:�������^
+	//結果を得る
+	//結果格納先のバッファは自動的に確保され、スマートポインタに設定されます。
+	//retResult:結果格納先
+	//retLen:結果のバイト数
+	//ret:成功時真
 	bool GetResult( HashData& retResult , DWORD& retLen )const;
 
-	//���ʂ𓾂�
-	//���ʊi�[��̃o�b�t�@�́A�Ăяo�������m�ۂ��A�܂��A�g�p��͉������K�v������܂��B
-	//retResult:���ʊi�[��
-	//len:���ʊi�[��̃o�C�g��
-	//ret:�������^
+	//結果を得る
+	//結果格納先のバッファは、呼び出し元が確保し、また、使用後は解放する必要があります。
+	//retResult:結果格納先
+	//len:結果格納先のバイト数
+	//ret:成功時真
 	bool GetResult( BYTE* retResult , DWORD len )const;
 
-	//���ʂ𓾂�
-	//retResult : �n�b�V���l��16�i������̊i�[��
-	//ret : �������^
+	//結果を得る
+	//retResult : ハッシュ値の16進文字列の格納先
+	//ret : 成功時真
 	bool GetResult( AString& retResult )const;
 
 	struct HashResult
@@ -118,9 +118,9 @@ public:
 		DWORD Len;
 	};
 
-	//���ʂ𓾂�
-	//retResult : �n�b�V���l�̃o�C�i����̊i�[��
-	//ret : �������^
+	//結果を得る
+	//retResult : ハッシュ値のバイナリ列の格納先
+	//ret : 成功時真
 	bool GetResult( HashResult& retResult )const;
 
 private:
@@ -137,10 +137,10 @@ protected:
 	HCRYPTPROV MyCryptProvider;
 	HCRYPTHASH MyCryptHash;
 
-	//�n�b�V���I�u�W�F�N�g��j������
+	//ハッシュオブジェクトを破棄する
 	void ReleaseHashObject( void );
 
-	//�n�b�V���A���S���Y����ID���擾����
+	//ハッシュアルゴリズムのIDを取得する
 	ALG_ID HashAlgorithm2AlgId( HashAlgorithm alg )const;
 
 };

@@ -1,13 +1,13 @@
-//----------------------------------------------------------------------------
-// ƒEƒCƒ“ƒhƒEŠÇ—iƒOƒ‹[ƒvƒ{ƒbƒNƒXj
+ï»¿//----------------------------------------------------------------------------
+// ã‚¦ã‚¤ãƒ³ãƒ‰ã‚¦ç®¡ç†ï¼ˆã‚°ãƒ«ãƒ¼ãƒ—ãƒœãƒƒã‚¯ã‚¹ï¼‰
 // Copyright (C) 2016 Fingerling. All rights reserved. 
 // This program is released under the MIT License. 
 // see http://opensource.org/licenses/mit-license.php
 //----------------------------------------------------------------------------
 
 /*
-œ—p“r
-ƒOƒ‹[ƒvƒ{ƒbƒNƒX‚Å‚·BƒEƒCƒ“ƒhƒE‚É“\‚è•t‚¯‚é‚±‚Æ‚ª‚Å‚«‚Ü‚·B
+â—ç”¨é€”
+ã‚°ãƒ«ãƒ¼ãƒ—ãƒœãƒƒã‚¯ã‚¹ã§ã™ã€‚ã‚¦ã‚¤ãƒ³ãƒ‰ã‚¦ã«è²¼ã‚Šä»˜ã‘ã‚‹ã“ã¨ãŒã§ãã¾ã™ã€‚
 
 
 */
@@ -21,20 +21,20 @@ class mGroupBox : public mWindow
 {
 public:
 
-	//ƒEƒCƒ“ƒhƒEƒvƒƒV[ƒWƒƒ
+	//ã‚¦ã‚¤ãƒ³ãƒ‰ã‚¦ãƒ—ãƒ­ã‚·ãƒ¼ã‚¸ãƒ£
 	virtual LRESULT WindowProcedure( UINT msg , WPARAM wparam , LPARAM lparam )override;
 
-	//ƒ{ƒ^ƒ“¶¬‚ÌƒIƒvƒVƒ‡ƒ“
-	//ÀÛ‚Éì¬‚·‚é‚Æ‚«‚ÍAOption\‘¢‘Ì‚ğ’¼Úg‚í‚¸‚ÉAƒVƒ`ƒ…ƒG[ƒVƒ‡ƒ“‚É‡‚í‚¹‚ÄˆÈ‰º‚ğg‚Á‚Ä‰º‚³‚¢B
-	//EOption_UseOption c ƒƒ“ƒo•Ï”‚ğ–„‚ß‚ÄƒIƒvƒVƒ‡ƒ“‚ğİ’è‚µ‚½‚¢‚Æ‚«
+	//ãƒœã‚¿ãƒ³ç”Ÿæˆæ™‚ã®ã‚ªãƒ—ã‚·ãƒ§ãƒ³
+	//å®Ÿéš›ã«ä½œæˆã™ã‚‹ã¨ãã¯ã€Optionæ§‹é€ ä½“ã‚’ç›´æ¥ä½¿ã‚ãšã«ã€ã‚·ãƒãƒ¥ã‚¨ãƒ¼ã‚·ãƒ§ãƒ³ã«åˆã‚ã›ã¦ä»¥ä¸‹ã‚’ä½¿ã£ã¦ä¸‹ã•ã„ã€‚
+	//ãƒ»Option_UseOption â€¦ ãƒ¡ãƒ³ãƒå¤‰æ•°ã‚’åŸ‹ã‚ã¦ã‚ªãƒ—ã‚·ãƒ§ãƒ³ã‚’è¨­å®šã—ãŸã„ã¨ã
 	struct Option
 	{
-		//ƒ{ƒ^ƒ“¶¬‚Ì•û–@
+		//ãƒœã‚¿ãƒ³ç”Ÿæˆã®æ–¹æ³•
 		enum CreateMethod
 		{
-			USEOPTION,		//’Êí‚Ì•û–@
+			USEOPTION,		//é€šå¸¸ã®æ–¹æ³•
 		};
-		const CreateMethod method;	//RTTI‚Ì‘ã—p‚Å‚·B•ÏX‚Ì•K—v‚Í‚ ‚è‚Ü‚¹‚ñB
+		const CreateMethod method;	//RTTIã®ä»£ç”¨ã§ã™ã€‚å¤‰æ›´ã®å¿…è¦ã¯ã‚ã‚Šã¾ã›ã‚“ã€‚
 	protected:
 		Option() = delete;
 		Option( CreateMethod create_method ) : method( create_method )
@@ -42,18 +42,18 @@ public:
 		}
 	};
 
-	//ƒOƒ‹[ƒvƒ{ƒbƒNƒX¶¬‚ÌƒIƒvƒVƒ‡ƒ“
+	//ã‚°ãƒ«ãƒ¼ãƒ—ãƒœãƒƒã‚¯ã‚¹ç”Ÿæˆæ™‚ã®ã‚ªãƒ—ã‚·ãƒ§ãƒ³
 	struct Option_UseOption : public Option
 	{
-		WString Caption;		//ƒOƒ‹[ƒvƒ{ƒbƒNƒX‚Ì¶ã‚É‘‚¢‚Ä‚ ‚é•¶š—ñ
-		WindowPosition Pos;		//•\¦ˆÊ’u
+		WString Caption;		//ã‚°ãƒ«ãƒ¼ãƒ—ãƒœãƒƒã‚¯ã‚¹ã®å·¦ä¸Šã«æ›¸ã„ã¦ã‚ã‚‹æ–‡å­—åˆ—
+		WindowPosition Pos;		//è¡¨ç¤ºä½ç½®
 		Option_UseOption() : Option( CreateMethod::USEOPTION )
 		{
 			Caption = L"";
 		}
 	};
 
-	//ƒtƒ@ƒNƒgƒŠƒƒ\ƒbƒh
+	//ãƒ•ã‚¡ã‚¯ãƒˆãƒªãƒ¡ã‚½ãƒƒãƒ‰
 	static mWindow* Factory( const void * option )throw( )
 	{
 		return mNew mGroupBox;
@@ -63,10 +63,10 @@ protected:
 	mGroupBox();
 	virtual ~mGroupBox();
 
-	//ƒEƒCƒ“ƒhƒEƒNƒ‰ƒX‚Ì“o˜^‚ğ‚·‚é
+	//ã‚¦ã‚¤ãƒ³ãƒ‰ã‚¦ã‚¯ãƒ©ã‚¹ã®ç™»éŒ²ã‚’ã™ã‚‹
 	virtual bool WindowClassSettingCallback( WindowClassSetting& retSetting , const void* opt )override;
 
-	//ƒEƒCƒ“ƒhƒE‚ğŠJ‚­
+	//ã‚¦ã‚¤ãƒ³ãƒ‰ã‚¦ã‚’é–‹ã
 	virtual bool CreateWindowCallback( CreateWindowSetting& retSetting , const void* opt )override;
 
 private:

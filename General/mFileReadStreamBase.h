@@ -1,12 +1,12 @@
-//----------------------------------------------------------------------------
-// �X�g���[�~���O�t�@�C���ǂݍ��ݑ���
+﻿//----------------------------------------------------------------------------
+// ストリーミングファイル読み込み操作
 // Copyright (C) 2013,2016 Fingerling. All rights reserved. 
 // Copyright (C) 2019-2024 Crea Inc. All rights reserved.
 // This program is released under the MIT License. 
 // see http://opensource.org/licenses/mit-license.php
-// ���쌠�\���⃉�C�Z���X�̉��ς͋֎~����Ă��܂��B
-// ���̃\�[�X�R�[�h�Ɋւ��āA��L���C�Z���X�ȊO�̌_�񓙂͈�ؑ��݂��܂���B
-// (���炩�̌_�񂪂���ꍇ�ł��A�{�\�[�X�R�[�h�͂��̑ΏۊO�ƂȂ�܂�)
+// 著作権表示やライセンスの改変は禁止されています。
+// このソースコードに関して、上記ライセンス以外の契約等は一切存在しません。
+// (何らかの契約がある場合でも、本ソースコードはその対象外となります)
 //----------------------------------------------------------------------------
 
 
@@ -25,103 +25,103 @@ public:
 	mFileReadStreamBase();
 	virtual ~mFileReadStreamBase();
 
-	//�P�����i�P�o�C�g�j�ǂݍ��݂܂�
-	//ret : �ǂݎ��������
-	//��EOF�̏ꍇ�A���̃��[�h�X�g���[���������A�N�Z�X�̂��̂��ǂ����ňӖ����Ⴂ�܂�
-	// �����A�N�Z�X�̏ꍇ   : �t�@�C���̏I�[�i����ȏ�̃f�[�^�͂Ȃ��j
-	// �񓯊��A�N�Z�X�̏ꍇ : ���ݓǂݎ���f�[�^���Ȃ��i���Ԃ��o�Ă΍ēx�ǂݎ��邩������Ȃ��j
+	//１文字（１バイト）読み込みます
+	//ret : 読み取った文字
+	//※EOFの場合、このリードストリームが同期アクセスのものかどうかで意味が違います
+	// 同期アクセスの場合   : ファイルの終端（それ以上のデータはない）
+	// 非同期アクセスの場合 : 現在読み取れるデータがない（時間が経てば再度読み取れるかもしれない）
 	virtual INT Read( void ) = 0;
 
-	//ANSI�łP�����ǂݍ��݂܂�
-	//retChar : �ǂݎ��������
-	//ret : �^�̏ꍇ : EOF�ɓ��B���Ă��Ȃ�
-	//      �U�œ����A�N�Z�X�̏ꍇ   : �t�@�C���̏I�[�i����ȏ�̃f�[�^�͂Ȃ��j
-	//      �U�Ŕ񓯊��A�N�Z�X�̏ꍇ : ���ݓǂݎ���f�[�^���Ȃ��i���Ԃ��o�Ă΍ēx�ǂݎ��邩������Ȃ��j
+	//ANSIで１文字読み込みます
+	//retChar : 読み取った文字
+	//ret : 真の場合 : EOFに到達していない
+	//      偽で同期アクセスの場合   : ファイルの終端（それ以上のデータはない）
+	//      偽で非同期アクセスの場合 : 現在読み取れるデータがない（時間が経てば再度読み取れるかもしれない）
 	bool ReadSingle( char& retChar );
 
-	//UNICODE(LE)�łP�����ǂݍ��݂܂�
-	//retWchar : �ǂݎ��������
-	//ret : �^�̏ꍇ : EOF�ɓ��B���Ă��Ȃ�
-	//      �U�œ����A�N�Z�X�̏ꍇ   : �t�@�C���̏I�[�i����ȏ�̃f�[�^�͂Ȃ��j
-	//      �U�Ŕ񓯊��A�N�Z�X�̏ꍇ : ���ݓǂݎ���f�[�^���Ȃ��i���Ԃ��o�Ă΍ēx�ǂݎ��邩������Ȃ��j
+	//UNICODE(LE)で１文字読み込みます
+	//retWchar : 読み取った文字
+	//ret : 真の場合 : EOFに到達していない
+	//      偽で同期アクセスの場合   : ファイルの終端（それ以上のデータはない）
+	//      偽で非同期アクセスの場合 : 現在読み取れるデータがない（時間が経てば再度読み取れるかもしれない）
 	bool ReadSingle( wchar_t& retWchar );
 
-	//�ǂݎ�莞�̃G���R�[�h�w��
+	//読み取り時のエンコード指定
 	enum Encode
 	{
-		ENCODE_ASIS,		//�ǂݎ��t�@�C���̃G���R�[�h�ɂ��čl�����Ȃ��i���邪�܂܂ɓǂݍ��ށj
-		ENCODE_SHIFT_JIS,	//�ǂݎ��t�@�C���̃G���R�[�h��SHIFT JIS�ł���
-		ENCODE_UTF16,		//�ǂݎ��t�@�C���̃G���R�[�h��UTF16(BOM�Ȃ�)�ł���
+		ENCODE_ASIS,		//読み取るファイルのエンコードについて考慮しない（あるがままに読み込む）
+		ENCODE_SHIFT_JIS,	//読み取るファイルのエンコードはSHIFT JISである
+		ENCODE_UTF16,		//読み取るファイルのエンコードはUTF16(BOMなし)である
 	};
 
-	//1�s�ǂݎ��E�w��T�C�Y�ǂݎ�莸�s���̓���w��
+	//1行読み取り・指定サイズ読み取り失敗時の動作指定
 	enum OnLineReadError
 	{
-		//�ǂ߂Ȃ����������͔j������
-		// ���ʁ�
-		// �EReadLine:�󂪕Ԃ�
-		// �EReadBinary:���g�͕ۏ؂���Ȃ�
-		// �G���[�����܂łɓǂ�ł����f�[�^���ǂݎ��ς݂ɂȂ�
-		// �֐��̖߂�l�����s
+		//読めなかった部分は破棄する
+		// 結果→
+		// ・ReadLine:空が返る
+		// ・ReadBinary:中身は保証されない
+		// エラー発生までに読んでいたデータ→読み取り済みになる
+		// 関数の戻り値→失敗
 		LINEREADERR_DISCARD,
 		
-		//���ǂݎ���Ԃɖ߂�
-		// ���ʁ�
-		// �EReadLine:�󂪕Ԃ�
-		// �EReadBinary:���g�͕ۏ؂���Ȃ�
-		// �G���[�����܂łɓǂ�ł����f�[�^�����Ǐ�Ԃɖ߂�
-		// �֐��̖߂�l�����s
+		//未読み取り状態に戻す
+		// 結果→
+		// ・ReadLine:空が返る
+		// ・ReadBinary:中身は保証されない
+		// エラー発生までに読んでいたデータ→未読状態に戻る
+		// 関数の戻り値→失敗
 		LINEREADERR_UNREAD,
 
-		//�ǂ߂��ʒu�܂ł����ʂƂ���
-		// ���ʁ�
-		// �EReadLine:�G���[�����܂łɓǂ�ł����f�[�^���Ԃ�
-		// �EReadBinary:�G���[�����܂łɓǂ�ł����f�[�^���Ԃ�
-		// �G���[�����܂łɓǂ�ł����f�[�^���ǂݎ��ς݂ɂȂ�
-		// �֐��̖߂�l������
+		//読めた位置までを結果とする
+		// 結果→
+		// ・ReadLine:エラー発生までに読んでいたデータが返る
+		// ・ReadBinary:エラー発生までに読んでいたデータが返る
+		// エラー発生までに読んでいたデータ→読み取り済みになる
+		// 関数の戻り値→成功
 		LINEREADERR_TRUNCATE,
 	};
 
-	//�ǂݎ�莞�̃t�@�C���̃G���R�[�h�����ł��邩���w�肵�܂��B
-	//�@��F SetEncode( ENCODE_SHIFT_JIS )	����t�@�C���̃G���R�[�h��SHIFT JIS�Ǝw��
-	//     �@��
+	//読み取り時のファイルのエンコードが何であるかを指定します。
+	//　例： SetEncode( ENCODE_SHIFT_JIS )	・・・ファイルのエンコードがSHIFT JISと指定
+	//     　↓
 	//       WString str
-	//       ReadLine( str ) ����t�@�C����SHIFT JIS�œǂݎ���āAUTF16�ɕϊ�����str�Ɋi�[
-	// encode : �t�@�C���̃G���R�[�h
-	// ret : �������^
-	// �����̊֐����Ăяo���Ȃ��i�G���R�[�h���w��j�ꍇ�́AENCODE_ASIS�ɂȂ�܂��B
+	//       ReadLine( str ) ・・・ファイルをSHIFT JISで読み取って、UTF16に変換してstrに格納
+	// encode : ファイルのエンコード
+	// ret : 成功時真
+	// ※この関数を呼び出さない（エンコード無指定）場合は、ENCODE_ASISになります。
 	bool SetEncode( Encode encode );
 
-	//�P�s�ǂݎ��܂��B
-	//ret : �ǂݎ����s�����Ƃ�true�B�����ǂݎ��Ȃ������Ƃ�false�B
-	//�E���s�����́A\r�܂���\n�܂���\r\n�ł��B
-	//�E�ǂݎ����������ɁA���s�R�[�h�͊܂܂�܂���B
-	//�E�����G���R�[�h��SHIFT_JIS�Ƃ��ď�������܂��B
+	//１行読み取ります。
+	//ret : 読み取りを行ったときtrue。何も読み取らなかったときfalse。
+	//・改行文字は、\rまたは\nまたは\r\nです。
+	//・読み取った文字列に、改行コードは含まれません。
+	//・文字エンコードはSHIFT_JISとして処理されます。
 	bool ReadLine( AString& retResult , OnLineReadError onerr = OnLineReadError::LINEREADERR_TRUNCATE );
 
-	//�P�s�ǂݎ��܂��B
-	//ret : �ǂݎ����s�����Ƃ�true�B�����ǂݎ��Ȃ������Ƃ�false�B
-	//�E���s�����́A\r�܂���\n�܂���\r\n�ł��B
-	//�E�ǂݎ����������ɁA���s�R�[�h�͊܂܂�܂���B
-	//�E�����G���R�[�h��UNICODE(BOM�Ȃ�16bit���g���G���f�B�A��)�Ƃ��ď�������܂��B
+	//１行読み取ります。
+	//ret : 読み取りを行ったときtrue。何も読み取らなかったときfalse。
+	//・改行文字は、\rまたは\nまたは\r\nです。
+	//・読み取った文字列に、改行コードは含まれません。
+	//・文字エンコードはUNICODE(BOMなし16bitリトルエンディアン)として処理されます。
 	bool ReadLine( WString& retResult , OnLineReadError onerr = OnLineReadError::LINEREADERR_TRUNCATE );
 
-	//�w��T�C�Y��ǂݎ��܂�
-	//retReadSize : ����I�����邩�A�G���[����������܂łɓǂݎ�����o�C�g���B�s�v�Ȃ�nullptr�ŉB
-	//ret : �w��T�C�Y�ǂݎ�萬����true�A���s��false
-	//�E�w��T�C�Y��ǂݎ��O��EOF�ɂȂ�Ǝ��s���܂�
+	//指定サイズを読み取ります
+	//retReadSize : 正常終了するか、エラーが発生するまでに読み取ったバイト数。不要ならnullptrで可。
+	//ret : 指定サイズ読み取り成功時true、失敗時false
+	//・指定サイズを読み取る前にEOFになると失敗します
 	bool ReadBinary( BYTE* retResult , size_t ReadSize , size_t* retReadSize = nullptr , OnLineReadError onerr = OnLineReadError::LINEREADERR_TRUNCATE );
 
-	//EOF�ɒB���Ă��邩�𒲂ׂ܂�
-	//��true�̏ꍇ�A���̃��[�h�X�g���[���������A�N�Z�X�̂��̂��ǂ����ňӖ����Ⴂ�܂�
-	// �����A�N�Z�X�̏ꍇ   : �t�@�C���̏I�[�i����ȏ�̃f�[�^�͂Ȃ��j
-	// �񓯊��A�N�Z�X�̏ꍇ : ���ݓǂݎ���f�[�^���Ȃ��i���Ԃ��o�Ă΍ēx�ǂݎ��邩������Ȃ��j
-	//�E�G���R�[�h��"ENCODE_UTF16"���w�肵�Ă���ꍇ�A�o�C�g�P�ʂ̒[�������݂���ƁA
-	//  ���̍Ō�̃o�C�g�ɂ��Ă�EOF�ƌ��Ȃ��܂��B
+	//EOFに達しているかを調べます
+	//※trueの場合、このリードストリームが同期アクセスのものかどうかで意味が違います
+	// 同期アクセスの場合   : ファイルの終端（それ以上のデータはない）
+	// 非同期アクセスの場合 : 現在読み取れるデータがない（時間が経てば再度読み取れるかもしれない）
+	//・エンコードに"ENCODE_UTF16"を指定している場合、バイト単位の端数が存在すると、
+	//  その最後のバイトについてもEOFと見なします。
 	virtual bool IsEOF( void )const = 0;
 
-	//�t�@�C�����J���Ă��邩�𔻒肵�܂�
-	//�J���Ă���ꍇ�͐^���Ԃ�܂�
+	//ファイルが開いているかを判定します
+	//開いている場合は真が返ります
 	virtual bool IsOpen( void )const = 0;
 
 protected:
@@ -131,19 +131,19 @@ protected:
 
 protected:
 
-	Encode MyEncode;		//�ǂݎ�莞�̃G���R�[�h
+	Encode MyEncode;		//読み取り時のエンコード
 
-	//�ǂݍ��񂾂̂�����ώ~�߂��ƃo�b�t�@�ɉ����߂����ꍇ�ɁA
-	//���ɓǂނƂ��܂Ŏ���Ă������߂̃o�b�t�@
+	//読み込んだのをやっぱ止めたとバッファに押し戻した場合に、
+	//次に読むときまで取っておくためのバッファ
 	class UnReadBuffer
 	{
 	public:
 		UnReadBuffer() = default;
 		virtual ~UnReadBuffer() = default;
 
-		//�^�̕������L���b�V���ɉ����Ԃ��܂�
-		//val : �����Ԃ��f�[�^
-		//�E���g���G���f�B�A���ƌ��Ȃ��܂�
+		//型の分だけキャッシュに押し返します
+		//val : 押し返すデータ
+		//・リトルエンディアンと見なします
 		template<class T> void Unread( T val )
 		{
 			for( size_t i = 0 ; i < sizeof( T ) ; i++ )
@@ -153,34 +153,34 @@ protected:
 			}
 		}
 
-		//�o�b�t�@����1������肾��
-		//�o�b�t�@����Ȃ̂Ɏ��o�����Ƃ����EOF�ɂȂ�(���ӁI)
-		//ret : �o�b�t�@������o�����f�[�^�B�o�b�t�@����̏ꍇEOF�B
+		//バッファから1文字取りだし
+		//バッファが空なのに取り出そうとするとEOFになる(注意！)
+		//ret : バッファから取り出したデータ。バッファが空の場合EOF。
 		INT Read( void );
 
-		//�o�b�t�@�͋󂩁H
-		//ret : ��ł����true
+		//バッファは空か？
+		//ret : 空であればtrue
 		bool IsEmpty( void )const;
 
-		//�o�b�t�@���N���A
+		//バッファをクリア
 		void Clear( void );
 
 	private:
 		UnReadBuffer( const UnReadBuffer& source ) = delete;
 		void operator=( const UnReadBuffer& source ) = delete;
 
-		//��x�ǂݎ�������̂́A�L���b�V���ɉ����Ԃ��ꂽ�f�[�^���i�[
+		//一度読み取ったものの、キャッシュに押し返されたデータを格納
 		typedef std::deque<BYTE> Buffer;
 		Buffer MyBuffer;
 	};
 
 	UnReadBuffer MyUnReadBuffer;
 
-	std::unique_ptr<BYTE[]> MyReadCacheHead;	//�L���b�V�����Ă���f�[�^�̐擪�o�C�g
-	DWORD MyReadCacheCurrent;					//����Read�ŕԂ��ʒu
-	DWORD MyReadCacheRemain;					//���ǂ̃L���b�V���̃T�C�Y
+	std::unique_ptr<BYTE[]> MyReadCacheHead;	//キャッシュしているデータの先頭バイト
+	DWORD MyReadCacheCurrent;					//次のReadで返す位置
+	DWORD MyReadCacheRemain;					//未読のキャッシュのサイズ
 
-	//EOF�ƂȂ������H
+	//EOFとなったか？
 	bool MyIsEOF;
 
 };

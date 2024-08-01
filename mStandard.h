@@ -1,10 +1,10 @@
-//----------------------------------------------------------------------------
-// ��{�w�b�_
+﻿//----------------------------------------------------------------------------
+// 基本ヘッダ
 // Copyright (C) 2016 Fingerling. All rights reserved. 
 // This program is released under the MIT License. 
 // see http://opensource.org/licenses/mit-license.php
-// ���쌠�\���⃉�C�Z���X�̉��ς͋֎~����Ă��܂��B
-// ���̃\�[�X�R�[�h�Ɋւ��āA��L���C�Z���X�ȊO�̌_�񓙂͈�ؑ��݂��܂���B
+// 著作権表示やライセンスの改変は禁止されています。
+// このソースコードに関して、上記ライセンス以外の契約等は一切存在しません。
 //----------------------------------------------------------------------------
 
 #ifndef MSTANDARD_H_INCLUDED
@@ -22,10 +22,10 @@
 #include <memory>
 #pragma warning( disable : 4482 )
 
-//�X���b�h�Z�[�t�ł��邱�Ƃ������}�[�J�[
+//スレッドセーフであることを示すマーカー
 #define threadsafe /**/
 
-//�f�o�b�O��new�Adelete�̒�`
+//デバッグ版new、deleteの定義
 #if defined( _DEBUG ) && defined( LIBRARY_ENABLE_CRTDBG )
 #include <crtdbg.h>
 #define mNew ::new(_NORMAL_BLOCK, __FILE__ ":" __FUNCSIG__ , __LINE__ ) 
@@ -37,7 +37,7 @@
 #define mPlacementNew(a) ::new( a )
 #endif //_DEBUG
 
-//�O���Q�Ƃ̉���
+//外部参照の解決
 #ifdef DEFINE_EXTERN_VALUE
 #define mEXTERN /**/
 #define mGLOBAL_INITIAL_VALUE(v) =(v)
@@ -46,27 +46,27 @@
 #define mGLOBAL_INITIAL_VALUE(v)
 #endif
 
-//�z��̗v�f�������߂�
+//配列の要素数を求める
 template<typename t , size_t s> constexpr size_t array_count_of( const t(&array)[ s ] )
 {
 	return s;
 }
 
-//���C�h�����񉻃}�N��( L"hoge"���ł��Ȃ�__FILE__���̑g�ݍ��݃}�N���p )
+//ワイド文字列化マクロ( L"hoge"ができない__FILE__等の組み込みマクロ用 )
 #define mWCHAR_STRING_INT(quote) L##quote
 #define mWCHAR_STRING(quote) mWCHAR_STRING_INT(quote)
 
-//���݃R���p�C�����̃t�@�C����
-//__FILE__����p�X����菜�������ɂȂ�܂��B
+//現在コンパイル中のファイル名
+//__FILE__からパスを取り除いた物になります。
 #define mCURRENT_FILE ( wcsrchr( mWCHAR_STRING(__FILE__) , L'\\') ? wcsrchr( mWCHAR_STRING(__FILE__)  , L'\\' ) + 1 : mWCHAR_STRING(__FILE__) )
 #define mCURRENT_FUNCTION mWCHAR_STRING(__FUNCTION__)
 
-//�C�j�V�����C�Y
-//���C�u���������������܂��B�g�p����O�ɏ��������ĉ������B
+//イニシャライズ
+//ライブラリを初期化します。使用する前に初期化して下さい。
 void InitializeLibrary( void );
 
-//�f�C�j�V�����C�Y
-//���C�u�����̏��������������܂��B
+//デイニシャライズ
+//ライブラリの初期化を解除します。
 void DeinitializeLibrary( void );
 
 #endif //MSTANDARD_H_INCLUDED

@@ -1,84 +1,84 @@
-//----------------------------------------------------------------------------
-// �E�C���h�E�Ǘ��i�v�����^�[�p�f�o�C�X�R���e�L�X�g�j
+﻿//----------------------------------------------------------------------------
+// ウインドウ管理（プリンター用デバイスコンテキスト）
 // Copyright (C) 2019 Crea Inc. All rights reserved. 
 // This program is released under the MIT License. 
 // see http://opensource.org/licenses/mit-license.php
-// ���쌠�\���⃉�C�Z���X�̉��ς͋֎~����Ă��܂��B
-// ���̃\�[�X�R�[�h�Ɋւ��āA��L���C�Z���X�ȊO�̌_�񓙂͈�ؑ��݂��܂���B
-// (���炩�̌_�񂪂���ꍇ�ł��A�{�\�[�X�R�[�h�͂��̑ΏۊO�ƂȂ�܂�)
+// 著作権表示やライセンスの改変は禁止されています。
+// このソースコードに関して、上記ライセンス以外の契約等は一切存在しません。
+// (何らかの契約がある場合でも、本ソースコードはその対象外となります)
 //----------------------------------------------------------------------------
 
-//���p�r
-//GDI���o�R���Ĉ�����s���܂�
-//�ȉ��T���v��
+//●用途
+//GDIを経由して印刷を行います
+//以下サンプル
 #if 0
 #include "mStandard.h"
 #include "General/mTCHAR.h"
 #include "Device/mPrinterEnumerar.h"
 #include "GDI/mGdiPrinterDC.h"
 
-//�R�}���h���C���I�v�V����
+//コマンドラインオプション
 mOptionParser MyOption;
 
 int main( int argc , char** argv )
 {
 	InitializeLibrary();
 
-	//�v�����^�[�����擾����
-	mPrinterEnumerar printers;				//�v�����^�[�񋓃N���X
-	mPrinterEnumerar::PrinterInfo info;		//�v�����^�[�ꗗ
+	//プリンター情報を取得する
+	mPrinterEnumerar printers;				//プリンター列挙クラス
+	mPrinterEnumerar::PrinterInfo info;		//プリンター一覧
 	printers.GetPrinterInfo( info );
 
-	//�f�t�H���g�v�����^�[�̖��O���擾����
-	WString defprinter;	//�f�t�H���g�v�����^�[�̖��O
+	//デフォルトプリンターの名前を取得する
+	WString defprinter;	//デフォルトプリンターの名前
 	printers.GetDefaultPrinterName( defprinter );
 
-	//�I�������v�����^�[�̏����擾����
-	mPrinterEnumerar::PrinterProperty prop;	//�v�����^�[���
+	//選択したプリンターの情報を取得する
+	mPrinterEnumerar::PrinterProperty prop;	//プリンター情報
 	printers.GetPrinterProperty( defprinter , prop );
 		 
-	//�������
+	//印刷する
 	mGdiPrinterDC printer;
 	mGdiPrinterDC::Option_UseOption opt;
-	opt.DocumentName = L"TestPage";			//�h�L�������g��
-	opt.PrinterName = defprinter;			//�����ł́A��Ɏ擾�����f�t�H���g�v�����^�[�ɂ���
+	opt.DocumentName = L"TestPage";			//ドキュメント名
+	opt.PrinterName = defprinter;			//ここでは、先に取得したデフォルトプリンターにする
 
 	mGdiPrinterDC::PageOption_StandardSize pageopt;
-	pageopt.Paper = DMPAPER_A4;				//����A4���w��(�{����mPrinterEnumerar::PrinterProperty�̒l����R�s�[���ׂ�)
+	pageopt.Paper = DMPAPER_A4;				//直接A4を指定(本来はmPrinterEnumerar::PrinterPropertyの値からコピーすべき)
 
-	//�v�����^���I�[�v�����āA1���ڂ̕`����J�n
+	//プリンタをオープンして、1枚目の描画を開始
 	printer.Open( opt );
 	printer.StartPage( pageopt );
 
-	//���W�ϊ��̐ݒ������
+	//座標変換の設定をする
 	SIZE sz;
-	//�����̍�������_�ɂ��ĕ`�悷��ꍇ��
-	// �� ���̒[����̈ʒu�ɑ΂��ĕ`��ł���
-	// �~ ����\�͈͂̒[�����W0�ɂȂ�Ȃ�
+	//＜紙の左上を原点にして描画する場合＞
+	// ○ 紙の端からの位置に対して描画できる
+	// × 印刷可能範囲の端が座標0にならない
 	printer.GetPaperSize( sz );
 	printer.SetView( mGdiPrinterDC::Origin::ORIGIN_PAPEREDGE , sz );
-	//��GetPaperSize()��1/10mm�P�ʂŌ��ʂ�Ԃ��̂ŁA
-	//  A4(210�~297mm)�Ȃ�΁A(2100,2970)���Ԃ�B
-	//  ��������̂܂�SetView�ɓn���Ă���̂ŁA���S�̂�(0,0)-(2099,2969)�̃r�b�g�}�b�v�̂悤�ɕ`��ł���ݒ�ɂȂ�B
-	//  �܂�A1�s�N�Z�� = 1/10mm �ɂȂ�B
+	//↑GetPaperSize()は1/10mm単位で結果を返すので、
+	//  A4(210×297mm)ならば、(2100,2970)が返る。
+	//  これをそのままSetViewに渡しているので、紙全体を(0,0)-(2099,2969)のビットマップのように描画できる設定になる。
+	//  つまり、1ピクセル = 1/10mm になる。
 
-	//������\�͈͂̍�������_�ɂ��ĕ`�悷��ꍇ��
-	// �� (0,0)�̈ʒu������W�v�Z�ł���̂ŁA������₷��
-	// �~ �v�����^�ɂ���Ĉ���ʒu�������ɕς��
+	//＜印刷可能範囲の左上を原点にして描画する場合＞
+	// ○ (0,0)の位置から座標計算できるので、分かりやすい
+	// × プリンタによって印刷位置が微妙に変わる
 //	printer.GetPrintableSize( sz );
 //	printer.SetView( mGdiPrinterDC::Origin::ORIGIN_PRINTABLEAREA , sz );
 
-	//�`�悷��
+	//描画する
 	RECT rect;
 	printer.Select( GetStockObject( BLACK_PEN ) );
-	printer.GetPrintableArea( rect );	//����\�͈͂��擾
-	printer.Rectangle( rect.left , rect.top , rect.right , rect.bottom );	//����\�͈͂����ς��ɒ����`��`��
-	printer.Rectangle( 0 , 0 , 100 , 100 );	//���W���w�肵�Ē����`��`��
-	printer.Print( L"Test" , 200 , 200 );	//���W���w�肵��"Test"�ƕ���������
+	printer.GetPrintableArea( rect );	//印刷可能範囲を取得
+	printer.Rectangle( rect.left , rect.top , rect.right , rect.bottom );	//印刷可能範囲いっぱいに長方形を描く
+	printer.Rectangle( 0 , 0 , 100 , 100 );	//座標を指定して長方形を描く
+	printer.Print( L"Test" , 200 , 200 );	//座標を指定して"Test"と文字を書く
 
-	//�h�L�������g�I��
+	//ドキュメント終了
 	printer.EndPage();
-	printer.Close();	//Close()�ɂ����ۂ̃v�����g���͂��܂�
+	printer.Close();	//Close()により実際のプリントがはじまる
 
 	return 0;
 }
@@ -94,26 +94,26 @@ int main( int argc , char** argv )
 
 namespace Definitions_mGdiPrinterDC
 {
-	//���_�ʒu�w��
+	//原点位置指定
 	enum Origin
 	{
-		ORIGIN_PAPEREDGE,		//���_�����̍���Ɏw�肵�܂�
-		ORIGIN_PRINTABLEAREA,	//���_������\�͈͂̍���Ɏw�肵�܂�
+		ORIGIN_PAPEREDGE,		//原点を紙の左上に指定します
+		ORIGIN_PRINTABLEAREA,	//原点を印刷可能範囲の左上に指定します
 	};
 
-	//�p���̌���
+	//用紙の向き
 	enum PaperOrientation
 	{
-		PAPER_PORTRAIT,			//�c��
-		PAPER_LANDSCAPE			//����
+		PAPER_PORTRAIT,			//縦長
+		PAPER_LANDSCAPE			//横長
 	};
 
-	//���ʈ��
+	//両面印刷
 	enum PaperDuplex
 	{
-		PAPER_SIMPLEX,				//�Жʈ��
-		PAPER_DUPLEX_HORIZONTAL,	//���ӒԂ�
-		PAPER_DUPLEX_VERTICAL,		//�Z�ӒԂ�
+		PAPER_SIMPLEX,				//片面印刷
+		PAPER_DUPLEX_HORIZONTAL,	//長辺綴じ
+		PAPER_DUPLEX_VERTICAL,		//短辺綴じ
 	};
 };
 
@@ -121,31 +121,31 @@ class mGdiPrinterDC : public mGdiDC
 {
 public:
 
-	//�I�v�V�����\����(�h�L�������g)
-	//�EOption_UseOption �c �����o�ϐ��𖄂߂ăI�v�V������ݒ肵�����Ƃ�
+	//オプション構造体(ドキュメント)
+	//・Option_UseOption … メンバ変数を埋めてオプションを設定したいとき
 	struct Option
 	{
 		enum CreateMethod
 		{
 			USEOPTION,
 		};
-		const CreateMethod method;	//RTTI�̑�p�ł��B�ύX�̕K�v�͂���܂���B
+		const CreateMethod method;	//RTTIの代用です。変更の必要はありません。
 
-		//�h�L�������g��
-		//�E�X�v�[���ɕ\������鍡��W���u�̖��O
+		//ドキュメント名
+		//・スプーラに表示される今回ジョブの名前
 		WString DocumentName;
 
-		//�v�����^��
-		//�E�����̃v�����^�̖��O
+		//プリンタ名
+		//・印刷先のプリンタの名前
 		WString PrinterName;
 
-		//�o�̓t�@�C��
-		//�E���z�v�����^(Microsoft Print to PDF��)�ŏo�̓t�@�C�������w��
+		//出力ファイル
+		//・仮想プリンタ(Microsoft Print to PDF等)で出力ファイル名を指定
 		WString OutFileName;
 
-		//����\�͈͂ɑ΂���}�[�W��(�f�o�C�X�P��)
-		//�E�f�o�C�X���瓾�������\�͈͂҂�����Ɉ������ƒ[�����Ȃ���Ő؂��\��������
-		//�E�����ɒl���w�肷��ƁA�f�o�C�X���瓾��ꂽ����\�͈͂ɑ΂��Ďw��ʂ̃}�[�W����ݒ肷��
+		//印刷可能範囲に対するマージン(デバイス単位)
+		//・デバイスから得られる印刷可能範囲ぴったりに印刷すると端数やらなんやらで切れる可能性がある
+		//・ここに値を指定すると、デバイスから得られた印刷可能範囲に対して指定量のマージンを設定する
 		DWORD PrintAreaMargin;
 
 	protected:
@@ -163,15 +163,15 @@ public:
 		}
 	};
 
-	//�I�v�V�����\����(�y�[�W)
+	//オプション構造体(ページ)
 	struct PageOption
 	{
 		enum CreateMethod
 		{
-			STANDARD_SIZE,		//�K�i�T�C�Y�̗p��
-			NOCHANGE,			//�O�y�[�W�Ɠ����ݒ�
+			STANDARD_SIZE,		//規格サイズの用紙
+			NOCHANGE,			//前ページと同じ設定
 		};
-		const CreateMethod method;	//RTTI�̑�p
+		const CreateMethod method;	//RTTIの代用
 
 	protected:
 		PageOption() = delete;
@@ -180,7 +180,7 @@ public:
 		}
 	};
 
-	//�O�Ɠ����ݒ�ɂ��v�����g
+	//前と同じ設定によるプリント
 	struct PageOption_Nochange : public PageOption
 	{
 		PageOption_Nochange() : PageOption( CreateMethod::NOCHANGE )
@@ -188,27 +188,27 @@ public:
 		}
 	};
 
-	//�K�i�����ꂽ�p���T�C�Y�ɂ��v�����g
+	//規格化された用紙サイズによるプリント
 	struct PageOption_StandardSize : public PageOption
 	{
 		using PaperId = mPrinterInfo::PaperId;
 		using PaperOrientation = Definitions_mGdiPrinterDC::PaperOrientation;
 		using PaperDuplex = Definitions_mGdiPrinterDC::PaperDuplex;
 
-		//�p��ID
-		//�g�p�ł���l�́AmPrinterEnumerar�N���X���g���āA
-		//mPrinterInfo::PrinterProperty::PaperInfo::PaperId�̒l���擾����΂킩��B
-		//�܂��A���ۂ̒l��wingdi.h�Œ�`����Ă���"DMPAPER_"�Ŏn�܂�}�N���̒l�Ȃ̂ŁA���ڎw�肵�Ă��悢�B
+		//用紙ID
+		//使用できる値は、mPrinterEnumerarクラスを使って、
+		//mPrinterInfo::PrinterProperty::PaperInfo::PaperIdの値を取得すればわかる。
+		//また、実際の値はwingdi.hで定義されている"DMPAPER_"で始まるマクロの値なので、直接指定してもよい。
 		PaperId Paper;
 
-		//�p���̌���
+		//用紙の向き
 		PaperOrientation Orientation;
 
-		//�J���[����Ȃ�^
-		//false�ɂ���ƁA�J���[�v�����^�ł����m�N������ɂȂ�܂��B
+		//カラー印刷なら真
+		//falseにすると、カラープリンタでもモノクロ印刷になります。
 		bool IsColor;
 
-		//���ʈ���ݒ�
+		//両面印刷設定
 		PaperDuplex Duplex;
 
 		PageOption_StandardSize() : PageOption( CreateMethod::STANDARD_SIZE )
@@ -220,86 +220,86 @@ public:
 		}
 	};
 
-	//�R���X�g���N�^
+	//コンストラクタ
 	mGdiPrinterDC() noexcept;
 	virtual ~mGdiPrinterDC();
 
-	//������J�n����
-	// opt : ����I�v�V����
-	// ret : �������^
+	//印刷を開始する
+	// opt : 印刷オプション
+	// ret : 成功時真
 	bool Open( const Option& opt ) noexcept;
 
-	//�������������
-	//�E���̃��\�b�h�̎��s�ɂ����ۂ̈����Ƃ��J�n����܂�
-	//ret : �������^
+	//印刷を完了する
+	//・このメソッドの実行により実際の印刷作業が開始されます
+	//ret : 成功時真
 	bool Close( void ) noexcept;
 
-	//������L�����Z������
-	//�EOpen()�����Ă���Close()����܂ł̊ԂɃL�����Z������ꍇ�R�[��
-	//ret : �������^
+	//印刷をキャンセルする
+	//・Open()をしてからClose()するまでの間にキャンセルする場合コール
+	//ret : 成功時真
 	bool Abort( void ) noexcept;
 
-	//���y�[�W���J�n����
-	//�E�ŏ��̃y�[�W�ł��Ăяo�����K�v
-	//�EGDI�I�u�W�F�N�g��(�u���V��)�̑I���󋵂̓��Z�b�g�����̂ōĐݒ肪�K�v
-	// opt : ����I�v�V����
-	// ret : �������^
+	//次ページを開始する
+	//・最初のページでも呼び出しが必要
+	//・GDIオブジェクト類(ブラシ等)の選択状況はリセットされるので再設定が必要
+	// opt : 印刷オプション
+	// ret : 成功時真
 	bool StartPage( const PageOption& opt ) noexcept;
 
-	//�y�[�W����������
-	//�E�Ō�̃y�[�W�ł��Ăяo�����K�v
-	// ret : �������^
+	//ページを完了する
+	//・最後のページでも呼び出しが必要
+	// ret : 成功時真
 	bool EndPage( void ) noexcept;
 
-	//�p���̃T�C�Y�𓾂�(0.1�~���P�� / 1cm = 100)
-	//retSize : ����ꂽ�p���T�C�Y
-	//ret : �������^
-	//�EStartPage()���s�O�́A�O�̃y�[�W�̏�񂪓�����
-	//�E�[�����o�邱�Ƃ�����܂�(�����ŃC���`�Emm�̕ϊ����s���邽��)
+	//用紙のサイズを得る(0.1ミリ単位 / 1cm = 100)
+	//retSize : 得られた用紙サイズ
+	//ret : 成功時真
+	//・StartPage()実行前は、前のページの情報が得られる
+	//・端数が出ることがあります(内部でインチ・mmの変換が行われるため)
 	bool GetPaperSize( SIZE& retSize ) noexcept;
 
-	//����\�͈͂̃T�C�Y�𓾂�(0.1�~���P�� / 1cm = 100)
-	//retSize : ����ꂽ����\�T�C�Y
-	//ret : �������^
-	//�EStartPage()���s�O�́A�O�̃y�[�W�̏�񂪓�����
-	//�E�[�����o�邱�Ƃ�����܂�(�����ŃC���`�Emm�̕ϊ����s���邽��)
-	//��SetView()�Ŏw�肵���`��Ώۂł͂Ȃ��A
-	//�@�v�����^�̎d�l�Ǝ��̎�ނ��瓱�����l�ɂȂ�܂�
+	//印刷可能範囲のサイズを得る(0.1ミリ単位 / 1cm = 100)
+	//retSize : 得られた印刷可能サイズ
+	//ret : 成功時真
+	//・StartPage()実行前は、前のページの情報が得られる
+	//・端数が出ることがあります(内部でインチ・mmの変換が行われるため)
+	//※SetView()で指定した描画対象ではなく、
+	//　プリンタの仕様と紙の種類から導かれる値になります
 	bool GetPrintableSize( SIZE& retSize ) noexcept;
 
-	//���̏㉺���E�̊e�[�������\�͈͂܂ł̃}�[�W���𓾂�(0.1�~���P�� / 1cm = 100)
-	//retSize : ����ꂽ�}�[�W���T�C�Y
-	//ret : �������^
-	//�EStartPage()���s�O�́A�O�̃y�[�W�̏�񂪓�����
-	//�E�[�����o�邱�Ƃ�����܂�(�����ŃC���`�Emm�̕ϊ����s���邽��)
+	//紙の上下左右の各端から印刷可能範囲までのマージンを得る(0.1ミリ単位 / 1cm = 100)
+	//retSize : 得られたマージンサイズ
+	//ret : 成功時真
+	//・StartPage()実行前は、前のページの情報が得られる
+	//・端数が出ることがあります(内部でインチ・mmの変換が行われるため)
 	bool GetPrintableMargin( RECT& retMargin ) noexcept;
 
-	//���_�ʒu�w��
+	//原点位置指定
 	using Origin = Definitions_mGdiPrinterDC::Origin;
 
-	//�`��Ώۂ͈̔͂��A���s�N�Z���l���̃X�N���[���ƌ��Ȃ������w�肵�܂�
-	//origin : ���_�ʒu�w��
+	//描画対象の範囲を、何ピクセル四方のスクリーンと見なすかを指定します
+	//origin : 原点位置指定
 	// ORIGIN_PAPEREDGE
-	//	�E���_�����̍���Ɏw�肵�܂�
-	//	�E���S�̂��`��Ώۂ͈̔͂ƂȂ�܂�
-	//	�E���ۂɃv�����^������ł���͈͂�GetPrintableArea()�Œ��ׂ܂�
+	//	・原点を紙の左上に指定します
+	//	・紙全体が描画対象の範囲となります
+	//	・実際にプリンタが印刷できる範囲はGetPrintableArea()で調べます
 	// ORIGIN_PRINTABLEAREA
-	//	�E���_������\�͈͂̍���Ɏw�肵�܂�
-	//	�E����\�͈͑S�̂��`��Ώۂ͈̔͂ƂȂ�܂�
-	//size : ���s�N�Z���l���̃X�N���[���ƌ��Ȃ���
+	//	・原点を印刷可能範囲の左上に指定します
+	//	・印刷可能範囲全体が描画対象の範囲となります
+	//size : 何ピクセル四方のスクリーンと見なすか
 	bool SetView( Origin origin , const SIZE& size ) noexcept;
 
-	//�`��Ώۂ͈̔͂��A���s�N�Z���l���̃X�N���[���ƌ��Ȃ������w�肵�܂�
-	//origin : ���_�ʒu�w��
+	//描画対象の範囲を、何ピクセル四方のスクリーンと見なすかを指定します
+	//origin : 原点位置指定
 	// ORIGIN_PAPEREDGE
-	//	�E���_�����̍���Ɏw�肵�܂�
-	//	�E���S�̂��`��Ώۂ͈̔͂ƂȂ�܂�
-	//	�E���ۂɃv�����^������ł���͈͂�GetPrintableArea()�Œ��ׂ܂�
+	//	・原点を紙の左上に指定します
+	//	・紙全体が描画対象の範囲となります
+	//	・実際にプリンタが印刷できる範囲はGetPrintableArea()で調べます
 	// ORIGIN_PRINTABLEAREA
-	//	�E���_������\�͈͂̍���Ɏw�肵�܂�
-	//	�E����\�͈͑S�̂��`��Ώۂ͈̔͂ƂȂ�܂�
-	//size : ���s�N�Z���l���̃X�N���[���ƌ��Ȃ���
-	//margin : origin�Ŏw�肵���͈͂ɑ΂��Ċm�ۂ���}�[�W��(0.1�~���P�� / 1cm = 100)
+	//	・原点を印刷可能範囲の左上に指定します
+	//	・印刷可能範囲全体が描画対象の範囲となります
+	//size : 何ピクセル四方のスクリーンと見なすか
+	//margin : originで指定した範囲に対して確保するマージン(0.1ミリ単位 / 1cm = 100)
 	bool SetView( Origin origin , const SIZE& size , const RECT& margin ) noexcept;
 
 

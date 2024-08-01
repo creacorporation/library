@@ -1,11 +1,11 @@
-//----------------------------------------------------------------------------
+ï»¿//----------------------------------------------------------------------------
 // GUID
 // Copyright (C) 2024 Crea Inc. All rights reserved.
 // This program is released under the MIT License. 
 // see http://opensource.org/licenses/mit-license.php
-// ’˜ìŒ •\¦‚âƒ‰ƒCƒZƒ“ƒX‚Ì‰ü•Ï‚Í‹Ö~‚³‚ê‚Ä‚¢‚Ü‚·B
-// ‚±‚Ìƒ\[ƒXƒR[ƒh‚ÉŠÖ‚µ‚ÄAã‹Lƒ‰ƒCƒZƒ“ƒXˆÈŠO‚ÌŒ_–ñ“™‚ÍˆêØ‘¶İ‚µ‚Ü‚¹‚ñB
-// (‰½‚ç‚©‚ÌŒ_–ñ‚ª‚ ‚éê‡‚Å‚àA–{ƒ\[ƒXƒR[ƒh‚Í‚»‚Ì‘ÎÛŠO‚Æ‚È‚è‚Ü‚·)
+// è‘—ä½œæ¨©è¡¨ç¤ºã‚„ãƒ©ã‚¤ã‚»ãƒ³ã‚¹ã®æ”¹å¤‰ã¯ç¦æ­¢ã•ã‚Œã¦ã„ã¾ã™ã€‚
+// ã“ã®ã‚½ãƒ¼ã‚¹ã‚³ãƒ¼ãƒ‰ã«é–¢ã—ã¦ã€ä¸Šè¨˜ãƒ©ã‚¤ã‚»ãƒ³ã‚¹ä»¥å¤–ã®å¥‘ç´„ç­‰ã¯ä¸€åˆ‡å­˜åœ¨ã—ã¾ã›ã‚“ã€‚
+// (ä½•ã‚‰ã‹ã®å¥‘ç´„ãŒã‚ã‚‹å ´åˆã§ã‚‚ã€æœ¬ã‚½ãƒ¼ã‚¹ã‚³ãƒ¼ãƒ‰ã¯ãã®å¯¾è±¡å¤–ã¨ãªã‚Šã¾ã™)
 //----------------------------------------------------------------------------
 
 #ifndef MGUID_H_INCLUDED
@@ -32,34 +32,34 @@ public:
 
 	virtual ~mGUID();
 
-	//’l‚ğ‚OƒNƒŠƒA‚·‚é(nil GUID‚É‚·‚é)
+	//å€¤ã‚’ï¼ã‚¯ãƒªã‚¢ã™ã‚‹(nil GUIDã«ã™ã‚‹)
 	void Clear( void );
 
-	//’l‚ğİ’è‚·‚é
+	//å€¤ã‚’è¨­å®šã™ã‚‹
 	bool Set( const WString& src );
-	//’l‚ğİ’è‚·‚é
+	//å€¤ã‚’è¨­å®šã™ã‚‹
 	bool Set( const AString& src );
-	//’l‚ğİ’è‚·‚é
+	//å€¤ã‚’è¨­å®šã™ã‚‹
 	bool Set( const GUID& src );
-	//’l‚ğİ’è‚·‚é
+	//å€¤ã‚’è¨­å®šã™ã‚‹
 	bool Set( const mGUID& src );
-	//’l‚ğİ’è‚·‚é
+	//å€¤ã‚’è¨­å®šã™ã‚‹
 	bool Set( uint32_t dt1 , uint16_t dt2 , uint16_t dt3 , uint64_t dt4 );
 
-	//V‚µ‚¢GUID‚ğ¶¬‚·‚é
+	//æ–°ã—ã„GUIDã‚’ç”Ÿæˆã™ã‚‹
 	bool Create( void );
 
-	//GUID‚ğæ“¾
+	//GUIDã‚’å–å¾—
 	operator const GUID&( void )const;
-	//GUID‚ğæ“¾
+	//GUIDã‚’å–å¾—
 	const GUID& ToGUID( void )const;
-	//GUID‚ğæ“¾
+	//GUIDã‚’å–å¾—
 	operator AString( void )const;
-	//GUID‚ğæ“¾
+	//GUIDã‚’å–å¾—
 	const AString ToAString( void )const;
-	//GUID‚ğæ“¾
+	//GUIDã‚’å–å¾—
 	operator WString( void )const;
-	//GUID‚ğæ“¾
+	//GUIDã‚’å–å¾—
 	const WString ToWString( void )const;
 
 	bool operator ==( const mGUID& src )const;

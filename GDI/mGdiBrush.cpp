@@ -1,5 +1,5 @@
-//----------------------------------------------------------------------------
-// ƒEƒCƒ“ƒhƒEŠÇ—iGDIƒuƒ‰ƒVj
+ï»¿//----------------------------------------------------------------------------
+// ã‚¦ã‚¤ãƒ³ãƒ‰ã‚¦ç®¡ç†ï¼ˆGDIãƒ–ãƒ©ã‚·ï¼‰
 // Copyright (C) 2016 Fingerling. All rights reserved. 
 // This program is released under the MIT License. 
 // see http://opensource.org/licenses/mit-license.php
@@ -12,17 +12,17 @@
 
 mGdiBrush::mGdiBrush( const Option* opt )throw( mException )
 {
-	//ƒIƒvƒVƒ‡ƒ“‚ªƒkƒ‹ƒ|ƒCƒ“ƒ^‚¾‚Á‚½ê‡A”’‚Ìƒ\ƒŠƒbƒhƒuƒ‰ƒV‚É‚È‚è‚Ü‚·B
+	//ã‚ªãƒ—ã‚·ãƒ§ãƒ³ãŒãƒŒãƒ«ãƒã‚¤ãƒ³ã‚¿ã ã£ãŸå ´åˆã€ç™½ã®ã‚½ãƒªãƒƒãƒ‰ãƒ–ãƒ©ã‚·ã«ãªã‚Šã¾ã™ã€‚
 	if( opt == nullptr )
 	{
 		MyHandle = (HBRUSH)::GetStockObject( WHITE_BRUSH );
 		return;
 	}
 
-	//ƒIƒvƒVƒ‡ƒ“‚Éw’è‚³‚ê‚½‚æ‚¤‚Èƒuƒ‰ƒV‚ğ¶¬‚µ‚Ü‚·B
+	//ã‚ªãƒ—ã‚·ãƒ§ãƒ³ã«æŒ‡å®šã•ã‚ŒãŸã‚ˆã†ãªãƒ–ãƒ©ã‚·ã‚’ç”Ÿæˆã—ã¾ã™ã€‚
 	if( opt->kind == Option::BrushKind::SOLID_BRUSH )
 	{
-		//ƒ\ƒŠƒbƒhƒuƒ‰ƒV‚Ì¶¬‚ğ‚µ‚Ü‚·B
+		//ã‚½ãƒªãƒƒãƒ‰ãƒ–ãƒ©ã‚·ã®ç”Ÿæˆã‚’ã—ã¾ã™ã€‚
 		const Option_Solid* opt_solid = (const Option_Solid*)opt;
 		if( !CreateSolidBrush( *opt_solid ) )
 		{
@@ -32,9 +32,9 @@ mGdiBrush::mGdiBrush( const Option* opt )throw( mException )
 	}
 	else if( opt->kind == Option::BrushKind::HATCH_BRUSH )
 	{
-		//ƒnƒbƒ`ƒuƒ‰ƒV‚Ìì¬‚ğ‚µ‚Ü‚·
+		//ãƒãƒƒãƒãƒ–ãƒ©ã‚·ã®ä½œæˆã‚’ã—ã¾ã™
 		const Option_Hatch* opt_hatch = (const Option_Hatch*)opt;
-		if( !this->CreateHatchBrush( *opt_hatch ) )	//©WinAPI‚É“¯–¼‚ÌŠÖ”‚ª‚ ‚é‚Ì‚ÅthisCü‚µ‚Ä‚¢‚Ü‚·
+		if( !this->CreateHatchBrush( *opt_hatch ) )	//â†WinAPIã«åŒåã®é–¢æ•°ãŒã‚ã‚‹ã®ã§thisä¿®é£¾ã—ã¦ã„ã¾ã™
 		{
 			throw EXCEPTION( opt_hatch->style , L"CreateHatchBrush failed" );
 		}
@@ -42,9 +42,9 @@ mGdiBrush::mGdiBrush( const Option* opt )throw( mException )
 	}
 	else if( opt->kind == Option::BrushKind::PATTERN_BRUSH )
 	{
-		//ƒpƒ^[ƒ“ƒuƒ‰ƒV‚Ìì¬‚ğ‚µ‚Ü‚·
+		//ãƒ‘ã‚¿ãƒ¼ãƒ³ãƒ–ãƒ©ã‚·ã®ä½œæˆã‚’ã—ã¾ã™
 		const Option_Pattern* opt_pat = (const Option_Pattern*)opt;
-		if( !this->CreatePatternBrush( *opt_pat ) )	//©WinAPI‚É“¯–¼‚ÌŠÖ”‚ª‚ ‚é‚Ì‚ÅthisCü‚µ‚Ä‚¢‚Ü‚·
+		if( !this->CreatePatternBrush( *opt_pat ) )	//â†WinAPIã«åŒåã®é–¢æ•°ãŒã‚ã‚‹ã®ã§thisä¿®é£¾ã—ã¦ã„ã¾ã™
 		{
 			throw EXCEPTION( 0 , L"CreatePatternBrush failed" );
 		}
@@ -56,79 +56,79 @@ mGdiBrush::mGdiBrush( const Option* opt )throw( mException )
 		return;
 	}
 
-	//‘Î‰‚µ‚Ä‚¢‚È‚¢í•Ê‚È‚Ì‚Å—áŠO‚ğ“Š‚°‚Ü‚·B
+	//å¯¾å¿œã—ã¦ã„ãªã„ç¨®åˆ¥ãªã®ã§ä¾‹å¤–ã‚’æŠ•ã’ã¾ã™ã€‚
 	MyHandle = nullptr;
 	throw EXCEPTION( opt->kind , L"Invalid brush kind" );
 }
 
 mGdiBrush::~mGdiBrush()
 {
-	//ƒnƒ“ƒhƒ‹‚Ì‰ğ•ú
-	//¦GetStockObject‚Åì‚Á‚½ƒnƒ“ƒhƒ‹‚à‰ğ•ú‚µ‚Ä‚µ‚Ü‚Á‚Ä–â‘è‚Í–³‚¢B
+	//ãƒãƒ³ãƒ‰ãƒ«ã®è§£æ”¾
+	//â€»GetStockObjectã§ä½œã£ãŸãƒãƒ³ãƒ‰ãƒ«ã‚‚è§£æ”¾ã—ã¦ã—ã¾ã£ã¦å•é¡Œã¯ç„¡ã„ã€‚
 	DeleteObject( MyHandle );
 	MyHandle = nullptr;
 }
 
-//ƒ\ƒŠƒbƒhƒuƒ‰ƒV‚ğì¬‚µ‚Ü‚·B¬Œ÷‚·‚ê‚ÎMyHandle‚É’l‚ª“ü‚è‚Ü‚·B
+//ã‚½ãƒªãƒƒãƒ‰ãƒ–ãƒ©ã‚·ã‚’ä½œæˆã—ã¾ã™ã€‚æˆåŠŸã™ã‚Œã°MyHandleã«å€¤ãŒå…¥ã‚Šã¾ã™ã€‚
 bool mGdiBrush::CreateSolidBrush( const Option_Solid& opt )
 {
-	//ƒnƒ“ƒhƒ‹‚Ìì¬
+	//ãƒãƒ³ãƒ‰ãƒ«ã®ä½œæˆ
 	MyHandle = ::CreateSolidBrush( opt.color );
 	return ( MyHandle != nullptr );
 }
 
-//ƒnƒbƒ`ƒuƒ‰ƒV‚ğì¬‚µ‚Ü‚·B¬Œ÷‚·‚ê‚ÎMyHandle‚É’l‚ª“ü‚è‚Ü‚·B
+//ãƒãƒƒãƒãƒ–ãƒ©ã‚·ã‚’ä½œæˆã—ã¾ã™ã€‚æˆåŠŸã™ã‚Œã°MyHandleã«å€¤ãŒå…¥ã‚Šã¾ã™ã€‚
 bool mGdiBrush::CreateHatchBrush( const Option_Hatch& opt )
 {
 
 	INT hatch_type;
 	switch( opt.style )
 	{
-	case Option_Hatch::HatchStyle::UP_DIAGONAL:		//‰Eã‚ª‚è‚ÌÎü
+	case Option_Hatch::HatchStyle::UP_DIAGONAL:		//å³ä¸ŠãŒã‚Šã®æ–œç·š
 		hatch_type = HS_FDIAGONAL;
 		break;
-	case Option_Hatch::HatchStyle::DOWN_DIAGONAL:	//‰E‰º‚ª‚è‚ÌÎü
+	case Option_Hatch::HatchStyle::DOWN_DIAGONAL:	//å³ä¸‹ãŒã‚Šã®æ–œç·š
 		hatch_type = HS_BDIAGONAL;
 		break;
-	case Option_Hatch::HatchStyle::CROSS_DIAGONAL:	//Îü‚ÌƒNƒƒXƒnƒbƒ`
+	case Option_Hatch::HatchStyle::CROSS_DIAGONAL:	//æ–œç·šã®ã‚¯ãƒ­ã‚¹ãƒãƒƒãƒ
 		hatch_type = HS_DIAGCROSS;
 		break;
-	case Option_Hatch::HatchStyle::HORIZONTAL:		//…•½ü‚Ìƒnƒbƒ`
+	case Option_Hatch::HatchStyle::HORIZONTAL:		//æ°´å¹³ç·šã®ãƒãƒƒãƒ
 		hatch_type = HS_HORIZONTAL;
 		break;
-	case Option_Hatch::HatchStyle::VERTICAL:		//‚’¼ü‚Ìƒnƒbƒ`
+	case Option_Hatch::HatchStyle::VERTICAL:		//å‚ç›´ç·šã®ãƒãƒƒãƒ
 		hatch_type = HS_VERTICAL;
 		break;
-	case Option_Hatch::HatchStyle::CROSS:			//\š‚Ìƒnƒbƒ`
+	case Option_Hatch::HatchStyle::CROSS:			//åå­—ã®ãƒãƒƒãƒ
 		hatch_type = HS_CROSS;
 		break;
 	default:
-		//•Ï‚È‚Ì‚ª—ˆ‚½ê‡‚ÍƒGƒ‰[I—¹‚·‚é
+		//å¤‰ãªã®ãŒæ¥ãŸå ´åˆã¯ã‚¨ãƒ©ãƒ¼çµ‚äº†ã™ã‚‹
 		return false;
 	}
 
-	//F‚Ìİ’è
+	//è‰²ã®è¨­å®š
 	RGBQUAD rgb_color = ::COLORREF2RGBQUAD( opt.color );
 
-	//ƒnƒ“ƒhƒ‹‚Ìì¬B¸”s‚Ínullptr‚È‚Ì‚ÅAnullptr‚Æ‚Ì”äŠrŒ‹‰Ê‚ğ•Ô‚µ‚Ü‚·B
+	//ãƒãƒ³ãƒ‰ãƒ«ã®ä½œæˆã€‚å¤±æ•—æ™‚ã¯nullptrãªã®ã§ã€nullptrã¨ã®æ¯”è¼ƒçµæœã‚’è¿”ã—ã¾ã™ã€‚
 	MyHandle = ::CreateHatchBrush( hatch_type , ::RGBQUAD2COLORREF( rgb_color ) );
 	return ( MyHandle != nullptr );
 }
 
-//ƒpƒ^[ƒ“ƒuƒ‰ƒV‚ğì¬‚µ‚Ü‚·B¬Œ÷‚·‚ê‚ÎMyHandle‚É’l‚ª“ü‚è‚Ü‚·B
+//ãƒ‘ã‚¿ãƒ¼ãƒ³ãƒ–ãƒ©ã‚·ã‚’ä½œæˆã—ã¾ã™ã€‚æˆåŠŸã™ã‚Œã°MyHandleã«å€¤ãŒå…¥ã‚Šã¾ã™ã€‚
 bool mGdiBrush::CreatePatternBrush( const Option_Pattern& opt )
 {
-	//TODO:ƒrƒbƒgƒ}ƒbƒv‚ÌÀ‘•‚ª‚Ü‚¾‚Å‚«‚Ä‚¢‚È‚¢‚©‚çAŒã‚Åì‚éB
+	//TODO:ãƒ“ãƒƒãƒˆãƒãƒƒãƒ—ã®å®Ÿè£…ãŒã¾ã ã§ãã¦ã„ãªã„ã‹ã‚‰ã€å¾Œã§ä½œã‚‹ã€‚
 	return false;
 }
 
-//ƒnƒ“ƒhƒ‹‚Ì’l‚ğæ“¾‚·‚é(ƒLƒƒƒXƒg‰‰Zqƒo[ƒWƒ‡ƒ“)
+//ãƒãƒ³ãƒ‰ãƒ«ã®å€¤ã‚’å–å¾—ã™ã‚‹(ã‚­ãƒ£ã‚¹ãƒˆæ¼”ç®—å­ãƒãƒ¼ã‚¸ãƒ§ãƒ³)
 mGdiBrush::operator HBRUSH()const
 {
 	return MyHandle;
 }
 
-//ƒnƒ“ƒhƒ‹‚Ì’l‚ğæ“¾‚·‚é(•’Ê‚ÌŠÖ”ƒo[ƒWƒ‡ƒ“)
+//ãƒãƒ³ãƒ‰ãƒ«ã®å€¤ã‚’å–å¾—ã™ã‚‹(æ™®é€šã®é–¢æ•°ãƒãƒ¼ã‚¸ãƒ§ãƒ³)
 HGDIOBJ mGdiBrush::GetHandle( void )const
 {
 	return MyHandle;

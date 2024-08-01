@@ -1,23 +1,23 @@
-//----------------------------------------------------------------------------
-// �E�C���h�E�Ǘ��i�f�o�C�X�R���e�L�X�g�j
+﻿//----------------------------------------------------------------------------
+// ウインドウ管理（デバイスコンテキスト）
 // Copyright (C) 2016 Fingerling. All rights reserved. 
 // This program is released under the MIT License. 
 // see http://opensource.org/licenses/mit-license.php
 //----------------------------------------------------------------------------
 
 /*
-���p�r
-�f�o�C�X�R���e�L�X�g�̃n���h���ł��B
-���̃N���X�͊��N���X�ŁA�n���h���������@�ɂ���Ĕh���N���X��������Ă��܂��B
+●用途
+デバイスコンテキストのハンドルです。
+このクラスは基底クラスで、ハンドルを作る方法によって派生クラスが分かれています。
 
-���R�R�Ŕh���N���X�̂��Љ�ł���
+※ココで派生クラスのご紹介です※
 [mGdiWinDC]
-�E�C���h�E�̃N���C�A���g�̈�ɒ��ڕ`������邽�߂̃N���X�ł��B
-���̃N���X�ł�WinAPI��GetDC()���Ăяo���Ď擾�����f�o�C�X�R���e�L�X�g�̃n���h���������܂��B
+ウインドウのクライアント領域に直接描画をするためのクラスです。
+このクラスではWinAPIのGetDC()を呼び出して取得したデバイスコンテキストのハンドルを扱います。
 
 [mGdiPaintDC]
-WM_PAINT���b�Z�[�W�ɑΉ����āA�E�C���h�E���ĕ`�悷�邽�߂̃N���X�ł��B
-BeginPaint()�Ŏ擾�����f�o�C�X�R���e�L�X�g�̃n���h���������܂��B
+WM_PAINTメッセージに対応して、ウインドウを再描画するためのクラスです。
+BeginPaint()で取得したデバイスコンテキストのハンドルを扱います。
 */
 
 #ifndef MGDIDC_H_INCLUDED
@@ -31,15 +31,15 @@ namespace mGdiDC_Definitions
 {
 	enum PrintHorizontalAlign
 	{
-		H_ALIGN_LEFT,		//������
-		H_ALIGN_CENTER,		//(����)��������
-		H_ALIGN_RIGHT		//�E����
+		H_ALIGN_LEFT,		//左揃え
+		H_ALIGN_CENTER,		//(水平)中央揃え
+		H_ALIGN_RIGHT		//右揃え
 	};
 	enum PrintVerticalAlign
 	{
-		V_ALIGN_TOP,		//�㑵��
-		V_ALIGN_CENTER,		//(����)�������� ��������w�肷��Ɖ��s�͖�������܂�
-		V_ALIGN_BOTTOM		//������ ��������w�肷��Ɖ��s�͖�������܂�
+		V_ALIGN_TOP,		//上揃え
+		V_ALIGN_CENTER,		//(垂直)中央揃え ※これを指定すると改行は無視されます
+		V_ALIGN_BOTTOM		//下揃え ※これを指定すると改行は無視されます
 	};
 	enum StrechMode
 	{
@@ -55,29 +55,29 @@ class mGdiDC
 public:
 	virtual ~mGdiDC();
 
-	//�I�u�W�F�N�g(�y���A�u���V�A�t�H���g�Ȃ�)��I������
-	//handle : �I���������I�u�W�F�N�g���i�[����mGdiHandle�܂��͂��̔h���N���X
-	//ret : ���������ꍇtrue
+	//オブジェクト(ペン、ブラシ、フォントなど)を選択する
+	//handle : 選択したいオブジェクトを格納したmGdiHandleまたはその派生クラス
+	//ret : 成功した場合true
 	bool Select( const mGdiHandle& handle );
 
-	//�I�u�W�F�N�g��I�����܂�(HGDIOBJ���w��ver)
-	//handle : �֘A�Â������I�u�W�F�N�g
-	//ret : ���������ꍇtrue
+	//オブジェクトを選択します(HGDIOBJ直指定ver)
+	//handle : 関連づけたいオブジェクト
+	//ret : 成功した場合true
 	bool Select( HGDIOBJ new_object );
 
-	//�I�u�W�F�N�g��I�����܂�(mGdiResource���璊�over ����1)
-	//res : ���o���̃��\�[�X�v�[��
-	//id : �擾������ID
-	//subid : id���Ȃ������ꍇ�Ɏ擾������ID(�s�v�ȏꍇ�͋󕶎����OK)
-	//ret : ���������ꍇtrue
+	//オブジェクトを選択します(mGdiResourceから抽出ver その1)
+	//res : 抽出元のリソースプール
+	//id : 取得したいID
+	//subid : idがなかった場合に取得したいID(不要な場合は空文字列でOK)
+	//ret : 成功した場合true
 	bool Select( const mGdiResource& res , const WString& id , const WString& subid = L"" );
 
-	//�I�u�W�F�N�g��I�����܂�(mGdiResource���璊�over ����2)
-	//res : ���o���̃��\�[�X�v�[��
-	//id : �擾������ID
-	//subid : id���Ȃ������ꍇ�Ɏ擾������ID(�s�v�ȏꍇ�͋󕶎����OK)
-	//ret : ���������ꍇtrue
-	//�^�Ȃ��łƂ́AmGdiResource����I�u�W�F�N�g�𒊏o�����Ƃ��Ɍ^�̃`�F�b�N������_���Ⴂ�܂��B
+	//オブジェクトを選択します(mGdiResourceから抽出ver その2)
+	//res : 抽出元のリソースプール
+	//id : 取得したいID
+	//subid : idがなかった場合に取得したいID(不要な場合は空文字列でOK)
+	//ret : 成功した場合true
+	//型なし版とは、mGdiResourceからオブジェクトを抽出したときに型のチェックが入る点が違います。
 	template< class T >
 	bool Select( const mGdiResource& res , const WString& id , const WString& subid = L"" )
 	{
@@ -89,123 +89,123 @@ public:
 		return Select( *object );
 	}
 
-	//����`�悷��
-	//( from_x , from_y )���̍��W������������܂�
-	//( to_x , to_y )���̍��W�Ɍ����Đ��������܂�
-	//ret : �������^
-	//�Efrom���ȗ������ꍇ�́A���݂̈ʒu������������܂��B
-	//�E���̊֐������s��́Ato�Ɏw�肵���ʒu���u���݂̈ʒu�v�ƂȂ�܂�
+	//線を描画する
+	//( from_x , from_y )この座標から線を引きます
+	//( to_x , to_y )この座標に向けて線を引きます
+	//ret : 成功時真
+	//・fromを省略した場合は、現在の位置から線を引きます。
+	//・この関数を実行後は、toに指定した位置が「現在の位置」となります
 	bool Line( INT to_x , INT to_y );
 	bool Line( INT from_x , INT from_y , INT to_x , INT to_y );
 	bool LineOffset( INT from_x , INT from_y , INT offset_x , INT offset_y );
 
-	//��`��`�悷��
-	//( x1 , y1 )-( x2 , y2 )��Ίp����̒��_�Ƃ��钷���`��`�悵�܂��B
-	//ret : �������^
-	//�E�O�g�����݂̃y���ŁA���������݂̃u���V�œh��Ԃ����B
-	//�E�O�g���v��Ȃ��Ȃ�k���y��(mGdiPen�I�ɂ�TRANSPARENT_PEN)���g��
-	//�E�h��Ԃ��Ȃ��Ȃ�k���u���V(mGdiBrush�I�ɂ�TRANSPARENT_BRUSH)���g��
-	//�y�d�v�zWinAPI�͉E�ӁA��ӂɂ��āA�w�肵�����W��1�s�N�Z�������ɕ`�悳��܂����A
-	//       ���̊֐��͂����␳���Ă��܂��B�w�肵�����W����E�Ӂ���ӂ��ʂ�܂��B
+	//矩形を描画する
+	//( x1 , y1 )-( x2 , y2 )を対角線上の頂点とする長方形を描画します。
+	//ret : 成功時真
+	//・外枠が現在のペンで、内側が現在のブラシで塗りつぶされる。
+	//・外枠が要らないならヌルペン(mGdiPen的にはTRANSPARENT_PEN)を使う
+	//・塗りつぶさないならヌルブラシ(mGdiBrush的にはTRANSPARENT_BRUSH)を使う
+	//【重要】WinAPIは右辺、底辺について、指定した座標の1ピクセル内側に描画されますが、
+	//       この関数はそれを補正しています。指定した座標上を右辺＆底辺が通ります。
 	bool Rectangle( INT x1 , INT y1 , INT x2 , INT y2 );
 
-	//��`��`�悷��
-	//( x1 , y1 )-( x1+x2 , y1+y2 )��Ίp����̒��_�Ƃ��钷���`��`�悵�܂��B
-	//ret : �������^
-	//�E�O�g�����݂̃y���ŁA���������݂̃u���V�œh��Ԃ����B
-	//�E�O�g���v��Ȃ��Ȃ�k���y��(mGdiPen�I�ɂ�TRANSPARENT_PEN)���g��
-	//�E�h��Ԃ��Ȃ��Ȃ�k���u���V(mGdiBrush�I�ɂ�TRANSPARENT_BRUSH)���g��
-	//�y�d�v�zWinAPI�͉E�ӁA��ӂɂ��āA�w�肵�����W��1�s�N�Z�������ɕ`�悳��܂����A
-	//       ���̊֐��͂����␳���Ă��܂��B�w�肵�����W����E�Ӂ���ӂ��ʂ�܂��B
+	//矩形を描画する
+	//( x1 , y1 )-( x1+x2 , y1+y2 )を対角線上の頂点とする長方形を描画します。
+	//ret : 成功時真
+	//・外枠が現在のペンで、内側が現在のブラシで塗りつぶされる。
+	//・外枠が要らないならヌルペン(mGdiPen的にはTRANSPARENT_PEN)を使う
+	//・塗りつぶさないならヌルブラシ(mGdiBrush的にはTRANSPARENT_BRUSH)を使う
+	//【重要】WinAPIは右辺、底辺について、指定した座標の1ピクセル内側に描画されますが、
+	//       この関数はそれを補正しています。指定した座標上を右辺＆底辺が通ります。
 	bool RectangleOffset( INT x1 , INT y1 , INT offset_x , INT offset_ );
 
-	//�~��`�悷��
-	//�w����W�𒆐S�Ƃ����A�w�蔼�a�̉~��`���܂�
-	//( x , y )�~�̒��S
-	//radius : �~�̔��a
-	//�E�O�g�����݂̃y���ŁA���������݂̃u���V�œh��Ԃ����B
-	//�E�O�g���v��Ȃ��Ȃ�k���y��(mGdiPen�I�ɂ�TRANSPARENT_PEN)���g��
-	//�E�h��Ԃ��Ȃ��Ȃ�k���u���V(mGdiBrush�I�ɂ�TRANSPARENT_BRUSH)���g��
-	//�E�y���Ӂz���Ƃ��΁A���a��5�Ƃ����ꍇ���S����}5�s�N�Z����`�����߁A
-	//          �`���ꂽ�~�̐�߂镝�E������11�s�N�Z���ɂȂ�܂��B
-	//          �C���[�W�I�ɂ́A�~�̊O��0.5�s�N�Z�����͉~�̊O���ƍl����΂悢���ƁB
+	//円を描画する
+	//指定座標を中心とした、指定半径の円を描きます
+	//( x , y )円の中心
+	//radius : 円の半径
+	//・外枠が現在のペンで、内側が現在のブラシで塗りつぶされる。
+	//・外枠が要らないならヌルペン(mGdiPen的にはTRANSPARENT_PEN)を使う
+	//・塗りつぶさないならヌルブラシ(mGdiBrush的にはTRANSPARENT_BRUSH)を使う
+	//・【注意】たとえば、半径を5とした場合中心から±5ピクセルを描くため、
+	//          描かれた円の占める幅・高さは11ピクセルになります。
+	//          イメージ的には、円の外側0.5ピクセル分は円の外側と考えればよいかと。
 	bool Circle( INT x , INT y , INT radius );
 
-	//�~��`�悷��
-	//�w����W�𒆐S�Ƃ����A�w�蔼�a�̉~��`���܂�
-	//( x1 , y1 )-( x2 , y2 )��Ίp����̒��_�Ƃ��钷���`�ɊO�ڂ���~��`���܂��B
-	//�E�O�g�����݂̃y���ŁA���������݂̃u���V�œh��Ԃ����B
-	//�E�O�g���v��Ȃ��Ȃ�k���y��(mGdiPen�I�ɂ�TRANSPARENT_PEN)���g��
-	//�E�h��Ԃ��Ȃ��Ȃ�k���u���V(mGdiBrush�I�ɂ�TRANSPARENT_BRUSH)���g��
+	//円を描画する
+	//指定座標を中心とした、指定半径の円を描きます
+	//( x1 , y1 )-( x2 , y2 )を対角線上の頂点とする長方形に外接する円を描きます。
+	//・外枠が現在のペンで、内側が現在のブラシで塗りつぶされる。
+	//・外枠が要らないならヌルペン(mGdiPen的にはTRANSPARENT_PEN)を使う
+	//・塗りつぶさないならヌルブラシ(mGdiBrush的にはTRANSPARENT_BRUSH)を使う
 	bool Circle( INT x1 , INT y1 , INT x2 , INT y2 );
 
-	//�w��͈͂��w��͈͂ɃR�s�[����(���̂P)
-	//srcdc�Ŏw�肵��DC��( src_x1 , src_y1 )-( src_x2 , src_y2 )��Ίp����̒��_�Ƃ��钷���`���A
-	//���̃I�u�W�F�N�g�� ( dst_x1 , dst_y1 )-( dst_x2 , dst_y2 )��Ίp����̒��_�Ƃ��钷���`�Ƃ���ʒu�ɓ\��t���܂��B
-	//ret : ������true
-	//�E�R�s�[���ƃR�s�[��ŕ��E�������Ⴄ�Ɗg��k�����܂�
-	bool Copy( const mGdiDC& srcdc ,							//�R�s�[���f�o�C�X�R���e�L�X�g
-		INT src_x1 , INT src_y1 , INT src_x2 , INT src_y2 ,		//�R�s�[�������`
-		INT dst_x1 , INT dst_y1 , INT dst_x2 , INT dst_y2 ,		//�R�s�[�撷���`
+	//指定範囲を指定範囲にコピーする(その１)
+	//srcdcで指定したDCの( src_x1 , src_y1 )-( src_x2 , src_y2 )を対角線上の頂点とする長方形を、
+	//このオブジェクトの ( dst_x1 , dst_y1 )-( dst_x2 , dst_y2 )を対角線上の頂点とする長方形とする位置に貼り付けます。
+	//ret : 成功時true
+	//・コピー元とコピー先で幅・高さが違うと拡大縮小します
+	bool Copy( const mGdiDC& srcdc ,							//コピー元デバイスコンテキスト
+		INT src_x1 , INT src_y1 , INT src_x2 , INT src_y2 ,		//コピー元長方形
+		INT dst_x1 , INT dst_y1 , INT dst_x2 , INT dst_y2 ,		//コピー先長方形
 		DWORD raster = SRCCOPY );
 
-	//�w��͈͂��w��͈͂ɃR�s�[����(���̂Q)
-	//srcdc�Ŏw�肵��DC��( src_x1 , src_y1 )-( src_x2 , src_y2 )��Ίp����̒��_�Ƃ��钷���`���A
-	//���̃I�u�W�F�N�g�� ( dst_x1 , dst_y1 )������̒��_�Ƃ���ʒu�ɓ\��t���܂��B
-	//ret : ������true
-	bool Copy( const mGdiDC& srcdc ,							//�R�s�[���f�o�C�X�R���e�L�X�g
-		INT src_x1 , INT src_y1 , INT src_x2 , INT src_y2 ,		//�R�s�[�������`
-		INT dst_x1 , INT dst_y1 ,								//�R�s�[����W(����)
+	//指定範囲を指定範囲にコピーする(その２)
+	//srcdcで指定したDCの( src_x1 , src_y1 )-( src_x2 , src_y2 )を対角線上の頂点とする長方形を、
+	//このオブジェクトの ( dst_x1 , dst_y1 )を左上の頂点とする位置に貼り付けます。
+	//ret : 成功時true
+	bool Copy( const mGdiDC& srcdc ,							//コピー元デバイスコンテキスト
+		INT src_x1 , INT src_y1 , INT src_x2 , INT src_y2 ,		//コピー元長方形
+		INT dst_x1 , INT dst_y1 ,								//コピー先座標(左上)
 		DWORD raster = SRCCOPY );
 
-	//�w��͈͂��w��͈͂ɃR�s�[����(���̂R)
-	//srcdc�Ŏw�肵��DC��( x1 , y1 )-( x2 , y2 )��Ίp����̒��_�Ƃ��钷���`���A
-	//���̃I�u�W�F�N�g�̓���ʒu�ɓ\��t���܂��B
-	//ret : ������true
+	//指定範囲を指定範囲にコピーする(その３)
+	//srcdcで指定したDCの( x1 , y1 )-( x2 , y2 )を対角線上の頂点とする長方形を、
+	//このオブジェクトの同一位置に貼り付けます。
+	//ret : 成功時true
 	bool Copy( const mGdiDC& srcdc , INT x1 , INT y1 , INT x2 , INT y2 , DWORD raster = SRCCOPY );
 
-	//�����F���Ŏw��͈͂��w��͈͂ɃR�s�[����(���̂P)
-	//srcdc�Ŏw�肵��DC��( src_x1 , src_y1 )-( src_x2 , src_y2 )��Ίp����̒��_�Ƃ��钷���`���A
-	//���̃I�u�W�F�N�g�� ( dst_x1 , dst_y1 )-( dst_x2 , dst_y2 )��Ίp����̒��_�Ƃ��钷���`�Ƃ���ʒu�ɓ\��t���܂��B
-	//ret : ������true
-	//�E�R�s�[���ƃR�s�[��ŕ��E�������Ⴄ�Ɗg��k�����܂�
-	bool Copy( const mGdiDC& srcdc ,							//�R�s�[���f�o�C�X�R���e�L�X�g
-		INT src_x1 , INT src_y1 , INT src_x2 , INT src_y2 ,		//�R�s�[�������`
-		INT dst_x1 , INT dst_y1 , INT dst_x2 , INT dst_y2 ,		//�R�s�[�撷���`
+	//透明色つきで指定範囲を指定範囲にコピーする(その１)
+	//srcdcで指定したDCの( src_x1 , src_y1 )-( src_x2 , src_y2 )を対角線上の頂点とする長方形を、
+	//このオブジェクトの ( dst_x1 , dst_y1 )-( dst_x2 , dst_y2 )を対角線上の頂点とする長方形とする位置に貼り付けます。
+	//ret : 成功時true
+	//・コピー元とコピー先で幅・高さが違うと拡大縮小します
+	bool Copy( const mGdiDC& srcdc ,							//コピー元デバイスコンテキスト
+		INT src_x1 , INT src_y1 , INT src_x2 , INT src_y2 ,		//コピー元長方形
+		INT dst_x1 , INT dst_y1 , INT dst_x2 , INT dst_y2 ,		//コピー先長方形
 		const RGBQUAD& transparent_color );
 
-	//�����F���Ŏw��͈͂��w��͈͂ɃR�s�[����(���̂Q)
-	//srcdc�Ŏw�肵��DC��( src_x1 , src_y1 )-( src_x2 , src_y2 )��Ίp����̒��_�Ƃ��钷���`���A
-	//���̃I�u�W�F�N�g�� ( dst_x1 , dst_y1 )������̒��_�Ƃ���ʒu�ɓ\��t���܂��B
-	//ret : ������true
-	bool Copy( const mGdiDC& srcdc ,							//�R�s�[���f�o�C�X�R���e�L�X�g
-		INT src_x1 , INT src_y1 , INT src_x2 , INT src_y2 ,		//�R�s�[�������`
-		INT dst_x1 , INT dst_y1 ,								//�R�s�[����W(����)
+	//透明色つきで指定範囲を指定範囲にコピーする(その２)
+	//srcdcで指定したDCの( src_x1 , src_y1 )-( src_x2 , src_y2 )を対角線上の頂点とする長方形を、
+	//このオブジェクトの ( dst_x1 , dst_y1 )を左上の頂点とする位置に貼り付けます。
+	//ret : 成功時true
+	bool Copy( const mGdiDC& srcdc ,							//コピー元デバイスコンテキスト
+		INT src_x1 , INT src_y1 , INT src_x2 , INT src_y2 ,		//コピー元長方形
+		INT dst_x1 , INT dst_y1 ,								//コピー先座標(左上)
 		const RGBQUAD& transparent_color );
 
-	//�����F���Ŏw��͈͂��w��͈͂ɃR�s�[����(���̂R)
-	//srcdc�Ŏw�肵��DC��( x1 , y1 )-( x2 , y2 )��Ίp����̒��_�Ƃ��钷���`���A
-	//���̃I�u�W�F�N�g�̓���ʒu�ɓ\��t���܂��B
-	//ret : ������true
+	//透明色つきで指定範囲を指定範囲にコピーする(その３)
+	//srcdcで指定したDCの( x1 , y1 )-( x2 , y2 )を対角線上の頂点とする長方形を、
+	//このオブジェクトの同一位置に貼り付けます。
+	//ret : 成功時true
 	bool Copy( const mGdiDC& srcdc , INT x1 , INT y1 , INT x2 , INT y2 , const RGBQUAD& transparent_color );
 
-	//���݂̈ʒu�Ƀe�L�X�g��`�悷��
-	//�E���s�͖�������܂�
-	// str : �`�悷�镶����
+	//現在の位置にテキストを描画する
+	//・改行は無視されます
+	// str : 描画する文字列
 	bool Print( const WString& str );
 
-	//�w��̈ʒu�Ƀe�L�X�g��`�悷��
-	//�E���s�͖�������܂�
-	//( x , y )�`�悷��ʒu
-	// str : �`�悷�镶����
+	//指定の位置にテキストを描画する
+	//・改行は無視されます
+	//( x , y )描画する位置
+	// str : 描画する文字列
 	bool Print( const WString& str , INT x , INT y );
 
-	//�`�悵���Ƃ��̃T�C�Y�𓾂�
-	//�E���s�͖�������܂�
-	// str : �`�悷�镶����
-	// retSize : �`�悵���Ƃ��̃T�C�Y
-	//���t�H���g�Ɋp�x���ݒ肳��Ă���ꍇ�́A���������ʂ�Ԃ��܂���B
-	//  �i�p�x�[�����Ɖ��肵�Čv�Z������ۂ��j
+	//描画したときのサイズを得る
+	//・改行は無視されます
+	// str : 描画する文字列
+	// retSize : 描画したときのサイズ
+	//※フォントに角度が設定されている場合は、正しい結果を返しません。
+	//  （角度ゼロだと仮定して計算するっぽい）
 	bool GetPrintSize( const WString& str , SIZE& retSize );
 
 	//
@@ -214,13 +214,13 @@ public:
 		using PrintHorizontalAlign = mGdiDC_Definitions::PrintHorizontalAlign;
 		using PrintVerticalAlign = mGdiDC_Definitions::PrintVerticalAlign;
 
-		//�^�u�̑傫��(1�ɂ���Ƃ����̃X�y�[�X�Ɠ���)
+		//タブの大きさ(1にするとただのスペースと同じ)
 		DWORD TabSize;
 
-		//�����ʒu
+		//水平位置
 		PrintHorizontalAlign HorizontalAlign;
 
-		//�����ʒu
+		//垂直位置
 		PrintVerticalAlign VerticalAlign;
 
 		PrintOptions()
@@ -231,101 +231,101 @@ public:
 		}
 	};
 
-	//���݂̈ʒu�Ƀe�L�X�g��`�悷��
-	//�E�����ʒu�������������������̏ꍇ�A���s�͖�������܂�
-	// str : �`�悷�镶����
+	//現在の位置にテキストを描画する
+	//・垂直位置が中央揃えか下揃えの場合、改行は無視されます
+	// str : 描画する文字列
 	bool Print( const WString& str , const PrintOptions& opt );
 
-	//�w��̈ʒu�Ƀe�L�X�g��`�悷��
-	//�E�����ʒu�������������������̏ꍇ�A���s�͖�������܂�
-	//( x , y )�`�悷��ʒu
-	// str : �`�悷�镶����
+	//指定の位置にテキストを描画する
+	//・垂直位置が中央揃えか下揃えの場合、改行は無視されます
+	//( x , y )描画する位置
+	// str : 描画する文字列
 	bool Print( const WString& str , INT x , INT y , const PrintOptions& opt );
 
-	//�w��̈ʒu�Ƀe�L�X�g��`�悷��
-	//�E�����ʒu�������������������̏ꍇ�A���s�͖�������܂�
-	//( x , y )�`�悷��ʒu
-	// str : �`�悷�镶����
+	//指定の位置にテキストを描画する
+	//・垂直位置が中央揃えか下揃えの場合、改行は無視されます
+	//( x , y )描画する位置
+	// str : 描画する文字列
 	bool Print( const WString& str , INT x1 , INT y1 , INT x2 , INT y2 , const PrintOptions& opt );
 
-	//�w��̈ʒu�Ƀe�L�X�g��`�悷��
-	//( x , y )�`�悷��ʒu
-	// str : �`�悷�镶����
+	//指定の位置にテキストを描画する
+	//( x , y )描画する位置
+	// str : 描画する文字列
 	bool PrintMultiline( const WString& str , INT x1 , INT y1 , INT x2 , INT y2 , const PrintOptions& opt );
 
-	//�w��̈ʒu�Ƀe�L�X�g��`�悷��
-	//( x , y )�`�悷��ʒu
-	// str : �`�悷�镶����
+	//指定の位置にテキストを描画する
+	//( x , y )描画する位置
+	// str : 描画する文字列
 	bool PrintMultiline( const WStringDeque& lines , INT x1 , INT y1 , INT x2 , INT y2 , const PrintOptions& opt );
 
-	//�w��̈ʒu�Ƀe�L�X�g��`�悷��
-	//�E�����ʒu�������������������̏ꍇ�A���s�͖�������܂�
-	//( x , y )�`�悷��ʒu
-	// str : �`�悷�镶����
+	//指定の位置にテキストを描画する
+	//・垂直位置が中央揃えか下揃えの場合、改行は無視されます
+	//( x , y )描画する位置
+	// str : 描画する文字列
 	bool PrintOffset( const WString& str , INT x1 , INT y1 , INT offset_x , INT offset_y , const PrintOptions& opt );
 
-	//�w��̈ʒu�Ƀe�L�X�g��`�悷��
-	//( x , y )�`�悷��ʒu
-	// str : �`�悷�镶����
+	//指定の位置にテキストを描画する
+	//( x , y )描画する位置
+	// str : 描画する文字列
 	bool PrintOffsetMultiline( const WString& str , INT x1 , INT y1 , INT offset_x , INT offset_y , const PrintOptions& opt );
 
-	//�w��̈ʒu�Ƀe�L�X�g��`�悷��
-	//( x , y )�`�悷��ʒu
-	// str : �`�悷�镶����
+	//指定の位置にテキストを描画する
+	//( x , y )描画する位置
+	// str : 描画する文字列
 	bool PrintOffsetMultiline( const WStringDeque& lines , INT x1 , INT y1 , INT offset_x , INT offset_y , const PrintOptions& opt );
 
-	//�`�悵���Ƃ��̃T�C�Y�𓾂�
-	//�E���s�͖�������܂�
-	// str : �`�悷�镶����
-	// retSize : �`�悵���Ƃ��̃T�C�Y
-	//���t�H���g�Ɋp�x���ݒ肳��Ă���ꍇ�́A���������ʂ�Ԃ��܂���B
-	//  �i�p�x�[�����Ɖ��肵�Čv�Z������ۂ��j
+	//描画したときのサイズを得る
+	//・改行は無視されます
+	// str : 描画する文字列
+	// retSize : 描画したときのサイズ
+	//※フォントに角度が設定されている場合は、正しい結果を返しません。
+	//  （角度ゼロだと仮定して計算するっぽい）
 	bool GetPrintSize( const WString& str , SIZE& retSize , const PrintOptions& opt );
 
-	//�e�s�̕`��T�C�Y
+	//各行の描画サイズ
 	using MultilineSize = std::deque< SIZE >;
 
-	//�`�悵���Ƃ��̃T�C�Y�𓾂�
-	// str : �`�悷�镶����
-	// retSize : �`�悵���Ƃ��̃T�C�Y
-	//���t�H���g�Ɋp�x���ݒ肳��Ă���ꍇ�́A���������ʂ�Ԃ��܂���B
-	//  �i�p�x�[�����Ɖ��肵�Čv�Z������ۂ��j
+	//描画したときのサイズを得る
+	// str : 描画する文字列
+	// retSize : 描画したときのサイズ
+	//※フォントに角度が設定されている場合は、正しい結果を返しません。
+	//  （角度ゼロだと仮定して計算するっぽい）
 	bool GetPrintSizeMultiline( const WString& lines , SIZE& retSize , MultilineSize& retLineSize , const PrintOptions& opt );
 
-	//�`�悵���Ƃ��̃T�C�Y�𓾂�
-	// str : �`�悷�镶����
-	// retSize : �`�悵���Ƃ��̃T�C�Y
-	//���t�H���g�Ɋp�x���ݒ肳��Ă���ꍇ�́A���������ʂ�Ԃ��܂���B
-	//  �i�p�x�[�����Ɖ��肵�Čv�Z������ۂ��j
+	//描画したときのサイズを得る
+	// str : 描画する文字列
+	// retSize : 描画したときのサイズ
+	//※フォントに角度が設定されている場合は、正しい結果を返しません。
+	//  （角度ゼロだと仮定して計算するっぽい）
 	bool GetPrintSizeMultiline( const WStringDeque& lines , SIZE& retSize , MultilineSize& retLineSize , const PrintOptions& opt );
 
-	//�e�L�X�g�̕����F���w��
-	// color : �e�L�X�g�F
+	//テキストの文字色を指定
+	// color : テキスト色
 	bool SetTextColor( COLORREF color );
 
-	//���݂̃e�L�X�g�̕����F���擾
-	// retColor : ���݂̕����F
-	// ret : �������^
+	//現在のテキストの文字色を取得
+	// retColor : 現在の文字色
+	// ret : 成功時真
 	bool GetTextColor( COLORREF& retColor )const noexcept;
 
-	//�e�L�X�g�̃o�b�N�O���E���h�F���w��
-	// color : �o�b�N�O���E���h�F
-	//�@�E�w����ȗ�����Ɠ����ɂȂ�܂�
+	//テキストのバックグラウンド色を指定
+	// color : バックグラウンド色
+	//　・指定を省略すると透明になります
 	bool SetBackgroundColor( COLORREF color );
 
-	//�e�L�X�g�̃o�b�N�O���E���h�F���w��
-	// color : �o�b�N�O���E���h�F
-	//�@�E�w����ȗ�����Ɠ����ɂȂ�܂�
+	//テキストのバックグラウンド色を指定
+	// color : バックグラウンド色
+	//　・指定を省略すると透明になります
 	bool SetBackgroundColor( void );
 
-	//���݂̔w�i�F���擾
-	// retColor : ���݂̔w�i�F
-	// retIsTransparent : �����ł���ΐ^
-	// ret : �������^
+	//現在の背景色を取得
+	// retColor : 現在の背景色
+	// retIsTransparent : 透明であれば真
+	// ret : 成功時真
 	bool GetBackgroundColor( COLORREF& retColor , bool& retIsTransparent )const noexcept;
 
 	using StrechMode = mGdiDC_Definitions::StrechMode;
-	//�g��E�k�����̐L�k���[�h��ݒ肷��
+	//拡大・縮小時の伸縮モードを設定する
 	bool SetStrechMode( StrechMode mode );
 
 private:
@@ -333,33 +333,33 @@ private:
 	mGdiDC( const mGdiDC& src ) = delete;
 	mGdiDC& operator=( const mGdiDC& src ) = delete;
 
-	//MyHdc�ւ̖������A�N�Z�X���K�v�Ȃ���
-	//mGdiMemDC : CreateCompatibleDC���ĂԂ���
-	//mGdiBitmap : CreateCompatibleBitmap���ĂԂ���
+	//MyHdcへの無制限アクセスが必要なため
+	//mGdiMemDC : CreateCompatibleDCを呼ぶため
+	//mGdiBitmap : CreateCompatibleBitmapを呼ぶため
 	friend class mGdiMemDC;
 	friend class mGdiBitmap;
 
-	//�n���h���v�[��
+	//ハンドルプール
 	typedef std::unordered_set<HGDIOBJ> GdiObjectPool;
-	GdiObjectPool MyDefaultObj;		//�ŏ�����f�o�C�X�R���e�L�X�g�Ɋ֘A�t�����Ă����n���h��
-	GdiObjectPool MyAttachedObj;	//���݃��[�U�[���f�o�C�X�R���e�L�X�g�Ɋ֘A�t���Ă���n���h��
+	GdiObjectPool MyDefaultObj;		//最初からデバイスコンテキストに関連付けられていたハンドル
+	GdiObjectPool MyAttachedObj;	//現在ユーザーがデバイスコンテキストに関連付けているハンドル
 
 protected:
 
-	//�h���N���X�ŃC���X�^���X�����O��Ȃ̂ŁA���̃N���X�̃f�t�H���g�R���X�g���N�^�͉B���Ă���
+	//派生クラスでインスタンスを作る前提なので、このクラスのデフォルトコンストラクタは隠しておく
 	mGdiDC();
 
-	//�f�o�C�X�R���e�L�X�g�̃n���h��
+	//デバイスコンテキストのハンドル
 	HDC MyHdc;
 
-	//�f�o�C�X�R���e�L�X�g�Ɋ֘A�t�����Ă���I�u�W�F�N�g��S�����ɖ߂�
-	//ret : ������true
+	//デバイスコンテキストに関連付けられているオブジェクトを全部元に戻す
+	//ret : 成功時true
 	bool ResetSelectedObject( void );
 
-	//���W�ϊ�
-	//�Ex1��x2�Ay1��y2�̈ʒu�֌W�����]���Ă���ꍇ�A����������x1,y1�ɂȂ�悤�ɓ���ւ��܂��B
-	//�E�E�ӁA��ӂ̈ʒu��1�s�N�Z�������ɕ␳���܂�
-	//x1,y1,x2,y2 : in/out �␳�Ώۂ̍��W
+	//座標変換
+	//・x1とx2、y1とy2の位置関係が反転している場合、小さい方がx1,y1になるように入れ替えます。
+	//・右辺、底辺の位置を1ピクセル内側に補正します
+	//x1,y1,x2,y2 : in/out 補正対象の座標
 	void PositionConvert( INT& x1 , INT& y1 , INT& x2 , INT&y2 )const;
 
 };

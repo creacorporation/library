@@ -1,10 +1,10 @@
-//----------------------------------------------------------------------------
-// Microsoft Excelƒnƒ“ƒhƒ‰
+ï»¿//----------------------------------------------------------------------------
+// Microsoft Excelãƒãƒ³ãƒ‰ãƒ©
 // Copyright (C) 2018- Crea Inc. All rights reserved.
 // This program is released under the MIT License. 
 // see http://opensource.org/licenses/mit-license.php
-// ’˜ìŒ •\¦‚âƒ‰ƒCƒZƒ“ƒX‚Ì‰ü•Ï‚Í‹Ö~‚³‚ê‚Ä‚¢‚Ü‚·B
-// ‚±‚Ìƒ\[ƒXƒR[ƒh‚ÉŠÖ‚µ‚ÄAã‹Lƒ‰ƒCƒZƒ“ƒXˆÈŠO‚ÌŒ_–ñ“™‚ÍˆêØ‘¶İ‚µ‚Ü‚¹‚ñB
+// è‘—ä½œæ¨©è¡¨ç¤ºã‚„ãƒ©ã‚¤ã‚»ãƒ³ã‚¹ã®æ”¹å¤‰ã¯ç¦æ­¢ã•ã‚Œã¦ã„ã¾ã™ã€‚
+// ã“ã®ã‚½ãƒ¼ã‚¹ã‚³ãƒ¼ãƒ‰ã«é–¢ã—ã¦ã€ä¸Šè¨˜ãƒ©ã‚¤ã‚»ãƒ³ã‚¹ä»¥å¤–ã®å¥‘ç´„ç­‰ã¯ä¸€åˆ‡å­˜åœ¨ã—ã¾ã›ã‚“ã€‚
 //----------------------------------------------------------------------------
 
 #include "mExcelHandler.h"
@@ -28,18 +28,18 @@ bool mExcelHandler::Initialize( void )
 {
 	if( MyApplication )
 	{
-		//“ñd‰Šú‰»‚ğ–h~‚·‚é
-		RaiseError( g_ErrorLogger , 0 , L"Excel‚Í‚·‚Å‚É‹N“®‚³‚ê‚Ä‚¢‚Ü‚·" );
+		//äºŒé‡åˆæœŸåŒ–ã‚’é˜²æ­¢ã™ã‚‹
+		RaiseError( g_ErrorLogger , 0 , L"Excelã¯ã™ã§ã«èµ·å‹•ã•ã‚Œã¦ã„ã¾ã™" );
 		return false;
 	}
 	if( SUCCEEDED( MyApplication.CreateInstance( L"Excel.Application" ) ) )
 	{
-		CreateLogEntry( g_ErrorLogger , 0 , L"Excel‚ğ‹N“®‚µ‚Ü‚µ‚½" );
+		CreateLogEntry( g_ErrorLogger , 0 , L"Excelã‚’èµ·å‹•ã—ã¾ã—ãŸ" );
 		return true;
 	}
 	else
 	{
-		RaiseError( g_ErrorLogger , 0 , L"Excel‚Ì‹N“®‚ª¸”s‚µ‚Ü‚µ‚½" );
+		RaiseError( g_ErrorLogger , 0 , L"Excelã®èµ·å‹•ãŒå¤±æ•—ã—ã¾ã—ãŸ" );
 		return false;
 	}
 }
@@ -69,19 +69,19 @@ bool mExcelHandler::UnInitialize( void )
 		MyApplication->Quit();
 		MyApplication.Release();
 		MyApplication = nullptr;
-		CreateLogEntry( g_ErrorLogger , 0 , L"Excel‚ğI—¹‚µ‚Ü‚µ‚½" );
+		CreateLogEntry( g_ErrorLogger , 0 , L"Excelã‚’çµ‚äº†ã—ã¾ã—ãŸ" );
 	}
 
 	return true;
 }
 
-//‰Šú‰»Ï‚İ‚©H
+//åˆæœŸåŒ–æ¸ˆã¿ã‹ï¼Ÿ
 bool mExcelHandler::IsInitialized( void )const
 {
 	return *this;
 }
 
-//‰Šú‰»Ï‚İ‚©H
+//åˆæœŸåŒ–æ¸ˆã¿ã‹ï¼Ÿ
 mExcelHandler::operator bool()const
 {
 	return MyApplication != nullptr;
@@ -91,7 +91,7 @@ bool mExcelHandler::SetVisible( bool newstate )
 {
 	if( MyApplication == nullptr )
 	{
-		RaiseError( g_ErrorLogger , 0 , L"Excel‚Í‹N“®‚µ‚Ä‚¢‚Ü‚¹‚ñ" );
+		RaiseError( g_ErrorLogger , 0 , L"Excelã¯èµ·å‹•ã—ã¦ã„ã¾ã›ã‚“" );
 		return false;
 	}
 	MyApplication->PutVisible( newstate );
@@ -102,7 +102,7 @@ bool mExcelHandler::AddNewWorkbook( void )
 {
 	if( MyApplication == nullptr )
 	{
-		RaiseError( g_ErrorLogger , 0 , L"Excel‚Í‹N“®‚µ‚Ä‚¢‚Ü‚¹‚ñ" );
+		RaiseError( g_ErrorLogger , 0 , L"Excelã¯èµ·å‹•ã—ã¦ã„ã¾ã›ã‚“" );
 		return false;
 	}
 	MyApplication->Workbooks->Add();
@@ -112,7 +112,7 @@ bool mExcelHandler::AddNewWorkbook( void )
 bool mExcelHandler::OpenWorkbook( const WString& filename , const mExcelHandler::OpenWorkbookOption* opt )
 {
 	/*
-	¦Openƒƒ\ƒbƒh‚Ìˆø”
+	â€»Openãƒ¡ã‚½ãƒƒãƒ‰ã®å¼•æ•°
 
 	http://msdn.microsoft.com/ja-jp/library/microsoft.office.interop.excel.workbooks.open%28VS.80%29.aspx
 
@@ -134,15 +134,15 @@ bool mExcelHandler::OpenWorkbook( const WString& filename , const mExcelHandler:
         const _variant_t & CorruptLoad = vtMissing );
 	*/
 
-	//ƒAƒvƒŠ‚ª‹N“®‚µ‚Ä‚¢‚È‚¯‚ê‚ÎƒGƒ‰[
+	//ã‚¢ãƒ—ãƒªãŒèµ·å‹•ã—ã¦ã„ãªã‘ã‚Œã°ã‚¨ãƒ©ãƒ¼
 	if( MyApplication == nullptr )
 	{
-		RaiseError( g_ErrorLogger , 0 , L"Excel‚Í‹N“®‚µ‚Ä‚¢‚Ü‚¹‚ñ" );
+		RaiseError( g_ErrorLogger , 0 , L"Excelã¯èµ·å‹•ã—ã¦ã„ã¾ã›ã‚“" );
 		return false;
 	}
 
-	//ƒIƒvƒVƒ‡ƒ“‚Ì“Ç‚İæ‚è
-	_variant_t is_read_only;	//ƒŠ[ƒhƒIƒ“ƒŠ[H
+	//ã‚ªãƒ—ã‚·ãƒ§ãƒ³ã®èª­ã¿å–ã‚Š
+	_variant_t is_read_only;	//ãƒªãƒ¼ãƒ‰ã‚ªãƒ³ãƒªãƒ¼ï¼Ÿ
 	bool is_select;
 	if( opt )
 	{
@@ -155,7 +155,7 @@ bool mExcelHandler::OpenWorkbook( const WString& filename , const mExcelHandler:
 		is_select = false;
 	}
 
-	//ŠJ‚­ˆ—
+	//é–‹ãå‡¦ç†
 	XlsWorkbooks wbs = MyApplication->Workbooks;
 	bool result = true;
 	try
@@ -171,7 +171,7 @@ bool mExcelHandler::OpenWorkbook( const WString& filename , const mExcelHandler:
 	}
 	catch( ... )
 	{
-		RaiseError( g_ErrorLogger , 0 , L"ƒtƒ@ƒCƒ‹‚ğŠJ‚¯‚Ü‚¹‚ñ‚Å‚µ‚½" , filename );
+		RaiseError( g_ErrorLogger , 0 , L"ãƒ•ã‚¡ã‚¤ãƒ«ã‚’é–‹ã‘ã¾ã›ã‚“ã§ã—ãŸ" , filename );
 		result = false;
 	}
 
@@ -183,7 +183,7 @@ DWORD mExcelHandler::GetWorkbookCount( void )
 {
 	if( MyApplication == nullptr )
 	{
-		RaiseError( g_ErrorLogger , 0 , L"Excel‚Í‹N“®‚µ‚Ä‚¢‚Ü‚¹‚ñ" );
+		RaiseError( g_ErrorLogger , 0 , L"Excelã¯èµ·å‹•ã—ã¦ã„ã¾ã›ã‚“" );
 		return 0;
 	}
 	return (DWORD)( MyApplication->GetWorkbooks()->Count );
@@ -193,14 +193,14 @@ bool mExcelHandler::SetCurrentWorkbook( DWORD index )
 {
 	if( MyApplication == nullptr )
 	{
-		RaiseError( g_ErrorLogger , 0 , L"Excel‚Í‹N“®‚µ‚Ä‚¢‚Ü‚¹‚ñ" );
+		RaiseError( g_ErrorLogger , 0 , L"Excelã¯èµ·å‹•ã—ã¦ã„ã¾ã›ã‚“" );
 		return false;
 	}
 
 	if( index == 0 || GetWorkbookCount() < index )
 	{
-		//ƒCƒ“ƒfƒbƒNƒX’l•s³
-		RaiseError( g_ErrorLogger , 0 , L"ƒCƒ“ƒfƒbƒNƒX‚ª•s³‚Å‚·" , index );
+		//ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹å€¤ä¸æ­£
+		RaiseError( g_ErrorLogger , 0 , L"ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹ãŒä¸æ­£ã§ã™" , index );
 		return false;
 	}
 
@@ -218,14 +218,14 @@ bool mExcelHandler::SetCurrentWorkbook( const WString& name , bool isFuzzyMatch 
 {
 	if( MyApplication == nullptr )
 	{
-		RaiseError( g_ErrorLogger , 0 , L"Excel‚Í‹N“®‚µ‚Ä‚¢‚Ü‚¹‚ñ" );
+		RaiseError( g_ErrorLogger , 0 , L"Excelã¯èµ·å‹•ã—ã¦ã„ã¾ã›ã‚“" );
 		return false;
 	}
 
 	WString tmp_search_name = ( !isFuzzyMatch ) ? ( name ) : ( MakeFuzzyName( name ) );
 
-	//ƒ[ƒNƒuƒbƒN‚Ìw’è‚ª–¼‘Oo—ˆ‚½ê‡A
-	//‘Sƒ[ƒNƒuƒbƒN‚©‚çˆê’v‚·‚é–¼‘O‚ğ‘{‚µAˆê’v‚µ‚½‚à‚Ì‚ğƒJƒŒƒ“ƒg‚É‚·‚éB
+	//ãƒ¯ãƒ¼ã‚¯ãƒ–ãƒƒã‚¯ã®æŒ‡å®šãŒåå‰å‡ºæ¥ãŸå ´åˆã€
+	//å…¨ãƒ¯ãƒ¼ã‚¯ãƒ–ãƒƒã‚¯ã‹ã‚‰ä¸€è‡´ã™ã‚‹åå‰ã‚’æœã—ã€ä¸€è‡´ã—ãŸã‚‚ã®ã‚’ã‚«ãƒ¬ãƒ³ãƒˆã«ã™ã‚‹ã€‚
 
 	DWORD count = GetWorkbookCount();
 	XlsWorkbooks wbs = MyApplication->Workbooks;
@@ -238,7 +238,7 @@ bool mExcelHandler::SetCurrentWorkbook( const WString& name , bool isFuzzyMatch 
 		{
 			if( name.compare( (wchar_t*)wbname ) == 0 )
 			{
-				//Å‰‚É–¼‘O‚ªˆê’v‚µ‚½‚à‚Ì‚É‚·‚é
+				//æœ€åˆã«åå‰ãŒä¸€è‡´ã—ãŸã‚‚ã®ã«ã™ã‚‹
 				MyCurrentWorkbook = wbs->GetItem( _variant_t( i ) );
 				return true;
 			}
@@ -248,13 +248,13 @@ bool mExcelHandler::SetCurrentWorkbook( const WString& name , bool isFuzzyMatch 
 			WString tmp_book_name = MakeFuzzyName( (wchar_t*)wbname );
 			if( tmp_search_name == tmp_book_name )
 			{
-				//Å‰‚É–¼‘O‚ªˆê’v‚µ‚½‚à‚Ì‚É‚·‚é
+				//æœ€åˆã«åå‰ãŒä¸€è‡´ã—ãŸã‚‚ã®ã«ã™ã‚‹
 				MyCurrentWorkbook = wbs->GetItem( _variant_t( i ) );
 				return true;
 			}
 		}
 	}
-	RaiseError( g_ErrorLogger , 0 , L"w’è‚Ìƒ[ƒNƒuƒbƒN‚Í‚ ‚è‚Ü‚¹‚ñ" , name );
+	RaiseError( g_ErrorLogger , 0 , L"æŒ‡å®šã®ãƒ¯ãƒ¼ã‚¯ãƒ–ãƒƒã‚¯ã¯ã‚ã‚Šã¾ã›ã‚“" , name );
 	return false;
 
 }
@@ -263,7 +263,7 @@ WString mExcelHandler::GetWorkbookName( void )const
 {
 	if( MyCurrentWorkbook == nullptr )
 	{
-		RaiseError( g_ErrorLogger , 0 , L"Œ»İ‚Ìƒ[ƒNƒuƒbƒN‚Íw’è‚³‚ê‚Ä‚¢‚Ü‚¹‚ñ" );
+		RaiseError( g_ErrorLogger , 0 , L"ç¾åœ¨ã®ãƒ¯ãƒ¼ã‚¯ãƒ–ãƒƒã‚¯ã¯æŒ‡å®šã•ã‚Œã¦ã„ã¾ã›ã‚“" );
 		return L"";
 	}
 
@@ -275,18 +275,18 @@ WString mExcelHandler::GetWorkbookName( DWORD index )
 	DWORD count = GetWorkbookCount();
 	if( index == 0 || count < index )
 	{
-		RaiseError( g_ErrorLogger , 0 , L"w’è‚Ìƒ[ƒNƒuƒbƒN‚Í‚ ‚è‚Ü‚¹‚ñ" , index );
+		RaiseError( g_ErrorLogger , 0 , L"æŒ‡å®šã®ãƒ¯ãƒ¼ã‚¯ãƒ–ãƒƒã‚¯ã¯ã‚ã‚Šã¾ã›ã‚“" , index );
 		return L"";
 	}
 
-	//MyApplication==0‚¾‚ÆGetWorkbookCount‚ª0‚ğ•Ô‚·‚Ì‚ÅA‚±‚±‚Å‚Ìƒkƒ‹ƒ`ƒFƒbƒN‚Í‚È‚µB
+	//MyApplication==0ã ã¨GetWorkbookCountãŒ0ã‚’è¿”ã™ã®ã§ã€ã“ã“ã§ã®ãƒŒãƒ«ãƒã‚§ãƒƒã‚¯ã¯ãªã—ã€‚
 	XlsWorkbook wb = MyApplication->Workbooks->GetItem( _variant_t( index ) );
 	return (const wchar_t*)wb->Name;
 }
 
 bool mExcelHandler::GetWorkbookNames( WStringDeque& retNames )
 {
-	//Šù‘¶‚Ìƒf[ƒ^‚ğ”jŠü
+	//æ—¢å­˜ã®ãƒ‡ãƒ¼ã‚¿ã‚’ç ´æ£„
 	retNames.clear();
 
 	DWORD count = GetWorkbookCount();
@@ -304,7 +304,7 @@ DWORD mExcelHandler::GetWorksheetCount( void )
 {
 	if( MyCurrentWorkbook == nullptr )
 	{
-		RaiseError( g_ErrorLogger , 0 , L"Œ»İ‚Ìƒ[ƒNƒuƒbƒN‚Íw’è‚³‚ê‚Ä‚¢‚Ü‚¹‚ñ" );
+		RaiseError( g_ErrorLogger , 0 , L"ç¾åœ¨ã®ãƒ¯ãƒ¼ã‚¯ãƒ–ãƒƒã‚¯ã¯æŒ‡å®šã•ã‚Œã¦ã„ã¾ã›ã‚“" );
 		return 0;
 	}
 	return (DWORD)( MyCurrentWorkbook->Sheets->Count );
@@ -315,14 +315,14 @@ bool mExcelHandler::SetCurrentWorksheet( DWORD index )
 {
 	if( MyCurrentWorkbook == nullptr )
 	{
-		RaiseError( g_ErrorLogger , 0 , L"Œ»İ‚Ìƒ[ƒNƒuƒbƒN‚Íw’è‚³‚ê‚Ä‚¢‚Ü‚¹‚ñ" );
+		RaiseError( g_ErrorLogger , 0 , L"ç¾åœ¨ã®ãƒ¯ãƒ¼ã‚¯ãƒ–ãƒƒã‚¯ã¯æŒ‡å®šã•ã‚Œã¦ã„ã¾ã›ã‚“" );
 		return false;
 	}
 
 	if( index == 0 || GetWorksheetCount() < index )
 	{
-		//ƒCƒ“ƒfƒbƒNƒX’l•s³
-		RaiseError( g_ErrorLogger , 0 , L"w’è‚Ìƒ[ƒNƒuƒbƒN‚Í‚ ‚è‚Ü‚¹‚ñ" , index );
+		//ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹å€¤ä¸æ­£
+		RaiseError( g_ErrorLogger , 0 , L"æŒ‡å®šã®ãƒ¯ãƒ¼ã‚¯ãƒ–ãƒƒã‚¯ã¯ã‚ã‚Šã¾ã›ã‚“" , index );
 		return false;
 	}
 
@@ -336,7 +336,7 @@ bool mExcelHandler::SetCurrentWorksheet( const WString& name , bool isFuzzyMatch
 {
 	if( MyCurrentWorkbook == nullptr )
 	{
-		RaiseError( g_ErrorLogger , 0 , L"Œ»İ‚Ìƒ[ƒNƒuƒbƒN‚Íw’è‚³‚ê‚Ä‚¢‚Ü‚¹‚ñ" );
+		RaiseError( g_ErrorLogger , 0 , L"ç¾åœ¨ã®ãƒ¯ãƒ¼ã‚¯ãƒ–ãƒƒã‚¯ã¯æŒ‡å®šã•ã‚Œã¦ã„ã¾ã›ã‚“" );
 		return false;
 	}
 
@@ -353,7 +353,7 @@ bool mExcelHandler::SetCurrentWorksheet( const WString& name , bool isFuzzyMatch
 		{
 			if( name.compare( (wchar_t*)wsname ) == 0 )
 			{
-				//Å‰‚É–¼‘O‚ªˆê’v‚µ‚½‚à‚Ì‚É‚·‚é
+				//æœ€åˆã«åå‰ãŒä¸€è‡´ã—ãŸã‚‚ã®ã«ã™ã‚‹
 				MyCurrentWorksheet = ws->GetItem( _variant_t( i ) );
 				return true;
 			}
@@ -363,13 +363,13 @@ bool mExcelHandler::SetCurrentWorksheet( const WString& name , bool isFuzzyMatch
 			WString tmp_sheet_name = MakeFuzzyName( (wchar_t*)wsname );
 			if( tmp_search_name == tmp_sheet_name )
 			{
-				//Å‰‚É–¼‘O‚ªˆê’v‚µ‚½‚à‚Ì‚É‚·‚é
+				//æœ€åˆã«åå‰ãŒä¸€è‡´ã—ãŸã‚‚ã®ã«ã™ã‚‹
 				MyCurrentWorksheet = ws->GetItem( _variant_t( i ) );
 				return true;
 			}
 		}
 	}
-	RaiseError( g_ErrorLogger , 0 , L"w’è‚Ìƒ[ƒNƒuƒbƒN‚Í‚ ‚è‚Ü‚¹‚ñ" , name );
+	RaiseError( g_ErrorLogger , 0 , L"æŒ‡å®šã®ãƒ¯ãƒ¼ã‚¯ãƒ–ãƒƒã‚¯ã¯ã‚ã‚Šã¾ã›ã‚“" , name );
 	return false;
 }
 
@@ -379,7 +379,7 @@ WString mExcelHandler::GetWorksheetName( DWORD index )
 	DWORD count = GetWorksheetCount();
 	if( index == 0 || count < index )
 	{
-		RaiseError( g_ErrorLogger , 0 , L"w’è‚Ìƒ[ƒNƒV[ƒg‚Í‚ ‚è‚Ü‚¹‚ñ" , index );
+		RaiseError( g_ErrorLogger , 0 , L"æŒ‡å®šã®ãƒ¯ãƒ¼ã‚¯ã‚·ãƒ¼ãƒˆã¯ã‚ã‚Šã¾ã›ã‚“" , index );
 		return L"";
 	}
 
@@ -392,7 +392,7 @@ WString mExcelHandler::GetWorksheetName( void )
 {
 	if( MyCurrentWorksheet == nullptr )
 	{
-		RaiseError( g_ErrorLogger , 0 , L"Œ»İ‚Ìƒ[ƒNƒV[ƒg‚Íw’è‚³‚ê‚Ä‚¢‚Ü‚¹‚ñ" );
+		RaiseError( g_ErrorLogger , 0 , L"ç¾åœ¨ã®ãƒ¯ãƒ¼ã‚¯ã‚·ãƒ¼ãƒˆã¯æŒ‡å®šã•ã‚Œã¦ã„ã¾ã›ã‚“" );
 		return L"";
 	}
 
@@ -418,7 +418,7 @@ bool mExcelHandler::GetLastCell( DWORD* retRow , DWORD* retCol )
 {
 	if( MyCurrentWorksheet == nullptr )
 	{
-		RaiseError( g_ErrorLogger , 0 , L"Œ»İ‚Ìƒ[ƒNƒV[ƒg‚Íw’è‚³‚ê‚Ä‚¢‚Ü‚¹‚ñ" );
+		RaiseError( g_ErrorLogger , 0 , L"ç¾åœ¨ã®ãƒ¯ãƒ¼ã‚¯ã‚·ãƒ¼ãƒˆã¯æŒ‡å®šã•ã‚Œã¦ã„ã¾ã›ã‚“" );
 		return false;
 	}
 
@@ -438,7 +438,7 @@ bool mExcelHandler::SetCurrentRange( const WString& range )
 {
 	if( MyCurrentWorksheet == nullptr )
 	{
-		RaiseError( g_ErrorLogger , 0 , L"Œ»İ‚Ìƒ[ƒNƒV[ƒg‚Íw’è‚³‚ê‚Ä‚¢‚Ü‚¹‚ñ" );
+		RaiseError( g_ErrorLogger , 0 , L"ç¾åœ¨ã®ãƒ¯ãƒ¼ã‚¯ã‚·ãƒ¼ãƒˆã¯æŒ‡å®šã•ã‚Œã¦ã„ã¾ã›ã‚“" );
 		return false;
 	}
 
@@ -448,7 +448,7 @@ bool mExcelHandler::SetCurrentRange( const WString& range )
 	}
 	catch( _com_error e )
 	{
-		RaiseError( g_ErrorLogger , 0 , L"”ÍˆÍw’è‚ª¸”s‚µ‚Ü‚µ‚½" , TString2WString( e.ErrorMessage() ) );
+		RaiseError( g_ErrorLogger , 0 , L"ç¯„å›²æŒ‡å®šãŒå¤±æ•—ã—ã¾ã—ãŸ" , TString2WString( e.ErrorMessage() ) );
 		return false;
 	}
 	return true;
@@ -464,7 +464,7 @@ bool mExcelHandler::SetValue( const _variant_t& newval )
 {
 	if( MyCurrentRange == nullptr )
 	{
-		RaiseError( g_ErrorLogger , 0 , L"Œ»İ‚Ì”ÍˆÍ‚Íw’è‚³‚ê‚Ä‚¢‚Ü‚¹‚ñ" );
+		RaiseError( g_ErrorLogger , 0 , L"ç¾åœ¨ã®ç¯„å›²ã¯æŒ‡å®šã•ã‚Œã¦ã„ã¾ã›ã‚“" );
 		return false;
 	}
 
@@ -478,7 +478,7 @@ WString mExcelHandler::GetValue( void )
 	_variant_t dat;
 	if( !GetValue( dat ) )
 	{
-		RaiseError( g_ErrorLogger , 0 , L"’l‚Ìæ“¾‚ª¸”s‚µ‚Ü‚µ‚½" );
+		RaiseError( g_ErrorLogger , 0 , L"å€¤ã®å–å¾—ãŒå¤±æ•—ã—ã¾ã—ãŸ" );
 		return TEXT( "" );
 	}
 
@@ -491,7 +491,7 @@ bool mExcelHandler::GetValue( _variant_t& retResult )
 
 	if( MyCurrentRange == nullptr )
 	{
-		RaiseError( g_ErrorLogger , 0 , L"Œ»İ‚Ì”ÍˆÍ‚Íw’è‚³‚ê‚Ä‚¢‚Ü‚¹‚ñ" );
+		RaiseError( g_ErrorLogger , 0 , L"ç¾åœ¨ã®ç¯„å›²ã¯æŒ‡å®šã•ã‚Œã¦ã„ã¾ã›ã‚“" );
 		return false;
 	}
 
@@ -501,7 +501,7 @@ bool mExcelHandler::GetValue( _variant_t& retResult )
 	}
 	catch( _com_error e )
 	{
-		RaiseError( g_ErrorLogger , 0 , L"’l‚Ìæ“¾‚ª¸”s‚µ‚Ü‚µ‚½" , TString2WString( e.ErrorMessage() ) );
+		RaiseError( g_ErrorLogger , 0 , L"å€¤ã®å–å¾—ãŒå¤±æ•—ã—ã¾ã—ãŸ" , TString2WString( e.ErrorMessage() ) );
 		return false;
 	}
 	return true;
@@ -510,28 +510,28 @@ bool mExcelHandler::GetValue( _variant_t& retResult )
 bool mExcelHandler::Search( const SearchOption& opt , fpSearchFindCallback callback , void* dataptr , DWORD* retCount )
 {
 
-	//‰½‚Æˆê’vH
+	//ä½•ã¨ä¸€è‡´ï¼Ÿ
 	Excel::XlFindLookIn lookin;
 	switch( opt.MatchType )
 	{
-	case SearchOption::MatchTypeEntry::Value:	//’l‚Æ
+	case SearchOption::MatchTypeEntry::Value:	//å€¤ã¨
 		lookin = Excel::XlFindLookIn::xlValues;
 		break;
-	case SearchOption::MatchTypeEntry::Comment:	//ƒRƒƒ“ƒg‚Æ
+	case SearchOption::MatchTypeEntry::Comment:	//ã‚³ãƒ¡ãƒ³ãƒˆã¨
 		lookin = Excel::XlFindLookIn::xlComments;
 		break;
-	case SearchOption::MatchTypeEntry::Formula:	//”®‚Æ
+	case SearchOption::MatchTypeEntry::Formula:	//æ•°å¼ã¨
 		lookin = Excel::XlFindLookIn::xlFormulas;
 		break;
-	default:					//•Ï‚È’l
-		RaiseAssert( g_ErrorLogger , 0 , L"ŒŸõ‚Ìˆê’v‘ÎÛ‚ª•s³‚Å‚·" , opt.MatchType );
+	default:					//å¤‰ãªå€¤
+		RaiseAssert( g_ErrorLogger , 0 , L"æ¤œç´¢ã®ä¸€è‡´å¯¾è±¡ãŒä¸æ­£ã§ã™" , opt.MatchType );
 		return false;		
 	}
 
-	//‘S‘Ìˆê’vH•”•ªˆê’vH
+	//å…¨ä½“ä¸€è‡´ï¼Ÿéƒ¨åˆ†ä¸€è‡´ï¼Ÿ
 	Excel::XlLookAt lookat = ( opt.MatchWhole ) ? ( Excel::XlLookAt::xlWhole ) : ( Excel::XlLookAt::xlPart );
 
-	//ŒŸõ•ûŒü‚ÍH
+	//æ¤œç´¢æ–¹å‘ã¯ï¼Ÿ
 	Excel::XlSearchOrder order;
 	switch( opt.SearchDirection )
 	{
@@ -542,23 +542,23 @@ bool mExcelHandler::Search( const SearchOption& opt , fpSearchFindCallback callb
 		order = Excel::XlSearchOrder::xlByRows;
 		break;
 	default:
-		RaiseAssert( g_ErrorLogger , 0 , L"ŒŸõ•ûŒü‚ª•s³‚Å‚·" , opt.SearchDirection );
+		RaiseAssert( g_ErrorLogger , 0 , L"æ¤œç´¢æ–¹å‘ãŒä¸æ­£ã§ã™" , opt.SearchDirection );
 		return false;
 	}
 
-	//ŒŸõŠJn
-	DWORD count = 0;		//”­Œ©‚µ‚½”
-	XlsRange search_range;	//ƒT[ƒ`”ÍˆÍ
-	XlsRange found;			//”­Œ©‚µ‚½ƒZƒ‹
+	//æ¤œç´¢é–‹å§‹
+	DWORD count = 0;		//ç™ºè¦‹ã—ãŸæ•°
+	XlsRange search_range;	//ã‚µãƒ¼ãƒç¯„å›²
+	XlsRange found;			//ç™ºè¦‹ã—ãŸã‚»ãƒ«
 
-	//Å‰‚Ì1ŒÂ‚ğŒ©‚Â‚¯‚é
+	//æœ€åˆã®1å€‹ã‚’è¦‹ã¤ã‘ã‚‹
 	switch( opt.SearchArea )
 	{
 	case SearchOption::SearchAreaEntry::Range:
 		if( MyCurrentRange == nullptr )
 		{
-			//ŒŸõ”ÍˆÍ‚ªw’è‚³‚ê‚Ä‚¢‚È‚¢‚Æ”­Œ©‚·‚é‚Í‚¸‚ª‚È‚¢‚Ì‚Å‚O
-			RaiseError( g_ErrorLogger , 0 , L"Œ»İ‚Ì”ÍˆÍ‚Íw’è‚³‚ê‚Ä‚¢‚Ü‚¹‚ñ" );
+			//æ¤œç´¢ç¯„å›²ãŒæŒ‡å®šã•ã‚Œã¦ã„ãªã„ã¨ç™ºè¦‹ã™ã‚‹ã¯ãšãŒãªã„ã®ã§ï¼
+			RaiseError( g_ErrorLogger , 0 , L"ç¾åœ¨ã®ç¯„å›²ã¯æŒ‡å®šã•ã‚Œã¦ã„ã¾ã›ã‚“" );
 			return false;
 		}
 		search_range = MyCurrentRange;
@@ -566,41 +566,41 @@ bool mExcelHandler::Search( const SearchOption& opt , fpSearchFindCallback callb
 	case SearchOption::SearchAreaEntry::Worksheet:
 		if( MyCurrentWorksheet == nullptr )
 		{
-			RaiseError( g_ErrorLogger , 0 , L"Œ»İ‚Ìƒ[ƒNƒV[ƒg‚Íw’è‚³‚ê‚Ä‚¢‚Ü‚¹‚ñ" );
+			RaiseError( g_ErrorLogger , 0 , L"ç¾åœ¨ã®ãƒ¯ãƒ¼ã‚¯ã‚·ãƒ¼ãƒˆã¯æŒ‡å®šã•ã‚Œã¦ã„ã¾ã›ã‚“" );
 			return false;
 		}
 		search_range = MyCurrentWorksheet->Cells;
 		break;
 	default:
-		RaiseAssert( g_ErrorLogger , 0 , L"ŒŸõ”ÍˆÍ‚ª•s³‚Å‚·" , opt.SearchArea );
+		RaiseAssert( g_ErrorLogger , 0 , L"æ¤œç´¢ç¯„å›²ãŒä¸æ­£ã§ã™" , opt.SearchArea );
 		return false;
 	}
 
-	//ŒŸõI
+	//æ¤œç´¢ï¼
 	found = search_range->Find( opt.What.c_str() , vtMissing , lookin , lookat , order , Excel::XlSearchDirection::xlNext , opt.MatchCase );
 	if( found != 0 )
 	{
-		//ŠY“–ƒZƒ‹‚ ‚è
-		INT first_row = found->Row;			//Å‰‚É”­Œ©‚µ‚½ƒZƒ‹‚Ìs
-		INT first_col = found->Column;		//Å‰‚É”­Œ©‚µ‚½ƒZƒ‹‚Ì—ñ
-		INT row = first_row;				//Œ»İ’–Ú‚µ‚Ä‚¢‚éƒZƒ‹‚Ìs
-		INT col = first_col;				//Œ»İ’–Ú‚µ‚Ä‚¢‚éƒZƒ‹‚Ì—ñ
-		_variant_t after;					//Ÿ‚ÌŒŸõŠJnˆÊ’u
+		//è©²å½“ã‚»ãƒ«ã‚ã‚Š
+		INT first_row = found->Row;			//æœ€åˆã«ç™ºè¦‹ã—ãŸã‚»ãƒ«ã®è¡Œ
+		INT first_col = found->Column;		//æœ€åˆã«ç™ºè¦‹ã—ãŸã‚»ãƒ«ã®åˆ—
+		INT row = first_row;				//ç¾åœ¨æ³¨ç›®ã—ã¦ã„ã‚‹ã‚»ãƒ«ã®è¡Œ
+		INT col = first_col;				//ç¾åœ¨æ³¨ç›®ã—ã¦ã„ã‚‹ã‚»ãƒ«ã®åˆ—
+		_variant_t after;					//æ¬¡ã®æ¤œç´¢é–‹å§‹ä½ç½®
 
-		//2ŒÂ–ÚˆÈ~‚ÌŒŸõ
+		//2å€‹ç›®ä»¥é™ã®æ¤œç´¢
 		do
 		{
 			count++;
-			//ƒR[ƒ‹ƒoƒbƒNŠÖ”‚ÌŒÄ‚Ño‚µ
+			//ã‚³ãƒ¼ãƒ«ãƒãƒƒã‚¯é–¢æ•°ã®å‘¼ã³å‡ºã—
 			if( callback )
 			{
 				if( !callback( dataptr , row , col ) )
 				{
-					break;	//‚à‚¤•s—v‚Ìê‡
+					break;	//ã‚‚ã†ä¸è¦ã®å ´åˆ
 				}
 			}
 
-			//Ÿ‚ğŒŸõ
+			//æ¬¡ã‚’æ¤œç´¢
 			after = _variant_t( found.GetInterfacePtr() );
 			found = search_range->FindNext( after );
 			row = found->Row;
@@ -628,24 +628,24 @@ static bool SearchCellAddrCallback( void* dataptr , DWORD row , DWORD col )
 	SearchCellAddr* data = reinterpret_cast<SearchCellAddr*>( dataptr );
 	if( data == nullptr || data->Pos == nullptr )
 	{
-		RaiseAssert( g_ErrorLogger , 0 , L"ƒZƒ‹–¼’Tõƒf[ƒ^‚ªƒkƒ‹‚Å‚·" );
+		RaiseAssert( g_ErrorLogger , 0 , L"ã‚»ãƒ«åæ¢ç´¢ãƒ‡ãƒ¼ã‚¿ãŒãƒŒãƒ«ã§ã™" );
 		return false;
 	}
 
-	//æ“¾‚µ‚½ƒAƒhƒŒƒX‚ğ“o˜^
+	//å–å¾—ã—ãŸã‚¢ãƒ‰ãƒ¬ã‚¹ã‚’ç™»éŒ²
 	data->Pos->push_back( mExcelCellRef::Position( false , false , true , true , row , col ) );
 
-	//ƒqƒbƒg”ƒJƒEƒ“ƒg
+	//ãƒ’ãƒƒãƒˆæ•°ã‚«ã‚¦ãƒ³ãƒˆ
 	data->CurrentFound++;
 	if( data->CurrentFound == data->MaxFound )
 	{
-		//Å‘å“’B
+		//æœ€å¤§åˆ°é”
 		return false;
 	}
 	return true;
 }
 
-//w’è‚Ì”ÍˆÍ“à‚ğŒŸõ‚µA”­Œ©‚µ‚½ƒZƒ‹‚Ì–¼Ì‚Ìˆê——‚ğ•Ô‚·
+//æŒ‡å®šã®ç¯„å›²å†…ã‚’æ¤œç´¢ã—ã€ç™ºè¦‹ã—ãŸã‚»ãƒ«ã®åç§°ã®ä¸€è¦§ã‚’è¿”ã™
 bool mExcelHandler::Search( const SearchOption& opt , PositionArray& retAddr , DWORD max_found )
 {
 	retAddr.clear();
@@ -662,7 +662,7 @@ DWORD mExcelHandler::GetRangeRow( void )
 {
 	if( MyCurrentRange == nullptr )
 	{
-		RaiseError( g_ErrorLogger , 0 , L"Œ»İ‚Ì”ÍˆÍ‚Íw’è‚³‚ê‚Ä‚¢‚Ü‚¹‚ñ" );
+		RaiseError( g_ErrorLogger , 0 , L"ç¾åœ¨ã®ç¯„å›²ã¯æŒ‡å®šã•ã‚Œã¦ã„ã¾ã›ã‚“" );
 		return false;
 	}
 
@@ -674,29 +674,29 @@ DWORD mExcelHandler::GetRangeCol( void )
 {
 	if( MyCurrentRange == nullptr )
 	{
-		RaiseError( g_ErrorLogger , 0 , L"Œ»İ‚Ì”ÍˆÍ‚Íw’è‚³‚ê‚Ä‚¢‚Ü‚¹‚ñ" );
+		RaiseError( g_ErrorLogger , 0 , L"ç¾åœ¨ã®ç¯„å›²ã¯æŒ‡å®šã•ã‚Œã¦ã„ã¾ã›ã‚“" );
 		return false;
 	}
 	return (DWORD)MyCurrentRange->Columns->Count;
 }
 
-//ƒ}[ƒW‚³‚ê‚½ƒZƒ‹‚©‚ğ“¾‚é
+//ãƒãƒ¼ã‚¸ã•ã‚ŒãŸã‚»ãƒ«ã‹ã‚’å¾—ã‚‹
 bool mExcelHandler::IsMerged( void )const
 {
 	if( MyCurrentRange == nullptr )
 	{
-		RaiseError( g_ErrorLogger , 0 , L"Œ»İ‚Ì”ÍˆÍ‚Íw’è‚³‚ê‚Ä‚¢‚Ü‚¹‚ñ" );
+		RaiseError( g_ErrorLogger , 0 , L"ç¾åœ¨ã®ç¯„å›²ã¯æŒ‡å®šã•ã‚Œã¦ã„ã¾ã›ã‚“" );
 		return false;
 	}
 	return MyCurrentRange->MergeCells;
 }
 
-//ƒ}[ƒW‚³‚ê‚½ƒZƒ‹‚Ì”ÍˆÍ‚ğ“¾‚é
+//ãƒãƒ¼ã‚¸ã•ã‚ŒãŸã‚»ãƒ«ã®ç¯„å›²ã‚’å¾—ã‚‹
 bool mExcelHandler::GetMergeRange( mExcelCellRef& retrange )
 {
 	if( MyCurrentRange == nullptr )
 	{
-		RaiseError( g_ErrorLogger , 0 , L"Œ»İ‚Ì”ÍˆÍ‚Íw’è‚³‚ê‚Ä‚¢‚Ü‚¹‚ñ" );
+		RaiseError( g_ErrorLogger , 0 , L"ç¾åœ¨ã®ç¯„å›²ã¯æŒ‡å®šã•ã‚Œã¦ã„ã¾ã›ã‚“" );
 		return false;
 	}
 	Excel::RangePtr ptr = MyCurrentRange->MergeArea;
@@ -718,16 +718,16 @@ bool mExcelHandler::Save( void )
 {
 	if( MyCurrentWorkbook == nullptr )
 	{
-		RaiseError( g_ErrorLogger , 0 , L"Œ»İ‚Ìƒ[ƒNƒuƒbƒN‚Íw’è‚³‚ê‚Ä‚¢‚Ü‚¹‚ñ" );
+		RaiseError( g_ErrorLogger , 0 , L"ç¾åœ¨ã®ãƒ¯ãƒ¼ã‚¯ãƒ–ãƒƒã‚¯ã¯æŒ‡å®šã•ã‚Œã¦ã„ã¾ã›ã‚“" );
 		return false;
 	}
 
 	if( SUCCEEDED( MyCurrentWorkbook->Save() ) )
 	{
-		CreateLogEntry( g_ErrorLogger , 0 , L"ƒ[ƒNƒuƒbƒN‚ğã‘‚«ƒZ[ƒu‚µ‚Ü‚µ‚½" );
+		CreateLogEntry( g_ErrorLogger , 0 , L"ãƒ¯ãƒ¼ã‚¯ãƒ–ãƒƒã‚¯ã‚’ä¸Šæ›¸ãã‚»ãƒ¼ãƒ–ã—ã¾ã—ãŸ" );
 		return true;
 	}
-	RaiseError( g_ErrorLogger , 0 , L"ƒ[ƒNƒuƒbƒN‚ğã‘‚«ƒZ[ƒu‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½" );
+	RaiseError( g_ErrorLogger , 0 , L"ãƒ¯ãƒ¼ã‚¯ãƒ–ãƒƒã‚¯ã‚’ä¸Šæ›¸ãã‚»ãƒ¼ãƒ–ã§ãã¾ã›ã‚“ã§ã—ãŸ" );
 	return false;
 }
 
@@ -735,16 +735,16 @@ bool mExcelHandler::SaveAs( const WString& filename , mExcelHandler::XlsFileForm
 {
 	if( MyCurrentWorkbook == nullptr )
 	{
-		RaiseError( g_ErrorLogger , 0 , L"Œ»İ‚Ìƒ[ƒNƒuƒbƒN‚Íw’è‚³‚ê‚Ä‚¢‚Ü‚¹‚ñ" );
+		RaiseError( g_ErrorLogger , 0 , L"ç¾åœ¨ã®ãƒ¯ãƒ¼ã‚¯ãƒ–ãƒƒã‚¯ã¯æŒ‡å®šã•ã‚Œã¦ã„ã¾ã›ã‚“" );
 		return false;
 	}
 
 	if( SUCCEEDED( MyCurrentWorkbook->SaveAs( filename.c_str() , (long)format , vtMissing , vtMissing , vtMissing , vtMissing , Excel::xlExclusive ) ) )
 	{
-		CreateLogEntry( g_ErrorLogger , 0 , L"ƒ[ƒNƒuƒbƒN‚ğƒZ[ƒu‚µ‚Ü‚µ‚½" , filename );
+		CreateLogEntry( g_ErrorLogger , 0 , L"ãƒ¯ãƒ¼ã‚¯ãƒ–ãƒƒã‚¯ã‚’ã‚»ãƒ¼ãƒ–ã—ã¾ã—ãŸ" , filename );
 		return true;
 	}
-	RaiseError( g_ErrorLogger , 0 , L"ƒ[ƒNƒuƒbƒN‚ğƒZ[ƒu‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½" , filename );
+	RaiseError( g_ErrorLogger , 0 , L"ãƒ¯ãƒ¼ã‚¯ãƒ–ãƒƒã‚¯ã‚’ã‚»ãƒ¼ãƒ–ã§ãã¾ã›ã‚“ã§ã—ãŸ" , filename );
 	return false;
 
 }
@@ -753,7 +753,7 @@ bool mExcelHandler::SetAlertEnable( bool newval )
 {
 	if( MyApplication == nullptr )
 	{
-		RaiseError( g_ErrorLogger , 0 , L"Excel‚Í‹N“®‚µ‚Ä‚¢‚Ü‚¹‚ñ" );
+		RaiseError( g_ErrorLogger , 0 , L"Excelã¯èµ·å‹•ã—ã¦ã„ã¾ã›ã‚“" );
 		return false;
 	}
 	MyApplication->DisplayAlerts = newval;
@@ -764,7 +764,7 @@ bool mExcelHandler::GetAlertEnable( void )
 {
 	if( MyApplication == nullptr )
 	{
-		RaiseError( g_ErrorLogger , 0 , L"Excel‚Í‹N“®‚µ‚Ä‚¢‚Ü‚¹‚ñ" );
+		RaiseError( g_ErrorLogger , 0 , L"Excelã¯èµ·å‹•ã—ã¦ã„ã¾ã›ã‚“" );
 		return true;
 	}
 	return MyApplication->DisplayAlerts;
@@ -774,7 +774,7 @@ bool mExcelHandler::SetCalculation( mExcelHandler::XlsCalculation newval )
 {
 	if( MyApplication == nullptr )
 	{
-		RaiseError( g_ErrorLogger , 0 , L"Excel‚Í‹N“®‚µ‚Ä‚¢‚Ü‚¹‚ñ" );
+		RaiseError( g_ErrorLogger , 0 , L"Excelã¯èµ·å‹•ã—ã¦ã„ã¾ã›ã‚“" );
 		return false;
 	}
 
@@ -787,7 +787,7 @@ mExcelHandler::XlsCalculation mExcelHandler::GetCalculation( void )
 {
 	if( MyApplication == nullptr )
 	{
-		RaiseError( g_ErrorLogger , 0 , L"Excel‚Í‹N“®‚µ‚Ä‚¢‚Ü‚¹‚ñ" );
+		RaiseError( g_ErrorLogger , 0 , L"Excelã¯èµ·å‹•ã—ã¦ã„ã¾ã›ã‚“" );
 		return XlsCalculation::xlCalculationAutomatic;
 	}
 	return MyApplication->Calculation;
@@ -795,10 +795,10 @@ mExcelHandler::XlsCalculation mExcelHandler::GetCalculation( void )
 
 bool mExcelHandler::CalcAll( void )
 {
-	//‘Sƒ[ƒNƒuƒbƒN
+	//å…¨ãƒ¯ãƒ¼ã‚¯ãƒ–ãƒƒã‚¯
 	if( MyApplication == nullptr )
 	{
-		RaiseError( g_ErrorLogger , 0 , L"Excel‚Í‹N“®‚µ‚Ä‚¢‚Ü‚¹‚ñ" );
+		RaiseError( g_ErrorLogger , 0 , L"Excelã¯èµ·å‹•ã—ã¦ã„ã¾ã›ã‚“" );
 		return false;
 	}
 
@@ -807,22 +807,22 @@ bool mExcelHandler::CalcAll( void )
 
 bool mExcelHandler::CalcWorksheet( void )
 {
-	//Œ»İ‚Ìƒ[ƒNƒV[ƒg
+	//ç¾åœ¨ã®ãƒ¯ãƒ¼ã‚¯ã‚·ãƒ¼ãƒˆ
 	if( MyCurrentWorksheet == nullptr )
 	{
-		RaiseError( g_ErrorLogger , 0 , L"Œ»İ‚Ìƒ[ƒNƒuƒbƒN‚Íw’è‚³‚ê‚Ä‚¢‚Ü‚¹‚ñ" );
+		RaiseError( g_ErrorLogger , 0 , L"ç¾åœ¨ã®ãƒ¯ãƒ¼ã‚¯ãƒ–ãƒƒã‚¯ã¯æŒ‡å®šã•ã‚Œã¦ã„ã¾ã›ã‚“" );
 		return false;
 	}
 
 	return SUCCEEDED( MyCurrentWorksheet->Calculate() );
 }
 
-//ƒCƒxƒ“ƒg‚Ì—LŒøE–³Œøİ’è
+//ã‚¤ãƒ™ãƒ³ãƒˆã®æœ‰åŠ¹ãƒ»ç„¡åŠ¹è¨­å®š
 bool mExcelHandler::SetEventEnable( bool newval )
 {
 	if( MyApplication == nullptr )
 	{
-		RaiseError( g_ErrorLogger , 0 , L"Excel‚Í‹N“®‚µ‚Ä‚¢‚Ü‚¹‚ñ" );
+		RaiseError( g_ErrorLogger , 0 , L"Excelã¯èµ·å‹•ã—ã¦ã„ã¾ã›ã‚“" );
 		return false;
 	}
 
@@ -831,12 +831,12 @@ bool mExcelHandler::SetEventEnable( bool newval )
 
 }
 
-//ƒCƒxƒ“ƒg‚Ì—LŒøE–³Œøó‘Ô‚ğæ“¾‚·‚é
+//ã‚¤ãƒ™ãƒ³ãƒˆã®æœ‰åŠ¹ãƒ»ç„¡åŠ¹çŠ¶æ…‹ã‚’å–å¾—ã™ã‚‹
 bool mExcelHandler::SetEventEnable( void )
 {
 	if( MyApplication == nullptr )
 	{
-		RaiseError( g_ErrorLogger , 0 , L"Excel‚Í‹N“®‚µ‚Ä‚¢‚Ü‚¹‚ñ" );
+		RaiseError( g_ErrorLogger , 0 , L"Excelã¯èµ·å‹•ã—ã¦ã„ã¾ã›ã‚“" );
 		return false;
 	}
 
@@ -847,7 +847,7 @@ bool mExcelHandler::Close( bool force , const WString* bookname )
 {
 	if( MyApplication == nullptr )
 	{
-		RaiseError( g_ErrorLogger , 0 , L"Excel‚Í‹N“®‚µ‚Ä‚¢‚Ü‚¹‚ñ" );
+		RaiseError( g_ErrorLogger , 0 , L"Excelã¯èµ·å‹•ã—ã¦ã„ã¾ã›ã‚“" );
 		return false;
 	}
 
@@ -860,7 +860,7 @@ bool mExcelHandler::Close( bool force , const WString* bookname )
 		}
 		if( !SetCurrentWorkbook( workbook_name ) )
 		{
-			RaiseError( g_ErrorLogger , 0 , L"w’è‚Ìƒ[ƒNƒuƒbƒN‚Í‚ ‚è‚Ü‚¹‚ñ" , *bookname );
+			RaiseError( g_ErrorLogger , 0 , L"æŒ‡å®šã®ãƒ¯ãƒ¼ã‚¯ãƒ–ãƒƒã‚¯ã¯ã‚ã‚Šã¾ã›ã‚“" , *bookname );
 			return false;
 		}
 	}
@@ -881,9 +881,9 @@ bool mExcelHandler::Close( bool force , const WString* bookname )
 	}
 	catch( ... )
 	{
-		//E•Â‚¶‚é‚Ì‚É¸”s‚µAã‚Ìthrow‚ªÀs‚³‚ê‚½ê‡
-		//Eƒ†[ƒU[‚ªExcel‚ğ•Â‚¶‚é‚È‚Ç‚µ‚ÄACOMƒIƒuƒWƒFƒNƒg‚ª–³Œø‚Ìê‡
-		RaiseError( g_ErrorLogger , 0 , L"ƒ[ƒNƒuƒbƒN‚ğ•Â‚¶‚é‚±‚Æ‚ªo—ˆ‚Ü‚¹‚ñ‚Å‚µ‚½" , force );
+		//ãƒ»é–‰ã˜ã‚‹ã®ã«å¤±æ•—ã—ã€ä¸Šã®throwãŒå®Ÿè¡Œã•ã‚ŒãŸå ´åˆ
+		//ãƒ»ãƒ¦ãƒ¼ã‚¶ãƒ¼ãŒExcelã‚’é–‰ã˜ã‚‹ãªã©ã—ã¦ã€COMã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆãŒç„¡åŠ¹ã®å ´åˆ
+		RaiseError( g_ErrorLogger , 0 , L"ãƒ¯ãƒ¼ã‚¯ãƒ–ãƒƒã‚¯ã‚’é–‰ã˜ã‚‹ã“ã¨ãŒå‡ºæ¥ã¾ã›ã‚“ã§ã—ãŸ" , force );
 		return false;
 	}
 
@@ -894,7 +894,7 @@ bool mExcelHandler::IsModified( void )const
 {
 	if( MyCurrentWorkbook == nullptr )
 	{
-		RaiseError( g_ErrorLogger , 0 , L"Œ»İ‚Ìƒ[ƒNƒuƒbƒN‚Íw’è‚³‚ê‚Ä‚¢‚Ü‚¹‚ñ" );
+		RaiseError( g_ErrorLogger , 0 , L"ç¾åœ¨ã®ãƒ¯ãƒ¼ã‚¯ãƒ–ãƒƒã‚¯ã¯æŒ‡å®šã•ã‚Œã¦ã„ã¾ã›ã‚“" );
 		return false;
 	}
 
@@ -906,7 +906,7 @@ bool mExcelHandler::AddNewWorksheet( void )
 {
 	if( MyApplication == nullptr )
 	{
-		RaiseError( g_ErrorLogger , 0 , L"Excel‚Í‹N“®‚µ‚Ä‚¢‚Ü‚¹‚ñ" );
+		RaiseError( g_ErrorLogger , 0 , L"Excelã¯èµ·å‹•ã—ã¦ã„ã¾ã›ã‚“" );
 		return false;
 	}
 
@@ -918,26 +918,26 @@ bool mExcelHandler::ReadArray( const _variant_t& arr , fpCellReadCallback reader
 {
 	bool result = false;
 
-	//ƒAƒŒƒC‚¶‚á‚È‚©‚Á‚½‚ç‚m‚f
+	//ã‚¢ãƒ¬ã‚¤ã˜ã‚ƒãªã‹ã£ãŸã‚‰ï¼®ï¼§
 	if( arr.vt != VT_SAFEARRAY && ( arr.vt & VT_ARRAY ) != VT_ARRAY )
 	{
-		RaiseError( g_ErrorLogger , 0 , L"w’è‚µ‚½ƒIƒuƒWƒFƒNƒg‚ÍƒAƒŒƒC‚Å‚Í‚ ‚è‚Ü‚¹‚ñ" );
+		RaiseError( g_ErrorLogger , 0 , L"æŒ‡å®šã—ãŸã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã¯ã‚¢ãƒ¬ã‚¤ã§ã¯ã‚ã‚Šã¾ã›ã‚“" );
 		return false;
 	}
 
-	//ƒAƒŒƒC‚ğƒƒbƒN‚·‚é
+	//ã‚¢ãƒ¬ã‚¤ã‚’ãƒ­ãƒƒã‚¯ã™ã‚‹
 	if( FAILED( SafeArrayLock( arr.parray ) ) )
 	{
-		RaiseError( g_ErrorLogger , 0 , L"ƒAƒŒƒC‚ğƒƒbƒN‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½" );
+		RaiseError( g_ErrorLogger , 0 , L"ã‚¢ãƒ¬ã‚¤ã‚’ãƒ­ãƒƒã‚¯ã§ãã¾ã›ã‚“ã§ã—ãŸ" );
 		return false;
 	}
 
-	//œ‚±‚±‚©‚çreturn‚Å–ß‚Á‚¿‚áƒ_ƒ
+	//â—ã“ã“ã‹ã‚‰returnã§æˆ»ã£ã¡ã‚ƒãƒ€ãƒ¡
 
 	VARIANT*	var_cell;
 	_variant_t	cell;
 
-	//ƒAƒŒƒC‚Ì‚PŸŒ³–Ú‚Ì—v‘f”‚ğæ“¾
+	//ã‚¢ãƒ¬ã‚¤ã®ï¼‘æ¬¡å…ƒç›®ã®è¦ç´ æ•°ã‚’å–å¾—
 	using index_converter = LONG(*)( LONG , LONG , LONG );
 	index_converter normal_order = []( LONG i , LONG lb , LONG ub )-> LONG
 	{
@@ -958,69 +958,69 @@ bool mExcelHandler::ReadArray( const _variant_t& arr , fpCellReadCallback reader
 
 	switch( order )
 	{
-	case ScanOrder::SCANORDER_ROW_MAJOR:				//ã‚Ìs‚©‚ç‡‚ÉA‰¡•ûŒü(¶‚©‚ç‰E)‚ÉƒXƒLƒƒƒ“
+	case ScanOrder::SCANORDER_ROW_MAJOR:				//ä¸Šã®è¡Œã‹ã‚‰é †ã«ã€æ¨ªæ–¹å‘(å·¦ã‹ã‚‰å³)ã«ã‚¹ã‚­ãƒ£ãƒ³
 		dim_1 = 1;
 		dim_2 = 2;
 		converter_1 = normal_order;
 		converter_2 = normal_order;
 		break;
-	case ScanOrder::SCANORDER_COL_MAJOR:				//¶‚Ì—ñ‚©‚ç‡‚ÉAc•ûŒü(ã‚©‚ç‰º)‚ÉƒXƒLƒƒƒ“
+	case ScanOrder::SCANORDER_COL_MAJOR:				//å·¦ã®åˆ—ã‹ã‚‰é †ã«ã€ç¸¦æ–¹å‘(ä¸Šã‹ã‚‰ä¸‹)ã«ã‚¹ã‚­ãƒ£ãƒ³
 		dim_1 = 2;
 		dim_2 = 1;
 		converter_1 = normal_order;
 		converter_2 = normal_order;
 		break;
-	case ScanOrder::SCANORDER_ROW_REVERSE:				//ã‚Ìs‚©‚ç‡‚ÉA‰¡•ûŒü(‰E‚©‚ç¶)‚ÉƒXƒLƒƒƒ“
+	case ScanOrder::SCANORDER_ROW_REVERSE:				//ä¸Šã®è¡Œã‹ã‚‰é †ã«ã€æ¨ªæ–¹å‘(å³ã‹ã‚‰å·¦)ã«ã‚¹ã‚­ãƒ£ãƒ³
 		dim_1 = 1;
 		dim_2 = 2;
 		converter_1 = normal_order;
 		converter_2 = reverse_order;
 		break;
-	case ScanOrder::SCANORDER_COL_REVERSE:				//¶‚Ì—ñ‚©‚ç‡‚ÉAc•ûŒü(‰º‚©‚çã)‚ÉƒXƒLƒƒƒ“
+	case ScanOrder::SCANORDER_COL_REVERSE:				//å·¦ã®åˆ—ã‹ã‚‰é †ã«ã€ç¸¦æ–¹å‘(ä¸‹ã‹ã‚‰ä¸Š)ã«ã‚¹ã‚­ãƒ£ãƒ³
 		dim_1 = 2;
 		dim_2 = 1;
 		converter_1 = normal_order;
 		converter_2 = reverse_order;
 		break;
-	case ScanOrder::SCANORDER_ROW_MAJOR_BOTTOMUP:		//‰º‚Ìs‚©‚ç‡‚ÉA‰¡•ûŒü(¶‚©‚ç‰E)‚ÉƒXƒLƒƒƒ“
+	case ScanOrder::SCANORDER_ROW_MAJOR_BOTTOMUP:		//ä¸‹ã®è¡Œã‹ã‚‰é †ã«ã€æ¨ªæ–¹å‘(å·¦ã‹ã‚‰å³)ã«ã‚¹ã‚­ãƒ£ãƒ³
 		dim_1 = 1;
 		dim_2 = 2;
 		converter_1 = reverse_order;
 		converter_2 = normal_order;
 		break;
-	case ScanOrder::SCANORDER_COL_MAJOR_RIGHTTOLEFT:	//‰E‚Ì—ñ‚©‚ç‡‚ÉAc•ûŒü(ã‚©‚ç‰º)‚ÉƒXƒLƒƒƒ“
+	case ScanOrder::SCANORDER_COL_MAJOR_RIGHTTOLEFT:	//å³ã®åˆ—ã‹ã‚‰é †ã«ã€ç¸¦æ–¹å‘(ä¸Šã‹ã‚‰ä¸‹)ã«ã‚¹ã‚­ãƒ£ãƒ³
 		dim_1 = 2;
 		dim_2 = 1;
 		converter_1 = reverse_order;
 		converter_2 = normal_order;
 		break;
-	case ScanOrder::SCANORDER_ROW_REVERSE_BOTTOMUP:		//‰º‚Ìs‚©‚ç‡‚ÉA‰¡•ûŒü(‰E‚©‚ç¶)‚ÉƒXƒLƒƒƒ“
+	case ScanOrder::SCANORDER_ROW_REVERSE_BOTTOMUP:		//ä¸‹ã®è¡Œã‹ã‚‰é †ã«ã€æ¨ªæ–¹å‘(å³ã‹ã‚‰å·¦)ã«ã‚¹ã‚­ãƒ£ãƒ³
 		dim_1 = 1;
 		dim_2 = 2;
 		converter_1 = reverse_order;
 		converter_2 = reverse_order;
 		break;
-	case ScanOrder::SCANORDER_COL_REVERSE_RIGHTTOLEFT:	//‰E‚Ì—ñ‚©‚ç‡‚ÉAc•ûŒü(‰º‚©‚çã)‚ÉƒXƒLƒƒƒ“
+	case ScanOrder::SCANORDER_COL_REVERSE_RIGHTTOLEFT:	//å³ã®åˆ—ã‹ã‚‰é †ã«ã€ç¸¦æ–¹å‘(ä¸‹ã‹ã‚‰ä¸Š)ã«ã‚¹ã‚­ãƒ£ãƒ³
 		dim_1 = 2;
 		dim_2 = 1;
 		converter_1 = reverse_order;
 		converter_2 = reverse_order;
 		break;
 	default:
-		RaiseError( g_ErrorLogger , 0 , L"ƒXƒLƒƒƒ“•ûŒü‚Ìİ’è‚ª•s³‚Å‚·" );
+		RaiseError( g_ErrorLogger , 0 , L"ã‚¹ã‚­ãƒ£ãƒ³æ–¹å‘ã®è¨­å®šãŒä¸æ­£ã§ã™" );
 		goto end;
 	}
 
 	SafeArrayGetUBound( arr.parray , dim_1 , &ub_1 );
 	SafeArrayGetLBound( arr.parray , dim_1 , &lb_1 );
 
-	//‚»‚ê‚Å‚Í‚¢‚æ‚¢‚æƒ‹[ƒv‚Å‚·
+	//ãã‚Œã§ã¯ã„ã‚ˆã„ã‚ˆãƒ«ãƒ¼ãƒ—ã§ã™
 	for( LONG loop_i = lb_1 ; loop_i <= ub_1 ; loop_i++ )
 	{
 		LONG i = converter_1( loop_i , lb_1 , ub_1 );
 		index[ dim_1 - 1 ] = i;
 
-		//ƒAƒŒƒC‚Ì‚QŸŒ³–Ú‚Ì—v‘f”‚ğæ“¾
+		//ã‚¢ãƒ¬ã‚¤ã®ï¼’æ¬¡å…ƒç›®ã®è¦ç´ æ•°ã‚’å–å¾—
 		LONG ub_2;
 		LONG lb_2;
 		SafeArrayGetUBound( arr.parray , dim_2 , &ub_2 );
@@ -1032,29 +1032,29 @@ bool mExcelHandler::ReadArray( const _variant_t& arr , fpCellReadCallback reader
 			ScanContinue cont_flag;
 			index[ dim_2 - 1 ] = j;
 
-			//’læ“¾
+			//å€¤å–å¾—
 			if( FAILED( SafeArrayPtrOfIndex( arr.parray , index , (void HUGEP* FAR*)&var_cell ) ) )
 			{
-				RaiseError( g_ErrorLogger , 0 , L"ƒAƒŒƒC‚Ì—v‘f‚É‘Î‚·‚éƒ|ƒCƒ“ƒ^‚ğæ“¾‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½" );
+				RaiseError( g_ErrorLogger , 0 , L"ã‚¢ãƒ¬ã‚¤ã®è¦ç´ ã«å¯¾ã™ã‚‹ãƒã‚¤ãƒ³ã‚¿ã‚’å–å¾—ã§ãã¾ã›ã‚“ã§ã—ãŸ" );
 				goto end;
 			}
 
-			//ƒR[ƒ‹ƒoƒbƒNŒÄ‚Ño‚µ
+			//ã‚³ãƒ¼ãƒ«ãƒãƒƒã‚¯å‘¼ã³å‡ºã—
 			cell.Attach( *var_cell );
 			try
 			{
 				switch( order )
 				{
-				case ScanOrder::SCANORDER_ROW_MAJOR:				//ã‚Ìs‚©‚ç‡‚ÉA‰¡•ûŒü(¶‚©‚ç‰E)‚ÉƒXƒLƒƒƒ“
-				case ScanOrder::SCANORDER_ROW_REVERSE:				//ã‚Ìs‚©‚ç‡‚ÉA‰¡•ûŒü(‰E‚©‚ç¶)‚ÉƒXƒLƒƒƒ“
-				case ScanOrder::SCANORDER_ROW_MAJOR_BOTTOMUP:		//‰º‚Ìs‚©‚ç‡‚ÉA‰¡•ûŒü(¶‚©‚ç‰E)‚ÉƒXƒLƒƒƒ“
-				case ScanOrder::SCANORDER_ROW_REVERSE_BOTTOMUP:		//‰º‚Ìs‚©‚ç‡‚ÉA‰¡•ûŒü(‰E‚©‚ç¶)‚ÉƒXƒLƒƒƒ“
+				case ScanOrder::SCANORDER_ROW_MAJOR:				//ä¸Šã®è¡Œã‹ã‚‰é †ã«ã€æ¨ªæ–¹å‘(å·¦ã‹ã‚‰å³)ã«ã‚¹ã‚­ãƒ£ãƒ³
+				case ScanOrder::SCANORDER_ROW_REVERSE:				//ä¸Šã®è¡Œã‹ã‚‰é †ã«ã€æ¨ªæ–¹å‘(å³ã‹ã‚‰å·¦)ã«ã‚¹ã‚­ãƒ£ãƒ³
+				case ScanOrder::SCANORDER_ROW_MAJOR_BOTTOMUP:		//ä¸‹ã®è¡Œã‹ã‚‰é †ã«ã€æ¨ªæ–¹å‘(å·¦ã‹ã‚‰å³)ã«ã‚¹ã‚­ãƒ£ãƒ³
+				case ScanOrder::SCANORDER_ROW_REVERSE_BOTTOMUP:		//ä¸‹ã®è¡Œã‹ã‚‰é †ã«ã€æ¨ªæ–¹å‘(å³ã‹ã‚‰å·¦)ã«ã‚¹ã‚­ãƒ£ãƒ³
 					cont_flag = reader( cell , dataptr , i - lb_1 , j - lb_2 , ub_1 - lb_1 , ub_2 - lb_2 );
 					break;
-				case ScanOrder::SCANORDER_COL_MAJOR:				//¶‚Ì—ñ‚©‚ç‡‚ÉAc•ûŒü(ã‚©‚ç‰º)‚ÉƒXƒLƒƒƒ“
-				case ScanOrder::SCANORDER_COL_REVERSE:				//¶‚Ì—ñ‚©‚ç‡‚ÉAc•ûŒü(‰º‚©‚çã)‚ÉƒXƒLƒƒƒ“
-				case ScanOrder::SCANORDER_COL_MAJOR_RIGHTTOLEFT:	//‰E‚Ì—ñ‚©‚ç‡‚ÉAc•ûŒü(ã‚©‚ç‰º)‚ÉƒXƒLƒƒƒ“
-				case ScanOrder::SCANORDER_COL_REVERSE_RIGHTTOLEFT:	//‰E‚Ì—ñ‚©‚ç‡‚ÉAc•ûŒü(‰º‚©‚çã)‚ÉƒXƒLƒƒƒ“
+				case ScanOrder::SCANORDER_COL_MAJOR:				//å·¦ã®åˆ—ã‹ã‚‰é †ã«ã€ç¸¦æ–¹å‘(ä¸Šã‹ã‚‰ä¸‹)ã«ã‚¹ã‚­ãƒ£ãƒ³
+				case ScanOrder::SCANORDER_COL_REVERSE:				//å·¦ã®åˆ—ã‹ã‚‰é †ã«ã€ç¸¦æ–¹å‘(ä¸‹ã‹ã‚‰ä¸Š)ã«ã‚¹ã‚­ãƒ£ãƒ³
+				case ScanOrder::SCANORDER_COL_MAJOR_RIGHTTOLEFT:	//å³ã®åˆ—ã‹ã‚‰é †ã«ã€ç¸¦æ–¹å‘(ä¸Šã‹ã‚‰ä¸‹)ã«ã‚¹ã‚­ãƒ£ãƒ³
+				case ScanOrder::SCANORDER_COL_REVERSE_RIGHTTOLEFT:	//å³ã®åˆ—ã‹ã‚‰é †ã«ã€ç¸¦æ–¹å‘(ä¸‹ã‹ã‚‰ä¸Š)ã«ã‚¹ã‚­ãƒ£ãƒ³
 					cont_flag = reader( cell , dataptr , j - lb_2 , i - lb_1 , ub_2 - lb_2 , ub_1 - lb_1 );
 					break;
 				default:
@@ -1069,8 +1069,8 @@ bool mExcelHandler::ReadArray( const _variant_t& arr , fpCellReadCallback reader
 				throw;
 			}
 
-			//ƒR[ƒ‹ƒoƒbƒNŠÖ”‚ª•Ô‚µ‚½ƒtƒ‰ƒO‚Ìˆ—
-			//Ÿ‚ÌƒZƒ‹‚É‚¢‚­H
+			//ã‚³ãƒ¼ãƒ«ãƒãƒƒã‚¯é–¢æ•°ãŒè¿”ã—ãŸãƒ•ãƒ©ã‚°ã®å‡¦ç†
+			//æ¬¡ã®ã‚»ãƒ«ã«ã„ãï¼Ÿ
 			if( cont_flag == ScanContinue::SCAN_FINISH_TRUE )
 			{
 				result = true;
@@ -1091,7 +1091,7 @@ bool mExcelHandler::ReadArray( const _variant_t& arr , fpCellReadCallback reader
 			}
 			else
 			{
-				RaiseError( g_ErrorLogger , 0 , L"ƒR[ƒ‹ƒoƒbƒNŠÖ”‚ª•Ô‚µ‚½’l‚ª•s³‚Å‚·" , cont_flag );
+				RaiseError( g_ErrorLogger , 0 , L"ã‚³ãƒ¼ãƒ«ãƒãƒƒã‚¯é–¢æ•°ãŒè¿”ã—ãŸå€¤ãŒä¸æ­£ã§ã™" , cont_flag );
 			}
 		}
 	}
@@ -1105,13 +1105,13 @@ end:
 
 struct ReadArrayDataCapsule
 {
-	//–{—ˆ‚ÌƒR[ƒ‹ƒoƒbƒNŠÖ”
+	//æœ¬æ¥ã®ã‚³ãƒ¼ãƒ«ãƒãƒƒã‚¯é–¢æ•°
 	mExcelHandler::fpCellReadCallbackV reader;
-	//–{—ˆ‚Ìƒf[ƒ^
+	//æœ¬æ¥ã®ãƒ‡ãƒ¼ã‚¿
 	void* dataptr;
 };
 
-//mVariant‚É•ÏŠ·‚·‚éƒR[ƒ‹ƒoƒbƒNƒvƒƒLƒV
+//mVariantã«å¤‰æ›ã™ã‚‹ã‚³ãƒ¼ãƒ«ãƒãƒƒã‚¯ãƒ—ãƒ­ã‚­ã‚·
 static mExcelHandler::ScanContinue ReadArrayProxy( const _variant_t& value , void* dataptr , DWORD row , DWORD col , DWORD max_row , DWORD max_col )
 {
 	mVariant variant( value );
@@ -1132,26 +1132,26 @@ bool mExcelHandler::ReadArray( fpCellReadCallback reader , void* dataptr , ScanO
 {
 	if( !reader )
 	{
-		RaiseAssert( g_ErrorLogger , 0 , L"ƒR[ƒ‹ƒoƒbƒNŠÖ”‚ªw’è‚³‚ê‚Ä‚¢‚Ü‚¹‚ñ" );
+		RaiseAssert( g_ErrorLogger , 0 , L"ã‚³ãƒ¼ãƒ«ãƒãƒƒã‚¯é–¢æ•°ãŒæŒ‡å®šã•ã‚Œã¦ã„ã¾ã›ã‚“" );
 		return false;
 	}
 
 	_variant_t val;
 	if( !GetValue( val ) )
 	{
-		RaiseError( g_ErrorLogger , 0 , L"’l‚ğæ“¾‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½" );
+		RaiseError( g_ErrorLogger , 0 , L"å€¤ã‚’å–å¾—ã§ãã¾ã›ã‚“ã§ã—ãŸ" );
 		return false;
 	}
-	if( val.vt == VT_SAFEARRAY )	//‚QŸŒ³iˆÈã‚Ìj”z—ñ
+	if( val.vt == VT_SAFEARRAY )	//ï¼’æ¬¡å…ƒï¼ˆä»¥ä¸Šã®ï¼‰é…åˆ—
 	{
 		return ReadArray( val , reader , dataptr , order );
 	}
-	else if( ( val.vt & VT_ARRAY ) == VT_ARRAY )	//‚PŸŒ³”z—ñ
+	else if( ( val.vt & VT_ARRAY ) == VT_ARRAY )	//ï¼‘æ¬¡å…ƒé…åˆ—
 	{
 		return ReadArray( val , reader , dataptr , order );
 
 	}
-	else	//’P”­ƒf[ƒ^
+	else	//å˜ç™ºãƒ‡ãƒ¼ã‚¿
 	{
 		if( reader( val , dataptr , 0 , 0 , 0 , 0 ) == ScanContinue::SCAN_FINISH_FALSE )
 		{
@@ -1190,7 +1190,7 @@ RGBQUAD mExcelHandler::GetBackgroundColor( void )
 	}
 	catch( ... )
 	{
-		RaiseError( g_ErrorLogger , 0 , L"”wŒiF‚ğæ“¾‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½" );
+		RaiseError( g_ErrorLogger , 0 , L"èƒŒæ™¯è‰²ã‚’å–å¾—ã§ãã¾ã›ã‚“ã§ã—ãŸ" );
 		result.rgbRed = 0xFF;
 		result.rgbGreen = 0xFF;
 		result.rgbBlue = 0xFF;

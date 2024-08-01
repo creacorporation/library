@@ -1,10 +1,10 @@
-//----------------------------------------------------------------------------
-// �t�@�C�����[�e�B���e�B�֐��Q
+﻿//----------------------------------------------------------------------------
+// ファイルユーティリティ関数群
 // Copyright (C) 2018- Crea Inc. All rights reserved.
 // This program is released under the MIT License. 
 // see http://opensource.org/licenses/mit-license.php
-// ���쌠�\���⃉�C�Z���X�̉��ς͋֎~����Ă��܂��B
-// ���̃\�[�X�R�[�h�Ɋւ��āA��L���C�Z���X�ȊO�̌_�񓙂͈�ؑ��݂��܂���B
+// 著作権表示やライセンスの改変は禁止されています。
+// このソースコードに関して、上記ライセンス以外の契約等は一切存在しません。
 //----------------------------------------------------------------------------
 
 
@@ -17,100 +17,100 @@
 namespace mFileUtility
 {
 
-	//�w�肵���t�@�C�������t�@�C���V�X�e���㋖����邩�𔻒肷��
-	// filename : ���肵�����t�@�C����
-	// ret : ������閼�O�̏ꍇtrue�A������Ȃ����O�̏ꍇfalse
+	//指定したファイル名がファイルシステム上許されるかを判定する
+	// filename : 判定したいファイル名
+	// ret : 許される名前の場合true、許されない名前の場合false
 	bool IsSuitableFilename( const WString& filename );
 
-	//�w�肵���t�@�C�������t�@�C���V�X�e���㋖����邩�𔻒肷��
-	// filename : ���肵�����t�@�C����
-	// ret : ������閼�O�̏ꍇtrue�A������Ȃ����O�̏ꍇfalse
+	//指定したファイル名がファイルシステム上許されるかを判定する
+	// filename : 判定したいファイル名
+	// ret : 許される名前の場合true、許されない名前の場合false
 	bool IsSuitableFilename( const wchar_t* filename );
 
-	//�p�X���h���C�u�A�f�B���N�g���A�t�@�C�����A�g���q�ɕ�������
-	// path : �����O�̃p�X
-	// retDrive : �y�o�́z�h���C�u���@�s�v�̏ꍇ��nullptr�ł���
-	// retDir : �y�o�́z�f�B���N�g�����@�s�v�̏ꍇ��nullptr�ł���
-	// retFile : �y�o�́z�t�@�C�����@�s�v�̏ꍇ��nullptr�ł���
-	// retExt : �y�o�́z�g���q�@�s�v�̏ꍇ��nullptr�ł���
-	// ret : �����̏ꍇ�^
+	//パスをドライブ、ディレクトリ、ファイル名、拡張子に分割する
+	// path : 分割前のパス
+	// retDrive : 【出力】ドライブ名　不要の場合はnullptrでも可
+	// retDir : 【出力】ディレクトリ名　不要の場合はnullptrでも可
+	// retFile : 【出力】ファイル名　不要の場合はnullptrでも可
+	// retExt : 【出力】拡張子　不要の場合はnullptrでも可
+	// ret : 成功の場合真
 	bool SplitPath( const WString& path , WString* retDrive , WString* retDir , WString* retFile , WString* retExt );
 
-	//�p�X���h���C�u�A�f�B���N�g���A�t�@�C�����A�g���q�ɕ�������
-	// path : �����O�̃p�X
-	// retDrive : �y�o�́z�h���C�u���@�s�v�̏ꍇ��nullptr�ł���
-	// retDir : �y�o�́z�f�B���N�g�����@�s�v�̏ꍇ��nullptr�ł���
-	// retFile : �y�o�́z�t�@�C�����@�s�v�̏ꍇ��nullptr�ł���
-	// retExt : �y�o�́z�g���q�@�s�v�̏ꍇ��nullptr�ł���
-	// ret : �����̏ꍇ�^
+	//パスをドライブ、ディレクトリ、ファイル名、拡張子に分割する
+	// path : 分割前のパス
+	// retDrive : 【出力】ドライブ名　不要の場合はnullptrでも可
+	// retDir : 【出力】ディレクトリ名　不要の場合はnullptrでも可
+	// retFile : 【出力】ファイル名　不要の場合はnullptrでも可
+	// retExt : 【出力】拡張子　不要の場合はnullptrでも可
+	// ret : 成功の場合真
 	bool SplitPath( const wchar_t* path , WString* retDrive , WString* retDir , WString* retFile , WString* retExt );
 
-	//�t�@�C���p�X�̔��o
-	//�t�@�C���p�X�̎w�肵���v�f�݂̂��g�p���ĐV�����p�X�����܂�
-	// path : ���̃p�X
-	// retResult : �y�o�́z�č\�z�����p�X
-	// drive : ���̃p�X�Ɋ܂܂�Ă���h���C�u�����g���Ȃ�true
-	// dir : ���̃p�X�Ɋ܂܂�Ă���f�B���N�g�������g���Ȃ�true
-	// filename : ���̃p�X�Ɋ܂܂�Ă���t�@�C�������g���Ȃ�true
-	// ext : ���̃p�X�Ɋ܂܂�Ă���g���q���g���Ȃ�true
+	//ファイルパスの抜出
+	//ファイルパスの指定した要素のみを使用して新しいパスを作ります
+	// path : 元のパス
+	// retResult : 【出力】再構築したパス
+	// drive : 元のパスに含まれているドライブ名を使うならtrue
+	// dir : 元のパスに含まれているディレクトリ名を使うならtrue
+	// filename : 元のパスに含まれているファイル名を使うならtrue
+	// ext : 元のパスに含まれている拡張子を使うならtrue
 	bool RebuildPath( const WString& path , WString& retResult , bool drive , bool dir , bool filename , bool ext );
 
-	//�t�@�C���p�X�̔��o
-	//�t�@�C���p�X�̎w�肵���v�f�݂̂��g�p���ĐV�����p�X�����܂�
-	// path : ���̃p�X
-	// retResult : �y�o�́z�č\�z�����p�X
-	// drive : ���̃p�X�Ɋ܂܂�Ă���h���C�u�����g���Ȃ�true
-	// dir : ���̃p�X�Ɋ܂܂�Ă���f�B���N�g�������g���Ȃ�true
-	// filename : ���̃p�X�Ɋ܂܂�Ă���t�@�C�������g���Ȃ�true
-	// ext : ���̃p�X�Ɋ܂܂�Ă���g���q���g���Ȃ�true
+	//ファイルパスの抜出
+	//ファイルパスの指定した要素のみを使用して新しいパスを作ります
+	// path : 元のパス
+	// retResult : 【出力】再構築したパス
+	// drive : 元のパスに含まれているドライブ名を使うならtrue
+	// dir : 元のパスに含まれているディレクトリ名を使うならtrue
+	// filename : 元のパスに含まれているファイル名を使うならtrue
+	// ext : 元のパスに含まれている拡張子を使うならtrue
 	bool RebuildPath( const wchar_t* path , WString& retResult , bool drive , bool dir , bool filename , bool ext );
 
-	//�p�X���h���C�u�A�f�B���N�g���A�t�@�C�����A�g���q�������ւ���
-	// path : �����ւ��O�̃p�X
-	// retpath : �����ւ����p�X�i�o�́j
-	// retDrive : �����ւ���h���C�u���@�����ւ��s�v�̏ꍇ��nullptr
-	// retDir : �����ւ���f�B���N�g�����@�����ւ��s�v�̏ꍇ��nullptr
-	// retFile : �����ւ���t�@�C�����@�����ւ��s�v�̏ꍇ��nullptr
-	// retExt : �����ւ���g���q�@�����ւ��s�v�̏ꍇ��nullptr
-	// ret : �����̏ꍇ�^
+	//パスをドライブ、ディレクトリ、ファイル名、拡張子を差し替える
+	// path : 差し替え前のパス
+	// retpath : 差し替えたパス（出力）
+	// retDrive : 差し替えるドライブ名　差し替え不要の場合はnullptr
+	// retDir : 差し替えるディレクトリ名　差し替え不要の場合はnullptr
+	// retFile : 差し替えるファイル名　差し替え不要の場合はnullptr
+	// retExt : 差し替える拡張子　差し替え不要の場合はnullptr
+	// ret : 成功の場合真
 	bool ReplacePath( const WString& path , WString& retPath , const WString* Drive , const WString* Dir , const WString* File , const WString* Ext );
 
-	//�p�X���h���C�u�A�f�B���N�g���A�t�@�C�����A�g���q�������ւ���
-	// path : �����ւ��O�̃p�X
-	// retpath : �����ւ����p�X�i�o�́j
-	// retDrive : �����ւ���h���C�u���@�����ւ��s�v�̏ꍇ��nullptr
-	// retDir : �����ւ���f�B���N�g�����@�����ւ��s�v�̏ꍇ��nullptr
-	// retFile : �����ւ���t�@�C�����@�����ւ��s�v�̏ꍇ��nullptr
-	// retExt : �����ւ���g���q�@�����ւ��s�v�̏ꍇ��nullptr
-	// ret : �����̏ꍇ�^
+	//パスをドライブ、ディレクトリ、ファイル名、拡張子を差し替える
+	// path : 差し替え前のパス
+	// retpath : 差し替えたパス（出力）
+	// retDrive : 差し替えるドライブ名　差し替え不要の場合はnullptr
+	// retDir : 差し替えるディレクトリ名　差し替え不要の場合はnullptr
+	// retFile : 差し替えるファイル名　差し替え不要の場合はnullptr
+	// retExt : 差し替える拡張子　差し替え不要の場合はnullptr
+	// ret : 成功の場合真
 	bool ReplacePath( const WString& path , WString& retPath , const wchar_t* Drive , const wchar_t* Dir , const wchar_t* File , const wchar_t* Ext );
 
-	//�p�X���h���C�u�A�f�B���N�g���A�t�@�C�����A�g���q�������ւ���
-	// path1 : �����ւ��O�̃p�X
-	// path2 : �����ւ��O�̃p�X
-	// retpath : �����ւ����p�X�i�o�́j
-	// Drive : true=path2���g���Afalse=path1���g��
-	// Dir : true=path2���g���Afalse=path1���g��
-	// File : true=path2���g���Afalse=path1���g��
-	// Ext : true=path2���g���Afalse=path1���g��
-	// ret : �����̏ꍇ�^
+	//パスをドライブ、ディレクトリ、ファイル名、拡張子を差し替える
+	// path1 : 差し替え前のパス
+	// path2 : 差し替え前のパス
+	// retpath : 差し替えたパス（出力）
+	// Drive : true=path2を使う、false=path1を使う
+	// Dir : true=path2を使う、false=path1を使う
+	// File : true=path2を使う、false=path1を使う
+	// Ext : true=path2を使う、false=path1を使う
+	// ret : 成功の場合真
 	bool ReplacePath( const WString& path1 , const WString& path2 , WString& retPath , bool drive , bool dir , bool filename , bool ext );
 
-	//�p�X��A������
-	//�f�B���N�g�����A�t�@�C�����A�g���q��A�����ĕԂ��܂��B�f�B���N�g�����̖����̃o�b�N�X���b�V�����Ȃ��ꍇ��
-	//�����I�ɕ₢�܂��B
-	// dir : �f�B���N�g����
-	// file : �t�@�C����
+	//パスを連結する
+	//ディレクトリ名、ファイル名、拡張子を連結して返します。ディレクトリ名の末尾のバックスラッシュがない場合は
+	//自動的に補います。
+	// dir : ディレクトリ名
+	// file : ファイル名
 	WString CombinePath( const WString& dir , const WString& file = L"" , const WString& ext = L"" );
 
-	//���΃p�X���΃p�X�ɕϊ����܂�
-	// filename : ���΃p�X
-	// ret : �ϊ�������΃p�X(�G���[�̏ꍇ�A�󕶎���)
+	//相対パスを絶対パスに変換します
+	// filename : 相対パス
+	// ret : 変換した絶対パス(エラーの場合、空文字列)
 	WString GetFullPath( const WString& filename )noexcept;
 
-	//���΃p�X���΃p�X�ɕϊ����܂�
-	// filename : ���΃p�X
-	// ret : �ϊ�������΃p�X(�G���[�̏ꍇ��O�𓊂���)
+	//相対パスを絶対パスに変換します
+	// filename : 相対パス
+	// ret : 変換した絶対パス(エラーの場合例外を投げる)
 	template< class ExceptionIfFailed >
 	inline WString GetFullPath( const WString& filename )
 	{
@@ -123,14 +123,14 @@ namespace mFileUtility
 		return result;
 	}
 
-	//���΃p�X���΃p�X�ɕϊ����܂�
-	// filename : ���΃p�X
-	// ret : �ϊ�������΃p�X(�G���[�̏ꍇ�A�󕶎���)
+	//相対パスを絶対パスに変換します
+	// filename : 相対パス
+	// ret : 変換した絶対パス(エラーの場合、空文字列)
 	WString GetFullPath( const wchar_t* filename )noexcept;
 
-	//���΃p�X���΃p�X�ɕϊ����܂�
-	// filename : ���΃p�X
-	// ret : �ϊ�������΃p�X(�G���[�̏ꍇ��O�𓊂���)
+	//相対パスを絶対パスに変換します
+	// filename : 相対パス
+	// ret : 変換した絶対パス(エラーの場合例外を投げる)
 	template< class ExceptionIfFailed >
 	inline WString GetFullPath( const wchar_t* filename )
 	{
@@ -143,25 +143,25 @@ namespace mFileUtility
 		return result;
 	}
 
-	//�p�X���s���̏ꍇ�̃G���[�R�[�h
+	//パスが不正の場合のエラーコード
 	static const DWORD ERR_BADPATH = 0x20000000;
 
-	//�w�肵���p�X���A����p�X�ȉ��ł��邩�𔻒肵�܂�
-	// path : ��������p�X
-	// rootpath : ������ɂȂ�p�X
-	// ret : true  = path��rootpath�ȉ��ł���(path��rootpath�̃T�u�f�B���N�g���ł���)
-	//       false = path��rootpath�ȉ��ł͂Ȃ�(path��rootpath�̃T�u�f�B���N�g���ł͂Ȃ�)
-	//               ��GetLastError()��ERROR_SUCCESS
-	//       false = �����ꂩ�̃p�X���s��
-	//               ��GetLastError()��ERR_BADPATH
+	//指定したパスが、あるパス以下であるかを判定します
+	// path : 検査するパス
+	// rootpath : 検査基準になるパス
+	// ret : true  = pathはrootpath以下である(pathはrootpathのサブディレクトリである)
+	//       false = pathはrootpath以下ではない(pathはrootpathのサブディレクトリではない)
+	//               ※GetLastError()はERROR_SUCCESS
+	//       false = いずれかのパスが不正
+	//               ※GetLastError()はERR_BADPATH
 	bool CheckPathTraversal( const WString& path , const WString& rootpath )noexcept;
 
-	//�w�肵���p�X���A����p�X�ȉ��ł��邩�𔻒肵�܂�
-	// path : ��������p�X
-	// rootpath : ������ɂȂ�p�X
-	// ret : true  = path��rootpath�ȉ��ł���(path��rootpath�̃T�u�f�B���N�g���ł���)
-	//       false = path��rootpath�ȉ��ł͂Ȃ�(path��rootpath�̃T�u�f�B���N�g���ł͂Ȃ�)
-	// �G���[�������͗�O
+	//指定したパスが、あるパス以下であるかを判定します
+	// path : 検査するパス
+	// rootpath : 検査基準になるパス
+	// ret : true  = pathはrootpath以下である(pathはrootpathのサブディレクトリである)
+	//       false = pathはrootpath以下ではない(pathはrootpathのサブディレクトリではない)
+	// エラー発生時は例外
 	template< class ExceptionIfFailed >
 	inline WString CheckPathTraversal( const WString& path , const WString& rootpath )
 	{
@@ -177,18 +177,18 @@ namespace mFileUtility
 		return true;
 	}
 
-	//�w�肵���p�X���A����p�X�ȉ��ł��邩�𔻒肵�܂�
-	// path : ��������p�X
-	// rootpath : ������ɂȂ�p�X
-	// ret : true  = path��rootpath�ȉ��ł���(path��rootpath�̃T�u�f�B���N�g���ł���)
-	//       false = path��rootpath�ȉ��ł͂Ȃ�(path��rootpath�̃T�u�f�B���N�g���ł͂Ȃ�)
+	//指定したパスが、あるパス以下であるかを判定します
+	// path : 検査するパス
+	// rootpath : 検査基準になるパス
+	// ret : true  = pathはrootpath以下である(pathはrootpathのサブディレクトリである)
+	//       false = pathはrootpath以下ではない(pathはrootpathのサブディレクトリではない)
 	bool CheckPathTraversal( const wchar_t* path , const wchar_t* rootpath ) noexcept;
 
-	//�w�肵���p�X���A����p�X�ȉ��ł��邩�𔻒肵�܂�
-	// path : ��������p�X
-	// rootpath : ������ɂȂ�p�X
-	// ret : true  = path��rootpath�ȉ��ł���(path��rootpath�̃T�u�f�B���N�g���ł���)
-	//       false = path��rootpath�ȉ��ł͂Ȃ�(path��rootpath�̃T�u�f�B���N�g���ł͂Ȃ�)
+	//指定したパスが、あるパス以下であるかを判定します
+	// path : 検査するパス
+	// rootpath : 検査基準になるパス
+	// ret : true  = pathはrootpath以下である(pathはrootpathのサブディレクトリである)
+	//       false = pathはrootpath以下ではない(pathはrootpathのサブディレクトリではない)
 	template< class ExceptionIfFailed >
 	inline WString CheckPathTraversal( const wchar_t* path , const wchar_t* rootpath )
 	{
@@ -204,26 +204,26 @@ namespace mFileUtility
 		return true;
 	}
 
-	//�e���|�����t�H���_�̃p�X�𓾂�
-	// ret : �e���|�����t�H���_�̃p�X
+	//テンポラリフォルダのパスを得る
+	// ret : テンポラリフォルダのパス
 	WString GetTempDirPath( void );
 
-	//�e���|�����t�@�C���̃p�X�𓾂�
-	// folder : �e���|�����t�H���_�̃p�X(�󔒂ɂ���ƃV�X�e������擾)
-	// prefix : �e���|�����t�@�C�����̐擪�ɂ���v���t�B�N�X
-	// ret : �e���|�����t�@�C���̃p�X
+	//テンポラリファイルのパスを得る
+	// folder : テンポラリフォルダのパス(空白にするとシステムから取得)
+	// prefix : テンポラリファイル名の先頭につけるプレフィクス
+	// ret : テンポラリファイルのパス
 	WString GetTempFilePath( const WString& folder , const WString& prefix );
 
-	//�p�X��"from"����p�X��"to"�ւ̑��΃p�X��Ԃ��܂�
-	// from : ���΃p�X�̌�
-	// to : ���΃p�X�̐�
-	// ret : from����to�ւ̑��΃p�X�B���΃p�X���v�Z�s�\�̏ꍇ�󕶎���B
+	//パス名"from"からパス名"to"への相対パスを返します
+	// from : 相対パスの元
+	// to : 相対パスの先
+	// ret : fromからtoへの相対パス。相対パスが計算不能の場合空文字列。
 	WString GetRelativePath( const WString& from , const WString& to ) noexcept;
 
-	//�p�X��"from"����p�X��"to"�ւ̑��΃p�X��Ԃ��܂�
-	// from : ���΃p�X�̌�
-	// to : ���΃p�X�̐�
-	// ret : from����to�ւ̑��΃p�X�B���΃p�X���v�Z�s�\�̏ꍇ��O
+	//パス名"from"からパス名"to"への相対パスを返します
+	// from : 相対パスの元
+	// to : 相対パスの先
+	// ret : fromからtoへの相対パス。相対パスが計算不能の場合例外
 	template< class ExceptionIfFailed >
 	inline WString GetRelativePath( const WString& from , const WString& to )
 	{
@@ -236,9 +236,9 @@ namespace mFileUtility
 		return result;
 	}
 
-	//�w�肵���f�B���N�g�����i���ԃf�B���N�g�����܂߂āj�쐬���܂�
-	// path : �쐬����f�B���N�g��
-	// ret : �������^
+	//指定したディレクトリを（中間ディレクトリを含めて）作成します
+	// path : 作成するディレクトリ
+	// ret : 成功時真
 	bool CreateMiddleDirectory( const WString& path )noexcept;
 
 };

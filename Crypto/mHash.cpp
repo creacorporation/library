@@ -1,5 +1,5 @@
-//----------------------------------------------------------------------------
-// ƒnƒbƒVƒ…ˆ—ƒNƒ‰ƒX
+ï»¿//----------------------------------------------------------------------------
+// ãƒãƒƒã‚·ãƒ¥å‡¦ç†ã‚¯ãƒ©ã‚¹
 // Copyright (C) 2018- Crea Inc. All rights reserved.
 // This program is released under the MIT License. 
 // see http://opensource.org/licenses/mit-license.php
@@ -46,7 +46,7 @@ ALG_ID mHash::HashAlgorithm2AlgId( HashAlgorithm alg )const
 	case HashAlgorithm::SHA512:
 		return CALG_SHA_512;
 	default:
-		RaiseAssert( g_ErrorLogger , 0 , L"ƒnƒbƒVƒ…ƒAƒ‹ƒSƒŠƒYƒ€‚Ìw’è‚ª•s³‚Å‚·" , alg );
+		RaiseAssert( g_ErrorLogger , 0 , L"ãƒãƒƒã‚·ãƒ¥ã‚¢ãƒ«ã‚´ãƒªã‚ºãƒ ã®æŒ‡å®šãŒä¸æ­£ã§ã™" , alg );
 	}
 	return 0;
 }
@@ -57,13 +57,13 @@ bool mHash::Init( HashAlgorithm alg )
 	{
 		if( !CryptAcquireContext( &MyCryptProvider , NULL , NULL , PROV_RSA_AES , CRYPT_VERIFYCONTEXT ) )
 		{
-			RaiseAssert( g_ErrorLogger , 0 , L"ˆÃ†‰»ƒvƒƒoƒCƒ_‚Ì‰Šú‰»‚É¸”s‚µ‚Ü‚µ‚½" );
+			RaiseAssert( g_ErrorLogger , 0 , L"æš—å·åŒ–ãƒ—ãƒ­ãƒã‚¤ãƒ€ã®åˆæœŸåŒ–ã«å¤±æ•—ã—ã¾ã—ãŸ" );
 			MyCryptProvider = 0;
 			return false;
 		}
 	}
 
-	//ƒIƒuƒWƒFƒNƒg‰Šú‰»
+	//ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆåˆæœŸåŒ–
 	ReleaseHashObject();
 
 	MyHashAlgorithm = alg;
@@ -71,7 +71,7 @@ bool mHash::Init( HashAlgorithm alg )
 
 	if( !CryptCreateHash( MyCryptProvider , algorithm_id , 0 , 0 , &MyCryptHash ) )
 	{
-		RaiseAssert( g_ErrorLogger , 0 , L"ƒnƒbƒVƒ…ƒIƒuƒWƒFƒNƒg‚Ì‰Šú‰»‚É¸”s‚µ‚Ü‚µ‚½" );
+		RaiseAssert( g_ErrorLogger , 0 , L"ãƒãƒƒã‚·ãƒ¥ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã®åˆæœŸåŒ–ã«å¤±æ•—ã—ã¾ã—ãŸ" );
 		goto errorend;
 	}
 	return true;
@@ -88,7 +88,7 @@ bool mHash::Hash( const BYTE* data , DWORD len )
 {
 	if( !CryptHashData( MyCryptHash , data , len , 0 ) )
 	{
-		RaiseAssert( g_ErrorLogger , 0 , L"ƒnƒbƒVƒ…ˆ—‚É¸”s‚µ‚Ü‚µ‚½" );
+		RaiseAssert( g_ErrorLogger , 0 , L"ãƒãƒƒã‚·ãƒ¥å‡¦ç†ã«å¤±æ•—ã—ã¾ã—ãŸ" );
 		return false;
 	}
 	return true;
@@ -101,7 +101,7 @@ DWORD mHash::GetResultLen( void )const
 
 	if( !CryptGetHashParam( MyCryptHash , HP_HASHSIZE , (BYTE*)&retlen , &datalen , 0 ) )
 	{
-		RaiseAssert( g_ErrorLogger , 0 , L"ƒnƒbƒVƒ…ƒTƒCƒY‚ğæ“¾‚Å‚«‚Ü‚¹‚ñ" );
+		RaiseAssert( g_ErrorLogger , 0 , L"ãƒãƒƒã‚·ãƒ¥ã‚µã‚¤ã‚ºã‚’å–å¾—ã§ãã¾ã›ã‚“" );
 		return 0;
 	}
 	return retlen;
@@ -115,7 +115,7 @@ DWORD mHash::GetBlockSize( void )const
 
 	if( !CryptGetKeyParam( MyCryptHash , KP_BLOCKLEN , (BYTE*)&retlen , &datalen , 0 ) )
 	{
-		RaiseAssert( g_ErrorLogger , 0 , L"ƒuƒƒbƒNƒTƒCƒY‚ğæ“¾‚Å‚«‚Ü‚¹‚ñ" );
+		RaiseAssert( g_ErrorLogger , 0 , L"ãƒ–ãƒ­ãƒƒã‚¯ã‚µã‚¤ã‚ºã‚’å–å¾—ã§ãã¾ã›ã‚“" );
 		return 0;
 	}
 	return retlen;
@@ -128,7 +128,7 @@ bool mHash::GetResult( HashData& retResult , DWORD& retLen )const
 
 	if( !CryptGetHashParam( MyCryptHash , HP_HASHVAL , retResult.get() , &retLen , 0 ) )
 	{
-		RaiseAssert( g_ErrorLogger , 0 , L"ƒnƒbƒVƒ…ˆ—Œ‹‰Ê‚ğæ“¾‚Å‚«‚Ü‚¹‚ñ" );
+		RaiseAssert( g_ErrorLogger , 0 , L"ãƒãƒƒã‚·ãƒ¥å‡¦ç†çµæœã‚’å–å¾—ã§ãã¾ã›ã‚“" );
 		return false;
 	}
 	return true;
@@ -138,18 +138,18 @@ bool mHash::GetResult( BYTE* retResult , DWORD len )const
 {
 	if( !retResult )
 	{
-		RaiseAssert( g_ErrorLogger , 0 , L"ƒoƒbƒtƒ@‚ªw’è‚³‚ê‚Ä‚¢‚Ü‚¹‚ñ" );
+		RaiseAssert( g_ErrorLogger , 0 , L"ãƒãƒƒãƒ•ã‚¡ãŒæŒ‡å®šã•ã‚Œã¦ã„ã¾ã›ã‚“" );
 		return false;
 	}
 	if( len < GetResultLen() )
 	{
-		RaiseAssert( g_ErrorLogger , 0 , L"ƒoƒbƒtƒ@‚Ì—Ê‚ª•s\•ª‚Å‚·" );
+		RaiseAssert( g_ErrorLogger , 0 , L"ãƒãƒƒãƒ•ã‚¡ã®é‡ãŒä¸ååˆ†ã§ã™" );
 		return false;
 	}
 
 	if( !CryptGetHashParam( MyCryptHash , HP_HASHVAL , retResult , &len , 0 ) )
 	{
-		RaiseAssert( g_ErrorLogger , 0 , L"ƒnƒbƒVƒ…ˆ—Œ‹‰Ê‚ğæ“¾‚Å‚«‚Ü‚¹‚ñ" );
+		RaiseAssert( g_ErrorLogger , 0 , L"ãƒãƒƒã‚·ãƒ¥å‡¦ç†çµæœã‚’å–å¾—ã§ãã¾ã›ã‚“" );
 		return false;
 	}
 	return true;
@@ -168,21 +168,21 @@ bool mHash::GetResult( AString& retResult )const
 	DWORD hashlen;
 	if( !GetResult( hash , hashlen ) )
 	{
-		RaiseAssert( g_ErrorLogger , 0 , L"ƒnƒbƒVƒ…ˆ—Œ‹‰Ê‚ğæ“¾‚Å‚«‚Ü‚¹‚ñ" );
+		RaiseAssert( g_ErrorLogger , 0 , L"ãƒãƒƒã‚·ãƒ¥å‡¦ç†çµæœã‚’å–å¾—ã§ãã¾ã›ã‚“" );
 		return false;
 	}
 
-	//•¶š—ñŒ`®‚ÉƒtƒH[ƒ}ƒbƒg‚·‚é
+	//æ–‡å­—åˆ—å½¢å¼ã«ãƒ•ã‚©ãƒ¼ãƒãƒƒãƒˆã™ã‚‹
 	return Binary2String( retResult, hash.get(), hashlen );
 }
 
 bool mHash::Hash( const WString& filename )
 {
-	//ƒtƒ@ƒCƒ‹ŠJ‚­
+	//ãƒ•ã‚¡ã‚¤ãƒ«é–‹ã
 	mFileReadStream fp;
 	if( !fp.Open( filename ) )
 	{
-		RaiseAssert( g_ErrorLogger , 0 , L"ƒtƒ@ƒCƒ‹‚ğŠJ‚­‚±‚Æ‚ª‚Å‚«‚Ü‚¹‚ñ" , filename );
+		RaiseAssert( g_ErrorLogger , 0 , L"ãƒ•ã‚¡ã‚¤ãƒ«ã‚’é–‹ãã“ã¨ãŒã§ãã¾ã›ã‚“" , filename );
 		return false;
 	}
 	return Hash( fp );
@@ -190,11 +190,11 @@ bool mHash::Hash( const WString& filename )
 
 bool mHash::Hash( mFile::Option opt )
 {
-	//ƒtƒ@ƒCƒ‹ŠJ‚­
+	//ãƒ•ã‚¡ã‚¤ãƒ«é–‹ã
 	mFileReadStream fp;
 	if( !fp.Open( opt ) )
 	{
-		RaiseAssert( g_ErrorLogger , 0 , L"ƒtƒ@ƒCƒ‹‚ğŠJ‚­‚±‚Æ‚ª‚Å‚«‚Ü‚¹‚ñ" , opt.Path );
+		RaiseAssert( g_ErrorLogger , 0 , L"ãƒ•ã‚¡ã‚¤ãƒ«ã‚’é–‹ãã“ã¨ãŒã§ãã¾ã›ã‚“" , opt.Path );
 		return false;
 	}
 	return Hash( fp );

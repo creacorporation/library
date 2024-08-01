@@ -1,11 +1,11 @@
-//----------------------------------------------------------------------------
-// �X�}�[�g�J�[�h���[�_�[�n���h��
+﻿//----------------------------------------------------------------------------
+// スマートカードリーダーハンドラ
 // Copyright (C) 2021- Crea Inc. All rights reserved.
 // This program is released under the MIT License. 
 // see http://opensource.org/licenses/mit-license.php
-// ���쌠�\���⃉�C�Z���X�̉��ς͋֎~����Ă��܂��B
-// ���̃\�[�X�R�[�h�Ɋւ��āA��L���C�Z���X�ȊO�̌_�񓙂͈�ؑ��݂��܂���B
-// (���炩�̌_�񂪂���ꍇ�ł��A�{�\�[�X�R�[�h�͂��̑ΏۊO�ƂȂ�܂�)
+// 著作権表示やライセンスの改変は禁止されています。
+// このソースコードに関して、上記ライセンス以外の契約等は一切存在しません。
+// (何らかの契約がある場合でも、本ソースコードはその対象外となります)
 //----------------------------------------------------------------------------
 
 #ifndef MSCREADER_H_INCLUDED
@@ -23,18 +23,18 @@
 
 namespace Definitions_SCReader
 {
-	//ATR����F�����ꂽ�J�[�h�̎��
+	//ATRから認識されたカードの種類
 	enum CardKind
 	{
 		//Mifare Classic 1K
 		MIFARE_CLASSIC_1K,
-		//Felica(Felica Standard/Light/LightS�̔��ʂ͐ڑ����Ă݂Ȃ��ƕ�����Ȃ�)
+		//Felica(Felica Standard/Light/LightSの判別は接続してみないと分からない)
 		FELICA,
-		//�s���E���̑�
+		//不明・その他
 		UNKNOWN
 	};
 
-	//�J�[�h��F�������ꍇ�̃C�x���g�ł�
+	//カードを認識した場合のイベントです
 	struct OnCardPresent
 	{
 		CardKind Kind;
@@ -42,14 +42,14 @@ namespace Definitions_SCReader
 		mBinary Atr;
 	};
 
-	//�J�[�h�����O���ꂽ�ꍇ�̃C�x���g�ł�
+	//カードが取り外された場合のイベントです
 	struct OnCardRemoved
 	{
 		DWORD Status;
 		mBinary Atr;
 	};
 
-	//���[�_�[�����O���ꂽ�Ǝv����ꍇ�̃C�x���g�ł�
+	//リーダーが取り外されたと思われる場合のイベントです
 	struct OnReaderGone
 	{
 		DWORD Status;
@@ -57,66 +57,66 @@ namespace Definitions_SCReader
 
 };
 
-//�X�}�[�g�J�[�h���[�_�[�̃n���h���B�ȉ��̋@�\������܂��B
-//�E�X�}�[�g�J�[�h�T�u�V�X�e�������p�\�ł��邩���肵�A���p�\�ɂȂ�܂őҋ@����
-//�E�V�X�e�����F�����Ă���X�}�[�g�J�[�h���[�_�[�̈ꗗ���쐬����
-//�E�X�}�[�g�J�[�h���[�_�[��ɃJ�[�h���u���ꂽ�E�O���ꂽ�A���[�_�[���̂��̂����O���ꂽ���Ƃ����o����
+//スマートカードリーダーのハンドラ。以下の機能があります。
+//・スマートカードサブシステムが利用可能であるか判定し、利用可能になるまで待機する
+//・システムが認識しているスマートカードリーダーの一覧を作成する
+//・スマートカードリーダー上にカードが置かれた・外された、リーダーそのものが取り外されたことを検出する
 class mSCReader
 {
 public:
 	mSCReader();
 	virtual ~mSCReader();
 
-	//�J�[�h�̎��
+	//カードの種類
 	using CardKind = Definitions_SCReader::CardKind;
 
-	//�ʒm���̃p�����[�^
+	//通知時のパラメータ
 	union NotifyFunctionOptPtr
 	{
-		//�J�[�h��F�������ꍇ�̃C�x���g�ł�
+		//カードを認識した場合のイベントです
 		Definitions_SCReader::OnCardPresent* OnCardPresent;
-		//�J�[�h�����O���ꂽ�ꍇ�̃C�x���g�ł�
+		//カードが取り外された場合のイベントです
 		Definitions_SCReader::OnCardRemoved* OnCardRemoved;
-		//���[�_�[�����O���ꂽ�Ǝv����ꍇ�̃C�x���g�ł�
+		//リーダーが取り外されたと思われる場合のイベントです
 		Definitions_SCReader::OnReaderGone* OnReaderGone;
 	};
 
-	//�ʒm�ݒ�
+	//通知設定
 	using NotifyFunction = void(*)( mSCReader& sc , DWORD_PTR parameter , NotifyFunctionOptPtr* opt );
 	class NotifyOption : public mNotifyOption< NotifyFunction >
 	{
 	public:
-		//�J�[�h��F�������ꍇ�̃C�x���g�ł�
+		//カードを認識した場合のイベントです
 		NotifierInfo OnCardPresent;
-		//�J�[�h�����O���ꂽ�ꍇ�̃C�x���g�ł�
+		//カードが取り外された場合のイベントです
 		NotifierInfo OnCardRemoved;
-		//���[�_�[�����O���ꂽ�Ǝv����ꍇ�̃C�x���g�ł�
+		//リーダーが取り外されたと思われる場合のイベントです
 		NotifierInfo OnReaderGone;
 	};
 
-	//�X�}�[�g�J�[�h�T�[�r�X�̋N����ҋ@����
-	// waittime : �~���b�P�ʂ̑ҋ@����
-	//             INFINITE�ŋN���܂ŉi�v�ҋ@
-	//             0�Ō��݂̏�Ԃ��m�F���Ē����ɖ߂�
-	// ret : ���ԓ��ɃT�[�r�X���N��������^
+	//スマートカードサービスの起動を待機する
+	// waittime : ミリ秒単位の待機時間
+	//             INFINITEで起動まで永久待機
+	//             0で現在の状態を確認して直ちに戻る
+	// ret : 時間内にサービスが起動したら真
 	bool WaitForServiceAvailable( DWORD waittime = 0 );
 
-	//�ڑ�����Ă���J�[�h���[�_�[�̈ꗗ���擾����
-	// retReader : �ڑ�����Ă��郊�[�_�[�̈ꗗ
-	// ret : �������^
+	//接続されているカードリーダーの一覧を取得する
+	// retReader : 接続されているリーダーの一覧
+	// ret : 成功時真
 	bool GetCardReaderList( WStringVector& retReader )const;
 
-	//�J�[�h���[�_�[�̊Ď����J�n����
-	// readername : �Ď�����J�[�h���[�_�[�̖��O
-	// opt : �ʒm�I�v�V����
-	// ret : �������^
+	//カードリーダーの監視を開始する
+	// readername : 監視するカードリーダーの名前
+	// opt : 通知オプション
+	// ret : 成功時真
 	bool StartWatch( const WString& readername , const NotifyOption& opt );
 
-	//�J�[�h���[�_�[�̊Ď����I������
-	// ret : �������^
+	//カードリーダーの監視を終了する
+	// ret : 成功時真
 	bool EndWatch( void );
 
-	//�Ď����̃J�[�h���[�_�[�̖��O���擾����
+	//監視中のカードリーダーの名前を取得する
 	const WString& GetCurrentCardReaderName( void )const;
 
 private:
@@ -125,19 +125,19 @@ private:
 
 protected:
 
-	//�X�}�[�g�J�[�h�T�u�V�X�e�����N�����Ă��邩�ǂ������`�F�b�N���邽�߂̃C�x���g�I�u�W�F�N�g
+	//スマートカードサブシステムが起動しているかどうかをチェックするためのイベントオブジェクト
 	HANDLE MyServiceAvailableSignal;
 
-	//�X�}�[�g�J�[�h�T�u�V�X�e���̃n���h��
+	//スマートカードサブシステムのハンドル
 	mutable SCARDCONTEXT MySCardContext;
 
-	//�Ď��X���b�h�̃n���h��
+	//監視スレッドのハンドル
 	mThread* MyThread;
 
-	//�Ď����̃J�[�h���[�_�[�̖��O
+	//監視中のカードリーダーの名前
 	WString MyCardReaderName;
 
-	//�R���e�L�X�g���J��
+	//コンテキストを開く
 	bool OpenContext( void )const;
 
 
@@ -152,20 +152,20 @@ protected:
 #include <Crypto/mSCReader.h>
 
 
-//�X�}�[�g�J�[�h���Z�b�g���ꂽ�Ƃ��̃R�[���o�b�N
+//スマートカードがセットされたときのコールバック
 void OnPresent( mSCReader& sc , DWORD_PTR parameter , mSCReader::NotifyFunctionOptPtr* opt )
 {
 	return;
 }
 
-//�X�}�[�g�J�[�h�����[�_�[������O���ꂽ�Ƃ��̃R�[���o�b�N
+//スマートカードがリーダーから取り外されたときのコールバック
 void OnRemove( mSCReader& sc , DWORD_PTR parameter , mSCReader::NotifyFunctionOptPtr* opt )
 {
 	return;
 }
 
-//���[�_�[�����O���ꂽ�Ǝv����ꍇ�̃R�[���o�b�N
-//���G���[��ԂȂ̂ŁA�Ăу��[�_�[�����t�����Ă����̃R�[���o�b�N�͂���܂���B�Ď����ċN������K�v������܂��B
+//リーダーが取り外されたと思われる場合のコールバック
+//※エラー状態なので、再びリーダーが取り付けられても次のコールバックはありません。監視を再起動する必要があります。
 void OnReaderGone( mSCReader& sc , DWORD_PTR parameter , mSCReader::NotifyFunctionOptPtr* opt )
 {
 	return;
@@ -173,16 +173,16 @@ void OnReaderGone( mSCReader& sc , DWORD_PTR parameter , mSCReader::NotifyFuncti
 
 int main( int argc , char** argv )
 {
-	//�I�u�W�F�N�g�𐶐����A�X�}�[�g�J�[�h�T�[�r�X�̋N���𐧌����Ԗ������őҋ@����
+	//オブジェクトを生成し、スマートカードサービスの起動を制限時間無制限で待機する
 	mSCReader reader;
 	reader.WaitForServiceAvailable( INFINITE );
 
-	//�o�b�ɐڑ�����Ă���J�[�h���[�_�[�̈ꗗ���擾����
+	//ＰＣに接続されているカードリーダーの一覧を取得する
 	WStringVector cardreader;
 	reader.GetCardReaderList( cardreader );
 
-	//�擾�����ꗗ�̐擪�i�v�f�O�j�̃��[�_�[�ɂ��āA
-	//�X�}�[�g�J�[�h�̃Z�b�g�E�A���Z�b�g�A���[�_�[�̎��O�������o����B
+	//取得した一覧の先頭（要素０）のリーダーについて、
+	//スマートカードのセット・アンセット、リーダーの取り外しを検出する。
 	mSCReader::NotifyOption notifyopt;
 	notifyopt.OnCardPresent.Mode = mSCReader::NotifyOption::NotifyMode::NOTIFY_CALLBACK;
 	notifyopt.OnCardPresent.Notifier.CallbackFunction = OnPresent;
@@ -191,16 +191,16 @@ int main( int argc , char** argv )
 	notifyopt.OnReaderGone.Mode = mSCReader::NotifyOption::NotifyMode::NOTIFY_CALLBACK;
 	notifyopt.OnReaderGone.Notifier.CallbackFunction = OnReaderGone;
 
-	//�Ď��J�n
+	//監視開始
 	reader.StartWatch( cardreader[ 0 ] , notifyopt );
 
-	//�ҋ@�B����̓T���v���Ȃ̂ŒP�Ȃ�E�G�C�g�B
+	//待機。これはサンプルなので単なるウエイト。
 	while( 1 )
 	{
 		Sleep( 1000 );
 	}
 
-	//�N���[���A�b�v
+	//クリーンアップ
 	reader.EndWatch();
 	return 0;
 }

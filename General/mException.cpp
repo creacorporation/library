@@ -1,5 +1,5 @@
-//----------------------------------------------------------------------------
-// —áŠOƒNƒ‰ƒX
+ï»¿//----------------------------------------------------------------------------
+// ä¾‹å¤–ã‚¯ãƒ©ã‚¹
 // Copyright (C) 2016 Fingerling. All rights reserved. 
 // This program is released under the MIT License. 
 // see http://opensource.org/licenses/mit-license.php

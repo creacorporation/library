@@ -1,25 +1,25 @@
-//----------------------------------------------------------------------------
-// ODBCÚ‘±—pƒ‰ƒCƒuƒ‰ƒŠ
+ï»¿//----------------------------------------------------------------------------
+// ODBCæ¥ç¶šç”¨ãƒ©ã‚¤ãƒ–ãƒ©ãƒª
 // Copyright (C) 2005 Fingerling. All rights reserved. 
 // Copyright (C) 2018- Crea Inc. All rights reserved.
 // This program is released under the MIT License. 
 // see http://opensource.org/licenses/mit-license.php
-// 2005/08/19`
+// 2005/08/19ã€œ
 //----------------------------------------------------------------------------
 
 #ifndef MODBC_H_INCLDUED
 #define MODBC_H_INCLDUED
 
 /*
-ƒŠƒtƒ@ƒŒƒ“ƒXF
-	E‚³‚Æ[‚b{{‚Ô‚ë‚®
-	WindowsŠÂ‹«‚É‚ÄCŒ¾Œê‚âC++‚ÅODBC‚ğg‚¤‚É‚Í
+ãƒªãƒ•ã‚¡ãƒ¬ãƒ³ã‚¹ï¼š
+	ãƒ»ã•ã¨ãƒ¼ï¼£ï¼‹ï¼‹ã¶ã‚ã
+	Windowsç’°å¢ƒã«ã¦Cè¨€èªã‚„C++ã§ODBCã‚’ä½¿ã†ã«ã¯
 	http://sato-si.at.webry.info/200503/article_11.html
-	EODBC API Reference
+	ãƒ»ODBC API Reference
 	http://msdn.microsoft.com/en-us/library/ms714562.aspx
-	E‚Î‚Ÿ‚Î‚Ì‚n‚c‚a‚bÀŒ±º
+	ãƒ»ã°ãã°ã®ï¼¯ï¼¤ï¼¢ï¼£å®Ÿé¨“å®¤
 	http://www.amy.hi-ho.ne.jp/jbaba/index.htm
-	EInside ODBC
+	ãƒ»Inside ODBC
 	  ISBN4-7561-1617-5
 	
 */
@@ -35,72 +35,72 @@
 
 namespace mOdbc
 {
-	//ƒpƒ‰ƒ[ƒ^‚Ìí—Ş
+	//ãƒ‘ãƒ©ãƒ¡ãƒ¼ã‚¿ã®ç¨®é¡
 	enum ParameterType
 	{
-		Int64,			//•„†‚ ‚è64ƒrƒbƒg®”Œ^(•„†‚È‚µ‚Í‚ ‚è‚Ü‚¹‚ñ)
-		Int32,			//•„†‚ ‚è32ƒrƒbƒg®”Œ^(•„†‚È‚µ‚Í‚ ‚è‚Ü‚¹‚ñ)
-		Int16,			//•„†‚ ‚è16ƒrƒbƒg®”Œ^(•„†‚È‚µ‚Í‚ ‚è‚Ü‚¹‚ñ)
-		Int8,			//•„†‚ ‚è8ƒrƒbƒg®”Œ^(•„†‚È‚µ‚Í‚ ‚è‚Ü‚¹‚ñ)
-		Float,			//’P¸“x•‚“®¬”“_
-		Double,			//”{¸“x•‚“®¬”“_
-		AString,		//ANSI•¶š—ñ
-		WString,		//UNICODE•¶š—ñ
-		Binary,			//ƒoƒCƒiƒŠ
-		Date,			//“ú•t
-		Time,			//
-		Timestamp,		//ƒ^ƒCƒ€ƒXƒ^ƒ“ƒv
+		Int64,			//ç¬¦å·ã‚ã‚Š64ãƒ“ãƒƒãƒˆæ•´æ•°å‹(ç¬¦å·ãªã—ã¯ã‚ã‚Šã¾ã›ã‚“)
+		Int32,			//ç¬¦å·ã‚ã‚Š32ãƒ“ãƒƒãƒˆæ•´æ•°å‹(ç¬¦å·ãªã—ã¯ã‚ã‚Šã¾ã›ã‚“)
+		Int16,			//ç¬¦å·ã‚ã‚Š16ãƒ“ãƒƒãƒˆæ•´æ•°å‹(ç¬¦å·ãªã—ã¯ã‚ã‚Šã¾ã›ã‚“)
+		Int8,			//ç¬¦å·ã‚ã‚Š8ãƒ“ãƒƒãƒˆæ•´æ•°å‹(ç¬¦å·ãªã—ã¯ã‚ã‚Šã¾ã›ã‚“)
+		Float,			//å˜ç²¾åº¦æµ®å‹•å°æ•°ç‚¹
+		Double,			//å€ç²¾åº¦æµ®å‹•å°æ•°ç‚¹
+		AString,		//ANSIæ–‡å­—åˆ—
+		WString,		//UNICODEæ–‡å­—åˆ—
+		Binary,			//ãƒã‚¤ãƒŠãƒª
+		Date,			//æ—¥ä»˜
+		Time,			//æ™‚åˆ»
+		Timestamp,		//ã‚¿ã‚¤ãƒ ã‚¹ã‚¿ãƒ³ãƒ—
 	};
 
 }
 
-//g—p•û–@
+//ä½¿ç”¨æ–¹æ³•
 #if 0
 int main( int argc , char** argv )
 {
 	InitializeLibrary();
 
-	//œÚ‘±
+	//â—æ¥ç¶š
 
-	//ODBCÚ‘±‚Ì‚½‚ß‚Ìî•ñ‚ğƒZƒbƒg‚µ‚Ü‚·
+	//ODBCæ¥ç¶šã®ãŸã‚ã®æƒ…å ±ã‚’ã‚»ãƒƒãƒˆã—ã¾ã™
 	mOdbcEnvironment::ConnectInfo info;
-	info.DataSource = L"LOCALDB";	//ƒf[ƒ^ƒ\[ƒX
-	info.User = L"";				//ƒ†[ƒU[–¼ ©MS SQL Server‚Ìê‡‹ó—“‚É‚·‚é‚ÆWindows”FØ‚É‚È‚é
-	info.Password = L"";			//ƒpƒXƒ[ƒh
+	info.DataSource = L"LOCALDB";	//ãƒ‡ãƒ¼ã‚¿ã‚½ãƒ¼ã‚¹
+	info.User = L"";				//ãƒ¦ãƒ¼ã‚¶ãƒ¼å â†MS SQL Serverã®å ´åˆç©ºæ¬„ã«ã™ã‚‹ã¨Windowsèªè¨¼ã«ãªã‚‹
+	info.Password = L"";			//ãƒ‘ã‚¹ãƒ¯ãƒ¼ãƒ‰
 
-	//ƒf[ƒ^ƒx[ƒX‚Ö‚ÌÚ‘±‚ğŠm—§‚µ‚Ü‚·
+	//ãƒ‡ãƒ¼ã‚¿ãƒ™ãƒ¼ã‚¹ã¸ã®æ¥ç¶šã‚’ç¢ºç«‹ã—ã¾ã™
 	mOdbcConnection db;
 	g_OdbcEnvironment.NewConnect( info , db );
 
-	//[ƒIƒvƒVƒ‡ƒ“]
-	//•K—v‚È‚çAƒgƒ‰ƒ“ƒUƒNƒVƒ‡ƒ“‚Ìİ’è‚ğ‚µ‚Ü‚·B
+	//[ã‚ªãƒ—ã‚·ãƒ§ãƒ³]
+	//å¿…è¦ãªã‚‰ã€ãƒˆãƒ©ãƒ³ã‚¶ã‚¯ã‚·ãƒ§ãƒ³ã®è¨­å®šã‚’ã—ã¾ã™ã€‚
 	//db.SetAutoCommit( false );
 
-	//ƒNƒGƒŠ‚Ì‚½‚ß‚ÌƒIƒuƒWƒFƒNƒg‚ğì¬‚µ‚Ü‚·
+	//ã‚¯ã‚¨ãƒªã®ãŸã‚ã®ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã‚’ä½œæˆã—ã¾ã™
 	mOdbcQuery query;
 	db.NewQuery( query );
 
-	//œƒNƒGƒŠ
+	//â—ã‚¯ã‚¨ãƒª
 
-	//ƒNƒGƒŠ‚ğs‚¢‚Ü‚·
+	//ã‚¯ã‚¨ãƒªã‚’è¡Œã„ã¾ã™
 	query.Execute( L"use TESTDB" );
 	query.Execute( L"select * from Name" );
 
-	//[ƒIƒvƒVƒ‡ƒ“]
-	//’·‚¢•¶š—ñ‚ÌƒŒƒR[ƒh‚ª‚ ‚éê‡‚ÍAƒoƒbƒtƒ@‚ğÄŠm•Û‚·‚é•K—v‚ª‚ ‚è‚Ü‚·B
-	//ƒoƒbƒtƒ@‚É“ü‚è‚«‚ç‚È‚¢ê‡‚ÍAƒf[ƒ^‚ÍØ‚è‹l‚ß‚ç‚ê‚Ä‚µ‚Ü‚¢‚Ü‚·B
-	//Šù’è‚Ìƒoƒbƒtƒ@’·‚ÍAmOdbcQuery::MAX_FETCH_BUFFER_SIZE‚É’è‹`‚³‚ê‚Ü‚·B
+	//[ã‚ªãƒ—ã‚·ãƒ§ãƒ³]
+	//é•·ã„æ–‡å­—åˆ—ã®ãƒ¬ã‚³ãƒ¼ãƒ‰ãŒã‚ã‚‹å ´åˆã¯ã€ãƒãƒƒãƒ•ã‚¡ã‚’å†ç¢ºä¿ã™ã‚‹å¿…è¦ãŒã‚ã‚Šã¾ã™ã€‚
+	//ãƒãƒƒãƒ•ã‚¡ã«å…¥ã‚Šãã‚‰ãªã„å ´åˆã¯ã€ãƒ‡ãƒ¼ã‚¿ã¯åˆ‡ã‚Šè©°ã‚ã‚‰ã‚Œã¦ã—ã¾ã„ã¾ã™ã€‚
+	//æ—¢å®šã®ãƒãƒƒãƒ•ã‚¡é•·ã¯ã€mOdbcQuery::MAX_FETCH_BUFFER_SIZEã«å®šç¾©ã•ã‚Œã¾ã™ã€‚
 	//query.ResizeFetchBuffer( L"UserName" , 200000 );
 
-	//[ƒIƒvƒVƒ‡ƒ“]
-	//ƒNƒGƒŠ‚µ‚½Œ‹‰Ê‚ÉŠÖ‚·‚éî•ñ‚ğæ“¾‚µ‚Ü‚·B
-	//¦‚±‚ÌƒIƒuƒWƒFƒNƒg‚ÌÚ×‚ÍAƒfƒoƒbƒK‚Å”`‚¢‚Ä‚İ‚Ä‚­‚¾‚³‚¢B
+	//[ã‚ªãƒ—ã‚·ãƒ§ãƒ³]
+	//ã‚¯ã‚¨ãƒªã—ãŸçµæœã«é–¢ã™ã‚‹æƒ…å ±ã‚’å–å¾—ã—ã¾ã™ã€‚
+	//â€»ã“ã®ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã®è©³ç´°ã¯ã€ãƒ‡ãƒãƒƒã‚¬ã§è¦—ã„ã¦ã¿ã¦ãã ã•ã„ã€‚
 	const mOdbcResultDescription& resultdesc = query.GetResultDescription();
 	const mOdbcDescriptionEntry& descentry1 = resultdesc.at( L"Name" );
 	const mOdbcDescriptionEntry& descentry2 = resultdesc.at( L"Id" );
 	const mOdbcDescriptionEntry& descentry3 = resultdesc.at( L"Score" );
 
-	//s‚ğƒtƒFƒbƒ`‚µ‚Ü‚·B
+	//è¡Œã‚’ãƒ•ã‚§ãƒƒãƒã—ã¾ã™ã€‚
 	mOdbcResultParam result;
 	query.Fetch( result );
 	printf( "%d(%ws) : %d\n" , result[ L"Id" ].Get<int32_t>() , result[ L"Name" ].Get<WString>().c_str() , result[ L"Score" ].Get<int32_t>() );
@@ -108,34 +108,34 @@ int main( int argc , char** argv )
 	printf( "%d(%ws) : %d\n" , result[ L"Id" ].Get<int32_t>() , result[ L"Name" ].Get<WString>().c_str() , result[ L"Score" ].Get<int32_t>() );
 
 
-	//œs‚Ì’Ç‰Á
+	//â—è¡Œã®è¿½åŠ 
 	query.Prepare( L"insert into Name ( Id , Name , Score ) values ( ? , ? , ? )" );
 
-	//[ƒIƒvƒVƒ‡ƒ“]
-	//ƒpƒ‰ƒ[ƒ^‚Ìî•ñ‚ğæ“¾
+	//[ã‚ªãƒ—ã‚·ãƒ§ãƒ³]
+	//ãƒ‘ãƒ©ãƒ¡ãƒ¼ã‚¿ã®æƒ…å ±ã‚’å–å¾—
 	const mOdbcParameterDescription& desc = query.GetParameterDescription();
 
-	//¦ƒTƒuƒNƒGƒŠ‚âjoin‚ğg‚¢‚½‚¢ê‡Aƒƒ^ƒf[ƒ^‚Ìæ‚èo‚µ‚ª‚¤‚Ü‚­‚¢‚©‚È‚¢‚±‚Æ‚ª‚ ‚é
-	//@‚±‚Ì‚Æ‚«‚ÍA‚¢‚Á‚½‚ñƒ_ƒ~[‚ÌƒNƒGƒŠ‚Åƒƒ^ƒf[ƒ^‚ğæ‚èo‚µ‚Ä‚©‚çA–{”Ô‚ÌƒNƒGƒŠ‚ğs‚¤BˆÈ‰ºƒTƒ“ƒvƒ‹B
-	//  (1)ƒpƒ‰ƒ[ƒ^î•ñ‚ğæ“¾‚·‚é‚½‚ß‚Ìƒ_ƒ~[ƒNƒGƒŠB–{”Ô‚ÌƒNƒGƒŠ‚Æ?‚ÌoŒ»‡‚Í“¯‚¶‚É‚·‚é‚±‚ÆB
+	//â€»ã‚µãƒ–ã‚¯ã‚¨ãƒªã‚„joinã‚’ä½¿ã„ãŸã„å ´åˆã€ãƒ¡ã‚¿ãƒ‡ãƒ¼ã‚¿ã®å–ã‚Šå‡ºã—ãŒã†ã¾ãã„ã‹ãªã„ã“ã¨ãŒã‚ã‚‹
+	//ã€€ã“ã®ã¨ãã¯ã€ã„ã£ãŸã‚“ãƒ€ãƒŸãƒ¼ã®ã‚¯ã‚¨ãƒªã§ãƒ¡ã‚¿ãƒ‡ãƒ¼ã‚¿ã‚’å–ã‚Šå‡ºã—ã¦ã‹ã‚‰ã€æœ¬ç•ªã®ã‚¯ã‚¨ãƒªã‚’è¡Œã†ã€‚ä»¥ä¸‹ã‚µãƒ³ãƒ—ãƒ«ã€‚
+	//  (1)ãƒ‘ãƒ©ãƒ¡ãƒ¼ã‚¿æƒ…å ±ã‚’å–å¾—ã™ã‚‹ãŸã‚ã®ãƒ€ãƒŸãƒ¼ã‚¯ã‚¨ãƒªã€‚æœ¬ç•ªã®ã‚¯ã‚¨ãƒªã¨?ã®å‡ºç¾é †ã¯åŒã˜ã«ã™ã‚‹ã“ã¨ã€‚
 	//  query.Prepare(
 	//  	L"select * from TableA ,TableB"
 	//  	L" where TableA.Date = ? and TableB.Class = ?" );
 	//  
-	//  //(2)–{—ˆs‚¢‚½‚¢ƒNƒGƒŠ
+	//  //(2)æœ¬æ¥è¡Œã„ãŸã„ã‚¯ã‚¨ãƒª
 	//  query.Prepare(
 	//  	L"select * from TableB"
 	//  	L" left outer join TableA on TableB.Id = TableA.Id and TableA.Date = ?"
 	//  	L" where TableB.Class = ?"
-	//  	, query.GetParameterDescription() ); //©‚±‚¤‚·‚é‚Æ‘O‚Ìƒ_ƒ~[ƒNƒGƒŠ‚Ìƒƒ^ƒf[ƒ^‚ğ‚»‚Ì‚Ü‚Üg—p‚·‚é
+	//  	, query.GetParameterDescription() ); //â†ã“ã†ã™ã‚‹ã¨å‰ã®ãƒ€ãƒŸãƒ¼ã‚¯ã‚¨ãƒªã®ãƒ¡ã‚¿ãƒ‡ãƒ¼ã‚¿ã‚’ãã®ã¾ã¾ä½¿ç”¨ã™ã‚‹
 
-	//’Ç‰Á‚·‚éƒpƒ‰ƒ[ƒ^‚Ìİ’è
+	//è¿½åŠ ã™ã‚‹ãƒ‘ãƒ©ãƒ¡ãƒ¼ã‚¿ã®è¨­å®š
 	mOdbcQueryParams params;
-	params.push_back( (int32_t) 300 );	//1”Ô–Ú(Id)
-	params.push_back( L"Added User" );	//2”Ô–Ú(Name)
-	params.push_back( (int32_t) 301 );	//3”Ô–Ú(Score)
+	params.push_back( (int32_t) 300 );	//1ç•ªç›®(Id)
+	params.push_back( L"Added User" );	//2ç•ªç›®(Name)
+	params.push_back( (int32_t) 301 );	//3ç•ªç›®(Score)
 
-	//’Ç‰ÁÀs
+	//è¿½åŠ å®Ÿè¡Œ
 	query.Execute( params );
 	return 0;
 }

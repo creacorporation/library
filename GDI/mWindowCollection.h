@@ -1,5 +1,5 @@
-//----------------------------------------------------------------------------
-// ƒEƒCƒ“ƒhƒEŠÇ—iŽqƒEƒCƒ“ƒhƒEŠÇ—j
+ï»¿//----------------------------------------------------------------------------
+// ã‚¦ã‚¤ãƒ³ãƒ‰ã‚¦ç®¡ç†ï¼ˆå­ã‚¦ã‚¤ãƒ³ãƒ‰ã‚¦ç®¡ç†ï¼‰
 // Copyright (C) 2016 Fingerling. All rights reserved. 
 // This program is released under the MIT License. 
 // see http://opensource.org/licenses/mit-license.php
@@ -17,25 +17,25 @@ class mWindowCollection
 {
 public:
 
-	//ƒRƒ“ƒXƒgƒ‰ƒNƒ^
-	//parent : eƒIƒuƒWƒFƒNƒg‚ª‘¶Ý‚·‚éê‡‚»‚ê‚Ìƒ|ƒCƒ“ƒ^B
-	//         nullptr‚ð“n‚·‚ÆAe‚È‚µ‚Æ‚È‚è‚Ü‚·B
+	//ã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
+	//parent : è¦ªã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆãŒå­˜åœ¨ã™ã‚‹å ´åˆãã‚Œã®ãƒã‚¤ãƒ³ã‚¿ã€‚
+	//         nullptrã‚’æ¸¡ã™ã¨ã€è¦ªãªã—ã¨ãªã‚Šã¾ã™ã€‚
 	mWindowCollection( mWindow* parent );
 
 	virtual ~mWindowCollection();
 
-	//ƒtƒ@ƒNƒgƒŠƒƒ\ƒbƒh‚ÌtypedefB
+	//ãƒ•ã‚¡ã‚¯ãƒˆãƒªãƒ¡ã‚½ãƒƒãƒ‰ã®typedefã€‚
 	typedef mWindow* (*mWindowFactory)( const void* );
 
-	//ƒRƒ“ƒgƒ[ƒ‹‚ðƒRƒŒƒNƒVƒ‡ƒ“‚É’Ç‰Á‚·‚é
-	//factory : mWindow*Œ^‚ÌƒCƒ“ƒXƒ^ƒ“ƒX‚ð¶¬‚µ‚Ä•Ô‚·ƒtƒ@ƒNƒgƒŠƒƒ\ƒbƒh
-	//          mNew‚ÅƒCƒ“ƒXƒ^ƒ“ƒX‚ð¶¬‚µ‚Ä•Ô‚·‚à‚Ì‚Å‚ ‚é‚±‚ÆB
-	//id : ’Ç‰Á‚·‚éƒRƒ“ƒgƒ[ƒ‹‚ðŽ¯•Ê‚·‚éID
-	//     ID‚Í”CˆÓ‚Ì•¶Žš—ñ‚Å‚·‚ªAˆÈ‰º‚Ì§ŒÀ‚ª‚ ‚è‚Ü‚·B
-	//     (1)‹ó•¶Žš—ñ‚Íƒ_ƒ
-	//     (2)“¯‚¶mWindowCollectionƒCƒ“ƒXƒ^ƒ“ƒX“à‚Åd•¡‚·‚é‚à‚Ì‚Íƒ_ƒ
-	//opt : ¶¬‚µ‚½ƒCƒ“ƒXƒ^ƒ“ƒX‚Éˆø‚«“n‚·ƒIƒvƒVƒ‡ƒ“iƒ†[ƒU’è‹`j
-	//ret : ¶¬‚É¬Œ÷‚µ‚½ê‡¶¬‚µ‚½ƒRƒ“ƒgƒ[ƒ‹BŽ¸”s‚µ‚½ê‡nullptr
+	//ã‚³ãƒ³ãƒˆãƒ­ãƒ¼ãƒ«ã‚’ã‚³ãƒ¬ã‚¯ã‚·ãƒ§ãƒ³ã«è¿½åŠ ã™ã‚‹
+	//factory : mWindow*åž‹ã®ã‚¤ãƒ³ã‚¹ã‚¿ãƒ³ã‚¹ã‚’ç”Ÿæˆã—ã¦è¿”ã™ãƒ•ã‚¡ã‚¯ãƒˆãƒªãƒ¡ã‚½ãƒƒãƒ‰
+	//          mNewã§ã‚¤ãƒ³ã‚¹ã‚¿ãƒ³ã‚¹ã‚’ç”Ÿæˆã—ã¦è¿”ã™ã‚‚ã®ã§ã‚ã‚‹ã“ã¨ã€‚
+	//id : è¿½åŠ ã™ã‚‹ã‚³ãƒ³ãƒˆãƒ­ãƒ¼ãƒ«ã‚’è­˜åˆ¥ã™ã‚‹ID
+	//     IDã¯ä»»æ„ã®æ–‡å­—åˆ—ã§ã™ãŒã€ä»¥ä¸‹ã®åˆ¶é™ãŒã‚ã‚Šã¾ã™ã€‚
+	//     (1)ç©ºæ–‡å­—åˆ—ã¯ãƒ€ãƒ¡
+	//     (2)åŒã˜mWindowCollectionã‚¤ãƒ³ã‚¹ã‚¿ãƒ³ã‚¹å†…ã§é‡è¤‡ã™ã‚‹ã‚‚ã®ã¯ãƒ€ãƒ¡
+	//opt : ç”Ÿæˆã—ãŸã‚¤ãƒ³ã‚¹ã‚¿ãƒ³ã‚¹ã«å¼•ãæ¸¡ã™ã‚ªãƒ—ã‚·ãƒ§ãƒ³ï¼ˆãƒ¦ãƒ¼ã‚¶å®šç¾©ï¼‰
+	//ret : ç”Ÿæˆã«æˆåŠŸã—ãŸå ´åˆç”Ÿæˆã—ãŸã‚³ãƒ³ãƒˆãƒ­ãƒ¼ãƒ«ã€‚å¤±æ•—ã—ãŸå ´åˆnullptr
 	template< class T > T* AddControl( const WString& id , const struct T::Option* opt )
 	{
 		return (T*)mWindowCollection::AddControlInternal( T::Factory , id , opt );
@@ -45,33 +45,33 @@ public:
 		return (T*)mWindowCollection::AddControlInternal( T::Factory , id , nullptr );
 	}
 
-	//Žw’è‚µ‚½ID‚ÌƒRƒ“ƒgƒ[ƒ‹‚ðíœ‚·‚é
-	//id : íœ‚µ‚½‚¢ƒRƒ“ƒgƒ[ƒ‹‚ÌID
-	//ret : ³í‚Éíœ‚Å‚«‚½ê‡true
+	//æŒ‡å®šã—ãŸIDã®ã‚³ãƒ³ãƒˆãƒ­ãƒ¼ãƒ«ã‚’å‰Šé™¤ã™ã‚‹
+	//id : å‰Šé™¤ã—ãŸã„ã‚³ãƒ³ãƒˆãƒ­ãƒ¼ãƒ«ã®ID
+	//ret : æ­£å¸¸ã«å‰Šé™¤ã§ããŸå ´åˆtrue
 	bool RemoveControl( const WString& id );
 
-	//Žw’è‚µ‚½ƒEƒCƒ“ƒhƒEƒnƒ“ƒhƒ‹‚©‚çID‚ðŒŸõ‚µ‚Ü‚·B
-	//hwnd : ŒŸõ‚·‚éƒEƒCƒ“ƒhƒEƒnƒ“ƒhƒ‹
-	//ret : ID–¼BŠY“–‚·‚é‚à‚Ì‚ª‚È‚©‚Á‚½ê‡‚Í‹ó•¶Žš—ñB
+	//æŒ‡å®šã—ãŸã‚¦ã‚¤ãƒ³ãƒ‰ã‚¦ãƒãƒ³ãƒ‰ãƒ«ã‹ã‚‰IDã‚’æ¤œç´¢ã—ã¾ã™ã€‚
+	//hwnd : æ¤œç´¢ã™ã‚‹ã‚¦ã‚¤ãƒ³ãƒ‰ã‚¦ãƒãƒ³ãƒ‰ãƒ«
+	//ret : IDåã€‚è©²å½“ã™ã‚‹ã‚‚ã®ãŒãªã‹ã£ãŸå ´åˆã¯ç©ºæ–‡å­—åˆ—ã€‚
 	WString QueryId( HWND hwnd )const;
 
-	//ID‚©‚çƒRƒ“ƒgƒ[ƒ‹‚ðŽæ“¾‚µ‚Ü‚·B
-	//id : ŒŸõ‚·‚éID
-	//ret : ID‚©‚çŒŸõ‚µ‚½ƒEƒCƒ“ƒhƒEƒnƒ“ƒhƒ‹BŠY“–‚ª‚È‚©‚Á‚½ê‡‚ÍnullptrB
+	//IDã‹ã‚‰ã‚³ãƒ³ãƒˆãƒ­ãƒ¼ãƒ«ã‚’å–å¾—ã—ã¾ã™ã€‚
+	//id : æ¤œç´¢ã™ã‚‹ID
+	//ret : IDã‹ã‚‰æ¤œç´¢ã—ãŸã‚¦ã‚¤ãƒ³ãƒ‰ã‚¦ãƒãƒ³ãƒ‰ãƒ«ã€‚è©²å½“ãŒãªã‹ã£ãŸå ´åˆã¯nullptrã€‚
 	mWindow* Query( const WString& id )const;
 
-	//ŠÇŠ‰º‚ÌƒIƒuƒWƒFƒNƒg‚ÌƒTƒCƒY‚ð’²®‚·‚é
-	//world : ƒNƒ‰ƒCƒAƒ“ƒgƒGƒŠƒA‚Ì‹éŒ`(‚Ü‚½‚ÍŽqƒRƒ“ƒgƒ[ƒ‹‚Ì•`‰æ—Ìˆæ)
+	//ç®¡è½„ä¸‹ã®ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã®ã‚µã‚¤ã‚ºã‚’èª¿æ•´ã™ã‚‹
+	//world : ã‚¯ãƒ©ã‚¤ã‚¢ãƒ³ãƒˆã‚¨ãƒªã‚¢ã®çŸ©å½¢(ã¾ãŸã¯å­ã‚³ãƒ³ãƒˆãƒ­ãƒ¼ãƒ«ã®æç”»é ˜åŸŸ)
 	bool AdjustSize( const RECT& world );
 
-	//ŠÇŠ‰º‚ÌƒIƒuƒWƒFƒNƒg‚ÌƒTƒCƒY‚ð’²®‚·‚é
-	//hwnd : Žw’è‚µ‚½ƒEƒCƒ“ƒhƒE‚ÌƒNƒ‰ƒCƒAƒ“ƒg—Ìˆæ‚É‡‚í‚¹‚é
+	//ç®¡è½„ä¸‹ã®ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã®ã‚µã‚¤ã‚ºã‚’èª¿æ•´ã™ã‚‹
+	//hwnd : æŒ‡å®šã—ãŸã‚¦ã‚¤ãƒ³ãƒ‰ã‚¦ã®ã‚¯ãƒ©ã‚¤ã‚¢ãƒ³ãƒˆé ˜åŸŸã«åˆã‚ã›ã‚‹
 	bool AdjustSize( HWND hwnd );
 
-	//ŠÇŠ‰º‚ÌƒIƒuƒWƒFƒNƒg‚ÉƒEƒCƒ“ƒhƒEƒƒbƒZ[ƒW‚ð‘—M‚·‚é
-	//msg : ‘—M‚·‚éƒEƒCƒ“ƒhƒEƒƒbƒZ[ƒW
-	//wparam : ‘—M‚·‚éƒƒbƒZ[ƒW‚ÌWPARAMƒpƒ‰ƒ[ƒ^
-	//lparam : ‘—M‚·‚éƒƒbƒZ[ƒW‚ÌLPARAMƒpƒ‰ƒ[ƒ^
+	//ç®¡è½„ä¸‹ã®ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã«ã‚¦ã‚¤ãƒ³ãƒ‰ã‚¦ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸ã‚’é€ä¿¡ã™ã‚‹
+	//msg : é€ä¿¡ã™ã‚‹ã‚¦ã‚¤ãƒ³ãƒ‰ã‚¦ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸
+	//wparam : é€ä¿¡ã™ã‚‹ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸ã®WPARAMãƒ‘ãƒ©ãƒ¡ãƒ¼ã‚¿
+	//lparam : é€ä¿¡ã™ã‚‹ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸ã®LPARAMãƒ‘ãƒ©ãƒ¡ãƒ¼ã‚¿
 	bool ReflectMessage( UINT msg , WPARAM wparam , LPARAM lparam );
 
 private:
@@ -79,36 +79,36 @@ private:
 	mWindowCollection( const mWindowCollection& src ) = delete;
 	mWindowCollection& operator=( const mWindowCollection& src ) = delete;
 
-	//ƒRƒ“ƒgƒ[ƒ‹‚ðƒRƒŒƒNƒVƒ‡ƒ“‚É’Ç‰Á‚·‚é
-	//AddControl‚Ì“à•”ˆ—
-	//factory : ƒtƒ@ƒNƒgƒŠƒƒ\ƒbƒh
-	//id : “o˜^‚·‚éID
-	//opt : ƒtƒ@ƒNƒgƒŠƒƒ\ƒbƒh‚Å¶¬‚µ‚½ƒIƒuƒWƒFƒNƒg‚É“n‚·ƒIƒvƒVƒ‡ƒ“
-	//ret : ¶¬‚µ‚½ƒIƒuƒWƒFƒNƒg‚Ìƒ|ƒCƒ“ƒ^
+	//ã‚³ãƒ³ãƒˆãƒ­ãƒ¼ãƒ«ã‚’ã‚³ãƒ¬ã‚¯ã‚·ãƒ§ãƒ³ã«è¿½åŠ ã™ã‚‹
+	//AddControlã®å†…éƒ¨å‡¦ç†
+	//factory : ãƒ•ã‚¡ã‚¯ãƒˆãƒªãƒ¡ã‚½ãƒƒãƒ‰
+	//id : ç™»éŒ²ã™ã‚‹ID
+	//opt : ãƒ•ã‚¡ã‚¯ãƒˆãƒªãƒ¡ã‚½ãƒƒãƒ‰ã§ç”Ÿæˆã—ãŸã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã«æ¸¡ã™ã‚ªãƒ—ã‚·ãƒ§ãƒ³
+	//ret : ç”Ÿæˆã—ãŸã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã®ãƒã‚¤ãƒ³ã‚¿
 	mWindow* AddControlInternal( mWindowFactory factory , const WString& id , const void* opt );
 
 protected:
 
-	//eƒIƒuƒWƒFƒNƒg
+	//è¦ªã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆ
 	mWindow* const MyParent;
 
-	//ƒIƒuƒWƒFƒNƒg‚Ìƒ}ƒbƒsƒ“ƒO‚P
-	//¶FƒIƒuƒWƒFƒNƒg‚ÌID
-	//‰EFƒIƒuƒWƒFƒNƒg‚Ö‚Ìƒ|ƒCƒ“ƒ^
+	//ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã®ãƒžãƒƒãƒ”ãƒ³ã‚°ï¼‘
+	//å·¦ï¼šã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã®ID
+	//å³ï¼šã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã¸ã®ãƒã‚¤ãƒ³ã‚¿
 	typedef std::unordered_map<WString,mWindow*> IdMap;
 	IdMap MyIdMap;
 
-	//ƒIƒuƒWƒFƒNƒg‚Ìƒ}ƒbƒsƒ“ƒO‚Q
-	//¶FƒEƒCƒ“ƒhƒEƒnƒ“ƒhƒ‹
-	//‰EFƒIƒuƒWƒFƒNƒg‚Ö‚Ìƒ|ƒCƒ“ƒ^
+	//ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã®ãƒžãƒƒãƒ”ãƒ³ã‚°ï¼’
+	//å·¦ï¼šã‚¦ã‚¤ãƒ³ãƒ‰ã‚¦ãƒãƒ³ãƒ‰ãƒ«
+	//å³ï¼šã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã¸ã®ãƒã‚¤ãƒ³ã‚¿
 	typedef std::unordered_map<HWND,WString> HwndMap;
 	HwndMap MyHwndMap;
 
-	//mWindow::WindowPosition\‘¢‘Ì‚Å’è‹`‚©‚çAŽÀÛ‚ÌÀ•W‚ð‹‚ß‚é
-	//srcpos : •ÏŠ·‚·‚éÀ•W
-	//retPos : •ÏŠ·Œã‚ÌŽÀÛ‚ÌÀ•W
-	//world : e‚ÌƒTƒCƒY‚ðŠi”[‚µ‚½RECT\‘¢‘Ì‚Ö‚Ìƒ|ƒCƒ“ƒ^Bnullptr‚Ìê‡‚±‚ÌƒEƒCƒ“ƒhƒE‚ÌƒNƒ‰ƒCƒAƒ“ƒgƒGƒŠƒA‘S‘Ì‚É‚È‚éB
-	//ret : ¬Œ÷Žžtrue
+	//mWindow::WindowPositionæ§‹é€ ä½“ã§å®šç¾©ã‹ã‚‰ã€å®Ÿéš›ã®åº§æ¨™ã‚’æ±‚ã‚ã‚‹
+	//srcpos : å¤‰æ›ã™ã‚‹åº§æ¨™
+	//retPos : å¤‰æ›å¾Œã®å®Ÿéš›ã®åº§æ¨™
+	//world : è¦ªã®ã‚µã‚¤ã‚ºã‚’æ ¼ç´ã—ãŸRECTæ§‹é€ ä½“ã¸ã®ãƒã‚¤ãƒ³ã‚¿ã€‚nullptrã®å ´åˆã“ã®ã‚¦ã‚¤ãƒ³ãƒ‰ã‚¦ã®ã‚¯ãƒ©ã‚¤ã‚¢ãƒ³ãƒˆã‚¨ãƒªã‚¢å…¨ä½“ã«ãªã‚‹ã€‚
+	//ret : æˆåŠŸæ™‚true
 	static bool CalcAbsolutePosition( const mWindow::WindowPosition& srcpos , RECT& retPos , const RECT& world );
 
 };

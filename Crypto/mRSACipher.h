@@ -1,5 +1,5 @@
-//----------------------------------------------------------------------------
-// RSAˆÃ†‰»ƒNƒ‰ƒX
+ï»¿//----------------------------------------------------------------------------
+// RSAæš—å·åŒ–ã‚¯ãƒ©ã‚¹
 // Copyright (C) 2018- Crea Inc. All rights reserved.
 // This program is released under the MIT License. 
 // see http://opensource.org/licenses/mit-license.php
@@ -18,26 +18,26 @@ public:
 	mRSACipher();
 	virtual ~mRSACipher();
 
-	//ˆÃ†‰»Ï‚İƒf[ƒ^‚ÌŠi”[æ
+	//æš—å·åŒ–æ¸ˆã¿ãƒ‡ãƒ¼ã‚¿ã®æ ¼ç´å…ˆ
 	typedef std::unique_ptr<BYTE> EncryptData;
 
-	//ˆÃ†‰»‚·‚é
-	//type : ˆÃ†‰»‚Ég‚¤Œ®(ŒöŠJŒ® or ”é–§Œ®)
-	//data : ˆÃ†‰»‚·‚éƒf[ƒ^
-	//       ¦(RSAbit”€8)-11 ƒoƒCƒg‚ªƒf[ƒ^’·‚ÌŒÀŠEB
-	//       2048bitRSA ‚Ìê‡ 245ƒoƒCƒg
-	//       4096bitRSA ‚Ìê‡ 501ƒoƒCƒg
-	//datalen : data‚Ì’·‚³
-	//retEncrypted : ˆÃ†‰»‚µ‚½ƒf[ƒ^‚ÌŠi”[æ
-	//retwritten : ˆÃ†‰»‚ÌŒ‹‰ÊAretEncrypted‚É‘‚«‚Ü‚ê‚½ƒTƒCƒYB
+	//æš—å·åŒ–ã™ã‚‹
+	//type : æš—å·åŒ–ã«ä½¿ã†éµ(å…¬é–‹éµ or ç§˜å¯†éµ)
+	//data : æš—å·åŒ–ã™ã‚‹ãƒ‡ãƒ¼ã‚¿
+	//       â€»(RSAbitæ•°Ã·8)-11 ãƒã‚¤ãƒˆãŒãƒ‡ãƒ¼ã‚¿é•·ã®é™ç•Œã€‚
+	//       2048bitRSA ã®å ´åˆ 245ãƒã‚¤ãƒˆ
+	//       4096bitRSA ã®å ´åˆ 501ãƒã‚¤ãƒˆ
+	//datalen : dataã®é•·ã•
+	//retEncrypted : æš—å·åŒ–ã—ãŸãƒ‡ãƒ¼ã‚¿ã®æ ¼ç´å…ˆ
+	//retwritten : æš—å·åŒ–ã®çµæœã€retEncryptedã«æ›¸ãè¾¼ã¾ã‚ŒãŸã‚µã‚¤ã‚ºã€‚
 	bool Encrypt( KEYTYPE type , const BYTE* data , DWORD datalen , EncryptData& retEncrypted , DWORD& retWritten )const;
 
-	//•œ†‚·‚é
-	//type : •œ†‚Ég‚¤Œ®(ŒöŠJŒ® or ”é–§Œ®)
-	//data : •œ†‚·‚éƒf[ƒ^
-	//datalen : data‚Ì’·‚³(1024bitRSA‚È‚ç128ƒoƒCƒgA2048bitRSA‚È‚ç256ƒoƒCƒg‚É‚È‚é”¤)
-	//bufflen : ƒoƒbƒtƒ@‚ÌƒTƒCƒY
-	//retwritten : •œ†‚ÌŒ‹‰ÊAdata‚É‘‚«‚Ü‚ê‚½ƒTƒCƒYB
+	//å¾©å·ã™ã‚‹
+	//type : å¾©å·ã«ä½¿ã†éµ(å…¬é–‹éµ or ç§˜å¯†éµ)
+	//data : å¾©å·ã™ã‚‹ãƒ‡ãƒ¼ã‚¿
+	//datalen : dataã®é•·ã•(1024bitRSAãªã‚‰128ãƒã‚¤ãƒˆã€2048bitRSAãªã‚‰256ãƒã‚¤ãƒˆã«ãªã‚‹ç­ˆ)
+	//bufflen : ãƒãƒƒãƒ•ã‚¡ã®ã‚µã‚¤ã‚º
+	//retwritten : å¾©å·ã®çµæœã€dataã«æ›¸ãè¾¼ã¾ã‚ŒãŸã‚µã‚¤ã‚ºã€‚
 	bool Decrypt( KEYTYPE type , const BYTE* data , DWORD datalen , EncryptData& retDecrypted , DWORD& retWritten )const;
 
 private:

@@ -1,12 +1,12 @@
-//----------------------------------------------------------------------------
-// ƒXƒgƒŠ[ƒ~ƒ“ƒOƒtƒ@ƒCƒ‹‘‚«ž‚Ý‘€ì
+ï»¿//----------------------------------------------------------------------------
+// ã‚¹ãƒˆãƒªãƒ¼ãƒŸãƒ³ã‚°ãƒ•ã‚¡ã‚¤ãƒ«æ›¸ãè¾¼ã¿æ“ä½œ
 // Copyright (C) 2013,2016 Fingerling. All rights reserved. 
 // Copyright (C) 2019- Crea Inc. All rights reserved.
 // This program is released under the MIT License. 
 // see http://opensource.org/licenses/mit-license.php
-// ’˜ìŒ •\Ž¦‚âƒ‰ƒCƒZƒ“ƒX‚Ì‰ü•Ï‚Í‹ÖŽ~‚³‚ê‚Ä‚¢‚Ü‚·B
-// ‚±‚Ìƒ\[ƒXƒR[ƒh‚ÉŠÖ‚µ‚ÄAã‹Lƒ‰ƒCƒZƒ“ƒXˆÈŠO‚ÌŒ_–ñ“™‚ÍˆêØ‘¶Ý‚µ‚Ü‚¹‚ñB
-// (‰½‚ç‚©‚ÌŒ_–ñ‚ª‚ ‚éê‡‚Å‚àA–{ƒ\[ƒXƒR[ƒh‚Í‚»‚Ì‘ÎÛŠO‚Æ‚È‚è‚Ü‚·)
+// è‘—ä½œæ¨©è¡¨ç¤ºã‚„ãƒ©ã‚¤ã‚»ãƒ³ã‚¹ã®æ”¹å¤‰ã¯ç¦æ­¢ã•ã‚Œã¦ã„ã¾ã™ã€‚
+// ã“ã®ã‚½ãƒ¼ã‚¹ã‚³ãƒ¼ãƒ‰ã«é–¢ã—ã¦ã€ä¸Šè¨˜ãƒ©ã‚¤ã‚»ãƒ³ã‚¹ä»¥å¤–ã®å¥‘ç´„ç­‰ã¯ä¸€åˆ‡å­˜åœ¨ã—ã¾ã›ã‚“ã€‚
+// (ä½•ã‚‰ã‹ã®å¥‘ç´„ãŒã‚ã‚‹å ´åˆã§ã‚‚ã€æœ¬ã‚½ãƒ¼ã‚¹ã‚³ãƒ¼ãƒ‰ã¯ãã®å¯¾è±¡å¤–ã¨ãªã‚Šã¾ã™)
 //----------------------------------------------------------------------------
 
 #define MFILEWRITESTREAM_CPP_COMPILING
@@ -24,7 +24,7 @@ mFileWriteStreamBase::~mFileWriteStreamBase()
 }
 
 
-bool mFileWriteStreamBase::WriteString( const AString& line )	//ANSI•¶Žš—ñ‚ð‘‚«ž‚Þ
+bool mFileWriteStreamBase::WriteString( const AString& line )	//ANSIæ–‡å­—åˆ—ã‚’æ›¸ãè¾¼ã‚€
 {
 
 	for( DWORD i = 0 ; i < line.size() ; i++ )
@@ -40,7 +40,7 @@ bool mFileWriteStreamBase::WriteString( const AString& line )	//ANSI•¶Žš—ñ‚ð‘‚«
 }
 
 
-bool mFileWriteStreamBase::WriteString( const WString& line )	//UNICODE•¶Žš—ñ‚ð‘‚«ž‚Þ
+bool mFileWriteStreamBase::WriteString( const WString& line )	//UNICODEæ–‡å­—åˆ—ã‚’æ›¸ãè¾¼ã‚€
 {
 
 	for( DWORD i = 0 ; i < line.size() ; i++ )
@@ -62,7 +62,7 @@ bool mFileWriteStreamBase::WriteString( const WString& line )	//UNICODE•¶Žš—ñ‚ð
 
 }
 
-bool mFileWriteStreamBase::WriteString( const char* line )	//ANSI•¶Žš—ñ‚ð‘‚«ž‚Þ
+bool mFileWriteStreamBase::WriteString( const char* line )	//ANSIæ–‡å­—åˆ—ã‚’æ›¸ãè¾¼ã‚€
 {
 	if( !line )
 	{
@@ -71,7 +71,7 @@ bool mFileWriteStreamBase::WriteString( const char* line )	//ANSI•¶Žš—ñ‚ð‘‚«ž‚
 	return WriteString( AString( line ) );
 }
 
-bool mFileWriteStreamBase::WriteString( const wchar_t* line )	//UNICODE•¶Žš—ñ‚ð‘‚«ž‚Þ
+bool mFileWriteStreamBase::WriteString( const wchar_t* line )	//UNICODEæ–‡å­—åˆ—ã‚’æ›¸ãè¾¼ã‚€
 {
 	if( line == 0 )
 	{
@@ -80,7 +80,7 @@ bool mFileWriteStreamBase::WriteString( const wchar_t* line )	//UNICODE•¶Žš—ñ‚ð
 	return WriteString( WString( line ) );
 }
 
-//Žw’èƒTƒCƒY‚ð‘ž‚Ý‚Ü‚·
+//æŒ‡å®šã‚µã‚¤ã‚ºã‚’æ›¸è¾¼ã¿ã¾ã™
 bool mFileWriteStreamBase::WriteBinary( const BYTE* buffer , size_t size )
 {
 	for( size_t i = 0 ; i < size ; i++ )
@@ -95,12 +95,12 @@ bool mFileWriteStreamBase::WriteBinary( const BYTE* buffer , size_t size )
 	return true;
 }
 
-//Žw’èƒXƒgƒŠ[ƒ€‚©‚ç“Ç‚ÝŽæ‚Á‚Ä‚»‚Ì‚Ü‚Ü‘‚«ž‚Ý‚Ü‚·
-//¦Žw’èƒoƒCƒg‘‚«ž‚Þ‚©A“Ç‚Ýž‚ÝŒ³ƒXƒgƒŠ[ƒ€‚ªEOF‚É‚È‚é‚Ü‚Å‘‚«ž‚Ý‚Ü‚·
-//fp : ‘‚«ž‚ÝŒ³
-//sz : ‘‚«ž‚ÞƒoƒCƒg”
-//retWritten : ‘‚«ž‚ñ‚¾ƒTƒCƒY(•s—v‚È‚çnullptr‚Å‰Â)
-//ret : ¬Œ÷Žžtrue
+//æŒ‡å®šã‚¹ãƒˆãƒªãƒ¼ãƒ ã‹ã‚‰èª­ã¿å–ã£ã¦ãã®ã¾ã¾æ›¸ãè¾¼ã¿ã¾ã™
+//â€»æŒ‡å®šãƒã‚¤ãƒˆæ›¸ãè¾¼ã‚€ã‹ã€èª­ã¿è¾¼ã¿å…ƒã‚¹ãƒˆãƒªãƒ¼ãƒ ãŒEOFã«ãªã‚‹ã¾ã§æ›¸ãè¾¼ã¿ã¾ã™
+//fp : æ›¸ãè¾¼ã¿å…ƒ
+//sz : æ›¸ãè¾¼ã‚€ãƒã‚¤ãƒˆæ•°
+//retWritten : æ›¸ãè¾¼ã‚“ã ã‚µã‚¤ã‚º(ä¸è¦ãªã‚‰nullptrã§å¯)
+//ret : æˆåŠŸæ™‚true
 bool mFileWriteStreamBase::WriteStream( mFileReadStreamBase& fp , size_t sz , size_t* retWritten )
 {
 	BYTE buffer[ 65536 ];
@@ -127,11 +127,11 @@ bool mFileWriteStreamBase::WriteStream( mFileReadStreamBase& fp , size_t sz , si
 	return true;
 }
 
-//Žw’èƒXƒgƒŠ[ƒ€‚©‚ç“Ç‚ÝŽæ‚Á‚Ä‚»‚Ì‚Ü‚Ü‘‚«ž‚Ý‚Ü‚·
-//¦“Ç‚Ýž‚ÝŒ³ƒXƒgƒŠ[ƒ€‚ªEOF‚É‚È‚é‚Ü‚Å‘‚«ž‚Ý‚Ü‚·
-//fp : ‘‚«ž‚ÝŒ³
-//retWritten : ‘‚«ž‚ñ‚¾ƒTƒCƒY(•s—v‚È‚çnullptr‚Å‰Â)
-//ret : ¬Œ÷Žžtrue
+//æŒ‡å®šã‚¹ãƒˆãƒªãƒ¼ãƒ ã‹ã‚‰èª­ã¿å–ã£ã¦ãã®ã¾ã¾æ›¸ãè¾¼ã¿ã¾ã™
+//â€»èª­ã¿è¾¼ã¿å…ƒã‚¹ãƒˆãƒªãƒ¼ãƒ ãŒEOFã«ãªã‚‹ã¾ã§æ›¸ãè¾¼ã¿ã¾ã™
+//fp : æ›¸ãè¾¼ã¿å…ƒ
+//retWritten : æ›¸ãè¾¼ã‚“ã ã‚µã‚¤ã‚º(ä¸è¦ãªã‚‰nullptrã§å¯)
+//ret : æˆåŠŸæ™‚true
 bool mFileWriteStreamBase::WriteStream( mFileReadStreamBase& fp , size_t* retWritten )
 {
 	BYTE buffer[ 65536 ];

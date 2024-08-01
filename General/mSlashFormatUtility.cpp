@@ -1,10 +1,10 @@
-//----------------------------------------------------------------------------
-// ƒXƒ‰ƒbƒVƒ…‹æØ‚èƒf[ƒ^ƒtƒH[ƒ}ƒbƒg
+ï»¿//----------------------------------------------------------------------------
+// ã‚¹ãƒ©ãƒƒã‚·ãƒ¥åŒºåˆ‡ã‚Šãƒ‡ãƒ¼ã‚¿ãƒ•ã‚©ãƒ¼ãƒãƒƒãƒˆ
 // Copyright (C) 2020- Crea Inc. All rights reserved.
 // This program is released under the MIT License. 
 // see http://opensource.org/licenses/mit-license.php
-// ’˜ìŒ •\¦‚âƒ‰ƒCƒZƒ“ƒX‚Ì‰ü•Ï‚Í‹Ö~‚³‚ê‚Ä‚¢‚Ü‚·B
-// ‚±‚Ìƒ\[ƒXƒR[ƒh‚ÉŠÖ‚µ‚ÄAã‹Lƒ‰ƒCƒZƒ“ƒXˆÈŠO‚ÌŒ_–ñ“™‚ÍˆêØ‘¶İ‚µ‚Ü‚¹‚ñB
+// è‘—ä½œæ¨©è¡¨ç¤ºã‚„ãƒ©ã‚¤ã‚»ãƒ³ã‚¹ã®æ”¹å¤‰ã¯ç¦æ­¢ã•ã‚Œã¦ã„ã¾ã™ã€‚
+// ã“ã®ã‚½ãƒ¼ã‚¹ã‚³ãƒ¼ãƒ‰ã«é–¢ã—ã¦ã€ä¸Šè¨˜ãƒ©ã‚¤ã‚»ãƒ³ã‚¹ä»¥å¤–ã®å¥‘ç´„ç­‰ã¯ä¸€åˆ‡å­˜åœ¨ã—ã¾ã›ã‚“ã€‚
 //----------------------------------------------------------------------------
 
 
@@ -23,13 +23,13 @@ void mSlashFormatUtility::Parse( const WString& src , mSlashFormatW& retData )
 	return;
 }
 
-//•¶š—ñ‚ÌƒXƒ‰ƒbƒVƒ…‚ğ//‚É’uŠ·‚·‚é
+//æ–‡å­—åˆ—ã®ã‚¹ãƒ©ãƒƒã‚·ãƒ¥ã‚’//ã«ç½®æ›ã™ã‚‹
 WString mSlashFormatUtility::EscapeSlash( const WString& src )
 {
 	return ReplaceString( src , L"/" , L"//" , nullptr );
 }
 
-//•¶š—ñ‚ÌƒXƒ‰ƒbƒVƒ…‚ğ//‚É’uŠ·‚·‚é
+//æ–‡å­—åˆ—ã®ã‚¹ãƒ©ãƒƒã‚·ãƒ¥ã‚’//ã«ç½®æ›ã™ã‚‹
 AString mSlashFormatUtility::EscapeSlash( const AString& src )
 {
 	return ReplaceString( src , "/" , "//" , nullptr );

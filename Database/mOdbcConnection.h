@@ -1,25 +1,25 @@
-//----------------------------------------------------------------------------
-// ODBC�ڑ��p���C�u����
+﻿//----------------------------------------------------------------------------
+// ODBC接続用ライブラリ
 // Copyright (C) 2005 Fingerling. All rights reserved. 
 // Copyright (C) 2018- Crea Inc. All rights reserved.
 // This program is released under the MIT License. 
 // see http://opensource.org/licenses/mit-license.php
-// 2005/08/19�`
+// 2005/08/19〜
 //----------------------------------------------------------------------------
 
 #ifndef MODBCCONNECTION_H_INCLUDED
 #define MODBCCONNECTION_H_INCLUDED
 
 /*
-���t�@�����X�F
-	�E���Ɓ[�b�{�{�Ԃ낮
-	Windows���ɂ�C�����C++��ODBC���g���ɂ�
+リファレンス：
+	・さとーＣ＋＋ぶろぐ
+	Windows環境にてC言語やC++でODBCを使うには
 	http://sato-si.at.webry.info/200503/article_11.html
-	�EODBC API Reference
+	・ODBC API Reference
 	http://msdn.microsoft.com/en-us/library/ms714562.aspx
-	�E�΂��΂̂n�c�a�b������
+	・ばぁばのＯＤＢＣ実験室
 	http://www.amy.hi-ho.ne.jp/jbaba/index.htm
-	�EInside ODBC
+	・Inside ODBC
 	  ISBN4-7561-1617-5
 	
 */
@@ -44,54 +44,54 @@ public:
 	mOdbcConnection();
 	virtual ~mOdbcConnection();
 
-	//�V���ȃN�G���[���쐬����
-	//retQuery : �V���ɍ쐬�����N�G���[�̃n���h��
-	//ret : �ڑ��������^
+	//新たなクエリーを作成する
+	//retQuery : 新たに作成したクエリーのハンドル
+	//ret : 接続成功時真
 	bool NewQuery( mOdbcQuery& retQuery );
 
-	//�����R�~�b�g���[�h���g�p���邩
-	// enable : �^�������R�~�b�g���[�h���g�p����(����)
-	//          �U���g�����U�N�V�������s��
-	//�g�����U�N�V�������s���ꍇ�́ACommit�ARollback�̑��삪�K�v�ɂȂ�܂�
+	//自動コミットモードを使用するか
+	// enable : 真＝自動コミットモードを使用する(既定)
+	//          偽＝トランザクションを行う
+	//トランザクションを行う場合は、Commit、Rollbackの操作が必要になります
 	bool SetAutoCommit( bool enable );
 
-	//�R�~�b�g����
-	// ret : �������^
+	//コミットする
+	// ret : 成功時真
 	bool Commit( void );
 
-	//���[���o�b�N����
-	// ret : �������^
+	//ロールバックする
+	// ret : 成功時真
 	bool Rollback( void );
 
-	//�������̃N�G�������݂��邩
-	// ret : ���݂���ꍇtrue
+	//処理中のクエリが存在するか
+	// ret : 存在する場合true
 	bool IsActive( void ) const noexcept;
 
 private:
 
-	mOdbcConnection( const mOdbcConnection& source );			//�R�s�[�֎~�N���X
-	void operator=( const mOdbcConnection& source ) = delete;	//�R�s�[�֎~�N���X
+	mOdbcConnection( const mOdbcConnection& source );			//コピー禁止クラス
+	void operator=( const mOdbcConnection& source ) = delete;	//コピー禁止クラス
 
 	friend class mOdbcEnvironment;
 
 protected:
 
-	//ODBC�ڑ����̃n���h��
+	//ODBC接続中のハンドル
 	mOdbcConnectionHandle MyDBCHandle;
 
-	//���̐ڑ��Ɋ֘A�t���Ă���N�G���̃`�P�b�g�^
+	//この接続に関連付いているクエリのチケット型
 	using QueryTicket = std::weak_ptr<ULONG_PTR>;
 
-	//���̐ڑ��Ɋ֘A�t���Ă���N�G���̃`�P�b�g�ꗗ
+	//この接続に関連付いているクエリのチケット一覧
 	using Queries = std::deque< QueryTicket >;
 
-	//���̐ڑ��Ɋ֘A�t���Ă���N�G���̃`�P�b�g�ꗗ
+	//この接続に関連付いているクエリのチケット一覧
 	mutable Queries MyQueries;
 
-	//SQLRETURN�^�̌��ʃR�[�h������I�����ǂ����𔻒肷��
-	//�ǉ���񂪂���ꍇ�́ASQL�X�e�[�g�����g�̃����o(MyOdbcSqlState)���X�V����
-	//rc : ���ʃR�[�h
-	//ret : ���ʃR�[�h���������������̂ł���ΐ^
+	//SQLRETURN型の結果コードが正常終了かどうかを判定する
+	//追加情報がある場合は、SQLステートメントのメンバ(MyOdbcSqlState)を更新する
+	//rc : 結果コード
+	//ret : 結果コードが成功を示すものであれば真
 	bool SQL_RESULT_CHECK( SQLRETURN rc );
 
 };

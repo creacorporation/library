@@ -1,5 +1,5 @@
-//----------------------------------------------------------------------------
-// �n�b�V�������N���X
+﻿//----------------------------------------------------------------------------
+// ハッシュ処理クラス
 // Copyright (C) 2018- Crea Inc. All rights reserved.
 // This program is released under the MIT License. 
 // see http://opensource.org/licenses/mit-license.php
@@ -14,7 +14,7 @@
 #include "../General/mErrorLogger.h"
 
 /*
-<�g����>
+<使い方>
 
 int main( int argc , const char** argv )
 {
@@ -48,51 +48,51 @@ public:
 	mHmac();
 	virtual ~mHmac();
 
-	//������
-	//algo : �g�p�������n�b�V���A���S���Y��
-	//key : �Í����L�[
-	//keylen : key�̃o�C�g��
-	//openssl : �^�FOpenSSL�Ɠ���HMAC�𐶐����܂��B
-	//			�U�F�L�[����URC4�ŃX�N�����u�����Ă���HMAC�𐶐����܂�(WindowsAPI�̃T���v���Ɠ���)�B
-	//ret : �������^
+	//初期化
+	//algo : 使用したいハッシュアルゴリズム
+	//key : 暗号化キー
+	//keylen : keyのバイト数
+	//openssl : 真：OpenSSLと同じHMACを生成します。
+	//			偽：キーを一旦RC4でスクランブルしてからHMACを生成します(WindowsAPIのサンプルと同じ)。
+	//ret : 成功時真
 	bool Init( mHash::HashAlgorithm algo , const BYTE* key , DWORD keylen , bool openssl = true );
 
-	//���Z�b�g
-	//�I�u�W�F�N�g�����Z�b�g����B�Í����L�[�̓��Z�b�g����Ȃ��B
-	//Init�ŏ�������HMAC�v�Z��Reset������HMAC�v�Z�c�̂悤�ɃI�u�W�F�N�g���ė��p�ł���
+	//リセット
+	//オブジェクトをリセットする。暗号化キーはリセットされない。
+	//Initで初期化→HMAC計算→Reset→次のHMAC計算…のようにオブジェクトを再利用できる
 	bool Reset( void );
 
-	//�n�b�V�������s
-	//�傫�ȃf�[�^�̏ꍇ�̓R�}�؂�ɂ��ČĂяo���Ă悢�B
-	// len : �f�[�^�̃o�C�g��
-	// data : �f�[�^�ւ̃|�C���^
-	// ret : �������^
+	//ハッシュを実行
+	//大きなデータの場合はコマ切れにして呼び出してよい。
+	// len : データのバイト数
+	// data : データへのポインタ
+	// ret : 成功時真
 	bool Hash( const BYTE* data , DWORD len );
 
-	//���ʂ̃T�C�Y�𓾂�
-	//ret : ���ʂ̃o�C�g��(�G���[�̏ꍇ0)
+	//結果のサイズを得る
+	//ret : 結果のバイト数(エラーの場合0)
 	DWORD GetResultLen( void )const;
 
-	//�n�b�V���l�o�C�i���̊i�[��
+	//ハッシュ値バイナリの格納先
 	typedef std::unique_ptr<BYTE> HmacData;
 
-	//���ʂ𓾂�
-	//���ʊi�[��̃o�b�t�@�͎����I�Ɋm�ۂ���A�X�}�[�g�|�C���^�ɐݒ肳��܂��B
-	//retResult : ���ʂ̊i�[��
-	//retLen : ���ʂ̃o�C�g��
-	//ret:�������^
+	//結果を得る
+	//結果格納先のバッファは自動的に確保され、スマートポインタに設定されます。
+	//retResult : 結果の格納先
+	//retLen : 結果のバイト数
+	//ret:成功時真
 	bool GetResult( HmacData& retResult , DWORD& retLen )const;
 
-	//���ʂ𓾂�
-	//���ʊi�[��̃o�b�t�@�́A�Ăяo�������m�ۂ��A�܂��A�g�p��͉������K�v������܂��B
-	//len:���ʊi�[��̃o�C�g��
-	//retResult:���ʊi�[��
-	//ret:�������^
+	//結果を得る
+	//結果格納先のバッファは、呼び出し元が確保し、また、使用後は解放する必要があります。
+	//len:結果格納先のバイト数
+	//retResult:結果格納先
+	//ret:成功時真
 	bool GetResult( BYTE* retResult , DWORD len )const;
 
-	//���ʂ𓾂�
-	//retResult : �n�b�V���l��16�i������̊i�[��
-	//ret : �������^
+	//結果を得る
+	//retResult : ハッシュ値の16進文字列の格納先
+	//ret : 成功時真
 	bool GetResult( AString& retResult )const;
 
 private:
@@ -104,8 +104,8 @@ protected:
 
 	mHash MyHashObject;
 
-	HCRYPTKEY MyCryptKey;	//HMAC�����p�̃L�[
-	HMAC_INFO MyHmacInfo;	//HMAC�����p�̏��i�p�f�B���O���j
+	HCRYPTKEY MyCryptKey;	//HMAC生成用のキー
+	HMAC_INFO MyHmacInfo;	//HMAC生成用の情報（パディング等）
 
 	void ReleaseHashObject( void );
 };

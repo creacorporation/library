@@ -1,12 +1,12 @@
-//----------------------------------------------------------------------------
-// HTTPƒAƒNƒZƒX
+ï»¿//----------------------------------------------------------------------------
+// HTTPã‚¢ã‚¯ã‚»ã‚¹
 // Copyright (C) 2013 Fingerling. All rights reserved. 
 // Copyright (C) 2019-2020 Crea Inc. All rights reserved.
 // This program is released under the MIT License. 
 // see http://opensource.org/licenses/mit-license.php
-// ’˜ìŒ •\¦‚âƒ‰ƒCƒZƒ“ƒX‚Ì‰ü•Ï‚Í‹Ö~‚³‚ê‚Ä‚¢‚Ü‚·B
-// ‚±‚Ìƒ\[ƒXƒR[ƒh‚ÉŠÖ‚µ‚ÄAã‹Lƒ‰ƒCƒZƒ“ƒXˆÈŠO‚ÌŒ_–ñ“™‚ÍˆêØ‘¶İ‚µ‚Ü‚¹‚ñB
-// (‰½‚ç‚©‚ÌŒ_–ñ‚ª‚ ‚éê‡‚Å‚àA–{ƒ\[ƒXƒR[ƒh‚Í‚»‚Ì‘ÎÛŠO‚Æ‚È‚è‚Ü‚·)
+// è‘—ä½œæ¨©è¡¨ç¤ºã‚„ãƒ©ã‚¤ã‚»ãƒ³ã‚¹ã®æ”¹å¤‰ã¯ç¦æ­¢ã•ã‚Œã¦ã„ã¾ã™ã€‚
+// ã“ã®ã‚½ãƒ¼ã‚¹ã‚³ãƒ¼ãƒ‰ã«é–¢ã—ã¦ã€ä¸Šè¨˜ãƒ©ã‚¤ã‚»ãƒ³ã‚¹ä»¥å¤–ã®å¥‘ç´„ç­‰ã¯ä¸€åˆ‡å­˜åœ¨ã—ã¾ã›ã‚“ã€‚
+// (ä½•ã‚‰ã‹ã®å¥‘ç´„ãŒã‚ã‚‹å ´åˆã§ã‚‚ã€æœ¬ã‚½ãƒ¼ã‚¹ã‚³ãƒ¼ãƒ‰ã¯ãã®å¯¾è±¡å¤–ã¨ãªã‚Šã¾ã™)
 //----------------------------------------------------------------------------
 
 #include "mStandard.h"
@@ -34,20 +34,20 @@ bool mHttpAccess::Setup( const AccessOption& opt )
 	DWORD proxy_type;
 	DWORD flag;
 
-	//ƒ†[ƒUƒG[ƒWƒFƒ“ƒg‚ğ‹ó‚É‚·‚é‚Ì‚Íƒ_ƒ
+	//ãƒ¦ãƒ¼ã‚¶ã‚¨ãƒ¼ã‚¸ã‚§ãƒ³ãƒˆã‚’ç©ºã«ã™ã‚‹ã®ã¯ãƒ€ãƒ¡
 	if( opt.UserAgent.empty() )
 	{
-		RaiseError( g_ErrorLogger , 0 , L"ƒ†[ƒU[ƒG[ƒWƒFƒ“ƒg‚ğ‹ó”’‚É‚·‚é‚±‚Æ‚Í‚Å‚«‚Ü‚¹‚ñ" );
+		RaiseError( g_ErrorLogger , 0 , L"ãƒ¦ãƒ¼ã‚¶ãƒ¼ã‚¨ãƒ¼ã‚¸ã‚§ãƒ³ãƒˆã‚’ç©ºç™½ã«ã™ã‚‹ã“ã¨ã¯ã§ãã¾ã›ã‚“" );
 		return false;
 	}
 
-	//“¯Šúƒ‚[ƒh
+	//åŒæœŸãƒ¢ãƒ¼ãƒ‰
 	flag = WINHTTP_FLAG_ASYNC;
 
-	//ƒvƒƒLƒV‚Ìg—pE•sg—p
+	//ãƒ—ãƒ­ã‚­ã‚·ã®ä½¿ç”¨ãƒ»ä¸ä½¿ç”¨
 	if( opt.OptionType == OptionType::NOPROXY )
 	{
-		//ƒvƒƒLƒV‚ğg—p‚µ‚È‚¢ê‡B
+		//ãƒ—ãƒ­ã‚­ã‚·ã‚’ä½¿ç”¨ã—ãªã„å ´åˆã€‚
 		MyOption.reset( mNew AccessOption_NoProxy( *(AccessOption_NoProxy*)&opt ) );
 		const AccessOption_NoProxy* p = (const AccessOption_NoProxy*)MyOption.get();
 
@@ -57,7 +57,7 @@ bool mHttpAccess::Setup( const AccessOption& opt )
 	}
 	else if( opt.OptionType == OptionType::WITHPROXY )
 	{
-		//ƒvƒƒLƒV‚ğg—p‚·‚éê‡B
+		//ãƒ—ãƒ­ã‚­ã‚·ã‚’ä½¿ç”¨ã™ã‚‹å ´åˆã€‚
 		MyOption.reset( mNew AccessOption_WithProxy( *(AccessOption_WithProxy*)&opt ) );
 		const AccessOption_WithProxy* p = (const AccessOption_WithProxy*)MyOption.get();
 
@@ -74,35 +74,35 @@ bool mHttpAccess::Setup( const AccessOption& opt )
 
 		if( p->NoProxyList.size() )
 		{
-			//ƒvƒƒLƒVœŠOƒT[ƒo‚ªw’è‚³‚ê‚Ä‚¢‚éê‡
+			//ãƒ—ãƒ­ã‚­ã‚·é™¤å¤–ã‚µãƒ¼ãƒãŒæŒ‡å®šã•ã‚Œã¦ã„ã‚‹å ´åˆ
 			proxy_bypass = p->NoProxyList.c_str();
 		}
 		else
 		{
-			//‘S‚ÄƒvƒƒLƒV‚ğg—p‚·‚éê‡
+			//å…¨ã¦ãƒ—ãƒ­ã‚­ã‚·ã‚’ä½¿ç”¨ã™ã‚‹å ´åˆ
 			proxy_bypass = WINHTTP_NO_PROXY_BYPASS;
 		}
 	}
 	else
 	{
-		RaiseError( g_ErrorLogger , 0 , L"ƒIƒvƒVƒ‡ƒ“¯•Êq‚ª•s³‚Å‚·" );
+		RaiseError( g_ErrorLogger , 0 , L"ã‚ªãƒ—ã‚·ãƒ§ãƒ³è­˜åˆ¥å­ãŒä¸æ­£ã§ã™" );
 		return false;
 	}
 
 	MySession = WinHttpOpen( MyOption->UserAgent.c_str() , proxy_type , proxy_server , proxy_bypass , flag );
 	if( !MySession )
 	{
-		RaiseError( g_ErrorLogger , 0 , L"ƒZƒbƒVƒ‡ƒ“ƒnƒ“ƒhƒ‹‚Ìì¬‚ª¸”s‚µ‚Ü‚µ‚½" );
+		RaiseError( g_ErrorLogger , 0 , L"ã‚»ãƒƒã‚·ãƒ§ãƒ³ãƒãƒ³ãƒ‰ãƒ«ã®ä½œæˆãŒå¤±æ•—ã—ã¾ã—ãŸ" );
 		return false;
 	}
 
-	//HTTP/2‚ğg—p‚·‚éê‡ƒtƒ‰ƒO‚ğƒZƒbƒg‚·‚é
+	//HTTP/2ã‚’ä½¿ç”¨ã™ã‚‹å ´åˆãƒ•ãƒ©ã‚°ã‚’ã‚»ãƒƒãƒˆã™ã‚‹
 	if( opt.ProtocolVersion == OptionProtocolVersion::HTTP_VERSION_20 )
 	{
 		DWORD protocol_option = WINHTTP_PROTOCOL_FLAG_HTTP2;
 		if( !WinHttpSetOption( MySession , WINHTTP_OPTION_ENABLE_HTTP_PROTOCOL , &protocol_option , sizeof( protocol_option ) ) )
 		{
-			RaiseError( g_ErrorLogger , 0 , L"HTTPƒvƒƒgƒRƒ‹ƒo[ƒWƒ‡ƒ“‚ğ•ÏX‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½" );
+			RaiseError( g_ErrorLogger , 0 , L"HTTPãƒ—ãƒ­ãƒˆã‚³ãƒ«ãƒãƒ¼ã‚¸ãƒ§ãƒ³ã‚’å¤‰æ›´ã§ãã¾ã›ã‚“ã§ã—ãŸ" );
 			return false;
 		}
 	}
@@ -117,21 +117,21 @@ mHttpAccess::operator bool() const
 
 bool mHttpAccess::NewConnection( const ConnectionOption& info , mHttpConnection& retConn )
 {
-	//ƒZƒbƒVƒ‡ƒ“‚ğ‚Ü‚¾ŠJ‚¢‚Ä‚È‚¢ê‡‚Í¸”s
+	//ã‚»ãƒƒã‚·ãƒ§ãƒ³ã‚’ã¾ã é–‹ã„ã¦ãªã„å ´åˆã¯å¤±æ•—
 	if( !*this )
 	{
-		RaiseError( g_ErrorLogger , 0 , L"ƒZƒbƒVƒ‡ƒ“ƒnƒ“ƒhƒ‹‚ªŠJ‚¢‚Ä‚¢‚Ü‚¹‚ñ" );
+		RaiseError( g_ErrorLogger , 0 , L"ã‚»ãƒƒã‚·ãƒ§ãƒ³ãƒãƒ³ãƒ‰ãƒ«ãŒé–‹ã„ã¦ã„ã¾ã›ã‚“" );
 		return false;
 	}
 
-	//‚·‚Å‚ÉŠJ‚¢‚Ä‚¢‚éê‡‚Í¸”s
+	//ã™ã§ã«é–‹ã„ã¦ã„ã‚‹å ´åˆã¯å¤±æ•—
 	if( retConn )
 	{
-		RaiseError( g_ErrorLogger , 0 , L"‚·‚Å‚Éƒnƒ“ƒhƒ‹‚ªŠJ‚©‚ê‚Ä‚¢‚Ü‚·" );
+		RaiseError( g_ErrorLogger , 0 , L"ã™ã§ã«ãƒãƒ³ãƒ‰ãƒ«ãŒé–‹ã‹ã‚Œã¦ã„ã¾ã™" );
 		return false;
 	}
 
-	//URL‚ğ•ª‰ğ‚µ‚ÄA‚»‚Ì’†‚©‚çƒT[ƒo–¼‚Ì•”•ª‚ğ’Šo‚·‚é
+	//URLã‚’åˆ†è§£ã—ã¦ã€ãã®ä¸­ã‹ã‚‰ã‚µãƒ¼ãƒåã®éƒ¨åˆ†ã‚’æŠ½å‡ºã™ã‚‹
 	URL_COMPONENTS url;
 	ZeroMemory( &url , sizeof( URL_COMPONENTS ) );
 	url.dwStructSize = sizeof( URL_COMPONENTS );
@@ -145,7 +145,7 @@ bool mHttpAccess::NewConnection( const ConnectionOption& info , mHttpConnection&
 		retConn.MyServerAddress = info.ServerName;
 	}
 
-	//ƒ|[ƒg‚Ìİ’è
+	//ãƒãƒ¼ãƒˆã®è¨­å®š
 	if( info.Port == 0 )
 	{
 		retConn.MyPort = INTERNET_DEFAULT_PORT;
@@ -155,11 +155,11 @@ bool mHttpAccess::NewConnection( const ConnectionOption& info , mHttpConnection&
 		retConn.MyPort = info.Port;
 	}
 
-	//ƒRƒlƒNƒVƒ‡ƒ“‚ğŠJ‚­
+	//ã‚³ãƒã‚¯ã‚·ãƒ§ãƒ³ã‚’é–‹ã
 	retConn.MyConnection = WinHttpConnect( MySession , retConn.MyServerAddress.c_str() , retConn.MyPort , 0 );
 	if( retConn.MyConnection == 0 )
 	{
-		RaiseError( g_ErrorLogger , 0 , L"ƒRƒlƒNƒVƒ‡ƒ“ƒnƒ“ƒhƒ‹‚ğ¶¬‚Å‚«‚Ü‚¹‚ñ" );
+		RaiseError( g_ErrorLogger , 0 , L"ã‚³ãƒã‚¯ã‚·ãƒ§ãƒ³ãƒãƒ³ãƒ‰ãƒ«ã‚’ç”Ÿæˆã§ãã¾ã›ã‚“" );
 		return false;
 	}
 

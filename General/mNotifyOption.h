@@ -1,10 +1,10 @@
-//----------------------------------------------------------------------------
-// �񓯊����슮���ʒm�I�u�W�F�N�g
+﻿//----------------------------------------------------------------------------
+// 非同期操作完了通知オブジェクト
 // Copyright (C) 2020- Crea Inc. All rights reserved.
 // This program is released under the MIT License. 
 // see http://opensource.org/licenses/mit-license.php
-// ���쌠�\���⃉�C�Z���X�̉��ς͋֎~����Ă��܂��B
-// ���̃\�[�X�R�[�h�Ɋւ��āA��L���C�Z���X�ȊO�̌_�񓙂͈�ؑ��݂��܂���B
+// 著作権表示やライセンスの改変は禁止されています。
+// このソースコードに関して、上記ライセンス以外の契約等は一切存在しません。
 //----------------------------------------------------------------------------
 
 #ifndef MNOTIFYOPTION_H_INCLUDED
@@ -14,28 +14,28 @@
 
 namespace Definitions_NotifyOption
 {
-	//�ʒm���[�h
+	//通知モード
 	enum NotifyMode
 	{
-		//�ʒm���܂���
+		//通知しません
 		NOTIFY_NONE ,
 
-		//�E�C���h���b�Z�[�W�𑗐M���܂�
+		//ウインドメッセージを送信します
 		NOTIFY_WINDOWMESSAGE ,
 
-		//�C�x���g�I�u�W�F�N�g���V�O�i����Ԃɂ��܂�
+		//イベントオブジェクトをシグナル状態にします
 		NOTIFY_SIGNAL ,
 
-		//�R�[���o�b�N�֐����Ăт܂�
-		//�EIO�Ɋ֘A�t���Ă���ꍇ�ŁA������IO���������Ɋ��������ꍇ�A�O��̃R�[���o�b�N�ȍ~�ɐV���f�[�^���������ꍇ�̂݌Ăяo���܂��B
-		//�E�����X���b�h�ŃR�[���o�b�N�֐��������ɌĂ΂�邱�Ƃ͂���܂���B
-		//�EmTaskBase���p�������^�X�N�I�u�W�F�N�g�̏ꍇ�́ANOTIFY_CALLBACK_PARALLEL�Ɠ����B
-		//  (IO�ȊO�ł�NOTIFY_CALLBACK_PARALLEL���g���Ă�������)
+		//コールバック関数を呼びます
+		//・IOに関連付いている場合で、複数のIOが同時期に完了した場合、前回のコールバック以降に新着データがあった場合のみ呼び出します。
+		//・複数スレッドでコールバック関数が同時に呼ばれることはありません。
+		//・mTaskBaseを継承したタスクオブジェクトの場合は、NOTIFY_CALLBACK_PARALLELと同じ。
+		//  (IO以外ではNOTIFY_CALLBACK_PARALLELを使ってください)
 		NOTIFY_CALLBACK ,
 
-		//�R�[���o�b�N�֐����Ăт܂�
-		//�E���1�̃C�x���g�ɂ�1��̌Ăяo�����s���܂��B
-		//�E�����̃X���b�h�ŃR�[���o�b�N�֐��������ɌĂ΂�邱�Ƃ�����܂��B
+		//コールバック関数を呼びます
+		//・常に1つのイベントにつき1回の呼び出しが行われます。
+		//・複数のスレッドでコールバック関数が同時に呼ばれることがあります。
 		NOTIFY_CALLBACK_PARALLEL ,
 	};
 };
@@ -46,31 +46,31 @@ template< typename fn > class mNotifyOption
 public:
 	using NotifyMode = Definitions_NotifyOption::NotifyMode;
 
-	//�E�C���h�E���b�Z�[�W�Œʒm����ꍇ�̃p�����[�^
+	//ウインドウメッセージで通知する場合のパラメータ
 	struct NotifyMessage
 	{
-		HWND Hwnd;		//�ʒm��̃E�C���h�E�̃n���h��
-		UINT Message;	//�ʒm���郁�b�Z�[�WID
+		HWND Hwnd;		//通知先のウインドウのハンドル
+		UINT Message;	//通知するメッセージID
 	};
 
-	//�ʒm���
+	//通知情報
 	struct NotifierInfo
 	{
-		//�C�x���g�������̒ʒm���@
-		//�����Ɏw�肵���l�ɉ����āANotifier�ɌĂяo���擙�̐ݒ�����Ă�������
+		//イベント発生時の通知方法
+		//ここに指定した値に応じて、Notifierに呼び出し先等の設定をしてください
 		NotifyMode Mode;
 
-		//�ʒm���@���E�C���h�E���b�Z�[�W�܂��̓R�[���o�b�N�֐��̎��Ɏg���郆�[�U�[��`�̒l
-		//���V�O�i���I�u�W�F�N�g�Œʒm����ꍇ�͎g�p����܂���
+		//通知方法がウインドウメッセージまたはコールバック関数の時に使われるユーザー定義の値
+		//※シグナルオブジェクトで通知する場合は使用されません
 		DWORD_PTR Parameter;
 
-		//�C�x���g�������̒ʒm���e
-		//Mode�Ɏw�肵�����e�Ɩ������Ȃ��悤�ɂ��Ă�������
+		//イベント発生時の通知内容
+		//Modeに指定した内容と矛盾しないようにしてください
 		union Notifiers
 		{
-			fn CallbackFunction;				//�R�[���o�b�N�֐��Œʒm����ꍇ
-			NotifyMessage Message;				//�E�C���h�E���b�Z�[�W�Œʒm����ꍇ
-			HANDLE Handle;						//�V�O�i���I�u�W�F�N�g�Œʒm����ꍇ
+			fn CallbackFunction;				//コールバック関数で通知する場合
+			NotifyMessage Message;				//ウインドウメッセージで通知する場合
+			HANDLE Handle;						//シグナルオブジェクトで通知する場合
 		}Notifier;
 
 		NotifierInfo()

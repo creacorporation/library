@@ -1,42 +1,42 @@
-//----------------------------------------------------------------------------
-// ƒEƒCƒ“ƒhƒEŠÇ—iƒEƒCƒ“ƒhƒE‚ÌŠî’êƒNƒ‰ƒXj
+ï»¿//----------------------------------------------------------------------------
+// ã‚¦ã‚¤ãƒ³ãƒ‰ã‚¦ç®¡ç†ï¼ˆã‚¦ã‚¤ãƒ³ãƒ‰ã‚¦ã®åŸºåº•ã‚¯ãƒ©ã‚¹ï¼‰
 // Copyright (C) 2016 Fingerling. All rights reserved. 
 // This program is released under the MIT License. 
 // see http://opensource.org/licenses/mit-license.php
 //----------------------------------------------------------------------------
 
 /*
-œ—p“r
-ƒEƒCƒ“ƒhƒEAƒ{ƒ^ƒ“Aƒ‰ƒWƒIƒ{ƒ^ƒ““™‚ÌGUI‚ÈƒIƒuƒWƒFƒNƒg‚ÌŠî’êƒNƒ‰ƒX‚Å‚·B
+â—ç”¨é€”
+ã‚¦ã‚¤ãƒ³ãƒ‰ã‚¦ã€ãƒœã‚¿ãƒ³ã€ãƒ©ã‚¸ã‚ªãƒœã‚¿ãƒ³ç­‰ã®GUIãªã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã®åŸºåº•ã‚¯ãƒ©ã‚¹ã§ã™ã€‚
 
-œ’ˆÓ“_
-EmWindow‚ðŒp³‚µ‚½ƒNƒ‰ƒX‚ÍA‚»‚ê‚¼‚êˆÈ‰º‚Ì\‘¢‘ÌAƒƒ\ƒbƒh‚ðŽ‚Â‚±‚Æ
-  (mWindowCollection::AddControl()‚Å–¼‘OŽw’è‚ÅŒÄ‚Ño‚µ‚Ä‚¢‚é‚½‚ß)
-@Factory() cV‚µ‚¢ƒCƒ“ƒXƒ^ƒ“ƒX‚ð•Ô‚·ƒtƒ@ƒNƒgƒŠƒƒ\ƒbƒh
-  struct Option c‚»‚ÌƒNƒ‰ƒXŒÅ—L‚ÌÝ’è€–Ú‚ðŠi”[‚·‚é\‘¢‘Ì
+â—æ³¨æ„ç‚¹
+ãƒ»mWindowã‚’ç¶™æ‰¿ã—ãŸã‚¯ãƒ©ã‚¹ã¯ã€ãã‚Œãžã‚Œä»¥ä¸‹ã®æ§‹é€ ä½“ã€ãƒ¡ã‚½ãƒƒãƒ‰ã‚’æŒã¤ã“ã¨
+  (mWindowCollection::AddControl()ã§åå‰æŒ‡å®šã§å‘¼ã³å‡ºã—ã¦ã„ã‚‹ãŸã‚)
+ã€€Factory() â€¦æ–°ã—ã„ã‚¤ãƒ³ã‚¹ã‚¿ãƒ³ã‚¹ã‚’è¿”ã™ãƒ•ã‚¡ã‚¯ãƒˆãƒªãƒ¡ã‚½ãƒƒãƒ‰
+  struct Option â€¦ãã®ã‚¯ãƒ©ã‚¹å›ºæœ‰ã®è¨­å®šé …ç›®ã‚’æ ¼ç´ã™ã‚‹æ§‹é€ ä½“
 */
 
-//œƒTƒ“ƒvƒ‹ƒR[ƒh
+//â—ã‚µãƒ³ãƒ—ãƒ«ã‚³ãƒ¼ãƒ‰
 #ifdef SAMPLE_CODE
-//œŽg—pƒTƒ“ƒvƒ‹i•Êƒtƒ@ƒCƒ‹‚ÉƒRƒsƒy‚µ‚Ä‰º‚³‚¢j
-//“®ìFƒEƒCƒ“ƒhƒE‚ð1ŒÂì¬‚µ‚Ü‚·B‚»‚ÌƒEƒCƒ“ƒhƒE‚ð•Â‚¶‚é‚ÆƒvƒƒOƒ‰ƒ€‚ªI—¹‚µ‚Ü‚·B
-//‘O‚ÌƒTƒ“ƒvƒ‹¨‚È‚µ
-//ŽŸ‚ÌƒTƒ“ƒvƒ‹¨mButton.h‚ðŽQÆ(ƒEƒCƒ“ƒhƒE‚Éƒ{ƒ^ƒ“‚ð“\‚è•t‚¯‚éƒR[ƒh‚ª‚ ‚è‚Ü‚·)
+//â—ä½¿ç”¨ã‚µãƒ³ãƒ—ãƒ«ï¼ˆåˆ¥ãƒ•ã‚¡ã‚¤ãƒ«ã«ã‚³ãƒ”ãƒšã—ã¦ä¸‹ã•ã„ï¼‰
+//å‹•ä½œï¼šã‚¦ã‚¤ãƒ³ãƒ‰ã‚¦ã‚’1å€‹ä½œæˆã—ã¾ã™ã€‚ãã®ã‚¦ã‚¤ãƒ³ãƒ‰ã‚¦ã‚’é–‰ã˜ã‚‹ã¨ãƒ—ãƒ­ã‚°ãƒ©ãƒ ãŒçµ‚äº†ã—ã¾ã™ã€‚
+//å‰ã®ã‚µãƒ³ãƒ—ãƒ«â†’ãªã—
+//æ¬¡ã®ã‚µãƒ³ãƒ—ãƒ«â†’mButton.hã‚’å‚ç…§(ã‚¦ã‚¤ãƒ³ãƒ‰ã‚¦ã«ãƒœã‚¿ãƒ³ã‚’è²¼ã‚Šä»˜ã‘ã‚‹ã‚³ãƒ¼ãƒ‰ãŒã‚ã‚Šã¾ã™)
 #include "GDI/mWindow.h"
 #include "GDI/mWindowCollection.h"
 class TestWindow : public mWindow
 {
 public:
-	//ƒtƒ@ƒNƒgƒŠƒƒ\ƒbƒhiŒp³‚µ‚½ƒNƒ‰ƒX–ˆ‚ÉÃ“I‚Éì‚Á‚Ä‰º‚³‚¢j
+	//ãƒ•ã‚¡ã‚¯ãƒˆãƒªãƒ¡ã‚½ãƒƒãƒ‰ï¼ˆç¶™æ‰¿ã—ãŸã‚¯ãƒ©ã‚¹æ¯Žã«é™çš„ã«ä½œã£ã¦ä¸‹ã•ã„ï¼‰
 	static mWindow* Factory( const void * )throw( )
 	{
 		return mNew TestWindow;
 	}
 protected:
-	//ƒEƒCƒ“ƒhƒEƒvƒƒV[ƒWƒƒ
+	//ã‚¦ã‚¤ãƒ³ãƒ‰ã‚¦ãƒ—ãƒ­ã‚·ãƒ¼ã‚¸ãƒ£
 	virtual LRESULT WindowProcedure( UINT msg , WPARAM wparam , LPARAM lparam )
 	{
-		//WM_DESTROY‚ª—ˆ‚½‚çƒƒbƒZ[ƒWƒ‹[ƒv‚ðI—¹‚µ‚Ü‚·B
+		//WM_DESTROYãŒæ¥ãŸã‚‰ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸ãƒ«ãƒ¼ãƒ—ã‚’çµ‚äº†ã—ã¾ã™ã€‚
 		if( msg == WM_DESTROY )
 		{
 			PostQuitMessage( 0 );
@@ -44,15 +44,15 @@ protected:
 		}
 		return mWindow::WindowProcedure( msg , wparam , lparam );
 	}
-	//mWindowCollection::AddControl‚©‚çŒÄ‚Î‚ê‚Ü‚·BƒEƒCƒ“ƒhƒEƒNƒ‰ƒX‚Ìî•ñ‚ð“o˜^‚µ‚Ü‚·B
-	//‚±‚±‚Å‚ÍATESTCLASS‚Æ‚¢‚¤–¼‘O‚¾‚¯Œˆ‚ß‚Ä‚¢‚Ü‚·B
+	//mWindowCollection::AddControlã‹ã‚‰å‘¼ã°ã‚Œã¾ã™ã€‚ã‚¦ã‚¤ãƒ³ãƒ‰ã‚¦ã‚¯ãƒ©ã‚¹ã®æƒ…å ±ã‚’ç™»éŒ²ã—ã¾ã™ã€‚
+	//ã“ã“ã§ã¯ã€TESTCLASSã¨ã„ã†åå‰ã ã‘æ±ºã‚ã¦ã„ã¾ã™ã€‚
 	virtual bool WindowClassSettingCallback( WindowClassSetting& retSetting , const void* opt )
 	{
 		retSetting.ClassName = L"TEST";
 		return true;
 	}
-	//mWindowCollection::AddControl‚©‚çŒÄ‚Î‚ê‚Ü‚·Bì¬‚·‚éƒEƒCƒ“ƒhƒE‚Ìî•ñ‚ð“o˜^‚µ‚Ü‚·B
-	//‚±‚±‚Å‚ÍA•\Ž¦ƒXƒ^ƒCƒ‹‚¾‚¯Œˆ‚ß‚Ä‚¢‚Ü‚·B
+	//mWindowCollection::AddControlã‹ã‚‰å‘¼ã°ã‚Œã¾ã™ã€‚ä½œæˆã™ã‚‹ã‚¦ã‚¤ãƒ³ãƒ‰ã‚¦ã®æƒ…å ±ã‚’ç™»éŒ²ã—ã¾ã™ã€‚
+	//ã“ã“ã§ã¯ã€è¡¨ç¤ºã‚¹ã‚¿ã‚¤ãƒ«ã ã‘æ±ºã‚ã¦ã„ã¾ã™ã€‚
 	virtual bool CreateWindowCallback( CreateWindowSetting& retSetting , const void* opt )
 	{
 		retSetting.Style = WS_VISIBLE | WS_OVERLAPPEDWINDOW;
@@ -64,18 +64,18 @@ protected:
 
 int main( int argc , char** argv )
 {
-	InitializeLibrary();	//‰Šú‰»
+	InitializeLibrary();	//åˆæœŸåŒ–
 
-	//ƒEƒCƒ“ƒhƒE‚ÌƒRƒŒƒNƒVƒ‡ƒ“BeƒEƒCƒ“ƒhƒE‚ª–³‚¢‚Ì‚Ånullptr‚ð“n‚µ‚Ü‚·B
+	//ã‚¦ã‚¤ãƒ³ãƒ‰ã‚¦ã®ã‚³ãƒ¬ã‚¯ã‚·ãƒ§ãƒ³ã€‚è¦ªã‚¦ã‚¤ãƒ³ãƒ‰ã‚¦ãŒç„¡ã„ã®ã§nullptrã‚’æ¸¡ã—ã¾ã™ã€‚
 	mWindowCollection root_collection( nullptr );
-	//class TestWindow‚ðTEST‚Æ‚¢‚¤–¼‘O‚Å“o˜^‚µ‚Ü‚·B
+	//class TestWindowã‚’TESTã¨ã„ã†åå‰ã§ç™»éŒ²ã—ã¾ã™ã€‚
 	root_collection.AddControl<TestWindow>( L"TEST" );
 
-	//ƒƒbƒZ[ƒWƒ‹[ƒv
+	//ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸ãƒ«ãƒ¼ãƒ—
 	MSG msg;
 	while( GetMessageW( &msg , 0 , 0 , 0 ) )
 	{
-		TranslateMessage( &msg ); //EDITƒRƒ“ƒgƒ[ƒ‹‚È‚ÇWM_CHAR‚ðŽó‚¯Žæ‚é‚È‚ç•K—v
+		TranslateMessage( &msg ); //EDITã‚³ãƒ³ãƒˆãƒ­ãƒ¼ãƒ«ãªã©WM_CHARã‚’å—ã‘å–ã‚‹ãªã‚‰å¿…è¦
 		DispatchMessageW( &msg );
 	}
 	return 0;
@@ -98,77 +98,77 @@ class mWindow
 public:
 	
 	/*
-	¦ƒtƒ@ƒNƒgƒŠƒƒ\ƒbƒhì¬—á
-	@ˆÈ‰ºƒR[ƒh‚ðŒp³‚µ‚½ƒNƒ‰ƒX‚ÉƒRƒsƒy‚µAumNew mWindowv‚Ì•”•ª‚ðŒp³‚µ‚½ƒNƒ‰ƒX–¼‚Å’u‚«Š·‚¦‚Ä‰º‚³‚¢B
+	â€»ãƒ•ã‚¡ã‚¯ãƒˆãƒªãƒ¡ã‚½ãƒƒãƒ‰ä½œæˆä¾‹
+	ã€€ä»¥ä¸‹ã‚³ãƒ¼ãƒ‰ã‚’ç¶™æ‰¿ã—ãŸã‚¯ãƒ©ã‚¹ã«ã‚³ãƒ”ãƒšã—ã€ã€ŒmNew mWindowã€ã®éƒ¨åˆ†ã‚’ç¶™æ‰¿ã—ãŸã‚¯ãƒ©ã‚¹åã§ç½®ãæ›ãˆã¦ä¸‹ã•ã„ã€‚
 	static mWindow* Factory( const void * )throw( )
 	{
 		return mNew mWindow;
 	}
 	*/
 
-	//‘Š‘Î“I‚ÉÀ•W‚ðŒˆ’è‚·‚é‚½‚ß‚Ìî•ñ
+	//ç›¸å¯¾çš„ã«åº§æ¨™ã‚’æ±ºå®šã™ã‚‹ãŸã‚ã®æƒ…å ±
 	typedef mWindowPosition::POSITION POSITION;
 
-	//ƒEƒCƒ“ƒhƒE‚Ì‘Š‘Î“I‚ÈˆÊ’uÝ’è
-	//ƒEƒCƒ“ƒhƒE(‚ ‚é‚¢‚Íƒ{ƒ^ƒ“‚È‚Ç‚Ìƒp[ƒc—Þ)‚ðeƒEƒCƒ“ƒhƒE‚ÌƒNƒ‰ƒCƒAƒ“ƒgƒGƒŠƒA“à‚Ì‚Ç‚Ì‚ ‚½‚è‚É”z’u‚·‚é‚©‚ðŽw’è‚µ‚Ü‚·B
-	//ã‰º¶‰E‚É‚Â‚¢‚ÄAeƒEƒCƒ“ƒhƒE‚Ìã’[E¶’[‚©‚ç‚Ì”ä—¦{ƒIƒtƒZƒbƒg‚Å•\‚µ‚Ü‚·B
-	//rate=0.0,offset=10	¨¶’[‚©‚ç10ƒsƒNƒZƒ‹‚ÌˆÊ’u
-	//rate=1.0,offset=-10	¨‰E’[‚©‚ç10ƒsƒNƒZƒ‹‚ÌˆÊ’u
-	//rate=0.5,offset=10	¨’†‰›‚©‚ç‰E‚É10ƒsƒNƒZƒ‹‚ÌˆÊ’u
-	//¶’[(rate=0.1,offset=  10)+‰E’[(rate=0.1,offset=110) ¨¶Šñ‚¹ŒÅ’è•100ƒsƒNƒZƒ‹
-	//¶’[(rate=1.0,offset=-110)+‰E’[(rate=1.0,offset=-10) ¨‰EŠñ‚¹ŒÅ’è•100ƒsƒNƒZƒ‹
-	//¶’[(rate=0.0,offset=  10)+‰E’[(rate=0.5,offset=-10) ¨•‚Íe‚Ì50ƒp[ƒZƒ“ƒg{10ƒsƒNƒZƒ‹‚ÌƒpƒfƒBƒ“ƒOB
+	//ã‚¦ã‚¤ãƒ³ãƒ‰ã‚¦ã®ç›¸å¯¾çš„ãªä½ç½®è¨­å®š
+	//ã‚¦ã‚¤ãƒ³ãƒ‰ã‚¦(ã‚ã‚‹ã„ã¯ãƒœã‚¿ãƒ³ãªã©ã®ãƒ‘ãƒ¼ãƒ„é¡ž)ã‚’è¦ªã‚¦ã‚¤ãƒ³ãƒ‰ã‚¦ã®ã‚¯ãƒ©ã‚¤ã‚¢ãƒ³ãƒˆã‚¨ãƒªã‚¢å†…ã®ã©ã®ã‚ãŸã‚Šã«é…ç½®ã™ã‚‹ã‹ã‚’æŒ‡å®šã—ã¾ã™ã€‚
+	//ä¸Šä¸‹å·¦å³ã«ã¤ã„ã¦ã€è¦ªã‚¦ã‚¤ãƒ³ãƒ‰ã‚¦ã®ä¸Šç«¯ãƒ»å·¦ç«¯ã‹ã‚‰ã®æ¯”çŽ‡ï¼‹ã‚ªãƒ•ã‚»ãƒƒãƒˆã§è¡¨ã—ã¾ã™ã€‚
+	//rate=0.0,offset=10	â†’å·¦ç«¯ã‹ã‚‰10ãƒ”ã‚¯ã‚»ãƒ«ã®ä½ç½®
+	//rate=1.0,offset=-10	â†’å³ç«¯ã‹ã‚‰10ãƒ”ã‚¯ã‚»ãƒ«ã®ä½ç½®
+	//rate=0.5,offset=10	â†’ä¸­å¤®ã‹ã‚‰å³ã«10ãƒ”ã‚¯ã‚»ãƒ«ã®ä½ç½®
+	//å·¦ç«¯(rate=0.1,offset=  10)+å³ç«¯(rate=0.1,offset=110) â†’å·¦å¯„ã›å›ºå®šå¹…100ãƒ”ã‚¯ã‚»ãƒ«
+	//å·¦ç«¯(rate=1.0,offset=-110)+å³ç«¯(rate=1.0,offset=-10) â†’å³å¯„ã›å›ºå®šå¹…100ãƒ”ã‚¯ã‚»ãƒ«
+	//å·¦ç«¯(rate=0.0,offset=  10)+å³ç«¯(rate=0.5,offset=-10) â†’å¹…ã¯è¦ªã®50ãƒ‘ãƒ¼ã‚»ãƒ³ãƒˆï¼‹10ãƒ”ã‚¯ã‚»ãƒ«ã®ãƒ‘ãƒ‡ã‚£ãƒ³ã‚°ã€‚
 	typedef mWindowPosition::WindowPosition WindowPosition;
 
-	//ƒEƒCƒ“ƒhƒE‚Ì‘Š‘ÎˆÊ’u‚ðÝ’è‚·‚é
-	//newpos : V‚µ‚¢ˆÊ’u
+	//ã‚¦ã‚¤ãƒ³ãƒ‰ã‚¦ã®ç›¸å¯¾ä½ç½®ã‚’è¨­å®šã™ã‚‹
+	//newpos : æ–°ã—ã„ä½ç½®
 	virtual bool SetWindowPosition( const WindowPosition& newpos );
 
-	//ƒEƒCƒ“ƒhƒE‚Ì‰ÂŽ‹/•s‰ÂŽ‹‚ð•ÏX‚·‚é
-	//newstate : true‚Å‰ÂŽ‹Afalse‚Å•s‰ÂŽ‹
-	//ret : ¬Œ÷Žžtrue
+	//ã‚¦ã‚¤ãƒ³ãƒ‰ã‚¦ã®å¯è¦–/ä¸å¯è¦–ã‚’å¤‰æ›´ã™ã‚‹
+	//newstate : trueã§å¯è¦–ã€falseã§ä¸å¯è¦–
+	//ret : æˆåŠŸæ™‚true
 	virtual bool SetVisible( bool newstate );
 
-	//ƒEƒCƒ“ƒhƒE‚Ì—LŒø/–³Œø‚ð•ÏX‚·‚é
-	//newstate : true‚Å—LŒøAfalse‚Å–³Œø
-	//ret : ¬Œ÷Žžtrue
+	//ã‚¦ã‚¤ãƒ³ãƒ‰ã‚¦ã®æœ‰åŠ¹/ç„¡åŠ¹ã‚’å¤‰æ›´ã™ã‚‹
+	//newstate : trueã§æœ‰åŠ¹ã€falseã§ç„¡åŠ¹
+	//ret : æˆåŠŸæ™‚true
 	virtual bool SetEnable( bool newstate );
 
-	//ƒEƒCƒ“ƒhƒE‚ÌˆÊ’u‚ðƒXƒNƒŠ[ƒ“À•W‚Å“¾‚é
-	//ret : ƒXƒNƒŠ[ƒ“À•W‚É‚æ‚éƒEƒCƒ“ƒhƒE‚ÌˆÊ’u(ƒGƒ‰[‚Ìê‡0,0,0,0)
+	//ã‚¦ã‚¤ãƒ³ãƒ‰ã‚¦ã®ä½ç½®ã‚’ã‚¹ã‚¯ãƒªãƒ¼ãƒ³åº§æ¨™ã§å¾—ã‚‹
+	//ret : ã‚¹ã‚¯ãƒªãƒ¼ãƒ³åº§æ¨™ã«ã‚ˆã‚‹ã‚¦ã‚¤ãƒ³ãƒ‰ã‚¦ã®ä½ç½®(ã‚¨ãƒ©ãƒ¼ã®å ´åˆ0,0,0,0)
 	virtual RECT GetRect( void ) const;
 
-	//ƒEƒCƒ“ƒhƒE‚ÌƒTƒCƒY‚ð“¾‚é
-	//ret : ƒEƒCƒ“ƒhƒE‚ÌƒTƒCƒY(ƒGƒ‰[‚Ìê‡0,0)
+	//ã‚¦ã‚¤ãƒ³ãƒ‰ã‚¦ã®ã‚µã‚¤ã‚ºã‚’å¾—ã‚‹
+	//ret : ã‚¦ã‚¤ãƒ³ãƒ‰ã‚¦ã®ã‚µã‚¤ã‚º(ã‚¨ãƒ©ãƒ¼ã®å ´åˆ0,0)
 	virtual SIZE GetSize( void ) const;
 
-	//‚±‚ÌƒEƒCƒ“ƒhƒE‚ÌƒNƒ‰ƒCƒAƒ“ƒgÀ•W‚ðƒXƒNƒŠ[ƒ“À•W‚É•ÏŠ·‚·‚é
-	//client_pos : ƒNƒ‰ƒCƒAƒ“ƒgÀ•W
-	//ret : ƒXƒNƒŠ[ƒ“À•W(ƒGƒ‰[‚Ìê‡0,0)
+	//ã“ã®ã‚¦ã‚¤ãƒ³ãƒ‰ã‚¦ã®ã‚¯ãƒ©ã‚¤ã‚¢ãƒ³ãƒˆåº§æ¨™ã‚’ã‚¹ã‚¯ãƒªãƒ¼ãƒ³åº§æ¨™ã«å¤‰æ›ã™ã‚‹
+	//client_pos : ã‚¯ãƒ©ã‚¤ã‚¢ãƒ³ãƒˆåº§æ¨™
+	//ret : ã‚¹ã‚¯ãƒªãƒ¼ãƒ³åº§æ¨™(ã‚¨ãƒ©ãƒ¼ã®å ´åˆ0,0)
 	virtual POINT Client2Screen( const POINT& client_pos ) const;
 
-	//‚±‚ÌƒEƒCƒ“ƒhƒE‚ÌƒNƒ‰ƒCƒAƒ“ƒgÀ•W‚ðƒXƒNƒŠ[ƒ“À•W‚É•ÏŠ·‚·‚é
-	//x : ƒNƒ‰ƒCƒAƒ“ƒgÀ•W(XÀ•W)
-	//x : ƒNƒ‰ƒCƒAƒ“ƒgÀ•W(YÀ•W)
-	//ret : ƒXƒNƒŠ[ƒ“À•W(ƒGƒ‰[‚Ìê‡0,0)
+	//ã“ã®ã‚¦ã‚¤ãƒ³ãƒ‰ã‚¦ã®ã‚¯ãƒ©ã‚¤ã‚¢ãƒ³ãƒˆåº§æ¨™ã‚’ã‚¹ã‚¯ãƒªãƒ¼ãƒ³åº§æ¨™ã«å¤‰æ›ã™ã‚‹
+	//x : ã‚¯ãƒ©ã‚¤ã‚¢ãƒ³ãƒˆåº§æ¨™(Xåº§æ¨™)
+	//x : ã‚¯ãƒ©ã‚¤ã‚¢ãƒ³ãƒˆåº§æ¨™(Yåº§æ¨™)
+	//ret : ã‚¹ã‚¯ãƒªãƒ¼ãƒ³åº§æ¨™(ã‚¨ãƒ©ãƒ¼ã®å ´åˆ0,0)
 	virtual POINT Client2Screen( INT x , INT y ) const;
 
-	//ƒXƒNƒŠ[ƒ“À•W‚ð‚±‚ÌƒEƒCƒ“ƒhƒE‚ÌƒNƒ‰ƒCƒAƒ“ƒgÀ•W‚É•ÏŠ·‚·‚é
-	//client_pos : ƒXƒNƒŠ[ƒ“À•W
-	//ret : ƒNƒ‰ƒCƒAƒ“ƒgÀ•W(ƒGƒ‰[‚Ìê‡0,0)
+	//ã‚¹ã‚¯ãƒªãƒ¼ãƒ³åº§æ¨™ã‚’ã“ã®ã‚¦ã‚¤ãƒ³ãƒ‰ã‚¦ã®ã‚¯ãƒ©ã‚¤ã‚¢ãƒ³ãƒˆåº§æ¨™ã«å¤‰æ›ã™ã‚‹
+	//client_pos : ã‚¹ã‚¯ãƒªãƒ¼ãƒ³åº§æ¨™
+	//ret : ã‚¯ãƒ©ã‚¤ã‚¢ãƒ³ãƒˆåº§æ¨™(ã‚¨ãƒ©ãƒ¼ã®å ´åˆ0,0)
 	virtual POINT Screen2Client( const POINT& client_pos ) const;
 
-	//ƒXƒNƒŠ[ƒ“À•W‚ð‚±‚ÌƒEƒCƒ“ƒhƒE‚ÌƒNƒ‰ƒCƒAƒ“ƒgÀ•W‚É•ÏŠ·‚·‚é
-	//x : ƒXƒNƒŠ[ƒ“À•W(XÀ•W)
-	//x : ƒXƒNƒŠ[ƒ“À•W(YÀ•W)
-	//ret : ƒNƒ‰ƒCƒAƒ“ƒgÀ•W(ƒGƒ‰[‚Ìê‡0,0)
+	//ã‚¹ã‚¯ãƒªãƒ¼ãƒ³åº§æ¨™ã‚’ã“ã®ã‚¦ã‚¤ãƒ³ãƒ‰ã‚¦ã®ã‚¯ãƒ©ã‚¤ã‚¢ãƒ³ãƒˆåº§æ¨™ã«å¤‰æ›ã™ã‚‹
+	//x : ã‚¹ã‚¯ãƒªãƒ¼ãƒ³åº§æ¨™(Xåº§æ¨™)
+	//x : ã‚¹ã‚¯ãƒªãƒ¼ãƒ³åº§æ¨™(Yåº§æ¨™)
+	//ret : ã‚¯ãƒ©ã‚¤ã‚¢ãƒ³ãƒˆåº§æ¨™(ã‚¨ãƒ©ãƒ¼ã®å ´åˆ0,0)
 	virtual POINT Screen2Client( INT x , INT y ) const;
 
-	//ƒtƒH[ƒJƒX‚ðÝ’è‚·‚é
-	//ret : ¬Œ÷Žžtrue
+	//ãƒ•ã‚©ãƒ¼ã‚«ã‚¹ã‚’è¨­å®šã™ã‚‹
+	//ret : æˆåŠŸæ™‚true
 	virtual bool SetFocus( void )const;
 
-	//ƒEƒCƒ“ƒhƒE‚ðˆÚ“®‚·‚é
+	//ã‚¦ã‚¤ãƒ³ãƒ‰ã‚¦ã‚’ç§»å‹•ã™ã‚‹
 	virtual void MoveWindowPosition( const RECT& pos );
 
 	//
@@ -181,31 +181,31 @@ protected:
 
 	friend class mGlobalWindowFunc;
 
-	//ƒEƒCƒ“ƒhƒEƒvƒƒV[ƒWƒƒ
-	//mWindow::WindowProcedure()‚ðŒÄ‚Ño‚µ‚½ê‡A
-	//(1)ƒEƒCƒ“ƒhƒEƒvƒƒV[ƒWƒƒ‚ª’u‚«Š·‚¦‚ç‚ê‚Ä‚¢‚ê‚ÎA’u‚«Š·‚¦‘O‚ÌƒEƒCƒ“ƒhƒEƒvƒƒV[ƒWƒƒ‚ÉA
-	//(2)ƒEƒCƒ“ƒhƒEƒvƒƒV[ƒWƒƒ‚ª’u‚«Š·‚¦‚ç‚ê‚Ä‚¢‚È‚¯‚ê‚ÎADefWindowProcW()‚É
-	//ƒƒbƒZ[ƒW‚ðˆ—‚³‚¹‚Ü‚·B
+	//ã‚¦ã‚¤ãƒ³ãƒ‰ã‚¦ãƒ—ãƒ­ã‚·ãƒ¼ã‚¸ãƒ£
+	//mWindow::WindowProcedure()ã‚’å‘¼ã³å‡ºã—ãŸå ´åˆã€
+	//(1)ã‚¦ã‚¤ãƒ³ãƒ‰ã‚¦ãƒ—ãƒ­ã‚·ãƒ¼ã‚¸ãƒ£ãŒç½®ãæ›ãˆã‚‰ã‚Œã¦ã„ã‚Œã°ã€ç½®ãæ›ãˆå‰ã®ã‚¦ã‚¤ãƒ³ãƒ‰ã‚¦ãƒ—ãƒ­ã‚·ãƒ¼ã‚¸ãƒ£ã«ã€
+	//(2)ã‚¦ã‚¤ãƒ³ãƒ‰ã‚¦ãƒ—ãƒ­ã‚·ãƒ¼ã‚¸ãƒ£ãŒç½®ãæ›ãˆã‚‰ã‚Œã¦ã„ãªã‘ã‚Œã°ã€DefWindowProcW()ã«
+	//ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸ã‚’å‡¦ç†ã•ã›ã¾ã™ã€‚
 	virtual LRESULT WindowProcedure( UINT msg , WPARAM wparam , LPARAM lparam );
 
 	//---------------------------------------
-	// ƒTƒuƒNƒ‰ƒX‚Ö‚ÌƒR[ƒ‹ƒoƒbƒNŠÖ”
+	// ã‚µãƒ–ã‚¯ãƒ©ã‚¹ã¸ã®ã‚³ãƒ¼ãƒ«ãƒãƒƒã‚¯é–¢æ•°
 	//---------------------------------------	
 	mWindow();
 	virtual ~mWindow();
 	friend class mWindowCollection;
 
-	//ƒEƒCƒ“ƒhƒEƒNƒ‰ƒX‚ÌÝ’è—p\‘¢‘Ì
+	//ã‚¦ã‚¤ãƒ³ãƒ‰ã‚¦ã‚¯ãƒ©ã‚¹ã®è¨­å®šç”¨æ§‹é€ ä½“
 	struct WindowClassSetting
 	{
-		WString ClassName;	//“o˜^‚·‚éƒNƒ‰ƒX‚Ì–¼‘OB
-		UINT Style;			//ƒXƒ^ƒCƒ‹
-		HICON Icon;			//ŠÖ˜A‚Ã‚¯‚éƒAƒCƒRƒ“
-		HICON IconSmall;	//ƒAƒCƒRƒ“‚Ì¬‚³‚¢•û
-		HCURSOR Cursor;		//ƒJ[ƒ\ƒ‹
-		HBRUSH Background;	//ƒoƒbƒNƒOƒ‰ƒEƒ“ƒh‚ð“h‚è‚Â‚Ô‚·‚Ì‚ÉŽg‚¤ƒuƒ‰ƒV
+		WString ClassName;	//ç™»éŒ²ã™ã‚‹ã‚¯ãƒ©ã‚¹ã®åå‰ã€‚
+		UINT Style;			//ã‚¹ã‚¿ã‚¤ãƒ«
+		HICON Icon;			//é–¢é€£ã¥ã‘ã‚‹ã‚¢ã‚¤ã‚³ãƒ³
+		HICON IconSmall;	//ã‚¢ã‚¤ã‚³ãƒ³ã®å°ã•ã„æ–¹
+		HCURSOR Cursor;		//ã‚«ãƒ¼ã‚½ãƒ«
+		HBRUSH Background;	//ãƒãƒƒã‚¯ã‚°ãƒ©ã‚¦ãƒ³ãƒ‰ã‚’å¡—ã‚Šã¤ã¶ã™ã®ã«ä½¿ã†ãƒ–ãƒ©ã‚·
 
-		//ƒfƒtƒHƒ‹ƒg’l‚ÌÝ’è
+		//ãƒ‡ãƒ•ã‚©ãƒ«ãƒˆå€¤ã®è¨­å®š
 		WindowClassSetting()
 		{
 			ClassName = L"";
@@ -217,33 +217,33 @@ protected:
 		}
 	};
 
-	//ƒEƒCƒ“ƒhƒEƒNƒ‰ƒX‚Ì“o˜^‚ð‚·‚é
-	//retSetting : Ý’è‚ð•Ô‚·‚½‚ß‚Ì\‘¢‘Ì
-	//opt : ƒ†[ƒU’è‹`‚Ìî•ñ(mWindowFactory‚É“n‚µ‚½‚à‚Ì‚ª‚»‚Ì‚Ü‚Ü“n‚Á‚Ä‚­‚é)
-	//ret : ƒEƒCƒ“ƒhƒEƒNƒ‰ƒX‚Ì“o˜^‚ðs‚¤ê‡true
-	//      ƒEƒCƒ“ƒhƒEƒNƒ‰ƒX‚Ì“o˜^‚ðs‚í‚È‚¢ê‡‚Ífalse
-	//      (’è‹`Ï‚ÝƒRƒ“ƒgƒ[ƒ‹ƒNƒ‰ƒX‚ð—˜—p‚·‚éê‡‚È‚Ç)
-	//¦mWindow::WindowClassSettingCallback()‚Í‰½‚à‚¹‚¸false‚ð•Ô‚·‚¾‚¯‚É‚È‚Á‚Ä‚¢‚Ü‚·
+	//ã‚¦ã‚¤ãƒ³ãƒ‰ã‚¦ã‚¯ãƒ©ã‚¹ã®ç™»éŒ²ã‚’ã™ã‚‹
+	//retSetting : è¨­å®šã‚’è¿”ã™ãŸã‚ã®æ§‹é€ ä½“
+	//opt : ãƒ¦ãƒ¼ã‚¶å®šç¾©ã®æƒ…å ±(mWindowFactoryã«æ¸¡ã—ãŸã‚‚ã®ãŒãã®ã¾ã¾æ¸¡ã£ã¦ãã‚‹)
+	//ret : ã‚¦ã‚¤ãƒ³ãƒ‰ã‚¦ã‚¯ãƒ©ã‚¹ã®ç™»éŒ²ã‚’è¡Œã†å ´åˆtrue
+	//      ã‚¦ã‚¤ãƒ³ãƒ‰ã‚¦ã‚¯ãƒ©ã‚¹ã®ç™»éŒ²ã‚’è¡Œã‚ãªã„å ´åˆã¯false
+	//      (å®šç¾©æ¸ˆã¿ã‚³ãƒ³ãƒˆãƒ­ãƒ¼ãƒ«ã‚¯ãƒ©ã‚¹ã‚’åˆ©ç”¨ã™ã‚‹å ´åˆãªã©)
+	//â€»mWindow::WindowClassSettingCallback()ã¯ä½•ã‚‚ã›ãšfalseã‚’è¿”ã™ã ã‘ã«ãªã£ã¦ã„ã¾ã™
 	virtual bool WindowClassSettingCallback( WindowClassSetting& retSetting , const void* opt );
 
-	//ƒEƒCƒ“ƒhƒEì¬î•ñ
+	//ã‚¦ã‚¤ãƒ³ãƒ‰ã‚¦ä½œæˆæƒ…å ±
 	struct CreateWindowSetting
 	{
-		WString ClassName;		//ƒEƒCƒ“ƒhƒE‚Ìì¬‚ÉŽg‚¤ƒEƒCƒ“ƒhƒEƒNƒ‰ƒX
-		WString WindowName;		//ƒEƒCƒ“ƒhƒE‚Ì–¼‘Oiƒ^ƒCƒgƒ‹j
-		DWORD Style;			//ƒXƒ^ƒCƒ‹‚P
-		DWORD ExStyle;			//ƒXƒ^ƒCƒ‹‚Q
-		INT x;					//XÀ•W
-		INT y;					//YÀ•W
-		INT Width;				//•
-		INT Height;				//‚‚³
+		WString ClassName;		//ã‚¦ã‚¤ãƒ³ãƒ‰ã‚¦ã®ä½œæˆã«ä½¿ã†ã‚¦ã‚¤ãƒ³ãƒ‰ã‚¦ã‚¯ãƒ©ã‚¹
+		WString WindowName;		//ã‚¦ã‚¤ãƒ³ãƒ‰ã‚¦ã®åå‰ï¼ˆã‚¿ã‚¤ãƒˆãƒ«ï¼‰
+		DWORD Style;			//ã‚¹ã‚¿ã‚¤ãƒ«ï¼‘
+		DWORD ExStyle;			//ã‚¹ã‚¿ã‚¤ãƒ«ï¼’
+		INT x;					//Xåº§æ¨™
+		INT y;					//Yåº§æ¨™
+		INT Width;				//å¹…
+		INT Height;				//é«˜ã•
 
-		//true‚É‚·‚é‚ÆƒEƒCƒ“ƒhƒEƒvƒƒV[ƒWƒƒ‚ð’u‚«Š·‚¦‚Ü‚·
-		//ƒ{ƒ^ƒ“‚È‚ÇƒRƒ‚ƒ“ƒRƒ“ƒgƒ[ƒ‹‚ÅƒIƒŠƒWƒiƒ‹‚È“®ì‚ð‚³‚¹‚½‚¢ê‡A
-		//‚±‚ê‚ðtrue‚É‚·‚é‚±‚Æ‚ÆƒTƒuƒNƒ‰ƒX‰»‚³‚êAƒEƒCƒ“ƒhƒEƒƒbƒZ[ƒW‚ðŽæ“¾‚Å‚«‚é‚æ‚¤‚É‚È‚è‚Ü‚·B
+		//trueã«ã™ã‚‹ã¨ã‚¦ã‚¤ãƒ³ãƒ‰ã‚¦ãƒ—ãƒ­ã‚·ãƒ¼ã‚¸ãƒ£ã‚’ç½®ãæ›ãˆã¾ã™
+		//ãƒœã‚¿ãƒ³ãªã©ã‚³ãƒ¢ãƒ³ã‚³ãƒ³ãƒˆãƒ­ãƒ¼ãƒ«ã§ã‚ªãƒªã‚¸ãƒŠãƒ«ãªå‹•ä½œã‚’ã•ã›ãŸã„å ´åˆã€
+		//ã“ã‚Œã‚’trueã«ã™ã‚‹ã“ã¨ã¨ã‚µãƒ–ã‚¯ãƒ©ã‚¹åŒ–ã•ã‚Œã€ã‚¦ã‚¤ãƒ³ãƒ‰ã‚¦ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸ã‚’å–å¾—ã§ãã‚‹ã‚ˆã†ã«ãªã‚Šã¾ã™ã€‚
 		bool ProcedureChange;
 
-		//ƒfƒtƒHƒ‹ƒg’l‚ÌÝ’è
+		//ãƒ‡ãƒ•ã‚©ãƒ«ãƒˆå€¤ã®è¨­å®š
 		CreateWindowSetting()
 		{
 			ClassName = L"";
@@ -258,19 +258,19 @@ protected:
 		}
 	};
 
-	//ƒEƒCƒ“ƒhƒE‚ðŠJ‚­
-	//retSetting : ƒEƒCƒ“ƒhƒEì¬‚Ì‚½‚ß‚Ìî•ñ
-	//opt : ƒ†[ƒU’è‹`‚Ìî•ñ(mWindowFactory‚É“n‚µ‚½‚à‚Ì‚ª‚»‚Ì‚Ü‚Ü“n‚Á‚Ä‚­‚é)
-	//ret : ƒEƒCƒ“ƒhƒE‚ðì¬‚·‚éê‡‚ÍtrueBƒEƒCƒ“ƒhƒE‚ðì¬‚µ‚È‚¢ê‡‚ÍfalseB
-	//      ¦false‚ð•Ô‚µ‚½ê‡‚ÍAretSetting‚Ì“à—e‚Í‘S‚Ä–³Ž‹‚³‚êAŽ©•ª‚ÅƒEƒCƒ“ƒhƒE‚ð¶¬‚·‚é•K—v‚ª‚ ‚è‚Ü‚·B
+	//ã‚¦ã‚¤ãƒ³ãƒ‰ã‚¦ã‚’é–‹ã
+	//retSetting : ã‚¦ã‚¤ãƒ³ãƒ‰ã‚¦ä½œæˆã®ãŸã‚ã®æƒ…å ±
+	//opt : ãƒ¦ãƒ¼ã‚¶å®šç¾©ã®æƒ…å ±(mWindowFactoryã«æ¸¡ã—ãŸã‚‚ã®ãŒãã®ã¾ã¾æ¸¡ã£ã¦ãã‚‹)
+	//ret : ã‚¦ã‚¤ãƒ³ãƒ‰ã‚¦ã‚’ä½œæˆã™ã‚‹å ´åˆã¯trueã€‚ã‚¦ã‚¤ãƒ³ãƒ‰ã‚¦ã‚’ä½œæˆã—ãªã„å ´åˆã¯falseã€‚
+	//      â€»falseã‚’è¿”ã—ãŸå ´åˆã¯ã€retSettingã®å†…å®¹ã¯å…¨ã¦ç„¡è¦–ã•ã‚Œã€è‡ªåˆ†ã§ã‚¦ã‚¤ãƒ³ãƒ‰ã‚¦ã‚’ç”Ÿæˆã™ã‚‹å¿…è¦ãŒã‚ã‚Šã¾ã™ã€‚
 	virtual bool CreateWindowCallback( CreateWindowSetting& retSetting , const void* opt ) = 0;
 
-	//ƒEƒCƒ“ƒhƒE¶¬‚ðŠ®—¹‚µ‚½ê‡‚ÉƒR[ƒ‹‚³‚ê‚é
-	//ret : ÅI“I‚É–â‘è‚È‚©‚Á‚½ê‡‚Ítrue
-	//      ¦false‚ð•Ô‚µ‚½ê‡‚ÍAƒEƒCƒ“ƒhƒE‚Ì¶¬‚ªƒLƒƒƒ“ƒZƒ‹‚³‚ê‚éB
+	//ã‚¦ã‚¤ãƒ³ãƒ‰ã‚¦ç”Ÿæˆã‚’å®Œäº†ã—ãŸå ´åˆã«ã‚³ãƒ¼ãƒ«ã•ã‚Œã‚‹
+	//ret : æœ€çµ‚çš„ã«å•é¡Œãªã‹ã£ãŸå ´åˆã¯true
+	//      â€»falseã‚’è¿”ã—ãŸå ´åˆã¯ã€ã‚¦ã‚¤ãƒ³ãƒ‰ã‚¦ã®ç”ŸæˆãŒã‚­ãƒ£ãƒ³ã‚»ãƒ«ã•ã‚Œã‚‹ã€‚
 	virtual bool OnCreate( const void* opt );
 
-	//ƒEƒCƒ“ƒhƒE‚ª”jŠü‚³‚ê‚æ‚¤‚Æ‚µ‚Ä‚¢‚é‚Æ‚«ƒR[ƒ‹‚³‚ê‚é
+	//ã‚¦ã‚¤ãƒ³ãƒ‰ã‚¦ãŒç ´æ£„ã•ã‚Œã‚ˆã†ã¨ã—ã¦ã„ã‚‹ã¨ãã‚³ãƒ¼ãƒ«ã•ã‚Œã‚‹
 	virtual void OnDestroy( void );
 
 private:
@@ -278,45 +278,45 @@ private:
 	mWindow( const mWindow& src ) = delete;
 	mWindow& operator=( const mWindow& src ) = delete;
 
-	//‚±‚ÌƒEƒCƒ“ƒhƒE‚É‘Î‚·‚éƒEƒCƒ“ƒhƒEƒNƒ‰ƒX‚Ì–¼‘O
+	//ã“ã®ã‚¦ã‚¤ãƒ³ãƒ‰ã‚¦ã«å¯¾ã™ã‚‹ã‚¦ã‚¤ãƒ³ãƒ‰ã‚¦ã‚¯ãƒ©ã‚¹ã®åå‰
 	WString MyWindowClass;
 
-	//ƒEƒCƒ“ƒhƒEƒNƒ‰ƒX‚ÍŽ©•ªŽ©g‚Å“o˜^‚µ‚½‚à‚Ì‚©H(Yes=true)
+	//ã‚¦ã‚¤ãƒ³ãƒ‰ã‚¦ã‚¯ãƒ©ã‚¹ã¯è‡ªåˆ†è‡ªèº«ã§ç™»éŒ²ã—ãŸã‚‚ã®ã‹ï¼Ÿ(Yes=true)
 	bool MyIsWindowClassOriginal;
 
-	//‚±‚ÌƒEƒCƒ“ƒhƒE‚Ìƒnƒ“ƒhƒ‹
+	//ã“ã®ã‚¦ã‚¤ãƒ³ãƒ‰ã‚¦ã®ãƒãƒ³ãƒ‰ãƒ«
 	HWND MyHwnd;
 
-	//‚±‚ÌƒEƒCƒ“ƒhƒE‚ÌeƒEƒCƒ“ƒhƒE‚Ìƒnƒ“ƒhƒ‹
+	//ã“ã®ã‚¦ã‚¤ãƒ³ãƒ‰ã‚¦ã®è¦ªã‚¦ã‚¤ãƒ³ãƒ‰ã‚¦ã®ãƒãƒ³ãƒ‰ãƒ«
 	HWND MyParent;
 
-	//‚±‚ÌƒEƒCƒ“ƒhƒE‚ÌÅãˆÊƒEƒCƒ“ƒhƒE‚Ìƒnƒ“ƒhƒ‹
+	//ã“ã®ã‚¦ã‚¤ãƒ³ãƒ‰ã‚¦ã®æœ€ä¸Šä½ã‚¦ã‚¤ãƒ³ãƒ‰ã‚¦ã®ãƒãƒ³ãƒ‰ãƒ«
 	HWND MyRoot;
 
-	//’u‚«Š·‚¦‘O‚ÌƒEƒCƒ“ƒhƒEƒvƒƒV[ƒWƒƒ
+	//ç½®ãæ›ãˆå‰ã®ã‚¦ã‚¤ãƒ³ãƒ‰ã‚¦ãƒ—ãƒ­ã‚·ãƒ¼ã‚¸ãƒ£
 	WNDPROC MyDefWndproc;
 
-	//ƒEƒCƒ“ƒhƒE‚Ì”z’uî•ñ
+	//ã‚¦ã‚¤ãƒ³ãƒ‰ã‚¦ã®é…ç½®æƒ…å ±
 	WindowPosition MyPosition;
 
 protected:
 
-	//ŽqƒEƒCƒ“ƒhƒE‚ÌƒRƒŒƒNƒVƒ‡ƒ“
+	//å­ã‚¦ã‚¤ãƒ³ãƒ‰ã‚¦ã®ã‚³ãƒ¬ã‚¯ã‚·ãƒ§ãƒ³
 	mWindowCollection* MyChild;
 
-	//GDIƒŠƒ\[ƒX‚ÌƒRƒŒƒNƒVƒ‡ƒ“
+	//GDIãƒªã‚½ãƒ¼ã‚¹ã®ã‚³ãƒ¬ã‚¯ã‚·ãƒ§ãƒ³
 	mGdiResource MyGdiResource;
 
-	//ƒƒjƒ…[‚Ìƒnƒ“ƒhƒ‹
+	//ãƒ¡ãƒ‹ãƒ¥ãƒ¼ã®ãƒãƒ³ãƒ‰ãƒ«
 	mMenu* MyMenu;
 
-	//Ž©•ªŽ©g‚ÌƒEƒCƒ“ƒhƒEƒnƒ“ƒhƒ‹‚ðŽæ“¾‚·‚é
+	//è‡ªåˆ†è‡ªèº«ã®ã‚¦ã‚¤ãƒ³ãƒ‰ã‚¦ãƒãƒ³ãƒ‰ãƒ«ã‚’å–å¾—ã™ã‚‹
 	HWND GetMyHwnd( void )const;
 
-	//eƒEƒCƒ“ƒhƒE‚Ìƒnƒ“ƒhƒ‹‚ðŽæ“¾‚·‚é
+	//è¦ªã‚¦ã‚¤ãƒ³ãƒ‰ã‚¦ã®ãƒãƒ³ãƒ‰ãƒ«ã‚’å–å¾—ã™ã‚‹
 	HWND GetMyParent( void )const;
 
-	//ÅãˆÊƒEƒCƒ“ƒhƒE‚Ìƒnƒ“ƒhƒ‹‚ðŽæ“¾‚·‚é
+	//æœ€ä¸Šä½ã‚¦ã‚¤ãƒ³ãƒ‰ã‚¦ã®ãƒãƒ³ãƒ‰ãƒ«ã‚’å–å¾—ã™ã‚‹
 	HWND GetMyRoot( void )const;
 
 };

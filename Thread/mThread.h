@@ -1,11 +1,11 @@
-//----------------------------------------------------------------------------
-// ���[�J�[�X���b�h���^�X�N�n���h��
+﻿//----------------------------------------------------------------------------
+// ワーカースレッド＆タスクハンドラ
 // Copyright (C) 2019- Crea Inc. All rights reserved.
 // This program is released under the MIT License. 
 // see http://opensource.org/licenses/mit-license.php
-// ���쌠�\���⃉�C�Z���X�̉��ς͋֎~����Ă��܂��B
-// ���̃\�[�X�R�[�h�Ɋւ��āA��L���C�Z���X�ȊO�̌_�񓙂͈�ؑ��݂��܂���B
-// (���炩�̌_�񂪂���ꍇ�ł��A�{�\�[�X�R�[�h�͂��̑ΏۊO�ƂȂ�܂�)
+// 著作権表示やライセンスの改変は禁止されています。
+// このソースコードに関して、上記ライセンス以外の契約等は一切存在しません。
+// (何らかの契約がある場合でも、本ソースコードはその対象外となります)
 //----------------------------------------------------------------------------
 
 #ifndef MTHREAD_H_INCLUDED
@@ -15,14 +15,14 @@
 #include <process.h>
 #include <memory>
 
-//�X���b�h�̃x�[�X�N���X
+//スレッドのベースクラス
 
 //HOW TO USE
-//1.���̃N���X���p�����ATaskFunction()�ɕʃX���b�h�Ŏ��s����������������
-//2.Begin()�Ƀ��[�U��`�̈�����n��
-//3.TaskFunction()���ʃX���b�h������s�����
-//4.TaskFunction()���Ԃ�ƃX���b�h���I������
-//5.�X���b�h���I������O�ɃI�u�W�F�N�g�̃C���X�^���X���폜����ƌ��ʂ��s��ɂȂ�
+//1.このクラスを継承し、TaskFunction()に別スレッドで実行したい処理を書く
+//2.Begin()にユーザ定義の引数を渡す
+//3.TaskFunction()が別スレッドから実行される
+//4.TaskFunction()が返るとスレッドが終了する
+//5.スレッドが終了する前にオブジェクトのインスタンスを削除すると結果が不定になる
 
 class mThread
 {
@@ -34,52 +34,52 @@ public:
 	mThread();
 	virtual ~mThread();
 
-	//�X���b�h���J�n����
-	//arg : �X���b�h�ɓn������
-	//�X���b�h�̓T�X�y���h��ԂŊJ�n���܂��B
-	//ret : �������^
+	//スレッドを開始する
+	//arg : スレッドに渡す引数
+	//スレッドはサスペンド状態で開始します。
+	//ret : 成功時真
 	bool Begin( std::shared_ptr<void> arg );
 
-	//�X���b�h���J�n����
-	//�X���b�h�̓T�X�y���h��ԂŊJ�n���܂��B
-	//ret : �������^
+	//スレッドを開始する
+	//スレッドはサスペンド状態で開始します。
+	//ret : 成功時真
 	bool Begin( void );
 
-	//�X���b�h�ɑ΂���v���Z�b�T�R�A�̐e�a�����Z�b�g����
-	// mask : �A�t�B�j�e�B�}�X�N
+	//スレッドに対するプロセッサコアの親和性をセットする
+	// mask : アフィニティマスク
 	bool SetAffinityMask( DWORD_PTR mask );
 
-	//��~���̃X���b�h���ĊJ����
-	//retPrevCount : �w�肷��Ǝ��s�O�̃T�X�y���h�J�E���g�̒l��Ԃ��܂�
-	//ret : �������^
+	//停止中のスレッドを再開する
+	//retPrevCount : 指定すると実行前のサスペンドカウントの値を返します
+	//ret : 成功時真
 	threadsafe bool Resume( DWORD* retPrevCount = nullptr );
 
-	//���s���̃X���b�h���~����
-	//retPrevCount : �w�肷��Ǝ��s�O�̃T�X�y���h�J�E���g�̒l��Ԃ��܂�
-	//ret : �������^
+	//実行中のスレッドを停止する
+	//retPrevCount : 指定すると実行前のサスペンドカウントの値を返します
+	//ret : 成功時真
 	threadsafe bool Suspend( DWORD* retPrevCount = nullptr );
 
-	//�X���b�h���I������
-	//ret : �������^
-	//�E�X���b�h���I������܂Ő����Ԃ��܂���
-	//�E�X���b�h���T�X�y���h���Ă���Ƃ��ɂ��̊֐����ĂԂƎ��s���܂�
-	//�E�Ăяo�������g�̃X���b�h���I�����邱�Ƃ͂ł��܂���
+	//スレッドを終了する
+	//ret : 成功時真
+	//・スレッドが終了するまで制御を返しません
+	//・スレッドがサスペンドしているときにこの関数を呼ぶと失敗します
+	//・呼び出し元自身のスレッドを終了することはできません
 	threadsafe bool End( void );
 
-	//�X���b�h�ɏI������悤�w������
-	//�E�w�����邾���ŁA���ۂɏI������܂łɂ̓^�C�����O������
-	//�E�Ăяo�������g�̃X���b�h�ɑ΂��ČĂяo�����Ƃ��ł��܂�
-	//ret : �������^
+	//スレッドに終了するよう指示する
+	//・指示するだけで、実際に終了するまでにはタイムラグがある
+	//・呼び出し元自身のスレッドに対して呼び出すこともできます
+	//ret : 成功時真
 	threadsafe bool FinishRequest( void );
 
-	//�X���b�h��(������)�I������
-	//ret : �������^
+	//スレッドを(強引に)終了する
+	//ret : 成功時真
 	bool Terminate( void );
 
-	//�X���b�h�����s�����ۂ��𒲂ׂ�
+	//スレッドが実行中か否かを調べる
 	threadsafe bool IsValid( void )const;
 
-	//�X���b�hID�𓾂�
+	//スレッドIDを得る
 	threadsafe unsigned int GetThreadId( void )const;
 
 private:
@@ -87,25 +87,25 @@ private:
 	mThread( const mThread& src );
 	const mThread& operator=( const mThread& src );
 
-	//�X���b�h�Ŏ��s���鏈��
+	//スレッドで実行する処理
 	virtual unsigned int TaskFunction() = 0;
 
-	//�ϐ�������
+	//変数初期化
 	bool Clear( void );
 
 protected:
 
-	//�X���b�h�̃n���h��
+	//スレッドのハンドル
 	HANDLE MyHandle;
 
-	//�X���b�hID
+	//スレッドID
 	unsigned int MyThreadId;
 
-	//�X���b�h�̏I���V�O�i��
-	//FinishRequest���Ă΂��ƃV�O�i����ԂɂȂ�
+	//スレッドの終了シグナル
+	//FinishRequestが呼ばれるとシグナル状態になる
 	HANDLE MyTerminateSignal;
 
-	//Begin()�œn���ꂽ����
+	//Begin()で渡された引数
 	std::shared_ptr<void> MyArg;
 
 };

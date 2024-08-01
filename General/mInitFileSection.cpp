@@ -1,11 +1,11 @@
-//----------------------------------------------------------------------------
-// INIƒtƒ@ƒCƒ‹“Ç‚İ‚İ‘€ì
+ï»¿//----------------------------------------------------------------------------
+// INIãƒ•ã‚¡ã‚¤ãƒ«èª­ã¿è¾¼ã¿æ“ä½œ
 // Copyright (C) 2013,2016 Fingerling. All rights reserved. 
 // Copyright (C) 2018- Crea Inc. All rights reserved.
 // This program is released under the MIT License. 
 // see http://opensource.org/licenses/mit-license.php
-// ’˜ìŒ •\¦‚âƒ‰ƒCƒZƒ“ƒX‚Ì‰ü•Ï‚Í‹Ö~‚³‚ê‚Ä‚¢‚Ü‚·B
-// ‚±‚Ìƒ\[ƒXƒR[ƒh‚ÉŠÖ‚µ‚ÄAã‹Lƒ‰ƒCƒZƒ“ƒXˆÈŠO‚ÌŒ_–ñ“™‚ÍˆêØ‘¶İ‚µ‚Ü‚¹‚ñB
+// è‘—ä½œæ¨©è¡¨ç¤ºã‚„ãƒ©ã‚¤ã‚»ãƒ³ã‚¹ã®æ”¹å¤‰ã¯ç¦æ­¢ã•ã‚Œã¦ã„ã¾ã™ã€‚
+// ã“ã®ã‚½ãƒ¼ã‚¹ã‚³ãƒ¼ãƒ‰ã«é–¢ã—ã¦ã€ä¸Šè¨˜ãƒ©ã‚¤ã‚»ãƒ³ã‚¹ä»¥å¤–ã®å¥‘ç´„ç­‰ã¯ä¸€åˆ‡å­˜åœ¨ã—ã¾ã›ã‚“ã€‚
 //----------------------------------------------------------------------------
 
 #define MINITFILESECTION_CPP_COMPINLING
@@ -37,22 +37,22 @@ mInitFileSection& mInitFileSection::operator=( const mInitFileSection& src )
 }
 
 
-//w’è‚µ‚½ƒL[‚ª‘¶İ‚·‚é‚©•Ô‚·
+//æŒ‡å®šã—ãŸã‚­ãƒ¼ãŒå­˜åœ¨ã™ã‚‹ã‹è¿”ã™
 bool mInitFileSection::IsValidKey( const WString& key )const noexcept
 {
 	return IsValidKey( key , 0 , L"" );
 }
 
-//w’è‚µ‚½ƒL[‚ª‘¶İ‚·‚é‚©•Ô‚·
+//æŒ‡å®šã—ãŸã‚­ãƒ¼ãŒå­˜åœ¨ã™ã‚‹ã‹è¿”ã™
 bool mInitFileSection::IsValidKey( const WString& key , INT index )const noexcept
 {
 	return IsValidKey( key , index , L"" );
 }
 
-//w’è‚µ‚½ƒL[‚ª‘¶İ‚·‚é‚©•Ô‚·
+//æŒ‡å®šã—ãŸã‚­ãƒ¼ãŒå­˜åœ¨ã™ã‚‹ã‹è¿”ã™
 bool mInitFileSection::IsValidKey( const WString& key , INT index , const WString& subkey )const noexcept
 {
-	//İ’è’l‚ğæ“¾
+	//è¨­å®šå€¤ã‚’å–å¾—
 	Key tmpkey;
 	tmpkey.key = key;
 	tmpkey.index = index;
@@ -60,22 +60,22 @@ bool mInitFileSection::IsValidKey( const WString& key , INT index , const WStrin
 	return MyKeyValueMap.count( tmpkey ) != 0;
 }
 
-//w’è‚µ‚½ƒL[‚ª‘¶İ‚·‚é‚©•Ô‚·
+//æŒ‡å®šã—ãŸã‚­ãƒ¼ãŒå­˜åœ¨ã™ã‚‹ã‹è¿”ã™
 bool mInitFileSection::IsValidKey( const WString& key , const WString& subkey )const noexcept
 {
 	return IsValidKey( key , 0 , subkey );
 }
 
-//ƒL[‚Ì’l‚ğ32ƒrƒbƒgINT‚Ì’l‚Æ‚µ‚Ä“Ç‚İæ‚é
+//ã‚­ãƒ¼ã®å€¤ã‚’32ãƒ“ãƒƒãƒˆINTã®å€¤ã¨ã—ã¦èª­ã¿å–ã‚‹
 INT mInitFileSection::GetValue( const WString& key , INT index , const WString& subkey , INT defvalue , bool* retIsReadable )const noexcept
 {
-	//İ’è’l‚ğæ“¾
+	//è¨­å®šå€¤ã‚’å–å¾—
 	Key tmpkey;
 	tmpkey.key = key;
 	tmpkey.index = index;
 	tmpkey.subkey = subkey;
 
-	//ƒL[‚É‘Î‰‚·‚é•¶š—ñ‚ğæ“¾
+	//ã‚­ãƒ¼ã«å¯¾å¿œã™ã‚‹æ–‡å­—åˆ—ã‚’å–å¾—
 	KeyValueMap::const_iterator itr = MyKeyValueMap.find( tmpkey );
 	if( itr == MyKeyValueMap.end() )
 	{
@@ -83,11 +83,11 @@ INT mInitFileSection::GetValue( const WString& key , INT index , const WString& 
 		return defvalue;
 	}
 
-	//æ“¾‚µ‚½•¶š—ñ‚ğ”’l‚É•ÏŠ·‚·‚é
+	//å–å¾—ã—ãŸæ–‡å­—åˆ—ã‚’æ•°å€¤ã«å¤‰æ›ã™ã‚‹
 	INT val;
 	if( wchar_sscanf( itr->second.c_str() , L"0x%x" , &val ) == 1 )
 	{
-		//0x‚Ån‚Ü‚Á‚Ä‚¢‚éê‡‚Í16i”‚Æ‚µ‚Ä“Ç‚İæ‚é
+		//0xã§å§‹ã¾ã£ã¦ã„ã‚‹å ´åˆã¯16é€²æ•°ã¨ã—ã¦èª­ã¿å–ã‚‹
 		SetReadable( retIsReadable );
 		return val;
 	}
@@ -103,26 +103,26 @@ INT mInitFileSection::GetValue( const WString& key , INT index , const WString& 
 	}
 }
 
-//ƒL[‚Ì’l‚ğ32ƒrƒbƒgLONG‚Ì’l‚Æ‚µ‚Ä“Ç‚İæ‚é
-//key : “Ç‚İæ‚è‚½‚¢ƒL[
-//defvalue : ƒL[‚ğ“Ç‚İæ‚ê‚È‚©‚Á‚½ê‡‚Ì’l
-//ret : “Ç‚İæ‚Á‚½’lB“Ç‚İæ‚ê‚È‚©‚Á‚½ê‡‚Ídefvalue‚Ì’l
+//ã‚­ãƒ¼ã®å€¤ã‚’32ãƒ“ãƒƒãƒˆLONGã®å€¤ã¨ã—ã¦èª­ã¿å–ã‚‹
+//key : èª­ã¿å–ã‚ŠãŸã„ã‚­ãƒ¼
+//defvalue : ã‚­ãƒ¼ã‚’èª­ã¿å–ã‚Œãªã‹ã£ãŸå ´åˆã®å€¤
+//ret : èª­ã¿å–ã£ãŸå€¤ã€‚èª­ã¿å–ã‚Œãªã‹ã£ãŸå ´åˆã¯defvalueã®å€¤
 LONG mInitFileSection::GetValue( const WString& key , INT index , const WString& subkey , LONG defvalue , bool* retIsReadable )const noexcept
 {
 	static_assert( sizeof( INT ) == sizeof( LONG ) , "sizeof int is not equal to sizeof long" );
 	return (LONG)GetValue( key , index , subkey , (INT)defvalue );
 }
 
-//ƒL[‚Ì’l‚ğ64ƒrƒbƒgINT‚Ì’l‚Æ‚µ‚Ä“Ç‚İæ‚é
+//ã‚­ãƒ¼ã®å€¤ã‚’64ãƒ“ãƒƒãƒˆINTã®å€¤ã¨ã—ã¦èª­ã¿å–ã‚‹
 LONGLONG mInitFileSection::GetValue( const WString& key , INT index , const WString& subkey , LONGLONG defvalue , bool* retIsReadable )const noexcept
 {
-	//İ’è’l‚ğæ“¾
+	//è¨­å®šå€¤ã‚’å–å¾—
 	Key tmpkey;
 	tmpkey.key = key;
 	tmpkey.index = index;
 	tmpkey.subkey = subkey;
 
-	//ƒL[‚É‘Î‰‚·‚é•¶š—ñ‚ğæ“¾
+	//ã‚­ãƒ¼ã«å¯¾å¿œã™ã‚‹æ–‡å­—åˆ—ã‚’å–å¾—
 	KeyValueMap::const_iterator itr = MyKeyValueMap.find( tmpkey );
 	if( itr == MyKeyValueMap.end() )
 	{
@@ -130,11 +130,11 @@ LONGLONG mInitFileSection::GetValue( const WString& key , INT index , const WStr
 		return defvalue;
 	}
 
-	//æ“¾‚µ‚½•¶š—ñ‚ğ”’l‚É•ÏŠ·‚·‚é
+	//å–å¾—ã—ãŸæ–‡å­—åˆ—ã‚’æ•°å€¤ã«å¤‰æ›ã™ã‚‹
 	LONGLONG val;
 	if( wchar_sscanf( itr->second.c_str() , L"0x%llx" , &val ) == 1 )
 	{
-		//0x‚Ån‚Ü‚Á‚Ä‚¢‚éê‡‚Í16i”‚Æ‚µ‚Ä“Ç‚İæ‚é
+		//0xã§å§‹ã¾ã£ã¦ã„ã‚‹å ´åˆã¯16é€²æ•°ã¨ã—ã¦èª­ã¿å–ã‚‹
 		SetReadable( retIsReadable );
 		return val;
 	}
@@ -151,23 +151,23 @@ LONGLONG mInitFileSection::GetValue( const WString& key , INT index , const WStr
 
 }
 
-//ƒL[‚Ì’l‚ğ32ƒrƒbƒgUINT‚Æ‚µ‚Ä“Ç‚İæ‚é
+//ã‚­ãƒ¼ã®å€¤ã‚’32ãƒ“ãƒƒãƒˆUINTã¨ã—ã¦èª­ã¿å–ã‚‹
 UINT mInitFileSection::GetValue( const WString& key , INT index , const WString& subkey , UINT defvalue , bool* retIsReadable )const noexcept
 {
 	static_assert( sizeof( UINT ) == sizeof( DWORD ) , "unexpected data size" );
 	return GetValue( key , index , subkey , static_cast<DWORD>( defvalue ) );
 }
 
-//ƒL[‚Ì’l‚ğ32ƒrƒbƒgDWORD‚Æ‚µ‚Ä“Ç‚İæ‚é
+//ã‚­ãƒ¼ã®å€¤ã‚’32ãƒ“ãƒƒãƒˆDWORDã¨ã—ã¦èª­ã¿å–ã‚‹
 DWORD mInitFileSection::GetValue( const WString& key , INT index , const WString& subkey , DWORD defvalue , bool* retIsReadable )const noexcept
 {
-	//İ’è’l‚ğæ“¾
+	//è¨­å®šå€¤ã‚’å–å¾—
 	Key tmpkey;
 	tmpkey.key = key;
 	tmpkey.index = index;
 	tmpkey.subkey = subkey;
 
-	//ƒL[‚É‘Î‰‚·‚é•¶š—ñ‚ğæ“¾
+	//ã‚­ãƒ¼ã«å¯¾å¿œã™ã‚‹æ–‡å­—åˆ—ã‚’å–å¾—
 	KeyValueMap::const_iterator itr = MyKeyValueMap.find( tmpkey );
 	if( itr == MyKeyValueMap.end() )
 	{
@@ -175,11 +175,11 @@ DWORD mInitFileSection::GetValue( const WString& key , INT index , const WString
 		return defvalue;
 	}
 
-	//æ“¾‚µ‚½•¶š—ñ‚ğ”’l‚É•ÏŠ·‚·‚é
+	//å–å¾—ã—ãŸæ–‡å­—åˆ—ã‚’æ•°å€¤ã«å¤‰æ›ã™ã‚‹
 	DWORD val;
 	if( wchar_sscanf( itr->second.c_str() , L"0x%x" , &val ) == 1 )
 	{
-		//0x‚Ån‚Ü‚Á‚Ä‚¢‚éê‡‚Í16i”‚Æ‚µ‚Ä“Ç‚İæ‚é
+		//0xã§å§‹ã¾ã£ã¦ã„ã‚‹å ´åˆã¯16é€²æ•°ã¨ã—ã¦èª­ã¿å–ã‚‹
 		SetReadable( retIsReadable );
 		return val;
 	}
@@ -195,16 +195,16 @@ DWORD mInitFileSection::GetValue( const WString& key , INT index , const WString
 	}
 }
 
-//ƒL[‚Ì’l‚ğ64ƒrƒbƒgUINT‚Æ‚µ‚Ä“Ç‚İæ‚é
+//ã‚­ãƒ¼ã®å€¤ã‚’64ãƒ“ãƒƒãƒˆUINTã¨ã—ã¦èª­ã¿å–ã‚‹
 ULONGLONG mInitFileSection::GetValue( const WString& key , INT index , const WString& subkey , ULONGLONG defvalue , bool* retIsReadable )const noexcept
 {
-	//İ’è’l‚ğæ“¾
+	//è¨­å®šå€¤ã‚’å–å¾—
 	Key tmpkey;
 	tmpkey.key = key;
 	tmpkey.index = index;
 	tmpkey.subkey = subkey;
 
-	//ƒL[‚É‘Î‰‚·‚é•¶š—ñ‚ğæ“¾
+	//ã‚­ãƒ¼ã«å¯¾å¿œã™ã‚‹æ–‡å­—åˆ—ã‚’å–å¾—
 	KeyValueMap::const_iterator itr = MyKeyValueMap.find( tmpkey );
 	if( itr == MyKeyValueMap.end() )
 	{
@@ -212,11 +212,11 @@ ULONGLONG mInitFileSection::GetValue( const WString& key , INT index , const WSt
 		return defvalue;
 	}
 
-	//æ“¾‚µ‚½•¶š—ñ‚ğ”’l‚É•ÏŠ·‚·‚é
+	//å–å¾—ã—ãŸæ–‡å­—åˆ—ã‚’æ•°å€¤ã«å¤‰æ›ã™ã‚‹
 	ULONGLONG val;
 	if( wchar_sscanf( itr->second.c_str() , L"0x%llx" , &val ) == 1 )
 	{
-		//0x‚Ån‚Ü‚Á‚Ä‚¢‚éê‡‚Í16i”‚Æ‚µ‚Ä“Ç‚İæ‚é
+		//0xã§å§‹ã¾ã£ã¦ã„ã‚‹å ´åˆã¯16é€²æ•°ã¨ã—ã¦èª­ã¿å–ã‚‹
 		SetReadable( retIsReadable );
 		return val;
 	}
@@ -232,16 +232,16 @@ ULONGLONG mInitFileSection::GetValue( const WString& key , INT index , const WSt
 	}
 }
 
-//ƒL[‚Ì’l‚ğ64ƒrƒbƒgFLOAT‚Æ‚µ‚Ä“Ç‚İæ‚é
+//ã‚­ãƒ¼ã®å€¤ã‚’64ãƒ“ãƒƒãƒˆFLOATã¨ã—ã¦èª­ã¿å–ã‚‹
 FLOAT mInitFileSection::GetValue( const WString& key , INT index , const WString& subkey , FLOAT defvalue , bool* retIsReadable )const noexcept
 {
-	//İ’è’l‚ğæ“¾
+	//è¨­å®šå€¤ã‚’å–å¾—
 	Key tmpkey;
 	tmpkey.key = key;
 	tmpkey.index = index;
 	tmpkey.subkey = subkey;
 
-	//ƒL[‚É‘Î‰‚·‚é•¶š—ñ‚ğæ“¾
+	//ã‚­ãƒ¼ã«å¯¾å¿œã™ã‚‹æ–‡å­—åˆ—ã‚’å–å¾—
 	KeyValueMap::const_iterator itr = MyKeyValueMap.find( tmpkey );
 	if( itr == MyKeyValueMap.end() )
 	{
@@ -249,7 +249,7 @@ FLOAT mInitFileSection::GetValue( const WString& key , INT index , const WString
 		return defvalue;
 	}
 
-	//æ“¾‚µ‚½•¶š—ñ‚ğ”’l‚É•ÏŠ·‚·‚é
+	//å–å¾—ã—ãŸæ–‡å­—åˆ—ã‚’æ•°å€¤ã«å¤‰æ›ã™ã‚‹
 	FLOAT val;
 	if( wchar_sscanf( itr->second.c_str() , L"%f" , &val ) == 1 )
 	{
@@ -260,16 +260,16 @@ FLOAT mInitFileSection::GetValue( const WString& key , INT index , const WString
 	return defvalue;
 }
 
-//ƒL[‚Ì’l‚ğ64ƒrƒbƒgDOUBLE‚Æ‚µ‚Ä“Ç‚İæ‚é
+//ã‚­ãƒ¼ã®å€¤ã‚’64ãƒ“ãƒƒãƒˆDOUBLEã¨ã—ã¦èª­ã¿å–ã‚‹
 DOUBLE mInitFileSection::GetValue( const WString& key , INT index , const WString& subkey , DOUBLE defvalue , bool* retIsReadable )const noexcept
 {
-	//İ’è’l‚ğæ“¾
+	//è¨­å®šå€¤ã‚’å–å¾—
 	Key tmpkey;
 	tmpkey.key = key;
 	tmpkey.index = index;
 	tmpkey.subkey = subkey;
 
-	//ƒL[‚É‘Î‰‚·‚é•¶š—ñ‚ğæ“¾
+	//ã‚­ãƒ¼ã«å¯¾å¿œã™ã‚‹æ–‡å­—åˆ—ã‚’å–å¾—
 	KeyValueMap::const_iterator itr = MyKeyValueMap.find( tmpkey );
 	if( itr == MyKeyValueMap.end() )
 	{
@@ -277,7 +277,7 @@ DOUBLE mInitFileSection::GetValue( const WString& key , INT index , const WStrin
 		return defvalue;
 	}
 
-	//æ“¾‚µ‚½•¶š—ñ‚ğ”’l‚É•ÏŠ·‚·‚é
+	//å–å¾—ã—ãŸæ–‡å­—åˆ—ã‚’æ•°å€¤ã«å¤‰æ›ã™ã‚‹
 	DOUBLE val;
 	if( wchar_sscanf( itr->second.c_str() , L"%lf" , &val ) == 1 )
 	{
@@ -288,16 +288,16 @@ DOUBLE mInitFileSection::GetValue( const WString& key , INT index , const WStrin
 	return defvalue;
 }
 
-//ƒL[‚Ì’l‚ğUNICODE•¶š—ñ‚Æ‚µ‚Ä“Ç‚İæ‚é
+//ã‚­ãƒ¼ã®å€¤ã‚’UNICODEæ–‡å­—åˆ—ã¨ã—ã¦èª­ã¿å–ã‚‹
 WString mInitFileSection::GetValue( const WString& key , INT index , const WString& subkey , const WString& defvalue , bool* retIsReadable )const noexcept
 {
-	//İ’è’l‚ğæ“¾
+	//è¨­å®šå€¤ã‚’å–å¾—
 	Key tmpkey;
 	tmpkey.key = key;
 	tmpkey.index = index;
 	tmpkey.subkey = subkey;
 
-	//ƒL[‚É‘Î‰‚·‚é•¶š—ñ‚ğæ“¾
+	//ã‚­ãƒ¼ã«å¯¾å¿œã™ã‚‹æ–‡å­—åˆ—ã‚’å–å¾—
 	KeyValueMap::const_iterator itr = MyKeyValueMap.find( tmpkey );
 	if( itr == MyKeyValueMap.end() )
 	{
@@ -309,18 +309,18 @@ WString mInitFileSection::GetValue( const WString& key , INT index , const WStri
 	return itr->second;
 }
 
-//ƒL[‚Ì’l‚ğASCII•¶š—ñ‚Æ‚µ‚Ä“Ç‚İæ‚é
+//ã‚­ãƒ¼ã®å€¤ã‚’ASCIIæ–‡å­—åˆ—ã¨ã—ã¦èª­ã¿å–ã‚‹
 AString mInitFileSection::GetValue( const WString& key , INT index , const WString& subkey , const AString& defvalue , bool* retIsReadable )const noexcept
 {
-	//“à•”“I‚É‚ÍUnicode‚È‚Ì‚ÅAˆê’UUnicode‚Æ‚µ‚Ä“Ç‚İæ‚Á‚Ä‚©‚çAASCII•¶š—ñ‚É•ÏŠ·‚·‚éB
+	//å†…éƒ¨çš„ã«ã¯Unicodeãªã®ã§ã€ä¸€æ—¦Unicodeã¨ã—ã¦èª­ã¿å–ã£ã¦ã‹ã‚‰ã€ASCIIæ–‡å­—åˆ—ã«å¤‰æ›ã™ã‚‹ã€‚
 
-	//İ’è’l‚ğæ“¾
+	//è¨­å®šå€¤ã‚’å–å¾—
 	Key tmpkey;
 	tmpkey.key = key;
 	tmpkey.index = index;
 	tmpkey.subkey = subkey;
 
-	//ƒL[‚É‘Î‰‚·‚é•¶š—ñ‚ğæ“¾
+	//ã‚­ãƒ¼ã«å¯¾å¿œã™ã‚‹æ–‡å­—åˆ—ã‚’å–å¾—
 	KeyValueMap::const_iterator itr = MyKeyValueMap.find( tmpkey );
 	if( itr == MyKeyValueMap.end() )
 	{
@@ -332,16 +332,16 @@ AString mInitFileSection::GetValue( const WString& key , INT index , const WStri
 	return WString2AString( itr->second );
 }
 
-//ƒL[‚Ì’l‚ğUNICODE•¶š—ñ‚Æ‚µ‚Ä“Ç‚İæ‚é
+//ã‚­ãƒ¼ã®å€¤ã‚’UNICODEæ–‡å­—åˆ—ã¨ã—ã¦èª­ã¿å–ã‚‹
 const wchar_t* mInitFileSection::GetValue( const WString& key , INT index , const WString& subkey , const wchar_t* defvalue , bool* retIsReadable )const noexcept
 {
-	//İ’è’l‚ğæ“¾
+	//è¨­å®šå€¤ã‚’å–å¾—
 	Key tmpkey;
 	tmpkey.key = key;
 	tmpkey.index = index;
 	tmpkey.subkey = subkey;
 
-	//ƒL[‚É‘Î‰‚·‚é•¶š—ñ‚ğæ“¾
+	//ã‚­ãƒ¼ã«å¯¾å¿œã™ã‚‹æ–‡å­—åˆ—ã‚’å–å¾—
 	KeyValueMap::const_iterator itr = MyKeyValueMap.find( tmpkey );
 	if( itr == MyKeyValueMap.end() )
 	{
@@ -352,16 +352,16 @@ const wchar_t* mInitFileSection::GetValue( const WString& key , INT index , cons
 	return itr->second.c_str();
 }
 
-//ƒL[‚Ì’l‚ğF‚Æ‚µ‚Ä“Ç‚İæ‚é
+//ã‚­ãƒ¼ã®å€¤ã‚’è‰²ã¨ã—ã¦èª­ã¿å–ã‚‹
 RGBQUAD mInitFileSection::GetValue( const WString& key , INT index , const WString& subkey , const RGBQUAD& defvalue , bool* retIsReadable )const noexcept
 {
-	//İ’è’l‚ğæ“¾
+	//è¨­å®šå€¤ã‚’å–å¾—
 	Key tmpkey;
 	tmpkey.key = key;
 	tmpkey.index = index;
 	tmpkey.subkey = subkey;
 
-	//ƒL[‚É‘Î‰‚·‚é•¶š—ñ‚ğæ“¾
+	//ã‚­ãƒ¼ã«å¯¾å¿œã™ã‚‹æ–‡å­—åˆ—ã‚’å–å¾—
 	KeyValueMap::const_iterator itr = MyKeyValueMap.find( tmpkey );
 	if( itr == MyKeyValueMap.end() )
 	{
@@ -369,19 +369,19 @@ RGBQUAD mInitFileSection::GetValue( const WString& key , INT index , const WStri
 		return defvalue;
 	}
 
-	//İ’è’l‚ª‚ ‚é‚Ì‚ÅA“Ç‚İæ‚è‚ğ‚İ‚Ü‚·B
-	DWORD r = 0;	//Ô
-	DWORD g = 0;	//—Î
-	DWORD b = 0;	//Â
-	DWORD a = 0;	//ƒAƒ‹ƒtƒ@
+	//è¨­å®šå€¤ãŒã‚ã‚‹ã®ã§ã€èª­ã¿å–ã‚Šã‚’è©¦ã¿ã¾ã™ã€‚
+	DWORD r = 0;	//èµ¤
+	DWORD g = 0;	//ç·‘
+	DWORD b = 0;	//é’
+	DWORD a = 0;	//ã‚¢ãƒ«ãƒ•ã‚¡
 	if( wchar_sscanf( itr->second.c_str() , L"#%02X%02X%02X%02X" , &r , &g , &b , &a ) < 3 )
 	{
-		//“Ç‚İæ‚ê‚È‚©‚Á‚½‚Ì‚ÅAƒGƒ‰[‚É‚µ‚Ü‚·B
+		//èª­ã¿å–ã‚Œãªã‹ã£ãŸã®ã§ã€ã‚¨ãƒ©ãƒ¼ã«ã—ã¾ã™ã€‚
 		ResetReadable( retIsReadable );
 		return defvalue;
 	}
 
-	//“Ç‚ß‚½‚Ì‚ÅA‚±‚ê‚ªŒ‹‰ÊB
+	//èª­ã‚ãŸã®ã§ã€ã“ã‚ŒãŒçµæœã€‚
 	RGBQUAD result;
 	result.rgbBlue = (BYTE)b;
 	result.rgbGreen = (BYTE)g;
@@ -392,7 +392,7 @@ RGBQUAD mInitFileSection::GetValue( const WString& key , INT index , const WStri
 	return result;
 }
 
-//ƒu[ƒ‹’l‚Æ‚µ‚ÄAƒL[‚Ì’l‚ğ“Ç‚İæ‚é
+//ãƒ–ãƒ¼ãƒ«å€¤ã¨ã—ã¦ã€ã‚­ãƒ¼ã®å€¤ã‚’èª­ã¿å–ã‚‹
 bool mInitFileSection::GetValue( const WString& key , INT index , const WString& subkey , bool defvalue , bool* retIsReadable )const noexcept
 {
 	const mInitFileSection::LookupValues< bool > BooleanValues =
@@ -407,13 +407,13 @@ bool mInitFileSection::GetValue( const WString& key , INT index , const WString&
 
 mInitFileSection::Hexdecimal mInitFileSection::GetValue( const WString& key , INT index , const WString& subkey , Hexdecimal defvalue , bool* retIsReadable )const noexcept
 {
-	//İ’è’l‚ğæ“¾
+	//è¨­å®šå€¤ã‚’å–å¾—
 	Key tmpkey;
 	tmpkey.key = key;
 	tmpkey.index = index;
 	tmpkey.subkey = subkey;
 
-	//ƒL[‚É‘Î‰‚·‚é•¶š—ñ‚ğæ“¾
+	//ã‚­ãƒ¼ã«å¯¾å¿œã™ã‚‹æ–‡å­—åˆ—ã‚’å–å¾—
 	KeyValueMap::const_iterator itr = MyKeyValueMap.find( tmpkey );
 	if( itr == MyKeyValueMap.end() )
 	{
@@ -421,11 +421,11 @@ mInitFileSection::Hexdecimal mInitFileSection::GetValue( const WString& key , IN
 		return defvalue;
 	}
 
-	//æ“¾‚µ‚½•¶š—ñ‚ğ”’l‚É•ÏŠ·‚·‚é
+	//å–å¾—ã—ãŸæ–‡å­—åˆ—ã‚’æ•°å€¤ã«å¤‰æ›ã™ã‚‹
 	DWORD val;
 	if( wchar_sscanf( itr->second.c_str() , L"%x" , &val ) == 1 )
 	{
-		//0x‚Ån‚Ü‚Á‚Ä‚¢‚éê‡‚Í16i”‚Æ‚µ‚Ä“Ç‚İæ‚é
+		//0xã§å§‹ã¾ã£ã¦ã„ã‚‹å ´åˆã¯16é€²æ•°ã¨ã—ã¦èª­ã¿å–ã‚‹
 		SetReadable( retIsReadable );
 		return Hexdecimal( val );
 	}
@@ -437,7 +437,7 @@ mInitFileSection::Hexdecimal mInitFileSection::GetValue( const WString& key , IN
 }
 
 
-//w’è‚ÌƒL[‚É32ƒrƒbƒgINT‚Ì’l‚ğİ’è‚·‚é
+//æŒ‡å®šã®ã‚­ãƒ¼ã«32ãƒ“ãƒƒãƒˆINTã®å€¤ã‚’è¨­å®šã™ã‚‹
 bool mInitFileSection::SetValue( const WString& key , INT index , const WString& subkey , INT newval )noexcept
 {
 	WString value;
@@ -445,13 +445,13 @@ bool mInitFileSection::SetValue( const WString& key , INT index , const WString&
 	return SetValue( key , index , subkey , value );
 }
 
-//w’è‚ÌƒL[‚É32ƒrƒbƒgLONG‚Ì’l‚ğİ’è‚·‚é
+//æŒ‡å®šã®ã‚­ãƒ¼ã«32ãƒ“ãƒƒãƒˆLONGã®å€¤ã‚’è¨­å®šã™ã‚‹
 bool mInitFileSection::SetValue( const WString& key , INT index , const WString& subkey , LONG newval )noexcept
 {
 	return SetValue( key , index , subkey , (INT)newval );
 }
 
-//w’è‚ÌƒL[‚É64ƒrƒbƒgINT‚Ì’l‚ğİ’è‚·‚é
+//æŒ‡å®šã®ã‚­ãƒ¼ã«64ãƒ“ãƒƒãƒˆINTã®å€¤ã‚’è¨­å®šã™ã‚‹
 bool mInitFileSection::SetValue( const WString& key , INT index , const WString& subkey , LONGLONG newval )noexcept
 {
 	WString value;
@@ -459,7 +459,7 @@ bool mInitFileSection::SetValue( const WString& key , INT index , const WString&
 	return SetValue( key , index , subkey , value );
 }
 
-//w’è‚ÌƒL[‚É32ƒrƒbƒgUINT‚Ì’l‚ğİ’è‚·‚é
+//æŒ‡å®šã®ã‚­ãƒ¼ã«32ãƒ“ãƒƒãƒˆUINTã®å€¤ã‚’è¨­å®šã™ã‚‹
 bool mInitFileSection::SetValue( const WString& key , INT index , const WString& subkey , DWORD newval )noexcept
 {
 	WString value;
@@ -467,7 +467,7 @@ bool mInitFileSection::SetValue( const WString& key , INT index , const WString&
 	return SetValue( key , index , subkey , value );
 }
 
-//w’è‚ÌƒL[‚É64ƒrƒbƒgUINT‚Ì’l‚ğİ’è‚·‚é
+//æŒ‡å®šã®ã‚­ãƒ¼ã«64ãƒ“ãƒƒãƒˆUINTã®å€¤ã‚’è¨­å®šã™ã‚‹
 bool mInitFileSection::SetValue( const WString& key , INT index , const WString& subkey , ULONGLONG newval )noexcept
 {
 	WString value;
@@ -475,7 +475,7 @@ bool mInitFileSection::SetValue( const WString& key , INT index , const WString&
 	return SetValue( key , index , subkey , value );
 }
 
-//w’è‚ÌƒL[‚É32ƒrƒbƒgFLOAT‚Ì’l‚ğİ’è‚·‚é
+//æŒ‡å®šã®ã‚­ãƒ¼ã«32ãƒ“ãƒƒãƒˆFLOATã®å€¤ã‚’è¨­å®šã™ã‚‹
 bool mInitFileSection::SetValue( const WString& key , INT index , const WString& subkey , FLOAT newval )noexcept
 {
 	WString value;
@@ -483,7 +483,7 @@ bool mInitFileSection::SetValue( const WString& key , INT index , const WString&
 	return SetValue( key , index , subkey , value );
 }
 
-//w’è‚ÌƒL[‚É64ƒrƒbƒgDOUBLE‚Ì’l‚ğİ’è‚·‚é
+//æŒ‡å®šã®ã‚­ãƒ¼ã«64ãƒ“ãƒƒãƒˆDOUBLEã®å€¤ã‚’è¨­å®šã™ã‚‹
 bool mInitFileSection::SetValue( const WString& key , INT index , const WString& subkey , DOUBLE newval )noexcept
 {
 	WString value;
@@ -491,10 +491,10 @@ bool mInitFileSection::SetValue( const WString& key , INT index , const WString&
 	return SetValue( key , index , subkey , value );
 }
 
-//w’è‚ÌƒL[‚ÉUNICODE•¶š—ñ‚ğİ’è‚·‚é
+//æŒ‡å®šã®ã‚­ãƒ¼ã«UNICODEæ–‡å­—åˆ—ã‚’è¨­å®šã™ã‚‹
 bool mInitFileSection::SetValue( const WString& key , INT index , const WString& subkey , const WString& newval )noexcept
 {
-	//İ’è’l‚ğæ“¾
+	//è¨­å®šå€¤ã‚’å–å¾—
 	Key tmpkey;
 	tmpkey.key = key;
 	tmpkey.index = index;
@@ -505,28 +505,28 @@ bool mInitFileSection::SetValue( const WString& key , INT index , const WString&
 	return true;
 }
 
-//w’è‚ÌƒL[‚ÉASCII•¶š—ñ‚ğİ’è‚·‚é
+//æŒ‡å®šã®ã‚­ãƒ¼ã«ASCIIæ–‡å­—åˆ—ã‚’è¨­å®šã™ã‚‹
 bool mInitFileSection::SetValue( const WString& key , INT index , const WString& subkey , const AString& newval )noexcept
 {
 	WString value = AString2WString( newval );
 	return SetValue( key , index , subkey , value );
 }
 
-//w’è‚ÌƒL[‚ÉUNICODE•¶š—ñ‚ğİ’è‚·‚é
+//æŒ‡å®šã®ã‚­ãƒ¼ã«UNICODEæ–‡å­—åˆ—ã‚’è¨­å®šã™ã‚‹
 bool mInitFileSection::SetValue( const WString& key , INT index , const WString& subkey , const wchar_t* newval )noexcept
 {
 	WString value( newval );
 	return SetValue( key , index , subkey , value );
 }
 
-//w’è‚ÌƒL[‚ÉASCII•¶š—ñ‚ğİ’è‚·‚é
+//æŒ‡å®šã®ã‚­ãƒ¼ã«ASCIIæ–‡å­—åˆ—ã‚’è¨­å®šã™ã‚‹
 bool mInitFileSection::SetValue( const WString& key , INT index , const WString& subkey , const char* newval )noexcept
 {
 	AString value( newval );
 	return SetValue( key , index , subkey , value );
 }
 
-//w’è‚ÌƒL[‚É‹P“x’l‚ğİ’è‚·‚é
+//æŒ‡å®šã®ã‚­ãƒ¼ã«è¼åº¦å€¤ã‚’è¨­å®šã™ã‚‹
 bool mInitFileSection::SetValue( const WString& key , INT index , const WString& subkey , const RGBQUAD& newval )noexcept
 {
 	WString value;
@@ -534,7 +534,7 @@ bool mInitFileSection::SetValue( const WString& key , INT index , const WString&
 	return SetValue( key , index , subkey , value );
 }
 
-//w’è‚ÌƒL[‚ÉGDIÀ•W‚ğİ’è‚·‚é
+//æŒ‡å®šã®ã‚­ãƒ¼ã«GDIåº§æ¨™ã‚’è¨­å®šã™ã‚‹
 bool mInitFileSection::SetValue( const WString& key , INT index , const WString& subkey , const mWindowPosition::POSITION& newval )noexcept
 {
 	WString value;
@@ -549,7 +549,7 @@ bool mInitFileSection::SetValue( const WString& key , INT index , const WString&
 	return SetValue( key , index , subkey , value );
 }
 
-//w’è‚ÌƒL[‚ÉWindowÀ•W‚ğİ’è‚·‚é
+//æŒ‡å®šã®ã‚­ãƒ¼ã«Windowåº§æ¨™ã‚’è¨­å®šã™ã‚‹
 bool mInitFileSection::SetValue( const WString& key , const mWindowPosition::WindowPosition& newval )noexcept
 {
 	bool result = true;
@@ -561,7 +561,7 @@ bool mInitFileSection::SetValue( const WString& key , const mWindowPosition::Win
 	return result;
 }
 
-//w’è‚ÌƒL[‚ÉWindowÀ•W‚ğİ’è‚·‚é
+//æŒ‡å®šã®ã‚­ãƒ¼ã«Windowåº§æ¨™ã‚’è¨­å®šã™ã‚‹
 bool mInitFileSection::SetValue( const WString& key , INT index , const mWindowPosition::WindowPosition& newval )noexcept
 {
 	bool result = true;
@@ -573,22 +573,22 @@ bool mInitFileSection::SetValue( const WString& key , INT index , const mWindowP
 	return result;
 }
 
-//w’è‚ÌƒL[‚Éƒu[ƒ‹’l‚ğ‘‚«‚Ş
+//æŒ‡å®šã®ã‚­ãƒ¼ã«ãƒ–ãƒ¼ãƒ«å€¤ã‚’æ›¸ãè¾¼ã‚€
 bool mInitFileSection::SetValue( const WString& key , INT index , const WString& subkey , bool newval )noexcept
 {
 	WString value = ( newval ) ? ( L"true" ) : ( L"false" );
 	return SetValue( key , index , subkey , value );
 }
 
-//‘¶İ‚·‚éƒL[‚Ìˆê——‚ğ•Ô‚·
+//å­˜åœ¨ã™ã‚‹ã‚­ãƒ¼ã®ä¸€è¦§ã‚’è¿”ã™
 bool mInitFileSection::GetKeyList( WStringDeque& retList )const
 {
 	retList.clear();
 
-	//‚·‚Å‚ÉoŒ»‚µ‚Ä‚¢‚éƒL[‚Ìˆê——
+	//ã™ã§ã«å‡ºç¾ã—ã¦ã„ã‚‹ã‚­ãƒ¼ã®ä¸€è¦§
 	std::unordered_set< WString > keytable;
 
-	//ƒL[‚ÌƒXƒLƒƒƒ“
+	//ã‚­ãƒ¼ã®ã‚¹ã‚­ãƒ£ãƒ³
 	for( KeyValueMap::const_iterator itr = MyKeyValueMap.begin() ; itr != MyKeyValueMap.end() ; itr++ )
 	{
 		if( keytable.count( itr->first.key ) == 0 )
@@ -598,12 +598,12 @@ bool mInitFileSection::GetKeyList( WStringDeque& retList )const
 		}
 	}
 
-	//•À‚×‘Ö‚¦
+	//ä¸¦ã¹æ›¿ãˆ
 	std::sort( retList.begin() , retList.end() );
 	return true;
 }
 
-//‘¶İ‚·‚éƒL[‚Ìˆê——‚ğ•Ô‚·
+//å­˜åœ¨ã™ã‚‹ã‚­ãƒ¼ã®ä¸€è¦§ã‚’è¿”ã™
 bool mInitFileSection::GetKeyList( KeyList& retList )const
 {
 	retList.clear();
@@ -617,13 +617,13 @@ bool mInitFileSection::GetKeyList( KeyList& retList )const
 	return true;
 }
 
-//‘¶İ‚·‚éƒL[‚Ìˆê——‚ğ•Ô‚·
-//¦‚±‚ÌŠÖ”‚ÍAw’è‚µ‚½ƒL[‚ÌƒTƒuƒL[‚ğ•Ô‚µ‚Ü‚·
+//å­˜åœ¨ã™ã‚‹ã‚­ãƒ¼ã®ä¸€è¦§ã‚’è¿”ã™
+//â€»ã“ã®é–¢æ•°ã¯ã€æŒ‡å®šã—ãŸã‚­ãƒ¼ã®ã‚µãƒ–ã‚­ãƒ¼ã‚’è¿”ã—ã¾ã™
 bool mInitFileSection::GetKeyList( const WString& key , KeyList& retList )const
 {
 	retList.clear();
 
-	//ƒL[‚ÌƒXƒLƒƒƒ“
+	//ã‚­ãƒ¼ã®ã‚¹ã‚­ãƒ£ãƒ³
 	for( KeyValueMap::const_iterator itr = MyKeyValueMap.begin() ; itr != MyKeyValueMap.end() ; itr++ )
 	{
 		if( key == itr->first.key )
@@ -632,7 +632,7 @@ bool mInitFileSection::GetKeyList( const WString& key , KeyList& retList )const
 		}
 	}
 
-	//•À‚×‘Ö‚¦
+	//ä¸¦ã¹æ›¿ãˆ
 	std::sort( retList.begin() , retList.end() );
 	return true;
 }
@@ -643,7 +643,7 @@ bool mInitFileSection::GetIndexRange( const WString& key , INT& ret_min_index , 
 	ret_max_index = 0;
 	bool result = false;
 
-	//ƒL[‚ÌƒXƒLƒƒƒ“
+	//ã‚­ãƒ¼ã®ã‚¹ã‚­ãƒ£ãƒ³
 	for( KeyValueMap::const_iterator itr = MyKeyValueMap.begin() ; itr != MyKeyValueMap.end() ; itr++ )
 	{
 		if( key == itr->first.key )
@@ -663,15 +663,15 @@ bool mInitFileSection::GetIndexRange( const WString& key , INT& ret_min_index , 
 	return true;
 }
 
-//‘¶İ‚·‚éƒL[‚ÉŠÜ‚Ü‚ê‚éƒCƒ“ƒfƒbƒNƒX‚ÌƒŠƒXƒg‚ğ•Ô‚·
-//retList : ƒCƒ“ƒfƒbƒNƒX‚Ìˆê——‚ğŠi”[‚·‚é
-//ret : ¬Œ÷^A¸”s‹U(w’è‚µ‚½ƒL[‚ª‘¶İ‚µ‚È‚¢ê‡‚È‚Ç)
+//å­˜åœ¨ã™ã‚‹ã‚­ãƒ¼ã«å«ã¾ã‚Œã‚‹ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹ã®ãƒªã‚¹ãƒˆã‚’è¿”ã™
+//retList : ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹ã®ä¸€è¦§ã‚’æ ¼ç´ã™ã‚‹
+//ret : æˆåŠŸæ™‚çœŸã€å¤±æ•—æ™‚å½(æŒ‡å®šã—ãŸã‚­ãƒ¼ãŒå­˜åœ¨ã—ãªã„å ´åˆãªã©)
 bool mInitFileSection::GetIndexList( const WString& key , IndexList& retList )const
 {
 	retList.clear();
 	bool result = false;
 
-	//ƒL[‚ÌƒXƒLƒƒƒ“
+	//ã‚­ãƒ¼ã®ã‚¹ã‚­ãƒ£ãƒ³
 	for( KeyValueMap::const_iterator itr = MyKeyValueMap.begin() ; itr != MyKeyValueMap.end() ; itr++ )
 	{
 		if( key == itr->first.key )
@@ -683,13 +683,13 @@ bool mInitFileSection::GetIndexList( const WString& key , IndexList& retList )co
 	return true;
 }
 
-//ƒtƒ@ƒCƒ‹‚ÉƒZƒNƒVƒ‡ƒ“‚Ì“à—e‚ğo—Í‚·‚é
+//ãƒ•ã‚¡ã‚¤ãƒ«ã«ã‚»ã‚¯ã‚·ãƒ§ãƒ³ã®å†…å®¹ã‚’å‡ºåŠ›ã™ã‚‹
 bool mInitFileSection::Write( mFileWriteStream& fp )const
 {
 	bool result = true;
 	WString str;
 
-	//ƒ^ƒCƒgƒ‹‚ğo—Í
+	//ã‚¿ã‚¤ãƒˆãƒ«ã‚’å‡ºåŠ›
 	switch( MySectionType )
 	{
 	case SectionType::SECTIONTYPE_NORMAL:
@@ -699,34 +699,34 @@ bool mInitFileSection::Write( mFileWriteStream& fp )const
 		sprintf( str , L"<%ls>\r\n" , MySectionName.c_str() );
 		break;
 	default:
-		RaiseAssert( g_ErrorLogger , 0 , L"ƒZƒNƒVƒ‡ƒ“Œ`®‚ª•s³‚Å‚·" );
+		RaiseAssert( g_ErrorLogger , 0 , L"ã‚»ã‚¯ã‚·ãƒ§ãƒ³å½¢å¼ãŒä¸æ­£ã§ã™" );
 		sprintf( str , L"[%ls] ;section type error\r\n" , MySectionName.c_str() );
 		break;
 	}
 	fp.WriteString( str );
 
-	//ƒL[‚Ìˆê——‚ğì¬BƒL[‚ğƒ\[ƒg‚·‚é‚½‚ßAGetKeyList‚ğŒÄ‚ÔB
+	//ã‚­ãƒ¼ã®ä¸€è¦§ã‚’ä½œæˆã€‚ã‚­ãƒ¼ã‚’ã‚½ãƒ¼ãƒˆã™ã‚‹ãŸã‚ã€GetKeyListã‚’å‘¼ã¶ã€‚
 	KeyList keylist;
 	if( !GetKeyList( keylist ) )
 	{
-		RaiseAssert( g_ErrorLogger , 0 , L"ƒL[‚ÌƒŠƒXƒg‚ªæ“¾‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½" );
+		RaiseAssert( g_ErrorLogger , 0 , L"ã‚­ãƒ¼ã®ãƒªã‚¹ãƒˆãŒå–å¾—ã§ãã¾ã›ã‚“ã§ã—ãŸ" );
 		return false;
 	}
 
-	//Še€–Ú‚ğo—Í
+	//å„é …ç›®ã‚’å‡ºåŠ›
 	for( KeyList::const_iterator itr = keylist.begin() ; itr != keylist.end() ; itr++ )
 	{
 		KeyValueMap::const_iterator entry = MyKeyValueMap.find( *itr );
 		if( entry == MyKeyValueMap.end() )
 		{
-			RaiseAssert( g_ErrorLogger , 0 , L"İ’è’l‚ªs•û•s–¾‚É‚È‚è‚Ü‚µ‚½" , itr->key );
+			RaiseAssert( g_ErrorLogger , 0 , L"è¨­å®šå€¤ãŒè¡Œæ–¹ä¸æ˜ã«ãªã‚Šã¾ã—ãŸ" , itr->key );
 			result = false;
 		}
 		else if( MySectionType == SectionType::SECTIONTYPE_NORMAL )
 		{
 			if( itr->subkey == L"" )
 			{
-				//ƒTƒuƒL[‚Å‚Í‚È‚¢ê‡
+				//ã‚µãƒ–ã‚­ãƒ¼ã§ã¯ãªã„å ´åˆ
 				if( itr->index != 0 )
 				{
 					sprintf( str , L"%ls[%d] = %ls\r\n" , itr->key.c_str() , itr->index , entry->second.c_str() );
@@ -738,13 +738,13 @@ bool mInitFileSection::Write( mFileWriteStream& fp )const
 			}
 			else
 			{
-				//ƒTƒuƒL[‚Ìê‡
+				//ã‚µãƒ–ã‚­ãƒ¼ã®å ´åˆ
 				sprintf( str , L".%ls = %ls\r\n" , itr->subkey.c_str() , entry->second.c_str() );
 			}
 
 			if( !fp.WriteString( str ) )
 			{
-				RaiseAssert( g_ErrorLogger , 0 , L"ƒtƒ@ƒCƒ‹‚Ö‚Ì‘‚«‚İ‚ª¸”s‚µ‚Ü‚µ‚½" , itr->key );
+				RaiseAssert( g_ErrorLogger , 0 , L"ãƒ•ã‚¡ã‚¤ãƒ«ã¸ã®æ›¸ãè¾¼ã¿ãŒå¤±æ•—ã—ã¾ã—ãŸ" , itr->key );
 				result = false;
 			}
 		}
@@ -761,25 +761,25 @@ bool mInitFileSection::Write( mFileWriteStream& fp )const
 
 			if( !fp.WriteString( str ) )
 			{
-				RaiseAssert( g_ErrorLogger , 0 , L"ƒtƒ@ƒCƒ‹‚Ö‚Ì‘‚«‚İ‚ª¸”s‚µ‚Ü‚µ‚½" , itr->key );
+				RaiseAssert( g_ErrorLogger , 0 , L"ãƒ•ã‚¡ã‚¤ãƒ«ã¸ã®æ›¸ãè¾¼ã¿ãŒå¤±æ•—ã—ã¾ã—ãŸ" , itr->key );
 				result = false;
 			}
 		}
 		else
 		{
-			RaiseAssert( g_ErrorLogger , 0 , L"ƒZƒNƒVƒ‡ƒ“Œ`®‚ª•s³‚Å‚·" );
+			RaiseAssert( g_ErrorLogger , 0 , L"ã‚»ã‚¯ã‚·ãƒ§ãƒ³å½¢å¼ãŒä¸æ­£ã§ã™" );
 			return false;
 		}
 	}
 
-	//o—Í‚ª‚Å‚«‚½‚Ì‚ÅAXVÏ‚İƒtƒ‰ƒO‚ğƒNƒŠƒA
-	//ƒCƒ“ƒXƒ^ƒ“ƒX‚Íconst‚É‚È‚Á‚Ä‚¢‚é‚ªXV‚·‚é
+	//å‡ºåŠ›ãŒã§ããŸã®ã§ã€æ›´æ–°æ¸ˆã¿ãƒ•ãƒ©ã‚°ã‚’ã‚¯ãƒªã‚¢
+	//ã‚¤ãƒ³ã‚¹ã‚¿ãƒ³ã‚¹ã¯constã«ãªã£ã¦ã„ã‚‹ãŒæ›´æ–°ã™ã‚‹
 	const_cast< mInitFileSection* >( this )->MyIsModified = false;
 
 	return result;
 }
 
-//‘¶İ‚·‚éƒL[‚Ì”‚ğæ“¾‚·‚é
+//å­˜åœ¨ã™ã‚‹ã‚­ãƒ¼ã®æ•°ã‚’å–å¾—ã™ã‚‹
 DWORD mInitFileSection::GetCount( void )const
 {
 	return static_cast<DWORD>( MyKeyValueMap.size() );
@@ -796,9 +796,9 @@ const WString& mInitFileSection::GetSectionName( void )const
 	return MySectionName;
 }
 
-//ƒZƒNƒVƒ‡ƒ“Œ`®‚ğ•ÏX‚·‚é
-// newtype : V‚µ‚¢Œ`®
-// ret : ¬Œ÷^
+//ã‚»ã‚¯ã‚·ãƒ§ãƒ³å½¢å¼ã‚’å¤‰æ›´ã™ã‚‹
+// newtype : æ–°ã—ã„å½¢å¼
+// ret : æˆåŠŸæ™‚çœŸ
 bool mInitFileSection::SetSectionType( SectionType newtype )
 {
 	switch( newtype )
@@ -808,15 +808,15 @@ bool mInitFileSection::SetSectionType( SectionType newtype )
 		MySectionType = newtype;
 		return true;
 	default:
-		RaiseAssert( g_ErrorLogger , 0 , L"ƒZƒNƒVƒ‡ƒ“Œ`®‚ª•s³‚Å‚·" );
+		RaiseAssert( g_ErrorLogger , 0 , L"ã‚»ã‚¯ã‚·ãƒ§ãƒ³å½¢å¼ãŒä¸æ­£ã§ã™" );
 		break;
 	}
 
 	return false;
 }
 
-//ƒZƒNƒVƒ‡ƒ“Œ`®‚ğæ“¾‚·‚é
-// ret : ƒZƒNƒVƒ‡ƒ“Œ`®
+//ã‚»ã‚¯ã‚·ãƒ§ãƒ³å½¢å¼ã‚’å–å¾—ã™ã‚‹
+// ret : ã‚»ã‚¯ã‚·ãƒ§ãƒ³å½¢å¼
 mInitFileSection::SectionType mInitFileSection::GetSectionType( void )const
 {
 	switch( MySectionType )
@@ -825,7 +825,7 @@ mInitFileSection::SectionType mInitFileSection::GetSectionType( void )const
 	case SECTIONTYPE_ROWBASE:
 		break;
 	default:
-		RaiseAssert( g_ErrorLogger , 0 , L"ƒZƒNƒVƒ‡ƒ“Œ`®‚ª•s³‚Å‚ ‚Á‚½‚Ì‚Å‹­§“I‚É•â³‚³‚ê‚Ü‚µ‚½" );
+		RaiseAssert( g_ErrorLogger , 0 , L"ã‚»ã‚¯ã‚·ãƒ§ãƒ³å½¢å¼ãŒä¸æ­£ã§ã‚ã£ãŸã®ã§å¼·åˆ¶çš„ã«è£œæ­£ã•ã‚Œã¾ã—ãŸ" );
 		const_cast<SectionType>( MySectionType ) = SECTIONTYPE_NORMAL;
 		break;
 	}
@@ -833,7 +833,7 @@ mInitFileSection::SectionType mInitFileSection::GetSectionType( void )const
 	return MySectionType;
 }
 
-//XV‚³‚ê‚Ä‚¢‚é‚©”Û‚©‚ğ•Ô‚·
+//æ›´æ–°ã•ã‚Œã¦ã„ã‚‹ã‹å¦ã‹ã‚’è¿”ã™
 bool mInitFileSection::IsModified( void )const
 {
 	return MyIsModified;

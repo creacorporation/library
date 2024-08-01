@@ -1,12 +1,12 @@
-//----------------------------------------------------------------------------
-// HTTPƒAƒNƒZƒX
+ï»¿//----------------------------------------------------------------------------
+// HTTPã‚¢ã‚¯ã‚»ã‚¹
 // Copyright (C) 2013 Fingerling. All rights reserved. 
 // Copyright (C) 2019- Crea Inc. All rights reserved.
 // This program is released under the MIT License. 
 // see http://opensource.org/licenses/mit-license.php
-// ’˜ìŒ •\¦‚âƒ‰ƒCƒZƒ“ƒX‚Ì‰ü•Ï‚Í‹Ö~‚³‚ê‚Ä‚¢‚Ü‚·B
-// ‚±‚Ìƒ\[ƒXƒR[ƒh‚ÉŠÖ‚µ‚ÄAã‹Lƒ‰ƒCƒZƒ“ƒXˆÈŠO‚ÌŒ_–ñ“™‚ÍˆêØ‘¶İ‚µ‚Ü‚¹‚ñB
-// (‰½‚ç‚©‚ÌŒ_–ñ‚ª‚ ‚éê‡‚Å‚àA–{ƒ\[ƒXƒR[ƒh‚Í‚»‚Ì‘ÎÛŠO‚Æ‚È‚è‚Ü‚·)
+// è‘—ä½œæ¨©è¡¨ç¤ºã‚„ãƒ©ã‚¤ã‚»ãƒ³ã‚¹ã®æ”¹å¤‰ã¯ç¦æ­¢ã•ã‚Œã¦ã„ã¾ã™ã€‚
+// ã“ã®ã‚½ãƒ¼ã‚¹ã‚³ãƒ¼ãƒ‰ã«é–¢ã—ã¦ã€ä¸Šè¨˜ãƒ©ã‚¤ã‚»ãƒ³ã‚¹ä»¥å¤–ã®å¥‘ç´„ç­‰ã¯ä¸€åˆ‡å­˜åœ¨ã—ã¾ã›ã‚“ã€‚
+// (ä½•ã‚‰ã‹ã®å¥‘ç´„ãŒã‚ã‚‹å ´åˆã§ã‚‚ã€æœ¬ã‚½ãƒ¼ã‚¹ã‚³ãƒ¼ãƒ‰ã¯ãã®å¯¾è±¡å¤–ã¨ãªã‚Šã¾ã™)
 //----------------------------------------------------------------------------
 
 
@@ -21,7 +21,7 @@
 
 #pragma comment( lib , "winhttp.lib" )
 
-//Ql‚É‚È‚é‚©‚à‚µ‚ê‚È‚¢URL
+//å‚è€ƒã«ãªã‚‹ã‹ã‚‚ã—ã‚Œãªã„URL
 // http://msdn.microsoft.com/en-us/library/aa385473(v=vs.85).aspx
 // http://msdn.microsoft.com/en-us/library/aa384273(v=vs.85).aspx
 // http://eternalwindows.jp/network/winhttp/winhttp01.html
@@ -37,27 +37,27 @@ public:
 	virtual ~mHttpConnection();
 
 	//-----------------------------------------------------------------------
-	// ‰Šúİ’è—pŠÖ”
+	// åˆæœŸè¨­å®šç”¨é–¢æ•°
 	//-----------------------------------------------------------------------
 
 	struct ConnectionOption
 	{
-		//Ú‘±æƒT[ƒo‚Ì–¼‘O
+		//æ¥ç¶šå…ˆã‚µãƒ¼ãƒã®åå‰
 		WString ServerName;
-		//ƒ|[ƒg”Ô†
+		//ãƒãƒ¼ãƒˆç•ªå·
 		USHORT Port;
 	};
 
-	//ƒŠƒNƒGƒXƒgİ’è
+	//ãƒªã‚¯ã‚¨ã‚¹ãƒˆè¨­å®š
 	using RequestOption = mHttpRequest::RequestOption;
 
-	//’Ê’mİ’è
+	//é€šçŸ¥è¨­å®š
 	using NotifyOption = mHttpRequest::NotifyOption;
 
-	//ƒŠƒNƒGƒXƒg‚ğ¶¬
+	//ãƒªã‚¯ã‚¨ã‚¹ãƒˆã‚’ç”Ÿæˆ
 	bool NewRequest( const RequestOption& opt , const NotifyOption& notifier , mHttpRequest& retReq );
 
-	//ƒnƒ“ƒhƒ‹‚ª¶¬‚³‚ê‚Ä‚¢‚é‚©‚ğ•Ô‚·
+	//ãƒãƒ³ãƒ‰ãƒ«ãŒç”Ÿæˆã•ã‚Œã¦ã„ã‚‹ã‹ã‚’è¿”ã™
 	operator bool() const;
 
 private:
@@ -68,13 +68,13 @@ private:
 
 protected:
 
-	//ƒnƒ“ƒhƒ‹
+	//ãƒãƒ³ãƒ‰ãƒ«
 	HINTERNET MyConnection;
 
-	//Œ»İÚ‘±‚µ‚Ä‚¢‚éƒT[ƒo‚ÌƒAƒhƒŒƒX
+	//ç¾åœ¨æ¥ç¶šã—ã¦ã„ã‚‹ã‚µãƒ¼ãƒã®ã‚¢ãƒ‰ãƒ¬ã‚¹
 	WString MyServerAddress;
 
-	//Ú‘±æ‚Ìƒ|[ƒg
+	//æ¥ç¶šå…ˆã®ãƒãƒ¼ãƒˆ
 	USHORT MyPort;
 
 };

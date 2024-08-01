@@ -1,12 +1,12 @@
-//----------------------------------------------------------------------------
-// ƒXƒgƒŠ[ƒ~ƒ“ƒOƒtƒ@ƒCƒ‹“Ç‚İ‚İ‘€ì
+ï»¿//----------------------------------------------------------------------------
+// ã‚¹ãƒˆãƒªãƒ¼ãƒŸãƒ³ã‚°ãƒ•ã‚¡ã‚¤ãƒ«èª­ã¿è¾¼ã¿æ“ä½œ
 // Copyright (C) 2013,2016 Fingerling. All rights reserved. 
 // Copyright (C) 2019-2024 Crea Inc. All rights reserved.
 // This program is released under the MIT License. 
 // see http://opensource.org/licenses/mit-license.php
-// ’˜ìŒ •\¦‚âƒ‰ƒCƒZƒ“ƒX‚Ì‰ü•Ï‚Í‹Ö~‚³‚ê‚Ä‚¢‚Ü‚·B
-// ‚±‚Ìƒ\[ƒXƒR[ƒh‚ÉŠÖ‚µ‚ÄAã‹Lƒ‰ƒCƒZƒ“ƒXˆÈŠO‚ÌŒ_–ñ“™‚ÍˆêØ‘¶İ‚µ‚Ü‚¹‚ñB
-// (‰½‚ç‚©‚ÌŒ_–ñ‚ª‚ ‚éê‡‚Å‚àA–{ƒ\[ƒXƒR[ƒh‚Í‚»‚Ì‘ÎÛŠO‚Æ‚È‚è‚Ü‚·)
+// è‘—ä½œæ¨©è¡¨ç¤ºã‚„ãƒ©ã‚¤ã‚»ãƒ³ã‚¹ã®æ”¹å¤‰ã¯ç¦æ­¢ã•ã‚Œã¦ã„ã¾ã™ã€‚
+// ã“ã®ã‚½ãƒ¼ã‚¹ã‚³ãƒ¼ãƒ‰ã«é–¢ã—ã¦ã€ä¸Šè¨˜ãƒ©ã‚¤ã‚»ãƒ³ã‚¹ä»¥å¤–ã®å¥‘ç´„ç­‰ã¯ä¸€åˆ‡å­˜åœ¨ã—ã¾ã›ã‚“ã€‚
+// (ä½•ã‚‰ã‹ã®å¥‘ç´„ãŒã‚ã‚‹å ´åˆã§ã‚‚ã€æœ¬ã‚½ãƒ¼ã‚¹ã‚³ãƒ¼ãƒ‰ã¯ãã®å¯¾è±¡å¤–ã¨ãªã‚Šã¾ã™)
 //----------------------------------------------------------------------------
 
 #define MFILEREADSTREAMBASE_CPP_COMPILING
@@ -29,16 +29,16 @@ mFileReadStreamBase::~mFileReadStreamBase()
 }
 
 
-//‚Ps“Ç‚İæ‚è‚Ü‚·B
-//‰üs•¶š‚ÍA\r‚Ü‚½‚Í\n‚Ü‚½‚Í\r\n‚Å‚·B
-//EOF‚É’B‚µ‚½‚Æ‚«Atrue
-//EOF‚É’B‚µ‚È‚¢‚Æ‚«Afalse
+//ï¼‘è¡Œèª­ã¿å–ã‚Šã¾ã™ã€‚
+//æ”¹è¡Œæ–‡å­—ã¯ã€\rã¾ãŸã¯\nã¾ãŸã¯\r\nã§ã™ã€‚
+//EOFã«é”ã—ãŸã¨ãã€true
+//EOFã«é”ã—ãªã„ã¨ãã€false
 bool mFileReadStreamBase::ReadLine( AString& retResult , OnLineReadError onerr )
 {
-	//‚·‚Å‚É‚ ‚éŒ‹‰Ê‚ğƒNƒŠƒA
+	//ã™ã§ã«ã‚ã‚‹çµæœã‚’ã‚¯ãƒªã‚¢
 	retResult.clear();
 
-	//ƒGƒ“ƒR[ƒh‚ª‘Šˆá‚µ‚Ä‚¢‚éê‡‚Í‰I‰ñ‚·‚é
+	//ã‚¨ãƒ³ã‚³ãƒ¼ãƒ‰ãŒç›¸é•ã—ã¦ã„ã‚‹å ´åˆã¯è¿‚å›ã™ã‚‹
 	if( MyEncode == Encode::ENCODE_UTF16 )
 	{
 		WString tmp;
@@ -50,28 +50,28 @@ bool mFileReadStreamBase::ReadLine( AString& retResult , OnLineReadError onerr )
 		return true;
 	}
 
-	//EOFH
+	//EOFï¼Ÿ
 	if( IsEOF() )
 	{
 		return false;
 	}
 
-	//‚P•¶š‚¸‚Â“Ç‚İæ‚èA‚Ps‚É’B‚·‚é‚Ü‚Å’Ç‰Á
+	//ï¼‘æ–‡å­—ãšã¤èª­ã¿å–ã‚Šã€ï¼‘è¡Œã«é”ã™ã‚‹ã¾ã§è¿½åŠ 
 	while( 1 )
 	{
 		INT readdata = Read();
 
 		if( readdata == EOF )
 		{
-			//“r’†‚ÅEOF‚ª—ˆ‚½ê‡
+			//é€”ä¸­ã§EOFãŒæ¥ãŸå ´åˆ
 			switch( onerr )
 			{
 			case OnLineReadError::LINEREADERR_DISCARD:
-				//Œ‹‰Ê‚ğƒNƒŠƒA‚·‚é
+				//çµæœã‚’ã‚¯ãƒªã‚¢ã™ã‚‹
 				retResult.clear();
 				return false;
 			case OnLineReadError::LINEREADERR_UNREAD:
-				//“Ç‚ñ‚¾‚Æ‚±‚ë‚Ü‚Å‚ğƒoƒbƒtƒ@‚É‰Ÿ‚µ–ß‚·
+				//èª­ã‚“ã ã¨ã“ã‚ã¾ã§ã‚’ãƒãƒƒãƒ•ã‚¡ã«æŠ¼ã—æˆ»ã™
 				for( AString::const_reverse_iterator itr = retResult.rbegin() ; itr != retResult.rend() ; itr++ )
 				{
 					MyUnReadBuffer.Unread< char >( *itr );
@@ -79,14 +79,14 @@ bool mFileReadStreamBase::ReadLine( AString& retResult , OnLineReadError onerr )
 				retResult.clear();
 				return false;
 			case OnLineReadError::LINEREADERR_TRUNCATE:
-				//“Ç‚ß‚½‚Æ‚±‚ë‚Ü‚Å‚Å¬Œ÷
+				//èª­ã‚ãŸã¨ã“ã‚ã¾ã§ã§æˆåŠŸ
 				if( retResult == "" )
 				{
-					return false;	//‰½‚à“Ç‚ß‚Ä‚¢‚È‚¢‚Ì‚Åfalse
+					return false;	//ä½•ã‚‚èª­ã‚ã¦ã„ãªã„ã®ã§false
 				}
 				return true;
 			default:
-				RaiseAssert( g_ErrorLogger , 0 , L"OnLineReadError‚Ìw’è‚ª•s³‚Å‚·" , onerr );
+				RaiseAssert( g_ErrorLogger , 0 , L"OnLineReadErrorã®æŒ‡å®šãŒä¸æ­£ã§ã™" , onerr );
 				return false;
 			}
 		}
@@ -94,35 +94,35 @@ bool mFileReadStreamBase::ReadLine( AString& retResult , OnLineReadError onerr )
 		switch( readdata )
 		{
 		case '\r':
-			//\r‚Ìê‡AŸ‚Ì•¶š‚ª\n‚¾‚Á‚½‚çCRLF‰üs
-			//‚»‚¤‚Å‚È‚¯‚ê‚ÎCR‰üs
-			//‚³‚ç‚É‚»‚ÌŸ‚ªEOF‚©‚Ç‚¤‚©‚ğ”»’è‚µ‚Ä•Ô‚·
+			//\rã®å ´åˆã€æ¬¡ã®æ–‡å­—ãŒ\nã ã£ãŸã‚‰CRLFæ”¹è¡Œ
+			//ãã†ã§ãªã‘ã‚Œã°CRæ”¹è¡Œ
+			//ã•ã‚‰ã«ãã®æ¬¡ãŒEOFã‹ã©ã†ã‹ã‚’åˆ¤å®šã—ã¦è¿”ã™
 			readdata = Read();
 			if( readdata == '\n' || readdata == EOF )
 			{
-				//CRLF‰üs or CR‰üs+EOF
+				//CRLFæ”¹è¡Œ or CRæ”¹è¡Œ+EOF
 				;
 			}
 			else
 			{
-				//CR‰üs
+				//CRæ”¹è¡Œ
 				MyUnReadBuffer.Unread<CHAR>( readdata );
 			}
 			return true;
 
 		case '\n':
-			//LF‰üs
+			//LFæ”¹è¡Œ
 			return true;
 
 		default:
-			//‚»‚Ì‘¼‚Ì•¶š‚Í˜AŒ‹
+			//ãã®ä»–ã®æ–‡å­—ã¯é€£çµ
 			retResult.push_back( readdata );
 			break;
 		}
 	}
 }
 
-//ANSI‚Å‚P•¶š“Ç‚İ‚İ‚Ü‚·
+//ANSIã§ï¼‘æ–‡å­—èª­ã¿è¾¼ã¿ã¾ã™
 bool mFileReadStreamBase::ReadSingle( char& retChar )
 {
 	INT c = Read();
@@ -130,7 +130,7 @@ bool mFileReadStreamBase::ReadSingle( char& retChar )
 	return c != EOF;
 }
 
-//UNICODE(LE)‚Å‚P•¶š“Ç‚İ‚İ‚Ü‚·
+//UNICODE(LE)ã§ï¼‘æ–‡å­—èª­ã¿è¾¼ã¿ã¾ã™
 bool mFileReadStreamBase::ReadSingle( wchar_t& retWchar )
 {
 	INT lo = Read();
@@ -150,10 +150,10 @@ bool mFileReadStreamBase::ReadSingle( wchar_t& retWchar )
 
 bool mFileReadStreamBase::ReadLine( WString& retResult , OnLineReadError onerr )
 {
-	//“ü—Í’lƒNƒŠƒA
+	//å…¥åŠ›å€¤ã‚¯ãƒªã‚¢
 	retResult.clear();
 
-	//ƒGƒ“ƒR[ƒh‚ª‘Šˆá‚µ‚Ä‚¢‚éê‡‚Í‰I‰ñ‚·‚é
+	//ã‚¨ãƒ³ã‚³ãƒ¼ãƒ‰ãŒç›¸é•ã—ã¦ã„ã‚‹å ´åˆã¯è¿‚å›ã™ã‚‹
 	if( MyEncode == Encode::ENCODE_SHIFT_JIS )
 	{
 		AString tmp;
@@ -165,13 +165,13 @@ bool mFileReadStreamBase::ReadLine( WString& retResult , OnLineReadError onerr )
 		return true;
 	}
 
-	//EOFH
+	//EOFï¼Ÿ
 	if( IsEOF() )
 	{
 		return false;
 	}
 
-	//“Ç‚İæ‚èƒ‹[ƒ`ƒ“’è‹`
+	//èª­ã¿å–ã‚Šãƒ«ãƒ¼ãƒãƒ³å®šç¾©
 	auto WcharRead = [this,onerr]( wchar_t& retRead ) -> bool
 	{
 		INT lo = Read();
@@ -192,21 +192,21 @@ bool mFileReadStreamBase::ReadLine( WString& retResult , OnLineReadError onerr )
 		return false;
 	};
 
-	//‚P•¶š‚¸‚Â“Ç‚İæ‚èA‚Ps‚É’B‚·‚é‚Ü‚Å’Ç‰Á
+	//ï¼‘æ–‡å­—ãšã¤èª­ã¿å–ã‚Šã€ï¼‘è¡Œã«é”ã™ã‚‹ã¾ã§è¿½åŠ 
 	while( 1 )
 	{
 		WCHAR readdata;
 		if( WcharRead( readdata ) )
 		{
-			//“r’†‚ÅEOF‚ª—ˆ‚½ê‡
+			//é€”ä¸­ã§EOFãŒæ¥ãŸå ´åˆ
 			switch( onerr )
 			{
 			case OnLineReadError::LINEREADERR_DISCARD:
-				//Œ‹‰Ê‚ğƒNƒŠƒA‚·‚é
+				//çµæœã‚’ã‚¯ãƒªã‚¢ã™ã‚‹
 				retResult.clear();
 				return false;
 			case OnLineReadError::LINEREADERR_UNREAD:
-				//“Ç‚ñ‚¾‚Æ‚±‚ë‚Ü‚Å‚ğƒoƒbƒtƒ@‚É‰Ÿ‚µ–ß‚·
+				//èª­ã‚“ã ã¨ã“ã‚ã¾ã§ã‚’ãƒãƒƒãƒ•ã‚¡ã«æŠ¼ã—æˆ»ã™
 				for( WString::const_reverse_iterator itr = retResult.rbegin() ; itr != retResult.rend() ; itr++ )
 				{
 					MyUnReadBuffer.Unread< wchar_t >( *itr );
@@ -214,10 +214,10 @@ bool mFileReadStreamBase::ReadLine( WString& retResult , OnLineReadError onerr )
 				retResult.clear();
 				return false;
 			case OnLineReadError::LINEREADERR_TRUNCATE:
-				//“Ç‚ß‚½‚Æ‚±‚ë‚Ü‚Å‚Å¬Œ÷
+				//èª­ã‚ãŸã¨ã“ã‚ã¾ã§ã§æˆåŠŸ
 				return true;
 			default:
-				RaiseAssert( g_ErrorLogger , 0 , L"OnLineReadError‚Ìw’è‚ª•s³‚Å‚·" , onerr );
+				RaiseAssert( g_ErrorLogger , 0 , L"OnLineReadErrorã®æŒ‡å®šãŒä¸æ­£ã§ã™" , onerr );
 				return false;
 
 			}
@@ -226,30 +226,30 @@ bool mFileReadStreamBase::ReadLine( WString& retResult , OnLineReadError onerr )
 		switch( readdata )
 		{
 		case L'\r':
-			//\r‚Ìê‡AŸ‚Ì•¶š‚ª\n‚¾‚Á‚½‚çCRLF‰üs
-			//‚»‚¤‚Å‚È‚¯‚ê‚ÎCR‰üs
-			//‚³‚ç‚É‚»‚ÌŸ‚ªEOF‚©‚Ç‚¤‚©‚ğ”»’è‚µ‚Ä•Ô‚·
+			//\rã®å ´åˆã€æ¬¡ã®æ–‡å­—ãŒ\nã ã£ãŸã‚‰CRLFæ”¹è¡Œ
+			//ãã†ã§ãªã‘ã‚Œã°CRæ”¹è¡Œ
+			//ã•ã‚‰ã«ãã®æ¬¡ãŒEOFã‹ã©ã†ã‹ã‚’åˆ¤å®šã—ã¦è¿”ã™
 			if( !WcharRead( readdata ) )
 			{
 				if( readdata == L'\n' || readdata == EOF )
 				{
-					//CRLF‰üs or CR‰üs+EOF
+					//CRLFæ”¹è¡Œ or CRæ”¹è¡Œ+EOF
 					;
 				}
 				else
 				{
-					//CR‰üs
+					//CRæ”¹è¡Œ
 					MyUnReadBuffer.Unread<WCHAR>( readdata );
 				}
 			}
 			return true;
 
 		case L'\n':
-			//LF‰üs
+			//LFæ”¹è¡Œ
 			return true;
 
 		default:
-			//‚»‚Ì‘¼‚Ì•¶š‚Í˜AŒ‹
+			//ãã®ä»–ã®æ–‡å­—ã¯é€£çµ
 			retResult.push_back( (WCHAR)readdata );
 			break;
 		}
@@ -265,7 +265,7 @@ bool mFileReadStreamBase::ReadBinary( BYTE* retResult , size_t ReadSize , size_t
 
 		if( readdata == EOF )
 		{
-			//“r’†‚ÅEOF‚ª—ˆ‚½ê‡
+			//é€”ä¸­ã§EOFãŒæ¥ãŸå ´åˆ
 			if( retReadSize )
 			{
 				*retReadSize = i;
@@ -276,7 +276,7 @@ bool mFileReadStreamBase::ReadBinary( BYTE* retResult , size_t ReadSize , size_t
 			case OnLineReadError::LINEREADERR_DISCARD:
 				return false;
 			case OnLineReadError::LINEREADERR_UNREAD:
-				//“Ç‚ñ‚¾‚Æ‚±‚ë‚Ü‚Å‚ğƒoƒbƒtƒ@‚É‰Ÿ‚µ–ß‚·
+				//èª­ã‚“ã ã¨ã“ã‚ã¾ã§ã‚’ãƒãƒƒãƒ•ã‚¡ã«æŠ¼ã—æˆ»ã™
 				for( size_t j = 0 ; j < i ; j++ )
 				{
 					MyUnReadBuffer.Unread< BYTE >( *retResult );
@@ -284,10 +284,10 @@ bool mFileReadStreamBase::ReadBinary( BYTE* retResult , size_t ReadSize , size_t
 				}
 				return false;
 			case OnLineReadError::LINEREADERR_TRUNCATE:
-				//“Ç‚ß‚½‚Æ‚±‚ë‚Ü‚Å‚Å¬Œ÷
+				//èª­ã‚ãŸã¨ã“ã‚ã¾ã§ã§æˆåŠŸ
 				return true;
 			default:
-				RaiseAssert( g_ErrorLogger , 0 , L"OnLineReadError‚Ìw’è‚ª•s³‚Å‚·" , onerr );
+				RaiseAssert( g_ErrorLogger , 0 , L"OnLineReadErrorã®æŒ‡å®šãŒä¸æ­£ã§ã™" , onerr );
 				return false;
 			}
 		}
@@ -316,18 +316,18 @@ bool mFileReadStreamBase::SetEncode( Encode encode )
 		MyEncode = encode;
 		return true;
 	default:
-		RaiseAssert( g_ErrorLogger , 0 , L"ƒGƒ“ƒR[ƒh‚Ìw’è‚ª•s³‚Å‚·" );
+		RaiseAssert( g_ErrorLogger , 0 , L"ã‚¨ãƒ³ã‚³ãƒ¼ãƒ‰ã®æŒ‡å®šãŒä¸æ­£ã§ã™" );
 		break;
 	}
 	return false;
 }
 
 //----------------------------------------------------
-// ‚±‚±‚©‚çqƒNƒ‰ƒX
+// ã“ã“ã‹ã‚‰å­ã‚¯ãƒ©ã‚¹
 //----------------------------------------------------
 
-//ƒoƒbƒtƒ@‚©‚ç1•¶šæ‚è‚¾‚µ
-//ƒoƒbƒtƒ@‚ª‹ó‚È‚Ì‚Éæ‚èo‚»‚¤‚Æ‚·‚é‚ÆEOF‚É‚È‚é(’ˆÓI)
+//ãƒãƒƒãƒ•ã‚¡ã‹ã‚‰1æ–‡å­—å–ã‚Šã ã—
+//ãƒãƒƒãƒ•ã‚¡ãŒç©ºãªã®ã«å–ã‚Šå‡ºãã†ã¨ã™ã‚‹ã¨EOFã«ãªã‚‹(æ³¨æ„ï¼)
 INT mFileReadStreamBase::UnReadBuffer::Read( void )
 {
 	if( IsEmpty() )
@@ -339,13 +339,13 @@ INT mFileReadStreamBase::UnReadBuffer::Read( void )
 	return result;
 }
 
-//ƒoƒbƒtƒ@‚Í‹ó‚©H
+//ãƒãƒƒãƒ•ã‚¡ã¯ç©ºã‹ï¼Ÿ
 bool mFileReadStreamBase::UnReadBuffer::IsEmpty( void )const
 {
 	return MyBuffer.empty();
 }
 
-//ƒoƒbƒtƒ@‚ğƒNƒŠƒA
+//ãƒãƒƒãƒ•ã‚¡ã‚’ã‚¯ãƒªã‚¢
 void mFileReadStreamBase::UnReadBuffer::Clear( void )
 {
 	MyBuffer.clear();

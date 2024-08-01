@@ -1,5 +1,5 @@
-//----------------------------------------------------------------------------
-// ƒEƒCƒ“ƒhƒEŠÇ—iGDIƒyƒ“j
+ï»¿//----------------------------------------------------------------------------
+// ã‚¦ã‚¤ãƒ³ãƒ‰ã‚¦ç®¡ç†ï¼ˆGDIãƒšãƒ³ï¼‰
 // Copyright (C) 2016 Fingerling. All rights reserved. 
 // This program is released under the MIT License. 
 // see http://opensource.org/licenses/mit-license.php
@@ -12,16 +12,16 @@
 
 mGdiPen::mGdiPen( const Option* option )throw( mException )
 {
-	//ƒIƒvƒVƒ‡ƒ“‚ªƒkƒ‹ƒ|ƒCƒ“ƒ^‚¾‚Á‚½ê‡A•ƒyƒ“‚É‚È‚è‚Ü‚·B
+	//ã‚ªãƒ—ã‚·ãƒ§ãƒ³ãŒãƒŒãƒ«ãƒã‚¤ãƒ³ã‚¿ã ã£ãŸå ´åˆã€é»’ãƒšãƒ³ã«ãªã‚Šã¾ã™ã€‚
 	if( option == nullptr )
 	{
 		MyHandle = (HPEN)::GetStockObject( BLACK_PEN );
 		return;
 	}
-	//¶¬•û–@‚É]‚Á‚Äƒyƒ“‚ğì¬‚µ‚Ü‚·
+	//ç”Ÿæˆæ–¹æ³•ã«å¾“ã£ã¦ãƒšãƒ³ã‚’ä½œæˆã—ã¾ã™
 	if( option->method == Option::CreateMethod::USEOPTION )
 	{
-		//ƒIƒvƒVƒ‡ƒ“\‘¢‘Ì‚ğg‚¤ê‡
+		//ã‚ªãƒ—ã‚·ãƒ§ãƒ³æ§‹é€ ä½“ã‚’ä½¿ã†å ´åˆ
 		const Option_UseOption* opt = (const Option_UseOption*)option;
 		if( !CreateHandle( *opt ) )
 		{
@@ -38,7 +38,7 @@ mGdiPen::mGdiPen( const Option* option )throw( mException )
 	}
 	else
 	{
-		//¶¬•û–@‚ª•s–¾
+		//ç”Ÿæˆæ–¹æ³•ãŒä¸æ˜
 		throw EXCEPTION( option->method , L"Unknown create method" );
 	}
 	return;
@@ -50,47 +50,47 @@ mGdiPen::~mGdiPen()
 	MyHandle = nullptr;
 }
 
-//ƒnƒ“ƒhƒ‹‚Ì’l‚ğæ“¾‚·‚é(ƒLƒƒƒXƒg‰‰Zqƒo[ƒWƒ‡ƒ“)
+//ãƒãƒ³ãƒ‰ãƒ«ã®å€¤ã‚’å–å¾—ã™ã‚‹(ã‚­ãƒ£ã‚¹ãƒˆæ¼”ç®—å­ãƒãƒ¼ã‚¸ãƒ§ãƒ³)
 mGdiPen::operator HPEN()const
 {
 	return MyHandle;
 }
 
-//ƒnƒ“ƒhƒ‹‚Ì’l‚ğæ“¾‚·‚é(•’Ê‚ÌŠÖ”ƒo[ƒWƒ‡ƒ“)
+//ãƒãƒ³ãƒ‰ãƒ«ã®å€¤ã‚’å–å¾—ã™ã‚‹(æ™®é€šã®é–¢æ•°ãƒãƒ¼ã‚¸ãƒ§ãƒ³)
 HGDIOBJ mGdiPen::GetHandle( void )const
 {
 	return MyHandle;
 }
 
-//ƒyƒ“¶¬
+//ãƒšãƒ³ç”Ÿæˆ
 bool mGdiPen::CreateHandle( const Option_UseOption& opt )
 {
-	//ƒyƒ“‚Ìí—Ş
+	//ãƒšãƒ³ã®ç¨®é¡
 	INT pen_kind = PS_NULL;
 	switch( opt.kind )
 	{
-	case Option::PenKind::SOLID_PEN:		//Àü‚Ìƒyƒ“
+	case Option::PenKind::SOLID_PEN:		//å®Ÿç·šã®ãƒšãƒ³
 		pen_kind = PS_SOLID;
 		break;
-	case Option::PenKind::DASH_PEN:			//”jü‚Ìƒyƒ“
+	case Option::PenKind::DASH_PEN:			//ç ´ç·šã®ãƒšãƒ³
 		pen_kind = PS_DASH;
 		break;
-	case Option::PenKind::DOT_PEN:			//“_ü‚Ìƒyƒ“
+	case Option::PenKind::DOT_PEN:			//ç‚¹ç·šã®ãƒšãƒ³
 		pen_kind = PS_DOT;
 		break;
-	case Option::PenKind::DASHDOT_PEN:		//ˆê“_½ƒyƒ“
+	case Option::PenKind::DASHDOT_PEN:		//ä¸€ç‚¹é–ãƒšãƒ³
 		pen_kind = PS_DASHDOT;
 		break;
-	case Option::PenKind::DASHDOTDOT_PEN:	//“ñ“_½ƒyƒ“
+	case Option::PenKind::DASHDOTDOT_PEN:	//äºŒç‚¹é–ãƒšãƒ³
 		pen_kind = PS_DASHDOTDOT;
 		break;
 	default:
 		break;
 	}
-	//F‚Ìİ’è
+	//è‰²ã®è¨­å®š
 	RGBQUAD rgb_color = ::COLORREF2RGBQUAD( opt.color );
 
-	//ƒnƒ“ƒhƒ‹‚Ìì¬
+	//ãƒãƒ³ãƒ‰ãƒ«ã®ä½œæˆ
 	MyHandle = ::CreatePen( pen_kind , opt.width , ::RGBQUAD2COLORREF( rgb_color ) );
 
 	return MyHandle != nullptr;

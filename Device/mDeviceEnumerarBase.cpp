@@ -1,11 +1,11 @@
-//----------------------------------------------------------------------------
-// ƒfƒoƒCƒX—ñ‹“ƒNƒ‰ƒX
+ï»¿//----------------------------------------------------------------------------
+// ãƒ‡ãƒã‚¤ã‚¹åˆ—æŒ™ã‚¯ãƒ©ã‚¹
 // Copyright (C) 2019-2024 Crea Inc. All rights reserved.
 // This program is released under the MIT License. 
 // see http://opensource.org/licenses/mit-license.php
-// ’˜ìŒ •\¦‚âƒ‰ƒCƒZƒ“ƒX‚Ì‰ü•Ï‚Í‹Ö~‚³‚ê‚Ä‚¢‚Ü‚·B
-// ‚±‚Ìƒ\[ƒXƒR[ƒh‚ÉŠÖ‚µ‚ÄAã‹Lƒ‰ƒCƒZƒ“ƒXˆÈŠO‚ÌŒ_–ñ“™‚ÍˆêØ‘¶İ‚µ‚Ü‚¹‚ñB
-// (‰½‚ç‚©‚ÌŒ_–ñ‚ª‚ ‚éê‡‚Å‚àA–{ƒ\[ƒXƒR[ƒh‚Í‚»‚Ì‘ÎÛŠO‚Æ‚È‚è‚Ü‚·)
+// è‘—ä½œæ¨©è¡¨ç¤ºã‚„ãƒ©ã‚¤ã‚»ãƒ³ã‚¹ã®æ”¹å¤‰ã¯ç¦æ­¢ã•ã‚Œã¦ã„ã¾ã™ã€‚
+// ã“ã®ã‚½ãƒ¼ã‚¹ã‚³ãƒ¼ãƒ‰ã«é–¢ã—ã¦ã€ä¸Šè¨˜ãƒ©ã‚¤ã‚»ãƒ³ã‚¹ä»¥å¤–ã®å¥‘ç´„ç­‰ã¯ä¸€åˆ‡å­˜åœ¨ã—ã¾ã›ã‚“ã€‚
+// (ä½•ã‚‰ã‹ã®å¥‘ç´„ãŒã‚ã‚‹å ´åˆã§ã‚‚ã€æœ¬ã‚½ãƒ¼ã‚¹ã‚³ãƒ¼ãƒ‰ã¯ãã®å¯¾è±¡å¤–ã¨ãªã‚Šã¾ã™)
 //----------------------------------------------------------------------------
 
 #include "mStandard.h"
@@ -24,7 +24,7 @@ mDeviceEnumerarBase::mDeviceEnumerarBase( const WString& ClassName , bool IsSetu
 	DWORD guid_size = 0;
 	if( !SetupDiClassGuidsFromNameW( ClassName.c_str() , &MyClassGuid , 1 , &guid_size ) )
 	{
-		RaiseAssert( g_ErrorLogger , 0 , L"ƒfƒoƒCƒXƒNƒ‰ƒX‚Ì•¶š—ñ‚©‚çGUID‚Ö‚Ì•ÏŠ·‚ª¸”s‚µ‚Ü‚µ‚½" );
+		RaiseAssert( g_ErrorLogger , 0 , L"ãƒ‡ãƒã‚¤ã‚¹ã‚¯ãƒ©ã‚¹ã®æ–‡å­—åˆ—ã‹ã‚‰GUIDã¸ã®å¤‰æ›ãŒå¤±æ•—ã—ã¾ã—ãŸ" );
 		MyClassGuid = { 0 };
 	}
 	return;
@@ -54,18 +54,18 @@ void mDeviceEnumerarBase::FreeDevHandle( void )
 	return;
 }
 
-//is_setup_class : true = guid ‚ÍƒZƒbƒgƒAƒbƒvƒNƒ‰ƒX‚Ì‚à‚Ì
-//                 false = guid ‚ÍƒCƒ“ƒ^[ƒtƒFƒCƒXƒNƒ‰ƒX‚Ì‚à‚Ì
+//is_setup_class : true = guid ã¯ã‚»ãƒƒãƒˆã‚¢ãƒƒãƒ—ã‚¯ãƒ©ã‚¹ã®ã‚‚ã®
+//                 false = guid ã¯ã‚¤ãƒ³ã‚¿ãƒ¼ãƒ•ã‚§ã‚¤ã‚¹ã‚¯ãƒ©ã‚¹ã®ã‚‚ã®
 static bool OpenHandle( HDEVINFO &io_handle , const GUID& guid , bool is_setup_class )
 {
-	//‘O‚Ìƒnƒ“ƒhƒ‹íœ
+	//å‰ã®ãƒãƒ³ãƒ‰ãƒ«å‰Šé™¤
 	if( io_handle != INVALID_HANDLE_VALUE )
 	{
 		SetupDiDestroyDeviceInfoList( io_handle );
 		io_handle = INVALID_HANDLE_VALUE;
 	}
 
-	//V‚µ‚¢ƒnƒ“ƒhƒ‹ì¬
+	//æ–°ã—ã„ãƒãƒ³ãƒ‰ãƒ«ä½œæˆ
 	DWORD flags = DIGCF_PRESENT | DIGCF_PROFILE;
 	if( !is_setup_class )
 	{
@@ -77,17 +77,17 @@ static bool OpenHandle( HDEVINFO &io_handle , const GUID& guid , bool is_setup_c
 
 bool mDeviceEnumerarBase::BuildDevInfoData_Interface( void )
 {
-	//Šù‘¶î•ñ‚Ì”jŠü
+	//æ—¢å­˜æƒ…å ±ã®ç ´æ£„
 	MyDevInfoData.clear();
 
-	//ƒnƒ“ƒhƒ‹‚ÌŠm•Û
+	//ãƒãƒ³ãƒ‰ãƒ«ã®ç¢ºä¿
 	if( !OpenHandle( MyHandle , MyClassGuid , MyIsSetupClass ) )
 	{
-		RaiseAssert( g_ErrorLogger , 0 , L"ƒnƒ“ƒhƒ‹‚ğæ“¾‚Å‚«‚Ü‚¹‚ñ" );
+		RaiseAssert( g_ErrorLogger , 0 , L"ãƒãƒ³ãƒ‰ãƒ«ã‚’å–å¾—ã§ãã¾ã›ã‚“" );
 		return false;
 	}
 
-	//î•ñæ“¾
+	//æƒ…å ±å–å¾—
 	DWORD index = 0;
 	while( 1 )
 	{
@@ -103,7 +103,7 @@ bool mDeviceEnumerarBase::BuildDevInfoData_Interface( void )
 			}
 			else
 			{
-				RaiseError( g_ErrorLogger , 0 , L"ƒfƒoƒCƒX—ñ‹“‚ÉƒGƒ‰[‚ª”­¶‚µ‚Ü‚µ‚½" );
+				RaiseError( g_ErrorLogger , 0 , L"ãƒ‡ãƒã‚¤ã‚¹åˆ—æŒ™æ™‚ã«ã‚¨ãƒ©ãƒ¼ãŒç™ºç”Ÿã—ã¾ã—ãŸ" );
 				return false;
 			}
 		}
@@ -113,7 +113,7 @@ bool mDeviceEnumerarBase::BuildDevInfoData_Interface( void )
 		{
 			if( GetLastError() != ERROR_INSUFFICIENT_BUFFER )
 			{
-				RaiseError( g_ErrorLogger , 0 , L"ƒfƒoƒCƒXƒCƒ“ƒ^[ƒtƒFƒCƒXî•ñæ“¾‚ÉƒGƒ‰[‚ª”­¶‚µ‚Ü‚µ‚½" );
+				RaiseError( g_ErrorLogger , 0 , L"ãƒ‡ãƒã‚¤ã‚¹ã‚¤ãƒ³ã‚¿ãƒ¼ãƒ•ã‚§ã‚¤ã‚¹æƒ…å ±å–å¾—æ™‚ã«ã‚¨ãƒ©ãƒ¼ãŒç™ºç”Ÿã—ã¾ã—ãŸ" );
 				return false;
 			}
 		}
@@ -128,7 +128,7 @@ bool mDeviceEnumerarBase::BuildDevInfoData_Interface( void )
 
 		SetupDiGetDeviceInterfaceDetailW( MyHandle , &devinterface , devdetail , reqsize , &reqsize , &info_data );
 
-		//æ“¾‚Å‚«‚½‚Ì‚ÅƒGƒ“ƒgƒŠ‚É’Ç‰Á
+		//å–å¾—ã§ããŸã®ã§ã‚¨ãƒ³ãƒˆãƒªã«è¿½åŠ 
 		DevInfoDataEntry entry;
 		entry.DevInfo = info_data;
 		entry.DevicePath = devdetail->DevicePath;
@@ -142,17 +142,17 @@ bool mDeviceEnumerarBase::BuildDevInfoData_Interface( void )
 
 bool mDeviceEnumerarBase::BuildDevInfoData_Setup( void )
 {
-	//Šù‘¶î•ñ‚Ì”jŠü
+	//æ—¢å­˜æƒ…å ±ã®ç ´æ£„
 	MyDevInfoData.clear();
 
-	//ƒnƒ“ƒhƒ‹‚ÌŠm•Û
+	//ãƒãƒ³ãƒ‰ãƒ«ã®ç¢ºä¿
 	if( !OpenHandle( MyHandle ,  MyClassGuid , MyIsSetupClass ) )
 	{
-		RaiseAssert( g_ErrorLogger , 0 , L"ƒnƒ“ƒhƒ‹‚ğæ“¾‚Å‚«‚Ü‚¹‚ñ" );
+		RaiseAssert( g_ErrorLogger , 0 , L"ãƒãƒ³ãƒ‰ãƒ«ã‚’å–å¾—ã§ãã¾ã›ã‚“" );
 		return false;
 	}
 
-	//î•ñæ“¾
+	//æƒ…å ±å–å¾—
 	DWORD index = 0;
 	while( 1 )
 	{
@@ -160,7 +160,7 @@ bool mDeviceEnumerarBase::BuildDevInfoData_Setup( void )
 		ZeroMemory( &info_data , sizeof( info_data ) );
 		info_data.cbSize = sizeof(SP_DEVINFO_DATA);
 
-		//SP_DEVINFO_DATA‚È‚é‚à‚Ì‚ğæ“¾
+		//SP_DEVINFO_DATAãªã‚‹ã‚‚ã®ã‚’å–å¾—
 		if( !SetupDiEnumDeviceInfo( MyHandle , index , &info_data ) )
 		{
 			DWORD ec = GetLastError();
@@ -170,12 +170,12 @@ bool mDeviceEnumerarBase::BuildDevInfoData_Setup( void )
 			}
 			else
 			{
-				RaiseError( g_ErrorLogger , 0 , L"ƒfƒoƒCƒXî•ñæ“¾‚ÉƒGƒ‰[‚ª”­¶‚µ‚Ü‚µ‚½" );
+				RaiseError( g_ErrorLogger , 0 , L"ãƒ‡ãƒã‚¤ã‚¹æƒ…å ±å–å¾—æ™‚ã«ã‚¨ãƒ©ãƒ¼ãŒç™ºç”Ÿã—ã¾ã—ãŸ" );
 				return false;
 			}
 		}
 
-		//æ“¾‚Å‚«‚½‚Ì‚ÅƒGƒ“ƒgƒŠ‚É’Ç‰Á
+		//å–å¾—ã§ããŸã®ã§ã‚¨ãƒ³ãƒˆãƒªã«è¿½åŠ 
 		DevInfoDataEntry entry;
 		entry.DevInfo = info_data;
 		entry.DevicePath = L"";
@@ -187,10 +187,10 @@ bool mDeviceEnumerarBase::BuildDevInfoData_Setup( void )
 
 bool mDeviceEnumerarBase::CreateCatalog( bool reload )
 {
-	//ƒnƒ“ƒhƒ‹‚ÌŠm•Û
+	//ãƒãƒ³ãƒ‰ãƒ«ã®ç¢ºä¿
 	if( !OpenHandle( MyHandle , MyClassGuid , MyIsSetupClass ) )
 	{
-		RaiseAssert( g_ErrorLogger , 0 , L"ƒnƒ“ƒhƒ‹‚ğæ“¾‚Å‚«‚Ü‚¹‚ñ" );
+		RaiseAssert( g_ErrorLogger , 0 , L"ãƒãƒ³ãƒ‰ãƒ«ã‚’å–å¾—ã§ãã¾ã›ã‚“" );
 		return false;
 	}
 
@@ -199,7 +199,7 @@ bool mDeviceEnumerarBase::CreateCatalog( bool reload )
 		MyDevInfoData.clear();
 	}
 
-	//“à•”î•ñ‚ª‚È‚¯‚ê‚Î\’z
+	//å†…éƒ¨æƒ…å ±ãŒãªã‘ã‚Œã°æ§‹ç¯‰
 	if( MyDevInfoData.size() == 0 )
 	{
 		bool ret = false;
@@ -207,7 +207,7 @@ bool mDeviceEnumerarBase::CreateCatalog( bool reload )
 		{
 			if( !BuildDevInfoData_Setup() )
 			{
-				RaiseAssert( g_ErrorLogger , 0 , L"“à•”ƒf[ƒ^(Setup)‚ğ\’z‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½" );
+				RaiseAssert( g_ErrorLogger , 0 , L"å†…éƒ¨ãƒ‡ãƒ¼ã‚¿(Setup)ã‚’æ§‹ç¯‰ã§ãã¾ã›ã‚“ã§ã—ãŸ" );
 				return false;
 			}
 		}
@@ -215,7 +215,7 @@ bool mDeviceEnumerarBase::CreateCatalog( bool reload )
 		{
 			if( !BuildDevInfoData_Interface() )
 			{
-				RaiseAssert( g_ErrorLogger , 0 , L"“à•”ƒf[ƒ^(Interface)‚ğ\’z‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½" );
+				RaiseAssert( g_ErrorLogger , 0 , L"å†…éƒ¨ãƒ‡ãƒ¼ã‚¿(Interface)ã‚’æ§‹ç¯‰ã§ãã¾ã›ã‚“ã§ã—ãŸ" );
 				return false;
 			}
 		}
@@ -230,14 +230,14 @@ bool mDeviceEnumerarBase::GetProperty( const SP_DEVINFO_DATA& info , DWORD prop_
 	{
 		if( GetLastError() != ERROR_INSUFFICIENT_BUFFER )
 		{
-			RaiseError( g_ErrorLogger , 0 , L"•K—v‚Èƒoƒbƒtƒ@ƒTƒCƒY‚ğ”»’è‚Å‚«‚Ü‚¹‚ñ" , prop_id );
+			RaiseError( g_ErrorLogger , 0 , L"å¿…è¦ãªãƒãƒƒãƒ•ã‚¡ã‚µã‚¤ã‚ºã‚’åˆ¤å®šã§ãã¾ã›ã‚“" , prop_id );
 			return false;
 		}
 	}
 	std::unique_ptr<BYTE> dt( mNew BYTE[ required_size ] );
 	if( !SetupDiGetDeviceRegistryPropertyW( MyHandle , &const_cast<SP_DEVINFO_DATA&>( info ) , prop_id , nullptr , dt.get() , required_size , &required_size ) )
 	{
-		RaiseError( g_ErrorLogger , 0 , L"ƒf[ƒ^‚ğæ“¾‚Å‚«‚Ü‚¹‚ñ" , prop_id );
+		RaiseError( g_ErrorLogger , 0 , L"ãƒ‡ãƒ¼ã‚¿ã‚’å–å¾—ã§ãã¾ã›ã‚“" , prop_id );
 		return false;
 	}
 	retProp = (wchar_t*)dt.get();
@@ -248,7 +248,7 @@ bool mDeviceEnumerarBase::GetProperty( DWORD index , DWORD prop_id , WString& re
 {
 	if( MyDevInfoData.size() <= index )
 	{
-		RaiseError( g_ErrorLogger , 0 , L"ƒCƒ“ƒfƒbƒNƒX‚ª”ÍˆÍŠO‚Å‚·" , index );
+		RaiseError( g_ErrorLogger , 0 , L"ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹ãŒç¯„å›²å¤–ã§ã™" , index );
 		return false;
 	}
 	return GetProperty( MyDevInfoData[ index ].DevInfo , prop_id , retProp );
@@ -258,17 +258,17 @@ bool mDeviceEnumerarBase::GetDeviceRegistry( DWORD index , mDeviceRegistry& retR
 {
 	retReg.Close();
 
-	//ƒCƒ“ƒfƒbƒNƒXƒ`ƒFƒbƒN
+	//ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹ãƒã‚§ãƒƒã‚¯
 	if( MyDevInfoData.size() <= index )
 	{
-		RaiseError( g_ErrorLogger , 0 , L"ƒCƒ“ƒfƒbƒNƒX‚ªƒfƒoƒCƒX‚Ì‘”‚ğ’´‚¦‚Ä‚¢‚Ü‚·" , index );
+		RaiseError( g_ErrorLogger , 0 , L"ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹ãŒãƒ‡ãƒã‚¤ã‚¹ã®ç·æ•°ã‚’è¶…ãˆã¦ã„ã¾ã™" , index );
 		return false;
 	}
 
-	//ƒŒƒWƒXƒgƒŠƒL[‚ÌŠl“¾
+	//ãƒ¬ã‚¸ã‚¹ãƒˆãƒªã‚­ãƒ¼ã®ç²å¾—
 	if( !retReg.Open( MyHandle , MyDevInfoData[ index ].DevInfo ) )
 	{
-		RaiseAssert( g_ErrorLogger , 0 , L"ƒŒƒWƒXƒgƒŠƒL[‚ğæ“¾‚Å‚«‚Ü‚¹‚ñ" );
+		RaiseAssert( g_ErrorLogger , 0 , L"ãƒ¬ã‚¸ã‚¹ãƒˆãƒªã‚­ãƒ¼ã‚’å–å¾—ã§ãã¾ã›ã‚“" );
 		return false;
 	}
 	return true;

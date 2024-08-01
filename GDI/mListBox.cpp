@@ -1,5 +1,5 @@
-//----------------------------------------------------------------------------
-// ƒEƒCƒ“ƒhƒEŠÇ—iƒŠƒXƒgƒ{ƒbƒNƒXj
+ï»¿//----------------------------------------------------------------------------
+// ã‚¦ã‚¤ãƒ³ãƒ‰ã‚¦ç®¡ç†ï¼ˆãƒªã‚¹ãƒˆãƒœãƒƒã‚¯ã‚¹ï¼‰
 // Copyright (C) 2016 Fingerling. All rights reserved. 
 // This program is released under the MIT License. 
 // see http://opensource.org/licenses/mit-license.php
@@ -17,49 +17,49 @@ mListBox::~mListBox()
 {
 }
 
-//ƒEƒCƒ“ƒhƒEƒNƒ‰ƒX‚Ì“o˜^‚ğ‚·‚é
+//ã‚¦ã‚¤ãƒ³ãƒ‰ã‚¦ã‚¯ãƒ©ã‚¹ã®ç™»éŒ²ã‚’ã™ã‚‹
 bool mListBox::WindowClassSettingCallback( WindowClassSetting& retSetting , const void* opt )
 {
-	//Šù‘¶‚Ì•¨‚ğg—p‚·‚é‚Ì‚Åfalse‚ğ•Ô‚·‚Ì‚İB
+	//æ—¢å­˜ã®ç‰©ã‚’ä½¿ç”¨ã™ã‚‹ã®ã§falseã‚’è¿”ã™ã®ã¿ã€‚
 	return false;
 }
 
-//ƒEƒCƒ“ƒhƒE‚ğŠJ‚­
+//ã‚¦ã‚¤ãƒ³ãƒ‰ã‚¦ã‚’é–‹ã
 bool mListBox::CreateWindowCallback( CreateWindowSetting& retSetting , const void* opt )
 {
 	retSetting.ClassName = L"LISTBOX";
 	retSetting.Style |= LBS_NOTIFY;
 	
-	//ƒIƒvƒVƒ‡ƒ“w’è‚ª‚È‚¢ê‡‚Í‚»‚Ì‚Ü‚Ü–ß‚é(ƒfƒtƒHƒ‹ƒg‚ÌƒIƒuƒWƒFƒNƒg‚ğ¶¬)
+	//ã‚ªãƒ—ã‚·ãƒ§ãƒ³æŒ‡å®šãŒãªã„å ´åˆã¯ãã®ã¾ã¾æˆ»ã‚‹(ãƒ‡ãƒ•ã‚©ãƒ«ãƒˆã®ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã‚’ç”Ÿæˆ)
 	if( opt == nullptr )
 	{
 		return true;
 	}
 
-	//ƒIƒvƒVƒ‡ƒ“w’è‚ª‚ ‚ê‚ÎA‚»‚ê‚É]‚¤
+	//ã‚ªãƒ—ã‚·ãƒ§ãƒ³æŒ‡å®šãŒã‚ã‚Œã°ã€ãã‚Œã«å¾“ã†
 	if( ((const Option*)opt)->method == Option::CreateMethod::USEOPTION )
 	{
 		const mListBox::Option_UseOption* op = (const mListBox::Option_UseOption*)opt;
-		//—LŒøE–³Œø‚ÌØ‚è‘Ö‚¦
+		//æœ‰åŠ¹ãƒ»ç„¡åŠ¹ã®åˆ‡ã‚Šæ›¿ãˆ
 		retSetting.Style |= ( op->Enable != 0 ) ? ( 0 ) : ( WS_DISABLED );
-		//˜g‚ ‚èH
+		//æ ã‚ã‚Šï¼Ÿ
 		retSetting.Style |= ( op->Border != 0 ) ? ( WS_BORDER ) : ( 0 );
-		//ƒXƒNƒ[ƒ‹ƒo[‚ ‚èH
+		//ã‚¹ã‚¯ãƒ­ãƒ¼ãƒ«ãƒãƒ¼ã‚ã‚Šï¼Ÿ
 		retSetting.Style |= ( op->ScrollBar != 0 ) ? ( WS_VSCROLL ) : ( 0 );
-		//©“®ƒ\[ƒg
+		//è‡ªå‹•ã‚½ãƒ¼ãƒˆ
 		retSetting.Style |= ( op->AutoSort ) ? ( LBS_SORT ) : ( 0 );
-		//•¡”‘I‘ğƒ^ƒCƒvH
+		//è¤‡æ•°é¸æŠã‚¿ã‚¤ãƒ—ï¼Ÿ
 		retSetting.Style |= ( op->Multiple ) ? ( LBS_MULTIPLESEL ) : ( 0 );
-		//ˆÊ’u‚ÆƒTƒCƒY
+		//ä½ç½®ã¨ã‚µã‚¤ã‚º
 		SetWindowPosition( op->Pos );
 	}
 	return true;
 }
 
-//ƒAƒCƒeƒ€‚ğ’Ç‰Á‚·‚é
+//ã‚¢ã‚¤ãƒ†ãƒ ã‚’è¿½åŠ ã™ã‚‹
 bool mListBox::AddItem( const WString& caption )
 {
-	//€–Ú’Ç‰Á
+	//é …ç›®è¿½åŠ 
 	LRESULT result = ::SendMessageW( GetMyHwnd() , LB_ADDSTRING , 0 , (LPARAM)caption.c_str() );
 	switch( result )
 	{
@@ -75,20 +75,20 @@ bool mListBox::AddItem( const WString& caption )
 
 bool mListBox::AddItem( const WString& caption , const ItemDataEntry& data )
 {
-	//€–Ú’Ç‰Á
+	//é …ç›®è¿½åŠ 
 	if( !AddItem( caption ) )
 	{
 		return false;
 	}
 
-	//ƒLƒƒƒvƒVƒ‡ƒ“‚Æƒf[ƒ^‚ÌŠÖ˜A‚Ã‚¯
+	//ã‚­ãƒ£ãƒ—ã‚·ãƒ§ãƒ³ã¨ãƒ‡ãƒ¼ã‚¿ã®é–¢é€£ã¥ã‘
 	MyItemData[ caption ] = data;
 	return true;
 }
 
 bool mListBox::AddItem( const WString& caption , INT index )
 {
-	//€–Ú’Ç‰Á
+	//é …ç›®è¿½åŠ 
 	LRESULT result = ::SendMessageW( GetMyHwnd() , LB_INSERTSTRING , index , (LPARAM)caption.c_str() );
 	switch( result )
 	{
@@ -104,31 +104,31 @@ bool mListBox::AddItem( const WString& caption , INT index )
 
 bool mListBox::AddItem( const WString& caption , const ItemDataEntry& data , INT index )
 {
-	//€–Ú’Ç‰Á
+	//é …ç›®è¿½åŠ 
 	if( !AddItem( caption , index ) )
 	{
 		return false;
 	}
 
-	//ƒLƒƒƒvƒVƒ‡ƒ“‚Æƒf[ƒ^‚ÌŠÖ˜A‚Ã‚¯
+	//ã‚­ãƒ£ãƒ—ã‚·ãƒ§ãƒ³ã¨ãƒ‡ãƒ¼ã‚¿ã®é–¢é€£ã¥ã‘
 	MyItemData[ caption ] = data;
 	return true;
 }
 
-//ƒAƒCƒeƒ€‚ğíœ‚·‚é
+//ã‚¢ã‚¤ãƒ†ãƒ ã‚’å‰Šé™¤ã™ã‚‹
 bool mListBox::RemoveItem( INT index )
 {
-	//ƒAƒCƒeƒ€‚Ì”‚æ‚è‘å‚«‚¢’l‚Æ‚©A•‰‚ÌˆÊ’u‚Æ‚©•Ï‚È‚Ì‚ğw’è‚µ‚Ä‚¢‚ê‚ÎƒGƒ‰[‚É‚·‚é
+	//ã‚¢ã‚¤ãƒ†ãƒ ã®æ•°ã‚ˆã‚Šå¤§ãã„å€¤ã¨ã‹ã€è² ã®ä½ç½®ã¨ã‹å¤‰ãªã®ã‚’æŒ‡å®šã—ã¦ã„ã‚Œã°ã‚¨ãƒ©ãƒ¼ã«ã™ã‚‹
 	if( index < 0 || (INT)MyItemData.size() <= index )
 	{
 		RaiseAssert( g_ErrorLogger , index , L"Bad index" );
 		return false;
 	}
 
-	//‚±‚ê‚©‚çíœ‚·‚é€–Ú‚ÌƒLƒƒƒvƒVƒ‡ƒ“‚ğæ“¾‚·‚é
+	//ã“ã‚Œã‹ã‚‰å‰Šé™¤ã™ã‚‹é …ç›®ã®ã‚­ãƒ£ãƒ—ã‚·ãƒ§ãƒ³ã‚’å–å¾—ã™ã‚‹
 	WString caption = GetItemCaption( index );
 
-	//íœˆ—
+	//å‰Šé™¤å‡¦ç†
 	LRESULT result = ::SendMessageW( GetMyHwnd() , LB_DELETESTRING , (WPARAM)index , 0 );
 	switch( result )
 	{
@@ -140,56 +140,56 @@ bool mListBox::RemoveItem( INT index )
 		break;
 	}
 
-	//íœ‚Å‚«‚½‚Ì‚ÅAƒLƒƒƒvƒVƒ‡ƒ“‚Æƒf[ƒ^‚ÌŠÖ˜A‚Ã‚¯‚ğíœ‚·‚é
-	//‘¼‚É“¯–¼‚ÌƒLƒƒƒvƒVƒ‡ƒ“‚ğ‚à‚Â€–Ú‚ª‘¶İ‚·‚éê‡‚ÍŠÖ˜A‚Ã‚¯‚ğíœ‚µ‚È‚¢
+	//å‰Šé™¤ã§ããŸã®ã§ã€ã‚­ãƒ£ãƒ—ã‚·ãƒ§ãƒ³ã¨ãƒ‡ãƒ¼ã‚¿ã®é–¢é€£ã¥ã‘ã‚’å‰Šé™¤ã™ã‚‹
+	//ä»–ã«åŒåã®ã‚­ãƒ£ãƒ—ã‚·ãƒ§ãƒ³ã‚’ã‚‚ã¤é …ç›®ãŒå­˜åœ¨ã™ã‚‹å ´åˆã¯é–¢é€£ã¥ã‘ã‚’å‰Šé™¤ã—ãªã„
 	if( MyItemData.count( caption ) == 0 )
 	{
-		//‚±‚ÌƒLƒƒƒvƒVƒ‡ƒ“‚É‘Î‚·‚éƒf[ƒ^‚Í‘¶İ‚µ‚È‚¢
+		//ã“ã®ã‚­ãƒ£ãƒ—ã‚·ãƒ§ãƒ³ã«å¯¾ã™ã‚‹ãƒ‡ãƒ¼ã‚¿ã¯å­˜åœ¨ã—ãªã„
 		return true;
 	}
 	for( INT i = GetItemCount() - 1 ; 0 <= i ; i-- )
 	{
 		if( GetItemCaption( i ) == caption )
 		{
-			//“¯–¼‚Ì•¨‚ª‚ ‚é‚Ì‚Åíœ–³‚µ
+			//åŒåã®ç‰©ãŒã‚ã‚‹ã®ã§å‰Šé™¤ç„¡ã—
 			return true;
 		}
 	}
-	//“¯–¼‚Ì•¨‚ª‚È‚¢‚©‚çíœ
+	//åŒåã®ç‰©ãŒãªã„ã‹ã‚‰å‰Šé™¤
 	MyItemData.erase( caption );
 	return true;
 }
 
-//‘I‘ğ‚³‚ê‚Ä‚¢‚éƒCƒ“ƒfƒbƒNƒX‚Ìˆê——‚ğæ“¾‚·‚é
+//é¸æŠã•ã‚Œã¦ã„ã‚‹ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹ã®ä¸€è¦§ã‚’å–å¾—ã™ã‚‹
 mListBox::SelectedItems mListBox::GetSelected( void )const
 {
-	//‘I‘ğ‚³‚ê‚Ä‚¢‚é€–Ú‚Ì”‚ğæ“¾‚·‚é
+	//é¸æŠã•ã‚Œã¦ã„ã‚‹é …ç›®ã®æ•°ã‚’å–å¾—ã™ã‚‹
 	LRESULT selcount = ::SendMessageW( GetMyHwnd() , LB_GETSELCOUNT , 0 , 0 );
 
-	//€–Ú‚Ì”‚ÉLB_ERR‚ª•Ô‚Á‚Ä‚­‚éê‡‚ÍA1ŒÂ‚¾‚¯‘I‘ğ‚Å‚«‚éƒŠƒXƒgƒ{ƒbƒNƒX
-	//‚»‚¤‚Å‚È‚¯‚ê‚ÎA‚»‚Ì”‚¾‚¯‘I‘ğ‚³‚ê‚Ä‚¢‚é
+	//é …ç›®ã®æ•°ã«LB_ERRãŒè¿”ã£ã¦ãã‚‹å ´åˆã¯ã€1å€‹ã ã‘é¸æŠã§ãã‚‹ãƒªã‚¹ãƒˆãƒœãƒƒã‚¯ã‚¹
+	//ãã†ã§ãªã‘ã‚Œã°ã€ãã®æ•°ã ã‘é¸æŠã•ã‚Œã¦ã„ã‚‹
 	if( selcount == LB_ERR )
 	{
-		//1ŒÂ‚µ‚©‘I‘ğ‚Å‚«‚È‚¢ƒŠƒXƒgƒ{ƒbƒNƒX‚Ìê‡ALB_GETCURSEL‚Å‘I‘ğ‚³‚ê‚Ä‚¢‚é€–Ú‚ªæ“¾‚Å‚«‚éB
-		//‚±‚Ìê‡A‰½‚à‘I‘ğ‚³‚ê‚Ä‚¢‚È‚¯‚ê‚ÎLB_ERR‚ª•Ô‚éB
+		//1å€‹ã—ã‹é¸æŠã§ããªã„ãƒªã‚¹ãƒˆãƒœãƒƒã‚¯ã‚¹ã®å ´åˆã€LB_GETCURSELã§é¸æŠã•ã‚Œã¦ã„ã‚‹é …ç›®ãŒå–å¾—ã§ãã‚‹ã€‚
+		//ã“ã®å ´åˆã€ä½•ã‚‚é¸æŠã•ã‚Œã¦ã„ãªã‘ã‚Œã°LB_ERRãŒè¿”ã‚‹ã€‚
 		LRESULT result = ::SendMessageW( GetMyHwnd() , LB_GETCURSEL , 0 , 0 );
 		if( result == LB_ERR )
 		{
-			//‰½‚à‘I‘ğ‚³‚ê‚Ä‚¢‚È‚¢
+			//ä½•ã‚‚é¸æŠã•ã‚Œã¦ã„ãªã„
 			return SelectedItems();
 		}
-		//‘I‘ğ‚³‚ê‚Ä‚¢‚é€–Ú‚ğ’Ç‰Á
+		//é¸æŠã•ã‚Œã¦ã„ã‚‹é …ç›®ã‚’è¿½åŠ 
 		SelectedItems items;
 		items.push_back( (INT)result );
 		return items;
 	}
 	else
 	{
-		//•¡”‘I‘ğ‚Å‚«‚éƒŠƒXƒgƒ{ƒbƒNƒX‚Å‚ÍALB_GETSELITEMS‚ğg‚Á‚Ä‘I‘ğ‚³‚ê‚Ä‚¢‚éƒAƒCƒeƒ€‚ğæ“¾‚·‚é
-		//LB_GETSELITEMS‚ÌLPARAM‚Íx64‚Å‚àINT‚Ì”z—ñ‚Å—Ç‚¢–Í—l
+		//è¤‡æ•°é¸æŠã§ãã‚‹ãƒªã‚¹ãƒˆãƒœãƒƒã‚¯ã‚¹ã§ã¯ã€LB_GETSELITEMSã‚’ä½¿ã£ã¦é¸æŠã•ã‚Œã¦ã„ã‚‹ã‚¢ã‚¤ãƒ†ãƒ ã‚’å–å¾—ã™ã‚‹
+		//LB_GETSELITEMSã®LPARAMã¯x64ã§ã‚‚INTã®é…åˆ—ã§è‰¯ã„æ¨¡æ§˜
 		INT* selected = mNew INT[ selcount ];
 
-		//‘I‘ğ‚³‚ê‚Ä‚¢‚é€–Ú‚Ìˆê——‚ğæ“¾
+		//é¸æŠã•ã‚Œã¦ã„ã‚‹é …ç›®ã®ä¸€è¦§ã‚’å–å¾—
 		LRESULT result = ::SendMessageW( GetMyHwnd() , LB_GETSELITEMS , selcount , (LPARAM)selected );
 		if( result == LB_ERR )
 		{
@@ -197,7 +197,7 @@ mListBox::SelectedItems mListBox::GetSelected( void )const
 			return SelectedItems();
 		}
 
-		//”z—ñ‚ğƒxƒNƒgƒ‹‚É’u‚«Š·‚¦
+		//é…åˆ—ã‚’ãƒ™ã‚¯ãƒˆãƒ«ã«ç½®ãæ›ãˆ
 		SelectedItems items;
 		for( LONG_PTR i = 0 ; i < selcount ; i++ )
 		{
@@ -208,14 +208,14 @@ mListBox::SelectedItems mListBox::GetSelected( void )const
 	}
 }
 
-//w’è‚µ‚½ƒCƒ“ƒfƒbƒNƒX‚ÌƒAƒCƒeƒ€‚ğ‘I‘ğó‘Ô‚É‚·‚é
+//æŒ‡å®šã—ãŸã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹ã®ã‚¢ã‚¤ãƒ†ãƒ ã‚’é¸æŠçŠ¶æ…‹ã«ã™ã‚‹
 bool mListBox::SetSelected( const SelectedItems& items )
 {
-	//‘I‘ğ‚³‚ê‚Ä‚¢‚é€–Ú‚Ì”‚ğæ“¾‚·‚é
+	//é¸æŠã•ã‚Œã¦ã„ã‚‹é …ç›®ã®æ•°ã‚’å–å¾—ã™ã‚‹
 	if( ::SendMessageW( GetMyHwnd() , LB_GETSELCOUNT , 0 , 0 ) == LB_ERR )
 	{
-		//1ŒÂ‚µ‚©‘I‘ğ‚Å‚«‚È‚¢ƒŠƒXƒgƒ{ƒbƒNƒX‚Ìê‡A
-		//•¡”ŒÂ‚ ‚Á‚Ä‚àˆ—‚Å‚«‚È‚¢‚Ì‚ÅƒGƒ‰[‚É‚·‚é
+		//1å€‹ã—ã‹é¸æŠã§ããªã„ãƒªã‚¹ãƒˆãƒœãƒƒã‚¯ã‚¹ã®å ´åˆã€
+		//è¤‡æ•°å€‹ã‚ã£ã¦ã‚‚å‡¦ç†ã§ããªã„ã®ã§ã‚¨ãƒ©ãƒ¼ã«ã™ã‚‹
 		if( items.size() != 1 )
 		{
 			RaiseAssert( g_ErrorLogger , items.size() , L"Bad item number" );
@@ -223,14 +223,14 @@ bool mListBox::SetSelected( const SelectedItems& items )
 		}
 	}
 
-	//‘S‘I‘ğ‚ğˆê’U‰ğœ‚·‚é
+	//å…¨é¸æŠã‚’ä¸€æ—¦è§£é™¤ã™ã‚‹
 	if( ::SendMessageW( GetMyHwnd() , LB_SETSEL , 0 , -1 ) == LB_ERR )
 	{
 		RaiseAssert( g_ErrorLogger , -1 , L"LB_SETSEL failed" );
 		return false;
 	}
 
-	//w’è‚³‚ê‚½ƒCƒ“ƒfƒbƒNƒX‚É‘Î‚µA‡Ÿ‘I‘ğó‘Ô‚É‚·‚é
+	//æŒ‡å®šã•ã‚ŒãŸã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹ã«å¯¾ã—ã€é †æ¬¡é¸æŠçŠ¶æ…‹ã«ã™ã‚‹
 	for( SelectedItems::const_iterator itr = items.begin() ; itr != items.end() ; itr++ )
 	{
 		if( !SetSelected( *itr ) )
@@ -242,30 +242,30 @@ bool mListBox::SetSelected( const SelectedItems& items )
 	return true;
 }
 
-//w’è‚µ‚½ƒCƒ“ƒfƒbƒNƒX‚ÌƒAƒCƒeƒ€‚ğ‘I‘ğó‘Ô‚É‚·‚é
+//æŒ‡å®šã—ãŸã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹ã®ã‚¢ã‚¤ãƒ†ãƒ ã‚’é¸æŠçŠ¶æ…‹ã«ã™ã‚‹
 bool mListBox::SetSelected( INT item )
 {
 	return ::SendMessageW( GetMyHwnd() , LB_SETSEL , 1 , item ) != LB_ERR;
 }
 
-//w’è‚µ‚½ƒLƒƒƒvƒVƒ‡ƒ“‚ğ‚à‚ÂƒAƒCƒeƒ€‚ÌƒCƒ“ƒfƒbƒNƒX‚ğ•Ô‚·
+//æŒ‡å®šã—ãŸã‚­ãƒ£ãƒ—ã‚·ãƒ§ãƒ³ã‚’ã‚‚ã¤ã‚¢ã‚¤ãƒ†ãƒ ã®ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹ã‚’è¿”ã™
 INT mListBox::SearchItem( const WString& caption )
 {
 	LRESULT result = ::SendMessageW( GetMyHwnd() , LB_FINDSTRINGEXACT , 0 , (LPARAM)caption.c_str() );
 	if( result == LB_ERR )
 	{
-		//w’èƒLƒƒƒvƒVƒ‡ƒ“‚ª‚È‚¢‚Ì‚Í‘z’è‚³‚ê‚Ä‚¢‚é‚©‚çAƒGƒ‰[‚Ì‹L˜^‚Í‚È‚µB
+		//æŒ‡å®šã‚­ãƒ£ãƒ—ã‚·ãƒ§ãƒ³ãŒãªã„ã®ã¯æƒ³å®šã•ã‚Œã¦ã„ã‚‹ã‹ã‚‰ã€ã‚¨ãƒ©ãƒ¼ã®è¨˜éŒ²ã¯ãªã—ã€‚
 		return -1;
 	}
 	return (INT)result;
 }
 
-//w’èƒCƒ“ƒfƒbƒNƒX‚ÌƒLƒƒƒvƒVƒ‡ƒ“‚ğæ“¾‚·‚é
+//æŒ‡å®šã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹ã®ã‚­ãƒ£ãƒ—ã‚·ãƒ§ãƒ³ã‚’å–å¾—ã™ã‚‹
 WString mListBox::GetItemCaption( INT index )const
 {
-	LRESULT result;	//Œ‹‰Ê‚ÌˆêŠi”[—p
+	LRESULT result;	//çµæœã®ä¸€æ™‚æ ¼ç´ç”¨
 	
-	//ƒ‰ƒxƒ‹‚Ì•¶š—ñ‚Ì’·‚³‚ğæ“¾‚·‚é
+	//ãƒ©ãƒ™ãƒ«ã®æ–‡å­—åˆ—ã®é•·ã•ã‚’å–å¾—ã™ã‚‹
 	result = ::SendMessageW( GetMyHwnd() , LB_GETTEXTLEN , index , 0 );
 	if( result == LB_ERR )
 	{
@@ -273,10 +273,10 @@ WString mListBox::GetItemCaption( INT index )const
 		return L"";
 	}
 
-	//Ši”[—p‚Ìƒoƒbƒtƒ@‚ğì¬
+	//æ ¼ç´ç”¨ã®ãƒãƒƒãƒ•ã‚¡ã‚’ä½œæˆ
 	WCHAR* str_buffer = mNew WCHAR[ (size_t)result ];
 
-	//ƒoƒbƒtƒ@‚É•¶š—ñ‚ğæ“¾‚·‚é
+	//ãƒãƒƒãƒ•ã‚¡ã«æ–‡å­—åˆ—ã‚’å–å¾—ã™ã‚‹
 	result = ::SendMessageW( GetMyHwnd() , LB_GETTEXT , index , (LPARAM)str_buffer );
 	if( result == LB_ERR )
 	{
@@ -285,42 +285,42 @@ WString mListBox::GetItemCaption( INT index )const
 		return L"";
 	}
 
-	//æ“¾‚µ‚½•¶š—ñ‚©‚çWStringƒIƒuƒWƒFƒNƒg‚ğ\’z‚µ‚ÄŒ‹‰Ê‚É‚·‚é
+	//å–å¾—ã—ãŸæ–‡å­—åˆ—ã‹ã‚‰WStringã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã‚’æ§‹ç¯‰ã—ã¦çµæœã«ã™ã‚‹
 	WString result_string = str_buffer;
 	mDelete[] str_buffer;
 	return result_string;
 }
 
-//w’èƒCƒ“ƒfƒbƒNƒX‚ÉŠÖ˜A‚Ã‚¯‚ç‚ê‚Ä‚¢‚éƒf[ƒ^‚ğæ“¾‚·‚é
+//æŒ‡å®šã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹ã«é–¢é€£ã¥ã‘ã‚‰ã‚Œã¦ã„ã‚‹ãƒ‡ãƒ¼ã‚¿ã‚’å–å¾—ã™ã‚‹
 bool mListBox::GetItemData( INT index , ItemDataEntry& retdata )const
 {
-	//w’è‚³‚ê‚½ƒCƒ“ƒfƒbƒNƒX‚ÌƒLƒƒƒvƒVƒ‡ƒ“‚ğæ“¾
+	//æŒ‡å®šã•ã‚ŒãŸã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹ã®ã‚­ãƒ£ãƒ—ã‚·ãƒ§ãƒ³ã‚’å–å¾—
 	WString caption = GetItemCaption( index );
 
-	//æ“¾‚µ‚½ƒLƒƒƒvƒVƒ‡ƒ“‚©‚çƒf[ƒ^‚ğæ“¾
+	//å–å¾—ã—ãŸã‚­ãƒ£ãƒ—ã‚·ãƒ§ãƒ³ã‹ã‚‰ãƒ‡ãƒ¼ã‚¿ã‚’å–å¾—
 	ItemData::const_iterator itr = MyItemData.find( caption );
 	if( itr == MyItemData.end() )
 	{
-		//w’èƒLƒƒƒvƒVƒ‡ƒ“‚ÉŠÖ˜A‚Ã‚¯‚ç‚ê‚Ä‚¢‚éƒf[ƒ^‚Í‚È‚¢
+		//æŒ‡å®šã‚­ãƒ£ãƒ—ã‚·ãƒ§ãƒ³ã«é–¢é€£ã¥ã‘ã‚‰ã‚Œã¦ã„ã‚‹ãƒ‡ãƒ¼ã‚¿ã¯ãªã„
 		return false;
 	}
 	retdata = itr->second;
 	return true;
 }
 
-//‚¢‚­‚ÂƒAƒCƒeƒ€‚ª‚ ‚é‚©‚ğƒJƒEƒ“ƒg‚·‚é
+//ã„ãã¤ã‚¢ã‚¤ãƒ†ãƒ ãŒã‚ã‚‹ã‹ã‚’ã‚«ã‚¦ãƒ³ãƒˆã™ã‚‹
 INT mListBox::GetItemCount( void )const
 {
 	return (INT)::SendMessage( GetMyHwnd() , LB_GETCOUNT , 0 , 0 );
 }
 
-//ƒAƒCƒeƒ€‚ğˆÚ“®‚·‚é
+//ã‚¢ã‚¤ãƒ†ãƒ ã‚’ç§»å‹•ã™ã‚‹
 bool mListBox::MoveItem( INT index , INT moveto )
 {
 	INT itemcount = GetItemCount();
-	//EƒCƒ“ƒfƒbƒNƒX‚ª2‚ÂˆÈ‰º‚¾‚Æ“ü‚ê‘Ö‚¦‚Å‚«‚È‚¢‚Ì‚ÅƒGƒ‰[
-	//Eindex‚ª•‰‚Ì”‚¾‚Á‚½‚èAƒAƒCƒeƒ€‚Ì”‚ğ’´‚¦‚Ä‚¢‚éê‡‚ÍƒGƒ‰[
-	//Emoveto‚ª•‰‚Ì”‚¾‚Á‚½‚èAƒAƒCƒeƒ€‚Ì”‚ğ’´‚¦‚Ä‚¢‚éê‡‚ÍƒGƒ‰[
+	//ãƒ»ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹ãŒ2ã¤ä»¥ä¸‹ã ã¨å…¥ã‚Œæ›¿ãˆã§ããªã„ã®ã§ã‚¨ãƒ©ãƒ¼
+	//ãƒ»indexãŒè² ã®æ•°ã ã£ãŸã‚Šã€ã‚¢ã‚¤ãƒ†ãƒ ã®æ•°ã‚’è¶…ãˆã¦ã„ã‚‹å ´åˆã¯ã‚¨ãƒ©ãƒ¼
+	//ãƒ»movetoãŒè² ã®æ•°ã ã£ãŸã‚Šã€ã‚¢ã‚¤ãƒ†ãƒ ã®æ•°ã‚’è¶…ãˆã¦ã„ã‚‹å ´åˆã¯ã‚¨ãƒ©ãƒ¼
 	if( ( itemcount < 2 ) ||
 		( index  < 0 || itemcount <= index  ) ||
 		( moveto < 0 || itemcount <= moveto ) )
@@ -328,16 +328,16 @@ bool mListBox::MoveItem( INT index , INT moveto )
 		RaiseAssert( g_ErrorLogger , ( index << 16 ) + moveto , L"" );
 		return false;
 	}
-	//index‚Æmoveto‚ª“¯‚¶‚¾‚Á‚½‚ç“ü‚ê‘Ö‚¦•K—v‚È‚µ
+	//indexã¨movetoãŒåŒã˜ã ã£ãŸã‚‰å…¥ã‚Œæ›¿ãˆå¿…è¦ãªã—
 	if( index == moveto )
 	{
 		return true;
 	}
-	//ƒAƒCƒeƒ€‚ÌƒLƒƒƒvƒVƒ‡ƒ“‚ğæ“¾‚·‚é
+	//ã‚¢ã‚¤ãƒ†ãƒ ã®ã‚­ãƒ£ãƒ—ã‚·ãƒ§ãƒ³ã‚’å–å¾—ã™ã‚‹
 	WString caption = GetItemCaption( index );
 
-	//Œ»İ‚ÌˆÊ’u‚©‚çƒAƒCƒeƒ€‚ğíœ‚µAV‚µ‚¢ˆÊ’u‚ÉƒAƒCƒeƒ€‚ğ‘}“ü‚·‚é
-	//¦MyItemData‚ÍƒAƒCƒeƒ€‚ÌˆÊ’u‚ª•Ï‚í‚é‚¾‚¯‚¾‚©‚ç•ÏX‚Í•s—v
+	//ç¾åœ¨ã®ä½ç½®ã‹ã‚‰ã‚¢ã‚¤ãƒ†ãƒ ã‚’å‰Šé™¤ã—ã€æ–°ã—ã„ä½ç½®ã«ã‚¢ã‚¤ãƒ†ãƒ ã‚’æŒ¿å…¥ã™ã‚‹
+	//â€»MyItemDataã¯ã‚¢ã‚¤ãƒ†ãƒ ã®ä½ç½®ãŒå¤‰ã‚ã‚‹ã ã‘ã ã‹ã‚‰å¤‰æ›´ã¯ä¸è¦
 	LRESULT result;
 	result = ::SendMessageW( GetMyHwnd() , LB_DELETESTRING , (WPARAM)index , 0 );
 	if( result == LB_ERR )

@@ -1,15 +1,15 @@
-//----------------------------------------------------------------------------
-// �E�C���h�E�Ǘ��i�`�F�b�N�{�b�N�X�j
+﻿//----------------------------------------------------------------------------
+// ウインドウ管理（チェックボックス）
 // Copyright (C) 2016 Fingerling. All rights reserved. 
 // This program is released under the MIT License. 
 // see http://opensource.org/licenses/mit-license.php
 //----------------------------------------------------------------------------
 
 /*
-���p�r
-�V���v���ȃ`�F�b�N�{�b�N�X�ł��B�E�C���h�E�ɓ\��t���邱�Ƃ��ł��܂��B
-�E�`�F�b�N�}�[�N��t������O������A���܃`�F�b�N�}�[�N���t���Ă��邩���m�F�����肷��֐���
-�@���̃N���X�̈��AmCheckboxFamily�Ő錾���Ă���܂��B
+●用途
+シンプルなチェックボックスです。ウインドウに貼り付けることができます。
+・チェックマークを付けたり外したり、いまチェックマークが付いているかを確認したりする関数は
+　このクラスの一個上、mCheckboxFamilyで宣言してあります。
 */
 
 
@@ -22,18 +22,18 @@ class mCheckBox : public mCheckboxFamily
 {
 public:
 
-	//�������̃I�v�V����
-	//���ۂɍ쐬����Ƃ��́AOption�\���̂𒼐ڎg�킸�ɁA�V�`���G�[�V�����ɍ��킹�Ĉȉ����g���ĉ������B
-	//�EOption_UseOption �c �����o�ϐ��𖄂߂ăI�v�V������ݒ肵�����Ƃ�
+	//生成時のオプション
+	//実際に作成するときは、Option構造体を直接使わずに、シチュエーションに合わせて以下を使って下さい。
+	//・Option_UseOption … メンバ変数を埋めてオプションを設定したいとき
 	struct Option
 	{
-		//�`�F�b�N�{�b�N�X�����̕��@
+		//チェックボックス生成の方法
 		enum CreateMethod
 		{
-			USEOPTION,		//�ʏ�̕��@
+			USEOPTION,		//通常の方法
 		};
 
-		const CreateMethod method;	//RTTI�̑�p�ł��B�ύX�̕K�v�͂���܂���B
+		const CreateMethod method;	//RTTIの代用です。変更の必要はありません。
 	protected:
 		Option() = delete;
 		Option( CreateMethod create_method ) : method( create_method )
@@ -41,13 +41,13 @@ public:
 		}
 	};
 
-	//�`�F�b�N�{�^���������̃I�v�V�����i�v���O�����Ŏw��p�j
+	//チェックボタン生成時のオプション（プログラムで指定用）
 	struct Option_UseOption : public Option
 	{
-		WString Caption;		//�{�^���ɏ����Ă��镶����
-		WindowPosition Pos;		//�\���ʒu
-		bool Enable;			//�L��/����
-		bool ThreeState;		//�^�̏ꍇ3�X�e�[�g
+		WString Caption;		//ボタンに書いてある文字列
+		WindowPosition Pos;		//表示位置
+		bool Enable;			//有効/無効
+		bool ThreeState;		//真の場合3ステート
 		Option_UseOption() : Option( CreateMethod::USEOPTION )
 		{
 			Caption = L"";
@@ -56,7 +56,7 @@ public:
 		}
 	};
 
-	//�t�@�N�g�����\�b�h
+	//ファクトリメソッド
 	static mWindow* Factory( const void * option )throw( )
 	{
 		return mNew mCheckBox;
@@ -66,10 +66,10 @@ protected:
 	mCheckBox();
 	virtual ~mCheckBox();
 
-	//�E�C���h�E�N���X�̓o�^������
+	//ウインドウクラスの登録をする
 	virtual bool WindowClassSettingCallback( WindowClassSetting& retSetting , const void* opt )override;
 
-	//�E�C���h�E���J��
+	//ウインドウを開く
 	virtual bool CreateWindowCallback( CreateWindowSetting& retSetting , const void* opt )override;
 
 private:

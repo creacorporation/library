@@ -1,10 +1,10 @@
-//----------------------------------------------------------------------------
-// WebView2ƒnƒ“ƒhƒ‰[
+ï»¿//----------------------------------------------------------------------------
+// WebView2ãƒãƒ³ãƒ‰ãƒ©ãƒ¼
 // Copyright (C) 2021 Crea Inc. All rights reserved.
 // This program is released under the MIT License. 
 // see http://opensource.org/licenses/mit-license.php
-// ’˜ìŒ •\Ž¦‚âƒ‰ƒCƒZƒ“ƒX‚Ì‰ü•Ï‚Í‹ÖŽ~‚³‚ê‚Ä‚¢‚Ü‚·B
-// ‚±‚Ìƒ\[ƒXƒR[ƒh‚ÉŠÖ‚µ‚ÄAã‹Lƒ‰ƒCƒZƒ“ƒXˆÈŠO‚ÌŒ_–ñ“™‚ÍˆêØ‘¶Ý‚µ‚Ü‚¹‚ñB
+// è‘—ä½œæ¨©è¡¨ç¤ºã‚„ãƒ©ã‚¤ã‚»ãƒ³ã‚¹ã®æ”¹å¤‰ã¯ç¦æ­¢ã•ã‚Œã¦ã„ã¾ã™ã€‚
+// ã“ã®ã‚½ãƒ¼ã‚¹ã‚³ãƒ¼ãƒ‰ã«é–¢ã—ã¦ã€ä¸Šè¨˜ãƒ©ã‚¤ã‚»ãƒ³ã‚¹ä»¥å¤–ã®å¥‘ç´„ç­‰ã¯ä¸€åˆ‡å­˜åœ¨ã—ã¾ã›ã‚“ã€‚
 //----------------------------------------------------------------------------
 
 
@@ -22,54 +22,54 @@
 
 namespace Definitions_WebView2
 {
-	//ƒiƒrƒQ[ƒVƒ‡ƒ“ŠJŽnŽž‚Ìƒpƒ‰ƒ[ƒ^
+	//ãƒŠãƒ“ã‚²ãƒ¼ã‚·ãƒ§ãƒ³é–‹å§‹æ™‚ã®ãƒ‘ãƒ©ãƒ¡ãƒ¼ã‚¿
 	struct OnNavigationStartingOpt
 	{
-		//ƒŠƒ_ƒCƒŒƒNƒg‚É‚æ‚èŠJŽn‚µ‚æ‚¤‚Æ‚µ‚Ä‚¢‚éê‡true
+		//ãƒªãƒ€ã‚¤ãƒ¬ã‚¯ãƒˆã«ã‚ˆã‚Šé–‹å§‹ã—ã‚ˆã†ã¨ã—ã¦ã„ã‚‹å ´åˆtrue
 		bool IsRedirected;
-		//ƒ†[ƒU[‚ªŠJŽn‚µ‚½‘€ì‚Å‚ ‚éê‡true
+		//ãƒ¦ãƒ¼ã‚¶ãƒ¼ãŒé–‹å§‹ã—ãŸæ“ä½œã§ã‚ã‚‹å ´åˆtrue
 		bool IsUserInitiated;
-		//ˆ—‚ðŠJŽn‚·‚éURI
+		//å‡¦ç†ã‚’é–‹å§‹ã™ã‚‹URI
 		WString Uri;
-		//ƒiƒrƒQ[ƒVƒ‡ƒ“‚ÌŠJŽn‚ð‹–‰Â‚·‚é
-		//¦ƒR[ƒ‹ƒoƒbƒN“à‚Å‚±‚Ìƒpƒ‰ƒ[ƒ^‚ðfalse‚É‘‚«Š·‚¦‚é‚ÆƒiƒrƒQ[ƒVƒ‡ƒ“‚ÍƒLƒƒƒ“ƒZƒ‹‚³‚ê‚Ü‚·
+		//ãƒŠãƒ“ã‚²ãƒ¼ã‚·ãƒ§ãƒ³ã®é–‹å§‹ã‚’è¨±å¯ã™ã‚‹
+		//â€»ã‚³ãƒ¼ãƒ«ãƒãƒƒã‚¯å†…ã§ã“ã®ãƒ‘ãƒ©ãƒ¡ãƒ¼ã‚¿ã‚’falseã«æ›¸ãæ›ãˆã‚‹ã¨ãƒŠãƒ“ã‚²ãƒ¼ã‚·ãƒ§ãƒ³ã¯ã‚­ãƒ£ãƒ³ã‚»ãƒ«ã•ã‚Œã¾ã™
 		bool IsAllowed;
 	};
 
-	//ƒiƒrƒQ[ƒVƒ‡ƒ“Š®—¹Žž‚Ìƒpƒ‰ƒ[ƒ^
+	//ãƒŠãƒ“ã‚²ãƒ¼ã‚·ãƒ§ãƒ³å®Œäº†æ™‚ã®ãƒ‘ãƒ©ãƒ¡ãƒ¼ã‚¿
 	struct OnNavigationCompletedOpt
 	{
-		//³íI—¹‚©H
+		//æ­£å¸¸çµ‚äº†ã‹ï¼Ÿ
 		bool IsSuccess;
-		//ƒGƒ‰[ƒR[ƒh‚ª‚ ‚ê‚Î
+		//ã‚¨ãƒ©ãƒ¼ã‚³ãƒ¼ãƒ‰ãŒã‚ã‚Œã°
 		COREWEBVIEW2_WEB_ERROR_STATUS Status;
 	};
 
-	//InjectOnCreateScript()‚Å’“ü‚µ‚½ƒXƒNƒŠƒvƒgŠ®—¹Žž‚Ìƒpƒ‰ƒ[ƒ^
+	//InjectOnCreateScript()ã§æ³¨å…¥ã—ãŸã‚¹ã‚¯ãƒªãƒ—ãƒˆå®Œäº†æ™‚ã®ãƒ‘ãƒ©ãƒ¡ãƒ¼ã‚¿
 	struct OnCreateScriptCompletedOpt
 	{
-		//³íI—¹‚©H
+		//æ­£å¸¸çµ‚äº†ã‹ï¼Ÿ
 		bool IsSuccess;
-		//Š®—¹‚µ‚½ƒXƒNƒŠƒvƒgIDiíœ‚·‚éê‡‚ÉŽg‚¤j
+		//å®Œäº†ã—ãŸã‚¹ã‚¯ãƒªãƒ—ãƒˆIDï¼ˆå‰Šé™¤ã™ã‚‹å ´åˆã«ä½¿ã†ï¼‰
 		WString ScriptId;
 	};
 
-	//WebMessageŽóMŽž‚Ìƒpƒ‰ƒ[ƒ^
+	//WebMessageå—ä¿¡æ™‚ã®ãƒ‘ãƒ©ãƒ¡ãƒ¼ã‚¿
 	struct OnWebMessageRecievedOpt
 	{
-		//‘—MŒ³
+		//é€ä¿¡å…ƒ
 		WString Sender;
-		//ƒƒbƒZ[ƒW(JSONƒtƒH[ƒ}ƒbƒg)
+		//ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸(JSONãƒ•ã‚©ãƒ¼ãƒžãƒƒãƒˆ)
 		WString Message;
-		//ƒƒbƒZ[ƒW‚ªƒVƒ“ƒvƒ‹‚ÈƒeƒLƒXƒg‚Æ‚µ‚Ä“Ç‚ß‚éê‡‚ÉŒÀ‚èA“Ç‚ÝŽæ‚Á‚½•¶Žš—ñB
-		//“Ç‚ß‚È‚¢ê‡‚ÍnullptrB
+		//ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸ãŒã‚·ãƒ³ãƒ—ãƒ«ãªãƒ†ã‚­ã‚¹ãƒˆã¨ã—ã¦èª­ã‚ã‚‹å ´åˆã«é™ã‚Šã€èª­ã¿å–ã£ãŸæ–‡å­—åˆ—ã€‚
+		//èª­ã‚ãªã„å ´åˆã¯nullptrã€‚
 		std::unique_ptr<WString> MessageAsString;
 	};
 
-	//JavascriptŽÀsŠ®—¹Žž‚Ìƒpƒ‰ƒ[ƒ^
+	//Javascriptå®Ÿè¡Œå®Œäº†æ™‚ã®ãƒ‘ãƒ©ãƒ¡ãƒ¼ã‚¿
 	struct OnScriptCompletedOpt
 	{
-		//ŽÀsŒ‹‰Ê(JSONƒtƒH[ƒ}ƒbƒg)
+		//å®Ÿè¡Œçµæžœ(JSONãƒ•ã‚©ãƒ¼ãƒžãƒƒãƒˆ)
 		WString Message;
 	};
 
@@ -79,59 +79,59 @@ class mWebView2 : public mWindow
 {
 public:
 
-	//’Ê’mŽž‚Ìƒpƒ‰ƒ[ƒ^
+	//é€šçŸ¥æ™‚ã®ãƒ‘ãƒ©ãƒ¡ãƒ¼ã‚¿
 	union NotifyFunctionOptPtr
 	{
-		//WebView2‚Ì‰Šú‰»‚ªŠ®—¹‚µ‚½ê‡‚ÌƒCƒxƒ“ƒg‚Å‚·
+		//WebView2ã®åˆæœŸåŒ–ãŒå®Œäº†ã—ãŸå ´åˆã®ã‚¤ãƒ™ãƒ³ãƒˆã§ã™
 		Definitions_WebView2::OnNavigationStartingOpt* OnNavigationStarting;
-		//ƒy[ƒW‘JˆÚ‚ªŠ®—¹‚µ‚½ê‡‚ÌƒCƒxƒ“ƒg‚Å‚·
+		//ãƒšãƒ¼ã‚¸é·ç§»ãŒå®Œäº†ã—ãŸå ´åˆã®ã‚¤ãƒ™ãƒ³ãƒˆã§ã™
 		Definitions_WebView2::OnNavigationCompletedOpt* OnNavigationCompleted;
-		//InjectOnCreateScript()‚Å‹­§ŽÀs‚·‚éƒXƒNƒŠƒvƒg‚ð’“ü‚µ‚Ä‚¢‚éê‡A‚»‚ÌƒXƒNƒŠƒvƒg‚ÌŽÀs‚ªŠ®—¹‚·‚é‚ÆƒR[ƒ‹ƒoƒbƒN‚³‚ê‚éƒCƒxƒ“ƒg‚Å‚·B
+		//InjectOnCreateScript()ã§å¼·åˆ¶å®Ÿè¡Œã™ã‚‹ã‚¹ã‚¯ãƒªãƒ—ãƒˆã‚’æ³¨å…¥ã—ã¦ã„ã‚‹å ´åˆã€ãã®ã‚¹ã‚¯ãƒªãƒ—ãƒˆã®å®Ÿè¡ŒãŒå®Œäº†ã™ã‚‹ã¨ã‚³ãƒ¼ãƒ«ãƒãƒƒã‚¯ã•ã‚Œã‚‹ã‚¤ãƒ™ãƒ³ãƒˆã§ã™ã€‚
 		Definitions_WebView2::OnCreateScriptCompletedOpt* OnCreateScriptCompleted;
-		//ƒEƒFƒuƒƒbƒZ[ƒW‚ðŽóM‚µ‚½ê‡‚ÌƒCƒxƒ“ƒg‚Å‚·
+		//ã‚¦ã‚§ãƒ–ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸ã‚’å—ä¿¡ã—ãŸå ´åˆã®ã‚¤ãƒ™ãƒ³ãƒˆã§ã™
 		Definitions_WebView2::OnWebMessageRecievedOpt* OnWebMessageRecievedOpt;
-		//ExceScript()‚ÅŽÀs‚µ‚½ƒXƒNƒŠƒvƒg‚ªŠ®—¹‚µ‚½ê‡‚ÌƒCƒxƒ“ƒg‚Å‚·
+		//ExceScript()ã§å®Ÿè¡Œã—ãŸã‚¹ã‚¯ãƒªãƒ—ãƒˆãŒå®Œäº†ã—ãŸå ´åˆã®ã‚¤ãƒ™ãƒ³ãƒˆã§ã™
 		Definitions_WebView2::OnScriptCompletedOpt* OnScriptCompletedOpt;
 	};
 
-	//’Ê’mÝ’è
+	//é€šçŸ¥è¨­å®š
 	using NotifyFunction = void(*)( mWebView2& webview , DWORD_PTR parameter , NotifyFunctionOptPtr* opt );
 	class NotifyOption : public mNotifyOption< NotifyFunction >
 	{
 	public:
-		//WebView2‚Ì‰Šú‰»‚ªŠ®—¹‚µ‚½ê‡‚ÌƒCƒxƒ“ƒg‚Å‚·
+		//WebView2ã®åˆæœŸåŒ–ãŒå®Œäº†ã—ãŸå ´åˆã®ã‚¤ãƒ™ãƒ³ãƒˆã§ã™
 		NotifierInfo OnInitialized;
-		//ƒy[ƒW‘JˆÚ‚ðŠJŽn‚µ‚½ê‡‚ÌƒCƒxƒ“ƒg‚Å‚·
-		//EƒŠƒ_ƒCƒŒƒNƒg‚³‚ê‚½ê‡‚ÍA•¡”‰ñ˜A‘±‚Å”­¶‚·‚é‚±‚Æ‚ª‚ ‚è‚Ü‚·
+		//ãƒšãƒ¼ã‚¸é·ç§»ã‚’é–‹å§‹ã—ãŸå ´åˆã®ã‚¤ãƒ™ãƒ³ãƒˆã§ã™
+		//ãƒ»ãƒªãƒ€ã‚¤ãƒ¬ã‚¯ãƒˆã•ã‚ŒãŸå ´åˆã¯ã€è¤‡æ•°å›žé€£ç¶šã§ç™ºç”Ÿã™ã‚‹ã“ã¨ãŒã‚ã‚Šã¾ã™
 		NotifierInfo OnNavigationStarting;
-		//ƒy[ƒW‘JˆÚ‚ªŠ®—¹‚µ‚½ê‡‚ÌƒCƒxƒ“ƒg‚Å‚·
-		//EŽ¸”s‚Ìê‡‚à‚ ‚è‚Ü‚·
+		//ãƒšãƒ¼ã‚¸é·ç§»ãŒå®Œäº†ã—ãŸå ´åˆã®ã‚¤ãƒ™ãƒ³ãƒˆã§ã™
+		//ãƒ»å¤±æ•—ã®å ´åˆã‚‚ã‚ã‚Šã¾ã™
 		NotifierInfo OnNavigationCompleted;
-		//InjectOnCreateScript()‚Å‹­§ŽÀs‚·‚éƒXƒNƒŠƒvƒg‚ð’“ü‚µ‚Ä‚¢‚éê‡A
-		//‚»‚ÌƒXƒNƒŠƒvƒg‚ÌŽÀs‚ªŠ®—¹‚·‚é‚ÆƒR[ƒ‹ƒoƒbƒN‚³‚ê‚éƒCƒxƒ“ƒg‚Å‚·B
+		//InjectOnCreateScript()ã§å¼·åˆ¶å®Ÿè¡Œã™ã‚‹ã‚¹ã‚¯ãƒªãƒ—ãƒˆã‚’æ³¨å…¥ã—ã¦ã„ã‚‹å ´åˆã€
+		//ãã®ã‚¹ã‚¯ãƒªãƒ—ãƒˆã®å®Ÿè¡ŒãŒå®Œäº†ã™ã‚‹ã¨ã‚³ãƒ¼ãƒ«ãƒãƒƒã‚¯ã•ã‚Œã‚‹ã‚¤ãƒ™ãƒ³ãƒˆã§ã™ã€‚
 		NotifierInfo OnCreateScriptCompleted;
-		//ƒEƒFƒuƒƒbƒZ[ƒW‚ðŽóM‚µ‚½ê‡‚ÌƒCƒxƒ“ƒg‚Å‚·
-		// Javascript‘¤‚©‚çuwindow.chrome.webview.postMessage("MessageFromJavascript");v‚Ý‚½‚¢‚ÈŠ´‚¶‚ÅƒƒbƒZ[ƒW‚ð‘—‚é‚Æ‚»‚ê‚ðŽóM‚Å‚«‚Ü‚·B
+		//ã‚¦ã‚§ãƒ–ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸ã‚’å—ä¿¡ã—ãŸå ´åˆã®ã‚¤ãƒ™ãƒ³ãƒˆã§ã™
+		// Javascriptå´ã‹ã‚‰ã€Œwindow.chrome.webview.postMessage("MessageFromJavascript");ã€ã¿ãŸã„ãªæ„Ÿã˜ã§ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸ã‚’é€ã‚‹ã¨ãã‚Œã‚’å—ä¿¡ã§ãã¾ã™ã€‚
 		NotifierInfo OnWebMessageReceived;
-		//ExceScript()‚ÅŽÀs‚µ‚½ƒXƒNƒŠƒvƒg‚ªŠ®—¹‚µ‚½ê‡‚ÌƒCƒxƒ“ƒg‚Å‚·
+		//ExceScript()ã§å®Ÿè¡Œã—ãŸã‚¹ã‚¯ãƒªãƒ—ãƒˆãŒå®Œäº†ã—ãŸå ´åˆã®ã‚¤ãƒ™ãƒ³ãƒˆã§ã™
 		NotifierInfo OnScriptCompleted;
 	};
 
-	//ƒRƒ“ƒgƒ[ƒ‹¶¬Žž‚ÌƒIƒvƒVƒ‡ƒ“
-	//ŽÀÛ‚Éì¬‚·‚é‚Æ‚«‚ÍAOption\‘¢‘Ì‚ð’¼ÚŽg‚í‚¸‚ÉAƒVƒ`ƒ…ƒG[ƒVƒ‡ƒ“‚É‡‚í‚¹‚ÄˆÈ‰º‚ðŽg‚Á‚Ä‰º‚³‚¢B
-	//EOption_UseOption c ƒƒ“ƒo•Ï”‚ð–„‚ß‚ÄƒIƒvƒVƒ‡ƒ“‚ðÝ’è‚µ‚½‚¢‚Æ‚«
+	//ã‚³ãƒ³ãƒˆãƒ­ãƒ¼ãƒ«ç”Ÿæˆæ™‚ã®ã‚ªãƒ—ã‚·ãƒ§ãƒ³
+	//å®Ÿéš›ã«ä½œæˆã™ã‚‹ã¨ãã¯ã€Optionæ§‹é€ ä½“ã‚’ç›´æŽ¥ä½¿ã‚ãšã«ã€ã‚·ãƒãƒ¥ã‚¨ãƒ¼ã‚·ãƒ§ãƒ³ã«åˆã‚ã›ã¦ä»¥ä¸‹ã‚’ä½¿ã£ã¦ä¸‹ã•ã„ã€‚
+	//ãƒ»Option_UseOption â€¦ ãƒ¡ãƒ³ãƒå¤‰æ•°ã‚’åŸ‹ã‚ã¦ã‚ªãƒ—ã‚·ãƒ§ãƒ³ã‚’è¨­å®šã—ãŸã„ã¨ã
 	struct Option
 	{
 	public:
-		//¶¬‚Ì•û–@
+		//ç”Ÿæˆã®æ–¹æ³•
 		enum CreateMethod
 		{
-			USEOPTION,		//’Êí‚Ì•û–@
+			USEOPTION,		//é€šå¸¸ã®æ–¹æ³•
 		};
 
-		const CreateMethod method;	//RTTI‚Ì‘ã—p‚Å‚·B•ÏX‚Ì•K—v‚Í‚ ‚è‚Ü‚¹‚ñB
+		const CreateMethod method;	//RTTIã®ä»£ç”¨ã§ã™ã€‚å¤‰æ›´ã®å¿…è¦ã¯ã‚ã‚Šã¾ã›ã‚“ã€‚
 
-		//’Ê’mƒIƒvƒVƒ‡ƒ“
+		//é€šçŸ¥ã‚ªãƒ—ã‚·ãƒ§ãƒ³
 		NotifyOption Notify;
 
 		virtual ~Option()
@@ -145,54 +145,54 @@ public:
 		}
 	};
 
-	//ƒRƒ“ƒgƒ[ƒ‹¶¬Žž‚ÌƒIƒvƒVƒ‡ƒ“
+	//ã‚³ãƒ³ãƒˆãƒ­ãƒ¼ãƒ«ç”Ÿæˆæ™‚ã®ã‚ªãƒ—ã‚·ãƒ§ãƒ³
 	struct Option_UseOption : public Option
 	{
 	public:
-		//•\Ž¦ˆÊ’u
+		//è¡¨ç¤ºä½ç½®
 		WindowPosition Pos;
 
-		//ƒ†[ƒU[ƒf[ƒ^‚ð”z’u‚·‚éƒpƒX
+		//ãƒ¦ãƒ¼ã‚¶ãƒ¼ãƒ‡ãƒ¼ã‚¿ã‚’é…ç½®ã™ã‚‹ãƒ‘ã‚¹
 		WString UserDataFolder;	
 
-		//ƒ†[ƒU[ƒG[ƒWƒFƒ“ƒg‚Ì•¶Žš—ñ‚Ìˆµ‚¢
-		//true‚Ìê‡AUserAgent‚ðŒ³‚ÌUserAgent‚Ì––”ö‚É•t‚¯‘«‚µ‚Ü‚·
-		//false‚Ìê‡AUserAgent‚Ì’l‚ÅŒ³‚ÌUserAgent‚ð’u‚«Š·‚¦‚Ü‚·
+		//ãƒ¦ãƒ¼ã‚¶ãƒ¼ã‚¨ãƒ¼ã‚¸ã‚§ãƒ³ãƒˆã®æ–‡å­—åˆ—ã®æ‰±ã„
+		//trueã®å ´åˆã€UserAgentã‚’å…ƒã®UserAgentã®æœ«å°¾ã«ä»˜ã‘è¶³ã—ã¾ã™
+		//falseã®å ´åˆã€UserAgentã®å€¤ã§å…ƒã®UserAgentã‚’ç½®ãæ›ãˆã¾ã™
 		bool IsAppendUserAgent;
 
-		//ƒ†[ƒU[ƒG[ƒWƒFƒ“ƒg‚Ì•¶Žš—ñB‹ó•¶Žš—ñ‚Ìê‡‚ÍEdge‚ÌƒfƒtƒHƒ‹ƒg‚ÌUAB
+		//ãƒ¦ãƒ¼ã‚¶ãƒ¼ã‚¨ãƒ¼ã‚¸ã‚§ãƒ³ãƒˆã®æ–‡å­—åˆ—ã€‚ç©ºæ–‡å­—åˆ—ã®å ´åˆã¯Edgeã®ãƒ‡ãƒ•ã‚©ãƒ«ãƒˆã®UAã€‚
 		WString UserAgent;
 
-		//‰Šú‰»Š®—¹Žž‚ÉŠJ‚­‚Ì‚ÍAURL‚©HTML‚©
-		//true‚Ìê‡AOnCreateNavigation‚ÍURL
-		//false‚Ìê‡AOnCreateNavigation‚ÍHTML
+		//åˆæœŸåŒ–å®Œäº†æ™‚ã«é–‹ãã®ã¯ã€URLã‹HTMLã‹
+		//trueã®å ´åˆã€OnCreateNavigationã¯URL
+		//falseã®å ´åˆã€OnCreateNavigationã¯HTML
 		bool IsNavigationUrl;
 
-		//‰Šú‰»Š®—¹Žž‚ÉŠJ‚­URL‚Ü‚½‚ÍHTMLB‹ó•¶Žš—ñ‚Ìê‡‚Í‚È‚É‚à‚µ‚È‚¢B
+		//åˆæœŸåŒ–å®Œäº†æ™‚ã«é–‹ãURLã¾ãŸã¯HTMLã€‚ç©ºæ–‡å­—åˆ—ã®å ´åˆã¯ãªã«ã‚‚ã—ãªã„ã€‚
 		WString OnCreateNavigation;
 
-		//‰EƒNƒŠƒbƒNƒƒjƒ…[—LŒøE–³ŒøƒXƒCƒbƒ`
-		//false‚É‚·‚é‚ÆAƒRƒ“ƒeƒNƒXƒgƒƒjƒ…[‚ª–³Œø‚É‚È‚é
+		//å³ã‚¯ãƒªãƒƒã‚¯ãƒ¡ãƒ‹ãƒ¥ãƒ¼æœ‰åŠ¹ãƒ»ç„¡åŠ¹ã‚¹ã‚¤ãƒƒãƒ
+		//falseã«ã™ã‚‹ã¨ã€ã‚³ãƒ³ãƒ†ã‚¯ã‚¹ãƒˆãƒ¡ãƒ‹ãƒ¥ãƒ¼ãŒç„¡åŠ¹ã«ãªã‚‹
 		bool IsEnableContextMenu;
 
-		//ŠJ”­ƒc[ƒ‹‚ð—LŒøE–³ŒøƒXƒCƒbƒ`
-		//false‚É‚·‚é‚ÆAŠJ”­ƒc[ƒ‹‚ª–³Œø‚É‚È‚é
+		//é–‹ç™ºãƒ„ãƒ¼ãƒ«ã‚’æœ‰åŠ¹ãƒ»ç„¡åŠ¹ã‚¹ã‚¤ãƒƒãƒ
+		//falseã«ã™ã‚‹ã¨ã€é–‹ç™ºãƒ„ãƒ¼ãƒ«ãŒç„¡åŠ¹ã«ãªã‚‹
 		bool IsEnableDevTool;
 
-		//ƒXƒe[ƒ^ƒXƒo[—LŒøE–³ŒøƒXƒCƒbƒ`
-		//false‚É‚·‚é‚ÆAƒXƒe[ƒ^ƒXƒo[‚Í•\Ž¦‚³‚ê‚È‚¢B
+		//ã‚¹ãƒ†ãƒ¼ã‚¿ã‚¹ãƒãƒ¼æœ‰åŠ¹ãƒ»ç„¡åŠ¹ã‚¹ã‚¤ãƒƒãƒ
+		//falseã«ã™ã‚‹ã¨ã€ã‚¹ãƒ†ãƒ¼ã‚¿ã‚¹ãƒãƒ¼ã¯è¡¨ç¤ºã•ã‚Œãªã„ã€‚
 		bool IsEnableStatusBar;
 
-		//ƒXƒNƒŠƒvƒg—LŒøE–³ŒøƒXƒCƒbƒ`
-		//false‚É‚·‚é‚ÆAJavascript‚Í“®ì‚µ‚È‚¢B‚½‚¾‚µAExecScript()‚Å’¼ÚŽÀs‚µ‚½ê‡‚Í“®ì‚·‚éB
+		//ã‚¹ã‚¯ãƒªãƒ—ãƒˆæœ‰åŠ¹ãƒ»ç„¡åŠ¹ã‚¹ã‚¤ãƒƒãƒ
+		//falseã«ã™ã‚‹ã¨ã€Javascriptã¯å‹•ä½œã—ãªã„ã€‚ãŸã ã—ã€ExecScript()ã§ç›´æŽ¥å®Ÿè¡Œã—ãŸå ´åˆã¯å‹•ä½œã™ã‚‹ã€‚
 		bool IsEnableScript;
 
-		//ƒY[ƒ€—LŒøE–³ŒøƒXƒCƒbƒ`
-		//false‚É‚·‚é‚ÆAƒ†[ƒU[‚É‚æ‚éƒY[ƒ€‚Ì’²®‚Í–³Œø
+		//ã‚ºãƒ¼ãƒ æœ‰åŠ¹ãƒ»ç„¡åŠ¹ã‚¹ã‚¤ãƒƒãƒ
+		//falseã«ã™ã‚‹ã¨ã€ãƒ¦ãƒ¼ã‚¶ãƒ¼ã«ã‚ˆã‚‹ã‚ºãƒ¼ãƒ ã®èª¿æ•´ã¯ç„¡åŠ¹
 		bool IsEnableZoom;
 
-		//ƒrƒ‹ƒgƒCƒ“ƒGƒ‰[ƒy[ƒW‚Ì—LŒøE–³ŒøƒXƒCƒbƒ`
-		//false‚É‚·‚é‚ÆAƒrƒ‹ƒgƒCƒ“ƒGƒ‰[ƒy[ƒW‚Í–³Œø
+		//ãƒ“ãƒ«ãƒˆã‚¤ãƒ³ã‚¨ãƒ©ãƒ¼ãƒšãƒ¼ã‚¸ã®æœ‰åŠ¹ãƒ»ç„¡åŠ¹ã‚¹ã‚¤ãƒƒãƒ
+		//falseã«ã™ã‚‹ã¨ã€ãƒ“ãƒ«ãƒˆã‚¤ãƒ³ã‚¨ãƒ©ãƒ¼ãƒšãƒ¼ã‚¸ã¯ç„¡åŠ¹
 		bool IsEnableBuiltinErrorPage;
 
 		Option_UseOption() : Option( CreateMethod::USEOPTION )
@@ -212,134 +212,134 @@ public:
 		}
 	};
 
-	//ƒEƒCƒ“ƒhƒE‚Ì‰ÂŽ‹/•s‰ÂŽ‹‚ð•ÏX‚·‚é
-	//newstate : true‚Å‰ÂŽ‹Afalse‚Å•s‰ÂŽ‹
-	//ret : ¬Œ÷Žžtrue
+	//ã‚¦ã‚¤ãƒ³ãƒ‰ã‚¦ã®å¯è¦–/ä¸å¯è¦–ã‚’å¤‰æ›´ã™ã‚‹
+	//newstate : trueã§å¯è¦–ã€falseã§ä¸å¯è¦–
+	//ret : æˆåŠŸæ™‚true
 	virtual bool SetVisible( bool newstate )override;
 
-	//ƒEƒCƒ“ƒhƒE‚Ì—LŒø/–³Œø‚ð•ÏX‚·‚é
-	//newstate : true‚Å—LŒøAfalse‚Å–³Œø
-	//ret : ¬Œ÷Žžtrue
+	//ã‚¦ã‚¤ãƒ³ãƒ‰ã‚¦ã®æœ‰åŠ¹/ç„¡åŠ¹ã‚’å¤‰æ›´ã™ã‚‹
+	//newstate : trueã§æœ‰åŠ¹ã€falseã§ç„¡åŠ¹
+	//ret : æˆåŠŸæ™‚true
 	virtual bool SetEnable( bool newstate )override;
 
-	//ƒEƒCƒ“ƒhƒE‚ÌˆÊ’u‚ðƒXƒNƒŠ[ƒ“À•W‚Å“¾‚é
-	//ret : ƒXƒNƒŠ[ƒ“À•W‚É‚æ‚éƒEƒCƒ“ƒhƒE‚ÌˆÊ’u(ƒGƒ‰[‚Ìê‡0,0,0,0)
+	//ã‚¦ã‚¤ãƒ³ãƒ‰ã‚¦ã®ä½ç½®ã‚’ã‚¹ã‚¯ãƒªãƒ¼ãƒ³åº§æ¨™ã§å¾—ã‚‹
+	//ret : ã‚¹ã‚¯ãƒªãƒ¼ãƒ³åº§æ¨™ã«ã‚ˆã‚‹ã‚¦ã‚¤ãƒ³ãƒ‰ã‚¦ã®ä½ç½®(ã‚¨ãƒ©ãƒ¼ã®å ´åˆ0,0,0,0)
 	virtual RECT GetRect( void ) const override;
 
-	//ƒEƒCƒ“ƒhƒE‚ÌƒTƒCƒY‚ð“¾‚é
-	//ret : ƒEƒCƒ“ƒhƒE‚ÌƒTƒCƒY(ƒGƒ‰[‚Ìê‡0,0)
+	//ã‚¦ã‚¤ãƒ³ãƒ‰ã‚¦ã®ã‚µã‚¤ã‚ºã‚’å¾—ã‚‹
+	//ret : ã‚¦ã‚¤ãƒ³ãƒ‰ã‚¦ã®ã‚µã‚¤ã‚º(ã‚¨ãƒ©ãƒ¼ã®å ´åˆ0,0)
 	virtual SIZE GetSize( void ) const override;
 
-	//‚±‚ÌƒEƒCƒ“ƒhƒE‚ÌƒNƒ‰ƒCƒAƒ“ƒgÀ•W‚ðƒXƒNƒŠ[ƒ“À•W‚É•ÏŠ·‚·‚é
-	//client_pos : ƒNƒ‰ƒCƒAƒ“ƒgÀ•W
-	//ret : ƒXƒNƒŠ[ƒ“À•W(ƒGƒ‰[‚Ìê‡0,0)
+	//ã“ã®ã‚¦ã‚¤ãƒ³ãƒ‰ã‚¦ã®ã‚¯ãƒ©ã‚¤ã‚¢ãƒ³ãƒˆåº§æ¨™ã‚’ã‚¹ã‚¯ãƒªãƒ¼ãƒ³åº§æ¨™ã«å¤‰æ›ã™ã‚‹
+	//client_pos : ã‚¯ãƒ©ã‚¤ã‚¢ãƒ³ãƒˆåº§æ¨™
+	//ret : ã‚¹ã‚¯ãƒªãƒ¼ãƒ³åº§æ¨™(ã‚¨ãƒ©ãƒ¼ã®å ´åˆ0,0)
 	virtual POINT Client2Screen( const POINT& client_pos ) const override;
 
-	//‚±‚ÌƒEƒCƒ“ƒhƒE‚ÌƒNƒ‰ƒCƒAƒ“ƒgÀ•W‚ðƒXƒNƒŠ[ƒ“À•W‚É•ÏŠ·‚·‚é
-	//x : ƒNƒ‰ƒCƒAƒ“ƒgÀ•W(XÀ•W)
-	//x : ƒNƒ‰ƒCƒAƒ“ƒgÀ•W(YÀ•W)
-	//ret : ƒXƒNƒŠ[ƒ“À•W(ƒGƒ‰[‚Ìê‡0,0)
+	//ã“ã®ã‚¦ã‚¤ãƒ³ãƒ‰ã‚¦ã®ã‚¯ãƒ©ã‚¤ã‚¢ãƒ³ãƒˆåº§æ¨™ã‚’ã‚¹ã‚¯ãƒªãƒ¼ãƒ³åº§æ¨™ã«å¤‰æ›ã™ã‚‹
+	//x : ã‚¯ãƒ©ã‚¤ã‚¢ãƒ³ãƒˆåº§æ¨™(Xåº§æ¨™)
+	//x : ã‚¯ãƒ©ã‚¤ã‚¢ãƒ³ãƒˆåº§æ¨™(Yåº§æ¨™)
+	//ret : ã‚¹ã‚¯ãƒªãƒ¼ãƒ³åº§æ¨™(ã‚¨ãƒ©ãƒ¼ã®å ´åˆ0,0)
 	virtual POINT Client2Screen( INT x , INT y ) const override;
 
-	//ƒXƒNƒŠ[ƒ“À•W‚ð‚±‚ÌƒEƒCƒ“ƒhƒE‚ÌƒNƒ‰ƒCƒAƒ“ƒgÀ•W‚É•ÏŠ·‚·‚é
-	//client_pos : ƒXƒNƒŠ[ƒ“À•W
-	//ret : ƒNƒ‰ƒCƒAƒ“ƒgÀ•W(ƒGƒ‰[‚Ìê‡0,0)
+	//ã‚¹ã‚¯ãƒªãƒ¼ãƒ³åº§æ¨™ã‚’ã“ã®ã‚¦ã‚¤ãƒ³ãƒ‰ã‚¦ã®ã‚¯ãƒ©ã‚¤ã‚¢ãƒ³ãƒˆåº§æ¨™ã«å¤‰æ›ã™ã‚‹
+	//client_pos : ã‚¹ã‚¯ãƒªãƒ¼ãƒ³åº§æ¨™
+	//ret : ã‚¯ãƒ©ã‚¤ã‚¢ãƒ³ãƒˆåº§æ¨™(ã‚¨ãƒ©ãƒ¼ã®å ´åˆ0,0)
 	virtual POINT Screen2Client( const POINT& client_pos ) const override;
 
-	//ƒXƒNƒŠ[ƒ“À•W‚ð‚±‚ÌƒEƒCƒ“ƒhƒE‚ÌƒNƒ‰ƒCƒAƒ“ƒgÀ•W‚É•ÏŠ·‚·‚é
-	//x : ƒXƒNƒŠ[ƒ“À•W(XÀ•W)
-	//x : ƒXƒNƒŠ[ƒ“À•W(YÀ•W)
-	//ret : ƒNƒ‰ƒCƒAƒ“ƒgÀ•W(ƒGƒ‰[‚Ìê‡0,0)
+	//ã‚¹ã‚¯ãƒªãƒ¼ãƒ³åº§æ¨™ã‚’ã“ã®ã‚¦ã‚¤ãƒ³ãƒ‰ã‚¦ã®ã‚¯ãƒ©ã‚¤ã‚¢ãƒ³ãƒˆåº§æ¨™ã«å¤‰æ›ã™ã‚‹
+	//x : ã‚¹ã‚¯ãƒªãƒ¼ãƒ³åº§æ¨™(Xåº§æ¨™)
+	//x : ã‚¹ã‚¯ãƒªãƒ¼ãƒ³åº§æ¨™(Yåº§æ¨™)
+	//ret : ã‚¯ãƒ©ã‚¤ã‚¢ãƒ³ãƒˆåº§æ¨™(ã‚¨ãƒ©ãƒ¼ã®å ´åˆ0,0)
 	virtual POINT Screen2Client( INT x , INT y ) const override;
 
-	//ƒtƒH[ƒJƒX‚ðÝ’è‚·‚é
-	//ret : ¬Œ÷Žžtrue
+	//ãƒ•ã‚©ãƒ¼ã‚«ã‚¹ã‚’è¨­å®šã™ã‚‹
+	//ret : æˆåŠŸæ™‚true
 	virtual bool SetFocus( void )const override;
 
-	//Žw’è‚ÌƒAƒhƒŒƒX‚ÉƒiƒrƒQ[ƒg‚·‚é
+	//æŒ‡å®šã®ã‚¢ãƒ‰ãƒ¬ã‚¹ã«ãƒŠãƒ“ã‚²ãƒ¼ãƒˆã™ã‚‹
 	bool Navigate( const WString& uri );
 
-	//•¶Žš—ñ‚ÅŽw’è‚µ‚½‚g‚s‚l‚k‚ð•\Ž¦‚·‚é
+	//æ–‡å­—åˆ—ã§æŒ‡å®šã—ãŸï¼¨ï¼´ï¼­ï¼¬ã‚’è¡¨ç¤ºã™ã‚‹
 	bool PutHTML( const WString& html );
 
-	//ƒŠƒ[ƒh‚·‚é
+	//ãƒªãƒ­ãƒ¼ãƒ‰ã™ã‚‹
 	bool Reload( void );
 
-	//“Ç‚Ýž‚Ý‚ð’†Ž~‚·‚é
+	//èª­ã¿è¾¼ã¿ã‚’ä¸­æ­¢ã™ã‚‹
 	bool Stop( void );
 
-	//[–ß‚é]‚ªŽg—p‰Â”\‚©Šm”F‚·‚é
+	//[æˆ»ã‚‹]ãŒä½¿ç”¨å¯èƒ½ã‹ç¢ºèªã™ã‚‹
 	bool IsBackAvailable( void );
 
-	//[i‚Þ]‚ªŽg—p‰Â”\‚©Šm”F‚·‚é
+	//[é€²ã‚€]ãŒä½¿ç”¨å¯èƒ½ã‹ç¢ºèªã™ã‚‹
 	bool IsForwardAvailable( void );
 
-	//[–ß‚é]
+	//[æˆ»ã‚‹]
 	bool Back( void );
 
-	//[i‚Þ]
+	//[é€²ã‚€]
 	bool Forward( void );
 
-	//ƒhƒLƒ…ƒƒ“ƒg‚Ìƒ^ƒCƒgƒ‹‚ðŽæ“¾‚·‚é
-	//ret : ƒhƒLƒ…ƒƒ“ƒg‚Ìƒ^ƒCƒgƒ‹BƒGƒ‰[‚Ìê‡‚Í‹ó•¶Žš—ñB
+	//ãƒ‰ã‚­ãƒ¥ãƒ¡ãƒ³ãƒˆã®ã‚¿ã‚¤ãƒˆãƒ«ã‚’å–å¾—ã™ã‚‹
+	//ret : ãƒ‰ã‚­ãƒ¥ãƒ¡ãƒ³ãƒˆã®ã‚¿ã‚¤ãƒˆãƒ«ã€‚ã‚¨ãƒ©ãƒ¼ã®å ´åˆã¯ç©ºæ–‡å­—åˆ—ã€‚
 	WString GetDocumentTitle( void );
 
-	//Œ»Ý‚ÌURI‚ðŽæ“¾‚·‚é
-	//ret : Œ»Ý‚ÌURIBƒGƒ‰[‚Ìê‡‚Í‹ó•¶Žš—ñB
+	//ç¾åœ¨ã®URIã‚’å–å¾—ã™ã‚‹
+	//ret : ç¾åœ¨ã®URIã€‚ã‚¨ãƒ©ãƒ¼ã®å ´åˆã¯ç©ºæ–‡å­—åˆ—ã€‚
 	WString GetURI( void );
 
-	//ƒhƒLƒ…ƒƒ“ƒg“Ç‚Ýž‚ÝŽž‚É‹­§ŽÀs‚·‚éƒXƒNƒŠƒvƒg‚ð‘}“ü‚·‚é
-	// scr : ’“ü‚·‚éjavascript
-	// ret : ¬Œ÷Žž^
+	//ãƒ‰ã‚­ãƒ¥ãƒ¡ãƒ³ãƒˆèª­ã¿è¾¼ã¿æ™‚ã«å¼·åˆ¶å®Ÿè¡Œã™ã‚‹ã‚¹ã‚¯ãƒªãƒ—ãƒˆã‚’æŒ¿å…¥ã™ã‚‹
+	// scr : æ³¨å…¥ã™ã‚‹javascript
+	// ret : æˆåŠŸæ™‚çœŸ
 	bool InjectOnCreateScript( const WString& scr );
 
-	//ƒhƒLƒ…ƒƒ“ƒg“Ç‚Ýž‚ÝŽž‚É‹­§ŽÀs‚·‚éƒXƒNƒŠƒvƒg‚ðœ‹Ž‚·‚é
-	//¦‚P‰ñŽÀs‚ªŠ®—¹‚µAƒR[ƒ‹ƒoƒbƒNŠÖ”‚©‚ç“¾‚ç‚ê‚é‚h‚c‚ð’m‚ç‚È‚¢‚Æíœ‚Å‚«‚È‚¢
-	// id : íœ‚·‚éƒXƒNƒŠƒvƒg‚ÌID(ƒR[ƒ‹ƒoƒbƒNŠÖ”‚Ìƒpƒ‰ƒ[ƒ^‚©‚ç“¾‚ç‚ê‚é)
-	// ret : ¬Œ÷Žž^
+	//ãƒ‰ã‚­ãƒ¥ãƒ¡ãƒ³ãƒˆèª­ã¿è¾¼ã¿æ™‚ã«å¼·åˆ¶å®Ÿè¡Œã™ã‚‹ã‚¹ã‚¯ãƒªãƒ—ãƒˆã‚’é™¤åŽ»ã™ã‚‹
+	//â€»ï¼‘å›žå®Ÿè¡ŒãŒå®Œäº†ã—ã€ã‚³ãƒ¼ãƒ«ãƒãƒƒã‚¯é–¢æ•°ã‹ã‚‰å¾—ã‚‰ã‚Œã‚‹ï¼©ï¼¤ã‚’çŸ¥ã‚‰ãªã„ã¨å‰Šé™¤ã§ããªã„
+	// id : å‰Šé™¤ã™ã‚‹ã‚¹ã‚¯ãƒªãƒ—ãƒˆã®ID(ã‚³ãƒ¼ãƒ«ãƒãƒƒã‚¯é–¢æ•°ã®ãƒ‘ãƒ©ãƒ¡ãƒ¼ã‚¿ã‹ã‚‰å¾—ã‚‰ã‚Œã‚‹)
+	// ret : æˆåŠŸæ™‚çœŸ
 	bool RemoveOnCreateScript( const WString& id );
 
-	//ƒEƒFƒuƒƒbƒZ[ƒW‚ð‘—M‚·‚éiJSONŒ`Ž®j
-	// message : ‘—M‚·‚éƒƒbƒZ[ƒW
-	// ret : ¬Œ÷Žž^
-	//HTML‘¤‚©‚ç‚Í‚±‚ñ‚ÈŠ´‚¶‚ÅƒŠƒXƒi[‚ð“o˜^‚·‚é‚ÆAƒƒbƒZ[ƒW‚ª“Í‚­‚æ‚¤‚É‚È‚éB
+	//ã‚¦ã‚§ãƒ–ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸ã‚’é€ä¿¡ã™ã‚‹ï¼ˆJSONå½¢å¼ï¼‰
+	// message : é€ä¿¡ã™ã‚‹ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸
+	// ret : æˆåŠŸæ™‚çœŸ
+	//HTMLå´ã‹ã‚‰ã¯ã“ã‚“ãªæ„Ÿã˜ã§ãƒªã‚¹ãƒŠãƒ¼ã‚’ç™»éŒ²ã™ã‚‹ã¨ã€ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸ãŒå±Šãã‚ˆã†ã«ãªã‚‹ã€‚
 	//  window.chrome.webview.addEventListener('message', handler)
 	//  window.chrome.webview.removeEventListener('message', handler)
 	bool SendMessageAsJson( const WString& message );
 
-	//ƒEƒFƒuƒƒbƒZ[ƒW‚ð‘—M‚·‚éi•¶Žš—ñŒ`Ž®j
-	// message : ‘—M‚·‚éƒƒbƒZ[ƒW
-	// ret : ¬Œ÷Žž^
-	//HTML‘¤‚©‚ç‚Í‚±‚ñ‚ÈŠ´‚¶‚ÅƒŠƒXƒi[‚ð“o˜^‚·‚é‚ÆAƒƒbƒZ[ƒW‚ª“Í‚­‚æ‚¤‚É‚È‚éB
+	//ã‚¦ã‚§ãƒ–ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸ã‚’é€ä¿¡ã™ã‚‹ï¼ˆæ–‡å­—åˆ—å½¢å¼ï¼‰
+	// message : é€ä¿¡ã™ã‚‹ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸
+	// ret : æˆåŠŸæ™‚çœŸ
+	//HTMLå´ã‹ã‚‰ã¯ã“ã‚“ãªæ„Ÿã˜ã§ãƒªã‚¹ãƒŠãƒ¼ã‚’ç™»éŒ²ã™ã‚‹ã¨ã€ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸ãŒå±Šãã‚ˆã†ã«ãªã‚‹ã€‚
 	//  window.chrome.webview.addEventListener('message', handler)
 	//  window.chrome.webview.removeEventListener('message', handler)
 	bool SendMessageAsString( const WString& message );
 
-	//ƒXƒNƒŠƒvƒg‚ðŽÀs‚·‚é
-	// ret : ¬Œ÷Žž^
-	// scr : ŽÀs‚·‚éjavascript
+	//ã‚¹ã‚¯ãƒªãƒ—ãƒˆã‚’å®Ÿè¡Œã™ã‚‹
+	// ret : æˆåŠŸæ™‚çœŸ
+	// scr : å®Ÿè¡Œã™ã‚‹javascript
 	bool ExecScript( const WString& scr );
 
-	//ƒY[ƒ€”{—¦‚ðŽæ“¾‚·‚é
-	// errorvalue : ƒGƒ‰[‚Ìê‡‚É•Ô‚·’l
-	// ret : ƒY[ƒ€”{—¦BƒGƒ‰[‚Ìê‡errorvalue‚ÉŽw’è‚µ‚½’lB
+	//ã‚ºãƒ¼ãƒ å€çŽ‡ã‚’å–å¾—ã™ã‚‹
+	// errorvalue : ã‚¨ãƒ©ãƒ¼ã®å ´åˆã«è¿”ã™å€¤
+	// ret : ã‚ºãƒ¼ãƒ å€çŽ‡ã€‚ã‚¨ãƒ©ãƒ¼ã®å ´åˆerrorvalueã«æŒ‡å®šã—ãŸå€¤ã€‚
 	double GetZoomFactor( double errorvalue = 1.0f );
 
-	//ƒY[ƒ€”{—¦‚ðÝ’è‚·‚é
+	//ã‚ºãƒ¼ãƒ å€çŽ‡ã‚’è¨­å®šã™ã‚‹
 	bool SetZoomFactor( double factor );
 
-	//ƒ†[ƒU[ƒG[ƒWƒFƒ“ƒg‚ðŽæ“¾‚·‚é
-	// ret : Žæ“¾‚µ‚½UA
+	//ãƒ¦ãƒ¼ã‚¶ãƒ¼ã‚¨ãƒ¼ã‚¸ã‚§ãƒ³ãƒˆã‚’å–å¾—ã™ã‚‹
+	// ret : å–å¾—ã—ãŸUA
 	WString GetUserAgant( void );
 
-	//ƒ†[ƒU[ƒG[ƒWƒFƒ“ƒg‚ðÝ’è‚·‚é
-	// ua : V‚µ‚¢ua
-	// ret : ¬Œ÷Žž^
+	//ãƒ¦ãƒ¼ã‚¶ãƒ¼ã‚¨ãƒ¼ã‚¸ã‚§ãƒ³ãƒˆã‚’è¨­å®šã™ã‚‹
+	// ua : æ–°ã—ã„ua
+	// ret : æˆåŠŸæ™‚çœŸ
 	bool SetUserAgant( const WString& ua );
 
 public:
 
-	//ƒtƒ@ƒNƒgƒŠƒƒ\ƒbƒh
+	//ãƒ•ã‚¡ã‚¯ãƒˆãƒªãƒ¡ã‚½ãƒƒãƒ‰
 	static mWindow* Factory( const void * option )throw( )
 	{
 		return mNew mWebView2;
@@ -349,41 +349,41 @@ protected:
 	mWebView2();
 	virtual ~mWebView2();
 
-	//ƒEƒCƒ“ƒhƒEƒNƒ‰ƒX‚Ì“o˜^‚ð‚·‚é
+	//ã‚¦ã‚¤ãƒ³ãƒ‰ã‚¦ã‚¯ãƒ©ã‚¹ã®ç™»éŒ²ã‚’ã™ã‚‹
 	virtual bool WindowClassSettingCallback( WindowClassSetting& retSetting , const void* opt )override;
 
-	//ƒEƒCƒ“ƒhƒE‚ðŠJ‚­
+	//ã‚¦ã‚¤ãƒ³ãƒ‰ã‚¦ã‚’é–‹ã
 	virtual bool CreateWindowCallback( CreateWindowSetting& retSetting , const void* opt )override;
 	
-	//ƒEƒCƒ“ƒhƒE¶¬‚ðŠ®—¹‚µ‚½ê‡‚ÉƒR[ƒ‹‚³‚ê‚é
+	//ã‚¦ã‚¤ãƒ³ãƒ‰ã‚¦ç”Ÿæˆã‚’å®Œäº†ã—ãŸå ´åˆã«ã‚³ãƒ¼ãƒ«ã•ã‚Œã‚‹
 	virtual bool OnCreate( const void* opt )override;
 
-	//ƒEƒCƒ“ƒhƒE‚ðˆÚ“®‚·‚é
+	//ã‚¦ã‚¤ãƒ³ãƒ‰ã‚¦ã‚’ç§»å‹•ã™ã‚‹
 	virtual void MoveWindowPosition( const RECT& pos )override;
 
-	//WebViewŠÂ‹«ƒnƒ“ƒhƒ‹
+	//WebViewç’°å¢ƒãƒãƒ³ãƒ‰ãƒ«
 	using EnvironmentHandle = Microsoft::WRL::ComPtr<ICoreWebView2Environment>;
 	EnvironmentHandle MyEnvironmentHandle;
 
-	//WebViewƒRƒ“ƒgƒ[ƒ‰[‚Ìƒnƒ“ƒhƒ‹
+	//WebViewã‚³ãƒ³ãƒˆãƒ­ãƒ¼ãƒ©ãƒ¼ã®ãƒãƒ³ãƒ‰ãƒ«
 	using ControllerHandle = Microsoft::WRL::ComPtr<ICoreWebView2Controller>;
 	ControllerHandle MyControllerHandle;
 
-	//WebView‚Ìƒnƒ“ƒhƒ‹
+	//WebViewã®ãƒãƒ³ãƒ‰ãƒ«
 	using ViewHandle = Microsoft::WRL::ComPtr<ICoreWebView2>;
 	ViewHandle MyViewHandle;
 
-	//ƒfƒŠƒQ[ƒg‚ÌÄ\’z
-	//ŽÀs‚É‚æ‚èˆÈ‰º‚ÌƒCƒxƒ“ƒg’è‹`‚ÅŽg—p‚·‚éƒfƒŠƒQ[ƒg‚ðÄ\’z‚·‚é
+	//ãƒ‡ãƒªã‚²ãƒ¼ãƒˆã®å†æ§‹ç¯‰
+	//å®Ÿè¡Œã«ã‚ˆã‚Šä»¥ä¸‹ã®ã‚¤ãƒ™ãƒ³ãƒˆå®šç¾©ã§ä½¿ç”¨ã™ã‚‹ãƒ‡ãƒªã‚²ãƒ¼ãƒˆã‚’å†æ§‹ç¯‰ã™ã‚‹
 	void UpdateDelegate( void );
-	//ƒfƒŠƒQ[ƒg’è‹`—ƒiƒrƒQ[ƒVƒ‡ƒ“ƒXƒ^[ƒg
+	//ãƒ‡ãƒªã‚²ãƒ¼ãƒˆå®šç¾©ï¼ ãƒŠãƒ“ã‚²ãƒ¼ã‚·ãƒ§ãƒ³ã‚¹ã‚¿ãƒ¼ãƒˆ
 	EventRegistrationToken MyOnNavigationStartingToken;
-	//ƒfƒŠƒQ[ƒg’è‹`—ƒiƒrƒQ[ƒVƒ‡ƒ“Š®—¹
+	//ãƒ‡ãƒªã‚²ãƒ¼ãƒˆå®šç¾©ï¼ ãƒŠãƒ“ã‚²ãƒ¼ã‚·ãƒ§ãƒ³å®Œäº†
 	EventRegistrationToken MyOnNavigationCompletedToken;
-	//ƒfƒŠƒQ[ƒg’è‹`—ƒEƒFƒuƒƒbƒZ[ƒWŽóM
+	//ãƒ‡ãƒªã‚²ãƒ¼ãƒˆå®šç¾©ï¼ ã‚¦ã‚§ãƒ–ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸å—ä¿¡
 	EventRegistrationToken MyOnWebMessageReceivedToken;
 
-	//ƒR[ƒ‹ƒoƒbƒNŠÖ”
+	//ã‚³ãƒ¼ãƒ«ãƒãƒƒã‚¯é–¢æ•°
 	HRESULT OnCreateEnvComplete( HRESULT callback_result , ICoreWebView2Environment* env );
 	HRESULT OnCreateCntComplete( HRESULT callback_result , ICoreWebView2Controller* cnt );
 	HRESULT OnNavigationStarting( ICoreWebView2* sender , ICoreWebView2NavigationStartingEventArgs* args );
@@ -397,7 +397,7 @@ private:
 	mWebView2( const mWebView2& src ) = delete;
 	mWebView2& operator=( const mWebView2& src ) = delete;
 
-	//ƒIƒvƒVƒ‡ƒ“ƒf[ƒ^‚ðˆêŽž•Û‘¶‚·‚é
+	//ã‚ªãƒ—ã‚·ãƒ§ãƒ³ãƒ‡ãƒ¼ã‚¿ã‚’ä¸€æ™‚ä¿å­˜ã™ã‚‹
 	std::unique_ptr<Option> MyOption;
 
 };

@@ -1,5 +1,5 @@
-//----------------------------------------------------------------------------
-// ƒEƒCƒ“ƒhƒEŠÇ—iGDIƒtƒHƒ“ƒgj
+ï»¿//----------------------------------------------------------------------------
+// ã‚¦ã‚¤ãƒ³ãƒ‰ã‚¦ç®¡ç†ï¼ˆGDIãƒ•ã‚©ãƒ³ãƒˆï¼‰
 // Copyright (C) 2016 Fingerling. All rights reserved. 
 // This program is released under the MIT License. 
 // see http://opensource.org/licenses/mit-license.php
@@ -10,20 +10,20 @@
 #include "General/mErrorLogger.h"
 
 /*
-LONG  lfHeight;                  // •¶šƒZƒ‹‚Ü‚½‚Í•¶š‚Ì‚‚³
-LONG  lfWidth;                   // •½‹Ï•¶š•
-LONG  lfEscapement;              // •¶š‘—‚è‚Ì•ûŒü‚ÆX²‚Æ‚ÌŠp“x
-LONG  lfOrientation;             // ƒx[ƒXƒ‰ƒCƒ“‚ÆX²‚Æ‚ÌŠp“x
-LONG  lfWeight;                  // ƒtƒHƒ“ƒg‚Ì‘¾‚³
-BYTE  lfItalic;                  // ƒCƒ^ƒŠƒbƒN‘Ìw’è
-BYTE  lfUnderline;               // ‰ºü•t‚«w’è
-BYTE  lfStrikeOut;               // ‘Å‚¿Á‚µü•t‚«w’è
-BYTE  lfCharSet;                 // ƒLƒƒƒ‰ƒNƒ^ƒZƒbƒg
-BYTE  lfOutPrecision;            // o—Í¸“x
-BYTE  lfClipPrecision;           // ƒNƒŠƒbƒsƒ“ƒO‚Ì¸“x
-BYTE  lfQuality;                 // o—Í•i¿
-BYTE  lfPitchAndFamily;          // ƒsƒbƒ`‚Æƒtƒ@ƒ~ƒŠ
-TCHAR lfFaceName[LF_FACESIZE];   // ƒtƒHƒ“ƒg–¼  
+LONG  lfHeight;                  // æ–‡å­—ã‚»ãƒ«ã¾ãŸã¯æ–‡å­—ã®é«˜ã•
+LONG  lfWidth;                   // å¹³å‡æ–‡å­—å¹…
+LONG  lfEscapement;              // æ–‡å­—é€ã‚Šã®æ–¹å‘ã¨Xè»¸ã¨ã®è§’åº¦
+LONG  lfOrientation;             // ãƒ™ãƒ¼ã‚¹ãƒ©ã‚¤ãƒ³ã¨Xè»¸ã¨ã®è§’åº¦
+LONG  lfWeight;                  // ãƒ•ã‚©ãƒ³ãƒˆã®å¤ªã•
+BYTE  lfItalic;                  // ã‚¤ã‚¿ãƒªãƒƒã‚¯ä½“æŒ‡å®š
+BYTE  lfUnderline;               // ä¸‹ç·šä»˜ãæŒ‡å®š
+BYTE  lfStrikeOut;               // æ‰“ã¡æ¶ˆã—ç·šä»˜ãæŒ‡å®š
+BYTE  lfCharSet;                 // ã‚­ãƒ£ãƒ©ã‚¯ã‚¿ã‚»ãƒƒãƒˆ
+BYTE  lfOutPrecision;            // å‡ºåŠ›ç²¾åº¦
+BYTE  lfClipPrecision;           // ã‚¯ãƒªãƒƒãƒ”ãƒ³ã‚°ã®ç²¾åº¦
+BYTE  lfQuality;                 // å‡ºåŠ›å“è³ª
+BYTE  lfPitchAndFamily;          // ãƒ”ãƒƒãƒã¨ãƒ•ã‚¡ãƒŸãƒª
+TCHAR lfFaceName[LF_FACESIZE];   // ãƒ•ã‚©ãƒ³ãƒˆå  
 */
 
 mGdiFont::mGdiFont( const Option* opt )throw( mException )
@@ -31,7 +31,7 @@ mGdiFont::mGdiFont( const Option* opt )throw( mException )
 	MyHandle = nullptr;
 	if( opt != nullptr )
 	{
-		//ƒIƒvƒVƒ‡ƒ“‚ªw’è‚³‚ê‚Ä‚¢‚½ê‡A‚»‚ê‚ğg‚Á‚ÄƒtƒHƒ“ƒg‚ğ¶¬‚·‚é
+		//ã‚ªãƒ—ã‚·ãƒ§ãƒ³ãŒæŒ‡å®šã•ã‚Œã¦ã„ãŸå ´åˆã€ãã‚Œã‚’ä½¿ã£ã¦ãƒ•ã‚©ãƒ³ãƒˆã‚’ç”Ÿæˆã™ã‚‹
 		if( opt->method == Option::CreateMethod::USEOPTION )
 		{
 			MakeFont( (Option_UseOption*)opt );
@@ -43,13 +43,13 @@ mGdiFont::mGdiFont( const Option* opt )throw( mException )
 	}
 	else
 	{
-		//ƒIƒvƒVƒ‡ƒ“‚ªw’è‚³‚ê‚Ä‚¢‚È‚©‚Á‚½ê‡(nullptr‚¾‚Á‚½ê‡)
-		//ƒ_ƒ~[‚ÌƒIƒvƒVƒ‡ƒ“\‘¢‘Ì(‘SƒfƒtƒHƒ‹ƒg‚Å‰Šú‰»‚³‚ê‚é)‚ğ“n‚·
+		//ã‚ªãƒ—ã‚·ãƒ§ãƒ³ãŒæŒ‡å®šã•ã‚Œã¦ã„ãªã‹ã£ãŸå ´åˆ(nullptrã ã£ãŸå ´åˆ)
+		//ãƒ€ãƒŸãƒ¼ã®ã‚ªãƒ—ã‚·ãƒ§ãƒ³æ§‹é€ ä½“(å…¨ãƒ‡ãƒ•ã‚©ãƒ«ãƒˆã§åˆæœŸåŒ–ã•ã‚Œã‚‹)ã‚’æ¸¡ã™
 		Option_UseOption temp_opt;
 		MakeFont( &temp_opt );
 	}
 
-	//ƒnƒ“ƒhƒ‹‚ª¶¬‚³‚ê‚Ä‚¢‚ê‚ÎOKA‚»‚¤‚Å‚È‚¯‚ê‚Î—áŠO‚ğ“Š‚°‚é
+	//ãƒãƒ³ãƒ‰ãƒ«ãŒç”Ÿæˆã•ã‚Œã¦ã„ã‚Œã°OKã€ãã†ã§ãªã‘ã‚Œã°ä¾‹å¤–ã‚’æŠ•ã’ã‚‹
 	if( MyHandle == nullptr )
 	{
 		throw EXCEPTION( 0 , L"CreateFontW failed" );
@@ -63,13 +63,13 @@ mGdiFont::~mGdiFont()
 	MyHandle = nullptr;
 }
 
-//ƒnƒ“ƒhƒ‹‚Ì’l‚ğæ“¾‚·‚é(ƒLƒƒƒXƒg‰‰Zqƒo[ƒWƒ‡ƒ“)
+//ãƒãƒ³ãƒ‰ãƒ«ã®å€¤ã‚’å–å¾—ã™ã‚‹(ã‚­ãƒ£ã‚¹ãƒˆæ¼”ç®—å­ãƒãƒ¼ã‚¸ãƒ§ãƒ³)
 mGdiFont::operator HFONT()const
 {
 	return MyHandle;
 }
 
-//ƒnƒ“ƒhƒ‹‚Ì’l‚ğæ“¾‚·‚é(•’Ê‚ÌŠÖ”ƒo[ƒWƒ‡ƒ“)
+//ãƒãƒ³ãƒ‰ãƒ«ã®å€¤ã‚’å–å¾—ã™ã‚‹(æ™®é€šã®é–¢æ•°ãƒãƒ¼ã‚¸ãƒ§ãƒ³)
 HGDIOBJ mGdiFont::GetHandle( void )const
 {
 	return MyHandle;
@@ -77,82 +77,82 @@ HGDIOBJ mGdiFont::GetHandle( void )const
 
 bool mGdiFont::MakeFont( const Option_UseOption* opt )
 {
-	//MyHandle‚É‚·‚Å‚É’l‚ª‚ ‚éê‡‚ÍƒGƒ‰[
+	//MyHandleã«ã™ã§ã«å€¤ãŒã‚ã‚‹å ´åˆã¯ã‚¨ãƒ©ãƒ¼
 	if( MyHandle != nullptr )
 	{
 		RaiseAssert( g_ErrorLogger , 0 , L"Handle is already allocated" );
 		return false;
 	}
 
-	//ˆÈ‰ºAƒIƒvƒVƒ‡ƒ“‚ªw’è‚³‚ê‚Ä‚¢‚é‚Æ‚«‚Ìˆ—
+	//ä»¥ä¸‹ã€ã‚ªãƒ—ã‚·ãƒ§ãƒ³ãŒæŒ‡å®šã•ã‚Œã¦ã„ã‚‹ã¨ãã®å‡¦ç†
 	LOGFONT font;
-	font.lfHeight = opt->height;	//ƒtƒHƒ“ƒg‚Ì‚‚³
-	font.lfWidth = opt->width;		//ƒtƒHƒ“ƒg‚Ì•
-	font.lfEscapement = opt->orientation;	//•¶š‘—‚è‚Ì‰ñ“]•ûŒü
-	font.lfOrientation = opt->orientation;					//•¶š‚Ì‰ñ“]•û–@
-	font.lfWeight = ( opt->isbold ) ? ( FW_BOLD ) : ( FW_DONTCARE );	//ƒ{[ƒ‹ƒh‚É‚·‚éH
-	font.lfItalic = ( opt->isitalic ) ? ( TRUE ) : ( FALSE );			//ƒCƒ^ƒŠƒbƒN‚É‚·‚éH
-	font.lfUnderline = ( opt->isunderline ) ? ( TRUE ) : ( FALSE );		//ƒAƒ“ƒ_[ƒ‰ƒCƒ“—~‚µ‚¢H
-	font.lfStrikeOut = ( opt->isstrikeout ) ? ( TRUE ) : ( FALSE );		//‘Å‚¿Á‚µü‚ğ•t‚¯‚éH
-	font.lfOutPrecision = OUT_DEFAULT_PRECIS;	//o—Í¸“x
-	font.lfClipPrecision = CLIP_DEFAULT_PRECIS;	//ƒNƒŠƒbƒsƒ“ƒO¸“x
-	font.lfPitchAndFamily = FF_DONTCARE;		//ƒtƒHƒ“ƒgƒtƒ@ƒ~ƒŠ
+	font.lfHeight = opt->height;	//ãƒ•ã‚©ãƒ³ãƒˆã®é«˜ã•
+	font.lfWidth = opt->width;		//ãƒ•ã‚©ãƒ³ãƒˆã®å¹…
+	font.lfEscapement = opt->orientation;	//æ–‡å­—é€ã‚Šã®å›è»¢æ–¹å‘
+	font.lfOrientation = opt->orientation;					//æ–‡å­—ã®å›è»¢æ–¹æ³•
+	font.lfWeight = ( opt->isbold ) ? ( FW_BOLD ) : ( FW_DONTCARE );	//ãƒœãƒ¼ãƒ«ãƒ‰ã«ã™ã‚‹ï¼Ÿ
+	font.lfItalic = ( opt->isitalic ) ? ( TRUE ) : ( FALSE );			//ã‚¤ã‚¿ãƒªãƒƒã‚¯ã«ã™ã‚‹ï¼Ÿ
+	font.lfUnderline = ( opt->isunderline ) ? ( TRUE ) : ( FALSE );		//ã‚¢ãƒ³ãƒ€ãƒ¼ãƒ©ã‚¤ãƒ³æ¬²ã—ã„ï¼Ÿ
+	font.lfStrikeOut = ( opt->isstrikeout ) ? ( TRUE ) : ( FALSE );		//æ‰“ã¡æ¶ˆã—ç·šã‚’ä»˜ã‘ã‚‹ï¼Ÿ
+	font.lfOutPrecision = OUT_DEFAULT_PRECIS;	//å‡ºåŠ›ç²¾åº¦
+	font.lfClipPrecision = CLIP_DEFAULT_PRECIS;	//ã‚¯ãƒªãƒƒãƒ”ãƒ³ã‚°ç²¾åº¦
+	font.lfPitchAndFamily = FF_DONTCARE;		//ãƒ•ã‚©ãƒ³ãƒˆãƒ•ã‚¡ãƒŸãƒª
 
-	//ƒLƒƒƒ‰ƒNƒ^ƒZƒbƒg‚Ìw’è
+	//ã‚­ãƒ£ãƒ©ã‚¯ã‚¿ã‚»ãƒƒãƒˆã®æŒ‡å®š
 	switch( opt->charset )
 	{
-	case Option::FontCharSet::ANSI:			//‰pŒê
+	case Option::FontCharSet::ANSI:			//è‹±èª
 		font.lfCharSet = ANSI_CHARSET;
 		break;
-	case Option::FontCharSet::BALTIC:		//ƒoƒ‹ƒgO‘‚Ì•¶š(ƒŠƒgƒAƒjƒAŒêAƒ‰ƒgƒrƒAŒê“™)
+	case Option::FontCharSet::BALTIC:		//ãƒãƒ«ãƒˆä¸‰å›½ã®æ–‡å­—(ãƒªãƒˆã‚¢ãƒ‹ã‚¢èªã€ãƒ©ãƒˆãƒ“ã‚¢èªç­‰)
 		font.lfCharSet = BALTIC_CHARSET;
 		break;
-	case Option::FontCharSet::GB2312:		//ŠÈ‘Ìš’†‘Œê(’†‘AƒVƒ“ƒKƒ|[ƒ‹)
+	case Option::FontCharSet::GB2312:		//ç°¡ä½“å­—ä¸­å›½èª(ä¸­å›½ã€ã‚·ãƒ³ã‚¬ãƒãƒ¼ãƒ«)
 		font.lfCharSet = GB2312_CHARSET;
 		break;
-	case Option::FontCharSet::CHINESEBIG5:	//”É‘Ìš’†‘Œê(’†‰Ø–¯‘A`Aƒ}ƒJƒI)
+	case Option::FontCharSet::CHINESEBIG5:	//ç¹ä½“å­—ä¸­å›½èª(ä¸­è¯æ°‘å›½ã€é¦™æ¸¯ã€ãƒã‚«ã‚ª)
 		font.lfCharSet = CHINESEBIG5_CHARSET;
 		break;
-	case Option::FontCharSet::EASTEUROPE:	//“Œ‰¢ŒnŒ¾Œê‚Ì•¶š
+	case Option::FontCharSet::EASTEUROPE:	//æ±æ¬§ç³»è¨€èªã®æ–‡å­—
 		font.lfCharSet = EASTEUROPE_CHARSET;
 		break;
-	case Option::FontCharSet::GREEK:		//ƒMƒŠƒVƒƒŒê
+	case Option::FontCharSet::GREEK:		//ã‚®ãƒªã‚·ãƒ£èª
 		font.lfCharSet = GREEK_CHARSET;
 		break;
-	case Option::FontCharSet::HANGUL:		//ŠØ‘Œê
+	case Option::FontCharSet::HANGUL:		//éŸ“å›½èª
 		font.lfCharSet = HANGUL_CHARSET;
 		break;
-	case Option::FontCharSet::SHIFTJIS:		//“ú–{Œê
+	case Option::FontCharSet::SHIFTJIS:		//æ—¥æœ¬èª
 		font.lfCharSet = SHIFTJIS_CHARSET;
 		break;
-	case Option::FontCharSet::RUSSIAN:		//ƒƒVƒAŒê
+	case Option::FontCharSet::RUSSIAN:		//ãƒ­ã‚·ã‚¢èª
 		font.lfCharSet = RUSSIAN_CHARSET;
 		break;
-	case Option::FontCharSet::TURKISH:		//ƒgƒ‹ƒRŒê
+	case Option::FontCharSet::TURKISH:		//ãƒˆãƒ«ã‚³èª
 		font.lfCharSet = TURKISH_CHARSET;
 		break;
-	case Option::FontCharSet::HEBREW:		//ƒwƒuƒ‰ƒCŒê
+	case Option::FontCharSet::HEBREW:		//ãƒ˜ãƒ–ãƒ©ã‚¤èª
 		font.lfCharSet = HEBREW_CHARSET;
 		break;
-	case Option::FontCharSet::ARABIC:		//ƒAƒ‰ƒrƒAŒê
+	case Option::FontCharSet::ARABIC:		//ã‚¢ãƒ©ãƒ“ã‚¢èª
 		font.lfCharSet = ARABIC_CHARSET;
 		break;
-	case Option::FontCharSet::THAI:			//ƒ^ƒCŒê
+	case Option::FontCharSet::THAI:			//ã‚¿ã‚¤èª
 		font.lfCharSet = THAI_CHARSET;
 		break;
-	case Option::FontCharSet::LOCALE:		//Œ»İ‚ÌƒƒP[ƒ‹(Œ¾Œêİ’è)‚ÉŠî‚Ã‚¢‚ÄŒˆ‚ß‚é
+	case Option::FontCharSet::LOCALE:		//ç¾åœ¨ã®ãƒ­ã‚±ãƒ¼ãƒ«(è¨€èªè¨­å®š)ã«åŸºã¥ã„ã¦æ±ºã‚ã‚‹
 		font.lfCharSet = DEFAULT_CHARSET;
 		break;
-	case Option::FontCharSet::OEM:			//‰½Œê”ÅƒEƒCƒ“ƒhƒEƒY‚©‚ÅŒˆ‚ß‚é
+	case Option::FontCharSet::OEM:			//ä½•èªç‰ˆã‚¦ã‚¤ãƒ³ãƒ‰ã‚¦ã‚ºã‹ã§æ±ºã‚ã‚‹
 		font.lfCharSet = OEM_CHARSET;
 		break;
 	default:
-		//”ÍˆÍŠO‚Ì’l‚ªw’è‚³‚ê‚Ä‚«‚½ê‡‚ÍAd•û‚ª–³‚¢‚©‚çƒfƒtƒHƒ‹ƒg‚É‚µ‚Ä‚¨‚­
+		//ç¯„å›²å¤–ã®å€¤ãŒæŒ‡å®šã•ã‚Œã¦ããŸå ´åˆã¯ã€ä»•æ–¹ãŒç„¡ã„ã‹ã‚‰ãƒ‡ãƒ•ã‚©ãƒ«ãƒˆã«ã—ã¦ãŠã
 		RaiseAssert( g_ErrorLogger , opt->charset , L"Bad charset id" );
 		font.lfCharSet = DEFAULT_CHARSET;
 		break;
 	}
-	//o—Í•i¿
+	//å‡ºåŠ›å“è³ª
 	switch( opt->quality )
 	{
 	case Option::PrintQuality::NORMAL:
@@ -169,16 +169,16 @@ bool mGdiFont::MakeFont( const Option_UseOption* opt )
 		font.lfQuality = DEFAULT_QUALITY;
 		break;
 	}
-	//ƒtƒHƒ“ƒgƒsƒbƒ`
+	//ãƒ•ã‚©ãƒ³ãƒˆãƒ”ãƒƒãƒ
 	switch( opt->pitch )
 	{
-	case Option::PrintPitch::DEFAULT:	//ƒtƒHƒ“ƒg”C‚¹‚É‚·‚é
+	case Option::PrintPitch::DEFAULT:	//ãƒ•ã‚©ãƒ³ãƒˆä»»ã›ã«ã™ã‚‹
 		font.lfPitchAndFamily |= DEFAULT_PITCH;
 		break;
-	case Option::PrintPitch::FIXED:		//ŒÅ’è•‚É‚·‚é
+	case Option::PrintPitch::FIXED:		//å›ºå®šå¹…ã«ã™ã‚‹
 		font.lfPitchAndFamily |= FIXED_PITCH;
 		break;
-	case Option::PrintPitch::VARIABLE:	//‰Â•Ï•‚É‚·‚é
+	case Option::PrintPitch::VARIABLE:	//å¯å¤‰å¹…ã«ã™ã‚‹
 		font.lfPitchAndFamily |= VARIABLE_PITCH;
 		break;
 	default:
@@ -186,25 +186,25 @@ bool mGdiFont::MakeFont( const Option_UseOption* opt )
 		font.lfPitchAndFamily |= DEFAULT_PITCH;
 		break;
 	}
-	//ƒtƒHƒ“ƒg–¼
+	//ãƒ•ã‚©ãƒ³ãƒˆå
 	if( LF_FACESIZE <= opt->name.size() )
 	{
-		//ƒoƒbƒtƒ@‚É“ü‚è‚«‚ç‚È‚¢ê‡‚Í‹ó•¶š—ñ‚É‚·‚éB
-		//ƒoƒbƒtƒ@‚É‚ÍI’[‚Ìƒkƒ‹•¶š‚àŠÜ‚ß‚È‚¯‚ê‚Î‚È‚ç‚È‚¢‚Ì‚É’ˆÓ
-		RaiseAssert( g_ErrorLogger , opt->name.size() , L"ƒtƒHƒ“ƒg–¼‚ª’·‚·‚¬‚Ü‚·" , opt->name );
+		//ãƒãƒƒãƒ•ã‚¡ã«å…¥ã‚Šãã‚‰ãªã„å ´åˆã¯ç©ºæ–‡å­—åˆ—ã«ã™ã‚‹ã€‚
+		//ãƒãƒƒãƒ•ã‚¡ã«ã¯çµ‚ç«¯ã®ãƒŒãƒ«æ–‡å­—ã‚‚å«ã‚ãªã‘ã‚Œã°ãªã‚‰ãªã„ã®ã«æ³¨æ„
+		RaiseAssert( g_ErrorLogger , opt->name.size() , L"ãƒ•ã‚©ãƒ³ãƒˆåãŒé•·ã™ãã¾ã™" , opt->name );
 		font.lfFaceName[ 0 ] = L'\0';
 	}
 	else
 	{
-		//ƒoƒbƒtƒ@‚É“ü‚è‚«‚éê‡‚Í•’Ê‚É‘‚«‚Ş
+		//ãƒãƒƒãƒ•ã‚¡ã«å…¥ã‚Šãã‚‹å ´åˆã¯æ™®é€šã«æ›¸ãè¾¼ã‚€
 		wchar_sprintf( font.lfFaceName , L"%s" , opt->name.c_str() );
 	}
 
-	//ƒnƒ“ƒhƒ‹‚ğ¶¬‚·‚é
+	//ãƒãƒ³ãƒ‰ãƒ«ã‚’ç”Ÿæˆã™ã‚‹
 	MyHandle = ::CreateFontIndirectW( &font );
 	if( MyHandle == nullptr )
 	{
-		RaiseAssert( g_ErrorLogger , 0 , L"ƒtƒHƒ“ƒg‚Ì¶¬‚ª¸”s‚µ‚Ü‚µ‚½" );
+		RaiseAssert( g_ErrorLogger , 0 , L"ãƒ•ã‚©ãƒ³ãƒˆã®ç”ŸæˆãŒå¤±æ•—ã—ã¾ã—ãŸ" );
 		return false;
 	}
 	return true;

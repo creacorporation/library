@@ -1,22 +1,22 @@
-//----------------------------------------------------------------------------
-// �E�C���h�E�Ǘ��i�E�C���h�E�`��p�f�o�C�X�R���e�L�X�g�j
+﻿//----------------------------------------------------------------------------
+// ウインドウ管理（ウインドウ描画用デバイスコンテキスト）
 // Copyright (C) 2016 Fingerling. All rights reserved. 
 // This program is released under the MIT License. 
 // see http://opensource.org/licenses/mit-license.php
 //----------------------------------------------------------------------------
 
 /*
-���p�r
-�E�C���h�E�`��p�̃f�o�C�X�R���e�L�X�g�ł��B
-���̃N���X�ł́AGetDC()���Ăяo����Windows����f�o�C�X�R���e�L�X�g���擾���܂��B
-GetDC�Ŏ擾�ł���̂�Windows���ŃO���[�o���ȃf�o�C�X�R���e�L�X�g�Ȃ̂ŁA
-�`�悪�I������炳�����Ɣj�����Ȃ��Ƃ����Ȃ��炵���ł��B
-�˂���āA���̃N���X�̃C���X�^���X���`�悪�I�������j�����Ă��������B
+●用途
+ウインドウ描画用のデバイスコンテキストです。
+このクラスでは、GetDC()を呼び出してWindowsからデバイスコンテキストを取得します。
+GetDCで取得できるのはWindows内でグローバルなデバイスコンテキストなので、
+描画が終わったらさっさと破棄しないといけないらしいです。
+⇒よって、このクラスのインスタンスも描画が終わったら破棄してください。
 
-�悭�킩��񂯂ǁA
-Get�`�Ŏn�܂�API�֐��Ŏ�ꂽ�f�o�C�X�R���e�L�X�g�˂������Ɣj������
-Create�`�n�܂�API�֐��Ŏ�ꂽ�f�o�C�X�R���e�L�X�g�˃A�v���I���܂ŃO���[�o���ϐ��Ƃ��Ɏ����Ă��Ă�OK
-���Ă��Ƃ炵���B
+よくわからんけど、
+Get〜で始まるAPI関数で取れたデバイスコンテキスト⇒さっさと破棄しろ
+Create〜始まるAPI関数で取れたデバイスコンテキスト⇒アプリ終了までグローバル変数とかに持っていてもOK
+ってことらしい。
 */
 
 #ifndef MGDIWINDC_H_INCLUDED
@@ -29,9 +29,9 @@ class mGdiWinDC : public mGdiDC
 {
 public:
 
-	//�R���X�g���N�^
-	//hwnd : �f�o�C�X�R���e�L�X�g���擾����̂Ɏg�p����E�C���h�E�̃n���h���B
-	//       �w�肵���E�C���h�E�̃N���C�A���g�̈�̃f�o�C�X�R���e�L�X�g���擾���܂��B
+	//コンストラクタ
+	//hwnd : デバイスコンテキストを取得するのに使用するウインドウのハンドル。
+	//       指定したウインドウのクライアント領域のデバイスコンテキストを取得します。
 	mGdiWinDC( HWND hwnd );
 
 	virtual ~mGdiWinDC();
@@ -43,8 +43,8 @@ private:
 
 protected:
 
-	HWND MyHwnd;	//MyHdc���擾����Ƃ��Ɏg�p�����E�C���h�E�̃n���h��
-					//���R���X�g���N�^�Ŏw�肵������
+	HWND MyHwnd;	//MyHdcを取得するときに使用したウインドウのハンドル
+					//※コンストラクタで指定したもの
 
 };
 

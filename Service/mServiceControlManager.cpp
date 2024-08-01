@@ -1,27 +1,27 @@
-//----------------------------------------------------------------------------
-// ƒT[ƒrƒXƒnƒ“ƒhƒ‰
+ï»¿//----------------------------------------------------------------------------
+// ã‚µãƒ¼ãƒ“ã‚¹ãƒãƒ³ãƒ‰ãƒ©
 // Copyright (C) 2016 Fingerling. All rights reserved. 
 // Copyright (C) 2019- Crea Inc. All rights reserved.
 // This program is released under the MIT License. 
 // see http://opensource.org/licenses/mit-license.php
-// ’˜ìŒ •\¦‚âƒ‰ƒCƒZƒ“ƒX‚Ì‰ü•Ï‚Í‹Ö~‚³‚ê‚Ä‚¢‚Ü‚·B
-// ‚±‚Ìƒ\[ƒXƒR[ƒh‚ÉŠÖ‚µ‚ÄAã‹Lƒ‰ƒCƒZƒ“ƒXˆÈŠO‚ÌŒ_–ñ“™‚ÍˆêØ‘¶İ‚µ‚Ü‚¹‚ñB
-// (‰½‚ç‚©‚ÌŒ_–ñ‚ª‚ ‚éê‡‚Å‚àA–{ƒ\[ƒXƒR[ƒh‚Í‚»‚Ì‘ÎÛŠO‚Æ‚È‚è‚Ü‚·)
+// è‘—ä½œæ¨©è¡¨ç¤ºã‚„ãƒ©ã‚¤ã‚»ãƒ³ã‚¹ã®æ”¹å¤‰ã¯ç¦æ­¢ã•ã‚Œã¦ã„ã¾ã™ã€‚
+// ã“ã®ã‚½ãƒ¼ã‚¹ã‚³ãƒ¼ãƒ‰ã«é–¢ã—ã¦ã€ä¸Šè¨˜ãƒ©ã‚¤ã‚»ãƒ³ã‚¹ä»¥å¤–ã®å¥‘ç´„ç­‰ã¯ä¸€åˆ‡å­˜åœ¨ã—ã¾ã›ã‚“ã€‚
+// (ä½•ã‚‰ã‹ã®å¥‘ç´„ãŒã‚ã‚‹å ´åˆã§ã‚‚ã€æœ¬ã‚½ãƒ¼ã‚¹ã‚³ãƒ¼ãƒ‰ã¯ãã®å¯¾è±¡å¤–ã¨ãªã‚Šã¾ã™)
 //----------------------------------------------------------------------------
 
 #include "mServiceControlManager.h"
 #include "General/mErrorLogger.h"
 
-//ƒT[ƒrƒX‚Ì–¼‘O‚©‚çƒnƒ“ƒhƒ‹‚ğæ“¾‚µ‚ÄƒR[ƒ‹ƒoƒbƒN‚ğŒÄ‚Ño‚·ƒT[ƒrƒXƒ‹[ƒ`ƒ“
-//ƒR[ƒ‹ƒoƒbƒNI—¹Œã‚Íƒnƒ“ƒhƒ‹‚ğ‰ğ•ú‚·‚é
-// name : ‘€ì‚ğs‚¢‚½‚¢ƒT[ƒrƒX‚Ì–¼‘O
-// req_access_right : •t—^‚µ‚½‚¢ƒAƒNƒZƒXŒ BƒR[ƒ‹ƒoƒbƒN“à‚Ås‚¢‚½‚¢‘€ì‚É‰‚¶‚Äİ’è‚·‚é
-// opt : ƒ†[ƒU[’è‹`‚Ì’l
-// callback : ŒÄ‚Ño‚·ƒR[ƒ‹ƒoƒbƒN
-//		‘æ1ˆø”name‚Åw’è‚µ‚½ƒT[ƒrƒX‚Ìƒnƒ“ƒhƒ‹
-//		‘æ2ˆø”opt‚Éw’è‚µ‚½ƒ†[ƒU[’è‹`‚Ì’l
-//		ret¬Œ÷^
-// ret : ¬Œ÷^
+//ã‚µãƒ¼ãƒ“ã‚¹ã®åå‰ã‹ã‚‰ãƒãƒ³ãƒ‰ãƒ«ã‚’å–å¾—ã—ã¦ã‚³ãƒ¼ãƒ«ãƒãƒƒã‚¯ã‚’å‘¼ã³å‡ºã™ã‚µãƒ¼ãƒ“ã‚¹ãƒ«ãƒ¼ãƒãƒ³
+//ã‚³ãƒ¼ãƒ«ãƒãƒƒã‚¯çµ‚äº†å¾Œã¯ãƒãƒ³ãƒ‰ãƒ«ã‚’è§£æ”¾ã™ã‚‹
+// name : æ“ä½œã‚’è¡Œã„ãŸã„ã‚µãƒ¼ãƒ“ã‚¹ã®åå‰
+// req_access_right : ä»˜ä¸ã—ãŸã„ã‚¢ã‚¯ã‚»ã‚¹æ¨©ã€‚ã‚³ãƒ¼ãƒ«ãƒãƒƒã‚¯å†…ã§è¡Œã„ãŸã„æ“ä½œã«å¿œã˜ã¦è¨­å®šã™ã‚‹
+// opt : ãƒ¦ãƒ¼ã‚¶ãƒ¼å®šç¾©ã®å€¤
+// callback : å‘¼ã³å‡ºã™ã‚³ãƒ¼ãƒ«ãƒãƒƒã‚¯
+//		ç¬¬1å¼•æ•°ï¼nameã§æŒ‡å®šã—ãŸã‚µãƒ¼ãƒ“ã‚¹ã®ãƒãƒ³ãƒ‰ãƒ«
+//		ç¬¬2å¼•æ•°ï¼optã«æŒ‡å®šã—ãŸãƒ¦ãƒ¼ã‚¶ãƒ¼å®šç¾©ã®å€¤
+//		retï¼æˆåŠŸæ™‚çœŸ
+// ret : æˆåŠŸæ™‚çœŸ
 static bool HandlingServiceTemplate( const WString& name , DWORD req_access_right , DWORD_PTR opt , bool(*callback)(SC_HANDLE sv,DWORD_PTR opt) )
 {
 	SC_HANDLE sc = NULL;
@@ -62,13 +62,13 @@ bool mServiceControlManager::DeleteExistingService( const WString& ServiceName )
 
 	if( !HandlingServiceTemplate( ServiceName , DELETE , 0 , Callback ) )
 	{
-		RaiseError( g_ErrorLogger , 0 , L"ƒT[ƒrƒX‚ğíœ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½" , ServiceName );
+		RaiseError( g_ErrorLogger , 0 , L"ã‚µãƒ¼ãƒ“ã‚¹ã‚’å‰Šé™¤ã§ãã¾ã›ã‚“ã§ã—ãŸ" , ServiceName );
 		return false;
 	}
 	return true;
 }
 
-//Šù‘¶‚ÌƒT[ƒrƒX‚ğ’†’f‚·‚é
+//æ—¢å­˜ã®ã‚µãƒ¼ãƒ“ã‚¹ã‚’ä¸­æ–­ã™ã‚‹
 bool mServiceControlManager::PauseExistingService( const WString& ServiceName )
 {
 	auto Callback = []( SC_HANDLE sv , DWORD_PTR opt )-> bool
@@ -80,13 +80,13 @@ bool mServiceControlManager::PauseExistingService( const WString& ServiceName )
 
 	if( !HandlingServiceTemplate( ServiceName , SERVICE_PAUSE_CONTINUE  , 0 , Callback ) )
 	{
-		RaiseError( g_ErrorLogger , 0 , L"ƒT[ƒrƒX‚ğ’†’f‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½" , ServiceName );
+		RaiseError( g_ErrorLogger , 0 , L"ã‚µãƒ¼ãƒ“ã‚¹ã‚’ä¸­æ–­ã§ãã¾ã›ã‚“ã§ã—ãŸ" , ServiceName );
 		return false;
 	}
 	return true;
 }
 
-//Šù‘¶‚ÌƒT[ƒrƒX‚ğÄŠJ‚·‚é
+//æ—¢å­˜ã®ã‚µãƒ¼ãƒ“ã‚¹ã‚’å†é–‹ã™ã‚‹
 bool mServiceControlManager::ContinueExistingService( const WString& ServiceName )
 {
 	auto Callback = []( SC_HANDLE sv , DWORD_PTR opt )-> bool
@@ -98,13 +98,13 @@ bool mServiceControlManager::ContinueExistingService( const WString& ServiceName
 
 	if( !HandlingServiceTemplate( ServiceName , SERVICE_PAUSE_CONTINUE  , 0 , Callback ) )
 	{
-		RaiseError( g_ErrorLogger , 0 , L"ƒT[ƒrƒX‚ğÄŠJ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½" , ServiceName );
+		RaiseError( g_ErrorLogger , 0 , L"ã‚µãƒ¼ãƒ“ã‚¹ã‚’å†é–‹ã§ãã¾ã›ã‚“ã§ã—ãŸ" , ServiceName );
 		return false;
 	}
 	return true;
 }
 
-//Šù‘¶‚ÌƒT[ƒrƒX‚ÉƒRƒ“ƒgƒ[ƒ‹ƒR[ƒh‚ğ‘—‚é
+//æ—¢å­˜ã®ã‚µãƒ¼ãƒ“ã‚¹ã«ã‚³ãƒ³ãƒˆãƒ­ãƒ¼ãƒ«ã‚³ãƒ¼ãƒ‰ã‚’é€ã‚‹
 bool mServiceControlManager::ControlExistingService( const WString& ServiceName , DWORD code )
 {
 	auto Callback = []( SC_HANDLE sv , DWORD_PTR opt )-> bool
@@ -116,22 +116,22 @@ bool mServiceControlManager::ControlExistingService( const WString& ServiceName 
 
 	if( ( code < 128 ) || ( 255 < code ) )
 	{
-		RaiseErrorF( g_ErrorLogger , 0 , L"ƒRƒ“ƒgƒ[ƒ‹ƒR[ƒh‚Ì’l‚ª”ÍˆÍŠO‚Å‚·" , L"%d@%s" , code , ServiceName.c_str() );
+		RaiseErrorF( g_ErrorLogger , 0 , L"ã‚³ãƒ³ãƒˆãƒ­ãƒ¼ãƒ«ã‚³ãƒ¼ãƒ‰ã®å€¤ãŒç¯„å›²å¤–ã§ã™" , L"%d@%s" , code , ServiceName.c_str() );
 		return false;
 	}
 
 	if( !HandlingServiceTemplate( ServiceName , SERVICE_USER_DEFINED_CONTROL , code , Callback ) )
 	{
-		RaiseError( g_ErrorLogger , 0 , L"ƒT[ƒrƒX‚ÉƒR[ƒh‚ğ‘—M‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½" , ServiceName );
+		RaiseError( g_ErrorLogger , 0 , L"ã‚µãƒ¼ãƒ“ã‚¹ã«ã‚³ãƒ¼ãƒ‰ã‚’é€ä¿¡ã§ãã¾ã›ã‚“ã§ã—ãŸ" , ServiceName );
 		return false;
 	}
 	return true;
 }
 
-//Šù‘¶‚ÌƒT[ƒrƒX‚ğŠJn‚·‚é
+//æ—¢å­˜ã®ã‚µãƒ¼ãƒ“ã‚¹ã‚’é–‹å§‹ã™ã‚‹
 bool mServiceControlManager::StartExistingService( const WString& ServiceName , const WStringDeque& args )
 {
-	//ŠJnˆ—‚ğ‚·‚éƒR[ƒ‹ƒoƒbƒN
+	//é–‹å§‹å‡¦ç†ã‚’ã™ã‚‹ã‚³ãƒ¼ãƒ«ãƒãƒƒã‚¯
 	struct OptStruct
 	{
 		DWORD argc;
@@ -144,7 +144,7 @@ bool mServiceControlManager::StartExistingService( const WString& ServiceName , 
 		return StartServiceW( sv , args->argc , args->argv );
 	};
 
-	//ˆø”‚Ì€”õ
+	//å¼•æ•°ã®æº–å‚™
 	OptStruct opt;
 	opt.argc = 0;
 	opt.argv = mNew LPCWSTR[ args.size() ];
@@ -158,24 +158,24 @@ bool mServiceControlManager::StartExistingService( const WString& ServiceName , 
 		}
 	}
 
-	//ŠJn
+	//é–‹å§‹
 	bool result = HandlingServiceTemplate( ServiceName , SERVICE_START , (DWORD_PTR)&opt , Callback );
 	if( !result )
 	{
-		RaiseError( g_ErrorLogger , 0 , L"ƒT[ƒrƒX‚ÌŠJn‚ª¸”s‚µ‚Ü‚µ‚½" , ServiceName );
+		RaiseError( g_ErrorLogger , 0 , L"ã‚µãƒ¼ãƒ“ã‚¹ã®é–‹å§‹ãŒå¤±æ•—ã—ã¾ã—ãŸ" , ServiceName );
 	}
 
 	mDelete[] opt.argv;
 	return result;
 }
 
-//Šù‘¶‚ÌƒT[ƒrƒX‚ğ’â~‚·‚é
+//æ—¢å­˜ã®ã‚µãƒ¼ãƒ“ã‚¹ã‚’åœæ­¢ã™ã‚‹
 bool mServiceControlManager::StopExistingService( const WString& ServiceName , bool is_planed , const WString& reason )
 {
-	//ƒpƒ‰ƒ[ƒ^‚Ì€”õ
+	//ãƒ‘ãƒ©ãƒ¡ãƒ¼ã‚¿ã®æº–å‚™
 	if( 127 < reason.size() )
 	{
-		RaiseError( g_ErrorLogger , 0 , L"ƒT[ƒrƒX’â~‚Ì——RƒR[ƒh‚ª’·‚·‚¬‚Ü‚·" , ServiceName );
+		RaiseError( g_ErrorLogger , 0 , L"ã‚µãƒ¼ãƒ“ã‚¹åœæ­¢æ™‚ã®ç†ç”±ã‚³ãƒ¼ãƒ‰ãŒé•·ã™ãã¾ã™" , ServiceName );
 		return false;
 	}
 
@@ -184,17 +184,17 @@ bool mServiceControlManager::StopExistingService( const WString& ServiceName , b
 	param.dwReason = ( is_planed ) ? ( SERVICE_STOP_REASON_FLAG_PLANNED ) : ( SERVICE_STOP_REASON_FLAG_UNPLANNED );
 	param.pszComment = ( !reason.empty() ) ? ( const_cast<LPWSTR>( reason.data() ) ) : ( nullptr );
 
-	//ƒR[ƒ‹ƒoƒbƒN‚ğ€”õ
+	//ã‚³ãƒ¼ãƒ«ãƒãƒƒã‚¯ã‚’æº–å‚™
 	auto Callback = []( SC_HANDLE sv , DWORD_PTR opt )-> bool
 	{
 		SERVICE_CONTROL_STATUS_REASON_PARAMSW* param = (SERVICE_CONTROL_STATUS_REASON_PARAMSW*)opt;
 		return ControlServiceExW( sv , SERVICE_CONTROL_STOP , SERVICE_CONTROL_STATUS_REASON_INFO , param );
 	};
 
-	//ƒeƒ“ƒvƒŒ[ƒg‚ÌŒÄ‚Ño‚µ
+	//ãƒ†ãƒ³ãƒ—ãƒ¬ãƒ¼ãƒˆã®å‘¼ã³å‡ºã—
 	if( !HandlingServiceTemplate( ServiceName , SERVICE_STOP , (DWORD_PTR)&param , Callback ) )
 	{
-		RaiseError( g_ErrorLogger , 0 , L"ƒT[ƒrƒX‚ğÄŠJ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½" , ServiceName );
+		RaiseError( g_ErrorLogger , 0 , L"ã‚µãƒ¼ãƒ“ã‚¹ã‚’å†é–‹ã§ãã¾ã›ã‚“ã§ã—ãŸ" , ServiceName );
 		return false;
 	}
 	return true;
@@ -214,11 +214,11 @@ bool mServiceControlManager::CreateNewService( const mServiceControlManager::Ser
 	sc = OpenSCManagerW( 0 , SERVICES_ACTIVE_DATABASE , SC_MANAGER_CREATE_SERVICE );
 	if( !sc )
 	{
-		RaiseError( g_ErrorLogger , 0 , L"SCM‚ğŠJ‚¯‚Ü‚¹‚ñ" );
+		RaiseError( g_ErrorLogger , 0 , L"SCMã‚’é–‹ã‘ã¾ã›ã‚“" );
 		goto cleanup;
 	}
 
-	//ƒvƒƒZƒXí•Ê‚Æƒ†[ƒU[–¼AƒpƒXƒ[ƒh
+	//ãƒ—ãƒ­ã‚»ã‚¹ç¨®åˆ¥ã¨ãƒ¦ãƒ¼ã‚¶ãƒ¼åã€ãƒ‘ã‚¹ãƒ¯ãƒ¼ãƒ‰
 	if( param.method == ServiceParam::ServiceProcessUser::LOGONUSER_PROCESS )
 	{
 		switch( param.ProcessType )
@@ -252,20 +252,20 @@ bool mServiceControlManager::CreateNewService( const mServiceControlManager::Ser
 	}
 	if( ServiceType == 0 )
 	{
-		RaiseError( g_ErrorLogger , 0 , L"ƒT[ƒrƒXƒvƒƒZƒX‚Ìí—Şw’è‚ªŠÔˆá‚Á‚Ä‚¢‚Ü‚·" );
+		RaiseError( g_ErrorLogger , 0 , L"ã‚µãƒ¼ãƒ“ã‚¹ãƒ—ãƒ­ã‚»ã‚¹ã®ç¨®é¡æŒ‡å®šãŒé–“é•ã£ã¦ã„ã¾ã™" );
 		goto cleanup;
 	}
 
-	//ƒ†[ƒU[‚Æ‚Ì‘Î˜b‹–‰ÂH
+	//ãƒ¦ãƒ¼ã‚¶ãƒ¼ã¨ã®å¯¾è©±è¨±å¯ï¼Ÿ
 	if( param.Interactive )
 	{
 		ServiceType |= SERVICE_INTERACTIVE_PROCESS;
 	}
 
-	//ˆË‘¶ŠÖŒW
+	//ä¾å­˜é–¢ä¿‚
 	MakeDoubleNullString( param.Dependencies , DependenciesString );
 
-	//ƒT[ƒrƒX¶¬
+	//ã‚µãƒ¼ãƒ“ã‚¹ç”Ÿæˆ
 	sv = CreateServiceW( sc ,
 		param.ServiceName.c_str() ,
 		param.DisplayName.c_str() ,
@@ -281,7 +281,7 @@ bool mServiceControlManager::CreateNewService( const mServiceControlManager::Ser
 		Password.c_str() );
 	if( !sv )
 	{
-		RaiseError( g_ErrorLogger , 0 , L"ƒT[ƒrƒX‚Ì“o˜^‚ª¸”s‚µ‚Ü‚µ‚½" );
+		RaiseError( g_ErrorLogger , 0 , L"ã‚µãƒ¼ãƒ“ã‚¹ã®ç™»éŒ²ãŒå¤±æ•—ã—ã¾ã—ãŸ" );
 		goto cleanup;
 	}
 
@@ -302,7 +302,7 @@ cleanup:
 	return result;
 }
 
-//ƒ†[ƒU[Œ ŒÀ‚Å“®ì‚µ‚Ä‚¢‚éƒT[ƒrƒX‚ÌAŒ»ƒZƒbƒVƒ‡ƒ“‚Å‚ÌƒT[ƒrƒX–¼‚ğ’²‚×‚é
+//ãƒ¦ãƒ¼ã‚¶ãƒ¼æ¨©é™ã§å‹•ä½œã—ã¦ã„ã‚‹ã‚µãƒ¼ãƒ“ã‚¹ã®ã€ç¾ã‚»ãƒƒã‚·ãƒ§ãƒ³ã§ã®ã‚µãƒ¼ãƒ“ã‚¹åã‚’èª¿ã¹ã‚‹
 bool mServiceControlManager::SearchUserProcessService( const WString& ServiceName , WString& retFound )
 {
 	retFound.clear();
@@ -314,24 +314,24 @@ bool mServiceControlManager::SearchUserProcessService( const WString& ServiceNam
 	sc = OpenSCManagerW( 0 , SERVICES_ACTIVE_DATABASE , SC_MANAGER_ENUMERATE_SERVICE );
 	if( !sc )
 	{
-		RaiseError( g_ErrorLogger , 0 , L"SCM‚ğŠJ‚¯‚Ü‚¹‚ñ" );
+		RaiseError( g_ErrorLogger , 0 , L"SCMã‚’é–‹ã‘ã¾ã›ã‚“" );
 	}
 
 
-	DWORD my_session_id;								//©•ª‚ÌƒZƒbƒVƒ‡ƒ“ID
+	DWORD my_session_id;								//è‡ªåˆ†ã®ã‚»ãƒƒã‚·ãƒ§ãƒ³ID
 	if( !ProcessIdToSessionId( GetCurrentProcessId() , &my_session_id ) )
 	{
-		RaiseError( g_ErrorLogger , 0 , L"‚±‚ÌƒvƒƒZƒX‚ÌƒZƒbƒVƒ‡ƒ“ID‚ğæ“¾‚Å‚«‚Ü‚¹‚ñ" );
+		RaiseError( g_ErrorLogger , 0 , L"ã“ã®ãƒ—ãƒ­ã‚»ã‚¹ã®ã‚»ãƒƒã‚·ãƒ§ãƒ³IDã‚’å–å¾—ã§ãã¾ã›ã‚“" );
 	}
-	WString search_service_name = ServiceName + L"_";	//ƒT[ƒ`‚·‚éƒT[ƒrƒX–¼
-	bool continue_required;		//2ü–Ú‚ª‚ ‚é‚©H@EnumServicesStatusExW‚Í‚Ü‚Æ‚ß‚Ä“Ç‚İo‚·‚­‚¹‚ÉAˆê“x‚É‘S•”“Ç‚ß‚È‚¢‚±‚Æ‚ª‚ ‚é‚ç‚µ‚¢B
-	DWORD resume_handle = 0;	//“Ç‚İo‚µˆÊ’u‚ÌƒCƒ“ƒfƒbƒNƒXB
+	WString search_service_name = ServiceName + L"_";	//ã‚µãƒ¼ãƒã™ã‚‹ã‚µãƒ¼ãƒ“ã‚¹å
+	bool continue_required;		//2å‘¨ç›®ãŒã‚ã‚‹ã‹ï¼Ÿã€€EnumServicesStatusExWã¯ã¾ã¨ã‚ã¦èª­ã¿å‡ºã™ãã›ã«ã€ä¸€åº¦ã«å…¨éƒ¨èª­ã‚ãªã„ã“ã¨ãŒã‚ã‚‹ã‚‰ã—ã„ã€‚
+	DWORD resume_handle = 0;	//èª­ã¿å‡ºã—ä½ç½®ã®ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹ã€‚
 
 	do
 	{
-		//ƒoƒbƒtƒ@‚Ì€”õ
-		DWORD service_count = 0;	//“Ç‚İæ‚Á‚½ƒT[ƒrƒX‚ÌƒGƒ“ƒgƒŠ”
-		DWORD req_size = 0;			//•K—v‚Èƒoƒbƒtƒ@ƒTƒCƒY
+		//ãƒãƒƒãƒ•ã‚¡ã®æº–å‚™
+		DWORD service_count = 0;	//èª­ã¿å–ã£ãŸã‚µãƒ¼ãƒ“ã‚¹ã®ã‚¨ãƒ³ãƒˆãƒªæ•°
+		DWORD req_size = 0;			//å¿…è¦ãªãƒãƒƒãƒ•ã‚¡ã‚µã‚¤ã‚º
 		if( !EnumServicesStatusExW( sc , SC_ENUM_PROCESS_INFO , SERVICE_WIN32 , SERVICE_ACTIVE , 0 , 0 , &req_size , &service_count , &resume_handle , nullptr ) )
 		{
 			if( GetLastError() != ERROR_MORE_DATA )
@@ -342,7 +342,7 @@ bool mServiceControlManager::SearchUserProcessService( const WString& ServiceNam
 		mDelete[] buffer;
 		buffer = mNew BYTE[ req_size ];
 
-		//ƒf[ƒ^æ“¾
+		//ãƒ‡ãƒ¼ã‚¿å–å¾—
 		SetLastError( 0 );
 		if( !EnumServicesStatusExW( sc , SC_ENUM_PROCESS_INFO , SERVICE_WIN32 , SERVICE_ACTIVE , buffer , req_size , &req_size , &service_count , &resume_handle , nullptr ) )
 		{
@@ -360,39 +360,39 @@ bool mServiceControlManager::SearchUserProcessService( const WString& ServiceNam
 			continue_required = false;
 		}
 
-		//“¾‚ç‚ê‚½Œ‹‰Ê‚ğ‡‚ÉƒXƒLƒƒƒ“‚·‚é
+		//å¾—ã‚‰ã‚ŒãŸçµæœã‚’é †ã«ã‚¹ã‚­ãƒ£ãƒ³ã™ã‚‹
 		ENUM_SERVICE_STATUS_PROCESS* stats = (ENUM_SERVICE_STATUS_PROCESS*)buffer;
 		for( DWORD i = 0 ; i < service_count ; i++ )
 		{
-			//ƒ†[ƒU[Œ ŒÀ‚Å“®ì‚µ‚Ä‚¢‚éƒT[ƒrƒXH
+			//ãƒ¦ãƒ¼ã‚¶ãƒ¼æ¨©é™ã§å‹•ä½œã—ã¦ã„ã‚‹ã‚µãƒ¼ãƒ“ã‚¹ï¼Ÿ
 			if( !( stats[ i ].ServiceStatusProcess.dwServiceType & SERVICE_USERSERVICE_INSTANCE ) )
 			{
-				//ƒ†[ƒU[Œ ŒÀ‚Å“®ì‚µ‚Ä‚È‚¢ƒT[ƒrƒX‚¾‚©‚ç–³‹‚µ‚ÄŸ
+				//ãƒ¦ãƒ¼ã‚¶ãƒ¼æ¨©é™ã§å‹•ä½œã—ã¦ãªã„ã‚µãƒ¼ãƒ“ã‚¹ã ã‹ã‚‰ç„¡è¦–ã—ã¦æ¬¡
 				continue;
 			}
 
-			//–¼‘O‚ªˆê’vH
+			//åå‰ãŒä¸€è‡´ï¼Ÿ
 			WString service_name = stats[ i ].lpServiceName;
 			if( service_name.substr( 0 , search_service_name.size() ) != search_service_name )
 			{
-				//–¼‘O•sˆê’v‚È‚Ì‚ÅŸ
+				//åå‰ä¸ä¸€è‡´ãªã®ã§æ¬¡
 				continue;
 			}
 
-			//ƒZƒbƒVƒ‡ƒ“ID‚ªˆê’vH
+			//ã‚»ãƒƒã‚·ãƒ§ãƒ³IDãŒä¸€è‡´ï¼Ÿ
 			DWORD session_id;
 			if( !ProcessIdToSessionId( stats[ i ].ServiceStatusProcess.dwProcessId , &session_id ) )
 			{
-				//ƒZƒbƒVƒ‡ƒ“IDæ‚ê‚È‚¢‚©‚ç–³‹
+				//ã‚»ãƒƒã‚·ãƒ§ãƒ³IDå–ã‚Œãªã„ã‹ã‚‰ç„¡è¦–
 				continue;
 			}
 			if( session_id != my_session_id )
 			{
-				//ƒZƒbƒVƒ‡ƒ“IDˆá‚¤‚©‚çŸ
+				//ã‚»ãƒƒã‚·ãƒ§ãƒ³IDé•ã†ã‹ã‚‰æ¬¡
 				continue;
 			}
 
-			//”­Œ©B‚½‚Ô‚ñ‚±‚êB
+			//ç™ºè¦‹ã€‚ãŸã¶ã‚“ã“ã‚Œã€‚
 			retFound = service_name;
 			result = true;
 			goto cleanup;
@@ -400,7 +400,7 @@ bool mServiceControlManager::SearchUserProcessService( const WString& ServiceNam
 
 	}while( continue_required );
 
-	//Œ©‚Â‚©‚ç‚È‚©‚Á‚½
+	//è¦‹ã¤ã‹ã‚‰ãªã‹ã£ãŸ
 	result = false;
 
 cleanup:

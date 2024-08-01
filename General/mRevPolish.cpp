@@ -1,10 +1,10 @@
-//----------------------------------------------------------------------------
-// ‹tƒ|[ƒ‰ƒ“ƒh•ÏŠ·ƒNƒ‰ƒX
+ï»¿//----------------------------------------------------------------------------
+// é€†ãƒãƒ¼ãƒ©ãƒ³ãƒ‰å¤‰æ›ã‚¯ãƒ©ã‚¹
 // Copyright (C) 2018- Crea Inc. All rights reserved.
 // This program is released under the MIT License. 
 // see http://opensource.org/licenses/mit-license.php
-// ’˜ìŒ •\¦‚âƒ‰ƒCƒZƒ“ƒX‚Ì‰ü•Ï‚Í‹Ö~‚³‚ê‚Ä‚¢‚Ü‚·B
-// ‚±‚Ìƒ\[ƒXƒR[ƒh‚ÉŠÖ‚µ‚ÄAã‹Lƒ‰ƒCƒZƒ“ƒXˆÈŠO‚ÌŒ_–ñ“™‚ÍˆêØ‘¶İ‚µ‚Ü‚¹‚ñB
+// è‘—ä½œæ¨©è¡¨ç¤ºã‚„ãƒ©ã‚¤ã‚»ãƒ³ã‚¹ã®æ”¹å¤‰ã¯ç¦æ­¢ã•ã‚Œã¦ã„ã¾ã™ã€‚
+// ã“ã®ã‚½ãƒ¼ã‚¹ã‚³ãƒ¼ãƒ‰ã«é–¢ã—ã¦ã€ä¸Šè¨˜ãƒ©ã‚¤ã‚»ãƒ³ã‚¹ä»¥å¤–ã®å¥‘ç´„ç­‰ã¯ä¸€åˆ‡å­˜åœ¨ã—ã¾ã›ã‚“ã€‚
 //----------------------------------------------------------------------------
 
 
@@ -13,18 +13,18 @@
 
 using namespace mRevPolish;
 
-//Ÿ‚Ìƒg[ƒNƒ“‚ğæ‚èo‚·
-// src : ®‚Ì•¶š—ñ
-// index : ƒg[ƒNƒ“‚Ìæ“ªˆÊ’u
-// retExpr : “Ç‚İæ‚Á‚½ƒg[ƒNƒ“
-// retNext : Ÿ‚Ìƒg[ƒNƒ“‚Ìæ“ªˆÊ’u
-// ret : ƒg[ƒNƒ“‚ğ“Ç‚İæ‚Á‚½ê‡true
-//       ‚à‚¤ƒg[ƒNƒ“‚ª‚È‚¢ê‡false
+//æ¬¡ã®ãƒˆãƒ¼ã‚¯ãƒ³ã‚’å–ã‚Šå‡ºã™
+// src : å¼ã®æ–‡å­—åˆ—
+// index : ãƒˆãƒ¼ã‚¯ãƒ³ã®å…ˆé ­ä½ç½®
+// retExpr : èª­ã¿å–ã£ãŸãƒˆãƒ¼ã‚¯ãƒ³
+// retNext : æ¬¡ã®ãƒˆãƒ¼ã‚¯ãƒ³ã®å…ˆé ­ä½ç½®
+// ret : ãƒˆãƒ¼ã‚¯ãƒ³ã‚’èª­ã¿å–ã£ãŸå ´åˆtrue
+//       ã‚‚ã†ãƒˆãƒ¼ã‚¯ãƒ³ãŒãªã„å ´åˆfalse
 static bool NextToken( const WString& src , size_t index , WString& retExpr , size_t& retNext )
 {
 	WCHAR c = L' ';
 
-	//‹ó”’‚ğ“Ç‚İ”ò‚Î‚·
+	//ç©ºç™½ã‚’èª­ã¿é£›ã°ã™
 	while( index < src.size() )
 	{
 		c = src[ index ];
@@ -35,20 +35,20 @@ static bool NextToken( const WString& src , size_t index , WString& retExpr , si
 		index++;
 	}
 
-	//Œ‹‰Ê‚ğƒŠƒZƒbƒg
+	//çµæœã‚’ãƒªã‚»ãƒƒãƒˆ
 	retExpr = L"";
 
-	//Å‰‚Ì•¶š‚ª‰½‚Å‚ ‚é‚©‚É‚æ‚èƒg[ƒNƒ“‚ğ”»•Ê
+	//æœ€åˆã®æ–‡å­—ãŒä½•ã§ã‚ã‚‹ã‹ã«ã‚ˆã‚Šãƒˆãƒ¼ã‚¯ãƒ³ã‚’åˆ¤åˆ¥
 	if( wchar_isblank( c ) )
 	{
-		//‹ó”’¨‚à‚¤ƒg[ƒNƒ“‚Í‚È‚¢
+		//ç©ºç™½â†’ã‚‚ã†ãƒˆãƒ¼ã‚¯ãƒ³ã¯ãªã„
 		return false;
 	}
 	else if( wchar_isdigit( c ) )
 	{
-		//”š¨”’l
-		bool is_hex = false;		//16i”H
-		bool is_float = false;		//•‚“®¬”“_H
+		//æ•°å­—â†’æ•°å€¤
+		bool is_hex = false;		//16é€²æ•°ï¼Ÿ
+		bool is_float = false;		//æµ®å‹•å°æ•°ç‚¹ï¼Ÿ
 
 		for( ; index < src.size() ; index++ )
 		{
@@ -82,7 +82,7 @@ static bool NextToken( const WString& src , size_t index , WString& retExpr , si
 
 		if( src.back() == L'.' || src.back() == L'x' )
 		{
-			//¬”“_‚â0x‚ÅI‚í‚Á‚Ä‚¢‚éê‡(ƒGƒ‰[)
+			//å°æ•°ç‚¹ã‚„0xã§çµ‚ã‚ã£ã¦ã„ã‚‹å ´åˆ(ã‚¨ãƒ©ãƒ¼)
 			retExpr = L"";
 			return true;
 		}
@@ -90,7 +90,7 @@ static bool NextToken( const WString& src , size_t index , WString& retExpr , si
 	}
 	else if( wchar_isalpha( c ) || c == L'@' || c == L'$' )
 	{
-		//ƒAƒ‹ƒtƒ@ƒxƒbƒg‚Æ—¨•Ï”–¼
+		//ã‚¢ãƒ«ãƒ•ã‚¡ãƒ™ãƒƒãƒˆã¨ï¼ â†’å¤‰æ•°å
 		for( ; index < src.size() ; index++ )
 		{
 			c = src[ index ];
@@ -105,7 +105,7 @@ static bool NextToken( const WString& src , size_t index , WString& retExpr , si
 	}
 	else
 	{
-		//‚»‚Ì‘¼¨‰‰ZqH
+		//ãã®ä»–â†’æ¼”ç®—å­ï¼Ÿ
 		switch( c )
 		{
 		case L'+': case L'-': case L'*': case L'/':
@@ -122,21 +122,21 @@ static bool NextToken( const WString& src , size_t index , WString& retExpr , si
 	}
 }
 
-//‰‰Zq‚Ì—Dæ‡ˆÊ‚ğ•Ô‚·
-// oper : —Dæ‡ˆÊ‚ğŠm”F‚µ‚½‚¢ƒIƒyƒŒ[ƒ^[
-// ret : —Dæ‡ˆÊi—Dæ‡ˆÊ‚ª‚‚¢•¨‚Ù‚Ç”š‚ª‘å‚«‚¢j
-//       ƒGƒ‰[‚Ì0
+//æ¼”ç®—å­ã®å„ªå…ˆé †ä½ã‚’è¿”ã™
+// oper : å„ªå…ˆé †ä½ã‚’ç¢ºèªã—ãŸã„ã‚ªãƒšãƒ¬ãƒ¼ã‚¿ãƒ¼
+// ret : å„ªå…ˆé †ä½ï¼ˆå„ªå…ˆé †ä½ãŒé«˜ã„ç‰©ã»ã©æ•°å­—ãŒå¤§ãã„ï¼‰
+//       ã‚¨ãƒ©ãƒ¼ã®æ™‚0
 static INT QueryOperatorPriority( ExprKind oper )
 {
 	switch( oper )
 	{
-	case ExprKind::OPERATOR_PLUS:		//‰‰Zq{
+	case ExprKind::OPERATOR_PLUS:		//æ¼”ç®—å­ï¼‹
 		return 2;
-	case ExprKind::OPERATOR_MINUS:		//‰‰Zq|
+	case ExprKind::OPERATOR_MINUS:		//æ¼”ç®—å­âˆ’
 		return 1;
-	case ExprKind::OPERATOR_MULTIPLY:	//‰‰Zq~
+	case ExprKind::OPERATOR_MULTIPLY:	//æ¼”ç®—å­Ã—
 		return 4;
-	case ExprKind::OPERATOR_DIVIDE:	//‰‰Zq€
+	case ExprKind::OPERATOR_DIVIDE:	//æ¼”ç®—å­Ã·
 		return 3;
 	default:
 		break;
@@ -146,18 +146,18 @@ static INT QueryOperatorPriority( ExprKind oper )
 
 bool mRevPolish::Convert( const WString& src , Expr& retPolish )
 {
-	//‚·‚Å‚ÉŠi”[‚³‚ê‚Ä‚¢‚éŒ‹‰Ê‚ª‚ ‚ê‚Î”jŠü
+	//ã™ã§ã«æ ¼ç´ã•ã‚Œã¦ã„ã‚‹çµæœãŒã‚ã‚Œã°ç ´æ£„
 	retPolish.clear();
 
-	//ƒeƒ“ƒ|ƒ‰ƒŠ•Ï”‚½‚¿
-	size_t index = 0;		//Œ»İ‚Ìƒg[ƒNƒ“‚ÌŠJnˆÊ’u
-	size_t next_index = 0;	//Ÿ‚Ìƒg[ƒNƒ“‚ÌŠJnˆÊ’u
-	WString NextExpr;		//Ÿ‚Ìƒg[ƒNƒ“
-	Expr Stack;				//‹tƒ|[ƒ‰ƒ“ƒh‹L–@•ÏŠ·—p‚ÌƒXƒ^ƒbƒN
-	WString ErrorStr;		//ƒGƒ‰[”­¶‚Ì•¶–Ê
-	bool is_unary = true;	//’P€‰‰ZqoŒ»‚Ìƒ^ƒCƒ~ƒ“ƒO‚©H
+	//ãƒ†ãƒ³ãƒãƒ©ãƒªå¤‰æ•°ãŸã¡
+	size_t index = 0;		//ç¾åœ¨ã®ãƒˆãƒ¼ã‚¯ãƒ³ã®é–‹å§‹ä½ç½®
+	size_t next_index = 0;	//æ¬¡ã®ãƒˆãƒ¼ã‚¯ãƒ³ã®é–‹å§‹ä½ç½®
+	WString NextExpr;		//æ¬¡ã®ãƒˆãƒ¼ã‚¯ãƒ³
+	Expr Stack;				//é€†ãƒãƒ¼ãƒ©ãƒ³ãƒ‰è¨˜æ³•å¤‰æ›ç”¨ã®ã‚¹ã‚¿ãƒƒã‚¯
+	WString ErrorStr;		//ã‚¨ãƒ©ãƒ¼ç™ºç”Ÿæ™‚ã®æ–‡é¢
+	bool is_unary = true;	//å˜é …æ¼”ç®—å­å‡ºç¾ã®ã‚¿ã‚¤ãƒŸãƒ³ã‚°ã‹ï¼Ÿ
 
-	//•Â‚¶Š‡ŒÊ‚Ìƒg[ƒNƒ“‚ª—ˆ‚½ê‡‚Ìˆ—
+	//é–‰ã˜æ‹¬å¼§ã®ãƒˆãƒ¼ã‚¯ãƒ³ãŒæ¥ãŸå ´åˆã®å‡¦ç†
 	auto PopStack = [&retPolish,&Stack]() -> bool 
 	{
 		while( Stack.size() )
@@ -170,14 +170,14 @@ bool mRevPolish::Convert( const WString& src , Expr& retPolish )
 			}
 			retPolish.push_back( entry );
 		}
-		//Š‡ŒÊ‚ª‘Î‰‚µ‚Ä‚¢‚È‚¢iƒGƒ‰[j
+		//æ‹¬å¼§ãŒå¯¾å¿œã—ã¦ã„ãªã„ï¼ˆã‚¨ãƒ©ãƒ¼ï¼‰
 		return false;
 	};
 
-	//‰‰Zq‚Ì•]‰¿‚ğ‚·‚éˆ—
+	//æ¼”ç®—å­ã®è©•ä¾¡ã‚’ã™ã‚‹å‡¦ç†
 	auto ExprPriority = [&retPolish,&Stack]( const WString& Next ) -> bool
 	{
-		//¡‰ñ‚Ìƒg[ƒNƒ“‚É‘Î‚·‚éƒGƒ“ƒgƒŠ‚Æ—Dæ‡ˆÊ‚ğ¶¬‚·‚é
+		//ä»Šå›ã®ãƒˆãƒ¼ã‚¯ãƒ³ã«å¯¾ã™ã‚‹ã‚¨ãƒ³ãƒˆãƒªã¨å„ªå…ˆé †ä½ã‚’ç”Ÿæˆã™ã‚‹
 		ExprEntry current_entry;
 		current_entry.variable = Next;
 		if( Next== L"+" )
@@ -202,7 +202,7 @@ bool mRevPolish::Convert( const WString& src , Expr& retPolish )
 		}
 		INT current_priority = QueryOperatorPriority( current_entry.kind );
 
-		//ƒXƒ^ƒbƒN‚ğŠm”F‚µ‚ÄA—Dæ‡ˆÊ‚Ì’á‚¢‚à‚Ì‚ğ“f‚«o‚·
+		//ã‚¹ã‚¿ãƒƒã‚¯ã‚’ç¢ºèªã—ã¦ã€å„ªå…ˆé †ä½ã®ä½ã„ã‚‚ã®ã‚’åãå‡ºã™
 		while( !Stack.empty() )
 		{
 			if( current_priority < QueryOperatorPriority( Stack.back().kind ) )
@@ -216,33 +216,33 @@ bool mRevPolish::Convert( const WString& src , Expr& retPolish )
 			}
 		}
 
-		//¡‰ñ‚Ìƒg[ƒNƒ“‚ğƒXƒ^ƒbƒN‚ÉÏ‚Ş
+		//ä»Šå›ã®ãƒˆãƒ¼ã‚¯ãƒ³ã‚’ã‚¹ã‚¿ãƒƒã‚¯ã«ç©ã‚€
 		Stack.push_back( current_entry );
 		return true;
 	};
 
-	//ƒƒCƒ“ƒ‹[ƒ`ƒ“
+	//ãƒ¡ã‚¤ãƒ³ãƒ«ãƒ¼ãƒãƒ³
 	while( NextToken( src , index , NextExpr , next_index ) )
 	{
 		if( NextExpr == L"" )
 		{
-			//“Ç‚İæ‚ê‚È‚¢ƒg[ƒNƒ“
-			sprintf( ErrorStr , L"®'%ls'‚É•s–¾‚Èƒg[ƒNƒ“‚ª‚ ‚è‚Ü‚·" , src.c_str() );
+			//èª­ã¿å–ã‚Œãªã„ãƒˆãƒ¼ã‚¯ãƒ³
+			sprintf( ErrorStr , L"å¼'%ls'ã«ä¸æ˜ãªãƒˆãƒ¼ã‚¯ãƒ³ãŒã‚ã‚Šã¾ã™" , src.c_str() );
 			goto onerror;
 		}
 		else if( wchar_isdigit( NextExpr[ 0 ] ) )
 		{
-			//”’l
+			//æ•°å€¤
 			ExprEntry entry;
 			entry.variable = NextExpr;
 			if( NextExpr.find( L'.' ) == WString::npos )
 			{
-				//¬”“_‚ª‚È‚¢‚Ì‚Å®”
+				//å°æ•°ç‚¹ãŒãªã„ã®ã§æ•´æ•°
 				entry.kind = ExprKind::VALUE_INTEGER;
 			}
 			else
 			{
-				//¬”“_‚ª‚ ‚é‚Ì‚Å•‚“®¬”
+				//å°æ•°ç‚¹ãŒã‚ã‚‹ã®ã§æµ®å‹•å°æ•°
 				entry.kind = ExprKind::VALUE_FLOAT;
 			}
 			retPolish.push_back( entry );
@@ -251,7 +251,7 @@ bool mRevPolish::Convert( const WString& src , Expr& retPolish )
 		}
 		else if( wchar_isalpha( NextExpr[ 0 ] ) )
 		{
-			//•Ï”–¼
+			//å¤‰æ•°å
 			ExprEntry entry;
 			entry.variable = NextExpr;
 			entry.kind = ExprKind::VALUE_VARIABLE;
@@ -261,15 +261,15 @@ bool mRevPolish::Convert( const WString& src , Expr& retPolish )
 		}
 		else if( NextExpr[ 0 ] == L')' )
 		{
-			//•Â‚¶Š‡ŒÊ
+			//é–‰ã˜æ‹¬å¼§
 			if( is_unary )
 			{
-				sprintf( ErrorStr , L"®'%ls'‚É‚¨‚¢‚ÄAŠ‡ŒÊ')'‚Ì‘O‚É“ñ€‰‰Zq‚ª•s‘«‚µ‚Ä‚¢‚Ü‚·" , src.c_str() );
+				sprintf( ErrorStr , L"å¼'%ls'ã«ãŠã„ã¦ã€æ‹¬å¼§')'ã®å‰ã«äºŒé …æ¼”ç®—å­ãŒä¸è¶³ã—ã¦ã„ã¾ã™" , src.c_str() );
 				goto onerror;
 			}
 			if( !PopStack() )
 			{
-				sprintf( ErrorStr , L"®'%ls'‚É‚¨‚¢‚ÄŠ‡ŒÊ'('‚Ì”‚ª‘«‚è‚Ü‚¹‚ñ" , src.c_str() );
+				sprintf( ErrorStr , L"å¼'%ls'ã«ãŠã„ã¦æ‹¬å¼§'('ã®æ•°ãŒè¶³ã‚Šã¾ã›ã‚“" , src.c_str() );
 				goto onerror;
 			}
 
@@ -277,10 +277,10 @@ bool mRevPolish::Convert( const WString& src , Expr& retPolish )
 		}
 		else if( NextExpr[ 0 ] == L'(' )
 		{
-			//ŠJ‚«Š‡ŒÊ
+			//é–‹ãæ‹¬å¼§
 			if( !is_unary )
 			{
-				sprintf( ErrorStr , L"®'%ls'‚É‚¨‚¢‚ÄAŠ‡ŒÊ'('‚Ì‘O‚É“ñ€‰‰Zq‚ª•s‘«‚µ‚Ä‚¢‚Ü‚·" , src.c_str() );
+				sprintf( ErrorStr , L"å¼'%ls'ã«ãŠã„ã¦ã€æ‹¬å¼§'('ã®å‰ã«äºŒé …æ¼”ç®—å­ãŒä¸è¶³ã—ã¦ã„ã¾ã™" , src.c_str() );
 				goto onerror;
 			}
 			ExprEntry entry;
@@ -292,18 +292,18 @@ bool mRevPolish::Convert( const WString& src , Expr& retPolish )
 		}
 		else
 		{
-			//‚»‚Ì‘¼‰‰Zq
+			//ãã®ä»–æ¼”ç®—å­
 			if( is_unary )
 			{
-				//’P€‰‰Zq‚Ìê‡
+				//å˜é …æ¼”ç®—å­ã®å ´åˆ
 				if( NextExpr== L"+" )
 				{
-					//{•„†‚Í–³‹‚·‚é
+					//ï¼‹ç¬¦å·ã¯ç„¡è¦–ã™ã‚‹
 					;
 				}
 				else if( NextExpr == L"-" )
 				{
-					//|•„†‚Í®‚É|‚P‚ğæ‚¶‚é
+					//âˆ’ç¬¦å·ã¯å¼ã«âˆ’ï¼‘ã‚’ä¹—ã˜ã‚‹
 					ExprEntry entry;
 					entry.kind = ExprKind::VALUE_INTEGER;
 					entry.variable = L"-1";
@@ -315,17 +315,17 @@ bool mRevPolish::Convert( const WString& src , Expr& retPolish )
 				}
 				else
 				{
-					//‚»‚êˆÈŠO‚Í–¢‘Î‰
-					sprintf( ErrorStr , L"®'%ls'‚É‚¨‚¢‚Ä•s³‚È’P€‰‰Zq‚ª‚ ‚è‚Ü‚·" , src.c_str() );
+					//ãã‚Œä»¥å¤–ã¯æœªå¯¾å¿œ
+					sprintf( ErrorStr , L"å¼'%ls'ã«ãŠã„ã¦ä¸æ­£ãªå˜é …æ¼”ç®—å­ãŒã‚ã‚Šã¾ã™" , src.c_str() );
 					goto onerror;
 				}
 			}
 			else
 			{
-				//“ñ€‰‰Zq‚Ìê‡
+				//äºŒé …æ¼”ç®—å­ã®å ´åˆ
 				if( !ExprPriority( NextExpr ) )
 				{
-					sprintf( ErrorStr , L"®'%ls'‚É‚¨‚¢‚Ä‰‰Zq‚Ìˆ—‚ª¸”s‚µ‚Ü‚µ‚½" , src.c_str() );
+					sprintf( ErrorStr , L"å¼'%ls'ã«ãŠã„ã¦æ¼”ç®—å­ã®å‡¦ç†ãŒå¤±æ•—ã—ã¾ã—ãŸ" , src.c_str() );
 					goto onerror;
 				}
 			}
@@ -334,14 +334,14 @@ bool mRevPolish::Convert( const WString& src , Expr& retPolish )
 		index = next_index;
 	}
 
-	//‘S•”‚Ìƒg[ƒNƒ“‚ğƒXƒ^ƒbƒN‚©‚çˆÚ“®‚·‚é
+	//å…¨éƒ¨ã®ãƒˆãƒ¼ã‚¯ãƒ³ã‚’ã‚¹ã‚¿ãƒƒã‚¯ã‹ã‚‰ç§»å‹•ã™ã‚‹
 	while( !Stack.empty() )
 	{
 		ExprEntry entry = Stack.back();
 		Stack.pop_back();
 		if( entry.variable == L"(" )
 		{
-			sprintf( ErrorStr , L"®'%ls'‚É‚¨‚¢‚ÄŠ‡ŒÊ')'‚Ì”‚ª‘«‚è‚Ü‚¹‚ñ" , src.c_str() );
+			sprintf( ErrorStr , L"å¼'%ls'ã«ãŠã„ã¦æ‹¬å¼§')'ã®æ•°ãŒè¶³ã‚Šã¾ã›ã‚“" , src.c_str() );
 			goto onerror;
 		}
 		retPolish.push_back( entry );

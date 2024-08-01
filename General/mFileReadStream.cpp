@@ -1,12 +1,12 @@
-//----------------------------------------------------------------------------
-// ƒXƒgƒŠ[ƒ~ƒ“ƒOƒtƒ@ƒCƒ‹“Ç‚İ‚İ‘€ì
+ï»¿//----------------------------------------------------------------------------
+// ã‚¹ãƒˆãƒªãƒ¼ãƒŸãƒ³ã‚°ãƒ•ã‚¡ã‚¤ãƒ«èª­ã¿è¾¼ã¿æ“ä½œ
 // Copyright (C) 2013,2016 Fingerling. All rights reserved. 
 // Copyright (C) 2019- Crea Inc. All rights reserved.
 // This program is released under the MIT License. 
 // see http://opensource.org/licenses/mit-license.php
-// ’˜ìŒ •\¦‚âƒ‰ƒCƒZƒ“ƒX‚Ì‰ü•Ï‚Í‹Ö~‚³‚ê‚Ä‚¢‚Ü‚·B
-// ‚±‚Ìƒ\[ƒXƒR[ƒh‚ÉŠÖ‚µ‚ÄAã‹Lƒ‰ƒCƒZƒ“ƒXˆÈŠO‚ÌŒ_–ñ“™‚ÍˆêØ‘¶İ‚µ‚Ü‚¹‚ñB
-// (‰½‚ç‚©‚ÌŒ_–ñ‚ª‚ ‚éê‡‚Å‚àA–{ƒ\[ƒXƒR[ƒh‚Í‚»‚Ì‘ÎÛŠO‚Æ‚È‚è‚Ü‚·)
+// è‘—ä½œæ¨©è¡¨ç¤ºã‚„ãƒ©ã‚¤ã‚»ãƒ³ã‚¹ã®æ”¹å¤‰ã¯ç¦æ­¢ã•ã‚Œã¦ã„ã¾ã™ã€‚
+// ã“ã®ã‚½ãƒ¼ã‚¹ã‚³ãƒ¼ãƒ‰ã«é–¢ã—ã¦ã€ä¸Šè¨˜ãƒ©ã‚¤ã‚»ãƒ³ã‚¹ä»¥å¤–ã®å¥‘ç´„ç­‰ã¯ä¸€åˆ‡å­˜åœ¨ã—ã¾ã›ã‚“ã€‚
+// (ä½•ã‚‰ã‹ã®å¥‘ç´„ãŒã‚ã‚‹å ´åˆã§ã‚‚ã€æœ¬ã‚½ãƒ¼ã‚¹ã‚³ãƒ¼ãƒ‰ã¯ãã®å¯¾è±¡å¤–ã¨ãªã‚Šã¾ã™)
 //----------------------------------------------------------------------------
 
 #define MFILEREADSTREAM_CPP_COMPILING
@@ -25,27 +25,27 @@ mFileReadStream::~mFileReadStream()
 
 bool mFileReadStream::Open( const mFile::Option& opt )
 {
-	//“Ç‚İæ‚èƒAƒNƒZƒX‚ğw’è‚µ‚Ä‚¢‚é‚©ƒ`ƒFƒbƒN
+	//èª­ã¿å–ã‚Šã‚¢ã‚¯ã‚»ã‚¹ã‚’æŒ‡å®šã—ã¦ã„ã‚‹ã‹ãƒã‚§ãƒƒã‚¯
 	if( !opt.AccessRead )
 	{
 		RaiseAssert( g_ErrorLogger , 0 , L"Insafficient access right : " + opt.Path );
 		return false;
 	}
 
-	//ƒtƒ@ƒCƒ‹‚ğƒI[ƒvƒ“
-	//¦“ñd‚ÉŠJ‚±‚¤‚Æ‚·‚é‚Æ‚±‚Ìƒƒ\ƒbƒh‚Í¸”s‚·‚é
+	//ãƒ•ã‚¡ã‚¤ãƒ«ã‚’ã‚ªãƒ¼ãƒ—ãƒ³
+	//â€»äºŒé‡ã«é–‹ã“ã†ã¨ã™ã‚‹ã¨ã“ã®ãƒ¡ã‚½ãƒƒãƒ‰ã¯å¤±æ•—ã™ã‚‹
 	if( !MyHandle.Open( opt ) )
 	{
 		RaiseError( g_ErrorLogger , 0 , L"Cannot open : " + opt.Path );
 		return false;
 	}
 
-	//ƒtƒ@ƒCƒ‹‚ğŠJ‚­‚±‚Æ‚ªo—ˆ‚½ê‡‚ÍA“Ç‚İæ‚èƒLƒƒƒbƒVƒ…€”õ
+	//ãƒ•ã‚¡ã‚¤ãƒ«ã‚’é–‹ãã“ã¨ãŒå‡ºæ¥ãŸå ´åˆã¯ã€èª­ã¿å–ã‚Šã‚­ãƒ£ãƒƒã‚·ãƒ¥æº–å‚™
 	InvalidateCache();
 	return true;
 }
 
-//ƒtƒ@ƒCƒ‹‚ğŠJ‚«‚Ü‚·
+//ãƒ•ã‚¡ã‚¤ãƒ«ã‚’é–‹ãã¾ã™
 bool mFileReadStream::Open( const WString& filename )
 {
 	Option opt;
@@ -61,14 +61,14 @@ bool mFileReadStream::Open( const WString& filename )
 
 bool mFileReadStream::Close( void )
 {
-	//ƒNƒ[ƒYŒã‚Í–ŒÌ–h~‚Ì‚½‚ßEOF‚µ‚©“Ç‚ß‚È‚¢‚æ‚¤‚É‚µ‚Ä‚¨‚­
+	//ã‚¯ãƒ­ãƒ¼ã‚ºå¾Œã¯äº‹æ•…é˜²æ­¢ã®ãŸã‚EOFã—ã‹èª­ã‚ãªã„ã‚ˆã†ã«ã—ã¦ãŠã
 	MyIsEOF = true;
 	return MyHandle.Close();
 }
 
 void mFileReadStream::InvalidateCache( void )
 {
-	//ƒLƒƒƒbƒVƒ…‚ğ–³Œø‚ÉB
+	//ã‚­ãƒ£ãƒƒã‚·ãƒ¥ã‚’ç„¡åŠ¹ã«ã€‚
 	MyReadCacheRemain = 0;
 	MyUnReadBuffer.Clear();
 	return;
@@ -76,19 +76,19 @@ void mFileReadStream::InvalidateCache( void )
 
 INT mFileReadStream::Read()
 {
-	//UnRead‚³‚ê‚½•¶š‚ª‚ ‚éê‡‚Íƒ\ƒŒ‚ğ•Ô‚·
+	//UnReadã•ã‚ŒãŸæ–‡å­—ãŒã‚ã‚‹å ´åˆã¯ã‚½ãƒ¬ã‚’è¿”ã™
 	if( !MyUnReadBuffer.IsEmpty() )
 	{
 		return MyUnReadBuffer.Read();
 	}
 
-	//ÅŒã‚É“Ç‚ñ‚¾Œ‹‰Ê‚àEOF‚È‚ç¡‰ñ‚àEOF
+	//æœ€å¾Œã«èª­ã‚“ã çµæœã‚‚EOFãªã‚‰ä»Šå›ã‚‚EOF
 	if( MyIsEOF )
 	{
 		return EOF;
 	}
 
-	//ƒLƒƒƒbƒVƒ…‚Ìc—Ê‚ª‚O‚È‚çAŸ‚ğ“Ç‚Ş
+	//ã‚­ãƒ£ãƒƒã‚·ãƒ¥ã®æ®‹é‡ãŒï¼ãªã‚‰ã€æ¬¡ã‚’èª­ã‚€
 	if( MyReadCacheRemain == 0 )
 	{
 		if( !ReadNextBlock() )
@@ -98,7 +98,7 @@ INT mFileReadStream::Read()
 		}
 	}
 
-	//ƒLƒƒƒbƒVƒ…‚Ìc—Ê‚ª‚ ‚é‚Ì‚ÅAƒLƒƒƒbƒVƒ…‚©‚ç‚P•¶š•Ô‚·
+	//ã‚­ãƒ£ãƒƒã‚·ãƒ¥ã®æ®‹é‡ãŒã‚ã‚‹ã®ã§ã€ã‚­ãƒ£ãƒƒã‚·ãƒ¥ã‹ã‚‰ï¼‘æ–‡å­—è¿”ã™
 	INT result = MyReadCacheHead[ MyReadCacheCurrent ];
 	MyReadCacheCurrent++;
 	MyReadCacheRemain--;
@@ -108,15 +108,15 @@ INT mFileReadStream::Read()
 
 bool mFileReadStream::ReadNextBlock( void )
 {
-	//ƒtƒ@ƒCƒ‹‚Ì“Ç‚İæ‚è
+	//ãƒ•ã‚¡ã‚¤ãƒ«ã®èª­ã¿å–ã‚Š
 	if( !MyHandle.Read( MyReadCacheHead.get() , MAX_BUFFER_SIZE , MyReadCacheRemain ) || MyReadCacheRemain == 0 )
 	{
-		//“Ç‚ß‚È‚©‚Á‚½‚çEOF
-		//‚ ‚é‚¢‚Í“Ç‚İæ‚Á‚½ƒTƒCƒY‚ª‚O‚Å‚àEOF
+		//èª­ã‚ãªã‹ã£ãŸã‚‰EOF
+		//ã‚ã‚‹ã„ã¯èª­ã¿å–ã£ãŸã‚µã‚¤ã‚ºãŒï¼ã§ã‚‚EOF
 		return false;
 	}
 
-	//ƒLƒƒƒbƒVƒ…‚Ì‚±‚±‚Ü‚Å“Ç‚ñ‚¾ƒ|ƒCƒ“ƒ^‚ğæ“ª‚ÉƒŠƒZƒbƒg
+	//ã‚­ãƒ£ãƒƒã‚·ãƒ¥ã®ã“ã“ã¾ã§èª­ã‚“ã ãƒã‚¤ãƒ³ã‚¿ã‚’å…ˆé ­ã«ãƒªã‚»ãƒƒãƒˆ
 	MyReadCacheCurrent = 0;
 	return true;
 }
@@ -137,7 +137,7 @@ bool mFileReadStream::IsOpen( void )const
 	return MyHandle.IsOpen();
 }
 
-//EOF‚É’B‚µ‚Ä‚¢‚é‚©‚ğ’²‚×‚Ü‚·
+//EOFã«é”ã—ã¦ã„ã‚‹ã‹ã‚’èª¿ã¹ã¾ã™
 bool mFileReadStream::IsEOF( void )const
 {
 	return MyIsEOF;
@@ -148,7 +148,7 @@ WString mFileReadStream::GetPath( bool fullpath )const
 	return MyHandle.GetPath( fullpath );
 }
 
-//ƒtƒ@ƒCƒ‹‚ÌƒTƒCƒY‚ğæ“¾
+//ãƒ•ã‚¡ã‚¤ãƒ«ã®ã‚µã‚¤ã‚ºã‚’å–å¾—
 bool mFileReadStream::GetFileSize( ULONGLONG& retSize )const
 {
 	return MyHandle.GetFileSize( retSize );

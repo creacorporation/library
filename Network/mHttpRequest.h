@@ -1,12 +1,12 @@
-//----------------------------------------------------------------------------
-// HTTP�A�N�Z�X
+﻿//----------------------------------------------------------------------------
+// HTTPアクセス
 // Copyright (C) 2013 Fingerling. All rights reserved. 
 // Copyright (C) 2019- Crea Inc. All rights reserved.
 // This program is released under the MIT License. 
 // see http://opensource.org/licenses/mit-license.php
-// ���쌠�\���⃉�C�Z���X�̉��ς͋֎~����Ă��܂��B
-// ���̃\�[�X�R�[�h�Ɋւ��āA��L���C�Z���X�ȊO�̌_�񓙂͈�ؑ��݂��܂���B
-// (���炩�̌_�񂪂���ꍇ�ł��A�{�\�[�X�R�[�h�͂��̑ΏۊO�ƂȂ�܂�)
+// 著作権表示やライセンスの改変は禁止されています。
+// このソースコードに関して、上記ライセンス以外の契約等は一切存在しません。
+// (何らかの契約がある場合でも、本ソースコードはその対象外となります)
 //----------------------------------------------------------------------------
 
 
@@ -25,20 +25,20 @@
 
 #pragma comment( lib , "winhttp.lib" )
 
-//�Q�l�ɂȂ邩������Ȃ�URL
+//参考になるかもしれないURL
 // http://msdn.microsoft.com/en-us/library/aa385473(v=vs.85).aspx
 // http://msdn.microsoft.com/en-us/library/aa384273(v=vs.85).aspx
 // http://eternalwindows.jp/network/winhttp/winhttp01.html
 
 namespace Definitions_HttpRequest
 {
-	//HTTP����
+	//HTTP動詞
 	enum RequestVerb
 	{
-		VERB_GET,			//GET���g�p����
-		VERB_PUT,			//PUT���g�p����
-		VERB_POST,			//POST���g�p����
-		VERB_HEADER,		//HEADER���g�p����
+		VERB_GET,			//GETを使用する
+		VERB_PUT,			//PUTを使用する
+		VERB_POST,			//POSTを使用する
+		VERB_HEADER,		//HEADERを使用する
 	};
 
 	enum HeaderFlag
@@ -107,33 +107,33 @@ namespace Definitions_HttpRequest
 		WWW_AUTHENTICATE = WINHTTP_QUERY_WWW_AUTHENTICATE
 	};
 
-	//���N�G�X�g�̏��
+	//リクエストの状態
 	enum RequestStatus
 	{
 		REQUEST_INITIALIZED,
-		REQUEST_PREEXEC,		//�������ݎ�t��(���N�G�X�g���M�O)
-		REQUEST_POSTEXEC,		//�������ݎ�t��(���N�G�X�g���M��)
-		REQUEST_CLOSED,			//�������ݏI��
-		REQUEST_RECEIVING,		//�����҂�
-		REQUEST_COMPLETED,		//��M�I��
-		REQUEST_FINISHED,		//�ʐM�I��
+		REQUEST_PREEXEC,		//書き込み受付中(リクエスト送信前)
+		REQUEST_POSTEXEC,		//書き込み受付中(リクエスト送信後)
+		REQUEST_CLOSED,			//書き込み終了
+		REQUEST_RECEIVING,		//応答待ち
+		REQUEST_COMPLETED,		//受信終了
+		REQUEST_FINISHED,		//通信終了
 	};
 
-	//�L���[�̏��
+	//キューの状態
 	enum BufferQueueStatus
 	{
-		BUFFERQUEUE_CREATED,	//���ꂽ�����ł܂����M�E��M�͍s���Ă��Ȃ�
-		BUFFERQUEUE_PROCEEDING,	//�V�X�e�����ő��M�E��M�������s���Ă���
-		BUFFERQUEUE_COMPLETED,	//���M�E��M�������I���A���ʂ̊m�F�҂�
-		BUFFERQUEUE_ERROR,		//�������G���[�ɂȂ���
+		BUFFERQUEUE_CREATED,	//作られただけでまだ送信・受信は行われていない
+		BUFFERQUEUE_PROCEEDING,	//システム内で送信・受信処理が行われている
+		BUFFERQUEUE_COMPLETED,	//送信・受信処理が終わり、結果の確認待ち
+		BUFFERQUEUE_ERROR,		//処理がエラーになった
 	};
 };
 
 class mHttpReadStream : public mFileReadStreamBase
 {
 public:
-	//�ǂݎ�葤�̌o�H���J���Ă��邩�𔻒肵�܂�
-	//�J���Ă���ꍇ�͐^���Ԃ�܂�
+	//読み取り側の経路が開いているかを判定します
+	//開いている場合は真が返ります
 	virtual bool IsOpen( void )const
 	{
 		return !IsEOF();
@@ -144,8 +144,8 @@ class mHttpWriteStream : public mFileWriteStreamBase
 {
 public:
 
-	//�������ݑ��̌o�H���J���Ă��邩�𔻒肵�܂�
-	//�J���Ă���ꍇ�͐^���Ԃ�܂�
+	//書き込み側の経路が開いているかを判定します
+	//開いている場合は真が返ります
 	virtual bool IsOpen( void )const
 	{
 		return IsWritable();
@@ -163,38 +163,38 @@ public:
 	virtual ~mHttpRequest();
 
 	//-----------------------------------------------------------------------
-	// �����ݒ�p�֐�
+	// 初期設定用関数
 	//-----------------------------------------------------------------------
 
-	//����
+	//動詞
 	using RequestVerb = Definitions_HttpRequest::RequestVerb;
 
-	//�󂯕t���郁�f�B�A�^�C�v�̃��X�g
+	//受け付けるメディアタイプのリスト
 	using MediaTypeList = WStringDeque;
 
-	//���N�G�X�g�ݒ�
+	//リクエスト設定
 	struct RequestOption
 	{
 		//-----------
-		//����ݒ�
+		//動作設定
 		//-----------
-		RequestVerb	Verb;			//HTTP����
-		bool Reload;				//true�̏ꍇ�����[�h����(�L���b�V������)
-		bool Secure;				//true�̏ꍇSSL���g�p����
-		WString Referer;			//���t�@���[
-		WString Url;				//�擾�������I�u�W�F�N�g
-		MediaTypeList AcceptType;	//�󂯕t���郁�f�B�A�^�C�v(�����w�肵�Ȃ��ƃe�L�X�g�̂݁B��Œǉ��E�X�V���\�B)
+		RequestVerb	Verb;			//HTTP動詞
+		bool Reload;				//trueの場合リロードする(キャッシュ無効)
+		bool Secure;				//trueの場合SSLを使用する
+		WString Referer;			//リファラー
+		WString Url;				//取得したいオブジェクト
+		MediaTypeList AcceptType;	//受け付けるメディアタイプ(何も指定しないとテキストのみ。後で追加・更新も可能。)
 
 		//-----------
-		//�o�b�t�@�ݒ�
+		//バッファ設定
 		//-----------
-		DWORD SendPacketSize;				//���M���Ɋm�ۂ���o�b�t�@�P������̃T�C�Y
-		DWORD RecievePacketSize;			//��M���Ɋm�ۂ���o�b�t�@�P������̃T�C�Y
-		DWORD RecievePacketMaxActive;		//��M���Ɋm�ۂ���o�b�t�@�̐�
-		DWORD RecievePacketMaxStock;		//�����Ŏw�肵�����ȏ�Ɏ�M�ς݂Ŗ��ǂݎ��̃o�b�t�@�����������M���~����
+		DWORD SendPacketSize;				//送信時に確保するバッファ１個あたりのサイズ
+		DWORD RecievePacketSize;			//受信時に確保するバッファ１個あたりのサイズ
+		DWORD RecievePacketMaxActive;		//受信時に確保するバッファの数
+		DWORD RecievePacketMaxStock;		//ここで指定した数以上に受信済みで未読み取りのバッファが増えたら受信を停止する
 
 		//-----------
-		//�����l
+		//初期値
 		//-----------
 
 		RequestOption()
@@ -217,23 +217,23 @@ public:
 			DWORD BytesSent;
 		}OnSend;
 
-		//�R�[���o�b�N�ŃG���[�ʒm���󂯎�����ꍇ�̃G���[���
+		//コールバックでエラー通知を受け取った場合のエラー情報
 		struct OnErrorOpt
 		{
 			DWORD_PTR Api;
 			DWORD ErrorCode;
 		}OnError;
 
-		//�R�[���o�b�N��SSL�G���[�ʒm���󂯎�����ꍇ�̃G���[���
+		//コールバックでSSLエラー通知を受け取った場合のエラー情報
 		struct OnSslErrorOpt
 		{
-			bool IsCertRevocationFailed;	//�ؖ����̃`�F�b�N���̂��̂��ł��Ȃ�����(�ؖ������s���Ƃ͌���Ȃ�)
-			bool IsInvalidCert;				//�ؖ������j�Z���m
-			bool IsCertRevoked;				//�ؖ������������Ă�
-			bool IsInvalidCA;				//�M���ς�CA���甭�s���ꂽ���̂ł͂Ȃ��A�܂��̓I���I���ؖ���
-			bool IsInvalidCommonName;		//�ؖ�����URL����v���ĂȂ�
-			bool IsInvalidDate;				//�ؖ����������؂�
-			bool IsChannelError;			//���̑��悭�킩��Ȃ��G���[�B�Ⴆ��HTTP�̃|�[�g��HTTPS�łȂ����ꍇ�Ƃ��B
+			bool IsCertRevocationFailed;	//証明書のチェックそのものができなかった(証明書が不正とは限らない)
+			bool IsInvalidCert;				//証明書がニセモノ
+			bool IsCertRevoked;				//証明書が失効してる
+			bool IsInvalidCA;				//信頼済みCAから発行されたものではない、またはオレオレ証明書
+			bool IsInvalidCommonName;		//証明書とURLが一致してない
+			bool IsInvalidDate;				//証明書が期限切れ
+			bool IsChannelError;			//その他よくわからないエラー。例えばHTTPのポートにHTTPSでつないだ場合とか。
 		}OnSslError;
 
 		// struct OnCancelOpt
@@ -254,65 +254,65 @@ public:
 		}OnReceive;
 	};
 
-	//�R�[���o�b�N�Œʒm����ꍇ�̃v���g�^�C�v
-	//req : �R�[���o�b�N�𔭐��������I�u�W�F�N�g�̎Q��
-	//parameter : �I�u�W�F�N�g�������ɓn�����C�ӂ̒l(NotifierInfo::Parameter�̒l)
-	//opt : �g�����
+	//コールバックで通知する場合のプロトタイプ
+	//req : コールバックを発生させたオブジェクトの参照
+	//parameter : オブジェクト生成時に渡した任意の値(NotifierInfo::Parameterの値)
+	//opt : 拡張情報
 	using NotifyFunction = void(*)( mHttpRequest& req , DWORD_PTR parameter , const NotifyFunctionOpt& opt );
 
-	//�ʒm�ݒ�
+	//通知設定
 	class NotifyOption : public mNotifyOption< NotifyFunction >
 	{
 	public:
-		//�f�[�^�̏������݂��s��ꂽ�ꍇ�̒ʒm
+		//データの書き込みが行われた場合の通知
 		NotifierInfo OnSend;
-		//�G���[�����������ꍇ�̒ʒm
+		//エラーが発生した場合の通知
 		NotifierInfo OnError;
-		//�G���[�����������ꍇ�̒ʒm
+		//エラーが発生した場合の通知
 		NotifierInfo OnSslError;
-		//�������L�����Z�����ꂽ�ꍇ�̒ʒm
+		//処理がキャンセルされた場合の通知
 		NotifierInfo OnCancel;
-		//�w�b�_�����p�\�ɂȂ����ꍇ�̒ʒm
+		//ヘッダが利用可能になった場合の通知
 		NotifierInfo OnHeaderAvailable;
-		//�f�[�^����M�����ꍇ�̒ʒm
+		//データを受信した場合の通知
 		NotifierInfo OnReceive;
 	};
 
 	//-----------------------------------------------------------------------
-	// �e��I�y���[�V����
+	// 各種オペレーション
 	//-----------------------------------------------------------------------
 
-	//�ǉ�����w�b�_�̃��X�g
+	//追加するヘッダのリスト
 	bool SetHeader( const WString& header );
 
-	//���N�G�X�g�̑��M
-	// AdditionalPostDataSize �F �ǉ��̃f�[�^�T�C�Y
-	//  ��Execute���s�ȍ~�ɁAPost���ő��M����f�[�^�̃T�C�Y�i�s��ɂ������ŕύX�����肷�邱�Ƃ͂ł��܂���j
-	//  ��GET�ȂǁA���͂���f�[�^���Ȃ����N�G�X�g�Ȃ̂�0�ȊO���w�肵����G���[
-	// ret : �������^
+	//リクエストの送信
+	// AdditionalPostDataSize ： 追加のデータサイズ
+	//  ※Execute実行以降に、Post等で送信するデータのサイズ（不定にしたり後で変更したりすることはできません）
+	//  ※GETなど、入力するデータがないリクエストなのに0以外を指定したらエラー
+	// ret : 成功時真
 	bool Execute( DWORD AdditionalDataSize );
 
-	//�ǂݍ��ݗp�̓����o�b�t�@���m�ۂ��܂�
-	//�Վ��Ƀo�b�t�@���K�v�ɂȂ�Ƃ��Ɏg�p���܂�
-	// count : �����o�b�t�@���w�肵���������ł���΁A���̐��ɂȂ�悤�ɓ����o�b�t�@��V���ɍ쐬���܂�
+	//読み込み用の内部バッファを確保します
+	//臨時にバッファが必要になるときに使用します
+	// count : 内部バッファが指定した数未満であれば、その数になるように内部バッファを新たに作成します
 	bool PrepareReadBuffer( DWORD count );
 
-	//�n���h������������Ă��邩��Ԃ�
+	//ハンドルが生成されているかを返す
 	operator bool() const;
 
 	//-----------------------------------------------------------------------
-	// �Z�L�����e�B�ݒ�
+	// セキュリティ設定
 	//-----------------------------------------------------------------------
 
 	struct SslIgnoreErrors
 	{
-		bool DisableRevocation;				//�^�̏ꍇ�A���������ؖ����̃`�F�b�N�����Ȃ�
+		bool DisableRevocation;				//真の場合、そもそも証明書のチェックをしない
 	#ifdef WINHTTP_OPTION_IGNORE_CERT_REVOCATION_OFFLINE
-		bool IgnoreCertRevocationFailed;	//�^�̏ꍇ�A�ؖ����̃`�F�b�N���̂��̂��ł��Ȃ������ꍇ��OK
+		bool IgnoreCertRevocationFailed;	//真の場合、証明書のチェックそのものができなかった場合もOK
 	#endif
-		bool IgnoreInvalidCA;				//�^�̏ꍇ�A�M���ς�CA���甭�s���ꂽ���̂ł͂Ȃ��A�܂��̓I���I���ؖ����ł�OK
-		bool IgnoreInvalidCommonName;		//�^�̏ꍇ�A�ؖ�����URL����v���ĂȂ��Ă�OK
-		bool IgnoreInvalidDate;				//�^�̏ꍇ�A�ؖ����������؂�ł�OK
+		bool IgnoreInvalidCA;				//真の場合、信頼済みCAから発行されたものではない、またはオレオレ証明書でもOK
+		bool IgnoreInvalidCommonName;		//真の場合、証明書とURLが一致してなくてもOK
+		bool IgnoreInvalidDate;				//真の場合、証明書が期限切れでもOK
 
 		SslIgnoreErrors()
 		{
@@ -326,107 +326,107 @@ public:
 		}
 	};
 
-	//SSL�̏ؖ������؃G���[�ɂȂ��Ă���������ݒ������
-	// opt : ��������G���[�̎�ނ������\����
-	// ret : �������^
+	//SSLの証明書検証エラーになっても無視する設定をする
+	// opt : 無視するエラーの種類を示す構造体
+	// ret : 成功時真
 	bool SetSslIgnoreErrors( const SslIgnoreErrors opt );
 
 	//-----------------------------------------------------------------------
-	// �w�b�_�ƃX�e�[�^�X�R�[�h
+	// ヘッダとステータスコード
 	//-----------------------------------------------------------------------
 
-	//�w�b�_�E�X�e�[�^�X�R�[�h���擾�ł��邩�𒲂ׂ�
-	// ret : �^�Ȃ�Ύ擾�ł���
+	//ヘッダ・ステータスコードが取得できるかを調べる
+	// ret : 真ならば取得できる
 	bool IsHeaderAvailable( void )const;
 
-	//�X�e�[�^�X�R�[�h�𓾂܂�
-	// ret : �X�e�[�^�X�R�[�h�B�G���[����0
+	//ステータスコードを得ます
+	// ret : ステータスコード。エラー時は0
 	DWORD GetStatusCode( void )const;
 
-	//���X�|���X�̃w�b�_���
+	//レスポンスのヘッダ種別
 	using HeaderFlag = Definitions_HttpRequest::HeaderFlag;
 
-	//���X�|���X�̃w�b�_�𓾂܂�
-	// flag : �������w�b�_
-	// ret : ����ꂽ���ʁB�G���[�̏ꍇ��errstr�Ɏw�肵��������
+	//レスポンスのヘッダを得ます
+	// flag : 得たいヘッダ
+	// ret : 得られた結果。エラーの場合はerrstrに指定した文字列
 	WString QueryHeaderDirect( HeaderFlag flag , const WString& errstr )const;
 
-	//���X�|���X�̃w�b�_�𓾂܂�
-	// flag : �������w�b�_
-	// retHeader : ����ꂽ���ʁB�G���[�̏ꍇ�͋󕶎���B
-	// ret : �������^
+	//レスポンスのヘッダを得ます
+	// flag : 得たいヘッダ
+	// retHeader : 得られた結果。エラーの場合は空文字列。
+	// ret : 成功時真
 	bool QueryHeader( HeaderFlag flag , WString& retHeader )const;
 
-	//���X�|���X�̃w�b�_�𐔒l�œ��܂�
-	// flag : �������w�b�_
-	// ret : ����ꂽ���ʁB�G���[�̏ꍇ��errval�Ɏw�肵���l
+	//レスポンスのヘッダを数値で得ます
+	// flag : 得たいヘッダ
+	// ret : 得られた結果。エラーの場合はerrvalに指定した値
 	DWORD QueryHeaderDirect( HeaderFlag flag , DWORD errval )const;
 
-	//���X�|���X�̃w�b�_�𐔒l�œ��܂�
-	// flag : �������w�b�_
-	// retHeader : ����ꂽ���ʁB�G���[�̏ꍇ��0�B
-	// ret : �������^
+	//レスポンスのヘッダを数値で得ます
+	// flag : 得たいヘッダ
+	// retHeader : 得られた結果。エラーの場合は0。
+	// ret : 成功時真
 	bool QueryHeader( HeaderFlag flag , DWORD& retHeader )const;
 
-	//���X�|���X�̃w�b�_�𐔒l�œ��܂�
-	// flag : �������w�b�_
-	// ret : ����ꂽ���ʁB�G���[�̏ꍇ��errval�Ɏw�肵���l
+	//レスポンスのヘッダを数値で得ます
+	// flag : 得たいヘッダ
+	// ret : 得られた結果。エラーの場合はerrvalに指定した値
 	uint64_t QueryHeaderDirect( HeaderFlag flag , uint64_t errval )const;
 
-	//���X�|���X�̃w�b�_�𐔒l�œ��܂�
-	// flag : �������w�b�_
-	// retHeader : ����ꂽ���ʁB�G���[�̏ꍇ��0�B
-	// ret : �������^
+	//レスポンスのヘッダを数値で得ます
+	// flag : 得たいヘッダ
+	// retHeader : 得られた結果。エラーの場合は0。
+	// ret : 成功時真
 	bool QueryHeader( HeaderFlag flag , uint64_t& retHeader )const;
 
-	//���X�|���X�̃w�b�_�������œ��܂�
-	// flag : �������w�b�_
-	// retHeader : ����ꂽ���ʁB�G���[�̏ꍇ�͕s��B
-	// ret : �������^
+	//レスポンスのヘッダを時刻で得ます
+	// flag : 得たいヘッダ
+	// retHeader : 得られた結果。エラーの場合は不定。
+	// ret : 成功時真
 	bool QueryHeader( HeaderFlag flag , mDateTime::Timestamp& retHeader )const;
 
-	//HTTP Version2�ŒʐM���Ă���ΐ^��Ԃ�
-	// ret : HTTP2�ł���ΐ^�A�����łȂ��A�܂��̓G���[�̏ꍇ�͋U
+	//HTTP Version2で通信していれば真を返す
+	// ret : HTTP2であれば真、そうでない、またはエラーの場合は偽
 	bool IsHttp2( void )const;
 
-	//�Í����L�[�̒����𓾂�
-	// ret : �Í����L�[�̃r�b�g���B�Í�������Ă��Ȃ����G���[����0
+	//暗号化キーの長さを得る
+	// ret : 暗号化キーのビット数。暗号化されていないかエラーだと0
 	DWORD GetEncryptionKeyLength( void )const;
 
 	//-----------------------------------------------------------------------
-	// �X�g���[���������݌n
+	// ストリーム書き込み系
 	//-----------------------------------------------------------------------
 
-	//�P������������
-	// data : ���M����f�[�^(1�o�C�g)
-	// ret : �������^
-	//�EExec()�Ăяo���O�ɍs�����������݂́AExec()�Ăяo����ɏ������M���܂�
-	//  ���̏ꍇ�AExec()�ɓn�����M�T�C�Y�̂��Ƃ͍l���Ȃ��Ă��ǂ��ł���(�����v�Z����܂�)�A
-	//  ���M�����܂Ńf�[�^�̃R�s�[��ێ����邽�߁A�傫�ȃf�[�^�������ꍇ�́A��������Q��܂��B
-	//�EExec()�Ăяo����ɍs�����������݂́A�������M���܂�
-	//  ���̏ꍇ�AExec()�ɓn�������M�T�C�Y�Ƃ҂����蓯���T�C�Y�̃f�[�^��^���Ȃ���΂Ȃ�܂��񂪁A
-	//  �������������������̂ŁA�������ɂ͗D�����Ȃ�܂��B
-	//�EExec()�Ăяo���O��Write�ƁA�Ăяo�����Write�͕��p����OK
-	//�EGET�ȂǁA���͂���f�[�^���Ȃ����N�G�X�g�Ȃ̂ɂ��̃��\�b�h���Ă񂾂�G���[
+	//１文字書き込み
+	// data : 送信するデータ(1バイト)
+	// ret : 成功時真
+	//・Exec()呼び出し前に行った書き込みは、Exec()呼び出し後に順次送信します
+	//  この場合、Exec()に渡す送信サイズのことは考えなくても良いですが(自動計算されます)、
+	//  送信完了までデータのコピーを保持するため、大きなデータを扱う場合は、メモリを浪費します。
+	//・Exec()呼び出し後に行った書き込みは、順次送信します
+	//  この場合、Exec()に渡した送信サイズとぴったり同じサイズのデータを与えなければなりませんが、
+	//  随時メモリを解放するので、メモリには優しくなります。
+	//・Exec()呼び出し前のWriteと、呼び出し後のWriteは併用してOK
+	//・GETなど、入力するデータがないリクエストなのにこのメソッドを呼んだらエラー
 	virtual bool Write( INT data );
 
-	//�L���b�V������������
-	// ��GET�ȂǁA���͂���f�[�^���Ȃ����N�G�X�g�Ȃ̂ɂ��̃��\�b�h���Ă񂾂�G���[
-	// ret : �������^
+	//キャッシュを書き込み
+	// ※GETなど、入力するデータがないリクエストなのにこのメソッドを呼んだらエラー
+	// ret : 成功時真
 	virtual bool FlushCache( void );
 
-	//�������݉\����Ԃ�
-	// ret : �������݉\�ł���ΐ^
+	//書き込み可能かを返す
+	// ret : 書き込み可能であれば真
 	virtual bool IsWritable( void )const;
 
 	//-----------------------------------------------------------------------
-	// �X�g���[���ǂݍ��݌n
+	// ストリーム読み込み系
 	//-----------------------------------------------------------------------
 
-	//�P�����i�P�o�C�g�j�ǂݍ��݂܂�
+	//１文字（１バイト）読み込みます
 	virtual INT Read( void );
 
-	//EOF�ɒB���Ă��邩�𒲂ׂ܂�
+	//EOFに達しているかを調べます
 	virtual bool IsEOF( void )const;
 
 private:
@@ -438,69 +438,69 @@ private:
 protected:
 
 	//------------------------
-	// �n���h���Ə�ԕϐ��֌W
+	// ハンドルと状態変数関係
 	//------------------------
 
-	//���N�G�X�g�̃n���h��
+	//リクエストのハンドル
 	HINTERNET MyRequest;
 
-	//�N���e�B�J���Z�N�V����
+	//クリティカルセクション
 	mutable mCriticalSectionContainer MyCritical;
 
-	//�������̃I�v�V����
+	//生成時のオプション
 	RequestOption MyOption;
 
-	//�ʒm�I�v�V����
+	//通知オプション
 	NotifyOption MyNotifyOption;
 
-	//�������
+	//内部状態
 	using RequestStatus = Definitions_HttpRequest::RequestStatus;
 	RequestStatus MyRequestStatus;
 
-	//���X�|���X�̃w�b�_�[��ǂݎ��\���ǂ���
+	//レスポンスのヘッダーを読み取り可能かどうか
 	bool MyIsResponseHeaderAvailable;
 
 	//------------------------
-	// �L���[�֌W
+	// キュー関係
 	//------------------------
 
-	//�L���[�̏��
+	//キューの状態
 	using BufferQueueStatus = Definitions_HttpRequest::BufferQueueStatus;
 
-	//�L���[
+	//キュー
 	struct BufferQueueEntry
 	{
-		//����M����f�[�^
+		//送受信するデータ
 		BYTE* Buffer;
 
-		//�f�[�^�̃T�C�Y
+		//データのサイズ
 		DWORD Size;
 
-		//�L���[�̏��
+		//キューの状態
 		BufferQueueStatus Status;
 
-		//�������̃G���[�R�[�h(IO�������ɐݒ�)
+		//完了時のエラーコード(IO完了時に設定)
 		DWORD ErrorCode;
 
-		//�������̏����ς݃o�C�g��(IO�������ɐݒ�)
+		//完了時の処理済みバイト数(IO完了時に設定)
 		DWORD BytesTransfered;
 	};
 
 	typedef std::deque<BufferQueueEntry> BufferQueue;
 
-	//���C�g�o�b�t�@�i���[�U�[�v���O�����̏������ݒ��E�����M�j
+	//ライトバッファ（ユーザープログラムの書き込み中・未送信）
 	BufferQueue MyWriteQueue;
 
-	//���C�g�o�b�t�@�i���M���j
+	//ライトバッファ（送信中）
 	BufferQueue MyWriteActiveQueue;
 
-	//���[�h�o�b�t�@�i��M���j
+	//リードバッファ（受信中）
 	BufferQueue MyReadActiveQueue;
 
-	//���[�h�o�b�t�@�i��M�ς݁E���[�U�[�v���O�����̓ǂݎ��҂��j
+	//リードバッファ（受信済み・ユーザープログラムの読み取り待ち）
 	BufferQueue MyReadQueue;
 
-	//WinHttp����̃R�[���o�b�N�֐�
+	//WinHttpからのコールバック関数
 	static void __stdcall WinhttpStatusCallback(
 		IN HINTERNET hInternet ,
 		IN DWORD_PTR dwContext ,
@@ -509,34 +509,34 @@ protected:
 		IN DWORD dwStatusInformationLength
 	);
 
-	//�L���[�̑��M���s��
-	// ret : �������^
+	//キューの送信を行う
+	// ret : 成功時真
 	bool ExecWriteQueue( void );
 
-	//WinHTTP����̃R�[���o�b�N���瓾���������ݍς݃T�C�Y�����ɁA���������o�b�t�@���p�[�W����
-	// written_size : WinHTTP���瓾���������݊��������o�C�g��
-	// ret : �������^
+	//WinHTTPからのコールバックから得た書き込み済みサイズを元に、完了したバッファをパージする
+	// written_size : WinHTTPから得た書き込み完了したバイト数
+	// ret : 成功時真
 	bool CompleteWriteQueue( DWORD written_size );
 
-	//���BufferQueueEntry������������
-	// buffer : WinHTTP�̃R�[���o�b�N����n���ꂽ�������݂̎�M�o�b�t�@
-	// read_size : WinHTTP�̃R�[���o�b�N����n���ꂽ�ǂݎ�����T�C�Y
-	// ret : �V���Ƀ��[�U�[�Ɉ����n���\�ȃf�[�^�����������ꍇ��true
-	// ����������BufferQueueEntry���L���[�̐擪�ł����true
-	//   �擪�łȂ��ꍇ�ł��A�擪�̃L���[�������ς݂ɂȂ��Ă���ꍇ(�C���M�����[)��true
-	//   ����ȊO��false
+	//一つのBufferQueueEntryを完了させる
+	// buffer : WinHTTPのコールバックから渡された完了ずみの受信バッファ
+	// read_size : WinHTTPのコールバックから渡された読み取ったサイズ
+	// ret : 新たにユーザーに引き渡し可能なデータが発生した場合はtrue
+	// ※完了したBufferQueueEntryがキューの先頭であればtrue
+	//   先頭でない場合でも、先頭のキューが完了済みになっている場合(イレギュラー)もtrue
+	//   それ以外はfalse
 	bool CompleteReadQueue( BYTE* buffer , DWORD read_size );
 
 	//------------------------
-	// ���̑��̃I�y���[�V����
+	// その他のオペレーション
 	//------------------------
 
-	//��M���J�n����
-	// ret : �������^
+	//受信を開始する
+	// ret : 成功時真
 	bool StartReceiveResponse( void );
 
-	//�������݂̊���
-	//HTTP�ł͕s�v
+	//書き込みの完了
+	//HTTPでは不要
 	virtual bool Close( void );
 
 };

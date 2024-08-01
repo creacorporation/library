@@ -1,26 +1,26 @@
-//----------------------------------------------------------------------------
-// �E�C���h�E�Ǘ��iGDI�r�b�g�}�b�v�j
+﻿//----------------------------------------------------------------------------
+// ウインドウ管理（GDIビットマップ）
 // Copyright (C) 2016 Fingerling. All rights reserved. 
 // This program is released under the MIT License. 
 // see http://opensource.org/licenses/mit-license.php
 //----------------------------------------------------------------------------
 
 /*
-���p�r
-GDI�̃r�b�g�}�b�v�ł��B
-�E�쐬����r�b�g�}�b�v�́AOption�\���̂Ŏw�肵�܂��B
+●用途
+GDIのビットマップです。
+・作成するビットマップは、Option構造体で指定します。
 */
 
 /*
-���g����
-[��1]test.bmp��ǂݍ���ŁAresource�ɓo�^���܂��B
+●使い方
+[例1]test.bmpを読み込んで、resourceに登録します。
 mGdiResource resource;
 mGdiBitmap::Option_LoadFile opt;
 opt.path = L"d:\\test.bmp";
 resource.AddItem<mGdiBitmap>( L"IMAGE", &opt );
 
-[��2]���ڃr�b�g�}�b�v��ǂݍ��݂܂�
-    (���ǂݍ��ݎ��s���R���X�g���N�^�����O�𓊂���̂Œ���)
+[例2]直接ビットマップを読み込みます
+    (※読み込み失敗時コンストラクタから例外を投げるので注意)
 mGdiBitmap::Option_LoadFile opt;
 opt.path = L"d:\\test.bmp";
 mGdiBitmap bmp( &opt );
@@ -40,9 +40,9 @@ namespace Definitions_mGdiBitmap
 {
 	enum Option_CreateMethod
 	{
-		NEWBITMAP,	//�f�o�C�X�R���e�L�X�g���w�肵�āA�݊��̃r�b�g�}�b�v��V�K�ɍ쐬����
-		LOADFILE,	//�t�@�C�������[�h����
-		RESOURCE,	//���\�[�X�����[�h����
+		NEWBITMAP,	//デバイスコンテキストを指定して、互換のビットマップを新規に作成する
+		LOADFILE,	//ファイルをロードする
+		RESOURCE,	//リソースをロードする
 	};
 };
 
@@ -51,16 +51,16 @@ class mGdiBitmap : public mGdiHandle
 public:
 
 
-	//�I�v�V�����\����
-	//�r�b�g�}�b�v���쐬����Ƃ��́AOption�\���̂𒼐ڎg�킸�ɁA��肽�����ɍ��킹�Ĉȉ����g���ĉ������B
-	//�EOption_NewBitmap �c �f�o�C�X�R���e�L�X�g�ƌ݊��̃r�b�g�}�b�v���쐬�������Ƃ�
-	//�EOption_LoadFile �c �r�b�g�}�b�v�t�@�C����ǂݍ��݂����Ƃ�
-	//�EOption_Resource �c ���\�[�X�����[�h�������Ƃ�
+	//オプション構造体
+	//ビットマップを作成するときは、Option構造体を直接使わずに、作りたい物に合わせて以下を使って下さい。
+	//・Option_NewBitmap … デバイスコンテキストと互換のビットマップを作成したいとき
+	//・Option_LoadFile … ビットマップファイルを読み込みたいとき
+	//・Option_Resource … リソースをロードしたいとき
 	struct Option
 	{
-		//�r�b�g�}�b�v�����̕��@
+		//ビットマップ生成の方法
 		using CreateMethod = Definitions_mGdiBitmap::Option_CreateMethod;
-		const CreateMethod method;	//RTTI�̑�p�ł��B�ύX�̕K�v�͂���܂���B
+		const CreateMethod method;	//RTTIの代用です。変更の必要はありません。
 	protected:
 		Option() = delete;
 		Option( CreateMethod create_method ) : method( create_method )
@@ -68,15 +68,15 @@ public:
 		}
 	};
 
-	//BMP_NEWBITMAP���w�肵�ăr�b�g�}�b�v���쐬����Ƃ��̃I�v�V����
-	//srcdc��nullptr�ɂ���ƁA�f�X�N�g�b�v�̌݊��r�b�g�}�b�v�𐶐����܂��B
+	//BMP_NEWBITMAPを指定してビットマップを作成するときのオプション
+	//srcdcをnullptrにすると、デスクトップの互換ビットマップを生成します。
 	struct Option_NewBitmap : public Option
 	{
-		//�R�R�Ɏw�肵���f�o�C�X�R���e�L�X�g�ƐF���Ȃǂ��݊��ɂȂ�
+		//ココに指定したデバイスコンテキストと色数などが互換になる
 		const mGdiDC* srcdc;
-		//�r�b�g�}�b�v�̕�
+		//ビットマップの幅
 		DWORD width;
-		//�r�b�g�}�b�v�̍���
+		//ビットマップの高さ
 		DWORD height;
 
 		Option_NewBitmap() : Option( CreateMethod::NEWBITMAP )
@@ -87,10 +87,10 @@ public:
 		}
 	};
 
-	//�t�@�C�������[�h���ăr�b�g�}�b�v���쐬����Ƃ��̃I�v�V����
+	//ファイルをロードしてビットマップを作成するときのオプション
 	struct Option_LoadFile : public Option
 	{
-		//���[�h����t�@�C����
+		//ロードするファイル名
 		WString path;
 
 		Option_LoadFile() : Option( CreateMethod::LOADFILE )
@@ -98,10 +98,10 @@ public:
 		}
 	};
 
-	//���\�[�X�����[�h���ăr�b�g�}�b�v���쐬����Ƃ��̃I�v�V����
+	//リソースをロードしてビットマップを作成するときのオプション
 	struct Option_Resource : public Option
 	{
-		//���[�h���郊�\�[�X��
+		//ロードするリソース名
 		WString name;
 
 		Option_Resource() : Option( CreateMethod::RESOURCE )
@@ -112,8 +112,8 @@ public:
 
 public:
 
-	//�t�@�N�g�����\�b�h
-	//opt�͕K���w�肵�Ă��������B�G���[�ɂȂ�nullptr��Ԃ��܂��B
+	//ファクトリメソッド
+	//optは必ず指定してください。エラーになりnullptrを返します。
 	static mGdiHandle* Factory( const void* opt )throw( )
 	{
 		mGdiHandle* result;
@@ -123,55 +123,55 @@ public:
 		}
 		catch( mException )
 		{
-			//nullptr��Ԃ��ƁA�t�@�N�g�����\�b�h�̌Ăяo���������s����
+			//nullptrを返すと、ファクトリメソッドの呼び出し側も失敗する
 			result = nullptr;
 		}
 		return result;
 	}
 
-	//�R���X�g���N�^
-	//���̃R���X�g���N�^�́AMyHandle�Ɋi�[����r�b�g�}�b�v�̐������s���ɗ�O�𓊂��܂��B
-	//�Eopt�͕K���w�肵�ĉ������Bnullptr��n���Ɨ�O�𓊂��܂��B
+	//コンストラクタ
+	//このコンストラクタは、MyHandleに格納するビットマップの生成失敗時に例外を投げます。
+	//・optは必ず指定して下さい。nullptrを渡すと例外を投げます。
 	mGdiBitmap( const Option* opt )throw( mException );
 
-	//�f�X�g���N�^
+	//デストラクタ
 	virtual ~mGdiBitmap();
 	
-	//�n���h���̒l���擾����(�L���X�g���Z�q�o�[�W����)
+	//ハンドルの値を取得する(キャスト演算子バージョン)
 	operator HBITMAP()const;
 
-	//�n���h���̒l���擾����(���ʂ̊֐��o�[�W����)
+	//ハンドルの値を取得する(普通の関数バージョン)
 	virtual HGDIOBJ GetHandle( void )const override;
 
-	//�r�b�g�}�b�v�̃T�C�Y���擾����
+	//ビットマップのサイズを取得する
 	bool GetSize( SIZE& retSize )const noexcept;
 
-	//�r�b�g�}�b�v�̏����擾����
+	//ビットマップの情報を取得する
 	bool GetInfo( BITMAP& retInfo )const noexcept;
 
 private:
 
-	//�ȉ��A�f�t�H���g�n�͎̂g�p�s�Ƃ���
+	//以下、デフォルト系のは使用不可とする
 	mGdiBitmap() = delete;
 	mGdiBitmap( const mGdiBitmap& src ) = delete;
 	mGdiBitmap& operator=( const mGdiBitmap& src ) = delete;
 
-	//�r�b�g�}�b�v�̐���
-	//�EOption_NewBitmap���g�p����Ƃ��p
+	//ビットマップの生成
+	//・Option_NewBitmapを使用するとき用
 	bool CreateHandle( const Option_NewBitmap& opt );
 
-	//�r�b�g�}�b�v�̐���
-	//�EOption_LoadFile���g�p����Ƃ��p
+	//ビットマップの生成
+	//・Option_LoadFileを使用するとき用
 	bool CreateHandle( const Option_LoadFile& opt );
 
-	//�r�b�g�}�b�v�̐���
-	//�EOption_Resource���g�p����Ƃ��p
+	//ビットマップの生成
+	//・Option_Resourceを使用するとき用
 	bool CreateHandle( const Option_Resource& opt );
 
 
 protected:
 
-	//�n���h���̎���
+	//ハンドルの実体
 	HBITMAP MyHandle;
 
 };

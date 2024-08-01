@@ -1,5 +1,5 @@
-//----------------------------------------------------------------------------
-// ODBC�ڑ��p���C�u����
+﻿//----------------------------------------------------------------------------
+// ODBC接続用ライブラリ
 // Copyright (C) 2018- Crea Inc. All rights reserved.
 // This program is released under the MIT License. 
 // see http://opensource.org/licenses/mit-license.php
@@ -30,150 +30,150 @@ public:
 	mOdbcQuery();
 	virtual ~mOdbcQuery();
 
-	//�N�G�����J�n����
-	//���T�[�o�[�ɂ��A�p�����[�^���T�u�N�G����inner/outer join�Ȃǂ̃p�����[�^�ɂȂ��Ă���Ǝ��s���邱�Ƃ�����܂��B
-	//  �΍��mOdbc.h�ɋL�ڂ̃R�����g���Q�l�ɂ��Ă�������
-	// query : �N�G���̕�����
-	// ret : �������^
+	//クエリを開始する
+	//※サーバーにより、パラメータがサブクエリやinner/outer joinなどのパラメータになっていると失敗することがあります。
+	//  対策はmOdbc.hに記載のコメントを参考にしてください
+	// query : クエリの文字列
+	// ret : 成功時真
 	bool Prepare( const WString& query );
 
-	//�N�G�����J�n����B�p�����[�^�̒�`�͎蓮�ōs���B
-	//���p�����[�^���T�u�N�G����inner/outer join�Ȃǂ̃p�����[�^�ɂȂ��Ă���ꍇ�A
-	//  ���邢��DB�T�[�o�[���Ή����Ȃ��ꍇ�A�p�����[�^�̐ݒ�͎蓮�ōs���K�v������܂��B
-	// query : �N�G���̕�����
-	// desc : �蓮��`����p�����[�^���i���̃p�����[�^�̓��e�`�F�b�N�͍s���܂���B���������̂Ƃ��Ĉ����܂��B�j
-	// ret : �������^
-	//���T�u�N�G����innner join���܂ރN�G���̎d��(�ȒP�o�[�W�����B�������Adesc��S�Ď蓮�Őݒ肵�Ă�OK)
-	//(1)�{�Ԃ̃N�G���ƃp�����[�^�����������A�T�u�N�G�������܂܂Ȃ��_�~�[�̃N�G�������
-	//(2)Prepare()�Ń_�~�[�̃N�G�����Z�b�g(mOdbcParameterDescription���\�z�����)
-	//(3)Prepare()��desc��GetParameterDescription()�œ����Q�Ƃ��Z�b�g���āA�{�Ԃ̃N�G�����Z�b�g����
+	//クエリを開始する。パラメータの定義は手動で行う。
+	//※パラメータがサブクエリやinner/outer joinなどのパラメータになっている場合、
+	//  あるいはDBサーバーが対応しない場合、パラメータの設定は手動で行う必要があります。
+	// query : クエリの文字列
+	// desc : 手動定義するパラメータ情報（このパラメータの内容チェックは行いません。正しいものとして扱います。）
+	// ret : 成功時真
+	//※サブクエリやinnner joinを含むクエリの仕方(簡単バージョン。もちろん、descを全て手動で設定してもOK)
+	//(1)本番のクエリとパラメータが同じだが、サブクエリ等を含まないダミーのクエリを作る
+	//(2)Prepare()でダミーのクエリをセット(mOdbcParameterDescriptionが構築される)
+	//(3)Prepare()のdescにGetParameterDescription()で得た参照をセットして、本番のクエリをセットする
 	bool Prepare( const WString& query , const mOdbcParameterDescription& desc );
 
-	//�p�����[�^�N�G�����s���Ƃ��́A�p�����[�^�����擾����
-	// ret : �p�����[�^�̏��
-	//���p�����[�^���Ȃ��ꍇ�����s�͂��܂���(�Ԃ��ꂽ�Q�Ƃ̃N���X�ɃG���g�����Ȃ���ԂɂȂ�܂�)
+	//パラメータクエリを行うときの、パラメータ情報を取得する
+	// ret : パラメータの情報
+	//※パラメータがない場合も失敗はしません(返された参照のクラスにエントリがない状態になります)
 	const mOdbcParameterDescription& GetParameterDescription( void )const;
 
-	//�N�G�������s����
-	//���p�����[�^�N�G���ŁA�p�����[�^���Ȃ��ꍇ
-	// ret : �������^
+	//クエリを実行する
+	//※パラメータクエリで、パラメータがない場合
+	// ret : 成功時真
 	bool Execute( void );
 
-	//�N�G�������s����
-	//���p�����[�^�N�G���ŁA�p�����[�^���g�p����ꍇ
-	// params : �p�����[�^�N�G���̃p�����[�^
-	// ret : �������^
+	//クエリを実行する
+	//※パラメータクエリで、パラメータを使用する場合
+	// params : パラメータクエリのパラメータ
+	// ret : 成功時真
 	bool Execute( const mOdbcQueryParams& params );
 
-	//�N�G�������s����
-	//������SQL�����s����ꍇ
-	// query : �N�G���̕�����
-	// ret : �������^
+	//クエリを実行する
+	//※直接SQLを実行する場合
+	// query : クエリの文字列
+	// ret : 成功時真
 	bool Execute( const WString& query );
 
-	//SQL���s���ʂ̗�Ɋւ�������擾����
-	// ret : �p�����[�^�̏��
-	//�����s���ʂ��Ȃ��ꍇ�����s�͂��܂���(�Ԃ��ꂽ�Q�Ƃ̃N���X�ɃG���g�����Ȃ���ԂɂȂ�܂�)
+	//SQL実行結果の列に関する情報を取得する
+	// ret : パラメータの情報
+	//※実行結果がない場合も失敗はしません(返された参照のクラスにエントリがない状態になります)
 	const mOdbcResultDescription& GetResultDescription( void )const;
 
-	//�t�F�b�`��������
+	//フェッチ処理結果
 	enum FetchResult
 	{
-		FETCH_SUCCEEDED,	//����
-		FETCH_NOMOREDATA,	//�����F�����t�F�b�`����f�[�^���Ȃ����߉����ǂݎ���Ă��Ȃ�
-		FETCH_TRUNCATED,	//�����F�������A�ꕔ�̃f�[�^�̓o�b�t�@�s���̂��ߐ؂�̂Ă����Ă���
-		FETCH_UNKNOWNTYPE,	//�G���[�F�f�[�^�^���s���i�G���[�����ʒu�܂ł����ǂݎ���܂���j
+		FETCH_SUCCEEDED,	//成功
+		FETCH_NOMOREDATA,	//成功：もうフェッチするデータがないため何も読み取られていない
+		FETCH_TRUNCATED,	//成功：ただし、一部のデータはバッファ不足のため切り捨てられられている
+		FETCH_UNKNOWNTYPE,	//エラー：データ型が不明（エラー発生位置までしか読み取られません）
 	};
 
-	//���ʂ��擾����
-	// retResult : ���ʂ̊i�[��
-	// �E���ʃZ�b�g�Ɋ܂܂��S�Ă̗񂪃Z�b�g����܂�
-	// �E���ł�retResult�ɓ����Ă���f�[�^�͔j������܂�
-	// �E�v��Ȃ���܂Ŏ擾���Ȃ��Ă�����ł������N�G���̂ق��𒼂��Ă�������
-	// ret �������^
+	//結果を取得する
+	// retResult : 結果の格納先
+	// ・結果セットに含まれる全ての列がセットされます
+	// ・すでにretResultに入っているデータは破棄されます
+	// ・要らない列まで取得しなくていいんですが→クエリのほうを直してください
+	// ret 成功時真
 	FetchResult Fetch( mOdbcResultParam& retResult );
 
-	//������Ԃł̃o�b�t�@�̍ő�l
-	//��̍ő咷�������ꍇ(����VARCHAR�̂悤�ȗ�)�A���̃T�C�Y�̃o�b�t�@�����m�ۂ��Ȃ�
-	//���t�F�b�`�p�o�b�t�@�T�C�Y�������������ꍇ�́A�t�F�b�`�����f�[�^���r���Ő؂�Ă��܂��܂��B
-	//  ���̏ꍇ�A�����f�[�^���Ď擾���邱�Ƃ͂ł��Ȃ��̂ŁA�S�̂��擾����ɂ͍ēx�N�G�������蒼����������܂���B
+	//初期状態でのバッファの最大値
+	//列の最大長が長い場合(特にVARCHARのような列)、このサイズのバッファしか確保しない
+	//※フェッチ用バッファサイズが小さすぎた場合は、フェッチしたデータが途中で切れてしまいます。
+	//  この場合、同じデータを再取得することはできないので、全体を取得するには再度クエリからやり直すしかありません。
 	const DWORD MAX_FETCH_BUFFER_SIZE = 8192;
 
-	//�w�肳�ꂽ��̃t�F�b�`�p�o�b�t�@�T�C�Y��ύX����
-	//Execute���s�������_�ł́A�t�F�b�`�p�o�b�t�@�͍ő�ł�MAX_FETCH_BUFFER_SIZE�����m�ۂ���Ă��Ȃ�
-	//������傫���T�C�Y�̗�ƂȂ�ꍇ�́A���炩���߂��̊֐����Ă�ŁA�o�b�t�@�̃T�C�Y���w�肵�܂��B
-	//���t�F�b�`�p�o�b�t�@�T�C�Y�������������ꍇ�́A�t�F�b�`�����f�[�^���r���Ő؂�Ă��܂��܂��B
-	//  ���̏ꍇ�A�����f�[�^���Ď擾���邱�Ƃ͂ł��Ȃ��̂ŁA�S�̂��擾����ɂ͍ēx�N�G�������蒼����������܂���B
-	// colname : �ݒ�Ώۂ̗�̖��O
-	// buffsize : �m�ۂ���o�C�g��
-	// ret : �������^
+	//指定された列のフェッチ用バッファサイズを変更する
+	//Executeを行った時点では、フェッチ用バッファは最大でもMAX_FETCH_BUFFER_SIZEしか確保されていない
+	//これより大きいサイズの列となる場合は、あらかじめこの関数を呼んで、バッファのサイズを指定します。
+	//※フェッチ用バッファサイズが小さすぎた場合は、フェッチしたデータが途中で切れてしまいます。
+	//  この場合、同じデータを再取得することはできないので、全体を取得するには再度クエリからやり直すしかありません。
+	// colname : 設定対象の列の名前
+	// buffsize : 確保するバイト数
+	// ret : 成功時真
 	bool ResizeFetchBuffer( const WString colname , size_t buffsize );
 
-	//���Ƀt�F�b�`����f�[�^�����݂��邩���`�F�b�N����
-	// ret : �܂��t�F�b�`���Ă��Ȃ��f�[�^������ΐ^
+	//次にフェッチするデータが存在するかをチェックする
+	// ret : まだフェッチしていないデータがあれば真
 	bool IsDataExist( void )const;
 
-	//�����N�G�����p�����[�^��ύX���čĎ��s�ł���悤��������
-	//�E�ǂݎ�蒆�̌��ʂ͔j�����܂�
-	//�E���̃R�[�������s��A�ēxExecute()���Ăяo�����Ƃ��ł��܂�
-	// Prepare()��Execute()��Recycle()��Execute()��Recycle()��Execute()��...
+	//同じクエリをパラメータを変更して再実行できるよう準備する
+	//・読み取り中の結果は破棄します
+	//・このコールを実行後、再度Execute()を呼び出すことができます
+	// Prepare()→Execute()→Recycle()→Execute()→Recycle()→Execute()→...
 	bool Recycle( void );
 
 private:
 
-	mOdbcQuery( const mOdbcQuery& source );					//�R�s�[�֎~�N���X
-	void operator=( const mOdbcQuery& source ) = delete;	//�R�s�[�֎~�N���X
+	mOdbcQuery( const mOdbcQuery& source );					//コピー禁止クラス
+	void operator=( const mOdbcQuery& source ) = delete;	//コピー禁止クラス
 
 	friend class mOdbcConnection;
 
 protected:
 
-	//mOdbcConnection�����琶���𔻒肷�邽�߂̃`�P�b�g
+	//mOdbcConnection側から生死を判定するためのチケット
 	std::shared_ptr< ULONG_PTR > MyDogtag;
 
-	//�X�e�[�g�����g�n���h��
+	//ステートメントハンドル
 	HSTMT MyStmt;
 
-	//�p�����[�^�N�G���Ɋւ�����
+	//パラメータクエリに関する情報
 	mOdbcParameterDescription MyParameterDescription;
 
-	//SQLBindParameter��StrLen_or_IndPtr�ɓn���o�b�t�@�̃A���C
+	//SQLBindParameterのStrLen_or_IndPtrに渡すバッファのアレイ
 	std::vector< SQLLEN > MyParameterLenArray;
 
-	//���ʃZ�b�g�Ɋւ�����
+	//結果セットに関する情報
 	mOdbcResultDescription MyResultDescription;
 
-	//�t�F�b�`�����f�[�^���ꎞ�i�[����o�b�t�@
+	//フェッチしたデータを一時格納するバッファ
 	struct FetchBufferEntry
 	{
-		SQLLEN size;				//ptr�Ɋm�ۂ���Ă���o�C�g��
-		SQLLEN value;				//�t�F�b�`�����T�C�Y�E�܂��̓k�����ǂ���������(ODBC�ɓn���p)
-		std::unique_ptr<BYTE> ptr;	//�t�F�b�`���̊i�[��(ODBC�ɓn���p)
+		SQLLEN size;				//ptrに確保されているバイト数
+		SQLLEN value;				//フェッチしたサイズ・またはヌルかどうかを示す(ODBCに渡す用)
+		std::unique_ptr<BYTE> ptr;	//フェッチ時の格納先(ODBCに渡す用)
 	};
 	typedef std::vector<FetchBufferEntry> FetchBuffer;
 	FetchBuffer MyFetchBuffer;
 
-	//�܂��t�F�b�`���Ă��Ȃ��f�[�^������H
-	//�t�F�b�`���Ă��Ȃ��f�[�^������ΐ^
+	//まだフェッチしていないデータがある？
+	//フェッチしていないデータがあれば真
 	bool MyIsDataExist;
 
-	//SQLRETURN�^�̌��ʃR�[�h������I�����ǂ����𔻒肷��
-	//�ǉ���񂪂���ꍇ�́ASQL�X�e�[�g�����g�̃����o(MyOdbcSqlState)���X�V����
-	//rc : ���ʃR�[�h
-	//ret : ���ʃR�[�h���������������̂ł���ΐ^
+	//SQLRETURN型の結果コードが正常終了かどうかを判定する
+	//追加情報がある場合は、SQLステートメントのメンバ(MyOdbcSqlState)を更新する
+	//rc : 結果コード
+	//ret : 結果コードが成功を示すものであれば真
 	bool SQL_RESULT_CHECK( SQLRETURN rc );
 
-	//�w�肵��mOdbcResultDescription�̃G���g���Ƀt�B�b�g����悤�ɁAMyFetchBuffer���\�z����B
-	//�܂��A���ʃZ�b�g�Ƀo�b�t�@���o�C���h����
-	// desc : �\�z���ɂ��錋�ʃZ�b�g�̏��
-	// ret : �������^
+	//指定したmOdbcResultDescriptionのエントリにフィットするように、MyFetchBufferを構築する。
+	//また、結果セットにバッファをバインドする
+	// desc : 構築元にする結果セットの情報
+	// ret : 成功時真
 	bool CreateFetchBuffer( const mOdbcResultDescription& desc );
 
-	//desc�Ɏw�肵�������g���āAMyFetchBuffer�Ƀo�b�t�@����ݒ肷��B
-	//�������A�m�ۂ���o�C�g����size�̎w��ɏ]���B
+	//descに指定した情報を使って、MyFetchBufferにバッファ情報を設定する。
+	//ただし、確保するバイト数はsizeの指定に従う。
 	bool SetFetchBuffer( const mOdbcDescriptionEntry& desc , SQLLEN size );
 
-	//�p�����[�^�̌^��C�^�ɕϊ�����
+	//パラメータの型をC型に変換する
 	SQLSMALLINT ParameterType2CType( mOdbc::ParameterType type )const;
 };
 

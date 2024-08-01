@@ -1,11 +1,11 @@
-//----------------------------------------------------------------------------
-// Mifare Classic 1K ƒJ[ƒhƒnƒ“ƒhƒ‰
+ï»¿//----------------------------------------------------------------------------
+// Mifare Classic 1K ã‚«ãƒ¼ãƒ‰ãƒãƒ³ãƒ‰ãƒ©
 // Copyright (C) 2021- Crea Inc. All rights reserved.
 // This program is released under the MIT License. 
 // see http://opensource.org/licenses/mit-license.php
-// ’˜ìŒ •\¦‚âƒ‰ƒCƒZƒ“ƒX‚Ì‰ü•Ï‚Í‹Ö~‚³‚ê‚Ä‚¢‚Ü‚·B
-// ‚±‚Ìƒ\[ƒXƒR[ƒh‚ÉŠÖ‚µ‚ÄAã‹Lƒ‰ƒCƒZƒ“ƒXˆÈŠO‚ÌŒ_–ñ“™‚ÍˆêØ‘¶İ‚µ‚Ü‚¹‚ñB
-// (‰½‚ç‚©‚ÌŒ_–ñ‚ª‚ ‚éê‡‚Å‚àA–{ƒ\[ƒXƒR[ƒh‚Í‚»‚Ì‘ÎÛŠO‚Æ‚È‚è‚Ü‚·)
+// è‘—ä½œæ¨©è¡¨ç¤ºã‚„ãƒ©ã‚¤ã‚»ãƒ³ã‚¹ã®æ”¹å¤‰ã¯ç¦æ­¢ã•ã‚Œã¦ã„ã¾ã™ã€‚
+// ã“ã®ã‚½ãƒ¼ã‚¹ã‚³ãƒ¼ãƒ‰ã«é–¢ã—ã¦ã€ä¸Šè¨˜ãƒ©ã‚¤ã‚»ãƒ³ã‚¹ä»¥å¤–ã®å¥‘ç´„ç­‰ã¯ä¸€åˆ‡å­˜åœ¨ã—ã¾ã›ã‚“ã€‚
+// (ä½•ã‚‰ã‹ã®å¥‘ç´„ãŒã‚ã‚‹å ´åˆã§ã‚‚ã€æœ¬ã‚½ãƒ¼ã‚¹ã‚³ãƒ¼ãƒ‰ã¯ãã®å¯¾è±¡å¤–ã¨ãªã‚Šã¾ã™)
 //----------------------------------------------------------------------------
 
 #include "mSCMifare.h"
@@ -25,26 +25,26 @@ bool mSCMifare::DefaultCommunication( const TransmitData& dt )const
 	ResponseData rsp;
 	if( !Communicate( dt , rsp ) )
 	{
-		RaiseError( g_ErrorLogger , 0 , L"ƒXƒ}[ƒgƒJ[ƒh‚Æ‚Ì’ÊM‚ª¸”s‚µ‚Ü‚µ‚½" );
+		RaiseError( g_ErrorLogger , 0 , L"ã‚¹ãƒãƒ¼ãƒˆã‚«ãƒ¼ãƒ‰ã¨ã®é€šä¿¡ãŒå¤±æ•—ã—ã¾ã—ãŸ" );
 		return false;
 	}
 	if( rsp.data.size() != 2 )
 	{
-		RaiseError( g_ErrorLogger , 0 , L"ƒXƒ}[ƒgƒJ[ƒh‰“šƒTƒCƒY‚ª•s³‚Å‚·" );
+		RaiseError( g_ErrorLogger , 0 , L"ã‚¹ãƒãƒ¼ãƒˆã‚«ãƒ¼ãƒ‰å¿œç­”ã‚µã‚¤ã‚ºãŒä¸æ­£ã§ã™" );
 		return false;
 	}
 	if( (BYTE)rsp.data[ 0 ] == 0x90 && rsp.data[ 1 ] == 0x00 )
 	{
-		//¬Œ÷‰“š
+		//æˆåŠŸå¿œç­”
 		return true;
 	}
 	if( (BYTE)rsp.data[ 0 ] == 0x63 && rsp.data[ 1 ] == 0x00 )
 	{
-		//¸”s‰“š
-		RaiseError( g_ErrorLogger , 0 , L"ƒXƒ}[ƒgƒJ[ƒh‚Æ‚Ì‘€ì‚ª¸”s‚µ‚Ü‚µ‚½" );
+		//å¤±æ•—å¿œç­”
+		RaiseError( g_ErrorLogger , 0 , L"ã‚¹ãƒãƒ¼ãƒˆã‚«ãƒ¼ãƒ‰ã¨ã®æ“ä½œãŒå¤±æ•—ã—ã¾ã—ãŸ" );
 		return false;
 	}
-	RaiseError( g_ErrorLogger , 0 , L"ƒXƒ}[ƒgƒJ[ƒh‚Ì‰“š‚ª•s³‚Å‚·" );
+	RaiseError( g_ErrorLogger , 0 , L"ã‚¹ãƒãƒ¼ãƒˆã‚«ãƒ¼ãƒ‰ã®å¿œç­”ãŒä¸æ­£ã§ã™" );
 	return false;
 }
 
@@ -60,7 +60,7 @@ bool mSCMifare::LoadAuthenticationKeys( Key key )const
 
 	if( !DefaultCommunication( dt ) )
 	{
-		RaiseError( g_ErrorLogger , 0 , L"”FØƒL[‚Ìƒ_ƒEƒ“ƒ[ƒh‚ª¸”s‚µ‚Ü‚µ‚½" );
+		RaiseError( g_ErrorLogger , 0 , L"èªè¨¼ã‚­ãƒ¼ã®ãƒ€ã‚¦ãƒ³ãƒ­ãƒ¼ãƒ‰ãŒå¤±æ•—ã—ã¾ã—ãŸ" );
 		return false;
 	}
 	return true;
@@ -81,7 +81,7 @@ bool mSCMifare::ExecAuthentication( DWORD sector , bool key_a )const
 
 	if( !DefaultCommunication( dt ) )
 	{
-		RaiseError( g_ErrorLogger , 0 , L"ƒJ[ƒh‚Ì”FØ‚ª¸”s‚µ‚Ü‚µ‚½" );
+		RaiseError( g_ErrorLogger , 0 , L"ã‚«ãƒ¼ãƒ‰ã®èªè¨¼ãŒå¤±æ•—ã—ã¾ã—ãŸ" );
 		return false;
 	}
 	return true;
@@ -101,30 +101,30 @@ bool mSCMifare::ReadSector( DWORD sector , mBinary& retData )const
 	ResponseData rsp;
 	if( !Communicate( dt , rsp ) )
 	{
-		RaiseError( g_ErrorLogger , 0 , L"ƒXƒ}[ƒgƒJ[ƒh‚Æ‚Ì’ÊM‚ª¸”s‚µ‚Ü‚µ‚½" );
+		RaiseError( g_ErrorLogger , 0 , L"ã‚¹ãƒãƒ¼ãƒˆã‚«ãƒ¼ãƒ‰ã¨ã®é€šä¿¡ãŒå¤±æ•—ã—ã¾ã—ãŸ" );
 		return false;
 	}
 	if( rsp.data.size() == 2 )
 	{
 		if( rsp.data[ 0 ] == 0x63 && rsp.data[ 1 ] == 0x00 )
 		{
-			//¸”s‰“š
-			RaiseError( g_ErrorLogger , 0 , L"ƒXƒ}[ƒgƒJ[ƒh‚Æ‚Ì‘€ì‚ª¸”s‚µ‚Ü‚µ‚½" );
+			//å¤±æ•—å¿œç­”
+			RaiseError( g_ErrorLogger , 0 , L"ã‚¹ãƒãƒ¼ãƒˆã‚«ãƒ¼ãƒ‰ã¨ã®æ“ä½œãŒå¤±æ•—ã—ã¾ã—ãŸ" );
 			return false;
 		}
 	}
 	if( rsp.data.size() != 50 )
 	{
-		RaiseError( g_ErrorLogger , 0 , L"ƒXƒ}[ƒgƒJ[ƒh‰“šƒTƒCƒY‚ª•s³‚Å‚·" );
+		RaiseError( g_ErrorLogger , 0 , L"ã‚¹ãƒãƒ¼ãƒˆã‚«ãƒ¼ãƒ‰å¿œç­”ã‚µã‚¤ã‚ºãŒä¸æ­£ã§ã™" );
 		return false;
 	}
 	if( rsp.data[ 48 ] == 0x90 && rsp.data[ 49 ] == 0x00 )
 	{
-		//¬Œ÷‰“š
+		//æˆåŠŸå¿œç­”
 		retData = rsp.data.subdata( 0 , 48 );
 		return true;
 	}
-	RaiseError( g_ErrorLogger , 0 , L"ƒXƒ}[ƒgƒJ[ƒh‚Ì‰“š‚ª•s³‚Å‚·" );
+	RaiseError( g_ErrorLogger , 0 , L"ã‚¹ãƒãƒ¼ãƒˆã‚«ãƒ¼ãƒ‰ã®å¿œç­”ãŒä¸æ­£ã§ã™" );
 	return false;
 
 }
@@ -175,7 +175,7 @@ static mSCMifare::Permission GetMifarePermission( bool c1 , bool c2 , bool c3 )
 	case 7:
 		return mSCMifare::Permission::Permission7;
 	default:
-		RaiseAssert( g_ErrorLogger , index , L"ƒp[ƒ~ƒbƒVƒ‡ƒ“İ’è‚ª•s³‚Å‚·" );
+		RaiseAssert( g_ErrorLogger , index , L"ãƒ‘ãƒ¼ãƒŸãƒƒã‚·ãƒ§ãƒ³è¨­å®šãŒä¸æ­£ã§ã™" );
 		return mSCMifare::Permission::Permission0;
 	}
 }
@@ -203,7 +203,7 @@ static uint8_t MakeMifarePermission( mSCMifare::Permission permission )
 	case mSCMifare::Permission::Permission7:
 		return 0b0000'0111;
 	default:
-		RaiseError( g_ErrorLogger , permission , L"ƒp[ƒ~ƒbƒVƒ‡ƒ“İ’è‚ª•s³‚Å‚·" );
+		RaiseError( g_ErrorLogger , permission , L"ãƒ‘ãƒ¼ãƒŸãƒƒã‚·ãƒ§ãƒ³è¨­å®šãŒä¸æ­£ã§ã™" );
 		return 0;
 	}
 }
@@ -220,35 +220,35 @@ bool mSCMifare::ReadTrailer( DWORD sector , Trailer& retTrailer )const
 	ResponseData rsp;
 	if( !Communicate( dt , rsp ) )
 	{
-		RaiseError( g_ErrorLogger , 0 , L"ƒXƒ}[ƒgƒJ[ƒh‚Æ‚Ì’ÊM‚ª¸”s‚µ‚Ü‚µ‚½" );
+		RaiseError( g_ErrorLogger , 0 , L"ã‚¹ãƒãƒ¼ãƒˆã‚«ãƒ¼ãƒ‰ã¨ã®é€šä¿¡ãŒå¤±æ•—ã—ã¾ã—ãŸ" );
 		return false;
 	}
 	if( rsp.data.size() == 2 )
 	{
 		if( rsp.data[ 0 ] == 0x63 && rsp.data[ 1 ] == 0x00 )
 		{
-			//¸”s‰“š
-			RaiseError( g_ErrorLogger , 0 , L"ƒXƒ}[ƒgƒJ[ƒh‚Æ‚Ì‘€ì‚ª¸”s‚µ‚Ü‚µ‚½" );
+			//å¤±æ•—å¿œç­”
+			RaiseError( g_ErrorLogger , 0 , L"ã‚¹ãƒãƒ¼ãƒˆã‚«ãƒ¼ãƒ‰ã¨ã®æ“ä½œãŒå¤±æ•—ã—ã¾ã—ãŸ" );
 			return false;
 		}
 	}
 	if( rsp.data.size() != 18 )
 	{
-		RaiseError( g_ErrorLogger , 0 , L"ƒXƒ}[ƒgƒJ[ƒh‰“šƒTƒCƒY‚ª•s³‚Å‚·" );
+		RaiseError( g_ErrorLogger , 0 , L"ã‚¹ãƒãƒ¼ãƒˆã‚«ãƒ¼ãƒ‰å¿œç­”ã‚µã‚¤ã‚ºãŒä¸æ­£ã§ã™" );
 		return false;
 	}
 	if( (BYTE)rsp.data[ 16 ] == 0x90 && rsp.data[ 17 ] == 0x00 )
 	{
-		//¬Œ÷‰“š‚È‚Ì‚ÅAƒAƒNƒZƒXƒrƒbƒg‚ÌŒŸØEİ’è‚ğs‚¤
+		//æˆåŠŸå¿œç­”ãªã®ã§ã€ã‚¢ã‚¯ã‚»ã‚¹ãƒ“ãƒƒãƒˆã®æ¤œè¨¼ãƒ»è¨­å®šã‚’è¡Œã†
 		BYTE byte6 = rsp.data[ 6 ];
 		BYTE byte7 = rsp.data[ 7 ];
 		BYTE byte8 = rsp.data[ 8 ];
 		if( !IsValidAccessBits( byte6 , byte7 , byte8 ) )
 		{
-			RaiseError( g_ErrorLogger , 0 , L"ƒAƒNƒZƒXƒrƒbƒg‚ª³‚µ‚­‚ ‚è‚Ü‚¹‚ñ" );
+			RaiseError( g_ErrorLogger , 0 , L"ã‚¢ã‚¯ã‚»ã‚¹ãƒ“ãƒƒãƒˆãŒæ­£ã—ãã‚ã‚Šã¾ã›ã‚“" );
 			return false;
 		}
-		//enum‚Ö‚Ì•ÏŠ·
+		//enumã¸ã®å¤‰æ›
 		BYTE c1 = ( byte7 >> 4 ) & 0x0Fu;
 		BYTE c2 = ( byte8 >> 0 ) & 0x0Fu;
 		BYTE c3 = ( byte8 >> 4 ) & 0x0Fu;
@@ -256,17 +256,17 @@ bool mSCMifare::ReadTrailer( DWORD sector , Trailer& retTrailer )const
 		retTrailer.permission1        = GetMifarePermission( ( c1 & 0x02 ) , ( c2 & 0x02 ) , ( c3 & 0x02 ) );
 		retTrailer.permission2        = GetMifarePermission( ( c1 & 0x04 ) , ( c2 & 0x04 ) , ( c3 & 0x04 ) );
 		retTrailer.permission_trailer = GetMifarePermission( ( c1 & 0x08 ) , ( c2 & 0x08 ) , ( c3 & 0x08 ) );
-		//ƒL[‚ÌƒZƒbƒg
+		//ã‚­ãƒ¼ã®ã‚»ãƒƒãƒˆ
 		for( DWORD i = 0 ; i < 6 ; i++ )
 		{
 			retTrailer.key_a[ i ] = (BYTE)rsp.data[ i +  0 ];
 			retTrailer.key_b[ i ] = (BYTE)rsp.data[ i + 10 ];
 		}
-		//ƒ†[ƒU[ƒf[ƒ^‚ÌƒZƒbƒg
+		//ãƒ¦ãƒ¼ã‚¶ãƒ¼ãƒ‡ãƒ¼ã‚¿ã®ã‚»ãƒƒãƒˆ
 		retTrailer.userdata = (BYTE)rsp.data[ 9 ];
 		return true;
 	}
-	RaiseError( g_ErrorLogger , 0 , L"ƒXƒ}[ƒgƒJ[ƒh‚Ì‰“š‚ª•s³‚Å‚·" );
+	RaiseError( g_ErrorLogger , 0 , L"ã‚¹ãƒãƒ¼ãƒˆã‚«ãƒ¼ãƒ‰ã®å¿œç­”ãŒä¸æ­£ã§ã™" );
 	return false;
 
 }
@@ -286,7 +286,7 @@ bool mSCMifare::WriteSector( DWORD sector , const mBinary& data )const
 
 	if( !DefaultCommunication( dt ) )
 	{
-		RaiseError( g_ErrorLogger , 0 , L"ƒJ[ƒh‚Ì‘‚«‚İ‚ª¸”s‚µ‚Ü‚µ‚½" );
+		RaiseError( g_ErrorLogger , 0 , L"ã‚«ãƒ¼ãƒ‰ã®æ›¸ãè¾¼ã¿ãŒå¤±æ•—ã—ã¾ã—ãŸ" );
 		return false;
 	}
 	return true;
@@ -342,7 +342,7 @@ bool mSCMifare::WriteTrailer( DWORD sector , const Trailer& trailer )const
 
 	if( !DefaultCommunication( dt ) )
 	{
-		RaiseError( g_ErrorLogger , 0 , L"ƒJ[ƒh‚Ì‘‚«‚İ‚ª¸”s‚µ‚Ü‚µ‚½" );
+		RaiseError( g_ErrorLogger , 0 , L"ã‚«ãƒ¼ãƒ‰ã®æ›¸ãè¾¼ã¿ãŒå¤±æ•—ã—ã¾ã—ãŸ" );
 		return false;
 	}
 	return true;

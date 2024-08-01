@@ -1,5 +1,5 @@
-//----------------------------------------------------------------------------
-// RSA�Í����N���X
+﻿//----------------------------------------------------------------------------
+// RSA暗号化クラス
 // Copyright (C) 2013-2016 Fingerling. All rights reserved. 
 // Copyright (C) 2018- Crea Inc. All rights reserved.
 // This program is released under the MIT License. 
@@ -14,18 +14,18 @@
 #include <memory>
 #include "../General/mTCHAR.h"
 
-//RSA���Ǘ��N���X
-//���ł��邱�Ɓ�
-//�E���y�A�̊Ǘ������邱�Ƃ��ł��܂�
-//�E�L�[�R���e�i���g�킸�A�e���|�����ȃJ�M����邱�Ƃ��ł��܂�(���̏ꍇ�d�q�����͕s��)
-//�E�V����������邱�Ƃ��ł��܂�
-//�E�쐬���������G�N�X�|�[�g�ł��܂�
-//�E�����C���|�[�g�ł��܂�
-//�����Ӂ�
-//�E�Í������s���ɂ́A�h���N���X��mRSACipher���g���܂�
-//�E�d�q�������s���ɂ́A�h���N���X��mRSAVerifier���g���܂�
+//RSA鍵管理クラス
+//＜できること＞
+//・鍵ペアの管理をすることができます
+//・キーコンテナを使わず、テンポラリなカギを作ることができます(この場合電子署名は不可)
+//・新しい鍵を作ることができます
+//・作成した鍵をエクスポートできます
+//・鍵をインポートできます
+//＜注意＞
+//・暗号化を行うには、派生クラスのmRSACipherを使います
+//・電子署名を行うには、派生クラスのmRSAVerifierを使います
 
-//�Q�l�ɂȂ邩������Ȃ�URL
+//参考になるかもしれないURL
 // http://eternalwindows.jp/crypto/csp/csp00.html
 // http://msdn.microsoft.com/en-us/library/aa380252(v=vs.85).aspx
 
@@ -35,74 +35,74 @@ public:
 	mRSA();
 	virtual ~mRSA();
 
-	//���̎��(���J��/�閧��)
+	//鍵の種別(公開鍵/秘密鍵)
 	enum KEYTYPE
 	{
-		KEY_PUBLIC,			//���J��
-		KEY_PRIVATE,		//�閧��
+		KEY_PUBLIC,			//公開鍵
+		KEY_PRIVATE,		//秘密鍵
 	};
 
-	//���̃r�b�g��
+	//鍵のビット長
 	enum KEYLENGTH
 	{
 		KEYLEN_2048BIT,		//2048bit
 		KEYLEN_4096BIT,		//4096bit
 	};
 
-	//������
-	//���̏��������\�b�h���g�p�����ꍇ�A
-	//�E���͎����ŃG�N�X�|�[�g���Ȃ�����ۑ�����Ȃ�
-	//�E�����ɂ͎g���Ȃ�
-	//len : ���̃r�b�g��
+	//初期化
+	//この初期化メソッドを使用した場合、
+	//・鍵は自分でエクスポートしない限り保存されない
+	//・署名には使えない
+	//len : 鍵のビット数
 	bool Init( void );
 
-	//������
-	//���̏��������\�b�h���g�p�����ꍇ�A
-	//�E�w�肵�����O�̃L�[�R���e�i���쐬�����
-	//�E���łɓ����̃L�[�R���e�i�����݂���ꍇ�A���̃L�[�R���e�i�̃L�[�����[�h����
-	//len : ���̃r�b�g��
-	//container_name : �L�[�R���e�i�̖��O
-	//machine_keyset : �^�̏ꍇ�A�L�[�R���e�i���R���s���[�^�Ɋ֘A�t����i�T�[�r�X�v���O�����p�j
-	//				   �U�̏ꍇ�A�L�[�R���e�i�����[�U�Ɋ֘A�t����i��ʃA�v���p�j
+	//初期化
+	//この初期化メソッドを使用した場合、
+	//・指定した名前のキーコンテナが作成される
+	//・すでに同名のキーコンテナが存在する場合、そのキーコンテナのキーをロードする
+	//len : 鍵のビット数
+	//container_name : キーコンテナの名前
+	//machine_keyset : 真の場合、キーコンテナをコンピュータに関連付ける（サービスプログラム用）
+	//				   偽の場合、キーコンテナをユーザに関連付ける（一般アプリ用）
 	bool Init( const WString& container_name , bool machine_keyset );
 
-	//�L�[�R���e�i��j������
-	//container_name : �폜�������L�[�R���e�i�̖��O
-	//                 �����w�肵�Ȃ��ꍇ�A�f�t�H���g�̃L�[�R���e�i���w�肵�����ƂɂȂ�
-	//machine_keyset : �^�̏ꍇ�A�L�[�R���e�i���R���s���[�^�Ɋ֘A�t����i�T�[�r�X�v���O�����p�j
-	//				   �U�̏ꍇ�A�L�[�R���e�i�����[�U�Ɋ֘A�t����i��ʃA�v���p�j
-	//���w�肵���L�[�R���e�i�Ɋ܂܂��L�[�͂��ׂč폜�����̂Œ���
+	//キーコンテナを破棄する
+	//container_name : 削除したいキーコンテナの名前
+	//                 何も指定しない場合、デフォルトのキーコンテナを指定したことになる
+	//machine_keyset : 真の場合、キーコンテナをコンピュータに関連付ける（サービスプログラム用）
+	//				   偽の場合、キーコンテナをユーザに関連付ける（一般アプリ用）
+	//※指定したキーコンテナに含まれるキーはすべて削除されるので注意
 	static bool DestroyKeyContainer( const WString& container_name , bool machine_keyset );
 
-	//�V�������y�A�����
-	//���݂̌��͔j������
-	//���n���h����j�����邾���ŁA�R���e�i��j������킯�ł͂Ȃ�
+	//新しい鍵ペアを作る
+	//現在の鍵は破棄する
+	//※ハンドルを破棄するだけで、コンテナを破棄するわけではない
 	bool GenerateNewKey( KEYLENGTH len );
 
-	//����j������
-	//���n���h����j�����邾���ŁA�R���e�i��j������킯�ł͂Ȃ�
+	//鍵を破棄する
+	//※ハンドルを破棄するだけで、コンテナを破棄するわけではない
 	bool Clear( void );
 
-	//���o�C�i���̃T�C�Y�𓾂�
-	//RSA�̃r�b�g���ł͂Ȃ��AGetKeyBinary�Ō��ʂ̊i�[�ɕK�v�ȃo�b�t�@�̃T�C�Y���Ԃ�B
-	//type : �擾��������(���J�� or �閧��)
+	//鍵バイナリのサイズを得る
+	//RSAのビット長ではなく、GetKeyBinaryで結果の格納に必要なバッファのサイズが返る。
+	//type : 取得したい鍵(公開鍵 or 秘密鍵)
 	DWORD GetKeySize( KEYTYPE type );
 
-	//���o�C�i��
+	//鍵バイナリ
 	typedef std::unique_ptr<BYTE> KeyBinary;
 
-	//���o�C�i���𓾂�
-	//���ʂ�PRIVATEKEYBLOB�܂��́APUBLICKEYBLOB�t�H�[�}�b�g�̃o�C�i���B
-	//type : �擾��������(���J�� or �閧��)
-	//buffer : �i�[��̃o�b�t�@
-	//len : �o�b�t�@�̃T�C�Y
-	//retWritten : �������܂ꂽ�o�C�g��
+	//鍵バイナリを得る
+	//結果はPRIVATEKEYBLOBまたは、PUBLICKEYBLOBフォーマットのバイナリ。
+	//type : 取得したい鍵(公開鍵 or 秘密鍵)
+	//buffer : 格納先のバッファ
+	//len : バッファのサイズ
+	//retWritten : 書き込まれたバイト数
 	bool ExportKey( KEYTYPE type , KeyBinary& retKey , DWORD& retWritten );
 
-	//�����o�C�i������C���|�[�g����
-	//data : ���BPRIVATEKEYBLOB�܂��́APUBLICKEYBLOB�t�H�[�}�b�g�̃o�C�i���B
-	//datalen : data�̃o�C�g��
-	//�������^
+	//鍵をバイナリからインポートする
+	//data : 鍵。PRIVATEKEYBLOBまたは、PUBLICKEYBLOBフォーマットのバイナリ。
+	//datalen : dataのバイト数
+	//成功時真
 	bool ImportKey( const BYTE* data , DWORD datalen );
 
 private:
@@ -111,18 +111,18 @@ private:
 
 protected:
 
-	//�Í����v���o�C�_�̃n���h��
+	//暗号化プロバイダのハンドル
 	HCRYPTPROV	MyCryptProv;		//
-	HCRYPTKEY	MyCryptKey;			//���J���{�閧��
-	HCRYPTKEY	MyCryptKeyPub;		//���J���̂�
+	HCRYPTKEY	MyCryptKey;			//公開鍵＋秘密鍵
+	HCRYPTKEY	MyCryptKeyPub;		//公開鍵のみ
 
-	//���o�C�i���𓾂�
+	//鍵バイナリを得る
 	bool GetKey( KEYTYPE type , BYTE* buffer , DWORD& size );
 
-	//MyCryptKey������J�������𒊏o����MyCryptKeyPub�ɃZ�b�g����
+	//MyCryptKeyから公開鍵だけを抽出してMyCryptKeyPubにセットする
 	bool ExtractPublicKey( void );
 
-	//���o�C�i���̃C���|�[�g
+	//鍵バイナリのインポート
 	bool ImportKeyInternal( HCRYPTKEY* key , DWORD len , const BYTE* buffer );
 
 };
@@ -133,23 +133,23 @@ int main( int argc , char** argv )
 {
 	InitializeLibrary();
 
-	//�E�V�������y�A������
-	//���L�[�R���e�i�̖��O���w�肵�Ȃ��ꍇ�́A�����Ɏg���Ȃ�
+	//・新しい鍵ペアをつくる
+	//※キーコンテナの名前を指定しない場合は、署名に使えない
 	mRSA key;
 	key.Init( L"Test Program" , false );
 	key.GenerateNewKey( mRSA::KEYLENGTH::KEYLEN_2048BIT );
 
-	//�E���J�����G�N�X�|�[�g
+	//・公開鍵をエクスポート
 	DWORD pubkey_size;
 	mRSA::KeyBinary pubkey;
 	key.ExportKey( mRSA::KEYTYPE::KEY_PUBLIC , pubkey , pubkey_size );
 
-	//�E�閧�����G�N�X�|�[�g
+	//・秘密鍵をエクスポート
 	DWORD privkey_size;
 	mRSA::KeyBinary privkey;
 	key.ExportKey( mRSA::KEYTYPE::KEY_PRIVATE , privkey , privkey_size );
 
-	//�G�N�X�|�[�g�������J����ʂ̃I�u�W�F�N�g�ɃC���|�[�g����
+	//エクスポートした公開鍵を別のオブジェクトにインポートする
 	mRSA other_key;
 	other_key.Init();
 	other_key.ImportKey( pubkey.get() , pubkey_size );

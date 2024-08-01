@@ -1,17 +1,17 @@
-//----------------------------------------------------------------------------
-// �E�C���h�E�Ǘ��i�`�F�b�N�{�b�N�X�n�j
+﻿//----------------------------------------------------------------------------
+// ウインドウ管理（チェックボックス系）
 // Copyright (C) 2016 Fingerling. All rights reserved. 
 // This program is released under the MIT License. 
 // see http://opensource.org/licenses/mit-license.php
 //----------------------------------------------------------------------------
 
 /*
-���p�r
-�`�F�b�N�{�b�N�X�n�R���g���[���̊��N���X�ł��B
+●用途
+チェックボックス系コントロールの基底クラスです。
 
-�ȉ��̃R���g���[���̐e�ƂȂ�܂��B
-�E�`�F�b�N�{�b�N�X
-�E���W�I�{�b�N�X
+以下のコントロールの親となります。
+・チェックボックス
+・ラジオボックス
 
 */
 
@@ -24,21 +24,21 @@ class mCheckboxFamily : public mWindow
 {
 public:
 
-	//�`�F�b�N���
+	//チェック状態
 	enum CheckStatus
 	{
-		CHECKED,		//�`�F�b�N����Ă���
-		UNCHECKED,		//�`�F�b�N����Ă��Ȃ�
-		INDETERMINATE,	//3�X�e�[�g�̃O���[�ȏ��
-		UNKNOWN,		//�s���i�G���[�j
+		CHECKED,		//チェックされている
+		UNCHECKED,		//チェックされていない
+		INDETERMINATE,	//3ステートのグレーな状態
+		UNKNOWN,		//不明（エラー）
 	};
 
-	//�`�F�b�N����Ă��邩���擾����
-	//ret : ���݂̃`�F�b�N�̏��
+	//チェックされているかを取得する
+	//ret : 現在のチェックの状態
 	virtual CheckStatus GetCheck( void )const;
 
-	//�`�F�b�N��t����or�O��
-	//state : �V�����X�e�[�^�X
+	//チェックを付けるor外す
+	//state : 新しいステータス
 	virtual bool SetCheck( CheckStatus state );
 
 protected:

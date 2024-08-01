@@ -1,5 +1,5 @@
-//----------------------------------------------------------------------------
-// RSAˆÃ†‰»ƒNƒ‰ƒX
+ï»¿//----------------------------------------------------------------------------
+// RSAæš—å·åŒ–ã‚¯ãƒ©ã‚¹
 // Copyright (C) 2013-2016 Fingerling. All rights reserved. 
 // Copyright (C) 2018- Crea Inc. All rights reserved.
 // This program is released under the MIT License. 
@@ -28,26 +28,26 @@ mRSA::~mRSA()
 
 bool mRSA::Init( void )
 {
-	//RSA‚ğg—p‚·‚é‚ªACRYPT_VERIFYCONTEXT‚ğg—p‚µ‚Ä·‚µx‚¦‚È‚¢B
-	//ƒNƒ‰ƒCƒAƒ“ƒgOS‚É‚¨‚¢‚Ä‚ÍACRYPT_VERIFYCONTEXT‚ğg—p‚µ‚½ê‡‚Íˆêƒƒ‚ƒŠ‚ÉŒ®‚ª•ÛŠÇ‚³‚ê‚éB
-	//‚»‚µ‚Äƒnƒ“ƒhƒ‹‚Ì‰ğ•ú‚Æ“¯‚Éíœ‚³‚ê‚éB
+	//RSAã‚’ä½¿ç”¨ã™ã‚‹ãŒã€CRYPT_VERIFYCONTEXTã‚’ä½¿ç”¨ã—ã¦å·®ã—æ”¯ãˆãªã„ã€‚
+	//ã‚¯ãƒ©ã‚¤ã‚¢ãƒ³ãƒˆOSã«ãŠã„ã¦ã¯ã€CRYPT_VERIFYCONTEXTã‚’ä½¿ç”¨ã—ãŸå ´åˆã¯ä¸€æ™‚ãƒ¡ãƒ¢ãƒªã«éµãŒä¿ç®¡ã•ã‚Œã‚‹ã€‚
+	//ãã—ã¦ãƒãƒ³ãƒ‰ãƒ«ã®è§£æ”¾ã¨åŒæ™‚ã«å‰Šé™¤ã•ã‚Œã‚‹ã€‚
 
-	//ƒMSDN‚ÌCRYPT_VERIFYCONTEXT‚Ìà–¾‚æ‚è”²ˆ„
+	//ï¼œMSDNã®CRYPT_VERIFYCONTEXTã®èª¬æ˜ã‚ˆã‚ŠæŠœç²‹ï¼
 	//The application has no access to the persisted private keys of public/private key pairs. 
 	//When this flag is set, temporary public/private key pairs can be created, but they are not persisted.
-	//–óFƒAƒvƒŠƒP[ƒVƒ‡ƒ“‚ÍAŒ®ƒyƒA‚Ì”é–§Œ®‚ÉƒAƒNƒZƒX‚·‚é‚±‚Æ‚Í‚ ‚è‚Ü‚¹‚ñB
-	//    ‚±‚Ìƒtƒ‰ƒO‚ªƒZƒbƒg‚³‚ê‚½ê‡‚ÍAƒeƒ“ƒ|ƒ‰ƒŠ‚ÈŒ®ƒyƒA‚ªì¬‚³‚ê‚Ü‚·‚ªA•Û‘¶‚³‚ê‚Ü‚¹‚ñB
-	//http://msdn.microsoft.com/en-us/library/aa379886(v=vs.85).aspx ‚æ‚èB
+	//è¨³ï¼šã‚¢ãƒ—ãƒªã‚±ãƒ¼ã‚·ãƒ§ãƒ³ã¯ã€éµãƒšã‚¢ã®ç§˜å¯†éµã«ã‚¢ã‚¯ã‚»ã‚¹ã™ã‚‹ã“ã¨ã¯ã‚ã‚Šã¾ã›ã‚“ã€‚
+	//    ã“ã®ãƒ•ãƒ©ã‚°ãŒã‚»ãƒƒãƒˆã•ã‚ŒãŸå ´åˆã¯ã€ãƒ†ãƒ³ãƒãƒ©ãƒªãªéµãƒšã‚¢ãŒä½œæˆã•ã‚Œã¾ã™ãŒã€ä¿å­˜ã•ã‚Œã¾ã›ã‚“ã€‚
+	//http://msdn.microsoft.com/en-us/library/aa379886(v=vs.85).aspx ã‚ˆã‚Šã€‚
 
 	if( MyCryptProv )
 	{
-		RaiseAssert( g_ErrorLogger , 0 , L"ˆÃ†‰»ƒvƒƒoƒCƒ_‚Í‚·‚Å‚É‰Šú‰»‚³‚ê‚Ä‚¢‚Ü‚·" );
+		RaiseAssert( g_ErrorLogger , 0 , L"æš—å·åŒ–ãƒ—ãƒ­ãƒã‚¤ãƒ€ã¯ã™ã§ã«åˆæœŸåŒ–ã•ã‚Œã¦ã„ã¾ã™" );
 		return false;
 	}
 
 	if( !CryptAcquireContext( &MyCryptProv , nullptr , MS_ENH_RSA_AES_PROV , PROV_RSA_AES , CRYPT_VERIFYCONTEXT ) )
 	{
-		RaiseAssert( g_ErrorLogger , 0 , L"ˆÃ†‰»ƒvƒƒoƒCƒ_‚Ì‰Šú‰»‚É¸”s‚µ‚Ü‚µ‚½" );
+		RaiseAssert( g_ErrorLogger , 0 , L"æš—å·åŒ–ãƒ—ãƒ­ãƒã‚¤ãƒ€ã®åˆæœŸåŒ–ã«å¤±æ•—ã—ã¾ã—ãŸ" );
 		return false;
 	}
 	return true;
@@ -57,7 +57,7 @@ bool mRSA::Init( const WString& container_name , bool machine_keyset )
 {
 	if( MyCryptProv )
 	{
-		RaiseAssert( g_ErrorLogger , 0 , L"ˆÃ†‰»ƒvƒƒoƒCƒ_‚Í‚·‚Å‚É‰Šú‰»‚³‚ê‚Ä‚¢‚Ü‚·" );
+		RaiseAssert( g_ErrorLogger , 0 , L"æš—å·åŒ–ãƒ—ãƒ­ãƒã‚¤ãƒ€ã¯ã™ã§ã«åˆæœŸåŒ–ã•ã‚Œã¦ã„ã¾ã™" );
 		return false;
 	}
 
@@ -67,17 +67,17 @@ bool mRSA::Init( const WString& container_name , bool machine_keyset )
 		flag |= CRYPT_NEWKEYSET;
 		if( !CryptAcquireContext( &MyCryptProv , container_name.c_str() , MS_ENH_RSA_AES_PROV , PROV_RSA_AES , flag ) )
 		{
-			RaiseAssert( g_ErrorLogger , 0 , L"ˆÃ†‰»ƒvƒƒoƒCƒ_‚ğ‰Šú‰»‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½" );
+			RaiseAssert( g_ErrorLogger , 0 , L"æš—å·åŒ–ãƒ—ãƒ­ãƒã‚¤ãƒ€ã‚’åˆæœŸåŒ–ã§ãã¾ã›ã‚“ã§ã—ãŸ" );
 			return false;
 		}
 		else
 		{
-			CreateLogEntry( g_ErrorLogger , 0 , L"V‚µ‚¢ƒL[ƒRƒ“ƒeƒi‚ğì¬‚µ‚Ü‚µ‚½" , container_name );
+			CreateLogEntry( g_ErrorLogger , 0 , L"æ–°ã—ã„ã‚­ãƒ¼ã‚³ãƒ³ãƒ†ãƒŠã‚’ä½œæˆã—ã¾ã—ãŸ" , container_name );
 		}
 	}
 	else
 	{
-		CreateLogEntry( g_ErrorLogger , 0 , L"ƒL[ƒRƒ“ƒeƒi‚ğƒ[ƒh‚µ‚Ü‚µ‚½" , container_name );
+		CreateLogEntry( g_ErrorLogger , 0 , L"ã‚­ãƒ¼ã‚³ãƒ³ãƒ†ãƒŠã‚’ãƒ­ãƒ¼ãƒ‰ã—ã¾ã—ãŸ" , container_name );
 	}
 	return true;
 }
@@ -90,12 +90,12 @@ bool mRSA::DestroyKeyContainer( const WString& container_name , bool machine_key
 
 	if( !CryptAcquireContext( &dummy_prov , container_name.c_str() , MS_ENH_RSA_AES_PROV , PROV_RSA_AES , flag ) )
 	{
-		RaiseError( g_ErrorLogger , 0 , L"ƒL[ƒRƒ“ƒeƒi‚Ìíœ‚ª‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½" , container_name );
+		RaiseError( g_ErrorLogger , 0 , L"ã‚­ãƒ¼ã‚³ãƒ³ãƒ†ãƒŠã®å‰Šé™¤ãŒã§ãã¾ã›ã‚“ã§ã—ãŸ" , container_name );
 		return false;
 	}
 	else
 	{
-		CreateLogEntry( g_ErrorLogger , 0 , L"ƒL[ƒRƒ“ƒeƒi‚ğíœ‚µ‚Ü‚µ‚½" , container_name );
+		CreateLogEntry( g_ErrorLogger , 0 , L"ã‚­ãƒ¼ã‚³ãƒ³ãƒ†ãƒŠã‚’å‰Šé™¤ã—ã¾ã—ãŸ" , container_name );
 		return true;
 	}
 }
@@ -127,24 +127,24 @@ bool mRSA::GenerateNewKey( KEYLENGTH len )
 		bit = 4096;
 		break;
 	default:
-		RaiseAssert( g_ErrorLogger , 0 , L"RSAŒ®’·‚Ìw’è‚ª•s³‚Å‚·" );
+		RaiseAssert( g_ErrorLogger , 0 , L"RSAéµé•·ã®æŒ‡å®šãŒä¸æ­£ã§ã™" );
 		return false;
 	}
 
 	if( MyCryptProv == 0 )
 	{
-		RaiseAssert( g_ErrorLogger , 0 , L"ˆÃ†‰»ƒvƒƒoƒCƒ_‚ª‰Šú‰»‚³‚ê‚Ä‚¢‚Ü‚¹‚ñ" );
+		RaiseAssert( g_ErrorLogger , 0 , L"æš—å·åŒ–ãƒ—ãƒ­ãƒã‚¤ãƒ€ãŒåˆæœŸåŒ–ã•ã‚Œã¦ã„ã¾ã›ã‚“" );
 		return false;
 	}
 	if( !Clear() )
 	{
-		RaiseAssert( g_ErrorLogger , 0 , L"Šù‘¶‚Ìƒnƒ“ƒhƒ‹‰ğ•ú‚É¸”s‚µ‚Ü‚µ‚½" );
+		RaiseAssert( g_ErrorLogger , 0 , L"æ—¢å­˜ã®ãƒãƒ³ãƒ‰ãƒ«è§£æ”¾ã«å¤±æ•—ã—ã¾ã—ãŸ" );
 		return false;
 	}
 
 	if( !CryptGenKey( MyCryptProv , AT_KEYEXCHANGE , ( bit << 16 ) | CRYPT_EXPORTABLE , &MyCryptKey ) )
 	{
-		RaiseAssert( g_ErrorLogger , 0 , L"ˆÃ†‰»Œ®‚Ì¶¬‚ª¸”s‚µ‚Ü‚µ‚½" );
+		RaiseAssert( g_ErrorLogger , 0 , L"æš—å·åŒ–éµã®ç”ŸæˆãŒå¤±æ•—ã—ã¾ã—ãŸ" );
 		return false;
 	}
 	return true;
@@ -155,13 +155,13 @@ DWORD mRSA::GetKeySize( mRSA::KEYTYPE type )
 	DWORD size = 0;
 	if( !GetKey( type , nullptr , size ) )
 	{
-		RaiseAssert( g_ErrorLogger , 0 , L"ˆÃ†‰»Œ®‚ªİ’è‚³‚ê‚Ä‚¢‚Ü‚¹‚ñ" , type );
+		RaiseAssert( g_ErrorLogger , 0 , L"æš—å·åŒ–éµãŒè¨­å®šã•ã‚Œã¦ã„ã¾ã›ã‚“" , type );
 		return 0;
 	}
 	return size;
 }
 
-//Œ®ƒoƒCƒiƒŠ‚ğ“¾‚é
+//éµãƒã‚¤ãƒŠãƒªã‚’å¾—ã‚‹
 bool mRSA::ExportKey( mRSA::KEYTYPE type , KeyBinary& retKey , DWORD& retWritten )
 {
 	retWritten = GetKeySize( type );
@@ -172,15 +172,15 @@ bool mRSA::ExportKey( mRSA::KEYTYPE type , KeyBinary& retKey , DWORD& retWritten
 
 bool mRSA::ImportKey( const BYTE* data , DWORD datalen )
 {
-	//Œ®‚ÌƒtƒH[ƒ}ƒbƒg‚ÍAæ“ª‚ÍPUBLICKEYSTRUC‚È‚Ì‚ÅA
-	//‚»‚±‚©‚çƒtƒH[ƒ}ƒbƒg‚ğ”»•Ê‚·‚éB
+	//éµã®ãƒ•ã‚©ãƒ¼ãƒãƒƒãƒˆã¯ã€å…ˆé ­ã¯PUBLICKEYSTRUCãªã®ã§ã€
+	//ãã“ã‹ã‚‰ãƒ•ã‚©ãƒ¼ãƒãƒƒãƒˆã‚’åˆ¤åˆ¥ã™ã‚‹ã€‚
 
 	//http://msdn.microsoft.com/en-us/library/aa375601(v=vs.85).aspx
 	//http://msdn.microsoft.com/en-us/library/aa387453(v=vs.85).aspx
 
 	if( data == 0 )
 	{
-		RaiseAssert( g_ErrorLogger , 0 , L"ƒoƒbƒtƒ@‚ª–¢w’è‚Å‚·" );
+		RaiseAssert( g_ErrorLogger , 0 , L"ãƒãƒƒãƒ•ã‚¡ãŒæœªæŒ‡å®šã§ã™" );
 		return false;
 	}
 
@@ -197,7 +197,7 @@ bool mRSA::ImportKey( const BYTE* data , DWORD datalen )
 	}
 	else
 	{
-		RaiseAssert( g_ErrorLogger , 0 , L"ƒf[ƒ^‚ÉŒ®‚ªŠÜ‚Ü‚ê‚Ä‚¢‚Ü‚¹‚ñ" );
+		RaiseAssert( g_ErrorLogger , 0 , L"ãƒ‡ãƒ¼ã‚¿ã«éµãŒå«ã¾ã‚Œã¦ã„ã¾ã›ã‚“" );
 		return false;
 	}
 }
@@ -206,11 +206,11 @@ bool mRSA::GetKey( mRSA::KEYTYPE type , BYTE* buffer , DWORD& size )
 {
 	if( MyCryptProv == 0 )
 	{
-		RaiseAssert( g_ErrorLogger , 0 , L"ˆÃ†‰»ƒvƒƒoƒCƒ_‚ª‰Šú‰»‚³‚ê‚Ä‚¢‚Ü‚¹‚ñ" );
+		RaiseAssert( g_ErrorLogger , 0 , L"æš—å·åŒ–ãƒ—ãƒ­ãƒã‚¤ãƒ€ãŒåˆæœŸåŒ–ã•ã‚Œã¦ã„ã¾ã›ã‚“" );
 		return false;
 	}
 
-	//’l•ÏŠ· (KEYTYPE ¨ CryptExportKey‚Ìblobtype)
+	//å€¤å¤‰æ› (KEYTYPE â†’ CryptExportKeyã®blobtype)
 	DWORD blobtype;
 	switch( type )
 	{
@@ -221,11 +221,11 @@ bool mRSA::GetKey( mRSA::KEYTYPE type , BYTE* buffer , DWORD& size )
 		blobtype = PUBLICKEYBLOB;
 		break;
 	default:
-		RaiseAssert( g_ErrorLogger , 0 , L"•s³‚ÈŒ®‚Ìí—Ş‚Å‚·" , type );
+		RaiseAssert( g_ErrorLogger , 0 , L"ä¸æ­£ãªéµã®ç¨®é¡ã§ã™" , type );
 		return false;
 	}
 
-	//’læ“¾
+	//å€¤å–å¾—
 	if( CryptExportKey( MyCryptKey , 0 , blobtype , 0 , buffer , &size ) )
 	{
 		return true;
@@ -234,7 +234,7 @@ bool mRSA::GetKey( mRSA::KEYTYPE type , BYTE* buffer , DWORD& size )
 	{
 		return true;
 	}
-	RaiseAssert( g_ErrorLogger , 0 , L"Œ®‚ÌƒGƒNƒXƒ|[ƒg‚É¸”s‚µ‚Ü‚µ‚½" );
+	RaiseAssert( g_ErrorLogger , 0 , L"éµã®ã‚¨ã‚¯ã‚¹ãƒãƒ¼ãƒˆã«å¤±æ•—ã—ã¾ã—ãŸ" );
 	return false;
 
 }
@@ -247,32 +247,32 @@ bool mRSA::ExtractPublicKey( void )
 
 	if( MyCryptKeyPub != 0 )
 	{
-		RaiseError( g_ErrorLogger , 0 , L"ŒöŠJŒ®‚ª‚·‚Å‚Éİ’è‚³‚ê‚Ä‚¢‚Ü‚·" );
+		RaiseError( g_ErrorLogger , 0 , L"å…¬é–‹éµãŒã™ã§ã«è¨­å®šã•ã‚Œã¦ã„ã¾ã™" );
 		goto end;
 	}
 
-	//Œ®‚Ì’·‚³‚ğæ“¾‚µ‚ÄA‚»‚ÌƒTƒCƒY‚Ìƒoƒbƒtƒ@‚ğì‚é
+	//éµã®é•·ã•ã‚’å–å¾—ã—ã¦ã€ãã®ã‚µã‚¤ã‚ºã®ãƒãƒƒãƒ•ã‚¡ã‚’ä½œã‚‹
 	keylen = GetKeySize( KEYTYPE::KEY_PUBLIC );
 	if( keylen == 0 )
 	{
-		RaiseAssert( g_ErrorLogger , 0 , L"ŒöŠJŒ®‚Ì’·‚³‚ğæ“¾‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½" );
+		RaiseAssert( g_ErrorLogger , 0 , L"å…¬é–‹éµã®é•·ã•ã‚’å–å¾—ã§ãã¾ã›ã‚“ã§ã—ãŸ" );
 		result = false;
 		goto end;
 	}
 	binkey.reset( mNew BYTE[ keylen ] );
 
-	//ì‚Á‚½ƒoƒbƒtƒ@‚ÉŒ®‚ğæ“¾
+	//ä½œã£ãŸãƒãƒƒãƒ•ã‚¡ã«éµã‚’å–å¾—
 	if( !ExportKey( KEYTYPE::KEY_PUBLIC , binkey , keylen ) )
 	{
-		RaiseAssert( g_ErrorLogger , 0 , L"ŒöŠJŒ®‚Ì•Û‘¶‚É¸”s‚µ‚Ü‚µ‚½" );
+		RaiseAssert( g_ErrorLogger , 0 , L"å…¬é–‹éµã®ä¿å­˜ã«å¤±æ•—ã—ã¾ã—ãŸ" );
 		result = false;
 		goto end;
 	}
 
-	//æ“¾‚µ‚½ŒöŠJŒ®‚ğ‚»‚Ì‚Ü‚ÜƒCƒ“ƒ|[ƒg‚µ‚ÄŒöŠJŒ®‚¾‚¯‚Ìƒnƒ“ƒhƒ‹‚ğì‚é
+	//å–å¾—ã—ãŸå…¬é–‹éµã‚’ãã®ã¾ã¾ã‚¤ãƒ³ãƒãƒ¼ãƒˆã—ã¦å…¬é–‹éµã ã‘ã®ãƒãƒ³ãƒ‰ãƒ«ã‚’ä½œã‚‹
 	if( !ImportKeyInternal( &MyCryptKeyPub , keylen , binkey.get() ) )
 	{
-		RaiseAssert( g_ErrorLogger , 0 , L"ŒöŠJŒ®‚ÌƒCƒ“ƒ|[ƒg‚É¸”s‚µ‚Ü‚µ‚½" );
+		RaiseAssert( g_ErrorLogger , 0 , L"å…¬é–‹éµã®ã‚¤ãƒ³ãƒãƒ¼ãƒˆã«å¤±æ•—ã—ã¾ã—ãŸ" );
 		result = false;
 		goto end;
 	}
@@ -289,7 +289,7 @@ bool mRSA::ImportKeyInternal( HCRYPTKEY* key , DWORD len , const BYTE* buffer )
 {
 	if( !CryptImportKey( MyCryptProv , buffer , len , 0 , 0 , key ) )
 	{
-		RaiseAssert( g_ErrorLogger , 0 , L"Œ®‚ÌƒCƒ“ƒ|[ƒg‚É¸”s‚µ‚Ü‚µ‚½" );
+		RaiseAssert( g_ErrorLogger , 0 , L"éµã®ã‚¤ãƒ³ãƒãƒ¼ãƒˆã«å¤±æ•—ã—ã¾ã—ãŸ" );
 		return false;
 	}
 	return true;

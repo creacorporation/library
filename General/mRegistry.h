@@ -1,5 +1,5 @@
-//----------------------------------------------------------------------------
-// ƒŒƒWƒXƒgƒŠƒAƒNƒZƒX
+ï»¿//----------------------------------------------------------------------------
+// ãƒ¬ã‚¸ã‚¹ãƒˆãƒªã‚¢ã‚¯ã‚»ã‚¹
 // Copyright (C) 2019- Crea Inc. All rights reserved.
 // This program is released under the MIT License. 
 // see http://opensource.org/licenses/mit-license.php
@@ -13,7 +13,7 @@
 #include <memory>
 #include <setupapi.h>
 
-//ƒŒƒWƒXƒgƒŠ‚Ìƒ‰ƒbƒp[
+//ãƒ¬ã‚¸ã‚¹ãƒˆãƒªã®ãƒ©ãƒƒãƒ‘ãƒ¼
 namespace Definitions_mRegistry
 {
 	enum ParentKey
@@ -31,67 +31,67 @@ public:
 
 	using ParentKey = Definitions_mRegistry::ParentKey;
 
-	//ƒŒƒWƒXƒgƒŠ‚ÌƒpƒX‚ğŠJ‚­
+	//ãƒ¬ã‚¸ã‚¹ãƒˆãƒªã®ãƒ‘ã‚¹ã‚’é–‹ã
 	bool Open( ParentKey parent , const WString& path , BOOL access_write );
 
-	//ƒŒƒWƒXƒgƒŠ‚ÌƒpƒX‚ğ•Â‚¶‚é
+	//ãƒ¬ã‚¸ã‚¹ãƒˆãƒªã®ãƒ‘ã‚¹ã‚’é–‰ã˜ã‚‹
 	bool Close( void );
 
-	//DWORD’l‚Ì“Ç‚İ‘‚«
-	// entry : ƒGƒ“ƒgƒŠ‚Ì–¼‘O
-	// def_value : ŠY“–‚ÌƒGƒ“ƒgƒŠ‚ª‚È‚©‚Á‚½ê‡A‚»‚Ì‘¼ƒGƒ‰[‚Ìê‡‚Éæ“¾‚·‚éƒfƒtƒHƒ‹ƒg‚Ì’l
-	// ret : “Ç‚İæ‚Á‚½’lBƒGƒ‰[‚Ìê‡‚Ídef_value‚Éİ’è‚µ‚½’l
+	//DWORDå€¤ã®èª­ã¿æ›¸ã
+	// entry : ã‚¨ãƒ³ãƒˆãƒªã®åå‰
+	// def_value : è©²å½“ã®ã‚¨ãƒ³ãƒˆãƒªãŒãªã‹ã£ãŸå ´åˆã€ãã®ä»–ã‚¨ãƒ©ãƒ¼ã®å ´åˆã«å–å¾—ã™ã‚‹ãƒ‡ãƒ•ã‚©ãƒ«ãƒˆã®å€¤
+	// ret : èª­ã¿å–ã£ãŸå€¤ã€‚ã‚¨ãƒ©ãƒ¼ã®å ´åˆã¯def_valueã«è¨­å®šã—ãŸå€¤
 	DWORD GetDword( const WString& entry , DWORD def_value );
 
-	//DWORD’l‚Ì“Ç‚İ‘‚«
-	// entry : ƒGƒ“ƒgƒŠ‚Ì–¼‘O
-	// value : İ’è‚·‚é’l
-	// ret : ¬Œ÷^
+	//DWORDå€¤ã®èª­ã¿æ›¸ã
+	// entry : ã‚¨ãƒ³ãƒˆãƒªã®åå‰
+	// value : è¨­å®šã™ã‚‹å€¤
+	// ret : æˆåŠŸæ™‚çœŸ
 	bool SetDword( const WString& entry , DWORD value );
 
-	//QWORD’l‚Ì“Ç‚İ‘‚«
-	// entry : ƒGƒ“ƒgƒŠ‚Ì–¼‘O
-	// def_value : ŠY“–‚ÌƒGƒ“ƒgƒŠ‚ª‚È‚©‚Á‚½ê‡A‚»‚Ì‘¼ƒGƒ‰[‚Ìê‡‚Éæ“¾‚·‚éƒfƒtƒHƒ‹ƒg‚Ì’l
-	// ret : “Ç‚İæ‚Á‚½’lBƒGƒ‰[‚Ìê‡‚Ídef_value‚Éİ’è‚µ‚½’l
+	//QWORDå€¤ã®èª­ã¿æ›¸ã
+	// entry : ã‚¨ãƒ³ãƒˆãƒªã®åå‰
+	// def_value : è©²å½“ã®ã‚¨ãƒ³ãƒˆãƒªãŒãªã‹ã£ãŸå ´åˆã€ãã®ä»–ã‚¨ãƒ©ãƒ¼ã®å ´åˆã«å–å¾—ã™ã‚‹ãƒ‡ãƒ•ã‚©ãƒ«ãƒˆã®å€¤
+	// ret : èª­ã¿å–ã£ãŸå€¤ã€‚ã‚¨ãƒ©ãƒ¼ã®å ´åˆã¯def_valueã«è¨­å®šã—ãŸå€¤
 	ULONGLONG GetQword( const WString& entry , ULONGLONG def_value );
 
-	//DWORD’l‚Ì“Ç‚İ‘‚«
-	// entry : ƒGƒ“ƒgƒŠ‚Ì–¼‘O
-	// value : İ’è‚·‚é’l
-	// ret : ¬Œ÷^
+	//DWORDå€¤ã®èª­ã¿æ›¸ã
+	// entry : ã‚¨ãƒ³ãƒˆãƒªã®åå‰
+	// value : è¨­å®šã™ã‚‹å€¤
+	// ret : æˆåŠŸæ™‚çœŸ
 	bool SetQword( const WString& entry , ULONGLONG value );
 
 
-	//WString’l‚Ì“Ç‚İ‘‚«
-	// entry : ƒGƒ“ƒgƒŠ‚Ì–¼‘O
-	// def_value : ŠY“–‚ÌƒGƒ“ƒgƒŠ‚ª‚È‚©‚Á‚½ê‡A‚»‚Ì‘¼ƒGƒ‰[‚Ìê‡‚Éæ“¾‚·‚éƒfƒtƒHƒ‹ƒg‚Ì’l
-	// ret : “Ç‚İæ‚Á‚½’lBƒGƒ‰[‚Ìê‡‚Ídef_value‚Éİ’è‚µ‚½’l
+	//WStringå€¤ã®èª­ã¿æ›¸ã
+	// entry : ã‚¨ãƒ³ãƒˆãƒªã®åå‰
+	// def_value : è©²å½“ã®ã‚¨ãƒ³ãƒˆãƒªãŒãªã‹ã£ãŸå ´åˆã€ãã®ä»–ã‚¨ãƒ©ãƒ¼ã®å ´åˆã«å–å¾—ã™ã‚‹ãƒ‡ãƒ•ã‚©ãƒ«ãƒˆã®å€¤
+	// ret : èª­ã¿å–ã£ãŸå€¤ã€‚ã‚¨ãƒ©ãƒ¼ã®å ´åˆã¯def_valueã«è¨­å®šã—ãŸå€¤
 	WString GetString( const WString& entry , const WString& def_value );
 
-	//WString’l‚Ì“Ç‚İ‘‚«
-	// entry : ƒGƒ“ƒgƒŠ‚Ì–¼‘O
-	// value : İ’è‚·‚é’l
-	// ret : ¬Œ÷^
+	//WStringå€¤ã®èª­ã¿æ›¸ã
+	// entry : ã‚¨ãƒ³ãƒˆãƒªã®åå‰
+	// value : è¨­å®šã™ã‚‹å€¤
+	// ret : æˆåŠŸæ™‚çœŸ
 	bool SetString( const WString& entry , const WString& value );
 
-	//string_vector’l‚Ì“Ç‚İ‘‚«
-	// entry : ƒGƒ“ƒgƒŠ‚Ì–¼‘O
-	// ret_value : “Ç‚İæ‚Á‚½’l
-	// ret : ¬Œ÷^
+	//string_vectorå€¤ã®èª­ã¿æ›¸ã
+	// entry : ã‚¨ãƒ³ãƒˆãƒªã®åå‰
+	// ret_value : èª­ã¿å–ã£ãŸå€¤
+	// ret : æˆåŠŸæ™‚çœŸ
 	bool GetMultiString( const WString& entry , WStringVector& ret_value );
 
-	//string_vector’l‚Ì“Ç‚İ‘‚«
-	// entry : ƒGƒ“ƒgƒŠ‚Ì–¼‘O
-	// value : İ’è‚·‚é’l
-	// ret : ¬Œ÷^
+	//string_vectorå€¤ã®èª­ã¿æ›¸ã
+	// entry : ã‚¨ãƒ³ãƒˆãƒªã®åå‰
+	// value : è¨­å®šã™ã‚‹å€¤
+	// ret : æˆåŠŸæ™‚çœŸ
 	bool SetMultiString( const WString& entry , const WStringVector& value );
 
-	//ƒGƒ“ƒgƒŠ‚Ìíœ
-	// entry : ƒGƒ“ƒgƒŠ‚Ì–¼‘O
-	// ret : ¬Œ÷^
+	//ã‚¨ãƒ³ãƒˆãƒªã®å‰Šé™¤
+	// entry : ã‚¨ãƒ³ãƒˆãƒªã®åå‰
+	// ret : æˆåŠŸæ™‚çœŸ
 	bool DeleteEntry( const WString& entry );
 
-	//ƒŒƒWƒXƒgƒŠ‚Ì’l‚Ìˆê——‚ğæ“¾‚·‚é
+	//ãƒ¬ã‚¸ã‚¹ãƒˆãƒªã®å€¤ã®ä¸€è¦§ã‚’å–å¾—ã™ã‚‹
 	bool EnumValues( WStringDeque& retValues );
 
 private:
@@ -100,7 +100,7 @@ private:
 
 protected:
 
-	//ƒŒƒWƒXƒgƒŠ‚Ìƒnƒ“ƒhƒ‹
+	//ãƒ¬ã‚¸ã‚¹ãƒˆãƒªã®ãƒãƒ³ãƒ‰ãƒ«
 	HKEY MyKey;
 
 };

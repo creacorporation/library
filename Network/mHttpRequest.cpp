@@ -1,12 +1,12 @@
-//----------------------------------------------------------------------------
-// HTTPƒAƒNƒZƒX
+ï»¿//----------------------------------------------------------------------------
+// HTTPã‚¢ã‚¯ã‚»ã‚¹
 // Copyright (C) 2013 Fingerling. All rights reserved. 
 // Copyright (C) 2019-2020 Crea Inc. All rights reserved.
 // This program is released under the MIT License. 
 // see http://opensource.org/licenses/mit-license.php
-// ’˜ìŒ •\¦‚âƒ‰ƒCƒZƒ“ƒX‚Ì‰ü•Ï‚Í‹Ö~‚³‚ê‚Ä‚¢‚Ü‚·B
-// ‚±‚Ìƒ\[ƒXƒR[ƒh‚ÉŠÖ‚µ‚ÄAã‹Lƒ‰ƒCƒZƒ“ƒXˆÈŠO‚ÌŒ_–ñ“™‚ÍˆêØ‘¶İ‚µ‚Ü‚¹‚ñB
-// (‰½‚ç‚©‚ÌŒ_–ñ‚ª‚ ‚éê‡‚Å‚àA–{ƒ\[ƒXƒR[ƒh‚Í‚»‚Ì‘ÎÛŠO‚Æ‚È‚è‚Ü‚·)
+// è‘—ä½œæ¨©è¡¨ç¤ºã‚„ãƒ©ã‚¤ã‚»ãƒ³ã‚¹ã®æ”¹å¤‰ã¯ç¦æ­¢ã•ã‚Œã¦ã„ã¾ã™ã€‚
+// ã“ã®ã‚½ãƒ¼ã‚¹ã‚³ãƒ¼ãƒ‰ã«é–¢ã—ã¦ã€ä¸Šè¨˜ãƒ©ã‚¤ã‚»ãƒ³ã‚¹ä»¥å¤–ã®å¥‘ç´„ç­‰ã¯ä¸€åˆ‡å­˜åœ¨ã—ã¾ã›ã‚“ã€‚
+// (ä½•ã‚‰ã‹ã®å¥‘ç´„ãŒã‚ã‚‹å ´åˆã§ã‚‚ã€æœ¬ã‚½ãƒ¼ã‚¹ã‚³ãƒ¼ãƒ‰ã¯ãã®å¯¾è±¡å¤–ã¨ãªã‚Šã¾ã™)
 //----------------------------------------------------------------------------
 
 #include "mStandard.h"
@@ -22,19 +22,19 @@ mHttpRequest::mHttpRequest()
 
 mHttpRequest::~mHttpRequest()
 {
-	//‘—MƒLƒ…[‚ğÌ‚Ä‚ÄAƒnƒ“ƒhƒ‹‚ğ•Â‚¶‚é
+	//é€ä¿¡ã‚­ãƒ¥ãƒ¼ã‚’æ¨ã¦ã¦ã€ãƒãƒ³ãƒ‰ãƒ«ã‚’é–‰ã˜ã‚‹
 	{
 		mCriticalSectionTicket ticket( MyCritical );
-		MyRequestStatus = RequestStatus::REQUEST_FINISHED;	//”O‚Ì‚½‚ßƒXƒe[ƒ^ƒX‚ğŠ®—¹‚É‚·‚é
+		MyRequestStatus = RequestStatus::REQUEST_FINISHED;	//å¿µã®ãŸã‚ã‚¹ãƒ†ãƒ¼ã‚¿ã‚¹ã‚’å®Œäº†ã«ã™ã‚‹
 
-		//‘—MƒLƒ…[”jŠü
+		//é€ä¿¡ã‚­ãƒ¥ãƒ¼ç ´æ£„
 		for( BufferQueue::iterator itr = MyWriteQueue.begin() ; itr != MyWriteQueue.end() ; itr++ )
 		{
 			mDelete[] itr->Buffer;
 		}
 		MyWriteQueue.clear();
 
-		//ƒnƒ“ƒhƒ‹”jŠü
+		//ãƒãƒ³ãƒ‰ãƒ«ç ´æ£„
 		if( MyRequest )
 		{
 			WinHttpCloseHandle( MyRequest );
@@ -42,7 +42,7 @@ mHttpRequest::~mHttpRequest()
 		}
 	}
 
-	//WinHTTP‚ÌƒAƒNƒeƒBƒu‚ÈƒLƒ…[‚ªJ‚¯‚é‚Ì‚ğ‘Ò‚Â
+	//WinHTTPã®ã‚¢ã‚¯ãƒ†ã‚£ãƒ–ãªã‚­ãƒ¥ãƒ¼ãŒæŒã‘ã‚‹ã®ã‚’å¾…ã¤
 	DWORD timer = 0;
 	while( 1 )
 	{
@@ -60,7 +60,7 @@ mHttpRequest::~mHttpRequest()
 		}
 	}
 
-	//WinHTTP‚©‚çƒLƒ…[‚ªJ‚¯‚½‚Ì‚ÅÌ‚Ä‚é
+	//WinHTTPã‹ã‚‰ã‚­ãƒ¥ãƒ¼ãŒæŒã‘ãŸã®ã§æ¨ã¦ã‚‹
 	{
 		for( BufferQueue::iterator itr = MyReadQueue.begin() ; itr != MyReadQueue.end() ; itr++ )
 		{
@@ -75,29 +75,29 @@ bool mHttpRequest::SetHeader( const WString& header )
 {
 	if( MyRequestStatus != RequestStatus::REQUEST_PREEXEC )
 	{
-		RaiseError( g_ErrorLogger , 0 , L"Œ»İƒwƒbƒ_‚ğ’Ç‰Á‚·‚é‚±‚Æ‚Í‚Å‚«‚Ü‚¹‚ñ" );
+		RaiseError( g_ErrorLogger , 0 , L"ç¾åœ¨ãƒ˜ãƒƒãƒ€ã‚’è¿½åŠ ã™ã‚‹ã“ã¨ã¯ã§ãã¾ã›ã‚“" );
 		return false;
 	}
 
-	//Šeƒwƒbƒ_‚ğ’Ç‰Á
+	//å„ãƒ˜ãƒƒãƒ€ã‚’è¿½åŠ 
 	if( !WinHttpAddRequestHeaders( MyRequest , header.c_str() , (DWORD)header.size() , WINHTTP_ADDREQ_FLAG_ADD | WINHTTP_ADDREQ_FLAG_REPLACE ) )
 	{
-		RaiseError( g_ErrorLogger , 0 , L"HTTPƒwƒbƒ_‚Ì’Ç‰Á‚ª¸”s‚µ‚Ü‚µ‚½" );
+		RaiseError( g_ErrorLogger , 0 , L"HTTPãƒ˜ãƒƒãƒ€ã®è¿½åŠ ãŒå¤±æ•—ã—ã¾ã—ãŸ" );
 		return false;
 	}
 	return true;
 }
 
-//‚P•¶š‘‚«‚İ
+//ï¼‘æ–‡å­—æ›¸ãè¾¼ã¿
 bool mHttpRequest::Write( INT data )
 {
 	if( !IsWritable() )
 	{
-		RaiseError( g_ErrorLogger , 0 , L"‘‚«‚İ‚Å‚«‚È‚¢ó‘Ô‚Å‚·" );
+		RaiseError( g_ErrorLogger , 0 , L"æ›¸ãè¾¼ã¿ã§ããªã„çŠ¶æ…‹ã§ã™" );
 		return false;
 	}
 
-	//‚à‚µƒLƒƒƒbƒVƒ…‚ª‚È‚¢‚æ‚¤‚È‚çì¬
+	//ã‚‚ã—ã‚­ãƒ£ãƒƒã‚·ãƒ¥ãŒãªã„ã‚ˆã†ãªã‚‰ä½œæˆ
 	if( MyWriteCacheHead.get() == nullptr )
 	{
 		MyWriteCacheHead.reset( mNew BYTE[ MyOption.SendPacketSize ] );
@@ -105,19 +105,19 @@ bool mHttpRequest::Write( INT data )
 		MyWriteCacheWritten = 0;
 	}
 
-	//ƒLƒƒƒbƒVƒ…‚Ìc‚è‚ª‚ ‚éH
+	//ã‚­ãƒ£ãƒƒã‚·ãƒ¥ã®æ®‹ã‚ŠãŒã‚ã‚‹ï¼Ÿ
 	if( MyWriteCacheRemain == 0 )
 	{
-		RaiseAssert( g_ErrorLogger , 0 , L"‘‚«‚İƒLƒƒƒbƒVƒ…‚Ìc—Ê‚ª‚ ‚è‚Ü‚¹‚ñ" );
+		RaiseAssert( g_ErrorLogger , 0 , L"æ›¸ãè¾¼ã¿ã‚­ãƒ£ãƒƒã‚·ãƒ¥ã®æ®‹é‡ãŒã‚ã‚Šã¾ã›ã‚“" );
 		return false;
 	}
 
-	//ƒLƒƒƒbƒVƒ…‚É‘‚ñ‚Å
+	//ã‚­ãƒ£ãƒƒã‚·ãƒ¥ã«æ›¸è¾¼ã‚“ã§
 	MyWriteCacheHead[ MyWriteCacheWritten ] = (BYTE)data;
 	MyWriteCacheRemain--;
 	MyWriteCacheWritten++;
 
-	//ƒLƒƒƒbƒVƒ…‚ª–ƒ^ƒ“‚¾‚Á‚½‚ç©“®‘—M
+	//ã‚­ãƒ£ãƒƒã‚·ãƒ¥ãŒæº€ã‚¿ãƒ³ã ã£ãŸã‚‰è‡ªå‹•é€ä¿¡
 	if( MyWriteCacheRemain == 0 )
 	{
 		return FlushCache();
@@ -125,7 +125,7 @@ bool mHttpRequest::Write( INT data )
 	return true;
 }
 
-//ƒLƒƒƒbƒVƒ…‚ğ‘‚«‚İ
+//ã‚­ãƒ£ãƒƒã‚·ãƒ¥ã‚’æ›¸ãè¾¼ã¿
 bool mHttpRequest::FlushCache( void )
 {
 	if( MyWriteCacheHead )
@@ -143,11 +143,11 @@ bool mHttpRequest::FlushCache( void )
 		MyWriteCacheRemain = 0;
 		MyWriteCacheWritten = 0;	
 
-		return ExecWriteQueue();	//©¦ƒNƒŠƒeƒBƒJƒ‹ƒZƒNƒVƒ‡ƒ““à‚ÅÀs
+		return ExecWriteQueue();	//â†â€»ã‚¯ãƒªãƒ†ã‚£ã‚«ãƒ«ã‚»ã‚¯ã‚·ãƒ§ãƒ³å†…ã§å®Ÿè¡Œ
 	}
 	else
 	{
-		return ExecWriteQueue();	//©¦ƒNƒŠƒeƒBƒJƒ‹ƒZƒNƒVƒ‡ƒ“ŠO‚ÅÀs
+		return ExecWriteQueue();	//â†â€»ã‚¯ãƒªãƒ†ã‚£ã‚«ãƒ«ã‚»ã‚¯ã‚·ãƒ§ãƒ³å¤–ã§å®Ÿè¡Œ
 	}
 }
 
@@ -160,29 +160,29 @@ bool mHttpRequest::ExecWriteQueue( void )
 	}
 	else
 	{
-		//ƒNƒŠƒeƒBƒJƒ‹ƒZƒNƒVƒ‡ƒ“
+		//ã‚¯ãƒªãƒ†ã‚£ã‚«ãƒ«ã‚»ã‚¯ã‚·ãƒ§ãƒ³
 		mCriticalSectionTicket ticket( MyCritical );
 		while( !MyWriteQueue.empty() )
 		{
 			BufferQueue::iterator itr = MyWriteQueue.begin();
 
-			//ƒLƒ…[“à‚Ì–¢‘—M‚ğ‡Ÿ‘—M‚·‚é
+			//ã‚­ãƒ¥ãƒ¼å†…ã®æœªé€ä¿¡ã‚’é †æ¬¡é€ä¿¡ã™ã‚‹
 			if( WinHttpWriteData( MyRequest , itr->Buffer , itr->Size , 0 ) )
 			{
-				//E’ÊM‚ÍŠJn‚µ‚½‚¾‚¯‚ÅŠ®—¹‚µ‚Ä‚¢‚é‚Æ‚ÍŒÀ‚ç‚È‚¢
-				//Eis’†ó‘Ô‚É‚·‚é
-				//EŒã‚Ù‚ÇWinHttp‚©‚ç‚ÌƒR[ƒ‹ƒoƒbƒN‚ª‚ ‚é
+				//ãƒ»é€šä¿¡ã¯é–‹å§‹ã—ãŸã ã‘ã§å®Œäº†ã—ã¦ã„ã‚‹ã¨ã¯é™ã‚‰ãªã„
+				//ãƒ»é€²è¡Œä¸­çŠ¶æ…‹ã«ã™ã‚‹
+				//ãƒ»å¾Œã»ã©WinHttpã‹ã‚‰ã®ã‚³ãƒ¼ãƒ«ãƒãƒƒã‚¯ãŒã‚ã‚‹
 				itr->Status = BufferQueueStatus::BUFFERQUEUE_PROCEEDING;
 			}
 			else
 			{
-				//¸”s
-				//EƒGƒ‰[ó‘Ô‚É‚·‚é
-				//EWinHttp‚©‚ç‚ÌƒR[ƒ‹ƒoƒbƒN‚Í‚È‚¢‚©‚çA©‚çƒR[ƒ‹ƒoƒbƒN‚ğŒÄ‚Ño‚·
+				//å¤±æ•—
+				//ãƒ»ã‚¨ãƒ©ãƒ¼çŠ¶æ…‹ã«ã™ã‚‹
+				//ãƒ»WinHttpã‹ã‚‰ã®ã‚³ãƒ¼ãƒ«ãƒãƒƒã‚¯ã¯ãªã„ã‹ã‚‰ã€è‡ªã‚‰ã‚³ãƒ¼ãƒ«ãƒãƒƒã‚¯ã‚’å‘¼ã³å‡ºã™
 				itr->ErrorCode = GetLastError();
 				itr->Status = BufferQueueStatus::BUFFERQUEUE_ERROR;
 
-				RaiseAssert( g_ErrorLogger , 0 , L"‘—Mˆ—‚ªŠJn‚µ‚Ü‚¹‚ñ‚Å‚µ‚½" );
+				RaiseAssert( g_ErrorLogger , 0 , L"é€ä¿¡å‡¦ç†ãŒé–‹å§‹ã—ã¾ã›ã‚“ã§ã—ãŸ" );
 				return false;
 			}
 			MyWriteActiveQueue.push_back( std::move( MyWriteQueue.front() ) );
@@ -229,7 +229,7 @@ static void AsyncEvent( mHttpRequest& req , const mHttpRequest::NotifyOption::No
 	}
 	else
 	{
-		RaiseAssert( g_ErrorLogger , 0 , L"”ñ“¯Šú‘€ì‚ÌŠ®—¹’Ê’m•û–@‚ª•s³‚Å‚·" , info.Mode );
+		RaiseAssert( g_ErrorLogger , 0 , L"éåŒæœŸæ“ä½œã®å®Œäº†é€šçŸ¥æ–¹æ³•ãŒä¸æ­£ã§ã™" , info.Mode );
 	}
 }
 
@@ -242,27 +242,27 @@ bool mHttpRequest::CompleteWriteQueue( DWORD written_size )
 		{
 			if( MyWriteActiveQueue.empty() )
 			{
-				RaiseAssert( g_ErrorLogger , 0 , L"‘‚«‚İƒLƒ…[‚ª‚È‚¢‚Ì‚ÉŠ®—¹’Ê’m‚ğóM‚µ‚Ü‚µ‚½" );
+				RaiseAssert( g_ErrorLogger , 0 , L"æ›¸ãè¾¼ã¿ã‚­ãƒ¥ãƒ¼ãŒãªã„ã®ã«å®Œäº†é€šçŸ¥ã‚’å—ä¿¡ã—ã¾ã—ãŸ" );
 				return false;
 			}
 
-			//“]‘—Ï‚İƒTƒCƒY‚ğXV
+			//è»¢é€æ¸ˆã¿ã‚µã‚¤ã‚ºã‚’æ›´æ–°
 			BufferQueueEntry* entry = &MyWriteActiveQueue.front();
 			DWORD space = entry->Size - entry->BytesTransfered;
 			if( written_size <= space )
 			{
-				//Œ»İ‚ÌƒLƒ…[‚Ì”ÍˆÍ‚ÅŠ®—¹‚µ‚Ä‚¢‚éê‡
+				//ç¾åœ¨ã®ã‚­ãƒ¥ãƒ¼ã®ç¯„å›²ã§å®Œäº†ã—ã¦ã„ã‚‹å ´åˆ
 				entry->BytesTransfered += written_size;
 				written_size = 0;
 			}
 			else
 			{
-				//Ÿ‚ÌƒLƒ…[‚É‚Ü‚½‚¢‚ÅŠ®—¹‚µ‚Ä‚¢‚éê‡
+				//æ¬¡ã®ã‚­ãƒ¥ãƒ¼ã«ã¾ãŸã„ã§å®Œäº†ã—ã¦ã„ã‚‹å ´åˆ
 				entry->BytesTransfered = entry->Size;
 				written_size -= space;					 
 			}
 
-			//Š®—¹‚µ‚Ä‚¢‚ê‚ÎƒLƒ…[‚©‚çíœ‚·‚é
+			//å®Œäº†ã—ã¦ã„ã‚Œã°ã‚­ãƒ¥ãƒ¼ã‹ã‚‰å‰Šé™¤ã™ã‚‹
 			if( entry->BytesTransfered == entry->Size )
 			{
 				entry->Status = BufferQueueStatus::BUFFERQUEUE_COMPLETED;
@@ -284,16 +284,16 @@ bool mHttpRequest::IsWritable( void )const
 	return false;
 }
 
-//ƒŠƒNƒGƒXƒg‚Ì‘—M
+//ãƒªã‚¯ã‚¨ã‚¹ãƒˆã®é€ä¿¡
 bool mHttpRequest::Execute( DWORD AdditionalDataSize )
 {
 	if( MyRequestStatus != RequestStatus::REQUEST_PREEXEC )
 	{
-		RaiseError( g_ErrorLogger , 0 , L"“ñd‚ÉƒŠƒNƒGƒXƒg‚ğ‘—M‚µ‚æ‚¤‚Æ‚µ‚Ü‚µ‚½" );
+		RaiseError( g_ErrorLogger , 0 , L"äºŒé‡ã«ãƒªã‚¯ã‚¨ã‚¹ãƒˆã‚’é€ä¿¡ã—ã‚ˆã†ã¨ã—ã¾ã—ãŸ" );
 		return false;
 	}
 
-	//ƒf[ƒ^ƒTƒCƒY‚ÌZ’è
+	//ãƒ‡ãƒ¼ã‚¿ã‚µã‚¤ã‚ºã®ç®—å®š
 	DWORD TotalPostLen = AdditionalDataSize;
 	for( BufferQueue::const_iterator itr = MyWriteActiveQueue.begin() ; itr != MyWriteActiveQueue.end() ; itr++ )
 	{
@@ -307,7 +307,7 @@ bool mHttpRequest::Execute( DWORD AdditionalDataSize )
 		case RequestVerb::VERB_PUT:
 			break;
 		default:
-			RaiseError( g_ErrorLogger , 0 , L"ƒƒbƒZ[ƒWƒ{ƒfƒB‚Éƒf[ƒ^‚ªŠÜ‚Ü‚ê‚Ä‚¢‚Ü‚·" );
+			RaiseError( g_ErrorLogger , 0 , L"ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸ãƒœãƒ‡ã‚£ã«ãƒ‡ãƒ¼ã‚¿ãŒå«ã¾ã‚Œã¦ã„ã¾ã™" );
 			return false;
 		}
 	}
@@ -320,17 +320,17 @@ bool mHttpRequest::Execute( DWORD AdditionalDataSize )
 		MyRequestStatus = RequestStatus::REQUEST_CLOSED;
 	}
 
-	//ƒŠƒNƒGƒXƒg‘—M
+	//ãƒªã‚¯ã‚¨ã‚¹ãƒˆé€ä¿¡
 	if( !WinHttpSendRequest( MyRequest , WINHTTP_NO_ADDITIONAL_HEADERS , 0 , WINHTTP_NO_REQUEST_DATA , 0 , TotalPostLen , (DWORD_PTR)this ) )
 	{
-		RaiseError( g_ErrorLogger , 0 , L"ƒŠƒNƒGƒXƒg‚Ì‘—M‚ª¸”s‚µ‚Ü‚µ‚½" );
+		RaiseError( g_ErrorLogger , 0 , L"ãƒªã‚¯ã‚¨ã‚¹ãƒˆã®é€ä¿¡ãŒå¤±æ•—ã—ã¾ã—ãŸ" );
 		return false;
 	}
 
-	//’™‚ß‚Ä‚ ‚éƒf[ƒ^‚ğ—¬‚·
+	//è²¯ã‚ã¦ã‚ã‚‹ãƒ‡ãƒ¼ã‚¿ã‚’æµã™
 	if( !FlushCache() )
 	{
-		RaiseError( g_ErrorLogger , 0 , L"ƒŠƒNƒGƒXƒg‚Ì‘—M‚ÉƒLƒƒƒbƒVƒ…‚ğ‘—o‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½" );
+		RaiseError( g_ErrorLogger , 0 , L"ãƒªã‚¯ã‚¨ã‚¹ãƒˆã®é€ä¿¡æ™‚ã«ã‚­ãƒ£ãƒƒã‚·ãƒ¥ã‚’é€å‡ºã§ãã¾ã›ã‚“ã§ã—ãŸ" );
 		return false;
 	}
 	return true;
@@ -340,7 +340,7 @@ bool mHttpRequest::CompleteReadQueue( BYTE* buffer , DWORD bytes_received )
 {
 	mCriticalSectionTicket ticket( MyCritical );
 
-	//óM’†‚Ìƒoƒbƒtƒ@ˆê——‚©‚çAŠ®—¹‚µ‚½ƒoƒbƒtƒ@‚ğ’T‚·ƒ‰ƒ€ƒ_
+	//å—ä¿¡ä¸­ã®ãƒãƒƒãƒ•ã‚¡ä¸€è¦§ã‹ã‚‰ã€å®Œäº†ã—ãŸãƒãƒƒãƒ•ã‚¡ã‚’æ¢ã™ãƒ©ãƒ ãƒ€
 	auto CompleteQueueEntry = [this]( BYTE* buffer , DWORD bytes_received ) -> bool
 	{
 		for( BufferQueue::iterator itr = MyReadActiveQueue.begin() ; itr != MyReadActiveQueue.end() ; itr++ )
@@ -355,39 +355,39 @@ bool mHttpRequest::CompleteReadQueue( BYTE* buffer , DWORD bytes_received )
 		return false;
 	};
 
-	//Š®—¹‚µ‚½ƒoƒbƒtƒ@‚ğ“Á’è‚µAƒXƒe[ƒ^ƒX‚ğ‘‚«Š·‚¦‚é
+	//å®Œäº†ã—ãŸãƒãƒƒãƒ•ã‚¡ã‚’ç‰¹å®šã—ã€ã‚¹ãƒ†ãƒ¼ã‚¿ã‚¹ã‚’æ›¸ãæ›ãˆã‚‹
 	if( !CompleteQueueEntry( buffer , bytes_received ) )
 	{
-		RaiseError( g_ErrorLogger , 0 , L"“Ç‚İæ‚èŠ®—¹‚µ‚½ƒoƒbƒtƒ@‚ªŒ©“–‚½‚è‚Ü‚¹‚ñ" );
+		RaiseError( g_ErrorLogger , 0 , L"èª­ã¿å–ã‚Šå®Œäº†ã—ãŸãƒãƒƒãƒ•ã‚¡ãŒè¦‹å½“ãŸã‚Šã¾ã›ã‚“" );
 	}
 
-	//æ“ª‚©‚ç‡‚ÉƒXƒLƒƒƒ“‚µAŠ®—¹‚µ‚Ä‚¢‚ê‚Îƒ†[ƒU[‚Éˆø‚«“n‚µ‰Â”\‚Èƒf[ƒ^‚ª‚ ‚é
-	//ˆê“x‚Å‚àŠ®—¹‚µ‚Ä‚¢‚È‚¢ƒLƒ…[‚É“–‚½‚Á‚½‚çA‚»‚êˆÈ~‚ÌƒLƒ…[‚Í‚Ü‚¾óM’†‚È‚Ì‚Åƒ†[ƒU[‚É‚Í“n‚¹‚È‚¢
+	//å…ˆé ­ã‹ã‚‰é †ã«ã‚¹ã‚­ãƒ£ãƒ³ã—ã€å®Œäº†ã—ã¦ã„ã‚Œã°ãƒ¦ãƒ¼ã‚¶ãƒ¼ã«å¼•ãæ¸¡ã—å¯èƒ½ãªãƒ‡ãƒ¼ã‚¿ãŒã‚ã‚‹
+	//ä¸€åº¦ã§ã‚‚å®Œäº†ã—ã¦ã„ãªã„ã‚­ãƒ¥ãƒ¼ã«å½“ãŸã£ãŸã‚‰ã€ãã‚Œä»¥é™ã®ã‚­ãƒ¥ãƒ¼ã¯ã¾ã å—ä¿¡ä¸­ãªã®ã§ãƒ¦ãƒ¼ã‚¶ãƒ¼ã«ã¯æ¸¡ã›ãªã„
 
-	bool rc = false;	//ƒ†[ƒU[‚Éˆø‚«“n‚µ‰Â”\‚Èƒf[ƒ^‚Í‚ ‚Á‚½‚©H
+	bool rc = false;	//ãƒ¦ãƒ¼ã‚¶ãƒ¼ã«å¼•ãæ¸¡ã—å¯èƒ½ãªãƒ‡ãƒ¼ã‚¿ã¯ã‚ã£ãŸã‹ï¼Ÿ
 	while( !MyReadActiveQueue.empty() )
 	{
 		BufferQueueEntry* front = &MyReadActiveQueue.front();
 		if( front->Status == BufferQueueStatus::BUFFERQUEUE_COMPLETED )
 		{
-			//Š®—¹‚µ‚Ä‚¢‚é
+			//å®Œäº†ã—ã¦ã„ã‚‹
 			if( front->BytesTransfered )
 			{
-				//—LŒø‚Èƒf[ƒ^‚ğ‚Á‚½ƒoƒbƒtƒ@
+				//æœ‰åŠ¹ãªãƒ‡ãƒ¼ã‚¿ã‚’æŒã£ãŸãƒãƒƒãƒ•ã‚¡
 				MyReadQueue.push_back( *front );
 				MyReadActiveQueue.pop_front();
 				rc = true;
 			}
 			else
 			{
-				//‰½‚à“Ç‚İæ‚ç‚¸Š®—¹‚µ‚½ƒoƒbƒtƒ@‚ÍÌ‚Ä‚é
+				//ä½•ã‚‚èª­ã¿å–ã‚‰ãšå®Œäº†ã—ãŸãƒãƒƒãƒ•ã‚¡ã¯æ¨ã¦ã‚‹
 				mDelete[] front->Buffer;
 				MyReadActiveQueue.pop_front();
 			}
 		}
 		else
 		{
-			//Š®—¹‚µ‚Ä‚¢‚È‚¢ƒLƒ…[‚ğŒ©‚Â‚¯‚½‚©‚ç”²‚¯‚é
+			//å®Œäº†ã—ã¦ã„ãªã„ã‚­ãƒ¥ãƒ¼ã‚’è¦‹ã¤ã‘ãŸã‹ã‚‰æŠœã‘ã‚‹
 			break;
 		}
 	}
@@ -400,14 +400,14 @@ bool mHttpRequest::StartReceiveResponse( void )
 
 	if( !WinHttpReceiveResponse( MyRequest , nullptr ) )
 	{
-		RaiseError( g_ErrorLogger , 0 , L"ƒŒƒXƒ|ƒ“ƒX‚ÌóM‚ª¸”s‚µ‚Ü‚µ‚½" );
+		RaiseError( g_ErrorLogger , 0 , L"ãƒ¬ã‚¹ãƒãƒ³ã‚¹ã®å—ä¿¡ãŒå¤±æ•—ã—ã¾ã—ãŸ" );
 		return false;
 	}
 
 	MyRequestStatus = RequestStatus::REQUEST_RECEIVING;
 	if( !PrepareReadBuffer( MyOption.RecievePacketMaxActive ) )
 	{
-		RaiseError( g_ErrorLogger , 0 , L"“Ç‚İæ‚è—p‚Ìƒoƒbƒtƒ@‚Ì€”õ‚ª¸”s‚µ‚Ü‚µ‚½" );
+		RaiseError( g_ErrorLogger , 0 , L"èª­ã¿å–ã‚Šç”¨ã®ãƒãƒƒãƒ•ã‚¡ã®æº–å‚™ãŒå¤±æ•—ã—ã¾ã—ãŸ" );
 		return false;
 	}
 
@@ -418,28 +418,28 @@ bool mHttpRequest::PrepareReadBuffer( DWORD count )
 {
 	mCriticalSectionTicket ticket( MyCritical );
 
-	//ƒTƒCƒY‚ª‚·‚Å‚ÉMAX‚È‚ç‚ÎV‚½‚ÉÏ‚Ü‚È‚¢
+	//ã‚µã‚¤ã‚ºãŒã™ã§ã«MAXãªã‚‰ã°æ–°ãŸã«ç©ã¾ãªã„
 	if( count <= MyReadActiveQueue.size() )
 	{
 		return true;
 	}
-	//“Ç‚İæ‚è’†‚Å‚È‚¢‚È‚ç‚ÎV‚½‚ÉÏ‚Ü‚È‚¢
+	//èª­ã¿å–ã‚Šä¸­ã§ãªã„ãªã‚‰ã°æ–°ãŸã«ç©ã¾ãªã„
 	if( MyRequestStatus != RequestStatus::REQUEST_RECEIVING )
 	{
 		return true;
 	}
-	//MyIsEOF‚ªƒZƒbƒg‚³‚ê‚Ä‚¢‚½‚çV‚½‚ÉÏ‚Ü‚È‚¢
-	//¦mHttpRequest‚É‚¨‚¢‚Ä‚ÍAMyIsEOF‚ÍƒGƒ‰[”­¶‚É‚æ‚è’ÊM‚ª‘Å‚¿Ø‚ç‚ê‚½ê‡‚ÉƒZƒbƒg‚·‚é
+	//MyIsEOFãŒã‚»ãƒƒãƒˆã•ã‚Œã¦ã„ãŸã‚‰æ–°ãŸã«ç©ã¾ãªã„
+	//â€»mHttpRequestã«ãŠã„ã¦ã¯ã€MyIsEOFã¯ã‚¨ãƒ©ãƒ¼ç™ºç”Ÿã«ã‚ˆã‚Šé€šä¿¡ãŒæ‰“ã¡åˆ‡ã‚‰ã‚ŒãŸå ´åˆã«ã‚»ãƒƒãƒˆã™ã‚‹
 	if( MyIsEOF )
 	{
 		return true;
 	}
 
-	//ƒTƒCƒY‚É•s‘«‚·‚é•ª‚¾‚¯Ï‚Ş
+	//ã‚µã‚¤ã‚ºã«ä¸è¶³ã™ã‚‹åˆ†ã ã‘ç©ã‚€
 	DWORD create_queue_count = count - (DWORD)MyReadActiveQueue.size();
 	for( DWORD i = 0 ; i < create_queue_count ; i++ )
 	{
-		//óMƒoƒbƒtƒ@‚ğ¶¬‚·‚é
+		//å—ä¿¡ãƒãƒƒãƒ•ã‚¡ã‚’ç”Ÿæˆã™ã‚‹
 		BufferQueueEntry entry;
 		entry.Buffer = new BYTE[ MyOption.RecievePacketSize ];
 		entry.Size = MyOption.RecievePacketSize;
@@ -455,11 +455,11 @@ bool mHttpRequest::PrepareReadBuffer( DWORD count )
 
 			if( GetLastError() == ERROR_WINHTTP_INCORRECT_HANDLE_STATE )
 			{
-				//ƒoƒbƒtƒ@Ï‚İ‰ß‚¬‚Æv‚í‚ê‚é‚½‚ßƒGƒ‰[‚É‚Í‚µ‚È‚¢
+				//ãƒãƒƒãƒ•ã‚¡ç©ã¿éãã¨æ€ã‚ã‚Œã‚‹ãŸã‚ã‚¨ãƒ©ãƒ¼ã«ã¯ã—ãªã„
 				return true;
 			}
-			//‚»‚Ì‘¼‚ÍƒGƒ‰[
-			RaiseError( g_ErrorLogger , 0 , L"“Ç‚İæ‚è—p‚Ìƒoƒbƒtƒ@‚Ì€”õ‚ª¸”s‚µ‚Ü‚µ‚½" );
+			//ãã®ä»–ã¯ã‚¨ãƒ©ãƒ¼
+			RaiseError( g_ErrorLogger , 0 , L"èª­ã¿å–ã‚Šç”¨ã®ãƒãƒƒãƒ•ã‚¡ã®æº–å‚™ãŒå¤±æ•—ã—ã¾ã—ãŸ" );
 			return false;
 		}
 	}
@@ -478,8 +478,8 @@ void __stdcall mHttpRequest::WinhttpStatusCallback(
 
 	if( dwInternetStatus == WINHTTP_CALLBACK_STATUS_WRITE_COMPLETE )
 	{
-		//‘‚«‚İ‚ªŠ®—¹‚µ‚½
-		//¦‚ ‚é‘‚«‚İƒoƒbƒtƒ@‚Ì‘—M‚ªŠ®—¹‚µ‚½‚Æ‚¢‚¤ˆÓ–¡
+		//æ›¸ãè¾¼ã¿ãŒå®Œäº†ã—ãŸ
+		//â€»ã‚ã‚‹æ›¸ãè¾¼ã¿ãƒãƒƒãƒ•ã‚¡ã®é€ä¿¡ãŒå®Œäº†ã—ãŸã¨ã„ã†æ„å‘³
 		DWORD bytes_written = *(DWORD*)lpvStatusInformation;
 		obj->CompleteWriteQueue( bytes_written );
 
@@ -489,19 +489,19 @@ void __stdcall mHttpRequest::WinhttpStatusCallback(
 	}
 	else if( dwInternetStatus == WINHTTP_CALLBACK_STATUS_SENDREQUEST_COMPLETE )
 	{
-		//‘—Mˆ—‚ªŠ®—¹‚µ‚½
-		//¦‚ ‚é‘‚«‚İƒoƒbƒtƒ@‚Ì‘—M‚ªŠ®—¹‚µ‚½‚Æ‚¢‚¤ˆÓ–¡‚Å‚Í‚È‚­AHTTPƒŠƒNƒGƒXƒg‘S‘Ì‚Ì‘—M‚ªŠ®—¹‚µ‚½‚Æ‚¢‚¤ˆÓ–¡
+		//é€ä¿¡å‡¦ç†ãŒå®Œäº†ã—ãŸ
+		//â€»ã‚ã‚‹æ›¸ãè¾¼ã¿ãƒãƒƒãƒ•ã‚¡ã®é€ä¿¡ãŒå®Œäº†ã—ãŸã¨ã„ã†æ„å‘³ã§ã¯ãªãã€HTTPãƒªã‚¯ã‚¨ã‚¹ãƒˆå…¨ä½“ã®é€ä¿¡ãŒå®Œäº†ã—ãŸã¨ã„ã†æ„å‘³
 		obj->StartReceiveResponse();
 	}
 	else if( dwInternetStatus == WINHTTP_CALLBACK_STATUS_DATA_AVAILABLE )
 	{
-		//ƒf[ƒ^‚ğ“Ç‚İæ‚è‰Â”\‚Å‚ ‚é
+		//ãƒ‡ãƒ¼ã‚¿ã‚’èª­ã¿å–ã‚Šå¯èƒ½ã§ã‚ã‚‹
 		DWORD bytes_received = *(DWORD*)lpvStatusInformation;
 		obj->PrepareReadBuffer( obj->MyOption.RecievePacketMaxActive );
 	}
 	else if( dwInternetStatus == WINHTTP_CALLBACK_STATUS_READ_COMPLETE )
 	{
-		//ƒf[ƒ^‚ğ“Ç‚İI‚í‚Á‚½
+		//ãƒ‡ãƒ¼ã‚¿ã‚’èª­ã¿çµ‚ã‚ã£ãŸ
 		DWORD bytes_received = dwStatusInformationLength;
 		if( bytes_received == 0 )
 		{
@@ -521,7 +521,7 @@ void __stdcall mHttpRequest::WinhttpStatusCallback(
 	}
 	else if( dwInternetStatus == WINHTTP_CALLBACK_STATUS_HEADERS_AVAILABLE )
 	{
-		//HTTPƒwƒbƒ_‚ª“Ç‚İæ‚è‰Â”\‚É‚È‚Á‚½
+		//HTTPãƒ˜ãƒƒãƒ€ãŒèª­ã¿å–ã‚Šå¯èƒ½ã«ãªã£ãŸ
 		obj->MyIsResponseHeaderAvailable = true;
 
 		NotifyFunctionOpt opt;
@@ -529,25 +529,25 @@ void __stdcall mHttpRequest::WinhttpStatusCallback(
 	}
 	else if( dwInternetStatus == WINHTTP_CALLBACK_STATUS_SECURE_FAILURE )
 	{
-		RaiseError( g_ErrorLogger , 0 , L"SSLƒGƒ‰[‚ª”­¶‚µ‚Ü‚µ‚½" , dwInternetStatus );
+		RaiseError( g_ErrorLogger , 0 , L"SSLã‚¨ãƒ©ãƒ¼ãŒç™ºç”Ÿã—ã¾ã—ãŸ" , dwInternetStatus );
 
 		DWORD flags = *(DWORD*)lpvStatusInformation;
 
 		NotifyFunctionOpt opt;
-		opt.OnSslError.IsCertRevocationFailed = ( flags & WINHTTP_CALLBACK_STATUS_FLAG_CERT_REV_FAILED );	//Ø–¾‘‚Ìƒ`ƒFƒbƒN‚ª‚Å‚«‚È‚©‚Á‚½
-		opt.OnSslError.IsInvalidCert = ( flags & WINHTTP_CALLBACK_STATUS_FLAG_INVALID_CERT );				//Ø–¾‘‚ªƒjƒZƒ‚ƒm
-		opt.OnSslError.IsCertRevoked = ( flags & WINHTTP_CALLBACK_STATUS_FLAG_CERT_REVOKED );				//Ø–¾‘‚ª¸Œø‚µ‚Ä‚é
-		opt.OnSslError.IsInvalidCA = ( flags & WINHTTP_CALLBACK_STATUS_FLAG_INVALID_CA );					//ƒIƒŒƒIƒŒØ–¾‘
-		opt.OnSslError.IsInvalidCommonName = ( flags & WINHTTP_CALLBACK_STATUS_FLAG_CERT_CN_INVALID );		//Ø–¾‘‚ÆURL‚ªˆê’v‚µ‚Ä‚È‚¢
-		opt.OnSslError.IsInvalidDate = ( flags & WINHTTP_CALLBACK_STATUS_FLAG_CERT_DATE_INVALID );			//Ø–¾‘‚ªŠúŒÀØ‚ê
-		opt.OnSslError.IsChannelError = ( flags & WINHTTP_CALLBACK_STATUS_FLAG_SECURITY_CHANNEL_ERROR );	//‚»‚Ì‘¼‚æ‚­‚í‚©‚ç‚È‚¢ƒGƒ‰[
+		opt.OnSslError.IsCertRevocationFailed = ( flags & WINHTTP_CALLBACK_STATUS_FLAG_CERT_REV_FAILED );	//è¨¼æ˜æ›¸ã®ãƒã‚§ãƒƒã‚¯ãŒã§ããªã‹ã£ãŸ
+		opt.OnSslError.IsInvalidCert = ( flags & WINHTTP_CALLBACK_STATUS_FLAG_INVALID_CERT );				//è¨¼æ˜æ›¸ãŒãƒ‹ã‚»ãƒ¢ãƒ
+		opt.OnSslError.IsCertRevoked = ( flags & WINHTTP_CALLBACK_STATUS_FLAG_CERT_REVOKED );				//è¨¼æ˜æ›¸ãŒå¤±åŠ¹ã—ã¦ã‚‹
+		opt.OnSslError.IsInvalidCA = ( flags & WINHTTP_CALLBACK_STATUS_FLAG_INVALID_CA );					//ã‚ªãƒ¬ã‚ªãƒ¬è¨¼æ˜æ›¸
+		opt.OnSslError.IsInvalidCommonName = ( flags & WINHTTP_CALLBACK_STATUS_FLAG_CERT_CN_INVALID );		//è¨¼æ˜æ›¸ã¨URLãŒä¸€è‡´ã—ã¦ãªã„
+		opt.OnSslError.IsInvalidDate = ( flags & WINHTTP_CALLBACK_STATUS_FLAG_CERT_DATE_INVALID );			//è¨¼æ˜æ›¸ãŒæœŸé™åˆ‡ã‚Œ
+		opt.OnSslError.IsChannelError = ( flags & WINHTTP_CALLBACK_STATUS_FLAG_SECURITY_CHANNEL_ERROR );	//ãã®ä»–ã‚ˆãã‚ã‹ã‚‰ãªã„ã‚¨ãƒ©ãƒ¼
 
 		AsyncEvent( *obj , obj->MyNotifyOption.OnSslError , opt );
-		obj->MyIsEOF = true;	//mHttpRequest‚É‚¨‚¢‚Ä‚ÍAMyIsEOF‚ÍƒGƒ‰[”­¶‚É‚æ‚è’ÊM‚ª‘Å‚¿Ø‚ç‚ê‚½ê‡‚ÉƒZƒbƒg‚·‚é
+		obj->MyIsEOF = true;	//mHttpRequestã«ãŠã„ã¦ã¯ã€MyIsEOFã¯ã‚¨ãƒ©ãƒ¼ç™ºç”Ÿã«ã‚ˆã‚Šé€šä¿¡ãŒæ‰“ã¡åˆ‡ã‚‰ã‚ŒãŸå ´åˆã«ã‚»ãƒƒãƒˆã™ã‚‹
 	}
 	else if( dwInternetStatus == WINHTTP_CALLBACK_STATUS_REQUEST_ERROR )
 	{
-		RaiseError( g_ErrorLogger , 0 , L"HTTPƒŠƒNƒGƒXƒgƒGƒ‰[‚ª”­¶‚µ‚Ü‚µ‚½" , dwInternetStatus );
+		RaiseError( g_ErrorLogger , 0 , L"HTTPãƒªã‚¯ã‚¨ã‚¹ãƒˆã‚¨ãƒ©ãƒ¼ãŒç™ºç”Ÿã—ã¾ã—ãŸ" , dwInternetStatus );
 		WINHTTP_ASYNC_RESULT* result = (WINHTTP_ASYNC_RESULT*)lpvStatusInformation;
 
 		NotifyFunctionOpt opt;
@@ -555,46 +555,46 @@ void __stdcall mHttpRequest::WinhttpStatusCallback(
 		opt.OnError.ErrorCode = result->dwError;
 
 		AsyncEvent( *obj , obj->MyNotifyOption.OnError , opt );
-		obj->MyIsEOF = true;	//mHttpRequest‚É‚¨‚¢‚Ä‚ÍAMyIsEOF‚ÍƒGƒ‰[”­¶‚É‚æ‚è’ÊM‚ª‘Å‚¿Ø‚ç‚ê‚½ê‡‚ÉƒZƒbƒg‚·‚é
+		obj->MyIsEOF = true;	//mHttpRequestã«ãŠã„ã¦ã¯ã€MyIsEOFã¯ã‚¨ãƒ©ãƒ¼ç™ºç”Ÿã«ã‚ˆã‚Šé€šä¿¡ãŒæ‰“ã¡åˆ‡ã‚‰ã‚ŒãŸå ´åˆã«ã‚»ãƒƒãƒˆã™ã‚‹
 	}
 	else
 	{
-		//‚»‚Ì‘¼
-		RaiseError( g_ErrorLogger , 0 , L"HTTPƒAƒNƒZƒX’†‚É•s–¾‚ÈƒGƒ‰[‚ª”­¶‚µ‚Ü‚µ‚½" , dwInternetStatus );
+		//ãã®ä»–
+		RaiseError( g_ErrorLogger , 0 , L"HTTPã‚¢ã‚¯ã‚»ã‚¹ä¸­ã«ä¸æ˜ãªã‚¨ãƒ©ãƒ¼ãŒç™ºç”Ÿã—ã¾ã—ãŸ" , dwInternetStatus );
 	}
 	return;
 }
 
-//‚P•¶ši‚PƒoƒCƒgj“Ç‚İ‚İ‚Ü‚·
+//ï¼‘æ–‡å­—ï¼ˆï¼‘ãƒã‚¤ãƒˆï¼‰èª­ã¿è¾¼ã¿ã¾ã™
 INT mHttpRequest::Read( void )
 {
-	//UnRead‚³‚ê‚½•¶š‚ª‚ ‚éê‡‚Íƒ\ƒŒ‚ğ•Ô‚·
+	//UnReadã•ã‚ŒãŸæ–‡å­—ãŒã‚ã‚‹å ´åˆã¯ã‚½ãƒ¬ã‚’è¿”ã™
 	if( !MyUnReadBuffer.IsEmpty() )
 	{
 		return MyUnReadBuffer.Read();
 	}
 
-	//ƒLƒƒƒbƒVƒ…‚Ìc—Ê‚ª‚ ‚ê‚ÎƒLƒƒƒbƒVƒ…‚ğ“Ç‚İ‚Ş
-	//ƒLƒƒƒbƒVƒ…‚Ìc—Ê‚ª‚È‚¢‚È‚çƒLƒ…[‚©‚çæ“¾‚·‚é
+	//ã‚­ãƒ£ãƒƒã‚·ãƒ¥ã®æ®‹é‡ãŒã‚ã‚Œã°ã‚­ãƒ£ãƒƒã‚·ãƒ¥ã‚’èª­ã¿è¾¼ã‚€
+	//ã‚­ãƒ£ãƒƒã‚·ãƒ¥ã®æ®‹é‡ãŒãªã„ãªã‚‰ã‚­ãƒ¥ãƒ¼ã‹ã‚‰å–å¾—ã™ã‚‹
 	if( MyReadCacheRemain == 0 )
 	{
-		//‚±‚ÌƒuƒƒbƒN‚ÍƒNƒŠƒeƒBƒJƒ‹ƒZƒNƒVƒ‡ƒ“
+		//ã“ã®ãƒ–ãƒ­ãƒƒã‚¯ã¯ã‚¯ãƒªãƒ†ã‚£ã‚«ãƒ«ã‚»ã‚¯ã‚·ãƒ§ãƒ³
 		mCriticalSectionTicket critical( MyCritical );
 		do
 		{
-			//“Ç‚İ‚İƒLƒ…[‚ª‚È‚¢ê‡‚ÍEOF
+			//èª­ã¿è¾¼ã¿ã‚­ãƒ¥ãƒ¼ãŒãªã„å ´åˆã¯EOF
 			if( MyReadQueue.empty() )
 			{
-				//“Ç‚İæ‚èƒoƒbƒtƒ@‚ğ•â[
+				//èª­ã¿å–ã‚Šãƒãƒƒãƒ•ã‚¡ã‚’è£œå……
 				PrepareReadBuffer( MyOption.RecievePacketMaxActive );
 				return EOF;
 			}
 
-			//“Ç‚İ‚İƒLƒ…[‚Ìæ“ª‚ğæ‚èo‚·
+			//èª­ã¿è¾¼ã¿ã‚­ãƒ¥ãƒ¼ã®å…ˆé ­ã‚’å–ã‚Šå‡ºã™
 			BufferQueueEntry entry = MyReadQueue.front();
 			MyReadQueue.pop_front();
 
-			//“Ç‚İæ‚èƒLƒƒƒbƒVƒ…‚ÉƒZƒbƒg
+			//èª­ã¿å–ã‚Šã‚­ãƒ£ãƒƒã‚·ãƒ¥ã«ã‚»ãƒƒãƒˆ
 			MyReadCacheHead.reset( entry.Buffer );
 			MyReadCacheCurrent = 0;
 			MyReadCacheRemain = entry.BytesTransfered;
@@ -608,11 +608,11 @@ INT mHttpRequest::Read( void )
 	return result;
 }
 
-//EOF‚É’B‚µ‚Ä‚¢‚é‚©‚ğ’²‚×‚Ü‚·
+//EOFã«é”ã—ã¦ã„ã‚‹ã‹ã‚’èª¿ã¹ã¾ã™
 bool mHttpRequest::IsEOF( void )const
 {
 	if( ( MyRequestStatus != RequestStatus::REQUEST_COMPLETED ) &&
-		( !MyIsEOF ) )	//mHttpRequest‚É‚¨‚¢‚Ä‚ÍAMyIsEOF‚ÍƒGƒ‰[”­¶‚É‚æ‚è’ÊM‚ª‘Å‚¿Ø‚ç‚ê‚½ê‡‚ÉƒZƒbƒg‚·‚é
+		( !MyIsEOF ) )	//mHttpRequestã«ãŠã„ã¦ã¯ã€MyIsEOFã¯ã‚¨ãƒ©ãƒ¼ç™ºç”Ÿã«ã‚ˆã‚Šé€šä¿¡ãŒæ‰“ã¡åˆ‡ã‚‰ã‚ŒãŸå ´åˆã«ã‚»ãƒƒãƒˆã™ã‚‹
 	{
 		return false;
 	}
@@ -622,7 +622,7 @@ bool mHttpRequest::IsEOF( void )const
 	}
 	else
 	{
-		//‚±‚±‚¾‚¯ƒNƒŠƒeƒBƒJƒ‹ƒZƒNƒVƒ‡ƒ“
+		//ã“ã“ã ã‘ã‚¯ãƒªãƒ†ã‚£ã‚«ãƒ«ã‚»ã‚¯ã‚·ãƒ§ãƒ³
 		mCriticalSectionTicket critical( MyCritical );
 		return MyReadQueue.empty();
 	}
@@ -633,10 +633,10 @@ mHttpRequest::operator bool() const
 	return MyRequest;
 }
 
-//‘‚«‚İ‚ÌŠ®—¹
+//æ›¸ãè¾¼ã¿ã®å®Œäº†
 bool mHttpRequest::Close( void )
 {
-	RaiseAssert( g_ErrorLogger , 0 , L"‚±‚Ìƒƒ\ƒbƒh‚Íg—p‚µ‚Ü‚¹‚ñ" );
+	RaiseAssert( g_ErrorLogger , 0 , L"ã“ã®ãƒ¡ã‚½ãƒƒãƒ‰ã¯ä½¿ç”¨ã—ã¾ã›ã‚“" );
 	return false;
 }
 
@@ -647,20 +647,20 @@ bool mHttpRequest::IsHeaderAvailable( void )const
 
 DWORD mHttpRequest::GetStatusCode( void )const
 {
-	//—LŒø‚ÈƒŠƒNƒGƒXƒgH
+	//æœ‰åŠ¹ãªãƒªã‚¯ã‚¨ã‚¹ãƒˆï¼Ÿ
 	if( !MyIsResponseHeaderAvailable )
 	{
-		RaiseError( g_ErrorLogger , 0 , L"‚Ü‚¾ƒwƒbƒ_‚ğóM‚µ‚Ä‚¢‚Ü‚¹‚ñ" );
+		RaiseError( g_ErrorLogger , 0 , L"ã¾ã ãƒ˜ãƒƒãƒ€ã‚’å—ä¿¡ã—ã¦ã„ã¾ã›ã‚“" );
 		return 0;
 	}
 
-	//ƒXƒe[ƒ^ƒXƒR[ƒh‚ğæ“¾
+	//ã‚¹ãƒ†ãƒ¼ã‚¿ã‚¹ã‚³ãƒ¼ãƒ‰ã‚’å–å¾—
 	DWORD code = 0;
 	DWORD size = sizeof( DWORD );
 	if( !WinHttpQueryHeaders( MyRequest , WINHTTP_QUERY_STATUS_CODE | WINHTTP_QUERY_FLAG_NUMBER , WINHTTP_HEADER_NAME_BY_INDEX , &code , &size , WINHTTP_NO_HEADER_INDEX ) )
 	{
-		//ƒGƒ‰[”­¶‚Ìê‡
-		RaiseError( g_ErrorLogger , 0 , L"ƒXƒe[ƒ^ƒXƒR[ƒh‚ÌóM’†‚ÉƒGƒ‰[‚ª”­¶‚µ‚Ü‚µ‚½" );
+		//ã‚¨ãƒ©ãƒ¼ç™ºç”Ÿã®å ´åˆ
+		RaiseError( g_ErrorLogger , 0 , L"ã‚¹ãƒ†ãƒ¼ã‚¿ã‚¹ã‚³ãƒ¼ãƒ‰ã®å—ä¿¡ä¸­ã«ã‚¨ãƒ©ãƒ¼ãŒç™ºç”Ÿã—ã¾ã—ãŸ" );
 		return 0;
 	}
 	return code;
@@ -680,31 +680,31 @@ bool mHttpRequest::QueryHeader( HeaderFlag flag , WString& retHeader )const
 {
 	retHeader = L"";
 
-	//ƒwƒbƒ_óMÏ‚İƒ`ƒFƒbƒN
+	//ãƒ˜ãƒƒãƒ€å—ä¿¡æ¸ˆã¿ãƒã‚§ãƒƒã‚¯
 	if( !MyIsResponseHeaderAvailable )
 	{
-		RaiseError( g_ErrorLogger , 0 , L"‚Ü‚¾ƒwƒbƒ_‚ğóM‚µ‚Ä‚¢‚Ü‚¹‚ñ" );
+		RaiseError( g_ErrorLogger , 0 , L"ã¾ã ãƒ˜ãƒƒãƒ€ã‚’å—ä¿¡ã—ã¦ã„ã¾ã›ã‚“" );
 		return false;
 	}
 
-	//•K—v‚ÈƒTƒCƒY‚ğ“¾‚é
+	//å¿…è¦ãªã‚µã‚¤ã‚ºã‚’å¾—ã‚‹
 	DWORD size = 0;
 	WinHttpQueryHeaders( MyRequest , flag , WINHTTP_HEADER_NAME_BY_INDEX , 0 , &size , WINHTTP_NO_HEADER_INDEX );
 	if( GetLastError() != ERROR_INSUFFICIENT_BUFFER )
 	{
-		RaiseError( g_ErrorLogger , 0 , L"w’è‚Ìƒwƒbƒ_‚Íæ“¾‚Å‚«‚Ü‚¹‚ñ" );
+		RaiseError( g_ErrorLogger , 0 , L"æŒ‡å®šã®ãƒ˜ãƒƒãƒ€ã¯å–å¾—ã§ãã¾ã›ã‚“" );
 		return false;
 	}
 
-	//‚»‚ÌƒTƒCƒY‚Ìƒoƒbƒtƒ@‚ğŠm•Û‚µ‚ÄAŒ‹‰Êæ“¾
+	//ãã®ã‚µã‚¤ã‚ºã®ãƒãƒƒãƒ•ã‚¡ã‚’ç¢ºä¿ã—ã¦ã€çµæœå–å¾—
 	WCHAR* buff = mNew WCHAR[ size / sizeof( WCHAR ) ];
 	if( !WinHttpQueryHeaders( MyRequest , flag , WINHTTP_HEADER_NAME_BY_INDEX , buff , &size , WINHTTP_NO_HEADER_INDEX ) )
 	{
-		RaiseError( g_ErrorLogger , 0 , L"ƒwƒbƒ_‚Ìæ“¾‚ª¸”s‚µ‚Ü‚µ‚½" );
+		RaiseError( g_ErrorLogger , 0 , L"ãƒ˜ãƒƒãƒ€ã®å–å¾—ãŒå¤±æ•—ã—ã¾ã—ãŸ" );
 	}
 	else
 	{
-		//æ“¾‚µ‚½Œ‹‰Ê‚ğ•¶š—ñ‚É•ÏŠ·
+		//å–å¾—ã—ãŸçµæœã‚’æ–‡å­—åˆ—ã«å¤‰æ›
 		retHeader = buff;
 	}
 
@@ -726,19 +726,19 @@ bool mHttpRequest::QueryHeader( HeaderFlag flag , DWORD& retHeader )const
 {
 	retHeader = 0;
 
-	//ƒwƒbƒ_óMÏ‚İƒ`ƒFƒbƒN
+	//ãƒ˜ãƒƒãƒ€å—ä¿¡æ¸ˆã¿ãƒã‚§ãƒƒã‚¯
 	if( !MyIsResponseHeaderAvailable )
 	{
-		RaiseError( g_ErrorLogger , 0 , L"‚Ü‚¾ƒwƒbƒ_‚ğóM‚µ‚Ä‚¢‚Ü‚¹‚ñ" );
+		RaiseError( g_ErrorLogger , 0 , L"ã¾ã ãƒ˜ãƒƒãƒ€ã‚’å—ä¿¡ã—ã¦ã„ã¾ã›ã‚“" );
 		return false;
 	}
 
-	//ƒR[ƒh‚ğæ“¾
+	//ã‚³ãƒ¼ãƒ‰ã‚’å–å¾—
 	DWORD size = sizeof( DWORD );
 	if( !WinHttpQueryHeaders( MyRequest , ( flag ) | WINHTTP_QUERY_FLAG_NUMBER , WINHTTP_HEADER_NAME_BY_INDEX , &retHeader , &size , WINHTTP_NO_HEADER_INDEX ) )
 	{
-		//ƒGƒ‰[”­¶‚Ìê‡
-		RaiseError( g_ErrorLogger , 0 , L"ƒwƒbƒ_‚Ìæ“¾‚ª¸”s‚µ‚Ü‚µ‚½" );
+		//ã‚¨ãƒ©ãƒ¼ç™ºç”Ÿã®å ´åˆ
+		RaiseError( g_ErrorLogger , 0 , L"ãƒ˜ãƒƒãƒ€ã®å–å¾—ãŒå¤±æ•—ã—ã¾ã—ãŸ" );
 		return false;
 	}
 	return true;
@@ -758,19 +758,19 @@ bool mHttpRequest::QueryHeader( HeaderFlag flag , uint64_t& retHeader )const
 {
 	retHeader = 0;
 
-	//ƒwƒbƒ_óMÏ‚İƒ`ƒFƒbƒN
+	//ãƒ˜ãƒƒãƒ€å—ä¿¡æ¸ˆã¿ãƒã‚§ãƒƒã‚¯
 	if( !MyIsResponseHeaderAvailable )
 	{
-		RaiseError( g_ErrorLogger , 0 , L"‚Ü‚¾ƒwƒbƒ_‚ğóM‚µ‚Ä‚¢‚Ü‚¹‚ñ" );
+		RaiseError( g_ErrorLogger , 0 , L"ã¾ã ãƒ˜ãƒƒãƒ€ã‚’å—ä¿¡ã—ã¦ã„ã¾ã›ã‚“" );
 		return false;
 	}
 
-	//ƒR[ƒh‚ğæ“¾
+	//ã‚³ãƒ¼ãƒ‰ã‚’å–å¾—
 	DWORD size = sizeof( uint64_t );
 	if( !WinHttpQueryHeaders( MyRequest , ( flag ) | WINHTTP_QUERY_FLAG_NUMBER64 , WINHTTP_HEADER_NAME_BY_INDEX , &retHeader , &size , WINHTTP_NO_HEADER_INDEX ) )
 	{
-		//ƒGƒ‰[”­¶‚Ìê‡
-		RaiseError( g_ErrorLogger , 0 , L"ƒwƒbƒ_‚Ìæ“¾‚ª¸”s‚µ‚Ü‚µ‚½" );
+		//ã‚¨ãƒ©ãƒ¼ç™ºç”Ÿã®å ´åˆ
+		RaiseError( g_ErrorLogger , 0 , L"ãƒ˜ãƒƒãƒ€ã®å–å¾—ãŒå¤±æ•—ã—ã¾ã—ãŸ" );
 		return false;
 	}
 	return true;
@@ -780,10 +780,10 @@ bool mHttpRequest::QueryHeader( HeaderFlag flag , mDateTime::Timestamp& retHeade
 {
 	retHeader.Clear();
 
-	//ƒwƒbƒ_óMÏ‚İƒ`ƒFƒbƒN
+	//ãƒ˜ãƒƒãƒ€å—ä¿¡æ¸ˆã¿ãƒã‚§ãƒƒã‚¯
 	if( !MyIsResponseHeaderAvailable )
 	{
-		RaiseError( g_ErrorLogger , 0 , L"‚Ü‚¾ƒwƒbƒ_‚ğóM‚µ‚Ä‚¢‚Ü‚¹‚ñ" );
+		RaiseError( g_ErrorLogger , 0 , L"ã¾ã ãƒ˜ãƒƒãƒ€ã‚’å—ä¿¡ã—ã¦ã„ã¾ã›ã‚“" );
 		return false;
 	}
 
@@ -793,15 +793,15 @@ bool mHttpRequest::QueryHeader( HeaderFlag flag , mDateTime::Timestamp& retHeade
 
 	if( !WinHttpQueryHeaders( MyRequest , ( flag ) | WINHTTP_QUERY_FLAG_SYSTEMTIME , WINHTTP_HEADER_NAME_BY_INDEX , &systime , &size , WINHTTP_NO_HEADER_INDEX ) )
 	{
-		//ƒGƒ‰[”­¶‚Ìê‡
-		RaiseError( g_ErrorLogger , 0 , L"ƒwƒbƒ_‚Ìæ“¾‚ª¸”s‚µ‚Ü‚µ‚½" );
+		//ã‚¨ãƒ©ãƒ¼ç™ºç”Ÿã®å ´åˆ
+		RaiseError( g_ErrorLogger , 0 , L"ãƒ˜ãƒƒãƒ€ã®å–å¾—ãŒå¤±æ•—ã—ã¾ã—ãŸ" );
 		return false;
 	}
 
 	retHeader.Year = systime.wYear;
 	retHeader.Month = systime.wMonth;
 	retHeader.Day = systime.wDay;
-	//retHeader.DayOfWeek = systime.wDayOfWeek;	—j“ú‚ÍŒvZ‚Åo‚µ‚Ä‚¢‚é‚½‚ß•s—v
+	//retHeader.DayOfWeek = systime.wDayOfWeek;	æ›œæ—¥ã¯è¨ˆç®—ã§å‡ºã—ã¦ã„ã‚‹ãŸã‚ä¸è¦
 	retHeader.Hour = systime.wHour;
 	retHeader.Minute = systime.wMinute;
 	retHeader.Second = systime.wSecond;
@@ -820,17 +820,17 @@ bool mHttpRequest::SetSslIgnoreErrors( const SslIgnoreErrors opt )
 
 	if( !::WinHttpSetOption( MyRequest , WINHTTP_OPTION_ENABLE_FEATURE , (LPVOID)&current , length ) )
 	{
-		RaiseError( g_ErrorLogger , 0 , L"İ’è‚ª¸”s‚µ‚Ü‚µ‚½" );
+		RaiseError( g_ErrorLogger , 0 , L"è¨­å®šãŒå¤±æ•—ã—ã¾ã—ãŸ" );
 		return false;
 	}
 
 	//----------------------------------------------
 #ifdef WINHTTP_OPTION_IGNORE_CERT_REVOCATION_OFFLINE
-	//Ø–¾‘‚ÌŒŸØ‚ª‚Å‚«‚È‚©‚Á‚½ê‡(Win10 Version2004ˆÈ~)
+	//è¨¼æ˜æ›¸ã®æ¤œè¨¼ãŒã§ããªã‹ã£ãŸå ´åˆ(Win10 Version2004ä»¥é™)
 	length = sizeof( opt.IgnoreCertRevocationFailed );
 	if( !WinHttpSetOption( MyRequest , WINHTTP_OPTION_IGNORE_CERT_REVOCATION_OFFLINE , (LPVOID)&opt.IgnoreCertRevocationFailed , length ) )
 	{
-		RaiseError( g_ErrorLogger , 0 , L"İ’è‚ª¸”s‚µ‚Ü‚µ‚½" );
+		RaiseError( g_ErrorLogger , 0 , L"è¨­å®šãŒå¤±æ•—ã—ã¾ã—ãŸ" );
 		return false;
 	}
 #endif
@@ -839,7 +839,7 @@ bool mHttpRequest::SetSslIgnoreErrors( const SslIgnoreErrors opt )
 	length = sizeof( current );
 	if( !::WinHttpQueryOption( MyRequest , WINHTTP_OPTION_SECURITY_FLAGS , (LPVOID)&current , (LPDWORD)&length ) )
 	{
-		RaiseError( g_ErrorLogger , 0 , L"Œ»İ‚Ìİ’è‚ğæ“¾‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½" );
+		RaiseError( g_ErrorLogger , 0 , L"ç¾åœ¨ã®è¨­å®šã‚’å–å¾—ã§ãã¾ã›ã‚“ã§ã—ãŸ" );
 		return false;
 	}
 
@@ -850,7 +850,7 @@ bool mHttpRequest::SetSslIgnoreErrors( const SslIgnoreErrors opt )
 
 	if( !::WinHttpSetOption( MyRequest , WINHTTP_OPTION_SECURITY_FLAGS , (LPVOID)&current , length ) )
 	{
-		RaiseError( g_ErrorLogger , 0 , L"İ’è‚ª¸”s‚µ‚Ü‚µ‚½" );
+		RaiseError( g_ErrorLogger , 0 , L"è¨­å®šãŒå¤±æ•—ã—ã¾ã—ãŸ" );
 		return false;
 	}
 						
@@ -862,24 +862,24 @@ DWORD mHttpRequest::GetEncryptionKeyLength( void )const
 	DWORD length;
 	DWORD current;
 
-	//‚»‚à‚»‚àˆÃ†‰»‚³‚ê‚Ä‚¢‚é‚ÌH
+	//ãã‚‚ãã‚‚æš—å·åŒ–ã•ã‚Œã¦ã„ã‚‹ã®ï¼Ÿ
 	length = sizeof( current );
 	if( !::WinHttpQueryOption( MyRequest , WINHTTP_OPTION_SECURITY_FLAGS , (LPVOID)&current , (LPDWORD)&length ) )
 	{
-		RaiseError( g_ErrorLogger , 0 , L"Œ»İ‚Ìİ’è‚ğæ“¾‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½" );
+		RaiseError( g_ErrorLogger , 0 , L"ç¾åœ¨ã®è¨­å®šã‚’å–å¾—ã§ãã¾ã›ã‚“ã§ã—ãŸ" );
 		return 0;
 	}
 	if( ( current & SECURITY_FLAG_SECURE ) == 0 )
 	{
-		//ˆÃ†‰»‚³‚ê‚Ä‚¢‚È‚¢‚Ì‚Å0
+		//æš—å·åŒ–ã•ã‚Œã¦ã„ãªã„ã®ã§0
 		return 0;
 	}
 
-	//ˆÃ†‰»‚³‚ê‚Ä‚¢‚é‚©‚çƒrƒbƒg”‚ğ“¾‚é
+	//æš—å·åŒ–ã•ã‚Œã¦ã„ã‚‹ã‹ã‚‰ãƒ“ãƒƒãƒˆæ•°ã‚’å¾—ã‚‹
 	length = sizeof( current );
 	if( !::WinHttpQueryOption( MyRequest , WINHTTP_OPTION_SECURITY_KEY_BITNESS , (LPVOID)&current , (LPDWORD)&length ) )
 	{
-		RaiseError( g_ErrorLogger , 0 , L"Œ»İ‚Ìİ’è‚ğæ“¾‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½" );
+		RaiseError( g_ErrorLogger , 0 , L"ç¾åœ¨ã®è¨­å®šã‚’å–å¾—ã§ãã¾ã›ã‚“ã§ã—ãŸ" );
 		return 0;
 	}
 	return current;
@@ -894,7 +894,7 @@ bool mHttpRequest::IsHttp2( void )const
 	length = sizeof( current );
 	if( !::WinHttpQueryOption( MyRequest , WINHTTP_OPTION_HTTP_PROTOCOL_USED , (LPVOID)&current , (LPDWORD)&length ) )
 	{
-		RaiseError( g_ErrorLogger , 0 , L"Œ»İ‚Ìİ’è‚ğæ“¾‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½" );
+		RaiseError( g_ErrorLogger , 0 , L"ç¾åœ¨ã®è¨­å®šã‚’å–å¾—ã§ãã¾ã›ã‚“ã§ã—ãŸ" );
 		return false;
 	}
 	return current == WINHTTP_PROTOCOL_FLAG_HTTP2;

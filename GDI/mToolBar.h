@@ -1,5 +1,5 @@
-//----------------------------------------------------------------------------
-// �E�C���h�E�Ǘ��i�c�[���o�[�j
+﻿//----------------------------------------------------------------------------
+// ウインドウ管理（ツールバー）
 // Copyright (C) 2016 Fingerling. All rights reserved. 
 // This program is released under the MIT License. 
 // see http://opensource.org/licenses/mit-license.php
@@ -7,8 +7,8 @@
 
 
 /*
-���p�r
-�c�[���o�[�̎����ł�
+●用途
+ツールバーの実装です
 
 */
 
@@ -26,19 +26,19 @@ class mToolBar : public mWindow
 {
 public:
 
-	//�R���g���[���������̃I�v�V����
-	//���ۂɍ쐬����Ƃ��́AOption�\���̂𒼐ڎg�킸�ɁA�V�`���G�[�V�����ɍ��킹�Ĉȉ����g���ĉ������B
-	//�EOption_UseOption �c �����o�ϐ��𖄂߂ăI�v�V������ݒ肵�����Ƃ�
+	//コントロール生成時のオプション
+	//実際に作成するときは、Option構造体を直接使わずに、シチュエーションに合わせて以下を使って下さい。
+	//・Option_UseOption … メンバ変数を埋めてオプションを設定したいとき
 	struct Option
 	{
 
-		//�����̕��@
+		//生成の方法
 		enum CreateMethod
 		{
-			USEOPTION,		//�ʏ�̕��@
+			USEOPTION,		//通常の方法
 		};
 
-		const CreateMethod method;	//RTTI�̑�p�ł��B�ύX�̕K�v�͂���܂���B
+		const CreateMethod method;	//RTTIの代用です。変更の必要はありません。
 
 	protected:
 		Option() = delete;
@@ -47,20 +47,20 @@ public:
 		}
 	};
 
-	//�R���g���[���������̃I�v�V����
+	//コントロール生成時のオプション
 	struct Option_UseOption : public Option
 	{
-		//�A�C�R���p�C���[�W���X�g�쐬���̃I�v�V����
+		//アイコン用イメージリスト作成時のオプション
 		mGdiImagelist::Option_UseOption ImgOpt;
 
-		//�t���b�g�^�C�v�̃c�[���o�[�ɂ���Ȃ��true
+		//フラットタイプのツールバーにするならばtrue
 		bool IsFlat;
 
-		//���X�g�X�^�C��(�����񂪃A�C�R���̉E)�Ȃ�true�A�����łȂ�(�����񂪃A�C�R���̉�)�Ȃ�false
+		//リストスタイル(文字列がアイコンの右)ならtrue、そうでない(文字列がアイコンの下)ならfalse
 		bool IsListStyle;
 
-		//�c�[���`�b�v�p�̃E�C���h�E���b�Z�[�W�𐶐����邩
-		//true�ɂ����WM_NOTIFY/TTN_GETDISPINFO����Ԃ悤�ɂȂ�܂�
+		//ツールチップ用のウインドウメッセージを生成するか
+		//trueにするとWM_NOTIFY/TTN_GETDISPINFOが飛ぶようになります
 		bool IsTooltipReq;
 
 		Option_UseOption() : Option( CreateMethod::USEOPTION )
@@ -71,7 +71,7 @@ public:
 		}
 	};
 
-	//�t�@�N�g�����\�b�h
+	//ファクトリメソッド
 	static mWindow* Factory( const void * opt )throw( )
 	{
 		if( opt == nullptr )
@@ -82,34 +82,34 @@ public:
 		return mNew mToolBar;
 	}
 
-	//�A�C�e���̎��
+	//アイテムの種類
 	enum ItemType
 	{
-		BUTTONTYPE,		//���������̃{�^��
-		CHECKBOXTYPE,	//�������炻�̂܂܂ɂȂ��āA������x�����Ɩ߂�{�^��
-		SEPARATOR,		//�Z�p���[�^�ł���
-		DROPDOWN,		//�{�^���̉��Ɂ��}�[�N������i�{�^���Ɓ��͓Ɨ��j
-		WHOLEDROPDOWN,	//�{�^���̉��Ɂ��}�[�N������i�{�^���Ɓ��͈�̌^�j
+		BUTTONTYPE,		//押すだけのボタン
+		CHECKBOXTYPE,	//押したらそのままになって、もう一度押すと戻るボタン
+		SEPARATOR,		//セパレータである
+		DROPDOWN,		//ボタンの横に▼マークがある（ボタンと▼は独立）
+		WHOLEDROPDOWN,	//ボタンの横に▼マークがある（ボタンと▼は一体型）
 	};
 
-	//�c�[���o�[�̃A�C�e��
+	//ツールバーのアイテム
 	struct ItemOptionEntry
 	{
-		//�A�C�e���𐶐�����Ƃ��ɁA�����Ɏw�肵���Z�N�V�����̓��e���g���B
-		//�󕶎���̏ꍇ�͖����i���[�g�Z�N�V�����͎g�p����Ȃ��j
-		//ToolbarUpdateHandle::SetInitFile()���g�p����Ini�t�@�C�����w�肵�Ă���ꍇ�̂ݗL���B
+		//アイテムを生成するときに、ここに指定したセクションの内容を使う。
+		//空文字列の場合は無効（ルートセクションは使用されない）
+		//ToolbarUpdateHandle::SetInitFile()を使用してIniファイルを指定している場合のみ有効。
 		WString SectionName;
 
-		ItemType Type;			//�A�C�e���̎��
+		ItemType Type;			//アイテムの種類
 
-		//�c�[���o�[�̃{�^���������ꂽ�Ƃ��ɁA�A�v���ɒʒm�������
-		UINT FunctionId;		//���[�U�[��`�̋@�\ID
-		ULONG_PTR UserData;		//���[�U�[��`�̒l
-		WString OptString;		//���[�U�[��`�̕�����
+		//ツールバーのボタンが押されたときに、アプリに通知される情報
+		UINT FunctionId;		//ユーザー定義の機能ID
+		ULONG_PTR UserData;		//ユーザー定義の値
+		WString OptString;		//ユーザー定義の文字列
 
-		//�c�[���o�[�̕\�������\������O���t�B�b�N�ƕ�����
-		WString Caption;		//�\��������
-		WString ImageId;		//�\������A�C�R����ID(�ʏ�ƑI����Ԃœ���ID���g���܂�)
+		//ツールバーの表示物を構成するグラフィックと文字列
+		WString Caption;		//表示文字列
+		WString ImageId;		//表示するアイコンのID(通常と選択状態で同じIDを使います)
 
 		ItemOptionEntry()
 		{
@@ -120,67 +120,67 @@ public:
 	};
 	typedef std::vector<ItemOptionEntry> ItemOption;
 
-	//�c�[���o�[���A�b�v�f�[�g���邽�߂̃N���X�B
-	//1.ToolbarUpdateHandle�̃R���X�g���N�^�ɁAmToolBar��n���Ă��������B
-	//2.Image()�AItem()���g���ĎQ�Ƃ��擾���A�c�[���o�[�̐ݒ��ύX���Ă��������B
-	//  img1���ʏ펞�̃A�C�R���Aimg2���I�����̃A�C�R���ɂȂ�܂��B
-	//3.ToolbarUpdateHandle�̃C���X�^���X��j������ƁA�c�[���o�[�ɔ��f����܂��B
+	//ツールバーをアップデートするためのクラス。
+	//1.ToolbarUpdateHandleのコンストラクタに、mToolBarを渡してください。
+	//2.Image()、Item()を使って参照を取得し、ツールバーの設定を変更してください。
+	//  img1が通常時のアイコン、img2が選択時のアイコンになります。
+	//3.ToolbarUpdateHandleのインスタンスを破棄すると、ツールバーに反映されます。
 	class ToolbarUpdateHandle final
 	{
 	public:
 		ToolbarUpdateHandle( mToolBar& toolbar );
 		~ToolbarUpdateHandle();
 
-		//�c�[���o�[�̃A�C�R���ɂ���C���[�W���X�g���擾
-		//�y���Ӂz�擾�����Q�Ƃ̃|�C���^��ێ�������A������悤�Ƃ����肵�Ȃ��ł��������B
+		//ツールバーのアイコンにするイメージリストを取得
+		//【注意】取得した参照のポインタを保持したり、解放しようとしたりしないでください。
 		mGdiDualImagelist& Image()const;
 
-		//�A�C�e���ݒ�̎Q�Ƃ��擾
-		//�y���Ӂz�擾�����Q�Ƃ̃|�C���^��ێ�������A������悤�Ƃ����肵�Ȃ��ł��������B
+		//アイテム設定の参照を取得
+		//【注意】取得した参照のポインタを保持したり、解放しようとしたりしないでください。
 		ItemOption& Item()const;
 
 	protected:
 		ToolbarUpdateHandle() = delete;
 		ToolbarUpdateHandle& operator=( const ToolbarUpdateHandle& src ) = delete;
 
-		mToolBar* MyParent;				//�e�I�u�W�F�N�g�̎Q��1
-		mGdiDualImagelist* MyImgage;	//�X�V���̃C���[�W���X�g
-		ItemOption* MyItemOption;		//���j���[�̃A�C�e���ݒ�
+		mToolBar* MyParent;				//親オブジェクトの参照1
+		mGdiDualImagelist* MyImgage;	//更新中のイメージリスト
+		ItemOption* MyItemOption;		//メニューのアイテム設定
 	};
 
-	//�A�C�R����L���E�����ɂ���
-	//FunctionId : �ݒ肷��@�\ID(ItemOption::FunctionId�Ŏw�肵������)
-	//enable : �^�ɂ���ƗL���ɂ���A�U�ɂ���Ɩ����ɂ���B
-	//checked : �^�ɂ���ƃ`�F�b�N����B�U�ɂ���ƃ`�F�b�N���O���B
-	//�����FunctionId�������j���[����������ꍇ�A�S�ĂɓK�p����܂��B
+	//アイコンを有効・無効にする
+	//FunctionId : 設定する機能ID(ItemOption::FunctionIdで指定したもの)
+	//enable : 真にすると有効にする、偽にすると無効にする。
+	//checked : 真にするとチェックする。偽にするとチェックを外す。
+	//同一のFunctionIdを持つメニューが複数ある場合、全てに適用されます。
 	bool SetState( UINT FunctionId , bool enable , bool checked );
 
-	//�A�C�e���̏����擾����
-	//index : �擾�������A�C�e���̃C���f�b�N�X
-	//	�E�������0�x�[�X�̃C���f�b�N�X�ɂȂ�܂��B
-	//	�EWM_NOTIFY��NM_CLICK���b�Z�[�W��LPARAM�ANMMOUSE::dwItemSpec�̒l��
-	//	�@0�x�[�X�̃C���f�b�N�X�ɂȂ��Ă���̂ŁA���̒l�������Ă�OK�ł��B
-	//retInfo : �擾�����A�C�e���̏��
-	//ret : �������^
+	//アイテムの情報を取得する
+	//index : 取得したいアイテムのインデックス
+	//	・左からの0ベースのインデックスになります。
+	//	・WM_NOTIFY→NM_CLICKメッセージのLPARAM、NMMOUSE::dwItemSpecの値は
+	//	　0ベースのインデックスになっているので、この値をつかってもOKです。
+	//retInfo : 取得したアイテムの情報
+	//ret : 成功時真
 	bool QueryItem( INT index , ItemOptionEntry& retInfo )const;
 
-	//�A�C�e���̏����擾����
-	//mouse : WM_NOTIFY��NM_CLICK���b�Z�[�W��LPARAM��LPNMMOUSE�ɃL���X�g��������
-	//retInfo : �擾�����A�C�e���̏��
-	//ret : �������^
+	//アイテムの情報を取得する
+	//mouse : WM_NOTIFY→NM_CLICKメッセージのLPARAMをLPNMMOUSEにキャストしたもの
+	//retInfo : 取得したアイテムの情報
+	//ret : 成功時真
 	bool QueryItem( const LPNMMOUSE mouse , ItemOptionEntry& retInfo )const;
 
 protected:
 	mToolBar();
 	virtual ~mToolBar()final;
 
-	//�E�C���h�E�N���X�̓o�^������
+	//ウインドウクラスの登録をする
 	virtual bool WindowClassSettingCallback( WindowClassSetting& retSetting , const void* opt )override;
 
-	//�E�C���h�E���J��
+	//ウインドウを開く
 	virtual bool CreateWindowCallback( CreateWindowSetting& retSetting , const void* opt )override;
 
-	//�E�C���h�E���������������ꍇ�ɃR�[�������
+	//ウインドウ生成を完了した場合にコールされる
 	virtual bool OnCreate( const void* opt )override;
 
 private:
@@ -188,25 +188,25 @@ private:
 	mToolBar( const mToolBar& src ) = delete;
 	mToolBar& operator=( const mToolBar& src ) = delete;
 
-	//���݂̃c�[���o�[�̏�Ԃ�K�p����B�ȉ��̃����o�ϐ��̒l�����ۂ̃I�u�W�F�N�g�ɔ��f�����B
-	//�EMyImgage
-	//�EMyItemOption
-	//ret : ������true
+	//現在のツールバーの状態を適用する。以下のメンバ変数の値が実際のオブジェクトに反映される。
+	//・MyImgage
+	//・MyItemOption
+	//ret : 成功時true
 	bool ExecUpdate( void );
 
-	//���݂̃c�[���o�[�̃{�^����S���j������
-	//ret : ������true
+	//現在のツールバーのボタンを全部破棄する
+	//ret : 成功時true
 	bool ExecClear( void );
 
 protected:
 
-	//�c�[���o�[�ɓ\��t����A�C�R��
+	//ツールバーに貼り付けるアイコン
 	mGdiDualImagelist* MyImgage;
 
-	//�A�C�e���ݒ�
+	//アイテム設定
 	ItemOption MyItemOption;
 
-	//����ID�̎g�p���̒l�ꗗ
+	//内部IDの使用中の値一覧
 	typedef mUniqueValue<INT> InternalIdStock;
 	InternalIdStock MyInternalIdStock;
 
@@ -228,7 +228,7 @@ protected:
 		switch( msg )
 		{
 		case WM_DESTROY:
-			//�E�C���h�E��������I��
+			//ウインドウが閉じたら終了
 			PostQuitMessage( 0 );
 			return 0;
 
@@ -246,7 +246,7 @@ protected:
 				tb->QueryItem( lpnm , item );
 
 				WString str;
-				sprintf( str , L"���j���[�u%ws�v(FunctionId=%d)���I������܂���" , item.Caption.c_str(), item.FunctionId );
+				sprintf( str , L"メニュー「%ws」(FunctionId=%d)が選択されました" , item.Caption.c_str(), item.FunctionId );
 				::MessageBoxW( GetMyHwnd() , str.c_str(), L"" , 0);
 			}
 		}
@@ -268,25 +268,25 @@ protected:
 	virtual void OnCreate( const void* option )
 	{
 
-		//�{�^���Ȃǂ�\��t����ꍇ�́AMyChild�����o�Ɏ��̂������Ă��܂��B
-		//�i������Ԃł�nullptr�ɂȂ��Ă��܂��B�j
-		//main�֐��ł͐e�E�C���h�E���Ȃ�����nullptr��n���Ă��܂����A
-		//����͂��̃E�C���h�E���e�ɂȂ�̂ŁAthis��n���܂��B
-		//���Ƃ́AMyChild�ɃI�u�W�F�N�g��o�^���Ă��������ł��B
+		//ボタンなどを貼り付ける場合は、MyChildメンバに実体をつくってやります。
+		//（初期状態ではnullptrになっています。）
+		//main関数では親ウインドウがないからnullptrを渡していますが、
+		//今回はこのウインドウが親になるので、thisを渡します。
+		//あとは、MyChildにオブジェクトを登録していくだけです。
 		MyChild = mNew mWindowCollection( this );
 		{
-			//�c�[���o�[�̐���
+			//ツールバーの生成
 			mToolBar::Option_UseOption opt;
 			opt.IsFlat = true;
 			opt.IsListStyle = true;
-			opt.ImgOpt.width = 16;		//�A�C�R���̃T�C�Y
-			opt.ImgOpt.height = 16;		//�A�C�R���̃T�C�Y
+			opt.ImgOpt.width = 16;		//アイコンのサイズ
+			opt.ImgOpt.height = 16;		//アイコンのサイズ
 			mToolBar* tb = MyChild->AddControl<mToolBar>( L"TOOLBAR" , &opt );
 
-			//�c�[���o�[�̏��o�^�I�u�W�F�N�g�𐶐�
+			//ツールバーの情報登録オブジェクトを生成
 			mToolBar::ToolbarUpdateHandle handle( *tb );
 
-			//�c�[���o�[�ɒ���t����A�C�R���𐶐�
+			//ツールバーに張り付けるアイコンを生成
 			for( DWORD i = 0 ; i < 4 ; i++ )
 			{
 				WString idstr;
@@ -302,7 +302,7 @@ protected:
 				handle.Image().AddImage( idstr , bmp1 , bmp2 , RGB( 255 , 255 , 255 ) , RGB( 255 , 255 , 255 ) );
 			}
 
-			//�c�[���o�[�̍��ړo�^
+			//ツールバーの項目登録
 			mToolBar::ItemOptionEntry entry;
 			entry.ImageId = L"IMAGE_1";
 			entry.Caption = L"";
@@ -324,7 +324,7 @@ protected:
 
 			mToolBar::ItemOptionEntry entry_sep;
 			entry_sep.Type = mToolBar::ItemType::SEPARATOR;
-			entry_sep.FunctionId = 999;	//�Z�p���[�^���AFunctionId=0��NG
+			entry_sep.FunctionId = 999;	//セパレータも、FunctionId=0はNG
 			handle.Item().push_back( entry_sep );
 
 			entry.ImageId = L"IMAGE_4";
@@ -340,7 +340,7 @@ int main( int argc , char** argv )
 {
 	InitializeLibrary();
 
-	//�E�C���h�E�̐���
+	//ウインドウの生成
 	mWindowCollection root_collection( nullptr );
 	root_collection.AddControl<TestWindow>( L"TEST" );
 

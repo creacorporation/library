@@ -1,5 +1,5 @@
-//----------------------------------------------------------------------------
-// ³‹K•\Œ»ƒNƒ‰ƒX(std::regexp‚Ìƒ‰ƒbƒp[)
+ï»¿//----------------------------------------------------------------------------
+// æ­£è¦è¡¨ç¾ã‚¯ãƒ©ã‚¹(std::regexpã®ãƒ©ãƒƒãƒ‘ãƒ¼)
 // Copyright (C) 2016 Fingerling. All rights reserved. 
 // This program is released under the MIT License. 
 // see http://opensource.org/licenses/mit-license.php
@@ -7,7 +7,7 @@
 
 #define MREGEXP_CPP_COMPILING
 
-//mRegexp‚Íƒeƒ“ƒvƒŒ[ƒgƒNƒ‰ƒX‚Ì‚½‚ßA‚±‚Ìƒtƒ@ƒCƒ‹‚Å‚Í“Á‚É‘‚­‚±‚Æ‚Í‚È‚¢
+//mRegexpã¯ãƒ†ãƒ³ãƒ—ãƒ¬ãƒ¼ãƒˆã‚¯ãƒ©ã‚¹ã®ãŸã‚ã€ã“ã®ãƒ•ã‚¡ã‚¤ãƒ«ã§ã¯ç‰¹ã«æ›¸ãã“ã¨ã¯ãªã„
 
 void _DummyFunction_mRegexp( void )
 {

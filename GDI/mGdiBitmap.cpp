@@ -1,5 +1,5 @@
-//----------------------------------------------------------------------------
-// �E�C���h�E�Ǘ��iGDI�r�b�g�}�b�v�j
+﻿//----------------------------------------------------------------------------
+// ウインドウ管理（GDIビットマップ）
 // Copyright (C) 2016 Fingerling. All rights reserved. 
 // This program is released under the MIT License. 
 // see http://opensource.org/licenses/mit-license.php
@@ -16,22 +16,22 @@ mGdiBitmap::mGdiBitmap( const Option* opt )throw( mException )
 
 	if( opt != nullptr )
 	{
-		//�쐬����r�b�g�}�b�v�̎�ނɉ���������
+		//作成するビットマップの種類に応じた処理
 		if( opt->method == Option::CreateMethod::NEWBITMAP )
 		{
-			//�f�o�C�X�R���e�L�X�g���琶������ꍇ
+			//デバイスコンテキストから生成する場合
 			const Option_NewBitmap* opt_bitmap = (const Option_NewBitmap*)opt;
 			CreateHandle( *opt_bitmap );
 		}
 		else if( opt->method == Option::CreateMethod::LOADFILE )
 		{
-			//�t�@�C����ǂݍ��ޏꍇ
+			//ファイルを読み込む場合
 			const Option_LoadFile* opt_loadfile = (const Option_LoadFile*)opt;
 			CreateHandle( *opt_loadfile );
 		}
 		else if( opt->method == Option::CreateMethod::RESOURCE )
 		{
-			//�t�@�C����ǂݍ��ޏꍇ
+			//ファイルを読み込む場合
 			const Option_Resource* opt_resource = (const Option_Resource*)opt;
 			CreateHandle( *opt_resource );
 		}
@@ -41,7 +41,7 @@ mGdiBitmap::mGdiBitmap( const Option* opt )throw( mException )
 		}
 	}
 
-	//�r�b�g�}�b�v���ł��ĂȂ�������G���[�ɂ���
+	//ビットマップができてなかったらエラーにする
 	if( MyHandle == nullptr )
 	{
 		throw EXCEPTION( 0 , L"Creating bitmap failed" );
@@ -50,71 +50,71 @@ mGdiBitmap::mGdiBitmap( const Option* opt )throw( mException )
 
 mGdiBitmap::~mGdiBitmap()
 {
-	//�n���h���̉��
+	//ハンドルの解放
 	DeleteObject( MyHandle );
 	MyHandle = nullptr;
 }
 
-//�n���h���̒l���擾����(�L���X�g���Z�q�o�[�W����)
+//ハンドルの値を取得する(キャスト演算子バージョン)
 mGdiBitmap::operator HBITMAP()const
 {
 	return MyHandle;
 }
 
-//�n���h���̒l���擾����(���ʂ̊֐��o�[�W����)
+//ハンドルの値を取得する(普通の関数バージョン)
 HGDIOBJ mGdiBitmap::GetHandle( void )const
 {
 	return MyHandle;
 }
 
-//�r�b�g�}�b�v�̐���
+//ビットマップの生成
 bool mGdiBitmap::CreateHandle( const Option_NewBitmap& opt )
 {
 	if( opt.srcdc == nullptr )
 	{
-		//srcdc��nullptr�̏ꍇ�́A�f�X�N�g�b�v�ƌ݊��̃r�b�g�}�b�v�����
+		//srcdcがnullptrの場合は、デスクトップと互換のビットマップを作る
 		HWND hwnd = ::GetDesktopWindow();
 		HDC hdc = ::GetDC( hwnd );
 		MyHandle = ::CreateCompatibleBitmap( hdc , opt.width , opt.height );
 		::ReleaseDC( hwnd , hdc );
-		//GetDesktopWindow�Ŏ擾�����n���h���͉�����Ȃ��Ă���
+		//GetDesktopWindowで取得したハンドルは解放しなくていい
 	}
 	else
 	{
-		//�S���w�肪����̂ŁA��������ɍ��
+		//全部指定があるので、それを元に作る
 		MyHandle = ::CreateCompatibleBitmap( opt.srcdc->MyHdc , opt.width , opt.height );
 	}
 	return ( MyHandle != nullptr );
 }
 
-//�r�b�g�}�b�v�̐���
+//ビットマップの生成
 bool mGdiBitmap::CreateHandle( const Option_LoadFile& opt )
 {
 
 	MyHandle = (HBITMAP)::LoadImageW( 
-		nullptr ,			//�C���X�^���X�n���h���B���\�[�X�ǂݍ��ނ킯����Ȃ�����k��
-		opt.path.c_str() ,		//�ǂݍ��ރt�@�C����
-		IMAGE_BITMAP ,		//���[�h����C���[�W�̃^�C�v�i�r�b�g�}�b�v�j
-		0 ,					//���B0�̏ꍇ�A�C���[�W�T�C�Y�ɍ��킹��B
-		0 ,					//�����B0�̏ꍇ�A�C���[�W�T�C�Y�ɍ��킹��B
-		LR_LOADFROMFILE );	//�t�@�C������ǂݍ��ނƂ��Ɏg���t���O
+		nullptr ,			//インスタンスハンドル。リソース読み込むわけじゃないからヌル
+		opt.path.c_str() ,		//読み込むファイル名
+		IMAGE_BITMAP ,		//ロードするイメージのタイプ（ビットマップ）
+		0 ,					//幅。0の場合、イメージサイズに合わせる。
+		0 ,					//高さ。0の場合、イメージサイズに合わせる。
+		LR_LOADFROMFILE );	//ファイルから読み込むときに使うフラグ
 
 	return ( MyHandle != nullptr );
 }
 
-//�r�b�g�}�b�v�̐���
+//ビットマップの生成
 bool mGdiBitmap::CreateHandle( const Option_Resource& opt )
 {
-	//���̃��W���[���̃n���h���擾
-	HINSTANCE module = ::GetModuleHandleW( nullptr );	//������Ȃ��ėǂ�
+	//このモジュールのハンドル取得
+	HINSTANCE module = ::GetModuleHandleW( nullptr );	//解放しなくて良い
 
 	MyHandle = (HBITMAP)::LoadImageW( 
-		module ,			//�C���X�^���X�n���h���B
-		opt.name.c_str() ,		//�ǂݍ��ރ��\�[�X��
-		IMAGE_BITMAP ,		//���[�h����C���[�W�̃^�C�v�i�r�b�g�}�b�v�j
-		0 ,					//���B0�̏ꍇ�A�C���[�W�T�C�Y�ɍ��킹��B
-		0 ,					//�����B0�̏ꍇ�A�C���[�W�T�C�Y�ɍ��킹��B
-		LR_DEFAULTCOLOR );	//���m�N���ł͂Ȃ��ꍇ�Ɏw��B
+		module ,			//インスタンスハンドル。
+		opt.name.c_str() ,		//読み込むリソース名
+		IMAGE_BITMAP ,		//ロードするイメージのタイプ（ビットマップ）
+		0 ,					//幅。0の場合、イメージサイズに合わせる。
+		0 ,					//高さ。0の場合、イメージサイズに合わせる。
+		LR_DEFAULTCOLOR );	//モノクロではない場合に指定。
 
 	return ( MyHandle != nullptr );
 }

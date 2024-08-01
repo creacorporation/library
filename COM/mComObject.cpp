@@ -1,10 +1,10 @@
-//----------------------------------------------------------------------------
-// COMƒIƒuƒWƒFƒNƒg—pƒ†[ƒeƒBƒŠƒeƒBŠÖ”ŒQ
+ï»¿//----------------------------------------------------------------------------
+// COMã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆç”¨ãƒ¦ãƒ¼ãƒ†ã‚£ãƒªãƒ†ã‚£é–¢æ•°ç¾¤
 // Copyright (C) 2018- Crea Inc. All rights reserved.
 // This program is released under the MIT License. 
 // see http://opensource.org/licenses/mit-license.php
-// ’˜ìŒ •\¦‚âƒ‰ƒCƒZƒ“ƒX‚Ì‰ü•Ï‚Í‹Ö~‚³‚ê‚Ä‚¢‚Ü‚·B
-// ‚±‚Ìƒ\[ƒXƒR[ƒh‚ÉŠÖ‚µ‚ÄAã‹Lƒ‰ƒCƒZƒ“ƒXˆÈŠO‚ÌŒ_–ñ“™‚ÍˆêØ‘¶İ‚µ‚Ü‚¹‚ñB
+// è‘—ä½œæ¨©è¡¨ç¤ºã‚„ãƒ©ã‚¤ã‚»ãƒ³ã‚¹ã®æ”¹å¤‰ã¯ç¦æ­¢ã•ã‚Œã¦ã„ã¾ã™ã€‚
+// ã“ã®ã‚½ãƒ¼ã‚¹ã‚³ãƒ¼ãƒ‰ã«é–¢ã—ã¦ã€ä¸Šè¨˜ãƒ©ã‚¤ã‚»ãƒ³ã‚¹ä»¥å¤–ã®å¥‘ç´„ç­‰ã¯ä¸€åˆ‡å­˜åœ¨ã—ã¾ã›ã‚“ã€‚
 //----------------------------------------------------------------------------
 
 #include "mComObject.h"
@@ -15,8 +15,8 @@ mComObject::mComObject()
 	HRESULT result = CoInitializeEx( 0 , COINIT_APARTMENTTHREADED );
 	if( result == S_OK )
 	{
-		//V‚½‚É‰Šú‰»‚ğs‚Á‚½ê‡
-		CreateLogEntry( g_ErrorLogger , 0 , L"COM‚ğ‰Šú‰»‚µ‚Ü‚µ‚½" );
+		//æ–°ãŸã«åˆæœŸåŒ–ã‚’è¡Œã£ãŸå ´åˆ
+		CreateLogEntry( g_ErrorLogger , 0 , L"COMã‚’åˆæœŸåŒ–ã—ã¾ã—ãŸ" );
 		MyIsInitialized = true;
 		CoInitializeSecurity(NULL, -1, NULL, NULL,
 								RPC_C_AUTHN_LEVEL_DEFAULT,
@@ -25,13 +25,13 @@ mComObject::mComObject()
 	}
 	else if( result == S_FALSE )
 	{
-		//‚·‚Å‚É‰Šú‰»Ï‚İ‚¾‚Á‚½ê‡
+		//ã™ã§ã«åˆæœŸåŒ–æ¸ˆã¿ã ã£ãŸå ´åˆ
 		MyIsInitialized = true;
 	}
 	else
 	{
-		//ƒGƒ‰[‚Ìê‡
-		RaiseError( g_ErrorLogger , 0 , L"COM‚Ì‰Šú‰»‚ª¸”s‚µ‚Ü‚µ‚½" , result );
+		//ã‚¨ãƒ©ãƒ¼ã®å ´åˆ
+		RaiseError( g_ErrorLogger , 0 , L"COMã®åˆæœŸåŒ–ãŒå¤±æ•—ã—ã¾ã—ãŸ" , result );
 		MyIsInitialized = false;
 	}
 }

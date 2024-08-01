@@ -1,76 +1,76 @@
-//----------------------------------------------------------------------------
-// INI�t�@�C���ǂݍ��ݑ���
+﻿//----------------------------------------------------------------------------
+// INIファイル読み込み操作
 // Copyright (C) 2013,2016 Fingerling. All rights reserved. 
 // Copyright (C) 2018- Crea Inc. All rights reserved.
 // This program is released under the MIT License. 
 // see http://opensource.org/licenses/mit-license.php
-// ���쌠�\���⃉�C�Z���X�̉��ς͋֎~����Ă��܂��B
-// ���̃\�[�X�R�[�h�Ɋւ��āA��L���C�Z���X�ȊO�̌_�񓙂͈�ؑ��݂��܂���B
+// 著作権表示やライセンスの改変は禁止されています。
+// このソースコードに関して、上記ライセンス以外の契約等は一切存在しません。
 //----------------------------------------------------------------------------
 
 /*
-���p�r
-	INI�t�@�C����1���̃Z�N�V������ێ����܂��B
+★用途
+	INIファイルの1つ分のセクションを保持します。
 
-���Z�N�V�����Ƃ�
-	�u�Z�N�V�����v�Ƃ́A
+★セクションとは
+	「セクション」とは、
 
-	[BASIC]			���^�C�g��
+	[BASIC]			←タイトル
 	HOGE=1
 	FUGA=c:\windows
-	PIYO=0xFFFF		���L�[�ƒl�̑g
+	PIYO=0xFFFF		←キーと値の組
 
-	�̂悤�ɁA[]�ł�����ꂽ�^�C�g���ƁA�L�[�ƒl�̑g����Ȃ�J�^�}���ł��B
-	�܂��A[]�̑����<>�Ń^�C�g����������ƁA�s�P�ʂł̓ǂݍ��݂ɂȂ�܂�(�u���������̃L�[�ɂ��āv���Q��)
+	のように、[]でくくられたタイトルと、キーと値の組からなるカタマリです。
+	また、[]の代わりに<>でタイトルをくくると、行単位での読み込みになります(「数字だけのキーについて」を参照)
 
-	����[]�܂���<>���o�Ă���܂ł��P�̃Z�N�V�����ɂȂ�܂��B
-	����̃Z�N�V�������œ����̃L�[���o������ƁA�ォ���`�������̂��g���܂��B
-	�����Z�N�V��������2�x�g���ƁA�ォ��o�Ă����ق��Œu�������܂�
+	次の[]または<>が出てくるまでが１つのセクションになります。
+	同一のセクション内で同名のキーが出現すると、後から定義したものを使います。
+	同じセクション名を2度使うと、後から出てきたほうで置き換えます
 
-���h�b�g(.)�Ŏn�܂�L�[�ɂ���
-	�h�b�g�Ŏn�܂�L�[�́A�T�u�L�[���ł��B���߂̃h�b�g�̂Ȃ��L�[�ɘA�����ăL�[�����`�����܂��B
-	�T�u�L�[�ɂ̓C���f�b�N�X�����邱�Ƃ͏o���܂���B
+★ドット(.)で始まるキーについて
+	ドットで始まるキーは、サブキー名です。直近のドットのないキーに連結してキー名を形成します。
+	サブキーにはインデックスをつけることは出来ません。
 
 	[BASIC]
-	HogeValue=10		; HogeValue=10			�L�[=HogeValue �C���f�b�N�X=�Ȃ� �T�u�L�[=�Ȃ�
-	.Opt=11				; HogeValue.Opt=11		�L�[=HogeValue �C���f�b�N�X=�Ȃ� �T�u�L�[=Opt
-	FugaVelue[1]=20		; FugaValue[1]=20		�L�[=FugaValue �C���f�b�N�X=1    �T�u�L�[=�Ȃ�
-	.Opt=21				; FugaValue[1].Opt=21	�L�[=FugaValue �C���f�b�N�X=1    �T�u�L�[=Opt
+	HogeValue=10		; HogeValue=10			キー=HogeValue インデックス=なし サブキー=なし
+	.Opt=11				; HogeValue.Opt=11		キー=HogeValue インデックス=なし サブキー=Opt
+	FugaVelue[1]=20		; FugaValue[1]=20		キー=FugaValue インデックス=1    サブキー=なし
+	.Opt=21				; FugaValue[1].Opt=21	キー=FugaValue インデックス=1    サブキー=Opt
 
-���C���f�b�N�X�ɂ���
-	�C���f�b�N�X�́A
+★インデックスについて
+	インデックスは、
 	NUM[1]=100
 	NUM[2]=100
-	�̂悤�ɁA�L�[�̒���ɂ�10�i���̒l�ł��B
-	�C���f�b�N�X���g���ƁA1�̃L�[�ɑ΂��ĘA�ԂŃA�N�Z�X�ł��܂��B
+	のように、キーの直後につく10進数の値です。
+	インデックスを使うと、1つのキーに対して連番でアクセスできます。
 
-�����������̃L�[�ɂ���
+★数字だけのキーについて
 
 	<BASIC>
-	����������
-	HOGE=����������		;�R�����g
-	����������
+	あいうえお
+	HOGE=かきくけこ		;コメント
+	さしすせそ
 
-	�̂悤�ɁA�^�C�g����<>�ł�����ƁA�s�P�ʂ̓ǂݍ��݂ɂȂ�܂��B
-	�s�P�ʂ̓ǂݍ��݂̏ꍇ�A
-		�E�L�[�͖�������܂�
-		�E�R�����g��;�͔F������܂�
-	�L�[�̓Z�N�V�������ł̍s�ԍ��ƂȂ�܂��B�ȉ��̏ꍇ�͍s�ԍ��ɃJ�E���g���܂���B
-		�E�R�����g�݂̂̍s
+	のように、タイトルを<>でくくると、行単位の読み込みになります。
+	行単位の読み込みの場合、
+		・キーは無視されます
+		・コメントの;は認識されます
+	キーはセクション内での行番号となります。以下の場合は行番号にカウントしません。
+		・コメントのみの行
 
-	�L�[�u0�v���l�u�����������v
-	�L�[�u1�v���l�uHOGE=�����������v
-	�L�[�u2�v���l�u�����������v
-	�ɂȂ�܂��B
+	キー「0」→値「あいうえお」
+	キー「1」→値「HOGE=かきくけこ」
+	キー「2」→値「さしすせそ」
+	になります。
 	
-	�L�[���u2�v�ɂ���ȊO�ɁA�L�[���󕶎���Ƃ��āA�C���f�b�N�X��2�Ƃ��Ă��u�����������v�ƂȂ�܂��B
+	キーを「2」にする以外に、キーを空文字列として、インデックスを2としても「さしすせそ」となります。
 	
-�����̃N���X�ɂ���
-	mInitFileSection�P�ɂ͂P�̃Z�N�V�������i�[����܂��B
-	�L�[�Ɠǂݎ�肽���`�����w�肷��ƁA���̌`���Œl���ǂݎ���܂��B
+★このクラスについて
+	mInitFileSection１個には１つのセクションが格納されます。
+	キーと読み取りたい形式を指定すると、その形式で値が読み取られます。
 	PIYO=0xFFFF
-	���̗�ł́APIYO�𕶎���Ƃ��ēǂݎ���"0xFFFF"���ǂݎ���܂��B
-	����APIYO�𐔒l�Ƃ��ēǂݎ���65535���ǂݎ���܂��B
+	この例では、PIYOを文字列として読み取ると"0xFFFF"が読み取られます。
+	一方、PIYOを数値として読み取ると65535が読み取られます。
 */
 
 
@@ -95,197 +95,197 @@ public:
 	mInitFileSection( const mInitFileSection& src );
 	mInitFileSection& operator=( const mInitFileSection& src );
 
-	//16�i���I�u�W�F�N�g
-	//���̕����g��Ȃ��ꍇ�ł��A�������0x�����Ă����16�i���œǂݎ�邪�A
-	//���Ă��Ȃ��ꍇ�ł������I��16�i���œǂ݂����ꍇ�͂��̃I�u�W�F�N�g���g��
+	//16進数オブジェクト
+	//この方を使わない場合でも、文字列に0xがついていれば16進数で読み取るが、
+	//ついていない場合でも強制的に16進数で読みたい場合はこのオブジェクトを使う
 	typedef mHexdecimal Hexdecimal;
 
 	//------------------------------------------------------
-	//���l�̓ǂݎ��֐��Q
+	//☆値の読み取り関数群
 	//------------------------------------------------------
 
-	//�w�肵���L�[�����݂��邩�Ԃ�
-	//key : ���݂��m�F�������L�[
-	//ret : �w�肵���L�[�����݂����true
+	//指定したキーが存在するか返す
+	//key : 存在を確認したいキー
+	//ret : 指定したキーが存在すればtrue
 	bool IsValidKey( const WString& key )const noexcept;
 
-	//�w�肵���L�[�����݂��邩�Ԃ�
-	//key : ���݂��m�F�������L�[
-	//index : ���Ԗڂ̃L�[�����؂��邩( key + INT2TEXT( index )�̃L�[���m�F���܂�)
-	//ret : �w�肵���L�[�����݂����true
+	//指定したキーが存在するか返す
+	//key : 存在を確認したいキー
+	//index : 何番目のキーを検証するか( key + INT2TEXT( index )のキーを確認します)
+	//ret : 指定したキーが存在すればtrue
 	bool IsValidKey( const WString& key , INT index )const noexcept;
 
-	//�w�肵���L�[�����݂��邩�Ԃ�
-	//key : ���݂��m�F�������L�[
-	//index : ���Ԗڂ̃L�[�����؂��邩( key + INT2TEXT( index )�̃L�[���m�F���܂�)
-	//subkey : ���݂��m�F�������T�u�L�[
-	//ret : �w�肵���L�[�����݂����true
+	//指定したキーが存在するか返す
+	//key : 存在を確認したいキー
+	//index : 何番目のキーを検証するか( key + INT2TEXT( index )のキーを確認します)
+	//subkey : 存在を確認したいサブキー
+	//ret : 指定したキーが存在すればtrue
 	bool IsValidKey( const WString& key , INT index , const WString& subkey )const noexcept;
 
-	//�w�肵���L�[�����݂��邩�Ԃ�
-	//key : ���݂��m�F�������L�[
-	//subkey : ���݂��m�F�������T�u�L�[
-	//ret : �w�肵���L�[�����݂����true
+	//指定したキーが存在するか返す
+	//key : 存在を確認したいキー
+	//subkey : 存在を確認したいサブキー
+	//ret : 指定したキーが存在すればtrue
 	bool IsValidKey( const WString& key , const WString& subkey )const noexcept;
 
-	//�L�[�̒l��32�r�b�gINT�̒l�Ƃ��ēǂݎ��
-	//key : �ǂݎ�肽���L�[
-	//defvalue : �L�[��ǂݎ��Ȃ������ꍇ�̒l
-	//ret : �ǂݎ�����l�B�ǂݎ��Ȃ������ꍇ��defvalue�̒l
+	//キーの値を32ビットINTの値として読み取る
+	//key : 読み取りたいキー
+	//defvalue : キーを読み取れなかった場合の値
+	//ret : 読み取った値。読み取れなかった場合はdefvalueの値
 	INT GetValue( const WString& key , INT index , const WString& subkey , INT defvalue , bool* retIsReadable = nullptr )const noexcept;
 
-	//�L�[�̒l��32�r�b�gLONG�̒l�Ƃ��ēǂݎ��
-	//key : �ǂݎ�肽���L�[
-	//defvalue : �L�[��ǂݎ��Ȃ������ꍇ�̒l
-	//ret : �ǂݎ�����l�B�ǂݎ��Ȃ������ꍇ��defvalue�̒l
+	//キーの値を32ビットLONGの値として読み取る
+	//key : 読み取りたいキー
+	//defvalue : キーを読み取れなかった場合の値
+	//ret : 読み取った値。読み取れなかった場合はdefvalueの値
 	LONG GetValue( const WString& key , INT index , const WString& subkey , LONG defvalue , bool* retIsReadable = nullptr )const noexcept;
 
-	//�L�[�̒l��64�r�b�gINT�̒l�Ƃ��ēǂݎ��
-	//key : �ǂݎ�肽���L�[
-	//defvalue : �L�[��ǂݎ��Ȃ������ꍇ�̒l
-	//ret : �ǂݎ�����l�B�ǂݎ��Ȃ������ꍇ��defvalue�̒l
+	//キーの値を64ビットINTの値として読み取る
+	//key : 読み取りたいキー
+	//defvalue : キーを読み取れなかった場合の値
+	//ret : 読み取った値。読み取れなかった場合はdefvalueの値
 	LONGLONG GetValue( const WString& key , INT index , const WString& subkey , LONGLONG defvalue , bool* retIsReadable = nullptr )const noexcept;
 
-	//�L�[�̒l��32�r�b�gUINT�Ƃ��ēǂݎ��
-	//key : �ǂݎ�肽���L�[
-	//defvalue : �L�[��ǂݎ��Ȃ������ꍇ�̒l
-	//ret : �ǂݎ�����l�B�ǂݎ��Ȃ������ꍇ��defvalue�̒l
+	//キーの値を32ビットUINTとして読み取る
+	//key : 読み取りたいキー
+	//defvalue : キーを読み取れなかった場合の値
+	//ret : 読み取った値。読み取れなかった場合はdefvalueの値
 	UINT GetValue( const WString& key , INT index , const WString& subkey , UINT defvalue , bool* retIsReadable = nullptr )const noexcept;
 
-	//�L�[�̒l��32�r�b�gDWORD�Ƃ��ēǂݎ��
-	//key : �ǂݎ�肽���L�[
-	//defvalue : �L�[��ǂݎ��Ȃ������ꍇ�̒l
-	//ret : �ǂݎ�����l�B�ǂݎ��Ȃ������ꍇ��defvalue�̒l
+	//キーの値を32ビットDWORDとして読み取る
+	//key : 読み取りたいキー
+	//defvalue : キーを読み取れなかった場合の値
+	//ret : 読み取った値。読み取れなかった場合はdefvalueの値
 	DWORD GetValue( const WString& key , INT index , const WString& subkey , DWORD defvalue , bool* retIsReadable = nullptr )const noexcept;
 
-	//�L�[�̒l��64�r�b�gUINT�Ƃ��ēǂݎ��
-	//key : �ǂݎ�肽���L�[
-	//defvalue : �L�[��ǂݎ��Ȃ������ꍇ�̒l
-	//ret : �ǂݎ�����l�B�ǂݎ��Ȃ������ꍇ��defvalue�̒l
+	//キーの値を64ビットUINTとして読み取る
+	//key : 読み取りたいキー
+	//defvalue : キーを読み取れなかった場合の値
+	//ret : 読み取った値。読み取れなかった場合はdefvalueの値
 	ULONGLONG GetValue( const WString& key , INT index , const WString& subkey , ULONGLONG defvalue , bool* retIsReadable = nullptr )const noexcept;
 
-	//�L�[�̒l��32�r�b�gFLOAT�Ƃ��ēǂݎ��
-	//key : �ǂݎ�肽���L�[
-	//defvalue : �L�[��ǂݎ��Ȃ������ꍇ�̒l
-	//ret : �ǂݎ�����l�B�ǂݎ��Ȃ������ꍇ��defvalue�̒l
+	//キーの値を32ビットFLOATとして読み取る
+	//key : 読み取りたいキー
+	//defvalue : キーを読み取れなかった場合の値
+	//ret : 読み取った値。読み取れなかった場合はdefvalueの値
 	FLOAT GetValue( const WString& key , INT index , const WString& subkey , FLOAT defvalue , bool* retIsReadable = nullptr )const noexcept;
 
-	//�L�[�̒l��64�r�b�gDOUBLE�Ƃ��ēǂݎ��
-	//key : �ǂݎ�肽���L�[
-	//defvalue : �L�[��ǂݎ��Ȃ������ꍇ�̒l
-	//ret : �ǂݎ�����l�B�ǂݎ��Ȃ������ꍇ��defvalue�̒l
+	//キーの値を64ビットDOUBLEとして読み取る
+	//key : 読み取りたいキー
+	//defvalue : キーを読み取れなかった場合の値
+	//ret : 読み取った値。読み取れなかった場合はdefvalueの値
 	DOUBLE GetValue( const WString& key , INT index , const WString& subkey , DOUBLE defvalue , bool* retIsReadable = nullptr )const noexcept;
 
-	//�L�[�̒l��UNICODE������Ƃ��ēǂݎ��
-	//key : �ǂݎ�肽���L�[
-	//defvalue : �L�[��ǂݎ��Ȃ������ꍇ�̒l
-	//ret : �ǂݎ�����l�B�ǂݎ��Ȃ������ꍇ��defvalue�̒l
+	//キーの値をUNICODE文字列として読み取る
+	//key : 読み取りたいキー
+	//defvalue : キーを読み取れなかった場合の値
+	//ret : 読み取った値。読み取れなかった場合はdefvalueの値
 	WString GetValue( const WString& key , INT index , const WString& subkey , const WString& defvalue , bool* retIsReadable = nullptr )const noexcept;
 
-	//�L�[�̒l��ASCII������Ƃ��ēǂݎ��
-	//key : �ǂݎ�肽���L�[
-	//defvalue : �L�[��ǂݎ��Ȃ������ꍇ�̒l
-	//ret : �ǂݎ�����l�B�ǂݎ��Ȃ������ꍇ��defvalue�̒l
+	//キーの値をASCII文字列として読み取る
+	//key : 読み取りたいキー
+	//defvalue : キーを読み取れなかった場合の値
+	//ret : 読み取った値。読み取れなかった場合はdefvalueの値
 	AString GetValue( const WString& key , INT index , const WString& subkey , const AString& defvalue , bool* retIsReadable = nullptr )const noexcept;
 
-	//�L�[�̒l��UNICODE������Ƃ��ēǂݎ��
-	//key : �ǂݎ�肽���L�[
-	//defvalue : �L�[��ǂݎ��Ȃ������ꍇ�̒l
-	//ret : �ǂݎ�����l�B�ǂݎ��Ȃ������ꍇ��defvalue�̒l
+	//キーの値をUNICODE文字列として読み取る
+	//key : 読み取りたいキー
+	//defvalue : キーを読み取れなかった場合の値
+	//ret : 読み取った値。読み取れなかった場合はdefvalueの値
 	const wchar_t* GetValue( const WString& key , INT index , const WString& subkey , const wchar_t* defvalue , bool* retIsReadable = nullptr )const noexcept;
 
-	//GetValue()��const char*�ł͂���܂���
-	//�����\����UNICODE�ɂȂ��Ă���AASCII������𒼐ڕԂ����Ƃ��o���Ȃ����߂ł��B
+	//GetValue()のconst char*版はありません
+	//内部表現はUNICODEになっており、ASCII文字列を直接返すことが出来ないためです。
 	//const char* GetValue( const WString& key , const char* defvalue )const noexcept;
 
-	//�L�[�̒l��F�Ƃ��ēǂݎ��
-	//�E#�ɑ���16�i��6����#rrggbb�Ƃ��ēǂݎ��܂��B
-	//�E#�ɑ���16�i��8����#rrggbbaa�Ƃ��ēǂݎ��܂��Baa��ǂݎ�����ꍇ�ARGBQUAD�\���̂�reserved�����o�Ɋi�[���܂��B
-	//key : �ǂݎ�肽���L�[
-	//defvalue : �L�[��ǂݎ��Ȃ������ꍇ�̒l
-	//ret : �ǂݎ�����l�B�ǂݎ��Ȃ������ꍇ��defvalue�̒l
+	//キーの値を色として読み取る
+	//・#に続く16進数6桁を#rrggbbとして読み取ります。
+	//・#に続く16進数8桁を#rrggbbaaとして読み取ります。aaを読み取った場合、RGBQUAD構造体のreservedメンバに格納します。
+	//key : 読み取りたいキー
+	//defvalue : キーを読み取れなかった場合の値
+	//ret : 読み取った値。読み取れなかった場合はdefvalueの値
 	RGBQUAD GetValue( const WString& key , INT index , const WString& subkey , const RGBQUAD& defvalue , bool* retIsReadable = nullptr )const noexcept;
 
-	//�L�[�̒l���u�[���l�Ƃ��ēǂݎ��
-	//key : �ǂݎ�肽���L�[
-	//defvalue : �L�[��ǂݎ��Ȃ������ꍇ�̒l
-	//ret : �ǂݎ�����l�B�ǂݎ��Ȃ������ꍇ��defvalue�̒l
-	//��true�Ɣ��肳������
-	//�@true�Ayes
-	//��false�Ɣ��肳������
-	//  false�Ano
-	//��defvalue�̒l���Ԃ�ꍇ
-	//  �L�[�����݂��Ȃ��ꍇ�A��Ltrue�Efalse�̏����𖞂����Ȃ��ꍇ
+	//キーの値をブール値として読み取る
+	//key : 読み取りたいキー
+	//defvalue : キーを読み取れなかった場合の値
+	//ret : 読み取った値。読み取れなかった場合はdefvalueの値
+	//※trueと判定されるもの
+	//　true、yes
+	//※falseと判定されるもの
+	//  false、no
+	//※defvalueの値が返る場合
+	//  キーが存在しない場合、上記true・falseの条件を満たさない場合
 	bool GetValue( const WString& key , INT index , const WString& subkey , bool defvalue , bool* retIsReadable = nullptr )const noexcept;
 
-	//�L�[�̒l��16�i���̒l�Ƃ��ēǂݎ��
-	//key : �ǂݎ�肽���L�[
-	//defvalue : �L�[��ǂݎ��Ȃ������ꍇ�̒l
-	//ret : �ǂݎ�����l�B�ǂݎ��Ȃ������ꍇ��defvalue�̒l
+	//キーの値を16進数の値として読み取る
+	//key : 読み取りたいキー
+	//defvalue : キーを読み取れなかった場合の値
+	//ret : 読み取った値。読み取れなかった場合はdefvalueの値
 	Hexdecimal GetValue( const WString& key , INT index , const WString& subkey , Hexdecimal defvalue , bool* retIsReadable = nullptr )const noexcept;
 
 	//------------------------------------------------------
-	//��������˒l�̃e�[�u�����g����GetValue
+	//☆文字列⇒値のテーブルを使ったGetValue
 	//------------------------------------------------------
 
-	//������˒l�̃e�[�u���̃G���g��
+	//文字列⇒値のテーブルのエントリ
 	template< class T > struct LookupValuesEntry
 	{
-		WString String;	//���̕������
-		T Value;		//���̒l���֘A�t����(�����񃊃e�����ɂ���ꍇ�́A�e���v���[�g��typename��const�����Y��Ȃ�)
+		WString String;	//この文字列に
+		T Value;		//この値を関連付ける(文字列リテラルにする場合は、テンプレートのtypenameにconstをお忘れなく)
 	};
 
-	//LookupValuesEntry��vector��typedef��������
+	//LookupValuesEntryのvectorをtypedefしたもの
 	template< class T > using LookupValues = std::vector< LookupValuesEntry< T > >;
 
-	//������˒l�̃e�[�u�����g���āA�L�[�̒l��ǂݎ��
-	//key : �ǂݎ�肽���L�[
-	//values : �L�[�̒l�����b�N�A�b�v����e�[�u���B�L�[�̒l�Ɗ��S��v������̂��ꗗ�̒��ɂ���΁A�Ή�����l��Ԃ�
-	//defvalue : �L�[��ǂݎ��Ȃ������ꍇ�Avalues�Ɉ�v������̂��Ȃ������ꍇ�̒l
-	//ret : values���烋�b�N�A�b�v�����l�A�܂��́Adefvalue�̒l�B
-	//�yvalues�ɓn���\���̂̍쐬��z
+	//文字列⇒値のテーブルを使って、キーの値を読み取る
+	//key : 読み取りたいキー
+	//values : キーの値をルックアップするテーブル。キーの値と完全一致するものが一覧の中にあれば、対応する値を返す
+	//defvalue : キーを読み取れなかった場合、valuesに一致するものがなかった場合の値
+	//ret : valuesからルックアップした値、または、defvalueの値。
+	//【valuesに渡す構造体の作成例】
 	//  const mInitFileSection::LookupValues< bool > BooleanValues =
 	//  {
-	//		{ L"yes"	, true  },	//�ݒ�l��yes����true���Ԃ�
-	//		{ L"no"		, false },	//�ݒ�l��no����false���Ԃ�
+	//		{ L"yes"	, true  },	//設定値がyesだとtrueが返る
+	//		{ L"no"		, false },	//設定値がnoだとfalseが返る
 	//  };
 	template< class T > T GetValue( const WString& key , const LookupValues< T >& values , const T defvalue , bool* retIsReadable = nullptr )const noexcept
 	{
 		return GetValue( key , 0 , L"" , values , defvalue , retIsReadable );
 	}
 
-	//������˒l�̃e�[�u�����g���āA�L�[�̒l��ǂݎ��
-	//key : �ǂݎ�肽���L�[
-	//index : ���Ԗڂ̃L�[��ǂݎ�邩( key + INT2TEXT( index )�̃L�[��ǂݎ��܂�)
-	//values : �L�[�̒l�����b�N�A�b�v����e�[�u���B�L�[�̒l�Ɗ��S��v������̂��ꗗ�̒��ɂ���΁A�Ή�����l��Ԃ�
-	//defvalue : �L�[��ǂݎ��Ȃ������ꍇ�Avalues�Ɉ�v������̂��Ȃ������ꍇ�̒l
-	//ret : values���烋�b�N�A�b�v�����l�A�܂��́Adefvalue�̒l�B
+	//文字列⇒値のテーブルを使って、キーの値を読み取る
+	//key : 読み取りたいキー
+	//index : 何番目のキーを読み取るか( key + INT2TEXT( index )のキーを読み取ります)
+	//values : キーの値をルックアップするテーブル。キーの値と完全一致するものが一覧の中にあれば、対応する値を返す
+	//defvalue : キーを読み取れなかった場合、valuesに一致するものがなかった場合の値
+	//ret : valuesからルックアップした値、または、defvalueの値。
 	template< class T > T GetValue( const WString& key , INT index , const LookupValues< T >& values , const T defvalue , bool* retIsReadable = nullptr )const noexcept
 	{
 		return GetValue( key , index , L"" , values , defvalue , retIsReadable );
 	}
 
-	//������˒l�̃e�[�u�����g���āA�L�[�̒l��ǂݎ��
-	//key : �ǂݎ�肽���L�[
-	//subkey : �ǂݎ�肽���T�u�L�[
-	//values : �L�[�̒l�����b�N�A�b�v����e�[�u���B�L�[�̒l�Ɗ��S��v������̂��ꗗ�̒��ɂ���΁A�Ή�����l��Ԃ�
-	//defvalue : �L�[��ǂݎ��Ȃ������ꍇ�Avalues�Ɉ�v������̂��Ȃ������ꍇ�̒l
-	//ret : values���烋�b�N�A�b�v�����l�A�܂��́Adefvalue�̒l�B
+	//文字列⇒値のテーブルを使って、キーの値を読み取る
+	//key : 読み取りたいキー
+	//subkey : 読み取りたいサブキー
+	//values : キーの値をルックアップするテーブル。キーの値と完全一致するものが一覧の中にあれば、対応する値を返す
+	//defvalue : キーを読み取れなかった場合、valuesに一致するものがなかった場合の値
+	//ret : valuesからルックアップした値、または、defvalueの値。
 	template< class T > T GetValue( const WString& key , const WString& subkey , const LookupValues< T >& values , const T defvalue , bool* retIsReadable = nullptr )const noexcept
 	{
 		return GetValue( key , 0 , subkey , values , defvalue , retIsReadable );
 	}
 
-	//������˒l�̃e�[�u�����g���āA�L�[�̒l��ǂݎ��
-	//key : �ǂݎ�肽���L�[
-	//index : ���Ԗڂ̃L�[��ǂݎ�邩( key + INT2TEXT( index )�̃L�[��ǂݎ��܂�)
-	//subkey : �ǂݎ�肽���T�u�L�[
-	//values : �L�[�̒l�����b�N�A�b�v����e�[�u���B�L�[�̒l�Ɗ��S��v������̂��ꗗ�̒��ɂ���΁A�Ή�����l��Ԃ�
-	//defvalue : �L�[��ǂݎ��Ȃ������ꍇ�Avalues�Ɉ�v������̂��Ȃ������ꍇ�̒l
-	//ret : values���烋�b�N�A�b�v�����l�A�܂��́Adefvalue�̒l�B
+	//文字列⇒値のテーブルを使って、キーの値を読み取る
+	//key : 読み取りたいキー
+	//index : 何番目のキーを読み取るか( key + INT2TEXT( index )のキーを読み取ります)
+	//subkey : 読み取りたいサブキー
+	//values : キーの値をルックアップするテーブル。キーの値と完全一致するものが一覧の中にあれば、対応する値を返す
+	//defvalue : キーを読み取れなかった場合、valuesに一致するものがなかった場合の値
+	//ret : valuesからルックアップした値、または、defvalueの値。
 	template< class T > T GetValue( const WString& key , INT index , const WString& subkey , const LookupValues< T >& values , const T defvalue , bool* retIsReadable = nullptr )const noexcept
 	{
-		//�ݒ�l���擾
+		//設定値を取得
 		Key tmpkey;
 		tmpkey.key = key;
 		tmpkey.index = index;
@@ -294,15 +294,15 @@ public:
 		KeyValueMap::const_iterator itr = MyKeyValueMap.find( tmpkey );
 		if( itr == MyKeyValueMap.end() )
 		{
-			//�L�[�����݂��Ȃ��̂Ńf�t�H���g��Ԃ�
+			//キーが存在しないのでデフォルトを返す
 			ResetReadable( retIsReadable );
 			return defvalue;
 		}
-		//�擾�����l��S�ď������ɕϊ�
+		//取得した値を全て小文字に変換
 		WString str1 = itr->second;
 		std::transform( str1.cbegin() , str1.cend() , str1.begin() , wchar_tolower );
 
-		//values�̒����X�L�������A��v������̂�������Ί֘A�Â����Ă���l��Ԃ�
+		//valuesの中をスキャンし、一致するものが見つかれば関連づけられている値を返す
 		typename LookupValues< T >::const_iterator values_itr = values.begin();
 		for( ; values_itr != values.end() ; values_itr++ )
 		{
@@ -310,139 +310,139 @@ public:
 			std::transform( str2.cbegin() , str2.cend() , str2.begin() , wchar_tolower );
 			if( str1 == str2 )
 			{
-				//��v������̂��������̂ł���B
+				//一致するものがあったのでこれ。
 				SetReadable( retIsReadable );
 				return values_itr->Value;
 			}
 		}
-		//��v�Ȃ��B
+		//一致なし。
 		ResetReadable( retIsReadable );
 		return defvalue;
 	}
 
 	//------------------------------------------------------
-	//�����̑��`���̃e���v���[�g
+	//☆その他形式のテンプレート
 	//------------------------------------------------------
 
 	//==================================================
-	//���ǂݎ�茋�ʂ�Ԃ��Ȃ��o�[�W������
+	//＜読み取り結果を返さないバージョン＞
 	//==================================================
 
-	//�L�[�̒l��ǂݎ��
-	//key : �ǂݎ�肽���L�[
-	//defvalue : �L�[��ǂݎ��Ȃ������ꍇ�̒l
-	//ret : �ǂݎ�����l�B�ǂݎ��Ȃ������ꍇ��defvalue�̒l
-	 //���ʂ̌^�œǂݏ�������ꍇ�̒��ӓ_�́Aindex�Asubkey�����̊�{�`�̊֐��ɃR�����g�������Ă���܂��B
+	//キーの値を読み取る
+	//key : 読み取りたいキー
+	//defvalue : キーを読み取れなかった場合の値
+	//ret : 読み取った値。読み取れなかった場合はdefvalueの値
+	 //※個別の型で読み書きする場合の注意点は、index、subkey無しの基本形の関数にコメントが書いてあります。
 	template< typename T >
 	inline T GetValue( const WString& key , T defvalue )const noexcept
 	{
 		return GetValue( key , 0 , L"" , defvalue );
 	}
 
-	//�L�[�̒l��ǂݎ��
-	//key : �ǂݎ�肽���L�[
-	//index : ���Ԗڂ̃L�[��ǂݎ�邩( key + INT2TEXT( index )�̃L�[��ǂݎ��܂�)
-	//defvalue : �L�[��ǂݎ��Ȃ������ꍇ�̒l
-	//ret : �ǂݎ�����l�B�ǂݎ��Ȃ������ꍇ��defvalue�̒l
-	 //���ʂ̌^�œǂݏ�������ꍇ�̒��ӓ_�́Aindex�Asubkey�����̊�{�`�̊֐��ɃR�����g�������Ă���܂��B
+	//キーの値を読み取る
+	//key : 読み取りたいキー
+	//index : 何番目のキーを読み取るか( key + INT2TEXT( index )のキーを読み取ります)
+	//defvalue : キーを読み取れなかった場合の値
+	//ret : 読み取った値。読み取れなかった場合はdefvalueの値
+	 //※個別の型で読み書きする場合の注意点は、index、subkey無しの基本形の関数にコメントが書いてあります。
 	template< typename T >
 	T GetValue( const WString& key , INT index , T defvalue )const noexcept
 	{
 		return GetValue( key , index , L"" , defvalue );
 	}
 
-	//�L�[�̒l��ǂݎ��
-	//key : �ǂݎ�肽���L�[
-	//subkey : �ǂݎ�肽���T�u�L�[
-	//defvalue : �L�[��ǂݎ��Ȃ������ꍇ�̒l
-	//ret : �ǂݎ�����l�B�ǂݎ��Ȃ������ꍇ��defvalue�̒l
-	 //���ʂ̌^�œǂݏ�������ꍇ�̒��ӓ_�́Aindex�Asubkey�����̊�{�`�̊֐��ɃR�����g�������Ă���܂��B
+	//キーの値を読み取る
+	//key : 読み取りたいキー
+	//subkey : 読み取りたいサブキー
+	//defvalue : キーを読み取れなかった場合の値
+	//ret : 読み取った値。読み取れなかった場合はdefvalueの値
+	 //※個別の型で読み書きする場合の注意点は、index、subkey無しの基本形の関数にコメントが書いてあります。
 	template< typename T >
 	T GetValue( const WString& key , const WString& subkey , T defvalue )const noexcept
 	{
 		return GetValue( key , 0 , subkey , defvalue );
 	}
 
-	//��舵���s�Ȍ^���w�肳�ꂽ�ꍇ�G���[�ɂ��邽�߂̊֐�
+	//取り扱い不可な型が指定された場合エラーにするための関数
 	template< typename T >
 	inline T GetValue( const WString& key , INT index , const WString& subkey , T defvalue )const noexcept
 	{
 		//==================================================
-		//�@�@�@�@�@�@�@���̌^�͎g�p�ł��܂���
+		//　　　　　　　この型は使用できません
 		//==================================================
-		//�Edefvalue�ɔ�Ή��̌^���w�肵�Ă��܂��񂩁H
-		//  ���[�U�[��`�̌^�Ȃǂ͑Ή����Ă��܂���B
-		//�Edefvalue��ASCII�������Achar*�^�̈������w�肵�Ă��܂��񂩁H
-		//�@���̏ꍇ�́AAString�Ɉ�U�ϊ����Ă��������B
-		//  �~�@printf( "%s\n" , sect->GetValue( L"key" , index , L"subkey" , "ABC" ) ) );
-		//  ���@printf( "%s\n" , sect->GetValue( L"key" , index , L"subkey" , AString( "ABC" ) ).c_str() );
+		//・defvalueに非対応の型を指定していませんか？
+		//  ユーザー定義の型などは対応していません。
+		//・defvalueにASCII文字列や、char*型の引数を指定していませんか？
+		//　この場合は、AStringに一旦変換してください。
+		//  ×　printf( "%s\n" , sect->GetValue( L"key" , index , L"subkey" , "ABC" ) ) );
+		//  ○　printf( "%s\n" , sect->GetValue( L"key" , index , L"subkey" , AString( "ABC" ) ).c_str() );
 		static_assert( false , "This typename is not allowed (see comment)" );
 	}
 
 	//==================================================
-	//���ǂݎ�茋�ʂ�Ԃ��o�[�W������
+	//＜読み取り結果を返すバージョン＞
 	//==================================================
 
-	//�L�[�̒l��ǂݎ��
-	//key : �ǂݎ�肽���L�[
-	//defvalue : �L�[��ǂݎ��Ȃ������ꍇ�̒l
-	//ret : �ǂݎ�����l�B�ǂݎ��Ȃ������ꍇ��defvalue�̒l
-	//���ʂ̌^�œǂݏ�������ꍇ�̒��ӓ_�́Aindex�Asubkey�����̊�{�`�̊֐��ɃR�����g�������Ă���܂��B
+	//キーの値を読み取る
+	//key : 読み取りたいキー
+	//defvalue : キーを読み取れなかった場合の値
+	//ret : 読み取った値。読み取れなかった場合はdefvalueの値
+	//※個別の型で読み書きする場合の注意点は、index、subkey無しの基本形の関数にコメントが書いてあります。
 	template< typename T >
 	inline T GetValue( bool* retIsReadable , const WString& key , T defvalue )const noexcept
 	{
 		return GetValue( key , 0 , L"" , defvalue , retIsReadable );
 	}
 
-	//�L�[�̒l��ǂݎ��
-	//key : �ǂݎ�肽���L�[
-	//index : ���Ԗڂ̃L�[��ǂݎ�邩( key + INT2TEXT( index )�̃L�[��ǂݎ��܂�)
-	//defvalue : �L�[��ǂݎ��Ȃ������ꍇ�̒l
-	//ret : �ǂݎ�����l�B�ǂݎ��Ȃ������ꍇ��defvalue�̒l
-	//���ʂ̌^�œǂݏ�������ꍇ�̒��ӓ_�́Aindex�Asubkey�����̊�{�`�̊֐��ɃR�����g�������Ă���܂��B
+	//キーの値を読み取る
+	//key : 読み取りたいキー
+	//index : 何番目のキーを読み取るか( key + INT2TEXT( index )のキーを読み取ります)
+	//defvalue : キーを読み取れなかった場合の値
+	//ret : 読み取った値。読み取れなかった場合はdefvalueの値
+	//※個別の型で読み書きする場合の注意点は、index、subkey無しの基本形の関数にコメントが書いてあります。
 	template< typename T >
 	T GetValue( bool* retIsReadable ,  const WString& key , INT index , T defvalue )const noexcept
 	{
 		return GetValue( key , index , L"" , defvalue , retIsReadable );
 	}
 
-	//�L�[�̒l��ǂݎ��
-	//key : �ǂݎ�肽���L�[
-	//subkey : �ǂݎ�肽���T�u�L�[
-	//defvalue : �L�[��ǂݎ��Ȃ������ꍇ�̒l
-	//ret : �ǂݎ�����l�B�ǂݎ��Ȃ������ꍇ��defvalue�̒l
-	//���ʂ̌^�œǂݏ�������ꍇ�̒��ӓ_�́Aindex�Asubkey�����̊�{�`�̊֐��ɃR�����g�������Ă���܂��B
+	//キーの値を読み取る
+	//key : 読み取りたいキー
+	//subkey : 読み取りたいサブキー
+	//defvalue : キーを読み取れなかった場合の値
+	//ret : 読み取った値。読み取れなかった場合はdefvalueの値
+	//※個別の型で読み書きする場合の注意点は、index、subkey無しの基本形の関数にコメントが書いてあります。
 	template< typename T >
 	T GetValue( bool* retIsReadable ,  const WString& key , const WString& subkey , T defvalue )const noexcept
 	{
 		return GetValue( key , 0 , subkey , defvalue , retIsReadable );
 	}
 
-	//��舵���s�Ȍ^���w�肳�ꂽ�ꍇ�G���[�ɂ��邽�߂̊֐�
+	//取り扱い不可な型が指定された場合エラーにするための関数
 	template< typename T >
 	inline T GetValue( bool* retIsReadable ,  const WString& key , INT index , const WString& subkey , T defvalue )const noexcept
 	{
 		//==================================================
-		//�@�@�@�@�@�@�@���̌^�͎g�p�ł��܂���
+		//　　　　　　　この型は使用できません
 		//==================================================
-		//�Edefvalue�ɔ�Ή��̌^���w�肵�Ă��܂��񂩁H
-		//  ���[�U�[��`�̌^�Ȃǂ͑Ή����Ă��܂���B
-		//�Edefvalue��ASCII�������Achar*�^�̈������w�肵�Ă��܂��񂩁H
-		//�@���̏ꍇ�́AAString�Ɉ�U�ϊ����Ă��������B
-		//  �~�@printf( "%s\n" , sect->GetValue( L"key" , index , L"subkey" , "ABC" ) ) );
-		//  ���@printf( "%s\n" , sect->GetValue( L"key" , index , L"subkey" , AString( "ABC" ) ).c_str() );
+		//・defvalueに非対応の型を指定していませんか？
+		//  ユーザー定義の型などは対応していません。
+		//・defvalueにASCII文字列や、char*型の引数を指定していませんか？
+		//　この場合は、AStringに一旦変換してください。
+		//  ×　printf( "%s\n" , sect->GetValue( L"key" , index , L"subkey" , "ABC" ) ) );
+		//  ○　printf( "%s\n" , sect->GetValue( L"key" , index , L"subkey" , AString( "ABC" ) ).c_str() );
 		static_assert( false , "This typename is not allowed (see comment)" );
 	}
 
 	//==================================================
-	//���ǂݎ�茋�ʂ�Ԃ�l�ŕԂ��o�[�W������
+	//＜読み取り結果を返り値で返すバージョン＞
 	//==================================================
 
-	//�L�[�̒l��ǂݎ��
-	//key : �ǂݎ�肽���L�[
-	//iovalue : �i�[��B�ǂݎ��Ȃ������ꍇ�͕ω����Ȃ��B
-	//ret : �ǂݎ�����ꍇ�^
-	//���ʂ̌^�œǂݏ�������ꍇ�̒��ӓ_�́Aindex�Asubkey�����̊�{�`�̊֐��ɃR�����g�������Ă���܂��B
+	//キーの値を読み取る
+	//key : 読み取りたいキー
+	//iovalue : 格納先。読み取れなかった場合は変化しない。
+	//ret : 読み取った場合真
+	//※個別の型で読み書きする場合の注意点は、index、subkey無しの基本形の関数にコメントが書いてあります。
 	template< typename T >
 	inline bool QueryValue( const WString& key , T iovalue )const noexcept
 	{
@@ -451,12 +451,12 @@ public:
 		return result;
 	}
 
-	//�L�[�̒l��ǂݎ��
-	//key : �ǂݎ�肽���L�[
-	//index : ���Ԗڂ̃L�[��ǂݎ�邩( key + INT2TEXT( index )�̃L�[��ǂݎ��܂�)
-	//iovalue : �i�[��B�ǂݎ��Ȃ������ꍇ�͕ω����Ȃ��B
-	//ret : �ǂݎ�����ꍇ�^
-	//���ʂ̌^�œǂݏ�������ꍇ�̒��ӓ_�́Aindex�Asubkey�����̊�{�`�̊֐��ɃR�����g�������Ă���܂��B
+	//キーの値を読み取る
+	//key : 読み取りたいキー
+	//index : 何番目のキーを読み取るか( key + INT2TEXT( index )のキーを読み取ります)
+	//iovalue : 格納先。読み取れなかった場合は変化しない。
+	//ret : 読み取った場合真
+	//※個別の型で読み書きする場合の注意点は、index、subkey無しの基本形の関数にコメントが書いてあります。
 	template< typename T >
 	bool QueryValue( const WString& key , INT index , T iovalue )const noexcept
 	{
@@ -465,12 +465,12 @@ public:
 		return result;
 	}
 
-	//�L�[�̒l��ǂݎ��
-	//key : �ǂݎ�肽���L�[
-	//subkey : �ǂݎ�肽���T�u�L�[
-	//iovalue : �i�[��B�ǂݎ��Ȃ������ꍇ�͕ω����Ȃ��B
-	//ret : �ǂݎ�����ꍇ�^
-	//���ʂ̌^�œǂݏ�������ꍇ�̒��ӓ_�́Aindex�Asubkey�����̊�{�`�̊֐��ɃR�����g�������Ă���܂��B
+	//キーの値を読み取る
+	//key : 読み取りたいキー
+	//subkey : 読み取りたいサブキー
+	//iovalue : 格納先。読み取れなかった場合は変化しない。
+	//ret : 読み取った場合真
+	//※個別の型で読み書きする場合の注意点は、index、subkey無しの基本形の関数にコメントが書いてあります。
 	template< typename T >
 	bool QueryValue( const WString& key , const WString& subkey , T iovalue )const noexcept
 	{
@@ -479,197 +479,197 @@ public:
 		return result;
 	}
 
-	//��舵���s�Ȍ^���w�肳�ꂽ�ꍇ�G���[�ɂ��邽�߂̊֐�
+	//取り扱い不可な型が指定された場合エラーにするための関数
 	template< typename T >
 	inline bool QueryValue( const WString& key , INT index , const WString& subkey , T iovalue )const noexcept
 	{
 		//==================================================
-		//�@�@�@�@�@�@�@���̌^�͎g�p�ł��܂���
+		//　　　　　　　この型は使用できません
 		//==================================================
-		//�Edefvalue�ɔ�Ή��̌^���w�肵�Ă��܂��񂩁H
-		//  ���[�U�[��`�̌^�Ȃǂ͑Ή����Ă��܂���B
-		//�Edefvalue��ASCII�������Achar*�^�̈������w�肵�Ă��܂��񂩁H
-		//�@���̏ꍇ�́AAString�Ɉ�U�ϊ����Ă��������B
-		//  �~�@printf( "%s\n" , sect->GetValue( L"key" , index , L"subkey" , "ABC" ) ) );
-		//  ���@printf( "%s\n" , sect->GetValue( L"key" , index , L"subkey" , AString( "ABC" ) ).c_str() );
+		//・defvalueに非対応の型を指定していませんか？
+		//  ユーザー定義の型などは対応していません。
+		//・defvalueにASCII文字列や、char*型の引数を指定していませんか？
+		//　この場合は、AStringに一旦変換してください。
+		//  ×　printf( "%s\n" , sect->GetValue( L"key" , index , L"subkey" , "ABC" ) ) );
+		//  ○　printf( "%s\n" , sect->GetValue( L"key" , index , L"subkey" , AString( "ABC" ) ).c_str() );
 		static_assert( false , "This typename is not allowed (see comment)" );
 	}
 
 
 	//------------------------------------------------------
-	//���l�̃Z�b�g
+	//☆値のセット
 	//------------------------------------------------------
 
-	//�w��̃L�[��32�r�b�gINT�̒l��ݒ肷��
-	//key : �ݒ肵�����L�[
-	//newval : �ݒ肷��l
-	//ret : �������^
+	//指定のキーに32ビットINTの値を設定する
+	//key : 設定したいキー
+	//newval : 設定する値
+	//ret : 成功時真
 	 bool SetValue( const WString& key , INT index , const WString& subkey , INT newval )noexcept;
 
-	//�w��̃L�[��32�r�b�gLONG�̒l��ݒ肷��
-	//key : �ݒ肵�����L�[
-	//newval : �ݒ肷��l
-	//ret : �������^
+	//指定のキーに32ビットLONGの値を設定する
+	//key : 設定したいキー
+	//newval : 設定する値
+	//ret : 成功時真
 	 bool SetValue( const WString& key , INT index , const WString& subkey , LONG newval )noexcept;
 
-	 //�w��̃L�[��64�r�b�gINT�̒l��ݒ肷��
-	//key : �ݒ肵�����L�[
-	//newval : �ݒ肷��l
-	//ret : �������^
+	 //指定のキーに64ビットINTの値を設定する
+	//key : 設定したいキー
+	//newval : 設定する値
+	//ret : 成功時真
 	 bool SetValue( const WString& key , INT index , const WString& subkey , LONGLONG newval )noexcept;
 
-	//�w��̃L�[��32�r�b�gUINT�̒l��ݒ肷��
-	//key : �ݒ肵�����L�[
-	//newval : �ݒ肷��l
-	//ret : �������^
+	//指定のキーに32ビットUINTの値を設定する
+	//key : 設定したいキー
+	//newval : 設定する値
+	//ret : 成功時真
 	 bool SetValue( const WString& key , INT index , const WString& subkey , DWORD newval )noexcept;
 
-	//�w��̃L�[��64�r�b�gUINT�̒l��ݒ肷��
-	//key : �ݒ肵�����L�[
-	//newval : �ݒ肷��l
-	//ret : �������^
+	//指定のキーに64ビットUINTの値を設定する
+	//key : 設定したいキー
+	//newval : 設定する値
+	//ret : 成功時真
 	 bool SetValue( const WString& key , INT index , const WString& subkey , ULONGLONG newval )noexcept;
 
-	//�w��̃L�[��32�r�b�gFLOAT�̒l��ݒ肷��
-	//key : �ݒ肵�����L�[
-	//newval : �ݒ肷��l
-	//ret : �������^
+	//指定のキーに32ビットFLOATの値を設定する
+	//key : 設定したいキー
+	//newval : 設定する値
+	//ret : 成功時真
 	 bool SetValue( const WString& key , INT index , const WString& subkey , FLOAT newval )noexcept;
 
-	//�w��̃L�[��64�r�b�gDOUBLE�̒l��ݒ肷��
-	//key : �ݒ肵�����L�[
-	//newval : �ݒ肷��l
-	//ret : �������^
+	//指定のキーに64ビットDOUBLEの値を設定する
+	//key : 設定したいキー
+	//newval : 設定する値
+	//ret : 成功時真
 	 bool SetValue( const WString& key , INT index , const WString& subkey , DOUBLE newval )noexcept;
 
-	//�w��̃L�[��UNICODE�������ݒ肷��
-	//key : �ݒ肵�����L�[
-	//newval : �ݒ肷��l
-	//ret : �������^
+	//指定のキーにUNICODE文字列を設定する
+	//key : 設定したいキー
+	//newval : 設定する値
+	//ret : 成功時真
 	 bool SetValue( const WString& key , INT index , const WString& subkey , const WString& newval )noexcept;
 
-	//�w��̃L�[��ASCII�������ݒ肷��
-	//key : �ݒ肵�����L�[
-	//newval : �ݒ肷��l
-	//ret : �������^
+	//指定のキーにASCII文字列を設定する
+	//key : 設定したいキー
+	//newval : 設定する値
+	//ret : 成功時真
 	 bool SetValue( const WString& key , INT index , const WString& subkey , const AString& newval )noexcept;
 
-	//�w��̃L�[��UNICODE�������ݒ肷��
-	//key : �ݒ肵�����L�[
-	//newval : �ݒ肷��l
-	//ret : �������^
+	//指定のキーにUNICODE文字列を設定する
+	//key : 設定したいキー
+	//newval : 設定する値
+	//ret : 成功時真
 	 bool SetValue( const WString& key , INT index , const WString& subkey , const wchar_t* newval )noexcept;
 
-	//�w��̃L�[��ASCII�������ݒ肷��
-	//key : �ݒ肵�����L�[
-	//newval : �ݒ肷��l
-	//ret : �������^
+	//指定のキーにASCII文字列を設定する
+	//key : 設定したいキー
+	//newval : 設定する値
+	//ret : 成功時真
 	 bool SetValue( const WString& key , INT index , const WString& subkey , const char* newval )noexcept;
 	 
-	 //�w��̃L�[�ɋP�x�l��ݒ肷��
-	//�ERGBQUAD�̒l���A#�ɑ���16�i��8����#rrggbbaa�Ƃ��ď������݂܂��B
-	//key : �ݒ肵�����L�[
-	//newval : �ݒ肷��l
-	//ret : �������^
+	 //指定のキーに輝度値を設定する
+	//・RGBQUADの値を、#に続く16進数8桁を#rrggbbaaとして書き込みます。
+	//key : 設定したいキー
+	//newval : 設定する値
+	//ret : 成功時真
 	 bool SetValue( const WString& key , INT index , const WString& subkey , const RGBQUAD& newval )noexcept;
 
-	//�w��̃L�[��GDI���W��ݒ肷��
-	//key : �ݒ肵�����L�[
-	//newval : �ݒ肷��l
-	//ret : �������^
+	//指定のキーにGDI座標を設定する
+	//key : 設定したいキー
+	//newval : 設定する値
+	//ret : 成功時真
 	 bool SetValue( const WString& key , INT index , const WString& subkey , const mWindowPosition::POSITION& newval )noexcept;
 
-	//�w��̃L�[��Window���W��ݒ肷��
-	//key : �ݒ肵�����L�[
-	//newval : �ݒ肷��l
-	//ret : �������^
-	//�w�肵���L�[�ɑ΂��āA�ȉ��̃T�u�L�[�̒l��ݒ肵�܂��B
-	//�Etop		�c��� WindowPosition::top�ɑΉ�
-	//�Ebottom	�c��� WindowPosition::bottom�ɑΉ� 
-	//�Eleft	�c���� WindowPosition::left�ɑΉ�
-	//�Eright	�c�E�� WindowPosition::right�ɑΉ�
+	//指定のキーにWindow座標を設定する
+	//key : 設定したいキー
+	//newval : 設定する値
+	//ret : 成功時真
+	//指定したキーに対して、以下のサブキーの値を設定します。
+	//・top		…上辺 WindowPosition::topに対応
+	//・bottom	…底辺 WindowPosition::bottomに対応 
+	//・left	…左辺 WindowPosition::leftに対応
+	//・right	…右辺 WindowPosition::rightに対応
 	 bool SetValue( const WString& key , const mWindowPosition::WindowPosition& newval )noexcept;
 
-	//�w��̃L�[��Window���W��ݒ肷��
-	//key : �ݒ肵�����L�[
-	//index : ���Ԗڂ̃L�[��ݒ肷�邩( key + INT2TEXT( index )�̃L�[��ݒ肵�܂�)
-	//newval : �ݒ肷��l
-	//ret : �������^
-	//�w�肵���L�[�ɑ΂��āA�ȉ��̃T�u�L�[�̒l��ݒ肵�܂��B
-	//�Etop		�c��� WindowPosition::top�ɑΉ�
-	//�Ebottom	�c��� WindowPosition::bottom�ɑΉ� 
-	//�Eleft	�c���� WindowPosition::left�ɑΉ�
-	//�Eright	�c�E�� WindowPosition::right�ɑΉ�
+	//指定のキーにWindow座標を設定する
+	//key : 設定したいキー
+	//index : 何番目のキーを設定するか( key + INT2TEXT( index )のキーを設定します)
+	//newval : 設定する値
+	//ret : 成功時真
+	//指定したキーに対して、以下のサブキーの値を設定します。
+	//・top		…上辺 WindowPosition::topに対応
+	//・bottom	…底辺 WindowPosition::bottomに対応 
+	//・left	…左辺 WindowPosition::leftに対応
+	//・right	…右辺 WindowPosition::rightに対応
 	 bool SetValue( const WString& key , INT index , const mWindowPosition::WindowPosition& newval )noexcept;
 
-	//�w��̃L�[�Ƀu�[���l����������
-	//key : �ݒ肵�����L�[
-	//newval : �ݒ肷��l
-	//ret : �������^
-	//��true/false�ŏ������݂܂�
+	//指定のキーにブール値を書き込む
+	//key : 設定したいキー
+	//newval : 設定する値
+	//ret : 成功時真
+	//※true/falseで書き込みます
 	 bool SetValue( const WString& key , INT index , const WString& subkey , bool newval )noexcept;
 
 	//------------------------------------------------------
-	//�����̑��`���̃e���v���[�g
+	//☆その他形式のテンプレート
 	//------------------------------------------------------
 
-	//�w��̃L�[�ɒl����������
-	//key : �ݒ肵�����L�[
-	//newval : �ݒ肷��l
-	//ret : �������^
-	 //���ʂ̌^�œǂݏ�������ꍇ�̒��ӓ_�́Aindex�Asubkey�����̊�{�`�̊֐��ɃR�����g�������Ă���܂��B
+	//指定のキーに値を書き込む
+	//key : 設定したいキー
+	//newval : 設定する値
+	//ret : 成功時真
+	 //※個別の型で読み書きする場合の注意点は、index、subkey無しの基本形の関数にコメントが書いてあります。
 	template< typename T >
 	bool SetValue( const WString& key , T newval )noexcept
 	{
 		return SetValue( key , 0 , L"" , newval );
 	}
 
-	//�w��̃L�[�ɒl����������
-	//key : �ݒ肵�����L�[
-	//index : ���Ԗڂ̃L�[��ݒ肷�邩( key + INT2TEXT( index )�̃L�[��ݒ肵�܂�)
-	//newval : �ݒ肷��l
-	//ret : �������^
-	 //���ʂ̌^�œǂݏ�������ꍇ�̒��ӓ_�́Aindex�Asubkey�����̊�{�`�̊֐��ɃR�����g�������Ă���܂��B
+	//指定のキーに値を書き込む
+	//key : 設定したいキー
+	//index : 何番目のキーを設定するか( key + INT2TEXT( index )のキーを設定します)
+	//newval : 設定する値
+	//ret : 成功時真
+	 //※個別の型で読み書きする場合の注意点は、index、subkey無しの基本形の関数にコメントが書いてあります。
 	 template< class T >
 	 bool SetValue( const WString& key , INT index , T newval )noexcept
 	 {
 		return SetValue( key , index , L"" , newval );
 	 }
 
-	//�w��̃L�[�ɒl����������
-	//key : �ݒ肵�����L�[
-	//subkey : �ݒ肵�����T�u�L�[
-	//newval : �ݒ肷��l
-	//ret : �������^
-	 //���ʂ̌^�œǂݏ�������ꍇ�̒��ӓ_�́Aindex�Asubkey�����̊�{�`�̊֐��ɃR�����g�������Ă���܂��B
+	//指定のキーに値を書き込む
+	//key : 設定したいキー
+	//subkey : 設定したいサブキー
+	//newval : 設定する値
+	//ret : 成功時真
+	 //※個別の型で読み書きする場合の注意点は、index、subkey無しの基本形の関数にコメントが書いてあります。
 	 template< class T >
 	 inline bool SetValue( const WString& key , const WString& subkey , T newval )noexcept
 	 {
 		return SetValue( key , 0 , subkey , newval );
 	 }
 
-	//��舵���s�Ȍ^���w�肳�ꂽ�ꍇ�G���[�ɂ��邽�߂̊֐�
+	//取り扱い不可な型が指定された場合エラーにするための関数
 	 template< class T >
 	 bool SetValue( const WString& key , INT index , const WString& subkey , T newval )noexcept
 	 {
 		//==================================================
-		//�@�@�@�@�@�@�@���̌^�͎g�p�ł��܂���
+		//　　　　　　　この型は使用できません
 		//==================================================
-		//�Edefvalue�ɔ�Ή��̌^���w�肵�Ă��܂��񂩁H
-		//  ���[�U�[��`�̌^�Ȃǂ͑Ή����Ă��܂���B
+		//・defvalueに非対応の型を指定していませんか？
+		//  ユーザー定義の型などは対応していません。
 		static_assert( false , "This typename is not allowed (see comment)" );
 	 }
 	 
 	 //------------------------------------------------------
-	//�����̑�
+	//☆その他
 	//------------------------------------------------------
 
-	 //�����p�L�[
+	 //検索用キー
 	struct Key
 	{
-		WString key;		//�L�[
-		INT index;			//�C���f�b�N�X
-		WString subkey;		//�T�u�L�[
+		WString key;		//キー
+		INT index;			//インデックス
+		WString subkey;		//サブキー
 
 		Key()
 		{
@@ -697,83 +697,83 @@ public:
 		}
 	};
 
-	//�L�[�ꗗ�\
+	//キー一覧表
 	typedef std::deque<Key> KeyList;
 	typedef std::deque<INT> IndexList;
 
-	//���݂���L�[�̈ꗗ��Ԃ�
-	//�����̊֐��́A�L�[��������Ԃ��܂�
+	//存在するキーの一覧を返す
+	//※この関数は、キー名だけを返します
 	bool GetKeyList( WStringDeque& retList )const;
 
-	//���݂���L�[�̈ꗗ��Ԃ�
-	//�����̊֐��́A�S�ẴL�[��Ԃ��܂�
-	//retList : �L�[�̈ꗗ���i�[����
-	//ret : �������^
+	//存在するキーの一覧を返す
+	//※この関数は、全てのキーを返します
+	//retList : キーの一覧を格納する
+	//ret : 成功時真
 	bool GetKeyList( KeyList& retList )const;
 
-	//���݂���L�[�̈ꗗ��Ԃ�
-	//�����̊֐��́A�w�肵���L�[�̃T�u�L�[��Ԃ��܂�
-	//retList : �L�[�̈ꗗ���i�[����
-	//ret : �������^
+	//存在するキーの一覧を返す
+	//※この関数は、指定したキーのサブキーを返します
+	//retList : キーの一覧を格納する
+	//ret : 成功時真
 	bool GetKeyList( const WString& key , KeyList& retList )const;
 
-	//�w�肵���L�[�ɑ΂���ő�E�ŏ��̃C���f�b�N�X�ԍ��𓾂܂�
-	//ret : �������^�A���s���U(�w�肵���L�[�����݂��Ȃ��ꍇ�Ȃ�)
-	//���C���f�b�N�X�ԍ��͔�є�т�������Ȃ����Ƃɒ��ӂ��Ă�������
+	//指定したキーに対する最大・最小のインデックス番号を得ます
+	//ret : 成功時真、失敗時偽(指定したキーが存在しない場合など)
+	//※インデックス番号は飛び飛びかもしれないことに注意してください
 	bool GetIndexRange( const WString& key , INT& ret_min_index , INT& ret_max_index )const;
 
-	//���݂���L�[�Ɋ܂܂��C���f�b�N�X�̃��X�g��Ԃ�
-	//retList : �C���f�b�N�X�̈ꗗ���i�[����
-	//ret : �������^�A���s���U(�w�肵���L�[�����݂��Ȃ��ꍇ�Ȃ�)
+	//存在するキーに含まれるインデックスのリストを返す
+	//retList : インデックスの一覧を格納する
+	//ret : 成功時真、失敗時偽(指定したキーが存在しない場合など)
 	bool GetIndexList( const WString& key , IndexList& retList )const;
 
-	//�t�@�C���ɃZ�N�V�����̓��e���o�͂���
-	// fp : �o�͐�I�u�W�F�N�g
-	// ret : �������^
+	//ファイルにセクションの内容を出力する
+	// fp : 出力先オブジェクト
+	// ret : 成功時真
 	bool Write( mFileWriteStream& fp )const;
 
-	//���݂���L�[�̐����擾����
-	// ret : �i�[����Ă���L�[�̐�
+	//存在するキーの数を取得する
+	// ret : 格納されているキーの数
 	DWORD GetCount( void )const;
 
-	//�Z�N�V�����̖��O��ݒ肷��
+	//セクションの名前を設定する
 	bool SetSectionName( const WString& newname );
 
-	//�Z�N�V�����̖��O���擾����
+	//セクションの名前を取得する
 	const WString& GetSectionName( void )const;
 
-	//�Z�N�V�����`��
+	//セクション形式
 	enum SectionType 
 	{
-		SECTIONTYPE_NORMAL,		// []�`��
-		SECTIONTYPE_ROWBASE,	// <>�`�� �s�P�ʂ̓ǂݍ���
+		SECTIONTYPE_NORMAL,		// []形式
+		SECTIONTYPE_ROWBASE,	// <>形式 行単位の読み込み
 	};
 
-	//�Z�N�V�����`����ύX����
-	// newtype : �V�����`��
-	// ret : �������^
+	//セクション形式を変更する
+	// newtype : 新しい形式
+	// ret : 成功時真
 	bool SetSectionType( SectionType newtype );
 
-	//�Z�N�V�����`�����擾����
-	// ret : �Z�N�V�����`��
+	//セクション形式を取得する
+	// ret : セクション形式
 	SectionType GetSectionType( void )const;
 
-	//�X�V����Ă��邩�ۂ���Ԃ�
-	// ret : �X�V����Ă����true
+	//更新されているか否かを返す
+	// ret : 更新されていればtrue
 	bool IsModified( void )const;
 
 protected:
 
-	//�e�N���X����̒��ڏ������ݗp
+	//親クラスからの直接書き込み用
 	friend class mInitFile;
 
-	//���̃Z�N�V�����̖��O
+	//このセクションの名前
 	WString MySectionName;
 
-	//�Z�N�V�����`��
+	//セクション形式
 	SectionType MySectionType;
 
-	//�L�[�̃n�b�V���擾�֐�
+	//キーのハッシュ取得関数
 	struct KeyHash {
 		typedef std::size_t result_type;
 		inline std::size_t operator()( const Key& key ) const
@@ -783,11 +783,11 @@ protected:
 		}
 	};
 
-	//���F���ږ��@�E�F���ڂ̐ݒ�l
+	//左：項目名　右：項目の設定値
 	typedef std::unordered_map<Key,WString,KeyHash> KeyValueMap;
 	KeyValueMap MyKeyValueMap;
 
-	//�X�V����Ă��邩�H
+	//更新されているか？
 	bool MyIsModified;
 
 	inline void ResetReadable( bool* retIsReadable )const
@@ -807,12 +807,12 @@ protected:
 
 };
 
-//mInitFileSection����w��L�[�̒l�𓾂�B
-//�|�C���^���k�����A�w��L�[���Ȃ��ꍇ�́A�f�t�H���g�̒l�𓾂�B
-//ptr : mInitFileSection�ւ̃|�C���^
-//key : mInitFileSection����l���擾����Ƃ��̃L�[
-//defvalue : �|�C���^���k�����A�w��L�[���Ȃ��ꍇ�ɓ���l
-//ret : �w�肵���L�[�̒l���Adefvalue�̒l
+//mInitFileSectionから指定キーの値を得る。
+//ポインタがヌルか、指定キーがない場合は、デフォルトの値を得る。
+//ptr : mInitFileSectionへのポインタ
+//key : mInitFileSectionから値を取得するときのキー
+//defvalue : ポインタがヌルか、指定キーがない場合に得る値
+//ret : 指定したキーの値か、defvalueの値
 template< class T > T GetInitOption( const mInitFileSection* ptr , const WString& key , T defvalue )
 {
 	if( ptr == nullptr )
@@ -822,13 +822,13 @@ template< class T > T GetInitOption( const mInitFileSection* ptr , const WString
 	return ptr->GetValue( key , defvalue );
 }
 
-//mInitFileSection����w��L�[�̒l�𓾂�B
-//�|�C���^���k�����A�w��L�[���Ȃ��ꍇ�́A�f�t�H���g�̒l�𓾂�B
-//ptr : mInitFileSection�ւ̃|�C���^
-//key : mInitFileSection����l���擾����Ƃ��̃L�[
-//index : ���Ԗڂ̃L�[��ǂݎ�邩( key + INT2TEXT( index )�̃L�[��ǂݎ��܂�)
-//defvalue : �|�C���^���k�����A�w��L�[���Ȃ��ꍇ�ɓ���l
-//ret : �w�肵���L�[�̒l���Adefvalue�̒l
+//mInitFileSectionから指定キーの値を得る。
+//ポインタがヌルか、指定キーがない場合は、デフォルトの値を得る。
+//ptr : mInitFileSectionへのポインタ
+//key : mInitFileSectionから値を取得するときのキー
+//index : 何番目のキーを読み取るか( key + INT2TEXT( index )のキーを読み取ります)
+//defvalue : ポインタがヌルか、指定キーがない場合に得る値
+//ret : 指定したキーの値か、defvalueの値
 template< class T > T GetInitOption( const mInitFileSection* ptr , const WString& key , INT index , T defvalue )
 {
 	if( ptr == nullptr )
@@ -838,12 +838,12 @@ template< class T > T GetInitOption( const mInitFileSection* ptr , const WString
 	return ptr->GetValue( key , index , defvalue );
 }
 
-//mInitFileSection����w��L�[�̒l�𓾂�B
-//�|�C���^���k�����A�w��L�[���Ȃ��ꍇ�́A�f�t�H���g�̒l�𓾂�B
-//key : �ǂݎ�肽���L�[
-//values : �L�[�̒l�����b�N�A�b�v����e�[�u���B�L�[�̒l�Ɗ��S��v������̂��ꗗ�̒��ɂ���΁A�Ή�����l��Ԃ�
-//defvalue : �L�[��ǂݎ��Ȃ������ꍇ�Avalues�Ɉ�v������̂��Ȃ������ꍇ�̒l
-//ret : values���烋�b�N�A�b�v�����l�A�܂��́Adefvalue�̒l�B
+//mInitFileSectionから指定キーの値を得る。
+//ポインタがヌルか、指定キーがない場合は、デフォルトの値を得る。
+//key : 読み取りたいキー
+//values : キーの値をルックアップするテーブル。キーの値と完全一致するものが一覧の中にあれば、対応する値を返す
+//defvalue : キーを読み取れなかった場合、valuesに一致するものがなかった場合の値
+//ret : valuesからルックアップした値、または、defvalueの値。
 template< class T > T GetInitOption( const mInitFileSection* ptr , const WString& key , const mInitFileSection::LookupValues< T >& table , T defvalue )
 {
 	if( ptr == nullptr )
@@ -853,12 +853,12 @@ template< class T > T GetInitOption( const mInitFileSection* ptr , const WString
 	return ptr->GetValue( key , table , defvalue );
 }
 
-//mInitFileSection����w��L�[�̒l�𓾂�B
-//�|�C���^���k�����A�w��L�[���Ȃ��ꍇ�́A�f�t�H���g�̒l�𓾂�B
-//key : �ǂݎ�肽���L�[
-//values : �L�[�̒l�����b�N�A�b�v����e�[�u���B�L�[�̒l�Ɗ��S��v������̂��ꗗ�̒��ɂ���΁A�Ή�����l��Ԃ�
-//defvalue : �L�[��ǂݎ��Ȃ������ꍇ�Avalues�Ɉ�v������̂��Ȃ������ꍇ�̒l
-//ret : values���烋�b�N�A�b�v�����l�A�܂��́Adefvalue�̒l�B
+//mInitFileSectionから指定キーの値を得る。
+//ポインタがヌルか、指定キーがない場合は、デフォルトの値を得る。
+//key : 読み取りたいキー
+//values : キーの値をルックアップするテーブル。キーの値と完全一致するものが一覧の中にあれば、対応する値を返す
+//defvalue : キーを読み取れなかった場合、valuesに一致するものがなかった場合の値
+//ret : valuesからルックアップした値、または、defvalueの値。
 template< class T > T GetInitOption( const mInitFileSection* ptr , const WString& key , INT index , const mInitFileSection::LookupValues< T >& table , T defvalue )
 {
 	if( ptr == nullptr )

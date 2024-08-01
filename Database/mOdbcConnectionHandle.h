@@ -1,5 +1,5 @@
-//----------------------------------------------------------------------------
-// ODBCÚ‘±—pƒ‰ƒCƒuƒ‰ƒŠ
+ï»¿//----------------------------------------------------------------------------
+// ODBCæ¥ç¶šç”¨ãƒ©ã‚¤ãƒ–ãƒ©ãƒª
 // Copyright (C) 2018- Crea Inc. All rights reserved.
 // This program is released under the MIT License. 
 // see http://opensource.org/licenses/mit-license.php
@@ -37,11 +37,11 @@ public:
 		}
 		if( !SQL_SUCCEEDED( SQLDisconnect( MyDbc ) ) )
 		{
-			RaiseAssert( g_ErrorLogger , 0 , L"Ú‘±‰ğœ‚É¸”s‚µ‚Ü‚µ‚½" );
+			RaiseAssert( g_ErrorLogger , 0 , L"æ¥ç¶šè§£é™¤ã«å¤±æ•—ã—ã¾ã—ãŸ" );
 		}
 		if( !SQL_SUCCEEDED( SQLFreeHandle( SQL_HANDLE_DBC , MyDbc ) ) )
 		{
-			RaiseAssert( g_ErrorLogger , 0 , L"Ú‘±ƒnƒ“ƒhƒ‹‚Ì‰ğ•ú‚É¸”s‚µ‚Ü‚µ‚½" );
+			RaiseAssert( g_ErrorLogger , 0 , L"æ¥ç¶šãƒãƒ³ãƒ‰ãƒ«ã®è§£æ”¾ã«å¤±æ•—ã—ã¾ã—ãŸ" );
 		}
 	}
 	operator HDBC()
@@ -50,11 +50,11 @@ public:
 	}
 
 private:
-	mOdbcConnectionHandleContents( const mOdbcConnectionHandleContents& source );		//ƒRƒs[‹Ö~ƒNƒ‰ƒX
-	void operator=( const mOdbcConnectionHandleContents& source ) = delete;	//ƒRƒs[‹Ö~ƒNƒ‰ƒX
+	mOdbcConnectionHandleContents( const mOdbcConnectionHandleContents& source );		//ã‚³ãƒ”ãƒ¼ç¦æ­¢ã‚¯ãƒ©ã‚¹
+	void operator=( const mOdbcConnectionHandleContents& source ) = delete;	//ã‚³ãƒ”ãƒ¼ç¦æ­¢ã‚¯ãƒ©ã‚¹
 
 private:
-	//ƒnƒ“ƒhƒ‹‚ÌÀ‘Ì
+	//ãƒãƒ³ãƒ‰ãƒ«ã®å®Ÿä½“
 	HDBC MyDbc;
 };
 typedef std::shared_ptr<mOdbcConnectionHandleContents> mOdbcConnectionHandle;

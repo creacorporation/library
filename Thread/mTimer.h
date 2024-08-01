@@ -1,11 +1,11 @@
-//----------------------------------------------------------------------------
-// �^�C�}�[�R���g���[��
+﻿//----------------------------------------------------------------------------
+// タイマーコントロール
 // Copyright (C) 2019- Crea Inc. All rights reserved.
 // This program is released under the MIT License. 
 // see http://opensource.org/licenses/mit-license.php
-// ���쌠�\���⃉�C�Z���X�̉��ς͋֎~����Ă��܂��B
-// ���̃\�[�X�R�[�h�Ɋւ��āA��L���C�Z���X�ȊO�̌_�񓙂͈�ؑ��݂��܂���B
-// (���炩�̌_�񂪂���ꍇ�ł��A�{�\�[�X�R�[�h�͂��̑ΏۊO�ƂȂ�܂�)
+// 著作権表示やライセンスの改変は禁止されています。
+// このソースコードに関して、上記ライセンス以外の契約等は一切存在しません。
+// (何らかの契約がある場合でも、本ソースコードはその対象外となります)
 //----------------------------------------------------------------------------
 
 #ifndef MTIMER_H_INCLUDED
@@ -22,23 +22,23 @@ public:
 	virtual ~mTimer();
 
 
-	//�I�v�V�����\����
+	//オプション構造体
 	struct NotificationOption
 	{
 	public:
-		//�ʒm���@
+		//通知方法
 		enum NotificationMethod
 		{
-			METHOD_NONE,				//�������Ȃ�
-			METHOD_WINDOW_MESSAGE,		//�E�C���h�E���b�Z�[�W
-			METHOD_CALLBACK_FUNCTION,	//�R�[���o�b�N�֐�
-			METHOD_SIGNAL_OBJECT,		//�V�O�i���I�u�W�F�N�g
+			METHOD_NONE,				//何もしない
+			METHOD_WINDOW_MESSAGE,		//ウインドウメッセージ
+			METHOD_CALLBACK_FUNCTION,	//コールバック関数
+			METHOD_SIGNAL_OBJECT,		//シグナルオブジェクト
 		};
 		const NotificationMethod Method;
 
-		DWORD Interval;			//����Ԋu(ms�P��)
-		int Count;				//�c���(���̐��̏ꍇ����)
-		bool StartImmediate;	//�^�Ȃ炷���J�n����
+		DWORD Interval;			//動作間隔(ms単位)
+		int Count;				//残り回数(負の数の場合無限)
+		bool StartImmediate;	//真ならすぐ開始する
 
 	protected:
 		NotificationOption() = delete;
@@ -50,24 +50,24 @@ public:
 		}
 	};
 
-	//�����ʒm���Ȃ��ꍇ�̃I�v�V����
+	//何も通知しない場合のオプション
 	struct Option_None : public NotificationOption
 	{
 		Option_None() : NotificationOption( NotificationMethod::METHOD_NONE )
 		{
 		}
 	};
-	//�E�C���h�E���b�Z�[�W���g�p���Ēʒm����ꍇ�̃I�v�V����
+	//ウインドウメッセージを使用して通知する場合のオプション
 	struct Option_WindowMessage : public NotificationOption
 	{
-		// wparam : �ďo����mTimer�ւ̃|�C���^
-		// lparam : Parameter�̒l
+		// wparam : 呼出し元mTimerへのポインタ
+		// lparam : Parameterの値
 
-		//���b�Z�[�W�𑗂�E�C���h�E
+		//メッセージを送るウインドウ
 		HWND Sendto;
-		//�ڑ��������ɓ�����E�C���h�E���b�Z�[�W�ԍ�
+		//接続完了時に投げるウインドウメッセージ番号
 		UINT OnTimer;
-		//LPARAM�ɓn���l(�C��)
+		//LPARAMに渡す値(任意)
 		LPARAM Parameter;
 
 		Option_WindowMessage() : NotificationOption( NotificationMethod::METHOD_WINDOW_MESSAGE )
@@ -78,7 +78,7 @@ public:
 		}
 	};
 
-	//�f�[�^��M���ɃR�[���o�b�N�֐����Ăяo���Ēʒm����ꍇ�̃I�v�V����
+	//データ受信時にコールバック関数を呼び出して通知する場合のオプション
 	struct Option_CallbackFunction : public NotificationOption
 	{
 		using CallbackFunction = void(*)( mTimer& timer , DWORD_PTR parameter , int count );
@@ -93,10 +93,10 @@ public:
 		}
 	};
 
-	//�f�[�^��M���ɃV�O�i���I�u�W�F�N�g���g�p���Ēʒm����ꍇ�̃I�v�V����
+	//データ受信時にシグナルオブジェクトを使用して通知する場合のオプション
 	struct Option_SignalObject : public NotificationOption
 	{
-		HANDLE OnTimer;		//�^�C�}�������ɃV�O�i����Ԃɂ���I�u�W�F�N�g
+		HANDLE OnTimer;		//タイマ発動時にシグナル状態にするオブジェクト
 
 		Option_SignalObject() : NotificationOption( NotificationMethod::METHOD_SIGNAL_OBJECT )
 		{
@@ -104,32 +104,32 @@ public:
 		}
 	};
 
-	//�^�C�}�[�̃Z�b�g�A�b�v
-	// opt : �ݒ�l
+	//タイマーのセットアップ
+	// opt : 設定値
 	bool Setup( const NotificationOption& opt );
 
-	//�^�C�}�[���ĊJ�n����
-	//�E�c��񐔂����Z�b�g���܂���
-	//�E�c��񐔂��[�����ƊJ�n���܂���
+	//タイマーを再開始する
+	//・残り回数をリセットしません
+	//・残り回数がゼロだと開始しません
 	bool Restart( void );
 
-	//�^�C�}�[�����Z�b�g���ĊJ�n����
-	//�E�c��񐔂��Z�b�g�A�b�v�����Ƃ��̒l�Ƀ��Z�b�g���Ă���J�n���܂�
+	//タイマーをリセットして開始する
+	//・残り回数をセットアップしたときの値にリセットしてから開始します
 	bool Start( void );
 
-	//�^�C�}�[���~����
+	//タイマーを停止する
 	bool Stop( void );
 
-	//�^�C�}�[�Ăяo�����s���c��񐔂��Z�b�g����
-	// newval : �c���(���̐��������j
-	//�E���݂̉񐔂ɑ΂��Đݒ肷��
-	//�E�Z�b�g�A�b�v�����Ƃ��̐ݒ���㏑��������̂ł͂Ȃ�
+	//タイマー呼び出しを行う残り回数をセットする
+	// newval : 残り回数(負の数＝無限）
+	//・現在の回数に対して設定する
+	//・セットアップしたときの設定を上書きするものではない
 	bool SetCount( int newval );
 
-	//�^�C�}�[�Ăяo�����Z�b�g�A�b�v�����Ƃ��̒l�Ƀ��Z�b�g����
+	//タイマー呼び出しをセットアップしたときの値にリセットする
 	bool SetCount( void );
 
-	//���݂̎c��񐔂��擾����
+	//現在の残り回数を取得する
 	int GetCount( void )const;
 
 private:
@@ -137,16 +137,16 @@ private:
 	mTimer( const mTimer& src ) = delete;
 	mTimer& operator=( const mTimer& src ) = delete;
 
-	//�ݒ�l
+	//設定値
 	std::unique_ptr< NotificationOption > MyOption;
 
-	//�������[�`��
+	//完了ルーチン
 	static VOID CALLBACK TimerRoutine( PVOID param , BOOLEAN istimer );
 
-	//�c��Ăяo����
+	//残り呼び出し回数
 	volatile long MyCount;
 
-	//�^�C�}�[�L���[
+	//タイマーキュー
 	HANDLE MyHandle;
 
 

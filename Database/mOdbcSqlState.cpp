@@ -1,5 +1,5 @@
-//----------------------------------------------------------------------------
-// ODBCÚ‘±—pƒ‰ƒCƒuƒ‰ƒŠ
+ï»¿//----------------------------------------------------------------------------
+// ODBCæ¥ç¶šç”¨ãƒ©ã‚¤ãƒ–ãƒ©ãƒª
 // Copyright (C) 2005 Fingerling. All rights reserved. 
 // Copyright (C) 2018- Crea Inc. All rights reserved.
 // This program is released under the MIT License. 
@@ -16,44 +16,44 @@ bool mOdbcSqlState::AppendLog( SQLHANDLE handle , HandleKind kind , mErrorLogger
 {
 	SQLSMALLINT handletype;
 
-	//ƒnƒ“ƒhƒ‹‚Ìí—Ş‚ğ”»’è
+	//ãƒãƒ³ãƒ‰ãƒ«ã®ç¨®é¡ã‚’åˆ¤å®š
 	switch( kind )
 	{
-	case HandleKind::Environment:	//ŠÂ‹«ƒnƒ“ƒhƒ‹
+	case HandleKind::Environment:	//ç’°å¢ƒãƒãƒ³ãƒ‰ãƒ«
 		handletype = SQL_HANDLE_ENV;
 		break;
-	case HandleKind::Connection:	//Ú‘±ƒnƒ“ƒhƒ‹
+	case HandleKind::Connection:	//æ¥ç¶šãƒãƒ³ãƒ‰ãƒ«
 		handletype = SQL_HANDLE_DBC;
 		break;
-	case HandleKind::Statement:		//ƒXƒe[ƒgƒƒ“ƒgƒnƒ“ƒhƒ‹
+	case HandleKind::Statement:		//ã‚¹ãƒ†ãƒ¼ãƒˆãƒ¡ãƒ³ãƒˆãƒãƒ³ãƒ‰ãƒ«
 		handletype = SQL_HANDLE_STMT;
 		break;
-	case HandleKind::Descriotion:	//ƒfƒBƒXƒNƒŠƒvƒ^ƒnƒ“ƒhƒ‹
+	case HandleKind::Descriotion:	//ãƒ‡ã‚£ã‚¹ã‚¯ãƒªãƒ—ã‚¿ãƒãƒ³ãƒ‰ãƒ«
 		handletype = SQL_HANDLE_DESC;
 		break;
 	default:
-		RaiseAssert( g_ErrorLogger , 0 , L"ƒnƒ“ƒhƒ‹‚Ìí•Ê‚ª•s³‚Å‚·" );
+		RaiseAssert( g_ErrorLogger , 0 , L"ãƒãƒ³ãƒ‰ãƒ«ã®ç¨®åˆ¥ãŒä¸æ­£ã§ã™" );
 		return false;
 	}
 	
-	//ƒŒƒR[ƒh”‚Ìæ“¾
-	SQLLEN records = 0;	//Ši”[‚³‚ê‚Ä‚¢‚éƒŒƒR[ƒh”
+	//ãƒ¬ã‚³ãƒ¼ãƒ‰æ•°ã®å–å¾—
+	SQLLEN records = 0;	//æ ¼ç´ã•ã‚Œã¦ã„ã‚‹ãƒ¬ã‚³ãƒ¼ãƒ‰æ•°
 	switch( SQLGetDiagFieldW( handletype , handle , 0 , SQL_DIAG_NUMBER , &records , 0 , 0 ) )
 	{
-	case SQL_SUCCESS:				//æ“¾¬Œ÷
-	case SQL_SUCCESS_WITH_INFO:		//ğŒ•t‚«æ“¾¬Œ÷
+	case SQL_SUCCESS:				//å–å¾—æˆåŠŸ
+	case SQL_SUCCESS_WITH_INFO:		//æ¡ä»¶ä»˜ãå–å¾—æˆåŠŸ
 		break;
 
-	case SQL_INVALID_HANDLE:		//ƒnƒ“ƒhƒ‹‚ª–³Œø
-	case SQL_ERROR:					//‚»‚Ì‘¼ƒGƒ‰[
-		RaiseAssert( g_ErrorLogger , 0 , L"f’fƒŒƒR[ƒh”‚ğæ“¾‚Å‚«‚Ü‚¹‚ñ" );
+	case SQL_INVALID_HANDLE:		//ãƒãƒ³ãƒ‰ãƒ«ãŒç„¡åŠ¹
+	case SQL_ERROR:					//ãã®ä»–ã‚¨ãƒ©ãƒ¼
+		RaiseAssert( g_ErrorLogger , 0 , L"è¨ºæ–­ãƒ¬ã‚³ãƒ¼ãƒ‰æ•°ã‚’å–å¾—ã§ãã¾ã›ã‚“" );
 		return false;
 
-	case SQL_NO_DATA:				//ƒf[ƒ^“o˜^‚È‚µ
+	case SQL_NO_DATA:				//ãƒ‡ãƒ¼ã‚¿ç™»éŒ²ãªã—
 		return true;
 	}
 
-	//ƒŒƒR[ƒh“à—e‚Ìæ“¾
+	//ãƒ¬ã‚³ãƒ¼ãƒ‰å†…å®¹ã®å–å¾—
 	SQLWCHAR SqlState[ 6 ];
 	SQLWCHAR SqlMsg[ SQL_MAX_MESSAGE_LENGTH ];  
 	SQLINTEGER NativeError = 0;
@@ -63,20 +63,20 @@ bool mOdbcSqlState::AppendLog( SQLHANDLE handle , HandleKind kind , mErrorLogger
 	{
 		switch( SQLGetDiagRecW( handletype , handle , (SQLSMALLINT)i , SqlState , &NativeError , SqlMsg , sizeof( SqlMsg ) , &MsgLen ) )
 		{
-		case SQL_SUCCESS:				//æ“¾¬Œ÷
-		case SQL_SUCCESS_WITH_INFO:		//ğŒ•t‚«æ“¾¬Œ÷
+		case SQL_SUCCESS:				//å–å¾—æˆåŠŸ
+		case SQL_SUCCESS_WITH_INFO:		//æ¡ä»¶ä»˜ãå–å¾—æˆåŠŸ
 			{
 				SetLastError( NativeError );
 				RaiseError( g_ErrorLogger , 0 , SqlMsg , SqlState );
 			}
 			break;
 
-		case SQL_INVALID_HANDLE:		//ƒnƒ“ƒhƒ‹‚ª–³Œø
-		case SQL_ERROR:					//‚»‚Ì‘¼ƒGƒ‰[
-			RaiseAssert( g_ErrorLogger , 0 , L"f’fƒŒƒR[ƒh‚ğæ“¾‚Å‚«‚Ü‚¹‚ñ" );
+		case SQL_INVALID_HANDLE:		//ãƒãƒ³ãƒ‰ãƒ«ãŒç„¡åŠ¹
+		case SQL_ERROR:					//ãã®ä»–ã‚¨ãƒ©ãƒ¼
+			RaiseAssert( g_ErrorLogger , 0 , L"è¨ºæ–­ãƒ¬ã‚³ãƒ¼ãƒ‰ã‚’å–å¾—ã§ãã¾ã›ã‚“" );
 			return false;
 
-		case SQL_NO_DATA:				//ƒf[ƒ^“o˜^‚È‚µ
+		case SQL_NO_DATA:				//ãƒ‡ãƒ¼ã‚¿ç™»éŒ²ãªã—
 			break;
 		}
 	}

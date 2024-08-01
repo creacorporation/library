@@ -1,10 +1,10 @@
-//----------------------------------------------------------------------------
-// Fî•ñŠÇ—
+ï»¿//----------------------------------------------------------------------------
+// è‰²æƒ…å ±ç®¡ç†
 // Copyright (C) 2018- Crea Inc. All rights reserved.
 // This program is released under the MIT License. 
 // see http://opensource.org/licenses/mit-license.php
-// ’˜ìŒ •\Ž¦‚âƒ‰ƒCƒZƒ“ƒX‚Ì‰ü•Ï‚Í‹ÖŽ~‚³‚ê‚Ä‚¢‚Ü‚·B
-// ‚±‚Ìƒ\[ƒXƒR[ƒh‚ÉŠÖ‚µ‚ÄAã‹Lƒ‰ƒCƒZƒ“ƒXˆÈŠO‚ÌŒ_–ñ“™‚ÍˆêØ‘¶Ý‚µ‚Ü‚¹‚ñB
+// è‘—ä½œæ¨©è¡¨ç¤ºã‚„ãƒ©ã‚¤ã‚»ãƒ³ã‚¹ã®æ”¹å¤‰ã¯ç¦æ­¢ã•ã‚Œã¦ã„ã¾ã™ã€‚
+// ã“ã®ã‚½ãƒ¼ã‚¹ã‚³ãƒ¼ãƒ‰ã«é–¢ã—ã¦ã€ä¸Šè¨˜ãƒ©ã‚¤ã‚»ãƒ³ã‚¹ä»¥å¤–ã®å¥‘ç´„ç­‰ã¯ä¸€åˆ‡å­˜åœ¨ã—ã¾ã›ã‚“ã€‚
 //----------------------------------------------------------------------------
 
 #include "mGdiColor.h"
@@ -32,7 +32,7 @@ mGdiColor::mGdiColor( const mGdiColor& source )
 		MyColor.HSV = source.MyColor.HSV;
 		break;
 	default:
-		RaiseAssert( g_ErrorLogger , 0 , L"F‹óŠÔ‚ÌID‚ª•s³’l‚Å‚·" , MyPrimaryColorSpace );
+		RaiseAssert( g_ErrorLogger , 0 , L"è‰²ç©ºé–“ã®IDãŒä¸æ­£å€¤ã§ã™" , MyPrimaryColorSpace );
 		MyPrimaryColorSpace = PrimaryColorSpace::COLORSPACE_RGB;
 		MyColor.RGB.clear();
 		break;
@@ -52,7 +52,7 @@ const mGdiColor& mGdiColor::operator=( const mGdiColor& source )
 		MyColor.HSV = source.MyColor.HSV;
 		break;
 	default:
-		RaiseAssert( g_ErrorLogger , 0 , L"F‹óŠÔ‚ÌID‚ª•s³’l‚Å‚·" , MyPrimaryColorSpace );
+		RaiseAssert( g_ErrorLogger , 0 , L"è‰²ç©ºé–“ã®IDãŒä¸æ­£å€¤ã§ã™" , MyPrimaryColorSpace );
 		MyPrimaryColorSpace = PrimaryColorSpace::COLORSPACE_RGB;
 		MyColor.RGB.clear();
 		break;
@@ -60,19 +60,19 @@ const mGdiColor& mGdiColor::operator=( const mGdiColor& source )
 	return *this;
 }
 
-//’l‚ÌÝ’è(ƒRƒ“ƒXƒgƒ‰ƒNƒ^Ver)
+//å€¤ã®è¨­å®š(ã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿Ver)
 mGdiColor::mGdiColor( const RGBColor& source )
 {
 	*this = source;
 }
 
-//’l‚ÌÝ’è(ƒRƒ“ƒXƒgƒ‰ƒNƒ^Ver)
+//å€¤ã®è¨­å®š(ã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿Ver)
 mGdiColor::mGdiColor( const HSVColor& source )
 {
 	*this = source;
 }
 
-//’l‚ÌÝ’è(ƒRƒ“ƒXƒgƒ‰ƒNƒ^Ver)
+//å€¤ã®è¨­å®š(ã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿Ver)
 mGdiColor::mGdiColor( const RGBQUAD& source )
 {
 	*this = source;
@@ -126,7 +126,7 @@ void mGdiColor::Set( const BrA& col )
 		MyColor.HSV.A = col;
 		break;
 	default:
-		RaiseAssert( g_ErrorLogger , 0 , L"F‹óŠÔ‚ÌID‚ª•s³’l‚Å‚·" , MyPrimaryColorSpace );
+		RaiseAssert( g_ErrorLogger , 0 , L"è‰²ç©ºé–“ã®IDãŒä¸æ­£å€¤ã§ã™" , MyPrimaryColorSpace );
 		break;
 	}
 	return;
@@ -180,7 +180,7 @@ mGdiColor::operator RGBColor( void )const
 	case PrimaryColorSpace::COLORSPACE_HSV:
 		return HSVtoRGB( MyColor.HSV );
 	default:
-		RaiseAssert( g_ErrorLogger , 0 , L"F‹óŠÔ‚ÌID‚ª•s³’l‚Å‚·" , MyPrimaryColorSpace );
+		RaiseAssert( g_ErrorLogger , 0 , L"è‰²ç©ºé–“ã®IDãŒä¸æ­£å€¤ã§ã™" , MyPrimaryColorSpace );
 		break;
 	}
 
@@ -198,7 +198,7 @@ mGdiColor::operator HSVColor( void )const
 	case PrimaryColorSpace::COLORSPACE_HSV:
 		return MyColor.HSV;
 	default:
-		RaiseAssert( g_ErrorLogger , 0 , L"F‹óŠÔ‚ÌID‚ª•s³’l‚Å‚·" , MyPrimaryColorSpace );
+		RaiseAssert( g_ErrorLogger , 0 , L"è‰²ç©ºé–“ã®IDãŒä¸æ­£å€¤ã§ã™" , MyPrimaryColorSpace );
 		break;
 	}
 
@@ -216,7 +216,7 @@ mGdiColor::operator RGBQUAD( void )const
 	case PrimaryColorSpace::COLORSPACE_HSV:
 		return HSVtoRGBQUAD( MyColor.HSV );
 	default:
-		RaiseAssert( g_ErrorLogger , 0 , L"F‹óŠÔ‚ÌID‚ª•s³’l‚Å‚·" , MyPrimaryColorSpace );
+		RaiseAssert( g_ErrorLogger , 0 , L"è‰²ç©ºé–“ã®IDãŒä¸æ­£å€¤ã§ã™" , MyPrimaryColorSpace );
 		break;
 	}
 
@@ -254,7 +254,7 @@ mGdiColor::HSVColor mGdiColor::RGBtoHSV( const RGBColor& src )
 	HSVColor hsv;
 	RGBColor rgb;
 
-	//RGB’l‚ÌãŒÀ^‰ºŒÀƒ`ƒFƒbƒN
+	//RGBå€¤ã®ä¸Šé™ï¼ä¸‹é™ãƒã‚§ãƒƒã‚¯
 	auto Limit = []( DOUBLE v ) -> DOUBLE
 	{
 		if( 1.0 <= v )
@@ -273,7 +273,7 @@ mGdiColor::HSVColor mGdiColor::RGBtoHSV( const RGBColor& src )
 	rgb.B = Limit( src.B );
 	rgb.A = Limit( src.A );
 
-	//F‘ŠE–¾“xEÊ“x‚Ì•ÏŠ·
+	//è‰²ç›¸ãƒ»æ˜Žåº¦ãƒ»å½©åº¦ã®å¤‰æ›
 	if( rgb.R < rgb.G )
 	{
 		if( rgb.G <= rgb.B )
@@ -355,13 +355,13 @@ mGdiColor::HSVColor mGdiColor::RGBtoHSV( const RGBColor& src )
 		}
 	}
 
-	//F‘Š‚ªƒ}ƒCƒiƒX‚É‚È‚Á‚Ä‚¢‚éê‡‚Ì•â³
+	//è‰²ç›¸ãŒãƒžã‚¤ãƒŠã‚¹ã«ãªã£ã¦ã„ã‚‹å ´åˆã®è£œæ­£
 	if( hsv.H < 0.0 )
 	{
 		hsv.H += 1.0;
 	}
 
-	//ƒAƒ‹ƒtƒ@’l‚Í‚»‚Ì‚Ü‚ÜƒRƒs[
+	//ã‚¢ãƒ«ãƒ•ã‚¡å€¤ã¯ãã®ã¾ã¾ã‚³ãƒ”ãƒ¼
 	hsv.A = rgb.A;
 
 	return hsv;
@@ -378,15 +378,15 @@ mGdiColor::RGBColor mGdiColor::HSVtoRGB( const HSVColor& src )
 	HSVColor hsv = src;
 	RGBColor rgb;
 
-	//F‘Š(H)‚Í0`1‚É•â³
-	DOUBLE integer = 0.0;	//®”•”(ƒ_ƒ~[)
+	//è‰²ç›¸(H)ã¯0ã€œ1ã«è£œæ­£
+	DOUBLE integer = 0.0;	//æ•´æ•°éƒ¨(ãƒ€ãƒŸãƒ¼)
 	hsv.H = modf( src.H , &integer );
 	if( hsv.H < 0 )
 	{
 		hsv.H += 1.0;
 	}
 
-	//F‘ŠˆÈŠO(SVA)‚ÍãŒÀ^‰ºŒÀ‚Ìƒ`ƒFƒbƒN
+	//è‰²ç›¸ä»¥å¤–(SVA)ã¯ä¸Šé™ï¼ä¸‹é™ã®ãƒã‚§ãƒƒã‚¯
 	auto Limit = []( DOUBLE v ) -> DOUBLE
 	{
 		if( 1.0 <= v )
@@ -403,7 +403,7 @@ mGdiColor::RGBColor mGdiColor::HSVtoRGB( const HSVColor& src )
 	hsv.V = Limit( src.V );
 	hsv.A = Limit( src.A );
 
-	//RGB‚Ö‚Ì•ÏŠ·
+	//RGBã¸ã®å¤‰æ›
 	if( hsv.S == 0.0 )
 	{
 		rgb.R = hsv.V;
@@ -447,7 +447,7 @@ mGdiColor::RGBColor mGdiColor::HSVtoRGB( const HSVColor& src )
 		rgb.B = ( hsv.V ) * ( 1 - ( hsv.S * ( hsv.H - ( 5.0 / 6.0 ) ) ) ); 
 	}
 
-	//ƒAƒ‹ƒtƒ@’l‚Í‚»‚Ì‚Ü‚ÜƒRƒs[
+	//ã‚¢ãƒ«ãƒ•ã‚¡å€¤ã¯ãã®ã¾ã¾ã‚³ãƒ”ãƒ¼
 	rgb.A = hsv.A;
 	return rgb;
 }
@@ -550,7 +550,7 @@ const mGdiColor& mGdiColor::operator+=( const BrA& src )
 		MyColor.HSV.A += src;
 		break;
 	default:
-		RaiseAssert( g_ErrorLogger , 0 , L"F‹óŠÔ‚ÌID‚ª•s³’l‚Å‚·" , MyPrimaryColorSpace );
+		RaiseAssert( g_ErrorLogger , 0 , L"è‰²ç©ºé–“ã®IDãŒä¸æ­£å€¤ã§ã™" , MyPrimaryColorSpace );
 		break;
 	}
 	return *this;
@@ -635,7 +635,7 @@ const mGdiColor& mGdiColor::operator-=( const BrA& src )
 		MyColor.HSV.A -= src;
 		break;
 	default:
-		RaiseAssert( g_ErrorLogger , 0 , L"F‹óŠÔ‚ÌID‚ª•s³’l‚Å‚·" , MyPrimaryColorSpace );
+		RaiseAssert( g_ErrorLogger , 0 , L"è‰²ç©ºé–“ã®IDãŒä¸æ­£å€¤ã§ã™" , MyPrimaryColorSpace );
 		break;
 	}
 	return *this;
@@ -720,7 +720,7 @@ const mGdiColor& mGdiColor::operator*=( const BrA& src )
 		MyColor.HSV.A *= src;
 		break;
 	default:
-		RaiseAssert( g_ErrorLogger , 0 , L"F‹óŠÔ‚ÌID‚ª•s³’l‚Å‚·" , MyPrimaryColorSpace );
+		RaiseAssert( g_ErrorLogger , 0 , L"è‰²ç©ºé–“ã®IDãŒä¸æ­£å€¤ã§ã™" , MyPrimaryColorSpace );
 		break;
 	}
 	return *this;
@@ -805,7 +805,7 @@ const mGdiColor& mGdiColor::operator/=( const BrA& src )
 		MyColor.HSV.A = ( src == 0.0 ) ? ( 1.0 ) : ( MyColor.HSV.A / src );
 		break;
 	default:
-		RaiseAssert( g_ErrorLogger , 0 , L"F‹óŠÔ‚ÌID‚ª•s³’l‚Å‚·" , MyPrimaryColorSpace );
+		RaiseAssert( g_ErrorLogger , 0 , L"è‰²ç©ºé–“ã®IDãŒä¸æ­£å€¤ã§ã™" , MyPrimaryColorSpace );
 		break;
 	}
 	return *this;
@@ -843,7 +843,7 @@ void mGdiColor::ChangeToRGB( void )
 		MyColor.RGB = HSVtoRGB( MyColor.HSV );
 		break;
 	default:
-		RaiseAssert( g_ErrorLogger , 0 , L"F‹óŠÔ‚ÌID‚ª•s³’l‚Å‚·" , MyPrimaryColorSpace );
+		RaiseAssert( g_ErrorLogger , 0 , L"è‰²ç©ºé–“ã®IDãŒä¸æ­£å€¤ã§ã™" , MyPrimaryColorSpace );
 		MyPrimaryColorSpace = PrimaryColorSpace::COLORSPACE_RGB;
 		MyColor.RGB.clear();
 		break;
@@ -862,7 +862,7 @@ void mGdiColor::ChangeToHSV( void )
 	case PrimaryColorSpace::COLORSPACE_HSV:
 		break;
 	default:
-		RaiseAssert( g_ErrorLogger , 0 , L"F‹óŠÔ‚ÌID‚ª•s³’l‚Å‚·" , MyPrimaryColorSpace );
+		RaiseAssert( g_ErrorLogger , 0 , L"è‰²ç©ºé–“ã®IDãŒä¸æ­£å€¤ã§ã™" , MyPrimaryColorSpace );
 		MyPrimaryColorSpace = PrimaryColorSpace::COLORSPACE_HSV;
 		MyColor.HSV.clear();
 		break;

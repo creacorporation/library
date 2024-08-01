@@ -1,11 +1,11 @@
-//----------------------------------------------------------------------------
-// XML����
+﻿//----------------------------------------------------------------------------
+// XML操作
 // Copyright (C) 2024 Crea Inc. All rights reserved.
 // This program is released under the MIT License. 
 // see http://opensource.org/licenses/mit-license.php
-// ���쌠�\���⃉�C�Z���X�̉��ς͋֎~����Ă��܂��B
-// ���̃\�[�X�R�[�h�Ɋւ��āA��L���C�Z���X�ȊO�̌_�񓙂͈�ؑ��݂��܂���B
-// (���炩�̌_�񂪂���ꍇ�ł��A�{�\�[�X�R�[�h�͂��̑ΏۊO�ƂȂ�܂�)
+// 著作権表示やライセンスの改変は禁止されています。
+// このソースコードに関して、上記ライセンス以外の契約等は一切存在しません。
+// (何らかの契約がある場合でも、本ソースコードはその対象外となります)
 //----------------------------------------------------------------------------
 
 #ifndef MXMLBASE_H_INCLUDED
@@ -183,10 +183,10 @@ namespace mXmlBase_Definitions
 {
 	enum OnReadResult
 	{
-		Fail,		// �ǂݎ�莸�s�̏ꍇ�i�G���[�I���j
-		Next,		// �ǂݎ��n�j�̏ꍇ�i�������s�j
-		Skip,		// ���Y�G�������g�ɂ��Ĉȍ~�S�Ė�������ꍇ�i���̃G�������g���瑱�s�j
-		Finish,		// �ǂݎ��I���̏ꍇ
+		Fail,		// 読み取り失敗の場合（エラー終了）
+		Next,		// 読み取りＯＫの場合（処理続行）
+		Skip,		// 当該エレメントについて以降全て無視する場合（次のエレメントから続行）
+		Finish,		// 読み取り終了の場合
 	};
 }
 
@@ -227,63 +227,63 @@ protected:
 
 	using OnReadResult = mXmlBase_Definitions::OnReadResult;
 
-	//���[�g�G�������g���ǂݎ�芮�������Ƃ��ɃR�[���o�b�N����܂�
+	//ルートエレメントが読み取り完了したときにコールバックされます
 	virtual bool OnReadRoot( std::unique_ptr<mXmlObject_Element_Child>&& obj );
 
-	//���[�g�ȊO�̃G�������g���ǂݎ�芮�������Ƃ��ɃR�[���o�b�N����܂�
-	//�����̃R�[���o�b�N�֐����ŁAobj��parent��Child�����o�ɒǉ����Ȃ���΁A�ǂݎ�����f�[�^�͔j������邱�ƂɂȂ�܂�
-	// path : ���[�g�G�������g����A�Ȃ�G�������g����'\\'�ŘA������������B�擪�Ɩ�����'\\'�B
-	// parent : �ǂݎ�����f�[�^�����ڏ������邱�ƂɂȂ�e�G�������g
-	// obj : �V���ɓǂݎ�����f�[�^
-	// ret : ���̌�̏���������OnReadResult�̒l
+	//ルート以外のエレメントが読み取り完了したときにコールバックされます
+	//※このコールバック関数内で、objをparentのChildメンバに追加しなければ、読み取ったデータは破棄されることになります
+	// path : ルートエレメントから連なるエレメント名を'\\'で連結した文字列。先頭と末尾は'\\'。
+	// parent : 読み取ったデータが直接所属することになる親エレメント
+	// obj : 新たに読み取ったデータ
+	// ret : その後の処理を示すOnReadResultの値
 	virtual OnReadResult OnReadElement( const WString& path , mXmlObject_Element_Child& parent , std::unique_ptr<mXmlObject_Element_Child>&& obj );
 
-	//�e�L�X�g�f�[�^���ǂݎ�芮�������Ƃ��ɃR�[���o�b�N����܂�
-	//�����̃R�[���o�b�N�֐����ŁAobj��parent��Child�����o�ɒǉ����Ȃ���΁A�ǂݎ�����f�[�^�͔j������邱�ƂɂȂ�܂�
-	// path : ���[�g�G�������g����A�Ȃ�G�������g����'\\'�ŘA������������B�擪�Ɩ�����'\\'�B
-	// parent : �ǂݎ�����f�[�^�����ڏ������邱�ƂɂȂ�e�G�������g
-	// obj : �V���ɓǂݎ�����f�[�^
-	// ret : ���̌�̏���������OnReadResult�̒l
+	//テキストデータが読み取り完了したときにコールバックされます
+	//※このコールバック関数内で、objをparentのChildメンバに追加しなければ、読み取ったデータは破棄されることになります
+	// path : ルートエレメントから連なるエレメント名を'\\'で連結した文字列。先頭と末尾は'\\'。
+	// parent : 読み取ったデータが直接所属することになる親エレメント
+	// obj : 新たに読み取ったデータ
+	// ret : その後の処理を示すOnReadResultの値
 	virtual OnReadResult OnReadText( const WString& path , mXmlObject_Element_Child& parent , std::unique_ptr<mXmlObject_Text>&& obj );
 
-	//CDATA���ǂݎ�芮�������Ƃ��ɃR�[���o�b�N����܂�
-	//�����̃R�[���o�b�N�֐����ŁAobj��parent��Child�����o�ɒǉ����Ȃ���΁A�ǂݎ�����f�[�^�͔j������邱�ƂɂȂ�܂�
-	// path : ���[�g�G�������g����A�Ȃ�G�������g����'\\'�ŘA������������B�擪�Ɩ�����'\\'�B
-	// parent : �ǂݎ�����f�[�^�����ڏ������邱�ƂɂȂ�e�G�������g
-	// obj : �V���ɓǂݎ�����f�[�^
-	// ret : ���̌�̏���������OnReadResult�̒l
+	//CDATAが読み取り完了したときにコールバックされます
+	//※このコールバック関数内で、objをparentのChildメンバに追加しなければ、読み取ったデータは破棄されることになります
+	// path : ルートエレメントから連なるエレメント名を'\\'で連結した文字列。先頭と末尾は'\\'。
+	// parent : 読み取ったデータが直接所属することになる親エレメント
+	// obj : 新たに読み取ったデータ
+	// ret : その後の処理を示すOnReadResultの値
 	virtual OnReadResult OnReadCDATA( const WString& path , mXmlObject_Element_Child& parent , std::unique_ptr<mXmlObject_CDATA>&& obj );
 
-	//�������߂��ǂݎ�芮�������Ƃ��ɃR�[���o�b�N����܂�
-	//�����̃R�[���o�b�N�֐����ŁAobj��parent��Child�����o�ɒǉ����Ȃ���΁A�ǂݎ�����f�[�^�͔j������邱�ƂɂȂ�܂�
-	// path : ���[�g�G�������g����A�Ȃ�G�������g����'\\'�ŘA������������B�擪�Ɩ�����'\\'�B
-	// parent : �ǂݎ�����f�[�^�����ڏ������邱�ƂɂȂ�e�G�������g
-	// obj : �V���ɓǂݎ�����f�[�^
-	// ret : ���̌�̏���������OnReadResult�̒l
+	//処理命令が読み取り完了したときにコールバックされます
+	//※このコールバック関数内で、objをparentのChildメンバに追加しなければ、読み取ったデータは破棄されることになります
+	// path : ルートエレメントから連なるエレメント名を'\\'で連結した文字列。先頭と末尾は'\\'。
+	// parent : 読み取ったデータが直接所属することになる親エレメント
+	// obj : 新たに読み取ったデータ
+	// ret : その後の処理を示すOnReadResultの値
 	virtual OnReadResult OnReadProcessingInstruction( const WString& path ,  mXmlObject_Element_Child& parent , std::unique_ptr<mXmlObject_ProcessingInstruction>&& obj );
 
-	//�R�����g���ǂݎ�芮�������Ƃ��ɃR�[���o�b�N����܂�
-	//�����̃R�[���o�b�N�֐����ŁAobj��parent��Child�����o�ɒǉ����Ȃ���΁A�ǂݎ�����f�[�^�͔j������邱�ƂɂȂ�܂�
-	// path : ���[�g�G�������g����A�Ȃ�G�������g����'\\'�ŘA������������B�擪�Ɩ�����'\\'�B
-	// parent : �ǂݎ�����f�[�^�����ڏ������邱�ƂɂȂ�e�G�������g
-	// obj : �V���ɓǂݎ�����f�[�^
-	// ret : ���̌�̏���������OnReadResult�̒l
+	//コメントが読み取り完了したときにコールバックされます
+	//※このコールバック関数内で、objをparentのChildメンバに追加しなければ、読み取ったデータは破棄されることになります
+	// path : ルートエレメントから連なるエレメント名を'\\'で連結した文字列。先頭と末尾は'\\'。
+	// parent : 読み取ったデータが直接所属することになる親エレメント
+	// obj : 新たに読み取ったデータ
+	// ret : その後の処理を示すOnReadResultの値
 	virtual OnReadResult OnReadComment( const WString& path , mXmlObject_Element_Child& parent , std::unique_ptr<mXmlObject_Comment>&& obj );
 
-	//DOM���ǂݎ�芮�������Ƃ��ɃR�[���o�b�N����܂�
-	//�����̃R�[���o�b�N�֐����ŁAobj��parent��Child�����o�ɒǉ����Ȃ���΁A�ǂݎ�����f�[�^�͔j������邱�ƂɂȂ�܂�
-	// path : ���[�g�G�������g����A�Ȃ�G�������g����'\\'�ŘA������������B�擪�Ɩ�����'\\'�B
-	// parent : �ǂݎ�����f�[�^�����ڏ������邱�ƂɂȂ�e�G�������g
-	// obj : �V���ɓǂݎ�����f�[�^
-	// ret : ���̌�̏���������OnReadResult�̒l
+	//DOMが読み取り完了したときにコールバックされます
+	//※このコールバック関数内で、objをparentのChildメンバに追加しなければ、読み取ったデータは破棄されることになります
+	// path : ルートエレメントから連なるエレメント名を'\\'で連結した文字列。先頭と末尾は'\\'。
+	// parent : 読み取ったデータが直接所属することになる親エレメント
+	// obj : 新たに読み取ったデータ
+	// ret : その後の処理を示すOnReadResultの値
 	virtual OnReadResult OnReadDocumentType( const WString& path , mXmlObject_Element_Child& parent , std::unique_ptr<mXmlObject_DocumentType>&& obj );
 
-	//XML�錾���ǂݎ�芮�������Ƃ��ɃR�[���o�b�N����܂�
-	//�����̃R�[���o�b�N�֐����ŁAobj��parent��Child�����o�ɒǉ����Ȃ���΁A�ǂݎ�����f�[�^�͔j������邱�ƂɂȂ�܂�
-	// path : ���[�g�G�������g����A�Ȃ�G�������g����'\\'�ŘA������������B�擪�Ɩ�����'\\'�B
-	// parent : �ǂݎ�����f�[�^�����ڏ������邱�ƂɂȂ�e�G�������g
-	// obj : �V���ɓǂݎ�����f�[�^
-	// ret : ���̌�̏���������OnReadResult�̒l
+	//XML宣言が読み取り完了したときにコールバックされます
+	//※このコールバック関数内で、objをparentのChildメンバに追加しなければ、読み取ったデータは破棄されることになります
+	// path : ルートエレメントから連なるエレメント名を'\\'で連結した文字列。先頭と末尾は'\\'。
+	// parent : 読み取ったデータが直接所属することになる親エレメント
+	// obj : 新たに読み取ったデータ
+	// ret : その後の処理を示すOnReadResultの値
 	virtual OnReadResult OnReadXmlDeclaration( const WString& path , mXmlObject_Element_Child& parent , std::unique_ptr<mXmlObject_XmlDeclaration_Child>&& obj );
 
 	virtual const mXmlObject_Element_Child* OnWriteRoot( void )const;
@@ -291,13 +291,13 @@ protected:
 private:
 	enum OnReadResultEx
 	{
-		Fail   = OnReadResult::Fail,	// �ǂݎ�莸�s�̏ꍇ�i�G���[�I���j
-		Next   = OnReadResult::Next,	// �ǂݎ��n�j�̏ꍇ�i�������s�j
-		Skip   = OnReadResult::Skip,	// ���Y�G�������g�ɂ��Ĉȍ~�S�Ė�������ꍇ�i���̃G�������g���瑱�s�j
-		Finish = OnReadResult::Finish,	// �ǂݎ��I���̏ꍇ
+		Fail   = OnReadResult::Fail,	// 読み取り失敗の場合（エラー終了）
+		Next   = OnReadResult::Next,	// 読み取りＯＫの場合（処理続行）
+		Skip   = OnReadResult::Skip,	// 当該エレメントについて以降全て無視する場合（次のエレメントから続行）
+		Finish = OnReadResult::Finish,	// 読み取り終了の場合
 	};
 
-	//�v�f�̓ǂݎ��
+	//要素の読み取り
 	OnReadResultEx ParseMain( const WString& path , mXmlObject_Element_Child& parent , IXmlReader* reader );
 	OnReadResultEx ParseElement( const WString& path , mXmlObject_Element_Child& parent , IXmlReader* reader );
 	OnReadResultEx ParseText( const WString& path , mXmlObject_Element_Child& parent , IXmlReader* reader );
@@ -306,10 +306,10 @@ private:
 	OnReadResultEx ParseComment( const WString& path , mXmlObject_Element_Child& parent , IXmlReader* reader );
 	OnReadResultEx ParseDocumentType( const WString& path , mXmlObject_Element_Child& parent , IXmlReader* reader );
 	OnReadResultEx ParseXmlDeclaration( const WString& path , mXmlObject_Element_Child& parent , IXmlReader* reader );
-	//�A�g���r���[�g�̓ǂݎ��
+	//アトリビュートの読み取り
 	bool ParseAttribute( mXmlObject_WithChildObject& parent , IXmlReader* reader );
 
-	//�v�f�̏o��
+	//要素の出力
 	bool WriteMain( const mXmlObject_WithChildObject& obj , IXmlWriter* writer )const;
 	bool WriteElement( const mXmlObject_Element_Child& obj , IXmlWriter* writer )const;
 

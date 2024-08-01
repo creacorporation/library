@@ -1,5 +1,5 @@
-//----------------------------------------------------------------------------
-// ƒAƒgƒ~ƒbƒN‚È’l
+ï»¿//----------------------------------------------------------------------------
+// ã‚¢ãƒˆãƒŸãƒƒã‚¯ãªå€¤
 // Copyright (C) 2016 Fingerling. All rights reserved. 
 // This program is released under the MIT License. 
 // see http://opensource.org/licenses/mit-license.php
@@ -9,7 +9,7 @@
 #define MATOMICVALUE_H_INCLUDED
 
 /*
-œ—p“r
+â—ç”¨é€”
 
 */
 
@@ -42,7 +42,7 @@ public:
 		MyValue.ptr = source.MyValue.ptr;
 	}
 
-	//‘ã“ü‰‰ŽZŽq
+	//ä»£å…¥æ¼”ç®—å­
 	T operator=( T val )
 	{		
 		PVOID tmp = (PVOID)val;
@@ -50,13 +50,13 @@ public:
 		return MyValue.val;
 	}
 
-	//ƒLƒƒƒXƒg‰‰ŽZŽq
+	//ã‚­ãƒ£ã‚¹ãƒˆæ¼”ç®—å­
 	operator T()const
 	{
 		return MyValue.val;
 	}
 
-	//‘O’uƒCƒ“ƒNƒŠƒƒ“ƒg
+	//å‰ç½®ã‚¤ãƒ³ã‚¯ãƒªãƒ¡ãƒ³ãƒˆ
 	T operator++()
 	{
 #ifdef _WIN64
@@ -67,7 +67,7 @@ public:
 		return (T)result;
 	}
 
-	//Œã’uƒCƒ“ƒNƒŠƒƒ“ƒg
+	//å¾Œç½®ã‚¤ãƒ³ã‚¯ãƒªãƒ¡ãƒ³ãƒˆ
 	T operator++(int)
 	{
 #ifdef _WIN64
@@ -78,7 +78,7 @@ public:
 		return (T)( result - 1 );
 	}
 
-	//‘O’uƒfƒNƒŠƒƒ“ƒg
+	//å‰ç½®ãƒ‡ã‚¯ãƒªãƒ¡ãƒ³ãƒˆ
 	T operator--()
 	{
 #ifdef _WIN64
@@ -89,7 +89,7 @@ public:
 		return (T)result;
 	}
 
-	//Œã’uƒfƒNƒŠƒƒ“ƒg
+	//å¾Œç½®ãƒ‡ã‚¯ãƒªãƒ¡ãƒ³ãƒˆ
 	T operator--(int)
 	{
 #ifdef _WIN64
@@ -100,10 +100,10 @@ public:
 		return (T)( result + 1 );
 	}
 
-	//ƒAƒgƒ~ƒbƒN‚É’l‚ð”äŠr‚µ‚ÄAˆê’v‚µ‚Ä‚¢‚ê‚ÎŒðŠ·‚·‚é
-	//if_val : ‚à‚µ‚±‚Ì’l‚¾‚Á‚½‚çA
-	//set_val : ‚±‚Ì’l‚ÉŒðŠ·‚·‚é
-	//ret : ŒðŠ·‘O‚Ì’l
+	//ã‚¢ãƒˆãƒŸãƒƒã‚¯ã«å€¤ã‚’æ¯”è¼ƒã—ã¦ã€ä¸€è‡´ã—ã¦ã„ã‚Œã°äº¤æ›ã™ã‚‹
+	//if_val : ã‚‚ã—ã“ã®å€¤ã ã£ãŸã‚‰ã€
+	//set_val : ã“ã®å€¤ã«äº¤æ›ã™ã‚‹
+	//ret : äº¤æ›å‰ã®å€¤
 	T CompareExchange( T if_val , T set_val )
 	{
 		T result;
@@ -115,19 +115,19 @@ public:
 
 protected:
 
-	//ƒfƒtƒHƒ‹ƒg‚Å‚ÍA
-	//E32ƒrƒbƒgƒvƒƒZƒbƒT‚Å‚Í4ƒoƒCƒg‹«ŠE‚ÉƒAƒ‰ƒCƒƒ“ƒg
-	//E64ƒrƒbƒgƒvƒƒZƒbƒT‚Å‚Í8ƒoƒCƒg‹«ŠE‚ÉƒAƒ‰ƒCƒƒ“ƒg
-	//‚³‚ê‚Ä‚¢‚éƒnƒYB
+	//ãƒ‡ãƒ•ã‚©ãƒ«ãƒˆã§ã¯ã€
+	//ãƒ»32ãƒ“ãƒƒãƒˆãƒ—ãƒ­ã‚»ãƒƒã‚µã§ã¯4ãƒã‚¤ãƒˆå¢ƒç•Œã«ã‚¢ãƒ©ã‚¤ãƒ¡ãƒ³ãƒˆ
+	//ãƒ»64ãƒ“ãƒƒãƒˆãƒ—ãƒ­ã‚»ãƒƒã‚µã§ã¯8ãƒã‚¤ãƒˆå¢ƒç•Œã«ã‚¢ãƒ©ã‚¤ãƒ¡ãƒ³ãƒˆ
+	//ã•ã‚Œã¦ã„ã‚‹ãƒã‚ºã€‚
 
-	//ƒAƒgƒ~ƒbƒN‚É‘€ì‚µ‚½‚¢’lB
-	//BYTE‚Æ‚©‚ÅŽg‚Á‚Ä‚à‚æ‚¢‚æ‚¤‚ÉAULONG_PTRŒ^‚Æ‚Ìunion‚É‚µ‚Ä‚ ‚éB
-	//Å‰‚©‚çULONG_PTR‚Åƒƒ“ƒoì‚Á‚ÄA“s“xƒLƒƒƒXƒg‚µ‚½’l‚ð•Ô‚µ‚Ä‚à‚¢‚¢‚¯‚ÇA
-	//enum‚Åì‚Á‚½‚Æ‚«‚ÉAƒfƒoƒbƒK‚ÅŒ©‚é‚Æƒ‰ƒxƒ‹–¼‚ª•ª‚©‚Á‚Ä‚¿‚å‚Á‚Æ•Ö—˜B
+	//ã‚¢ãƒˆãƒŸãƒƒã‚¯ã«æ“ä½œã—ãŸã„å€¤ã€‚
+	//BYTEã¨ã‹ã§ä½¿ã£ã¦ã‚‚ã‚ˆã„ã‚ˆã†ã«ã€ULONG_PTRåž‹ã¨ã®unionã«ã—ã¦ã‚ã‚‹ã€‚
+	//æœ€åˆã‹ã‚‰ULONG_PTRã§ãƒ¡ãƒ³ãƒä½œã£ã¦ã€éƒ½åº¦ã‚­ãƒ£ã‚¹ãƒˆã—ãŸå€¤ã‚’è¿”ã—ã¦ã‚‚ã„ã„ã‘ã©ã€
+	//enumã§ä½œã£ãŸã¨ãã«ã€ãƒ‡ãƒãƒƒã‚¬ã§è¦‹ã‚‹ã¨ãƒ©ãƒ™ãƒ«åãŒåˆ†ã‹ã£ã¦ã¡ã‚‡ã£ã¨ä¾¿åˆ©ã€‚
 	union Value
 	{
-		ULONG_PTR ptr;	//ƒ_ƒ~[B•K—vƒTƒCƒYŠm•Û•‰Šú‰»—pB
-		T val;			//ƒAƒgƒ~ƒbƒN‚É‘€ì‚·‚é’l
+		ULONG_PTR ptr;	//ãƒ€ãƒŸãƒ¼ã€‚å¿…è¦ã‚µã‚¤ã‚ºç¢ºä¿ï¼†åˆæœŸåŒ–ç”¨ã€‚
+		T val;			//ã‚¢ãƒˆãƒŸãƒƒã‚¯ã«æ“ä½œã™ã‚‹å€¤
 	};
 	
 	Value MyValue;

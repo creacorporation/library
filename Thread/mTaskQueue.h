@@ -1,11 +1,11 @@
-//----------------------------------------------------------------------------
-// ���[�J�[�X���b�h���^�X�N�n���h��
+﻿//----------------------------------------------------------------------------
+// ワーカースレッド＆タスクハンドラ
 // Copyright (C) 2019-2024 Crea Inc. All rights reserved.
 // This program is released under the MIT License. 
 // see http://opensource.org/licenses/mit-license.php
-// ���쌠�\���⃉�C�Z���X�̉��ς͋֎~����Ă��܂��B
-// ���̃\�[�X�R�[�h�Ɋւ��āA��L���C�Z���X�ȊO�̌_�񓙂͈�ؑ��݂��܂���B
-// (���炩�̌_�񂪂���ꍇ�ł��A�{�\�[�X�R�[�h�͂��̑ΏۊO�ƂȂ�܂�)
+// 著作権表示やライセンスの改変は禁止されています。
+// このソースコードに関して、上記ライセンス以外の契約等は一切存在しません。
+// (何らかの契約がある場合でも、本ソースコードはその対象外となります)
 //----------------------------------------------------------------------------
 
 #ifndef MTASKQUEUE_H_INCLUDED
@@ -25,45 +25,45 @@ public:
 	mTaskQueue( mWorkerThreadPool& wtp );
 	virtual ~mTaskQueue();
 
-	//�^�X�N�̒ǉ�
-	// high : ���̃^�X�N�ɗD�悵�ď�������
-	// task : ��������^�X�N(mTaskBase���p�������N���X)
+	//タスクの追加
+	// high : 他のタスクに優先して処理する
+	// task : 処理するタスク(mTaskBaseを継承したクラス)
 	threadsafe bool AddTask( bool high , mTaskBase::Ticket& task );
 
-	//�^�X�N�̒ǉ��i�u���b�L���O�j
-	//�ǉ������^�X�N����������܂Ŗ߂�Ȃ�
-	//���[�J�[�X���b�h�̃����o�[�X���b�h����Ăяo�����Ƃ͂ł��Ȃ�
-	//���p�t�H�[�}���X��������̂ŁA���p���Ȃ�����
-	// high : ���̃^�X�N�ɗD�悵�ď�������
-	// task : ��������^�X�N(mTaskBase���p�������N���X)
+	//タスクの追加（ブロッキング）
+	//追加したタスクが完了するまで戻らない
+	//ワーカースレッドのメンバースレッドから呼び出すことはできない
+	//※パフォーマンスを下げるので、乱用しないこと
+	// high : 他のタスクに優先して処理する
+	// task : 処理するタスク(mTaskBaseを継承したクラス)
 	threadsafe bool AddTaskBlocking( bool high , mTaskBase::Ticket& task );
 
-	//�ŏI�^�X�N�̒ǉ�
-	// high : ���̃^�X�N�ɗD�悵�ď�������
-	// task : ��������^�X�N(mTaskBase���p�������N���X)
-	//���̊֐��Ń^�X�N��ǉ�����ƁA�ȍ~��AddTask(),Seal()�͑S�Ď��s���܂��B
+	//最終タスクの追加
+	// high : 他のタスクに優先して処理する
+	// task : 処理するタスク(mTaskBaseを継承したクラス)
+	//この関数でタスクを追加すると、以降のAddTask(),Seal()は全て失敗します。
 	threadsafe bool Seal( bool high , mTaskBase::Ticket& task );
 
-	//�^�X�N�I��
-	//���̊֐����ĂԂƁA�ȍ~��AddTask(),Seal()�͑S�Ď��s���܂��B
+	//タスク終了
+	//この関数を呼ぶと、以降のAddTask(),Seal()は全て失敗します。
 	threadsafe bool Seal( void );
 
-	//���s�҂��L���[�ɂ���^�X�N��S�Ď�����
-	//���łɎ��s���J�n���ꂽ�^�X�N�́A��������Ȃ��B
-	//�������ꂽ�^�X�N�̐����Ԃ�
+	//実行待ちキューにあるタスクを全て取り消す
+	//すでに実行が開始されたタスクは、取り消されない。
+	//取り消されたタスクの数が返る
 	threadsafe DWORD CancelTask( void );
 
-	//�A�C�h����Ԃł��邩����
-	//�E�L���[�ɐς܂ꂽ�^�X�N���Ȃ�
-	//�E�^�X�N�����s���Ă���X���b�h���Ȃ�
+	//アイドル状態であるか得る
+	//・キューに積まれたタスクがない
+	//・タスクを実行しているスレッドがない
 	threadsafe bool IsIdle( void )const;
 
-	//�w�肵���^�X�NID�����^�X�N���������邩��Ԃ�
-	// id : ���������^�X�NID
-	// ret : �w�肵���^�X�NID�̐�
+	//指定したタスクIDをもつタスクがいくつあるかを返す
+	// id : 数えたいタスクID
+	// ret : 指定したタスクIDの数
 	threadsafe DWORD GetTaskIdCount( const AString& id )const;
 
-	//���[�J�[�X���b�h�v�[���̃n���h����Ԃ�
+	//ワーカースレッドプールのハンドルを返す
 	threadsafe mWorkerThreadPool& GetThreadPool( void )const;
 
 private:
@@ -74,20 +74,20 @@ private:
 
 protected:
 
-	//�֘A�t�����Ă��郏�[�J�[�X���b�h�v�[��
+	//関連付けられているワーカースレッドプール
 	mWorkerThreadPool& MyWorkerThreadPool;
 
-	//�N���e�B�J���Z�N�V����
+	//クリティカルセクション
 	mutable mCriticalSectionContainer MyCriticalSection;
 
-	//����ς݁H
+	//封印済み？
 	bool MyIsSealed;
 
-	//�^�X�NID���Ƃ̏��
+	//タスクIDごとの情報
 	struct TaskInformation
 	{
-		DWORD Count;		//���݂��̃^�X�NID�ɑ����Ă���^�X�N�̐�(�Q�ƃJ�E���g)
-		DWORD Executing;	//���݂��̃^�X�NID�Ŏ��s���̃^�X�N�̐�
+		DWORD Count;		//現在このタスクIDに属しているタスクの数(参照カウント)
+		DWORD Executing;	//現在このタスクIDで実行中のタスクの数
 		TaskInformation()
 		{
 			Count = 0;
@@ -97,27 +97,27 @@ protected:
 	using TaskInformationMap = std::unordered_map< AString , TaskInformation >;
 	TaskInformationMap MyTaskInformationMap;
 
-	//�^�X�NID�̎Q�ƃJ�E���g���C���N�������g����
+	//タスクIDの参照カウントをインクリメントする
 	threadsafe void TaskInformationIncrement( const AString& id );
 
-	//�^�X�NID�̎Q�ƃJ�E���g���f�N�������g����
+	//タスクIDの参照カウントをデクリメントする
 	threadsafe void TaskInformationDecrement( const AString& id );
 
-	//�N���e�B�J���w��̃^�X�N�����s���Ă��邩�ǂ���
+	//クリティカル指定のタスクを実行しているかどうか
 	bool MyIsCritical;
 
-	//�^�X�N�L���[�̃G���g��
+	//タスクキューのエントリ
 	using TicketQueue = std::deque< mTaskBase::Ticket >;
-	TicketQueue MyWaiting;		//���s�҂��L���[
+	TicketQueue MyWaiting;		//実行待ちキュー
 
-	//���s���̃^�X�N�̐�
+	//実行中のタスクの数
 	DWORD MyActiveTask;
 
-	//�^�X�N�̒ǉ�
-	//���̃N���X�̃C���X�^���X�̃f�X�g���N�^�����s�J�n�Ȍ�́A���̃R�[���͎��s���ꂸ���s����B
+	//タスクの追加
+	//このクラスのインスタンスのデストラクタが実行開始以後は、このコールは実行されず失敗する。
 	threadsafe bool AddTask( bool high , mTaskBase::Ticket& task , bool isFinal );
 
-	//�^�X�N�̏������[�`��
+	//タスクの処理ルーチン
 	static bool TaskRoutine( mWorkerThreadPool& pool , DWORD Param1 , DWORD_PTR Param2 );
 
 };

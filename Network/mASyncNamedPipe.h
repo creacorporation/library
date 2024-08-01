@@ -1,11 +1,11 @@
-//----------------------------------------------------------------------------
-// �p�C�v�n���h��
+﻿//----------------------------------------------------------------------------
+// パイプハンドラ
 // Copyright (C) 2019- Crea Inc. All rights reserved.
 // This program is released under the MIT License. 
 // see http://opensource.org/licenses/mit-license.php
-// ���쌠�\���⃉�C�Z���X�̉��ς͋֎~����Ă��܂��B
-// ���̃\�[�X�R�[�h�Ɋւ��āA��L���C�Z���X�ȊO�̌_�񓙂͈�ؑ��݂��܂���B
-// (���炩�̌_�񂪂���ꍇ�ł��A�{�\�[�X�R�[�h�͂��̑ΏۊO�ƂȂ�܂�)
+// 著作権表示やライセンスの改変は禁止されています。
+// このソースコードに関して、上記ライセンス以外の契約等は一切存在しません。
+// (何らかの契約がある場合でも、本ソースコードはその対象外となります)
 //----------------------------------------------------------------------------
 
 #ifndef MASYNCNAMEDPIPE_H_INCLUDED
@@ -20,7 +20,7 @@
 #include <memory>
 
 /*
-�g����
+使い方
 
 #include "mStandard.h"
 #include "Network/mASyncNamedPipe.h"
@@ -56,26 +56,26 @@ int main( int argc , char** argv )
 {
 
 	//---------------
-	//����
+	//準備
 	//---------------
-	//�X���b�h�v�[���쐬
-	//�E���̃N���X�̓X���b�h�v�[���ƘA�g���ē����̂ŕK�{
+	//スレッドプール作成
+	//・このクラスはスレッドプールと連携して動くので必須
 	ThreadPool.Begin( 1 );
 
 	//---------------
-	//�T�[�o�[��
+	//サーバー側
 	//---------------
 	{
-		//�ڑ��܂��p�C�v�������̐ݒ�
+		//接続まちパイプ生成時の設定
 		mASyncNamedPipe::CreateOption createopt;
 		createopt.MaxConn = 1;
 		createopt.Timeout = 50;
 		createopt.RemoteAccess = false;
 
-		//�p�C�v�ڑ����̐ݒ�
+		//パイプ接続時の設定
 		mASyncNamedPipe::ConnectionOption connopt;
 
-		//�ʒm�֘A�̐ݒ�
+		//通知関連の設定
 		mASyncNamedPipe::NotifyOption notifyopt;
 		notifyopt.OnConnect.Mode = mASyncNamedPipe::NotifyOption::NotifyMode::NOTIFY_CALLBACK;
 		notifyopt.OnConnect.Notifier.CallbackFunction = ConnectCallback;
@@ -88,14 +88,14 @@ int main( int argc , char** argv )
 	}
 
 	//---------------
-	//�N���C�A���g��
+	//クライアント側
 	//---------------
 	mASyncNamedPipe client;
 	{
-		//�p�C�v�ڑ����̐ݒ�
+		//パイプ接続時の設定
 		mASyncNamedPipe::ConnectionOption opt;
 
-		//�ʒm�֘A�̐ݒ�
+		//通知関連の設定
 		mASyncNamedPipe::NotifyOption notifyopt;
 		notifyopt.OnConnect.Mode = mASyncNamedPipe::NotifyOption::NotifyMode::NOTIFY_CALLBACK;
 		notifyopt.OnConnect.Notifier.CallbackFunction = ConnectCallback;
@@ -118,17 +118,17 @@ int main( int argc , char** argv )
 			valid &= client.FlushCache();
 			if( !valid )
 			{
-				//�p�C�v������ł�
+				//パイプが死んでる
 				wchar_printf( "pipe died" );
 				break;
 			}
 		}
 	}
 
-	//��Ȃ̂ŃT�[�o�[�����������B�{�Ԃł̓N���C�A���g�����l�ɏ�������B
-	Pipe.Close();		//�������ݏI��
-	Pipe.SetEOF();		//�ǂݍ��ݏI��
-	//�������̓ǂݍ��݃L���[�j��
+	//例なのでサーバー側だけ処理。本番ではクライアントも同様に処理する。
+	Pipe.Close();		//書き込み終了
+	Pipe.SetEOF();		//読み込み終了
+	//未処理の読み込みキュー破棄
 	while( !Pipe.IsEOF() )
 	{
 		SleepEx( 100 , true );
@@ -136,10 +136,10 @@ int main( int argc , char** argv )
 		{
 		}
 	}
-	//�������̏������݃L���[�j��
+	//未処理の書き込みキュー破棄
 	Pipe.Cancel();
 
-	//�X���b�h�v�[���I��
+	//スレッドプール終了
 	ThreadPool.End();
 
 	return 0;
@@ -150,7 +150,7 @@ int main( int argc , char** argv )
 
 namespace Definitions_ASyncNamedPipe
 {
-	//�ʒm���[�h
+	//通知モード
 	enum NotifyMode
 	{
 		NOTIFY_NONE ,
@@ -159,20 +159,20 @@ namespace Definitions_ASyncNamedPipe
 		NOTIFY_CALLBACK ,
 	};
 
-	//�G���[�����������^�C�~���O
+	//エラーが発生したタイミング
 	enum ErrorAction
 	{
-		ERROR_ON_CONNECT,	//�ڑ��������̃G���[
-		ERROR_ON_READ,		//�ǂݍ��ݒ��̃G���[
-		ERROR_ON_WRITE,		//�������ݒ��̃G���[
+		ERROR_ON_CONNECT,	//接続処理中のエラー
+		ERROR_ON_READ,		//読み込み中のエラー
+		ERROR_ON_WRITE,		//書き込み中のエラー
 	};
 };
 
 class mPipeReadStream : public mFileReadStreamBase
 {
 public:
-	//�ǂݎ�葤�̌o�H���J���Ă��邩�𔻒肵�܂�
-	//�J���Ă���ꍇ�͐^���Ԃ�܂�
+	//読み取り側の経路が開いているかを判定します
+	//開いている場合は真が返ります
 	virtual bool IsOpen( void )const
 	{
 		return !IsEOF();
@@ -187,8 +187,8 @@ public:
 		MyIsClosed = false;
 	}
 
-	//�������ݑ��̌o�H���J���Ă��邩�𔻒肵�܂�
-	//�J���Ă���ꍇ�͐^���Ԃ�܂�
+	//書き込み側の経路が開いているかを判定します
+	//開いている場合は真が返ります
 	virtual bool IsOpen( void )const
 	{
 		return !MyIsClosed;
@@ -208,16 +208,16 @@ public:
 	mASyncNamedPipe();
 	virtual ~mASyncNamedPipe();
 
-	//�G���[�������̗��R�R�[�h
+	//エラー発生時の理由コード
 	enum ErrorCode
 	{
 	};
 
-	//���O�t���p�C�v�쐬�p�̃I�v�V�����\����
+	//名前付きパイプ作成用のオプション構造体
 	struct CreateOption
 	{
-		DWORD MaxConn;					//�ő哯���ڑ���
-		bool RemoteAccess;				//�����[�g����̃A�N�Z�X�������邩
+		DWORD MaxConn;					//最大同時接続数
+		bool RemoteAccess;				//リモートからのアクセスを許可するか
 		DWORD Timeout;
 
 		CreateOption()
@@ -250,7 +250,7 @@ public:
 		}OnError;
 	};
 
-	//�ʒm�ݒ�
+	//通知設定
 	using NotifyFunction = void(*)( mASyncNamedPipe& pipe , DWORD_PTR parameter , const NotifyFunctionOpt& opt );
 	class NotifyOption : public mNotifyOption< NotifyFunction >
 	{
@@ -261,24 +261,24 @@ public:
 		NotifierInfo OnError;
 	};
 
-	//�I�v�V�����\����
+	//オプション構造体
 	struct ConnectionOption
 	{
 	public:
 
 		//-----------
-		//����M�ݒ�
+		//送受信設定
 		//-----------
 
-		DWORD ReadPacketSize;			//�ǂݍ��݃p�P�b�g�̃T�C�Y
-		DWORD ReadPacketCount;			//�ǂݍ��݃p�P�b�g���m�ۂ��鐔
-		DWORD WritePacketSize;			//�������݃p�P�b�g�̃T�C�Y
-		DWORD WritePacketNotifyCount;	//�������ݑ҂��p�P�b�g�������Ŏw�肵��������������ꍇ�ɒʒm����
-		DWORD WritePacketLimit;			//�������ݑ҂��p�P�b�g�̐��̏���i������Ə������݃G���[�j
-		DWORD ReadBufferTimeout;		//�C�ӂ̃o�C�g�̎�M�Ԋu(�~���b)�����̒l�����������M�ʒm�𐶐�����
+		DWORD ReadPacketSize;			//読み込みパケットのサイズ
+		DWORD ReadPacketCount;			//読み込みパケットを確保する数
+		DWORD WritePacketSize;			//書き込みパケットのサイズ
+		DWORD WritePacketNotifyCount;	//書き込み待ちパケットがここで指定した数を下回った場合に通知する
+		DWORD WritePacketLimit;			//書き込み待ちパケットの数の上限（超えると書き込みエラー）
+		DWORD ReadBufferTimeout;		//任意のバイトの受信間隔(ミリ秒)がこの値を上回ったら受信通知を生成する
 
 		//-----------
-		//�����l
+		//初期値
 		//-----------
 		ConnectionOption()
 		{
@@ -291,58 +291,58 @@ public:
 		}
 	};
 
-	//�����̖��O�t���p�C�v�ɐڑ�����
-	// wtp : �o�^��̃��[�J�[�X���b�h�v�[��
-	// opt : �ʒm�I�v�V����
-	// pipename : ���O�t���p�C�v�̖��O
+	//既存の名前付きパイプに接続する
+	// wtp : 登録先のワーカースレッドプール
+	// opt : 通知オプション
+	// pipename : 名前付きパイプの名前
 	bool Connect( mWorkerThreadPool& wtp , const ConnectionOption& opt , const NotifyOption& notifier , const WString& servername , const WString& pipename );
 
-	//�p�C�v��V���ɍ쐬����
-	// wtp : �o�^��̃��[�J�[�X���b�h�v�[��
-	// opt : �ʒm�I�v�V����
+	//パイプを新たに作成する
+	// wtp : 登録先のワーカースレッドプール
+	// opt : 通知オプション
 	bool Create( mWorkerThreadPool& wtp , const CreateOption& createopt , const ConnectionOption& opt , const NotifyOption& notifier , const WString& servername , const WString& pipename );
 
-	//�P�����i�P�o�C�g�j�ǂݍ��݂܂�
-	//ret : �ǂݎ��������
-	//EOF�͌��ݓǂݎ���f�[�^���Ȃ����Ƃ������܂�
-	//�i���Ԃ��o�Ă΍ēx�ǂݎ��邩������Ȃ��j
+	//１文字（１バイト）読み込みます
+	//ret : 読み取った文字
+	//EOFは現在読み取れるデータがないことを示します
+	//（時間が経てば再度読み取れるかもしれない）
 	virtual INT Read( void );
 
-	//EOF�ɒB���Ă��邩�𒲂ׂ܂�
-	//�ESetEOF()���R�[����A���̎��_�܂łɎ�M�ς݂̃f�[�^��S�ēǂݏo����true�ɂȂ�܂�
+	//EOFに達しているかを調べます
+	//・SetEOF()をコール後、その時点までに受信済みのデータを全て読み出すとtrueになります
 	virtual bool IsEOF( void )const;
 
-	//�P������������
+	//１文字書き込み
 	virtual bool Write( INT data );
 
-	//�L���b�V������������
-	//������Ă΂Ȃ��Ǝ��ۂ̑��M�͔������܂���
+	//キャッシュを書き込み
+	//これを呼ばないと実際の送信は発生しません
 	virtual bool FlushCache( void );
 
-	//�������ݑ��̌o�H����܂�
+	//書き込み側の経路を閉じます
 	virtual bool Close( void );
 
-	//�ǂݍ��ݑ��̌o�H����܂�
+	//読み込み側の経路を閉じます
 	virtual bool SetEOF( void );
 
-	//���M�������̃f�[�^�����邩��Ԃ��܂�
-	// ret : ���M�������̃f�[�^�̐�(�L���[�̃G���g���P��)
+	//送信未完了のデータがあるかを返します
+	// ret : 送信未完了のデータの数(キューのエントリ単位)
 	DWORD IsWriting( void )const;
 
-	//���M�������̃f�[�^��j�����܂�
+	//送信未完了のデータを破棄します
 	bool Cancel( void );
 
-	//���ݖ������̒ʐM(����M�Ƃ�)��S�Ĕj�����A�ڑ�����܂�
-	//�ڑ��҂��̏ꍇ�͑ҋ@���L�����Z�����܂�
+	//現在未完了の通信(送受信とも)を全て破棄し、接続を閉じます
+	//接続待ちの場合は待機をキャンセルします
 	bool Abort( void );
 
-	//�ڑ����Ă��邩�ۂ���Ԃ��܂�
-	//���p�C�v�̐�ɒN���Ȃ����Ă���ΐ^
+	//接続しているか否かを返します
+	//※パイプの先に誰かつながっていれば真
 	bool IsConnected( void )const;
 
-	//�ǂݍ��ݗp�̓����o�b�t�@���m�ۂ��܂�
-	//�Վ��Ƀo�b�t�@���K�v�ɂȂ�Ƃ��Ɏg�p���܂�
-	// count : �����o�b�t�@���w�肵���������ł���΁A���̐��ɂȂ�悤�ɓ����o�b�t�@��V���ɍ쐬���܂�
+	//読み込み用の内部バッファを確保します
+	//臨時にバッファが必要になるときに使用します
+	// count : 内部バッファが指定した数未満であれば、その数になるように内部バッファを新たに作成します
 	bool PrepareReadBuffer( DWORD count );
 
 private:
@@ -352,26 +352,26 @@ private:
 
 protected:
 	
-	//�p�C�v�̃n���h��
+	//パイプのハンドル
 	HANDLE MyHandle;
 
-	//�ڑ��ς݂��H
+	//接続済みか？
 	bool MyIsConnected;
 
-	//�ݒ�l
+	//設定値
 	ConnectionOption MyOption;
 
-	//�ʒm�ݒ�l
+	//通知設定値
 	NotifyOption MyNotifyOption;
 
-	//�N���e�B�J���Z�N�V����
+	//クリティカルセクション
 	mutable mCriticalSectionContainer MyCritical;
 
-	//Notify�Ăяo�����̃C�x���g��
+	//Notify呼び出し中のイベント数
 	using NotifyEventToken = std::shared_ptr<int>;
 	NotifyEventToken MyNotifyEventToken;
 
-	//�������e�t���O
+	//処理内容フラグ
 	enum QueueType
 	{
 		CONNECT_QUEUE_ENTRY,
@@ -379,61 +379,61 @@ protected:
 		READ_QUEUE_ENTRY
 	};
 
-	//�L���[
+	//キュー
 	struct BufferQueueEntry
 	{
-		//�e�I�u�W�F�N�g�ւ̃|�C���^
-		//�������A�񓯊�����̊������_�Őe�I�u�W�F�N�g���j������Ă���ꍇ�̓k���|�C���^
+		//親オブジェクトへのポインタ
+		//ただし、非同期操作の完了時点で親オブジェクトが破棄されている場合はヌルポインタ
 		mASyncNamedPipe* Parent;
 
-		//���M�L���[�̃G���g�����A��M�L���[�̃G���g����
+		//送信キューのエントリか、受信キューのエントリか
 		QueueType Type;
 
-		//�����Ώۃo�b�t�@
+		//処理対象バッファ
 		BYTE* Buffer;
 
-		//�񓯊��p��OVERLAPPED�\���́iWindows�ɓn���p�j
+		//非同期用のOVERLAPPED構造体（Windowsに渡す用）
 		OVERLAPPED Ov;
 
-		//�����ς݂Ȃ��true(IO�������ɐݒ�)
+		//完了済みならばtrue(IO完了時に設定)
 		bool Completed;
 
-		//�������̃G���[�R�[�h(IO�������ɐݒ�)
+		//完了時のエラーコード(IO完了時に設定)
 		DWORD ErrorCode;
 
-		//�������̏����ς݃o�C�g��(IO�������ɐݒ�)
+		//完了時の処理済みバイト数(IO完了時に設定)
 		DWORD BytesTransfered;
 
 	};
 
 	typedef std::deque<BufferQueueEntry*> BufferQueue;
 
-	//���C�g�o�b�t�@
+	//ライトバッファ
 	BufferQueue MyWriteQueue;
 
-	//���[�h�o�b�t�@
+	//リードバッファ
 	BufferQueue MyReadQueue;
 
-	//�ڑ��p
+	//接続用
 	BufferQueueEntry* MyConnectData;
 
 protected:
 
-	//�������[�`��
+	//完了ルーチン
 	static VOID CALLBACK CompleteRoutine( DWORD ec , DWORD len , LPOVERLAPPED ov );
 
-	//�ڑ��������̊������[�`��
+	//接続完了時の完了ルーチン
 	static VOID CALLBACK ConnectCompleteRoutine( DWORD ec , DWORD len , LPOVERLAPPED ov );
 
-	//��M�������̊������[�`��
+	//受信完了時の完了ルーチン
 	static VOID CALLBACK ReadCompleteRoutine( DWORD ec , DWORD len , LPOVERLAPPED ov );
 
-	//���M�������̊������[�`��
+	//送信完了時の完了ルーチン
 	static VOID CALLBACK WriteCompleteRoutine( DWORD ec , DWORD len , LPOVERLAPPED ov );
 
-	//�p�C�v��o�^����
-	// wtp : �o�^��̃��[�J�[�X���b�h�v�[��
-	// opt : �ʒm�I�v�V����
+	//パイプを登録する
+	// wtp : 登録先のワーカースレッドプール
+	// opt : 通知オプション
 	bool Attach( mWorkerThreadPool& wtp , const ConnectionOption& opt , const NotifyOption& notifier );
 
 

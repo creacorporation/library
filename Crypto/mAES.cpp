@@ -1,17 +1,17 @@
-//----------------------------------------------------------------------------
-// AESˆÃ†‰»ƒNƒ‰ƒX
+ï»¿//----------------------------------------------------------------------------
+// AESæš—å·åŒ–ã‚¯ãƒ©ã‚¹
 // Copyright (C) 2013-2016 Fingerling. All rights reserved. 
 // Copyright (C) 2018- Crea Inc. All rights reserved.
 // This program is released under the MIT License. 
 // see http://opensource.org/licenses/mit-license.php
-// 2013/10/09`
+// 2013/10/09ã€œ
 //----------------------------------------------------------------------------
 
 #define MAES_CPP_COMPILE
 #include "mAES.h"
 #include "../General/mErrorLogger.h"
 
-//Ql‚É‚È‚é‚©‚à‚µ‚ê‚È‚¢URL
+//å‚è€ƒã«ãªã‚‹ã‹ã‚‚ã—ã‚Œãªã„URL
 // http://www.trustss.co.jp/smnEncrypt010.html
 // http://www.trustss.co.jp/cng/1000.html
 // http://blogs.msdn.com/b/japan_platform_sdkwindows_sdk_support_team_blog/archive/2012/03/01/api-cryptography-api.aspx
@@ -34,7 +34,7 @@ mAES::~mAES()
 	Deinit();
 }
 
-//ˆÃ†‰»ƒL[‚ğ‰ğ•ú‚µA‰Šúó‘Ô‚É–ß‚µ‚Ü‚·
+//æš—å·åŒ–ã‚­ãƒ¼ã‚’è§£æ”¾ã—ã€åˆæœŸçŠ¶æ…‹ã«æˆ»ã—ã¾ã™
 void mAES::Deinit( void )
 {
 	if( MyCryptKey )
@@ -57,44 +57,44 @@ bool mAES::Init( const SecureAString& key , const BYTE* salt , DWORD saltsize )
 	DWORD tmpkeylen = 0;
 	BYTE* tmpkey = nullptr;
 
-	//ƒvƒƒoƒCƒ_‰Šú‰»
+	//ãƒ—ãƒ­ãƒã‚¤ãƒ€åˆæœŸåŒ–
 	if( !InitProvider() )
 	{
-		RaiseAssert( g_ErrorLogger , 0 , L"ƒnƒbƒVƒ…ƒvƒƒoƒCƒ_‚ª‰Šú‰»‚³‚ê‚Ä‚¢‚Ü‚¹‚ñ" );
+		RaiseAssert( g_ErrorLogger , 0 , L"ãƒãƒƒã‚·ãƒ¥ãƒ—ãƒ­ãƒã‚¤ãƒ€ãŒåˆæœŸåŒ–ã•ã‚Œã¦ã„ã¾ã›ã‚“" );
 		result = false;
 		goto end;
 	}
 
-	//ƒpƒXƒ[ƒh‚©‚çƒnƒbƒVƒ…‚ğ¶¬
+	//ãƒ‘ã‚¹ãƒ¯ãƒ¼ãƒ‰ã‹ã‚‰ãƒãƒƒã‚·ãƒ¥ã‚’ç”Ÿæˆ
 	if( !CryptCreateHash( MyCryptProv , CALG_SHA_256 , 0 , 0 , &hash ) )
 	{
-		RaiseAssert( g_ErrorLogger , 0 , L"ƒnƒbƒVƒ…ƒIƒuƒWƒFƒNƒg‚ğ¶¬‚Å‚«‚Ü‚¹‚ñ" );
+		RaiseAssert( g_ErrorLogger , 0 , L"ãƒãƒƒã‚·ãƒ¥ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã‚’ç”Ÿæˆã§ãã¾ã›ã‚“" );
 		result = false;
 		goto end;
 	}
 
-	//ƒL[‚ÌƒTƒCƒY‚ğƒ`ƒFƒbƒNBˆø‚Á‚©‚©‚é‚±‚Æ‚Í‚È‚¢‚Æv‚¤‚ªB
+	//ã‚­ãƒ¼ã®ã‚µã‚¤ã‚ºã‚’ãƒã‚§ãƒƒã‚¯ã€‚å¼•ã£ã‹ã‹ã‚‹ã“ã¨ã¯ãªã„ã¨æ€ã†ãŒã€‚
 	if( key.size() > MAXDWORD )
 	{
-		RaiseAssert( g_ErrorLogger , 0 , L"ƒL[‚ª’·‚·‚¬‚Ü‚·" );
+		RaiseAssert( g_ErrorLogger , 0 , L"ã‚­ãƒ¼ãŒé•·ã™ãã¾ã™" );
 		result = false;
 		goto end;
 	}
 
-	//ƒL[‚ÌƒnƒbƒVƒ…‚ğ¶¬
+	//ã‚­ãƒ¼ã®ãƒãƒƒã‚·ãƒ¥ã‚’ç”Ÿæˆ
 	if( !CryptHashData( hash , (const BYTE*)key.c_str() , (DWORD)key.size() , 0 ) )
 	{
-		RaiseAssert( g_ErrorLogger , 0 , L"ƒpƒXƒ[ƒh‚ÌƒnƒbƒVƒ…‚É¸”s‚µ‚Ü‚µ‚½" );
+		RaiseAssert( g_ErrorLogger , 0 , L"ãƒ‘ã‚¹ãƒ¯ãƒ¼ãƒ‰ã®ãƒãƒƒã‚·ãƒ¥ã«å¤±æ•—ã—ã¾ã—ãŸ" );
 		result = false;
 		goto end;
 	}
 
-	//salt‚ÌƒnƒbƒVƒ…‚ğ¶¬Bw’è‚ª‚È‚¢ê‡‚ÍŒÅ’è’l‚ÌƒnƒbƒVƒ…‚ğg‚¤B
+	//saltã®ãƒãƒƒã‚·ãƒ¥ã‚’ç”Ÿæˆã€‚æŒ‡å®šãŒãªã„å ´åˆã¯å›ºå®šå€¤ã®ãƒãƒƒã‚·ãƒ¥ã‚’ä½¿ã†ã€‚
 	if( salt == nullptr || saltsize == 0 )
 	{
 		if( !CryptHashData( hash , SHA_HashSalt , sizeof( SHA_HashSalt ) , 0 ) )
 		{
-			RaiseAssert( g_ErrorLogger , 0 , L"ƒpƒXƒ[ƒh‚ÌƒnƒbƒVƒ…‚É¸”s‚µ‚Ü‚µ‚½" );
+			RaiseAssert( g_ErrorLogger , 0 , L"ãƒ‘ã‚¹ãƒ¯ãƒ¼ãƒ‰ã®ãƒãƒƒã‚·ãƒ¥ã«å¤±æ•—ã—ã¾ã—ãŸ" );
 			result = false;
 			goto end;
 		}
@@ -103,13 +103,13 @@ bool mAES::Init( const SecureAString& key , const BYTE* salt , DWORD saltsize )
 	{
 		if( !CryptHashData( hash , salt , saltsize , 0 ) )
 		{
-			RaiseAssert( g_ErrorLogger , 0 , L"ƒpƒXƒ[ƒh‚ÌƒnƒbƒVƒ…‚É¸”s‚µ‚Ü‚µ‚½" );
+			RaiseAssert( g_ErrorLogger , 0 , L"ãƒ‘ã‚¹ãƒ¯ãƒ¼ãƒ‰ã®ãƒãƒƒã‚·ãƒ¥ã«å¤±æ•—ã—ã¾ã—ãŸ" );
 			result = false;
 			goto end;
 		}
 	}
 
-	//ƒnƒbƒVƒ…ƒIƒuƒWƒFƒNƒg‚ª‚Å‚«‚½‚Ì‚ÅAˆÃ†‰»ƒnƒ“ƒhƒ‹‚ğ¶¬‚·‚é
+	//ãƒãƒƒã‚·ãƒ¥ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆãŒã§ããŸã®ã§ã€æš—å·åŒ–ãƒãƒ³ãƒ‰ãƒ«ã‚’ç”Ÿæˆã™ã‚‹
 	result = Init( hash );
 
 end:
@@ -125,30 +125,30 @@ bool mAES::Init( const BYTE* key )
 	BOOL result = true;
 	HCRYPTHASH hash_sha = 0;
 
-	//ƒvƒƒoƒCƒ_‰Šú‰»
+	//ãƒ—ãƒ­ãƒã‚¤ãƒ€åˆæœŸåŒ–
 	if( !InitProvider() )
 	{
-		RaiseAssert( g_ErrorLogger , 0 , L"ƒvƒƒoƒCƒ_‚ª‰Šú‰»‚³‚ê‚Ä‚¢‚Ü‚¹‚ñ" );
+		RaiseAssert( g_ErrorLogger , 0 , L"ãƒ—ãƒ­ãƒã‚¤ãƒ€ãŒåˆæœŸåŒ–ã•ã‚Œã¦ã„ã¾ã›ã‚“" );
 		result = false;
 		goto end;
 	}
 
-	//ƒnƒbƒVƒ…ƒIƒuƒWƒFƒNƒg‚Ì¶¬
+	//ãƒãƒƒã‚·ãƒ¥ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã®ç”Ÿæˆ
 	if( !CryptCreateHash( MyCryptProv , CALG_SHA_256 , 0 , 0 , &hash_sha ) )
 	{
-		RaiseAssert( g_ErrorLogger , 0 , L"ƒnƒbƒVƒ…ƒIƒuƒWƒFƒNƒg‚ğ¶¬‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½" );
+		RaiseAssert( g_ErrorLogger , 0 , L"ãƒãƒƒã‚·ãƒ¥ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã‚’ç”Ÿæˆã§ãã¾ã›ã‚“ã§ã—ãŸ" );
 		result = false;
 		goto end;
 	}
 
 	if( !CryptSetHashParam( hash_sha , HP_HASHVAL , key , 0 ) )
 	{
-		RaiseAssert( g_ErrorLogger , 0 , L"ƒpƒXƒ[ƒh‚ÌƒnƒbƒVƒ…‚É¸”s‚µ‚Ü‚µ‚½" );
+		RaiseAssert( g_ErrorLogger , 0 , L"ãƒ‘ã‚¹ãƒ¯ãƒ¼ãƒ‰ã®ãƒãƒƒã‚·ãƒ¥ã«å¤±æ•—ã—ã¾ã—ãŸ" );
 		result = false;
 		goto end;
 	}
 
-	//ƒnƒbƒVƒ…ƒIƒuƒWƒFƒNƒg‚ª‚Å‚«‚½‚Ì‚ÅAˆÃ†‰»ƒnƒ“ƒhƒ‹‚ğ¶¬‚·‚é
+	//ãƒãƒƒã‚·ãƒ¥ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆãŒã§ããŸã®ã§ã€æš—å·åŒ–ãƒãƒ³ãƒ‰ãƒ«ã‚’ç”Ÿæˆã™ã‚‹
 	result = Init( hash_sha );
 
 end:
@@ -163,38 +163,38 @@ bool mAES::Init( HCRYPTHASH hash )
 {
 	BOOL result = true;
 
-	//Œ®‚ğŠi”[‚µ‚½ƒnƒbƒVƒ…ƒIƒuƒWƒFƒNƒg‚ª‚Å‚«‚½‚Ì‚ÅA
-	//AESŒ®‚ğ¶¬‚·‚éB
+	//éµã‚’æ ¼ç´ã—ãŸãƒãƒƒã‚·ãƒ¥ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆãŒã§ããŸã®ã§ã€
+	//AESéµã‚’ç”Ÿæˆã™ã‚‹ã€‚
 	if( !CryptDeriveKey( MyCryptProv , CALG_AES_256 , hash , ( 256 << 16 ) , &MyCryptKey ) )
 	{
-		RaiseAssert( g_ErrorLogger , 0 , L"AESŒ®‚Ì¶¬‚É¸”s‚µ‚Ü‚µ‚½" );
+		RaiseAssert( g_ErrorLogger , 0 , L"AESéµã®ç”Ÿæˆã«å¤±æ•—ã—ã¾ã—ãŸ" );
 		result = false;
 		goto end;
 	}
 
-	//ƒpƒfƒBƒ“ƒOƒ‚[ƒh‚Ìİ’è(PKCS5)
+	//ãƒ‘ãƒ‡ã‚£ãƒ³ã‚°ãƒ¢ãƒ¼ãƒ‰ã®è¨­å®š(PKCS5)
 	DWORD padding = PKCS5_PADDING;
 	if( !CryptSetKeyParam( MyCryptKey , KP_PADDING , (BYTE*)&padding , 0 ) )
 	{
-		RaiseAssert( g_ErrorLogger , 0 , L"ƒpƒfƒBƒ“ƒO‚Ìİ’è‚É¸”s‚µ‚Ü‚µ‚½" );
+		RaiseAssert( g_ErrorLogger , 0 , L"ãƒ‘ãƒ‡ã‚£ãƒ³ã‚°ã®è¨­å®šã«å¤±æ•—ã—ã¾ã—ãŸ" );
 		result = false;
 		goto end;
 	}
 
-	//‰Šú‰»ƒxƒNƒ^‚Ìİ’è(‰Šú‰»ƒxƒNƒ^‚Í0‚È‚Ì‚ÅASetIV‚Å©•ª‚ÅƒZƒbƒg‚·‚é‚±‚Æ)
+	//åˆæœŸåŒ–ãƒ™ã‚¯ã‚¿ã®è¨­å®š(åˆæœŸåŒ–ãƒ™ã‚¯ã‚¿ã¯0ãªã®ã§ã€SetIVã§è‡ªåˆ†ã§ã‚»ãƒƒãƒˆã™ã‚‹ã“ã¨)
 	BYTE init_vector[16]={ 0 };
 	if( !SetIV( init_vector ) )
 	{
-		RaiseAssert( g_ErrorLogger , 0 , L"IV‚Ìİ’è‚É¸”s‚µ‚Ü‚µ‚½" );
+		RaiseAssert( g_ErrorLogger , 0 , L"IVã®è¨­å®šã«å¤±æ•—ã—ã¾ã—ãŸ" );
 		result = false;
 		goto end;
 	}
 
-	//CBCƒ‚[ƒh‚Éİ’è
+	//CBCãƒ¢ãƒ¼ãƒ‰ã«è¨­å®š
 	DWORD block_mode = CRYPT_MODE_CBC;
 	if( !CryptSetKeyParam ( MyCryptKey , KP_MODE , (BYTE*)&block_mode , 0 ) )
 	{
-		RaiseAssert( g_ErrorLogger , 0 , L"ˆÃ†‰»ƒ‚[ƒh‚Ìİ’è‚É¸”s‚µ‚Ü‚µ‚½" );
+		RaiseAssert( g_ErrorLogger , 0 , L"æš—å·åŒ–ãƒ¢ãƒ¼ãƒ‰ã®è¨­å®šã«å¤±æ•—ã—ã¾ã—ãŸ" );
 		result = false;
 		goto end;
 	}
@@ -208,13 +208,13 @@ bool mAES::IsInitialized( void )const
 	return MyCryptKey != 0;
 }
 
-//IV‚ğƒZƒbƒg‚·‚é
-// iv ‚Í16ƒoƒCƒg‚ÌƒoƒCƒiƒŠ
+//IVã‚’ã‚»ãƒƒãƒˆã™ã‚‹
+// iv ã¯16ãƒã‚¤ãƒˆã®ãƒã‚¤ãƒŠãƒª
 bool mAES::SetIV( const BYTE* iv )
 {
 	if( !CryptSetKeyParam( MyCryptKey , KP_IV , iv , 0 ) )
 	{
-		RaiseAssert( g_ErrorLogger , 0 , L"ˆÃ†‰»ƒ‚[ƒh‚Ìİ’è‚É¸”s‚µ‚Ü‚µ‚½" );
+		RaiseAssert( g_ErrorLogger , 0 , L"æš—å·åŒ–ãƒ¢ãƒ¼ãƒ‰ã®è¨­å®šã«å¤±æ•—ã—ã¾ã—ãŸ" );
 		return false;
 	}
 	return true;
@@ -222,18 +222,18 @@ bool mAES::SetIV( const BYTE* iv )
 
 bool mAES::InitProvider( void )
 {
-	//“ñd‰Šú‰»‚Ì‹Ö~
+	//äºŒé‡åˆæœŸåŒ–ã®ç¦æ­¢
 	if( MyCryptProv )
 	{
-		//‰Šú‰»‚¸‚İ
-		RaiseAssert( g_ErrorLogger , 0 , L"ˆÃ†‰»ƒIƒuƒWƒFƒNƒg‚Í‰Šú‰»Ï‚İ‚Å‚·" );
+		//åˆæœŸåŒ–ãšã¿
+		RaiseAssert( g_ErrorLogger , 0 , L"æš—å·åŒ–ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã¯åˆæœŸåŒ–æ¸ˆã¿ã§ã™" );
 		return false;
 	}
 
-	//ƒvƒƒoƒCƒ_‚Ì‰Šú‰»
+	//ãƒ—ãƒ­ãƒã‚¤ãƒ€ã®åˆæœŸåŒ–
 	if( !CryptAcquireContext( &MyCryptProv , 0 , MS_ENH_RSA_AES_PROV , PROV_RSA_AES , CRYPT_VERIFYCONTEXT ) )
 	{
-		RaiseAssert( g_ErrorLogger , 0 , L"ƒvƒƒoƒCƒ_‚Ì‰Šú‰»‚ª‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½" );
+		RaiseAssert( g_ErrorLogger , 0 , L"ãƒ—ãƒ­ãƒã‚¤ãƒ€ã®åˆæœŸåŒ–ãŒã§ãã¾ã›ã‚“ã§ã—ãŸ" );
 		return false;
 	}
 	return true;

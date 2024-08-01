@@ -1,15 +1,15 @@
-//----------------------------------------------------------------------------
-// �E�C���h�E�Ǘ��iGDI�y���j
+﻿//----------------------------------------------------------------------------
+// ウインドウ管理（GDIペン）
 // Copyright (C) 2016 Fingerling. All rights reserved. 
 // This program is released under the MIT License. 
 // see http://opensource.org/licenses/mit-license.php
 //----------------------------------------------------------------------------
 
 /*
-���p�r
-GDI�̃y���ł��B
-�E�쐬����y���́AOption�\���̂Ŏw�肵�܂��B
-�E�t�@�N�g�����\�b�h��opt��nullptr��n���ƁA����1�|�C���g�̃y���ɂȂ�܂��B
+●用途
+GDIのペンです。
+・作成するペンは、Option構造体で指定します。
+・ファクトリメソッドのoptにnullptrを渡すと、黒の1ポイントのペンになります。
 */
 
 #ifndef MGDIPEN_H_INCLUDED
@@ -24,29 +24,29 @@ class mGdiPen : public mGdiHandle
 {
 public:
 
-	//�I�v�V�����\����
-	//���ۂɃC���[�W���X�g���쐬����Ƃ��́AOption�\���̂𒼐ڎg�킸�ɁA��肽�����ɍ��킹�Ĉȉ����g���ĉ������B
-	//�EOption_UseOption �c �����o�ϐ��𖄂߂ăI�v�V������ݒ肵�����Ƃ�
+	//オプション構造体
+	//実際にイメージリストを作成するときは、Option構造体を直接使わずに、作りたい物に合わせて以下を使って下さい。
+	//・Option_UseOption … メンバ変数を埋めてオプションを設定したいとき
 	struct Option
 	{
-		//�y�������̕��@
+		//ペン生成の方法
 		enum CreateMethod
 		{
-			USEOPTION,			//�ʏ�̕��@
-			TRANSPARENT_PEN		//���ۂɂ͉��������Ȃ��y��
+			USEOPTION,			//通常の方法
+			TRANSPARENT_PEN		//実際には何も書かないペン
 		};
 
-		//�y���̎��
+		//ペンの種類
 		enum PenKind
 		{
-			SOLID_PEN,			//�����̃y��  ________
-			DASH_PEN,			//�j���̃y��  __ __ __
-			DOT_PEN,			//�_���̃y��  ........
-			DASHDOT_PEN,		//��_���y��  __.__.__
-			DASHDOTDOT_PEN,		//��_���y��  __..__..
+			SOLID_PEN,			//実線のペン  ________
+			DASH_PEN,			//破線のペン  __ __ __
+			DOT_PEN,			//点線のペン  ........
+			DASHDOT_PEN,		//一点鎖ペン  __.__.__
+			DASHDOTDOT_PEN,		//二点鎖ペン  __..__..
 		};
 
-		const CreateMethod method;	//RTTI�̑�p�ł��B�ύX�̕K�v�͂���܂���B
+		const CreateMethod method;	//RTTIの代用です。変更の必要はありません。
 	protected:
 		Option() = delete;
 		Option( CreateMethod create_method ) : method( create_method )
@@ -54,8 +54,8 @@ public:
 		}
 	};
 
-	//�y�������̃I�v�V����
-	//�ǂ�ȃy���𐶐����邩���R�R�Ŏw�肵�܂��B
+	//ペン生成のオプション
+	//どんなペンを生成するかをココで指定します。
 	struct Option_UseOption : public Option
 	{
 		PenKind kind;
@@ -77,54 +77,54 @@ public:
 		}
 	};
 
-	//�t�@�N�g�����\�b�h
+	//ファクトリメソッド
 	static mGdiHandle* Factory( const void* opt )throw( )
 	{
 		mGdiHandle* result;
 		try
 		{
-			//�V�����y���̃C���X�^���X���쐬����
+			//新しいペンのインスタンスを作成する
 			result = mNew mGdiPen( (const Option*)opt );
 		}
 		catch( mException )
 		{
-			//�y���̐����Ɏ��s�����ꍇ�̓k���|�C���^��Ԃ�
+			//ペンの生成に失敗した場合はヌルポインタを返す
 			result = nullptr;
 		}
 		return result;
 	}
 
-	//�R���X�g���N�^
-	//���̃R���X�g���N�^�́AMyHandle�Ɋi�[����u���V�̐������s���ɗ�O�𓊂��܂��B
+	//コンストラクタ
+	//このコンストラクタは、MyHandleに格納するブラシの生成失敗時に例外を投げます。
 	mGdiPen( const Option* option )throw( mException );
 
-	//�f�X�g���N�^
+	//デストラクタ
 	virtual ~mGdiPen();
 
-	//�n���h���̒l���擾����(�L���X�g���Z�q�o�[�W����)
+	//ハンドルの値を取得する(キャスト演算子バージョン)
 	operator HPEN()const;
 
-	//�n���h���̒l���擾����(���ʂ̊֐��o�[�W����)
+	//ハンドルの値を取得する(普通の関数バージョン)
 	virtual HGDIOBJ GetHandle( void )const override;
 
 private:
 	
-	//�ȉ��A�f�t�H���g�n�͎̂g�p�s�Ƃ���
+	//以下、デフォルト系のは使用不可とする
 	mGdiPen() = delete;
 	mGdiPen( const mGdiPen& src ) = delete;
 	mGdiPen& operator=( const mGdiPen& src ) = delete;
 
 private:
 
-	//�y������
-	//�EOption_UseOption���g�p����Ƃ��p
+	//ペン生成
+	//・Option_UseOptionを使用するとき用
 	bool CreateHandle( const Option_UseOption& opt );
 
-	//�EOption_Transparent���g�p����Ƃ��p
+	//・Option_Transparentを使用するとき用
 	bool CreateHandle( const Option_Transparent& opt );
 
 protected:
-	//�n���h���̎���
+	//ハンドルの実体
 	HPEN MyHandle;
 };
 

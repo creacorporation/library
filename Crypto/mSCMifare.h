@@ -1,11 +1,11 @@
-//----------------------------------------------------------------------------
-// Mifare Classic 1K ƒJ[ƒhƒnƒ“ƒhƒ‰
+ï»¿//----------------------------------------------------------------------------
+// Mifare Classic 1K ã‚«ãƒ¼ãƒ‰ãƒãƒ³ãƒ‰ãƒ©
 // Copyright (C) 2021- Crea Inc. All rights reserved.
 // This program is released under the MIT License. 
 // see http://opensource.org/licenses/mit-license.php
-// ’˜ìŒ •\¦‚âƒ‰ƒCƒZƒ“ƒX‚Ì‰ü•Ï‚Í‹Ö~‚³‚ê‚Ä‚¢‚Ü‚·B
-// ‚±‚Ìƒ\[ƒXƒR[ƒh‚ÉŠÖ‚µ‚ÄAã‹Lƒ‰ƒCƒZƒ“ƒXˆÈŠO‚ÌŒ_–ñ“™‚ÍˆêØ‘¶İ‚µ‚Ü‚¹‚ñB
-// (‰½‚ç‚©‚ÌŒ_–ñ‚ª‚ ‚éê‡‚Å‚àA–{ƒ\[ƒXƒR[ƒh‚Í‚»‚Ì‘ÎÛŠO‚Æ‚È‚è‚Ü‚·)
+// è‘—ä½œæ¨©è¡¨ç¤ºã‚„ãƒ©ã‚¤ã‚»ãƒ³ã‚¹ã®æ”¹å¤‰ã¯ç¦æ­¢ã•ã‚Œã¦ã„ã¾ã™ã€‚
+// ã“ã®ã‚½ãƒ¼ã‚¹ã‚³ãƒ¼ãƒ‰ã«é–¢ã—ã¦ã€ä¸Šè¨˜ãƒ©ã‚¤ã‚»ãƒ³ã‚¹ä»¥å¤–ã®å¥‘ç´„ç­‰ã¯ä¸€åˆ‡å­˜åœ¨ã—ã¾ã›ã‚“ã€‚
+// (ä½•ã‚‰ã‹ã®å¥‘ç´„ãŒã‚ã‚‹å ´åˆã§ã‚‚ã€æœ¬ã‚½ãƒ¼ã‚¹ã‚³ãƒ¼ãƒ‰ã¯ãã®å¯¾è±¡å¤–ã¨ãªã‚Šã¾ã™)
 //----------------------------------------------------------------------------
 
 #ifndef MSCMIFARE_H_INCLUDED
@@ -21,120 +21,120 @@ public:
 	mSCMifare();
 	virtual ~mSCMifare();
 
-	//ƒp[ƒ~ƒbƒVƒ‡ƒ“İ’è
+	//ãƒ‘ãƒ¼ãƒŸãƒƒã‚·ãƒ§ãƒ³è¨­å®š
 	enum Permission
 	{
 		//AccessBits   KeyA-----  KeyB------  Data------------------------------
 		//R      W     R    W     R     W     Read    Write   Inc     Dec,Tr/Res
-		//KeyA   ~    ~   KeyA  KeyA  KeyA  KeyA/B  KeyA/B  KeyA/B  KeyA/B
+		//KeyA   Ã—    Ã—   KeyA  KeyA  KeyA  KeyA/B  KeyA/B  KeyA/B  KeyA/B
 		Permission0,
 		//AccessBits   KeyA-----  KeyB------  Data------------------------------
 		//R      W     R    W     R     W     Read    Write   Inc     Dec,Tr/Res
-		//KeyA   ~    ~   ~    KeyA  ~    KeyA/B  ~      ~      ~
+		//KeyA   Ã—    Ã—   Ã—    KeyA  Ã—    KeyA/B  Ã—      Ã—      Ã—
 		Permission1,
 		//AccessBits   KeyA-----  KeyB------  Data------------------------------
 		//R      W     R    W     R     W     Read    Write   Inc     Dec,Tr/Res
-		//KeyA/B ~    ~   KeyB  ~    KeyB  KeyA/B  KeyB    ~      ~
+		//KeyA/B Ã—    Ã—   KeyB  Ã—    KeyB  KeyA/B  KeyB    Ã—      Ã—
 		Permission2,
 		//AccessBits   KeyA-----  KeyB------  Data------------------------------
 		//R      W     R    W     R     W     Read    Write   Inc     Dec,Tr/Res
-		//KeyA/B ~    ~   ~    ~    ~    KeyA/B  KeyB    KeyB    KeyA/B
+		//KeyA/B Ã—    Ã—   Ã—    Ã—    Ã—    KeyA/B  KeyB    KeyB    KeyA/B
 		Permission3,
 		//AccessBits   KeyA-----  KeyB------  Data------------------------------
 		//R      W     R    W     R     W     Read    Write   Inc     Dec,Tr/Res
-		//KeyA   KeyA  ~   KeyA  KeyA  KeyA  KeyA/B  ~      ~      KeyA/B
+		//KeyA   KeyA  Ã—   KeyA  KeyA  KeyA  KeyA/B  Ã—      Ã—      KeyA/B
 		Permission4,
 		//AccessBits   KeyA-----  KeyB------  Data------------------------------
 		//R      W     R    W     R     W     Read    Write   Inc     Dec,Tr/Res
-		//KeyA/B KeyB  ~   KeyB  ~    KeyB  KeyB    KeyB    ~      ~
+		//KeyA/B KeyB  Ã—   KeyB  Ã—    KeyB  KeyB    KeyB    Ã—      Ã—
 		Permission5,
 		//AccessBits   KeyA-----  KeyB------  Data------------------------------
 		//R      W     R    W     R     W     Read    Write   Inc     Dec,Tr/Res
-		//KeyA/B KeyB  ~   ~    ~    ~    KeyB    ~      ~      ~
+		//KeyA/B KeyB  Ã—   Ã—    Ã—    Ã—    KeyB    Ã—      Ã—      Ã—
 		Permission6,
 		//AccessBits   KeyA-----  KeyB------  Data------------------------------
 		//R      W     R    W     R     W     Read    Write   Inc     Dec,Tr/Res
-		//KeyA/B ~    ~   ~    ~    ~    ~      ~      ~      ~
+		//KeyA/B Ã—    Ã—   Ã—    Ã—    Ã—    Ã—      Ã—      Ã—      Ã—
 		Permission7,
 	};
 
 	using Key = std::array<BYTE,6>;
 	struct Trailer
 	{
-		//ƒZƒNƒ^‚ÌŒ®‚`‚Å‚·
-		//EƒL[‚`‚ğ“Ç‚İo‚µ‚·‚±‚Æ‚Í‚Å‚«‚È‚¢‚Ì‚ÅA“Ç‚İo‚µ‚Í•K‚¸00H‚É‚È‚è‚Ü‚·B
+		//ã‚»ã‚¯ã‚¿ã®éµï¼¡ã§ã™
+		//ãƒ»ã‚­ãƒ¼ï¼¡ã‚’èª­ã¿å‡ºã—ã™ã“ã¨ã¯ã§ããªã„ã®ã§ã€èª­ã¿å‡ºã—æ™‚ã¯å¿…ãš00Hã«ãªã‚Šã¾ã™ã€‚
 		Key key_a;
-		//ƒZƒNƒ^‚ÌŒ®‚a‚Å‚·
+		//ã‚»ã‚¯ã‚¿ã®éµï¼¢ã§ã™
 		Key key_b;
-		//ƒZƒNƒ^“à‚Ìæ“ªƒf[ƒ^ƒuƒƒbƒN(3ŒÂ‚Ì‚¤‚¿1ŒÂ–Ú)‚É‘Î‚·‚éƒp[ƒ~ƒbƒVƒ‡ƒ“‚Å‚·
+		//ã‚»ã‚¯ã‚¿å†…ã®å…ˆé ­ãƒ‡ãƒ¼ã‚¿ãƒ–ãƒ­ãƒƒã‚¯(3å€‹ã®ã†ã¡1å€‹ç›®)ã«å¯¾ã™ã‚‹ãƒ‘ãƒ¼ãƒŸãƒƒã‚·ãƒ§ãƒ³ã§ã™
 		Permission permission0;
-		//ƒZƒNƒ^“à‚Ì^‚ñ’†‚Ìƒf[ƒ^ƒuƒƒbƒN(3ŒÂ‚Ì‚¤‚¿2ŒÂ–Ú)‚É‘Î‚·‚éƒp[ƒ~ƒbƒVƒ‡ƒ“‚Å‚·
+		//ã‚»ã‚¯ã‚¿å†…ã®çœŸã‚“ä¸­ã®ãƒ‡ãƒ¼ã‚¿ãƒ–ãƒ­ãƒƒã‚¯(3å€‹ã®ã†ã¡2å€‹ç›®)ã«å¯¾ã™ã‚‹ãƒ‘ãƒ¼ãƒŸãƒƒã‚·ãƒ§ãƒ³ã§ã™
 		Permission permission1;
-		//ƒZƒNƒ^“à‚ÌŒã‚ë‚Ìƒf[ƒ^ƒuƒƒbƒN(3ŒÂ‚Ì‚¤‚¿3ŒÂ–Ú)‚É‘Î‚·‚éƒp[ƒ~ƒbƒVƒ‡ƒ“‚Å‚·
+		//ã‚»ã‚¯ã‚¿å†…ã®å¾Œã‚ã®ãƒ‡ãƒ¼ã‚¿ãƒ–ãƒ­ãƒƒã‚¯(3å€‹ã®ã†ã¡3å€‹ç›®)ã«å¯¾ã™ã‚‹ãƒ‘ãƒ¼ãƒŸãƒƒã‚·ãƒ§ãƒ³ã§ã™
 		Permission permission2;
-		//ƒgƒŒƒCƒ‰[ƒuƒƒbƒN‚»‚Ì‚à‚Ì‚É‘Î‚·‚éƒp[ƒ~ƒbƒVƒ‡ƒ“‚Å‚·
+		//ãƒˆãƒ¬ã‚¤ãƒ©ãƒ¼ãƒ–ãƒ­ãƒƒã‚¯ãã®ã‚‚ã®ã«å¯¾ã™ã‚‹ãƒ‘ãƒ¼ãƒŸãƒƒã‚·ãƒ§ãƒ³ã§ã™
 		Permission permission_trailer;
-		//ƒgƒŒƒCƒ‰[ƒuƒƒbƒN‚Ì9ƒoƒCƒg–Ú‚É‚ ‚éƒ†[ƒU[ƒf[ƒ^‚Å‚·
+		//ãƒˆãƒ¬ã‚¤ãƒ©ãƒ¼ãƒ–ãƒ­ãƒƒã‚¯ã®9ãƒã‚¤ãƒˆç›®ã«ã‚ã‚‹ãƒ¦ãƒ¼ã‚¶ãƒ¼ãƒ‡ãƒ¼ã‚¿ã§ã™
 		uint8_t userdata;
 	};
 
-	//”FØƒL[‚ğƒZƒbƒg‚·‚é
-	// key : ƒZƒbƒg‚·‚éƒL[
-	// ret : ¬Œ÷^
+	//èªè¨¼ã‚­ãƒ¼ã‚’ã‚»ãƒƒãƒˆã™ã‚‹
+	// key : ã‚»ãƒƒãƒˆã™ã‚‹ã‚­ãƒ¼
+	// ret : æˆåŠŸæ™‚çœŸ
 	bool LoadAuthenticationKeys( Key key )const;
 
-	//ƒZƒbƒg‚³‚ê‚½”FØƒL[‚ğ—p‚¢‚Ä”FØˆ—‚ğs‚¤
-	// sector : ”FØ‚ğs‚¤ƒZƒNƒ^
-	//  ƒZƒNƒ^‚OFƒuƒƒbƒN‚O`‚RiƒgƒŒ[ƒ‰[ƒuƒƒbƒN‚Í‚Rj
-	//  ƒZƒNƒ^‚PFƒuƒƒbƒN‚S`‚ViƒgƒŒ[ƒ‰[ƒuƒƒbƒN‚Í‚Vj
-	//  ƒZƒNƒ^‚QFƒuƒƒbƒN‚W`‚P‚PiƒgƒŒ[ƒ‰[ƒuƒƒbƒN‚Í‚P‚Pj
-	//@@i’†—ªj
-	//  ƒZƒNƒ^‚P‚TFƒuƒƒbƒN‚U‚O`‚U‚RiƒgƒŒ[ƒ‰[ƒuƒƒbƒN‚Í‚U‚Rj
-	// key_a : ^‚Ìê‡keyA‚Æ‚µ‚Ä”FØ‚·‚éB‹U‚Ìê‡keyB‚Æ‚µ‚Ä”FØ‚·‚éB
-	// ret : ¬Œ÷^
+	//ã‚»ãƒƒãƒˆã•ã‚ŒãŸèªè¨¼ã‚­ãƒ¼ã‚’ç”¨ã„ã¦èªè¨¼å‡¦ç†ã‚’è¡Œã†
+	// sector : èªè¨¼ã‚’è¡Œã†ã‚»ã‚¯ã‚¿
+	//  ã‚»ã‚¯ã‚¿ï¼ï¼šãƒ–ãƒ­ãƒƒã‚¯ï¼ã€œï¼“ï¼ˆãƒˆãƒ¬ãƒ¼ãƒ©ãƒ¼ãƒ–ãƒ­ãƒƒã‚¯ã¯ï¼“ï¼‰
+	//  ã‚»ã‚¯ã‚¿ï¼‘ï¼šãƒ–ãƒ­ãƒƒã‚¯ï¼”ã€œï¼—ï¼ˆãƒˆãƒ¬ãƒ¼ãƒ©ãƒ¼ãƒ–ãƒ­ãƒƒã‚¯ã¯ï¼—ï¼‰
+	//  ã‚»ã‚¯ã‚¿ï¼’ï¼šãƒ–ãƒ­ãƒƒã‚¯ï¼˜ã€œï¼‘ï¼‘ï¼ˆãƒˆãƒ¬ãƒ¼ãƒ©ãƒ¼ãƒ–ãƒ­ãƒƒã‚¯ã¯ï¼‘ï¼‘ï¼‰
+	//ã€€ã€€ï¼ˆä¸­ç•¥ï¼‰
+	//  ã‚»ã‚¯ã‚¿ï¼‘ï¼•ï¼šãƒ–ãƒ­ãƒƒã‚¯ï¼–ï¼ã€œï¼–ï¼“ï¼ˆãƒˆãƒ¬ãƒ¼ãƒ©ãƒ¼ãƒ–ãƒ­ãƒƒã‚¯ã¯ï¼–ï¼“ï¼‰
+	// key_a : çœŸã®å ´åˆkeyAã¨ã—ã¦èªè¨¼ã™ã‚‹ã€‚å½ã®å ´åˆkeyBã¨ã—ã¦èªè¨¼ã™ã‚‹ã€‚
+	// ret : æˆåŠŸæ™‚çœŸ
 	bool ExecAuthentication( DWORD sector , bool key_a )const;
 
-	//‚PƒZƒNƒ^(48ƒoƒCƒg)‚ğ“Ç‚İæ‚é
-	//ELoadAuthenticationKeysAExecAuthentication‚ğ—p‚¢‚ÄAŠY“–ƒZƒNƒ^‚Ì“Ç‚İæ‚è‚ª‰Â”\‚È”FØ‚ğÏ‚Ü‚¹‚Ä‚¨‚­•K—v‚ª‚ ‚é
-	// sector : “Ç‚İæ‚éƒZƒNƒ^
-	// retData : “Ç‚İæ‚Á‚½ƒf[ƒ^
-	// ret : ¬Œ÷^
+	//ï¼‘ã‚»ã‚¯ã‚¿(48ãƒã‚¤ãƒˆ)ã‚’èª­ã¿å–ã‚‹
+	//ãƒ»LoadAuthenticationKeysã€ExecAuthenticationã‚’ç”¨ã„ã¦ã€è©²å½“ã‚»ã‚¯ã‚¿ã®èª­ã¿å–ã‚ŠãŒå¯èƒ½ãªèªè¨¼ã‚’æ¸ˆã¾ã›ã¦ãŠãå¿…è¦ãŒã‚ã‚‹
+	// sector : èª­ã¿å–ã‚‹ã‚»ã‚¯ã‚¿
+	// retData : èª­ã¿å–ã£ãŸãƒ‡ãƒ¼ã‚¿
+	// ret : æˆåŠŸæ™‚çœŸ
 	bool ReadSector( DWORD sector , mBinary& retData )const;
 
-	//w’èƒZƒNƒ^‚ÌƒgƒŒƒCƒ‰[‚ğæ“¾‚·‚é
-	// sector : “Ç‚İæ‚éƒZƒNƒ^
-	// retTrailer : “Ç‚İæ‚Á‚½ƒf[ƒ^
-	// ret : ¬Œ÷^
+	//æŒ‡å®šã‚»ã‚¯ã‚¿ã®ãƒˆãƒ¬ã‚¤ãƒ©ãƒ¼ã‚’å–å¾—ã™ã‚‹
+	// sector : èª­ã¿å–ã‚‹ã‚»ã‚¯ã‚¿
+	// retTrailer : èª­ã¿å–ã£ãŸãƒ‡ãƒ¼ã‚¿
+	// ret : æˆåŠŸæ™‚çœŸ
 	bool ReadTrailer( DWORD sector , Trailer& retTrailer )const;
 
-	//‚PƒZƒNƒ^(48ƒoƒCƒg)‚ğ‘‚Ş
-	//ELoadAuthenticationKeysAExecAuthentication‚ğ—p‚¢‚ÄAŠY“–ƒZƒNƒ^‚Ì‘‚«‚İ‚ª‰Â”\‚È”FØ‚ğÏ‚Ü‚¹‚Ä‚¨‚­•K—v‚ª‚ ‚é
-	// sector : ‘‚ŞƒZƒNƒ^
-	// data : ‘‚Şƒf[ƒ^
-	//  E48ƒoƒCƒg‚É–‚½‚È‚¢ê‡‚Í‘«‚è‚È‚¢•ª00H‚ğ•â‚¤
-	//  E48ƒoƒCƒg‚ğ’´‚¦‚éê‡‚ÍA48ƒoƒCƒg‚ğ’´‚¦‚½•ª‚ÍØ‚èÌ‚Ä‚é
-	// ret : ¬Œ÷^
+	//ï¼‘ã‚»ã‚¯ã‚¿(48ãƒã‚¤ãƒˆ)ã‚’æ›¸è¾¼ã‚€
+	//ãƒ»LoadAuthenticationKeysã€ExecAuthenticationã‚’ç”¨ã„ã¦ã€è©²å½“ã‚»ã‚¯ã‚¿ã®æ›¸ãè¾¼ã¿ãŒå¯èƒ½ãªèªè¨¼ã‚’æ¸ˆã¾ã›ã¦ãŠãå¿…è¦ãŒã‚ã‚‹
+	// sector : æ›¸è¾¼ã‚€ã‚»ã‚¯ã‚¿
+	// data : æ›¸è¾¼ã‚€ãƒ‡ãƒ¼ã‚¿
+	//  ãƒ»48ãƒã‚¤ãƒˆã«æº€ãŸãªã„å ´åˆã¯è¶³ã‚Šãªã„åˆ†00Hã‚’è£œã†
+	//  ãƒ»48ãƒã‚¤ãƒˆã‚’è¶…ãˆã‚‹å ´åˆã¯ã€48ãƒã‚¤ãƒˆã‚’è¶…ãˆãŸåˆ†ã¯åˆ‡ã‚Šæ¨ã¦ã‚‹
+	// ret : æˆåŠŸæ™‚çœŸ
 	bool WriteSector( DWORD sector , const mBinary& data )const;
 
-	//w’èƒZƒNƒ^‚ÌƒgƒŒƒCƒ‰[‚ğ‘‚Ş
-	// sector : ‘‚ŞƒZƒNƒ^
-	// trailer : ‘‚Şƒf[ƒ^
-	// ret : ¬Œ÷^
+	//æŒ‡å®šã‚»ã‚¯ã‚¿ã®ãƒˆãƒ¬ã‚¤ãƒ©ãƒ¼ã‚’æ›¸è¾¼ã‚€
+	// sector : æ›¸è¾¼ã‚€ã‚»ã‚¯ã‚¿
+	// trailer : æ›¸è¾¼ã‚€ãƒ‡ãƒ¼ã‚¿
+	// ret : æˆåŠŸæ™‚çœŸ
 	bool WriteTrailer( DWORD sector , const Trailer& trailer )const;
 
 protected:
 
-	//Ú‘±‚ÌƒJ[ƒhŒÂ•Ê‚Ìˆ—
-	// ret : ˆ—¬Œ÷^
+	//æ¥ç¶šæ™‚ã®ã‚«ãƒ¼ãƒ‰å€‹åˆ¥ã®å‡¦ç†
+	// ret : å‡¦ç†æˆåŠŸæ™‚çœŸ
 	virtual bool OnConnectCallback( void );
 
 private:
 	mSCMifare( const mSCMifare& source );
 	const mSCMifare& operator=( const mSCMifare& source ) = delete;
 
-	//‘—Mƒf[ƒ^‚É‘Î‚µ‚ÄA¬”Û‚µ‚©•Ô‚µ‚Ä‚±‚È‚¢ƒRƒ}ƒ“ƒh‚Ì‘—óMˆ—‚ğ‚Ü‚Æ‚ß‚½ƒwƒ‹ƒp[ŠÖ”
-	// dt : ‘—M‚·‚éƒf[ƒ^
-	// ret : ˆ—‚ª¬Œ÷‚µ‚½ê‡^(WinAPIAƒJ[ƒh‘¤ˆ——¼•û¬Œ÷‚µ‚Ä^)
+	//é€ä¿¡ãƒ‡ãƒ¼ã‚¿ã«å¯¾ã—ã¦ã€æˆå¦ã—ã‹è¿”ã—ã¦ã“ãªã„ã‚³ãƒãƒ³ãƒ‰ã®é€å—ä¿¡å‡¦ç†ã‚’ã¾ã¨ã‚ãŸãƒ˜ãƒ«ãƒ‘ãƒ¼é–¢æ•°
+	// dt : é€ä¿¡ã™ã‚‹ãƒ‡ãƒ¼ã‚¿
+	// ret : å‡¦ç†ãŒæˆåŠŸã—ãŸå ´åˆçœŸ(WinAPIã€ã‚«ãƒ¼ãƒ‰å´å‡¦ç†ä¸¡æ–¹æˆåŠŸã—ã¦çœŸ)
 	bool DefaultCommunication( const TransmitData& dt )const;
 
 };
@@ -147,47 +147,47 @@ private:
 #include <Crypto/mSCReader.h>
 #include <Crypto/mSCMifare.h>
 
-//ƒXƒ}[ƒgƒJ[ƒh‚ªƒZƒbƒg‚³‚ê‚½‚Æ‚«‚ÌƒR[ƒ‹ƒoƒbƒN
+//ã‚¹ãƒãƒ¼ãƒˆã‚«ãƒ¼ãƒ‰ãŒã‚»ãƒƒãƒˆã•ã‚ŒãŸã¨ãã®ã‚³ãƒ¼ãƒ«ãƒãƒƒã‚¯
 void OnPresent( mSCReader& sc , DWORD_PTR parameter , mSCReader::NotifyFunctionOptPtr* opt )
 {
-	//ƒZƒbƒg‚³‚ê‚½ƒXƒ}[ƒgƒJ[ƒh‚ªMifare1K‚Ìê‡
+	//ã‚»ãƒƒãƒˆã•ã‚ŒãŸã‚¹ãƒãƒ¼ãƒˆã‚«ãƒ¼ãƒ‰ãŒMifare1Kã®å ´åˆ
 	if( opt->OnCardPresent->Kind == Definitions_SCReader::CardKind::MIFARE_CLASSIC_1K )
 	{
-		//ƒJ[ƒh‚ÆÚ‘±‚·‚é
+		//ã‚«ãƒ¼ãƒ‰ã¨æ¥ç¶šã™ã‚‹
 		mSCMifare card;
 		if( !card.Connect( sc.GetCurrentCardReaderName() ) )
 		{
 			return;
 		}
-		//”FØƒL[‚ğƒZƒbƒg
-		//¦‚±‚±‚Å‚ÍAƒZƒNƒ^‚OA‚P‚Æ‚à‚ÉƒfƒtƒHƒ‹ƒgi‘S‚ÄFFj‚ªƒZƒbƒg‚³‚ê‚Ä‚¢‚é‚Æ‰¼’è
+		//èªè¨¼ã‚­ãƒ¼ã‚’ã‚»ãƒƒãƒˆ
+		//â€»ã“ã“ã§ã¯ã€ã‚»ã‚¯ã‚¿ï¼ã€ï¼‘ã¨ã‚‚ã«ãƒ‡ãƒ•ã‚©ãƒ«ãƒˆï¼ˆå…¨ã¦FFï¼‰ãŒã‚»ãƒƒãƒˆã•ã‚Œã¦ã„ã‚‹ã¨ä»®å®š
 		card.LoadAuthenticationKeys( mSCMifare::Key( {0xFFu,0xFFu,0xFFu,0xFFu,0xFFu,0xFFu} ) );
 
-		//¦ƒZƒNƒ^‚O‚ğ“Ç‚İæ‚Á‚ÄAƒL[‚ğ‘‚«Š·‚¦‚éƒeƒXƒg
-		//ƒZƒNƒ^‚O‚Ì”FØÀ{(ˆÈ~ƒGƒ‰[ƒ`ƒFƒbƒNÈ—ª)
+		//â€»ã‚»ã‚¯ã‚¿ï¼ã‚’èª­ã¿å–ã£ã¦ã€ã‚­ãƒ¼ã‚’æ›¸ãæ›ãˆã‚‹ãƒ†ã‚¹ãƒˆ
+		//ã‚»ã‚¯ã‚¿ï¼ã®èªè¨¼å®Ÿæ–½(ä»¥é™ã‚¨ãƒ©ãƒ¼ãƒã‚§ãƒƒã‚¯çœç•¥)
 		if( !card.ExecAuthentication( 0 , true ) )
 		{
-			//”FØ¸”s
+			//èªè¨¼å¤±æ•—
 			return;
 		}
-		//ƒZƒNƒ^‚O‚Ìƒf[ƒ^‚ğ“Ç‚İæ‚è
+		//ã‚»ã‚¯ã‚¿ï¼ã®ãƒ‡ãƒ¼ã‚¿ã‚’èª­ã¿å–ã‚Š
 		mBinary data;
 		card.ReadSector( 0 , data );
-		//ƒZƒNƒ^‚O‚ÌƒgƒŒƒCƒ‰[‚ğ“Ç‚İæ‚è
+		//ã‚»ã‚¯ã‚¿ï¼ã®ãƒˆãƒ¬ã‚¤ãƒ©ãƒ¼ã‚’èª­ã¿å–ã‚Š
 		mSCMifare::Trailer trailer;
 		card.ReadTrailer( 0 , trailer );
-		//ƒZƒNƒ^‚O‚ÌƒL[‚`‚ğ•Ê‚Ì‚à‚Ì‚É‘‚«Š·‚¦‚é
+		//ã‚»ã‚¯ã‚¿ï¼ã®ã‚­ãƒ¼ï¼¡ã‚’åˆ¥ã®ã‚‚ã®ã«æ›¸ãæ›ãˆã‚‹
 		//trailer.key_a = mSCMifare::Key( {0x12u,0x34u,0x56u,0x78u,0x9Au,0xBCu} );
 		//card.WriteTrailer( 0 , trailer );
 
-		//¦ƒZƒNƒ^‚P‚Ìƒf[ƒ^‚ğXV‚·‚éƒeƒXƒg
-		//ƒZƒNƒ^‚P‚ğ”FØ
+		//â€»ã‚»ã‚¯ã‚¿ï¼‘ã®ãƒ‡ãƒ¼ã‚¿ã‚’æ›´æ–°ã™ã‚‹ãƒ†ã‚¹ãƒˆ
+		//ã‚»ã‚¯ã‚¿ï¼‘ã‚’èªè¨¼
 		card.ExecAuthentication( 1 , true );
-		//ƒZƒNƒ^‚P‚Ìƒf[ƒ^‚ğ“Ç‚İæ‚è
+		//ã‚»ã‚¯ã‚¿ï¼‘ã®ãƒ‡ãƒ¼ã‚¿ã‚’èª­ã¿å–ã‚Š
 		card.ReadSector( 1 , data );
-		//ƒZƒNƒ^‚P‚Ì‚PƒoƒCƒg–Ú‚ğXV
+		//ã‚»ã‚¯ã‚¿ï¼‘ã®ï¼‘ãƒã‚¤ãƒˆç›®ã‚’æ›´æ–°
 		data[ 0 ]++;
-		//ƒZƒNƒ^‚P‚ğ‘‚İ
+		//ã‚»ã‚¯ã‚¿ï¼‘ã‚’æ›¸è¾¼ã¿
 		card.WriteSector( 1 , data );
 	}
 	return;
@@ -195,31 +195,31 @@ void OnPresent( mSCReader& sc , DWORD_PTR parameter , mSCReader::NotifyFunctionO
 
 int main( int argc , char** argv )
 {
-	//ƒIƒuƒWƒFƒNƒg‚ğ¶¬‚µAƒXƒ}[ƒgƒJ[ƒhƒT[ƒrƒX‚Ì‹N“®‚ğ§ŒÀŠÔ–³§ŒÀ‚Å‘Ò‹@‚·‚é
+	//ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã‚’ç”Ÿæˆã—ã€ã‚¹ãƒãƒ¼ãƒˆã‚«ãƒ¼ãƒ‰ã‚µãƒ¼ãƒ“ã‚¹ã®èµ·å‹•ã‚’åˆ¶é™æ™‚é–“ç„¡åˆ¶é™ã§å¾…æ©Ÿã™ã‚‹
 	mSCReader reader;
 	reader.WaitForServiceAvailable( INFINITE );
 
-	//‚o‚b‚ÉÚ‘±‚³‚ê‚Ä‚¢‚éƒJ[ƒhƒŠ[ƒ_[‚Ìˆê——‚ğæ“¾‚·‚é
+	//ï¼°ï¼£ã«æ¥ç¶šã•ã‚Œã¦ã„ã‚‹ã‚«ãƒ¼ãƒ‰ãƒªãƒ¼ãƒ€ãƒ¼ã®ä¸€è¦§ã‚’å–å¾—ã™ã‚‹
 	WStringVector cardreader;
 	reader.GetCardReaderList( cardreader );
 
-	//æ“¾‚µ‚½ˆê——‚Ìæ“ªi—v‘f‚Oj‚ÌƒŠ[ƒ_[‚É‚Â‚¢‚ÄA
-	//ƒXƒ}[ƒgƒJ[ƒh‚ÌƒZƒbƒgEƒAƒ“ƒZƒbƒgAƒŠ[ƒ_[‚Ìæ‚èŠO‚µ‚ğŒŸo‚·‚éB
+	//å–å¾—ã—ãŸä¸€è¦§ã®å…ˆé ­ï¼ˆè¦ç´ ï¼ï¼‰ã®ãƒªãƒ¼ãƒ€ãƒ¼ã«ã¤ã„ã¦ã€
+	//ã‚¹ãƒãƒ¼ãƒˆã‚«ãƒ¼ãƒ‰ã®ã‚»ãƒƒãƒˆãƒ»ã‚¢ãƒ³ã‚»ãƒƒãƒˆã€ãƒªãƒ¼ãƒ€ãƒ¼ã®å–ã‚Šå¤–ã—ã‚’æ¤œå‡ºã™ã‚‹ã€‚
 	mSCReader::NotifyOption notifyopt;
 	notifyopt.OnCardPresent.Mode = mSCReader::NotifyOption::NotifyMode::NOTIFY_CALLBACK;
 	notifyopt.OnCardPresent.Notifier.CallbackFunction = OnPresent;
 
-	//ŠÄ‹ŠJn
+	//ç›£è¦–é–‹å§‹
 	reader.StartWatch( cardreader[ 0 ] , notifyopt );
 
-	//‘Ò‹@B‚±‚ê‚ÍƒTƒ“ƒvƒ‹‚È‚Ì‚Å’P‚È‚éƒEƒGƒCƒgB
+	//å¾…æ©Ÿã€‚ã“ã‚Œã¯ã‚µãƒ³ãƒ—ãƒ«ãªã®ã§å˜ãªã‚‹ã‚¦ã‚¨ã‚¤ãƒˆã€‚
 	DWORD flag = 1;
 	while( flag )
 	{
 		Sleep( 1000 );
 	}
 
-	//ƒNƒŠ[ƒ“ƒAƒbƒv
+	//ã‚¯ãƒªãƒ¼ãƒ³ã‚¢ãƒƒãƒ—
 	reader.EndWatch();
 	return 0;
 }

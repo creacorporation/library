@@ -1,10 +1,10 @@
-//----------------------------------------------------------------------------
-// AESˆÃ†‰»ƒNƒ‰ƒX
+ï»¿//----------------------------------------------------------------------------
+// AESæš—å·åŒ–ã‚¯ãƒ©ã‚¹
 // Copyright (C) 2013-2016 Fingerling. All rights reserved. 
 // Copyright (C) 2018- Crea Inc. All rights reserved.
 // This program is released under the MIT License. 
 // see http://opensource.org/licenses/mit-license.php
-// 2013/10/09`
+// 2013/10/09ã€œ
 //----------------------------------------------------------------------------
 
 
@@ -24,30 +24,30 @@ mAESEncrypter::~mAESEncrypter()
 
 bool mAESEncrypter::Encrypt( bool isfinal , const BYTE* data , DWORD datalen , EncryptData& retEncryptData , DWORD& retWritten )const
 {
-	//ƒoƒbƒtƒ@ƒ`ƒFƒbƒN
+	//ãƒãƒƒãƒ•ã‚¡ãƒã‚§ãƒƒã‚¯
 	if( !data )
 	{
-		RaiseAssert( g_ErrorLogger , 0 , L"ƒoƒbƒtƒ@‚ª–¢w’è‚Å‚·" );
+		RaiseAssert( g_ErrorLogger , 0 , L"ãƒãƒƒãƒ•ã‚¡ãŒæœªæŒ‡å®šã§ã™" );
 		return false; 
 	}
 
-	//•K—vƒoƒbƒtƒ@’·‚ÌZo
+	//å¿…è¦ãƒãƒƒãƒ•ã‚¡é•·ã®ç®—å‡º
 	retWritten = datalen;
 	DWORD bufflen = datalen;
 
 	if( !CryptEncrypt( MyCryptKey , 0 , isfinal , 0 , nullptr , &bufflen , 0 ) )
 	{
-		RaiseAssert( g_ErrorLogger , 0 , L"ˆÃ†‰»‚É¸”s‚µ‚Ü‚µ‚½" );
+		RaiseAssert( g_ErrorLogger , 0 , L"æš—å·åŒ–ã«å¤±æ•—ã—ã¾ã—ãŸ" );
 		return false;
 	}
-	//ƒoƒbƒtƒ@‚ÌŠm•Û
+	//ãƒãƒƒãƒ•ã‚¡ã®ç¢ºä¿
 	retEncryptData.reset( mNew BYTE[ bufflen ] );
 	MoveMemory( retEncryptData.get() , data , datalen );
 
-	//ˆÃ†‰»ˆ—
+	//æš—å·åŒ–å‡¦ç†
 	if( !CryptEncrypt( MyCryptKey , 0 , isfinal , 0 , retEncryptData.get() , &retWritten , bufflen ) )
 	{
-		RaiseAssert( g_ErrorLogger , 0 , L"ˆÃ†‰»‚É¸”s‚µ‚Ü‚µ‚½" );
+		RaiseAssert( g_ErrorLogger , 0 , L"æš—å·åŒ–ã«å¤±æ•—ã—ã¾ã—ãŸ" );
 		return false;
 	}
 	return true;
@@ -58,26 +58,26 @@ bool mAESEncrypter::CreateRandomHeader( BYTE* data , DWORD bufflen , DWORD& retw
 {
 	if( !data )
 	{
-		RaiseAssert( g_ErrorLogger , 0 , L"ƒoƒbƒtƒ@‚ª–¢w’è‚Å‚·" );
+		RaiseAssert( g_ErrorLogger , 0 , L"ãƒãƒƒãƒ•ã‚¡ãŒæœªæŒ‡å®šã§ã™" );
 		return false;
 	}
 	if( bufflen == 0 )
 	{
-		RaiseAssert( g_ErrorLogger , 0 , L"ƒoƒbƒtƒ@’·‚ª0‚Å‚·" );
+		RaiseAssert( g_ErrorLogger , 0 , L"ãƒãƒƒãƒ•ã‚¡é•·ãŒ0ã§ã™" );
 		return false;
 	}
 	if( bufflen < 32 )
 	{
-		RaiseAssert( g_ErrorLogger , 0 , L"ƒoƒbƒtƒ@‚ª’Z‚·‚¬‚Ü‚·" );
+		RaiseAssert( g_ErrorLogger , 0 , L"ãƒãƒƒãƒ•ã‚¡ãŒçŸ­ã™ãã¾ã™" );
 	}
 
-	//‰½ƒoƒCƒg•ªƒ‰ƒ“ƒ_ƒ€ƒf[ƒ^‚ğì‚éH
+	//ä½•ãƒã‚¤ãƒˆåˆ†ãƒ©ãƒ³ãƒ€ãƒ ãƒ‡ãƒ¼ã‚¿ã‚’ä½œã‚‹ï¼Ÿ
 	DWORD factor = 0;
 	CryptGenRandom( MyCryptProv , sizeof( DWORD ) , (BYTE*)&factor );
 	double rnd = (double)factor * ( 1.0 / 4294967296.0 );
 
-	//17•¶š‚æ‚è­‚È‚¯‚ê‚Î‘S•”
-	//17•¶šˆÈã‚È‚ç‚Î­‚È‚­‚Ä‚à16•¶šƒ‰ƒ“ƒ_ƒ€ƒf[ƒ^‚É‚·‚éB
+	//17æ–‡å­—ã‚ˆã‚Šå°‘ãªã‘ã‚Œã°å…¨éƒ¨
+	//17æ–‡å­—ä»¥ä¸Šãªã‚‰ã°å°‘ãªãã¦ã‚‚16æ–‡å­—ãƒ©ãƒ³ãƒ€ãƒ ãƒ‡ãƒ¼ã‚¿ã«ã™ã‚‹ã€‚
 	DWORD len;
 	if( bufflen < 17 )
 	{
@@ -89,10 +89,10 @@ bool mAESEncrypter::CreateRandomHeader( BYTE* data , DWORD bufflen , DWORD& retw
 		len = (DWORD)( rnd * rndm ) + 16 + 1;
 	}
 
-	//ƒ‰ƒ“ƒ_ƒ€ƒoƒCƒg‚ğ¶¬
+	//ãƒ©ãƒ³ãƒ€ãƒ ãƒã‚¤ãƒˆã‚’ç”Ÿæˆ
 	CryptGenRandom( MyCryptProv , len , data );
 
-	//¶¬‚µ‚½ƒ‰ƒ“ƒ_ƒ€ƒoƒCƒg‚ÌÅIƒoƒCƒgˆÈŠO‚Å0‚ª‚ ‚Á‚½‚ç0‚¶‚á‚È‚¢’l‚Å–„‚ß‚é
+	//ç”Ÿæˆã—ãŸãƒ©ãƒ³ãƒ€ãƒ ãƒã‚¤ãƒˆã®æœ€çµ‚ãƒã‚¤ãƒˆä»¥å¤–ã§0ãŒã‚ã£ãŸã‚‰0ã˜ã‚ƒãªã„å€¤ã§åŸ‹ã‚ã‚‹
 	for( DWORD i = 0 ; i < len - 1 ; i++ )
 	{
 		if( data[ i ] == 0 )
@@ -106,10 +106,10 @@ bool mAESEncrypter::CreateRandomHeader( BYTE* data , DWORD bufflen , DWORD& retw
 		}
 	}
 
-	//ÅIƒoƒCƒg‚ğ‚O‚É‚·‚é
+	//æœ€çµ‚ãƒã‚¤ãƒˆã‚’ï¼ã«ã™ã‚‹
 	data[ len - 1 ] = 0;
 
-	//–„‚ß‚½ƒoƒCƒg”‚ğƒZƒbƒg
+	//åŸ‹ã‚ãŸãƒã‚¤ãƒˆæ•°ã‚’ã‚»ãƒƒãƒˆ
 	retwritten = len;
 
 	return true;

@@ -1,5 +1,5 @@
-//----------------------------------------------------------------------------
-// ƒEƒCƒ“ƒhƒEŠÇ—i‚QƒCƒ[ƒW‚ÌƒCƒ[ƒWƒŠƒXƒgj
+ï»¿//----------------------------------------------------------------------------
+// ã‚¦ã‚¤ãƒ³ãƒ‰ã‚¦ç®¡ç†ï¼ˆï¼’ã‚¤ãƒ¡ãƒ¼ã‚¸ã®ã‚¤ãƒ¡ãƒ¼ã‚¸ãƒªã‚¹ãƒˆï¼‰
 // Copyright (C) 2016 Fingerling. All rights reserved. 
 // This program is released under the MIT License. 
 // see http://opensource.org/licenses/mit-license.php
@@ -22,65 +22,65 @@ mGdiDualImagelist::mGdiDualImagelist( const Option* opt )throw( mException )
 
 mGdiDualImagelist::~mGdiDualImagelist()
 {
-	//ƒnƒ“ƒhƒ‹‚Ì‰ğ•ú
+	//ãƒãƒ³ãƒ‰ãƒ«ã®è§£æ”¾
 	::ImageList_Destroy( MyHandle2 );
 	MyHandle2 = nullptr;
 	mDelete MyHandle;
 	MyHandle = nullptr;
 }
 
-//ƒnƒ“ƒhƒ‹‚Ì’l‚ğæ“¾‚·‚éi‚P‚Â‚ß‚ÌƒCƒ[ƒWƒŠƒXƒg‚Ìƒnƒ“ƒhƒ‹‚ğæ“¾‚·‚éj
+//ãƒãƒ³ãƒ‰ãƒ«ã®å€¤ã‚’å–å¾—ã™ã‚‹ï¼ˆï¼‘ã¤ã‚ã®ã‚¤ãƒ¡ãƒ¼ã‚¸ãƒªã‚¹ãƒˆã®ãƒãƒ³ãƒ‰ãƒ«ã‚’å–å¾—ã™ã‚‹ï¼‰
 HGDIOBJ mGdiDualImagelist::GetHandle( void )const
 {
 	return MyHandle->GetHandle();
 }
 
-//ƒnƒ“ƒhƒ‹‚Ì’l‚ğæ“¾‚·‚éi‚Q‚Â‚ß‚ÌƒCƒ[ƒWƒŠƒXƒg‚Ìƒnƒ“ƒhƒ‹‚ğæ“¾‚·‚éj
+//ãƒãƒ³ãƒ‰ãƒ«ã®å€¤ã‚’å–å¾—ã™ã‚‹ï¼ˆï¼’ã¤ã‚ã®ã‚¤ãƒ¡ãƒ¼ã‚¸ãƒªã‚¹ãƒˆã®ãƒãƒ³ãƒ‰ãƒ«ã‚’å–å¾—ã™ã‚‹ï¼‰
 HGDIOBJ mGdiDualImagelist::GetHandle2( void )const
 {
 	return MyHandle2;
 }
 
-//ƒCƒ[ƒWƒŠƒXƒg‚ÉƒCƒ[ƒW‚Ì’Ç‰Á‚ğ‚·‚é
+//ã‚¤ãƒ¡ãƒ¼ã‚¸ãƒªã‚¹ãƒˆã«ã‚¤ãƒ¡ãƒ¼ã‚¸ã®è¿½åŠ ã‚’ã™ã‚‹
 bool mGdiDualImagelist::AddImage( const WString& id ,
 	const mGdiBitmap& img1 ,
 	const mGdiBitmap& img2 ,
 	const mGdiBitmap* mask1 ,
 	const mGdiBitmap* mask2 )
 {
-	//‚Ü‚¸A‚P”Ô–Ú‚ÌƒCƒ[ƒWƒŠƒXƒg‚É“o˜^
+	//ã¾ãšã€ï¼‘ç•ªç›®ã®ã‚¤ãƒ¡ãƒ¼ã‚¸ãƒªã‚¹ãƒˆã«ç™»éŒ²
 	if( !MyHandle->AddImage( id , img1 , mask1 ) )
 	{
-		//ƒGƒ‰[ƒƒbƒZ[ƒW‚Í‚P”Ô–Ú‚Ì•û‚Å“o˜^‚µ‚Ä‚¢‚é‚©‚çƒRƒR‚Å‚Í‰½‚à‚µ‚È‚¢B
+		//ã‚¨ãƒ©ãƒ¼ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸ã¯ï¼‘ç•ªç›®ã®æ–¹ã§ç™»éŒ²ã—ã¦ã„ã‚‹ã‹ã‚‰ã‚³ã‚³ã§ã¯ä½•ã‚‚ã—ãªã„ã€‚
 		return false;
 	}
 
-	//‚P”Ô–Ú‚ª¬Œ÷‚µ‚½‚Ì‚ÅA‚Q”Ô–Ú‚É“o˜^
+	//ï¼‘ç•ªç›®ãŒæˆåŠŸã—ãŸã®ã§ã€ï¼’ç•ªç›®ã«ç™»éŒ²
 	INT index = -1;
 	if( mask2 != nullptr )
 	{
-		//ƒ}ƒXƒN‚ª‚ ‚éê‡
+		//ãƒã‚¹ã‚¯ãŒã‚ã‚‹å ´åˆ
 		index = ::ImageList_Add( MyHandle2 , img2 , *mask2 );
 	}
 	else
 	{
-		//ƒ}ƒXƒN‚ª‚È‚¢ê‡
+		//ãƒã‚¹ã‚¯ãŒãªã„å ´åˆ
 		index = ::ImageList_Add( MyHandle2 , img2 , nullptr );
 	}
 
-	//‚Q”Ô–Ú‚Ì“o˜^‚Í¬Œ÷‚¾‚Á‚½‚©H
+	//ï¼’ç•ªç›®ã®ç™»éŒ²ã¯æˆåŠŸã ã£ãŸã‹ï¼Ÿ
 	if( index < 0 )
 	{
-		//¸”s‚µ‚Ä‚¢‚é‚Ì‚ÅA‚P”Ô–Ú‚Ì“o˜^‚ğæ‚èÁ‚·
+		//å¤±æ•—ã—ã¦ã„ã‚‹ã®ã§ã€ï¼‘ç•ªç›®ã®ç™»éŒ²ã‚’å–ã‚Šæ¶ˆã™
 		MyHandle->RemoveImage( id );
-		//ƒGƒ‰[ƒƒbƒZ[ƒW‚ğ“o˜^
+		//ã‚¨ãƒ©ãƒ¼ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸ã‚’ç™»éŒ²
 		RaiseAssert( g_ErrorLogger , index , L"ImageList_Add(2) failed" );
 		return false;
 	}
 	return true;
 }
 
-//ƒCƒ[ƒWƒŠƒXƒg‚ÉƒCƒ[ƒW‚Ì’Ç‰Á‚ğ‚·‚é(mGdiResource‚©‚çƒCƒ[ƒW‚ğ’Šo‚·‚éVer)
+//ã‚¤ãƒ¡ãƒ¼ã‚¸ãƒªã‚¹ãƒˆã«ã‚¤ãƒ¡ãƒ¼ã‚¸ã®è¿½åŠ ã‚’ã™ã‚‹(mGdiResourceã‹ã‚‰ã‚¤ãƒ¡ãƒ¼ã‚¸ã‚’æŠ½å‡ºã™ã‚‹Ver)
 bool mGdiDualImagelist::AddImageBitmap( const mGdiResource& res ,
 	const WString& id ,
 	const WString& img1 ,
@@ -88,74 +88,74 @@ bool mGdiDualImagelist::AddImageBitmap( const mGdiResource& res ,
 	const WString& mask1 ,
 	const WString& mask2 )
 {
-	//mGdiResource‚©‚çw’è‚ÌƒCƒ[ƒW‚ğ’Šo‚·‚é
-	//¦‚P‚Â‚ß
+	//mGdiResourceã‹ã‚‰æŒ‡å®šã®ã‚¤ãƒ¡ãƒ¼ã‚¸ã‚’æŠ½å‡ºã™ã‚‹
+	//â€»ï¼‘ã¤ã‚
 	const mGdiBitmap* bmp_img1 = res.GetItem< mGdiBitmap >( img1 );
 	if( bmp_img1 == nullptr )
 	{
-		//’Šo¸”sBƒCƒ[ƒW‚ªæ“¾‚Å‚«‚È‚¢ê‡‚ÍƒGƒ‰[‚ÅI—¹
+		//æŠ½å‡ºå¤±æ•—ã€‚ã‚¤ãƒ¡ãƒ¼ã‚¸ãŒå–å¾—ã§ããªã„å ´åˆã¯ã‚¨ãƒ©ãƒ¼ã§çµ‚äº†
 		RaiseError( g_ErrorLogger , 1 , L"Image id not found : " + img1 );
 		return false;
 	}
-	//‚Q‚Â‚ß
+	//ï¼’ã¤ã‚
 	const mGdiBitmap* bmp_img2 = res.GetItem< mGdiBitmap >( img2 );
 	if( bmp_img2 == nullptr )
 	{
-		//’Šo¸”sBƒCƒ[ƒW‚ªæ“¾‚Å‚«‚È‚¢ê‡‚ÍƒGƒ‰[‚ÅI—¹
+		//æŠ½å‡ºå¤±æ•—ã€‚ã‚¤ãƒ¡ãƒ¼ã‚¸ãŒå–å¾—ã§ããªã„å ´åˆã¯ã‚¨ãƒ©ãƒ¼ã§çµ‚äº†
 		RaiseError( g_ErrorLogger , 2 , L"Image id not found : " + img2 );
 		return false;
 	}
 
-	//ƒCƒ[ƒW‚ğ2‚Â‚Æ‚àæ‚ê‚½‚©‚çA¡“x‚Íƒ}ƒXƒN‚ğæ“¾‚·‚éBƒ}ƒXƒN‚Í‘¶İ‚µ‚È‚­‚Ä‚àƒGƒ‰[‚É‚Í‚µ‚È‚¢B
-	//‚P‚Â‚ß
+	//ã‚¤ãƒ¡ãƒ¼ã‚¸ã‚’2ã¤ã¨ã‚‚å–ã‚ŒãŸã‹ã‚‰ã€ä»Šåº¦ã¯ãƒã‚¹ã‚¯ã‚’å–å¾—ã™ã‚‹ã€‚ãƒã‚¹ã‚¯ã¯å­˜åœ¨ã—ãªãã¦ã‚‚ã‚¨ãƒ©ãƒ¼ã«ã¯ã—ãªã„ã€‚
+	//ï¼‘ã¤ã‚
 	const mGdiBitmap* bmp_mask1 = nullptr;
 	if( mask1 != L"" )
 	{
 		bmp_mask1 = res.GetItem< mGdiBitmap >( mask1 );
 	}
-	//‚Q‚Â‚ß
+	//ï¼’ã¤ã‚
 	const mGdiBitmap* bmp_mask2 = nullptr;
 	if( mask2 != L"" )
 	{
 		bmp_mask2 = res.GetItem< mGdiBitmap >( mask2 );
 	}
 
-	//’Ç‰Áˆ—B
+	//è¿½åŠ å‡¦ç†ã€‚
 	return AddImage( id , *bmp_img1 , *bmp_img2 , bmp_mask1 , bmp_mask2 );
 }
 
 
-//ƒCƒ[ƒWƒŠƒXƒg‚ÉƒCƒ[ƒW‚Ì’Ç‰Á‚ğ‚·‚é
+//ã‚¤ãƒ¡ãƒ¼ã‚¸ãƒªã‚¹ãƒˆã«ã‚¤ãƒ¡ãƒ¼ã‚¸ã®è¿½åŠ ã‚’ã™ã‚‹
 bool mGdiDualImagelist::AddImage( const WString& id ,
 	const mGdiBitmap& img1 ,
 	const mGdiBitmap& img2 ,
 	COLORREF mask1 ,
 	COLORREF mask2 )
 {
-	//‚Ü‚¸A‚P”Ô–Ú‚ÌƒCƒ[ƒWƒŠƒXƒg‚É“o˜^
+	//ã¾ãšã€ï¼‘ç•ªç›®ã®ã‚¤ãƒ¡ãƒ¼ã‚¸ãƒªã‚¹ãƒˆã«ç™»éŒ²
 	if( !MyHandle->AddImage( id , img1 , mask1 ) )
 	{
-		//ƒGƒ‰[ƒƒbƒZ[ƒW‚Í‚P”Ô–Ú‚Ì•û‚Å“o˜^‚µ‚Ä‚¢‚é‚©‚çƒRƒR‚Å‚Í‰½‚à‚µ‚È‚¢B
+		//ã‚¨ãƒ©ãƒ¼ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸ã¯ï¼‘ç•ªç›®ã®æ–¹ã§ç™»éŒ²ã—ã¦ã„ã‚‹ã‹ã‚‰ã‚³ã‚³ã§ã¯ä½•ã‚‚ã—ãªã„ã€‚
 		return false;
 	}
 
-	//‚Q”Ô–Ú‚ÌƒCƒ[ƒWƒŠƒXƒg‚É’Ç‰Áˆ—‚ğs‚¤
+	//ï¼’ç•ªç›®ã®ã‚¤ãƒ¡ãƒ¼ã‚¸ãƒªã‚¹ãƒˆã«è¿½åŠ å‡¦ç†ã‚’è¡Œã†
 	int index = -1;
 	index = ::ImageList_AddMasked( MyHandle2 , img2 , mask2 );
 
-	//‚Q”Ô–Ú‚Ì“o˜^‚Í¬Œ÷‚¾‚Á‚½‚©H
+	//ï¼’ç•ªç›®ã®ç™»éŒ²ã¯æˆåŠŸã ã£ãŸã‹ï¼Ÿ
 	if( index < 0 )
 	{
-		//¸”s‚µ‚Ä‚¢‚é‚Ì‚ÅA‚P”Ô–Ú‚Ì“o˜^‚ğæ‚èÁ‚·
+		//å¤±æ•—ã—ã¦ã„ã‚‹ã®ã§ã€ï¼‘ç•ªç›®ã®ç™»éŒ²ã‚’å–ã‚Šæ¶ˆã™
 		MyHandle->RemoveImage( id );
-		//ƒGƒ‰[ƒƒbƒZ[ƒW‚ğ“o˜^
+		//ã‚¨ãƒ©ãƒ¼ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸ã‚’ç™»éŒ²
 		RaiseAssert( g_ErrorLogger , index , L"ImageList_AddMasked(2) failed" );
 		return false;
 	}
 	return true;
 }
 
-//ƒCƒ[ƒWƒŠƒXƒg‚ÉƒCƒ[ƒW‚Ì’Ç‰Á‚ğ‚·‚é(mGdiResource‚©‚çƒCƒ[ƒW‚ğ’Šo‚·‚éVer)
+//ã‚¤ãƒ¡ãƒ¼ã‚¸ãƒªã‚¹ãƒˆã«ã‚¤ãƒ¡ãƒ¼ã‚¸ã®è¿½åŠ ã‚’ã™ã‚‹(mGdiResourceã‹ã‚‰ã‚¤ãƒ¡ãƒ¼ã‚¸ã‚’æŠ½å‡ºã™ã‚‹Ver)
 bool mGdiDualImagelist::AddImageBitmap( const mGdiResource& res ,
 	const WString& id ,
 	const WString& img1 ,
@@ -163,83 +163,83 @@ bool mGdiDualImagelist::AddImageBitmap( const mGdiResource& res ,
 	COLORREF mask1 ,
 	COLORREF mask2 )
 {
-	//mGdiResource‚©‚çw’è‚ÌƒCƒ[ƒW‚ğ’Šo‚·‚é
-	//¦‚P‚Â‚ß
+	//mGdiResourceã‹ã‚‰æŒ‡å®šã®ã‚¤ãƒ¡ãƒ¼ã‚¸ã‚’æŠ½å‡ºã™ã‚‹
+	//â€»ï¼‘ã¤ã‚
 	const mGdiBitmap* bmp_img1 = res.GetItem< mGdiBitmap >( img1 );
 	if( bmp_img1 == nullptr )
 	{
-		//’Šo¸”sBƒCƒ[ƒW‚ªæ“¾‚Å‚«‚È‚¢ê‡‚ÍƒGƒ‰[‚ÅI—¹
+		//æŠ½å‡ºå¤±æ•—ã€‚ã‚¤ãƒ¡ãƒ¼ã‚¸ãŒå–å¾—ã§ããªã„å ´åˆã¯ã‚¨ãƒ©ãƒ¼ã§çµ‚äº†
 		RaiseError( g_ErrorLogger , 1 , L"Image id not found : " + img1 );
 		return false;
 	}
-	//‚Q‚Â‚ß
+	//ï¼’ã¤ã‚
 	const mGdiBitmap* bmp_img2 = res.GetItem< mGdiBitmap >( img2 );
 	if( bmp_img2 == nullptr )
 	{
-		//’Šo¸”sBƒCƒ[ƒW‚ªæ“¾‚Å‚«‚È‚¢ê‡‚ÍƒGƒ‰[‚ÅI—¹
+		//æŠ½å‡ºå¤±æ•—ã€‚ã‚¤ãƒ¡ãƒ¼ã‚¸ãŒå–å¾—ã§ããªã„å ´åˆã¯ã‚¨ãƒ©ãƒ¼ã§çµ‚äº†
 		RaiseError( g_ErrorLogger , 2 , L"Image id not found : " + img2 );
 		return false;
 	}
 	return AddImage( id , *bmp_img1 , *bmp_img2 );
 }
 
-//ƒCƒ[ƒWƒŠƒXƒg‚ÉƒCƒ[ƒW‚Ì’Ç‰Á‚ğ‚·‚é
+//ã‚¤ãƒ¡ãƒ¼ã‚¸ãƒªã‚¹ãƒˆã«ã‚¤ãƒ¡ãƒ¼ã‚¸ã®è¿½åŠ ã‚’ã™ã‚‹
 bool mGdiDualImagelist::AddImage( const WString& id ,
 	const mGdiIcon& img1 ,
 	const mGdiIcon& img2 )
 {
-	//‚Ü‚¸A‚P”Ô–Ú‚ÌƒCƒ[ƒWƒŠƒXƒg‚É“o˜^
+	//ã¾ãšã€ï¼‘ç•ªç›®ã®ã‚¤ãƒ¡ãƒ¼ã‚¸ãƒªã‚¹ãƒˆã«ç™»éŒ²
 	if( !MyHandle->AddImage( id , img1 ) )
 	{
-		//ƒGƒ‰[ƒƒbƒZ[ƒW‚Í‚P”Ô–Ú‚Ì•û‚Å“o˜^‚µ‚Ä‚¢‚é‚©‚çƒRƒR‚Å‚Í‰½‚à‚µ‚È‚¢B
+		//ã‚¨ãƒ©ãƒ¼ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸ã¯ï¼‘ç•ªç›®ã®æ–¹ã§ç™»éŒ²ã—ã¦ã„ã‚‹ã‹ã‚‰ã‚³ã‚³ã§ã¯ä½•ã‚‚ã—ãªã„ã€‚
 		return false;
 	}
-	//‚Q”Ô–Ú‚ÌƒCƒ[ƒWƒŠƒXƒg‚É’Ç‰Áˆ—‚ğs‚¤
+	//ï¼’ç•ªç›®ã®ã‚¤ãƒ¡ãƒ¼ã‚¸ãƒªã‚¹ãƒˆã«è¿½åŠ å‡¦ç†ã‚’è¡Œã†
 	int index = -1;
 	index = ::ImageList_AddIcon( MyHandle2 , img2 );
 
-	//‚Q”Ô–Ú‚Ì“o˜^‚Í¬Œ÷‚¾‚Á‚½‚©H
+	//ï¼’ç•ªç›®ã®ç™»éŒ²ã¯æˆåŠŸã ã£ãŸã‹ï¼Ÿ
 	if( index < 0 )
 	{
-		//¸”s‚µ‚Ä‚¢‚é‚Ì‚ÅA‚P”Ô–Ú‚Ì“o˜^‚ğæ‚èÁ‚·
+		//å¤±æ•—ã—ã¦ã„ã‚‹ã®ã§ã€ï¼‘ç•ªç›®ã®ç™»éŒ²ã‚’å–ã‚Šæ¶ˆã™
 		MyHandle->RemoveImage( id );
-		//ƒGƒ‰[ƒƒbƒZ[ƒW‚ğ“o˜^
+		//ã‚¨ãƒ©ãƒ¼ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸ã‚’ç™»éŒ²
 		RaiseAssert( g_ErrorLogger , index , L"ImageList_AddIcon(2) failed" );
 		return false;
 	}
 	return true;
 }
 
-//ƒCƒ[ƒWƒŠƒXƒg‚ÉƒCƒ[ƒW‚Ì’Ç‰Á‚ğ‚·‚é(mGdiResource‚©‚çƒCƒ[ƒW‚ğ’Šo‚·‚éVer)
+//ã‚¤ãƒ¡ãƒ¼ã‚¸ãƒªã‚¹ãƒˆã«ã‚¤ãƒ¡ãƒ¼ã‚¸ã®è¿½åŠ ã‚’ã™ã‚‹(mGdiResourceã‹ã‚‰ã‚¤ãƒ¡ãƒ¼ã‚¸ã‚’æŠ½å‡ºã™ã‚‹Ver)
 bool mGdiDualImagelist::AddImageIcon( const mGdiResource& res ,
 	const WString& id ,
 	const WString& img1 ,
 	const WString& img2 )
 {
-	//mGdiResource‚©‚çw’è‚ÌƒCƒ[ƒW‚ğ’Šo‚·‚é
-	//¦‚P‚Â‚ß
+	//mGdiResourceã‹ã‚‰æŒ‡å®šã®ã‚¤ãƒ¡ãƒ¼ã‚¸ã‚’æŠ½å‡ºã™ã‚‹
+	//â€»ï¼‘ã¤ã‚
 	const mGdiIcon* icon_img1 = res.GetItem< mGdiIcon >( img1 );
 	if( icon_img1 == nullptr )
 	{
-		//’Šo¸”sBƒCƒ[ƒW‚ªæ“¾‚Å‚«‚È‚¢ê‡‚ÍƒGƒ‰[‚ÅI—¹
+		//æŠ½å‡ºå¤±æ•—ã€‚ã‚¤ãƒ¡ãƒ¼ã‚¸ãŒå–å¾—ã§ããªã„å ´åˆã¯ã‚¨ãƒ©ãƒ¼ã§çµ‚äº†
 		RaiseError( g_ErrorLogger , 1 , L"Image id not found : " + img1 );
 		return false;
 	}
-	//‚Q‚Â‚ß
+	//ï¼’ã¤ã‚
 	const mGdiIcon* icon_img2 = res.GetItem< mGdiIcon >( img2 );
 	if( icon_img2 == nullptr )
 	{
-		//’Šo¸”sBƒCƒ[ƒW‚ªæ“¾‚Å‚«‚È‚¢ê‡‚ÍƒGƒ‰[‚ÅI—¹
+		//æŠ½å‡ºå¤±æ•—ã€‚ã‚¤ãƒ¡ãƒ¼ã‚¸ãŒå–å¾—ã§ããªã„å ´åˆã¯ã‚¨ãƒ©ãƒ¼ã§çµ‚äº†
 		RaiseError( g_ErrorLogger , 2 , L"Image id not found : " + img2 );
 		return false;
 	}
 	return AddImage( id , *icon_img1 , *icon_img2 );
 }
 
-//ƒCƒ[ƒWƒŠƒXƒg‚©‚çƒCƒ[ƒW‚ğíœ‚·‚é
+//ã‚¤ãƒ¡ãƒ¼ã‚¸ãƒªã‚¹ãƒˆã‹ã‚‰ã‚¤ãƒ¡ãƒ¼ã‚¸ã‚’å‰Šé™¤ã™ã‚‹
 bool mGdiDualImagelist::RemoveImage( const WString& id )
 {
-	//Á‹‚·‚éƒCƒ[ƒW‚ÌƒCƒ“ƒfƒbƒNƒX‚ğæ“¾
+	//æ¶ˆå»ã™ã‚‹ã‚¤ãƒ¡ãƒ¼ã‚¸ã®ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹ã‚’å–å¾—
 	INT index = MyHandle->GetIndex( id );
 	if( index < 0 )
 	{
@@ -247,14 +247,14 @@ bool mGdiDualImagelist::RemoveImage( const WString& id )
 		return false;
 	}
 
-	//‚P”Ô–Ú‚©‚çÁ‚·
+	//ï¼‘ç•ªç›®ã‹ã‚‰æ¶ˆã™
 	if( !MyHandle->RemoveImage( id ) )
 	{
-		//ƒGƒ‰[ƒƒbƒZ[ƒW‚Í‚P”Ô–Ú‚Ì’†g‚Å“o˜^‚µ‚Ä‚¢‚é‚©‚çƒRƒR‚Å‚Í‰½‚à‚µ‚È‚¢B
+		//ã‚¨ãƒ©ãƒ¼ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸ã¯ï¼‘ç•ªç›®ã®ä¸­èº«ã§ç™»éŒ²ã—ã¦ã„ã‚‹ã‹ã‚‰ã‚³ã‚³ã§ã¯ä½•ã‚‚ã—ãªã„ã€‚
 		return false;
 	}
 
-	//‚Q”Ô–Ú‚ÌƒCƒ[ƒWƒŠƒXƒg‚©‚çíœ
+	//ï¼’ç•ªç›®ã®ã‚¤ãƒ¡ãƒ¼ã‚¸ãƒªã‚¹ãƒˆã‹ã‚‰å‰Šé™¤
 	if( !::ImageList_Remove( MyHandle2 , index ) )
 	{
 		RaiseAssert( g_ErrorLogger , 0 , L"ImageList_Remove(2) failed" );
@@ -263,7 +263,7 @@ bool mGdiDualImagelist::RemoveImage( const WString& id )
 	return true;
 }
 
-//ID‚©‚çƒCƒ“ƒfƒbƒNƒX‚ğæ“¾‚·‚é
+//IDã‹ã‚‰ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹ã‚’å–å¾—ã™ã‚‹
 INT mGdiDualImagelist::GetIndex( const WString& id )const
 {
 	return MyHandle->GetIndex( id );

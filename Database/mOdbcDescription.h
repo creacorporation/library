@@ -1,5 +1,5 @@
-//----------------------------------------------------------------------------
-// ODBC�ڑ��p���C�u����
+﻿//----------------------------------------------------------------------------
+// ODBC接続用ライブラリ
 // Copyright (C) 2018- Crea Inc. All rights reserved.
 // This program is released under the MIT License. 
 // see http://opensource.org/licenses/mit-license.php
@@ -22,32 +22,32 @@
 
 struct mOdbcDescriptionEntry
 {
-	//�T�C�Y
+	//サイズ
 	DWORD_PTR Size;
-	//�T�C�Y
+	//サイズ
 	DWORD_PTR Digit;
-	//�k�������e����ꍇ�^
+	//ヌルを許容する場合真
 	bool Nullable;
-	//�Œ蒷�ł���ꍇ�F�^
-	//�ϒ��ł���ꍇ�F�U
+	//固定長である場合：真
+	//可変長である場合：偽
 	bool Fixed;
-	//���^ODBC�^
+	//メタODBC型
 	DWORD MetaType;
-	//�����f�[�^�^
+	//推奨データ型
 	mOdbc::ParameterType ParamType;
-	//�����Ή����Ă��邩
+	//公式対応しているか
 	bool Available;
-	//�p�����[�^�A���ʃZ�b�g�̗�ԍ�
+	//パラメータ、結果セットの列番号
 	INT Index;
 };
 
-//�p�����[�^�N�G���̃p�����[�^����ێ�����
-//�p�����[�^�̍������珇�ɔz��Ɋi�[����
+//パラメータクエリのパラメータ情報を保持する
+//パラメータの左側から順に配列に格納する
 typedef std::vector<mOdbcDescriptionEntry> mOdbcParameterDescription;
 
-//�N�G���ɂ���ē���ꂽ���ʃZ�b�g�̏���ێ�����
-//���F��̖��O
-//�E�F��̏��
+//クエリによって得られた結果セットの情報を保持する
+//左：列の名前
+//右：列の情報
 typedef std::unordered_map<WString,mOdbcDescriptionEntry> mOdbcResultDescription;
 
 #endif

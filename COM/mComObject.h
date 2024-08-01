@@ -1,10 +1,10 @@
-//----------------------------------------------------------------------------
-// COM�I�u�W�F�N�g�p���[�e�B���e�B�֐��Q
+﻿//----------------------------------------------------------------------------
+// COMオブジェクト用ユーティリティ関数群
 // Copyright (C) 2018- Crea Inc. All rights reserved.
 // This program is released under the MIT License. 
 // see http://opensource.org/licenses/mit-license.php
-// ���쌠�\���⃉�C�Z���X�̉��ς͋֎~����Ă��܂��B
-// ���̃\�[�X�R�[�h�Ɋւ��āA��L���C�Z���X�ȊO�̌_�񓙂͈�ؑ��݂��܂���B
+// 著作権表示やライセンスの改変は禁止されています。
+// このソースコードに関して、上記ライセンス以外の契約等は一切存在しません。
 //----------------------------------------------------------------------------
 
 #ifndef MCOMOBJECT_H_INCLUDED
@@ -26,8 +26,8 @@ private:
 	mComObject( const mComObject& src );
 	const mComObject& operator=( const mComObject& src );
 
-	//���̃I�u�W�F�N�g�ŃC�j�V�����C�Y(CoInitialize)���s�������H
-	//true = �C�j�V�����C�Y���s����
+	//このオブジェクトでイニシャライズ(CoInitialize)を行ったか？
+	//true = イニシャライズを行った
 	bool MyIsInitialized;
 };
 

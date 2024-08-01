@@ -1,5 +1,5 @@
-//----------------------------------------------------------------------------
-// ƒEƒCƒ“ƒhƒEŠÇ—iƒEƒCƒ“ƒhƒE•`‰æ—pƒfƒoƒCƒXƒRƒ“ƒeƒLƒXƒgj
+ï»¿//----------------------------------------------------------------------------
+// ã‚¦ã‚¤ãƒ³ãƒ‰ã‚¦ç®¡ç†ï¼ˆã‚¦ã‚¤ãƒ³ãƒ‰ã‚¦æç”»ç”¨ãƒ‡ãƒã‚¤ã‚¹ã‚³ãƒ³ãƒ†ã‚­ã‚¹ãƒˆï¼‰
 // Copyright (C) 2016 Fingerling. All rights reserved. 
 // This program is released under the MIT License. 
 // see http://opensource.org/licenses/mit-license.php
@@ -25,11 +25,11 @@ mGdiWinDC::mGdiWinDC( HWND hwnd )
 
 mGdiWinDC::~mGdiWinDC()
 {
-	//‘I‘ð‚³‚ê‚Ä‚¢‚éGDIƒIƒuƒWƒFƒNƒg‚ð‘S•”Œ³‚É–ß‚·
-	//¦‚±‚ê‚ð‚â‚ç‚È‚¢‚ÆƒŠƒ\[ƒXƒŠ[ƒN‚·‚é‚©‚à
+	//é¸æŠžã•ã‚Œã¦ã„ã‚‹GDIã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã‚’å…¨éƒ¨å…ƒã«æˆ»ã™
+	//â€»ã“ã‚Œã‚’ã‚„ã‚‰ãªã„ã¨ãƒªã‚½ãƒ¼ã‚¹ãƒªãƒ¼ã‚¯ã™ã‚‹ã‹ã‚‚
 	ResetSelectedObject();
 
-	//ƒnƒ“ƒhƒ‹‚Ì‰ð•ú‚ð‚µ‚ÄI—¹
+	//ãƒãƒ³ãƒ‰ãƒ«ã®è§£æ”¾ã‚’ã—ã¦çµ‚äº†
 	::ReleaseDC( MyHwnd , MyHdc );
 }
 

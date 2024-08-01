@@ -1,12 +1,12 @@
-//----------------------------------------------------------------------------
-// ƒEƒCƒ“ƒhƒEŠÇ—iID•¥‚¢o‚µj
+ï»¿//----------------------------------------------------------------------------
+// ã‚¦ã‚¤ãƒ³ãƒ‰ã‚¦ç®¡ç†ï¼ˆIDæ‰•ã„å‡ºã—ï¼‰
 // Copyright (C) 2016 Fingerling. All rights reserved. 
 // This program is released under the MIT License. 
 // see http://opensource.org/licenses/mit-license.php
 //----------------------------------------------------------------------------
 
 /*
-œ—p“r
+â—ç”¨é€”
 */
 
 #ifndef MUNIQUEVALUE_H_INCLUDED
@@ -25,35 +25,35 @@ public:
 	}
 	virtual ~mUniqueValue() = default;
 
-	//ƒ†ƒj[ƒN‚È’l‚ğæ“¾‚·‚é
-	//ret : ƒ†ƒj[ƒN‚È’l
-	//ƒƒ‚ƒŠƒŠ[ƒN‚µ‚Ä‚µ‚Ü‚¤‚Ì‚ÅAæ“¾‚µ‚½ƒ†ƒj[ƒN‚È’l‚ª•s—v‚Æ‚È‚Á‚½“_‚Å
-	//Return()‚É‚æ‚è’l‚ÌŠ—LŒ ‚ğ•Ô‹p‚µ‚Ä‰º‚³‚¢B
+	//ãƒ¦ãƒ‹ãƒ¼ã‚¯ãªå€¤ã‚’å–å¾—ã™ã‚‹
+	//ret : ãƒ¦ãƒ‹ãƒ¼ã‚¯ãªå€¤
+	//ãƒ¡ãƒ¢ãƒªãƒªãƒ¼ã‚¯ã—ã¦ã—ã¾ã†ã®ã§ã€å–å¾—ã—ãŸãƒ¦ãƒ‹ãƒ¼ã‚¯ãªå€¤ãŒä¸è¦ã¨ãªã£ãŸæ™‚ç‚¹ã§
+	//Return()ã«ã‚ˆã‚Šå€¤ã®æ‰€æœ‰æ¨©ã‚’è¿”å´ã—ã¦ä¸‹ã•ã„ã€‚
 	T Get( void )
 	{
-		//–œˆêA•¥‚¢o‚¹‚é’l‚ª‘¶İ‚µ‚È‚¢ê‡‚ÍA‚Ç‚¤‚É‚à‚È‚ç‚È‚¢‚Ì‚Å—áŠO
+		//ä¸‡ä¸€ã€æ‰•ã„å‡ºã›ã‚‹å€¤ãŒå­˜åœ¨ã—ãªã„å ´åˆã¯ã€ã©ã†ã«ã‚‚ãªã‚‰ãªã„ã®ã§ä¾‹å¤–
 		if( MyValueSet.size() == ~(T)0 )
 		{
 			throw EXCEPTION( 0 , L"unique value full" );
 		}
 
-		//•¥‚¢‚¾‚»‚¤‚Æ‚µ‚Ä‚¢‚é’l‚ªg—p’†‚Å‚È‚¢‚©Šm”F‚µA
-		//g‚Á‚Ä‚¢‚È‚¢’l‚ğŒ©‚Â‚¯‚é‚Ü‚Åƒ‹[ƒv
+		//æ‰•ã„ã ãã†ã¨ã—ã¦ã„ã‚‹å€¤ãŒä½¿ç”¨ä¸­ã§ãªã„ã‹ç¢ºèªã—ã€
+		//ä½¿ã£ã¦ã„ãªã„å€¤ã‚’è¦‹ã¤ã‘ã‚‹ã¾ã§ãƒ«ãƒ¼ãƒ—
 		while( MyValueSet.count( MyNextValue ) )
 		{
 			MyNextValue++;
 		}
 
-		//Œ‹‰Ê•Ô‹p
+		//çµæœè¿”å´
 		UINT result = MyNextValue;
-		MyNextValue++;	//Ÿ‚É”õ‚¦‚Ä1‘«‚µ‚Ä‚¨‚­
+		MyNextValue++;	//æ¬¡ã«å‚™ãˆã¦1è¶³ã—ã¦ãŠã
 
-		MyValueSet.insert( result );	//g—p’†‚É“o˜^
+		MyValueSet.insert( result );	//ä½¿ç”¨ä¸­ã«ç™»éŒ²
 		return result;
 	}
 
-	//•s—v‚Æ‚È‚Á‚½’l‚ğ•Ô‚·
-	//val : •Ô‹p‚·‚é’l
+	//ä¸è¦ã¨ãªã£ãŸå€¤ã‚’è¿”ã™
+	//val : è¿”å´ã™ã‚‹å€¤
 	void Return( T val )
 	{
 		if( MyValueSet.count( val ) )
@@ -62,7 +62,7 @@ public:
 		}
 	}
 
-	//‘S•”‚Ü‚Æ‚ß‚ÄÁ‚·
+	//å…¨éƒ¨ã¾ã¨ã‚ã¦æ¶ˆã™
 	void Clear( void )
 	{
 		MyValueSet.clear();
@@ -73,11 +73,11 @@ private:
 	mUniqueValue( const mUniqueValue& src ) = delete;
 	mUniqueValue& operator=( const mUniqueValue& src ) = delete;
 
-	//•¥oÏ‚İ‚Ì’l‚Ìˆê——
+	//æ‰•å‡ºæ¸ˆã¿ã®å€¤ã®ä¸€è¦§
 	typedef std::unordered_set< T > ValueSet;
 	ValueSet MyValueSet;
 
-	//Ÿ‚É•¥‚¢o‚·—\’è‚Ì’l
+	//æ¬¡ã«æ‰•ã„å‡ºã™äºˆå®šã®å€¤
 	T MyNextValue;
 };
 

@@ -1,19 +1,19 @@
-//----------------------------------------------------------------------------
-// �E�C���h�E�Ǘ��iGDI���\�[�X�v�[���j
+﻿//----------------------------------------------------------------------------
+// ウインドウ管理（GDIリソースプール）
 // Copyright (C) 2016 Fingerling. All rights reserved. 
 // This program is released under the MIT License. 
 // see http://opensource.org/licenses/mit-license.php
 //----------------------------------------------------------------------------
 
 /*
-���p�r
-GDI���\�[�X���X�g�b�N���܂�
+●用途
+GDIリソースをストックします
 
-HBRUSH brush;			//�u���V
-HPEN pen;				//�y��
-HFONT font;				//�t�H���g
-HBITMAP bmp;			//�r�b�g�}�b�v
-HIMAGELIST imglist;		//�C���[�W���X�g
+HBRUSH brush;			//ブラシ
+HPEN pen;				//ペン
+HFONT font;				//フォント
+HBITMAP bmp;			//ビットマップ
+HIMAGELIST imglist;		//イメージリスト
 
 */
 
@@ -34,15 +34,15 @@ public:
 	mGdiResource();
 	virtual ~mGdiResource();
 
-	//�t�@�N�g�����\�b�h��typedef�B
+	//ファクトリメソッドのtypedef。
 	typedef mGdiHandle* (*mGdiHandleFactory)( const void* opt );
 
-	//�A�C�e����o�^����B����œo�^�����I�u�W�F�N�g�́AGetItem�Ŏ擾�ł��܂��B
-	//�e���v���[�g�Ɏw�肵���N���X��Factory()���Ăяo����A�����Ő��������|�C���^��
-	//id�Ɏw�肵�����O�œ����̃R���e�i�Ɋi�[���܂��BFactory()�ɂ�opt�Ŏw�肵���|�C���^���n����܂��B
-	//id : �o�^����A�C�e���ɕt���閼�O
-	//item : �o�^����A�C�e��
-	//ret : ���������I�u�W�F�N�g(GetItem�Ŏ��镨�Ɠ���)
+	//アイテムを登録する。これで登録したオブジェクトは、GetItemで取得できます。
+	//テンプレートに指定したクラスのFactory()が呼び出され、そこで生成したポインタを
+	//idに指定した名前で内部のコンテナに格納します。Factory()にはoptで指定したポインタが渡されます。
+	//id : 登録するアイテムに付ける名前
+	//item : 登録するアイテム
+	//ret : 生成したオブジェクト(GetItemで取れる物と同じ)
 	template< class T > T* AddItem( const WString& id , const struct T::Option* opt )
 	{
 		T* obj = (T*)mGdiResource::AddItemInternal( T::Factory , id , opt );
@@ -54,72 +54,72 @@ public:
 		return obj;
 	}
 
-	//�A�C�e�����擾����
-	//AddItem�œo�^�����I�u�W�F�N�g��Ԃ��܂��B
-	//id�Ŏw�肵���������݂��Ȃ��ꍇ�́Asubid�Ŏw�肵������T���܂��B
-	//������Ȃ��ꍇ�́Anullptr��Ԃ��܂��B
-	//id : �擾������ID(AddItem�Ŏw�肵������)
-	//subid : id���Ȃ������ꍇ�Ɏ擾������ID(�s�v�ȏꍇ�͋󕶎����OK)
-	//ret : �擾�����I�u�W�F�N�g�B�Y�������̏ꍇnullptr�B
+	//アイテムを取得する
+	//AddItemで登録したオブジェクトを返します。
+	//idで指定した物が存在しない場合は、subidで指定した物を探します。
+	//それもない場合は、nullptrを返します。
+	//id : 取得したいID(AddItemで指定したもの)
+	//subid : idがなかった場合に取得したいID(不要な場合は空文字列でOK)
+	//ret : 取得したオブジェクト。該当無しの場合nullptr。
 	template< class T > T* GetItem( const WString& id , const WString& subid = L"" )const
 	{
-		//�A�C�e���̌���
+		//アイテムの検索
 		IdMap::const_iterator itr = MyIdMap.find( id );
 		if( itr == MyIdMap.end() )
 		{
-			//�Y��ID�̓o�^���Ȃ��ꍇ�́Asubid�Ō���
+			//該当IDの登録がない場合は、subidで検索
 			itr = MyIdMap.find( subid );
 			if( itr == MyIdMap.end() )
 			{
-				//���̓o�^���Ȃ��ꍇ�͊Y���Ȃ��ɂ��G���[
+				//その登録もない場合は該当なしにつきエラー
 				RaiseAssert( g_ErrorLogger , 0 , L"Id not found : " + id );
 				return nullptr;
 			}
 		}
 		if( dynamic_cast< T* >( itr->second ) == nullptr )
 		{
-			//�e���v���[�g�Ǝ擾�����I�u�W�F�N�g�̌^���Ⴄ
+			//テンプレートと取得したオブジェクトの型が違う
 			RaiseAssert( g_ErrorLogger , 0 , L"Typeinfo mismatch : " + id );
 			return nullptr;
 		}
 		return (T*)itr->second;
 	}
 
-	//�A�C�e���̃n���h�����擾����
-	//AddItem�œo�^�����I�u�W�F�N�g���������A���̃I�u�W�F�N�g�̃n���h����Ԃ��܂��B
-	//�n���h�������݂��Ȃ������ꍇ��nullptr���Ԃ�܂��B
-	//id : �擾������ID(AddItem�Ŏw�肵������)
-	//subid : id���Ȃ������ꍇ�Ɏ擾������ID(�s�v�ȏꍇ�͋󕶎����OK)
-	//ret : �擾�����I�u�W�F�N�g�̃n���h���B�Y�������̏ꍇnullptr�B
+	//アイテムのハンドルを取得する
+	//AddItemで登録したオブジェクトを検索し、そのオブジェクトのハンドルを返します。
+	//ハンドルが存在しなかった場合はnullptrが返ります。
+	//id : 取得したいID(AddItemで指定したもの)
+	//subid : idがなかった場合に取得したいID(不要な場合は空文字列でOK)
+	//ret : 取得したオブジェクトのハンドル。該当無しの場合nullptr。
 	HGDIOBJ GetItem( const WString& id , const WString& subid = L"" )const;
 
-	//�A�C�e�����폜����
-	//id : �폜������ID
-	//ret�F ������true
+	//アイテムを削除する
+	//id : 削除したいID
+	//ret： 成功時true
 	bool RemoveItem( const WString& id );
 
-	//�w�肵��ID�̃I�u�W�F�N�g�����݂��邩��Ԃ��܂�
-	//id : ���ׂ���ID
-	//ret : ���݂����true�B���݂��Ȃ����false�B
+	//指定したIDのオブジェクトが存在するかを返します
+	//id : 調べたいID
+	//ret : 存在すればtrue。存在しなければfalse。
 	bool IsExist( const WString& id )const;
 
 private:
 	mGdiResource( const mGdiResource& src ) = delete;
 	mGdiResource& operator=( const mGdiResource& src ) = delete;
 
-	//�R���g���[�����R���N�V�����ɒǉ�����BAddControl�̓��������B
-	//factory : �t�@�N�g�����\�b�h
-	//id : �o�^����ID
-	//opt : �t�@�N�g�����\�b�h�Ő��������I�u�W�F�N�g�ɓn���I�v�V����
-	//ret : ���������I�u�W�F�N�g�̃|�C���^
+	//コントロールをコレクションに追加する。AddControlの内部処理。
+	//factory : ファクトリメソッド
+	//id : 登録するID
+	//opt : ファクトリメソッドで生成したオブジェクトに渡すオプション
+	//ret : 生成したオブジェクトのポインタ
 	mGdiHandle* AddItemInternal( mGdiHandleFactory factory , const WString& id , const void* opt );
 
 
 protected:
 
-	//�I�u�W�F�N�g�̃}�b�s���O
-	//���F�I�u�W�F�N�g��ID
-	//�E�F�I�u�W�F�N�g�ւ̃|�C���^
+	//オブジェクトのマッピング
+	//左：オブジェクトのID
+	//右：オブジェクトへのポインタ
 	typedef std::unordered_map<WString,mGdiHandle*> IdMap;
 	IdMap MyIdMap;
 	

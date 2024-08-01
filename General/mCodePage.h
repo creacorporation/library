@@ -1,5 +1,5 @@
-//----------------------------------------------------------------------------
-// ƒR[ƒhƒy[ƒWƒnƒ“ƒhƒ‰
+ï»¿//----------------------------------------------------------------------------
+// ã‚³ãƒ¼ãƒ‰ãƒšãƒ¼ã‚¸ãƒãƒ³ãƒ‰ãƒ©
 // Copyright (C) 2020 Crea Inc. All rights reserved.
 // This program is released under the MIT License. 
 // see http://opensource.org/licenses/mit-license.php
@@ -21,16 +21,16 @@ namespace mCodePage
 		UNKNOWN
 	};
 
-	//ƒR[ƒhƒy[ƒW‚ğİ’è‚µ‚Ü‚·
+	//ã‚³ãƒ¼ãƒ‰ãƒšãƒ¼ã‚¸ã‚’è¨­å®šã—ã¾ã™
 	bool SetConsoleInputCodePage( CodePage cp );
 
-	//ƒR[ƒhƒy[ƒW‚ğæ“¾‚µ‚Ü‚·
+	//ã‚³ãƒ¼ãƒ‰ãƒšãƒ¼ã‚¸ã‚’å–å¾—ã—ã¾ã™
 	bool GetConsoleInputCodePage( CodePage& retCp );
 
-	//ƒR[ƒhƒy[ƒW‚ğİ’è‚µ‚Ü‚·
+	//ã‚³ãƒ¼ãƒ‰ãƒšãƒ¼ã‚¸ã‚’è¨­å®šã—ã¾ã™
 	bool SetConsoleOutputCodePage( CodePage cp );
 
-	//ƒR[ƒhƒy[ƒW‚ğæ“¾‚µ‚Ü‚·
+	//ã‚³ãƒ¼ãƒ‰ãƒšãƒ¼ã‚¸ã‚’å–å¾—ã—ã¾ã™
 	bool GetConsoleOutputCodePage( CodePage& retCp );
 
 };

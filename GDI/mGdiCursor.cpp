@@ -1,5 +1,5 @@
-//----------------------------------------------------------------------------
-// �E�C���h�E�Ǘ��i�J�[�\���j
+﻿//----------------------------------------------------------------------------
+// ウインドウ管理（カーソル）
 // Copyright (C) 2016 Fingerling. All rights reserved. 
 // This program is released under the MIT License. 
 // see http://opensource.org/licenses/mit-license.php
@@ -16,16 +16,16 @@ mGdiCursor::mGdiCursor( const Option* opt )throw( mException )
 
 	if( opt != nullptr )
 	{
-		//�쐬����J�[�\���̍쐬���@�ɉ���������
+		//作成するカーソルの作成方法に応じた処理
 		if( opt->method == Option::CreateMethod::LOADFILE )
 		{
-			//�t�@�C����ǂݍ��ޏꍇ
+			//ファイルを読み込む場合
 			const Option_LoadFile* opt_loadfile = (const Option_LoadFile*)opt;
 			CreateHandle( *opt_loadfile );
 		}
 		else if( opt->method == Option::CreateMethod::RESOURCE )
 		{
-			//�t�@�C����ǂݍ��ޏꍇ
+			//ファイルを読み込む場合
 			const Option_Resource* opt_resource = (const Option_Resource*)opt;
 			CreateHandle( *opt_resource );
 		}
@@ -35,7 +35,7 @@ mGdiCursor::mGdiCursor( const Option* opt )throw( mException )
 		}
 	}
 
-	//�J�[�\�����ł��ĂȂ�������G���[�ɂ���
+	//カーソルができてなかったらエラーにする
 	if( MyHandle == nullptr )
 	{
 		throw EXCEPTION( 0 , L"Creating cursor failed" );
@@ -44,52 +44,52 @@ mGdiCursor::mGdiCursor( const Option* opt )throw( mException )
 
 mGdiCursor::~mGdiCursor()
 {
-	//�n���h���̉��
+	//ハンドルの解放
 	::DestroyCursor( MyHandle );
 	MyHandle = nullptr;
 }
 
-//�n���h���̒l���擾����(�L���X�g���Z�q�o�[�W����)
+//ハンドルの値を取得する(キャスト演算子バージョン)
 mGdiCursor::operator HCURSOR()const
 {
 	return MyHandle;
 }
 
-//�n���h���̒l���擾����(���ʂ̊֐��o�[�W����)
+//ハンドルの値を取得する(普通の関数バージョン)
 HGDIOBJ mGdiCursor::GetHandle( void )const
 {
 	return MyHandle;
 }
 
-//�J�[�\���̐���
+//カーソルの生成
 bool mGdiCursor::CreateHandle( const Option_LoadFile& opt )
 {
-	//�n���h���̍쐬
+	//ハンドルの作成
 	MyHandle = (HCURSOR)::LoadImageW( 
-		nullptr ,			//�C���X�^���X�n���h���B���\�[�X�ǂݍ��ނ킯����Ȃ�����k��
-		opt.path.c_str() ,		//�ǂݍ��ރt�@�C����
-		IMAGE_CURSOR ,		//���[�h����C���[�W�̃^�C�v�i�J�[�\���j
-		0 ,					//���B0�̏ꍇ�A�C���[�W�T�C�Y�ɍ��킹��B
-		0 ,					//�����B0�̏ꍇ�A�C���[�W�T�C�Y�ɍ��킹��B
-		LR_LOADFROMFILE );	//�t�@�C������ǂݍ��ނƂ��Ɏg���t���O
+		nullptr ,			//インスタンスハンドル。リソース読み込むわけじゃないからヌル
+		opt.path.c_str() ,		//読み込むファイル名
+		IMAGE_CURSOR ,		//ロードするイメージのタイプ（カーソル）
+		0 ,					//幅。0の場合、イメージサイズに合わせる。
+		0 ,					//高さ。0の場合、イメージサイズに合わせる。
+		LR_LOADFROMFILE );	//ファイルから読み込むときに使うフラグ
 
 	return ( MyHandle != nullptr );
 }
 
-//�J�[�\���̐���
+//カーソルの生成
 bool mGdiCursor::CreateHandle( const Option_Resource& opt )
 {
-	//���̃��W���[���̃n���h���擾
-	HINSTANCE module = ::GetModuleHandleW( nullptr );	//������Ȃ��ėǂ�
+	//このモジュールのハンドル取得
+	HINSTANCE module = ::GetModuleHandleW( nullptr );	//解放しなくて良い
 
-	//�n���h���̍쐬
+	//ハンドルの作成
 	MyHandle = (HCURSOR)::LoadImageW( 
-		module ,			//�C���X�^���X�n���h���B
-		opt.name.c_str() ,		//�ǂݍ��ރ��\�[�X��
-		IMAGE_CURSOR ,		//���[�h����C���[�W�̃^�C�v�i�J�[�\���j
-		0 ,					//���B0�̏ꍇ�A�C���[�W�T�C�Y�ɍ��킹��B
-		0 ,					//�����B0�̏ꍇ�A�C���[�W�T�C�Y�ɍ��킹��B
-		LR_DEFAULTCOLOR );	//���m�N���ł͂Ȃ��ꍇ�Ɏw��B
+		module ,			//インスタンスハンドル。
+		opt.name.c_str() ,		//読み込むリソース名
+		IMAGE_CURSOR ,		//ロードするイメージのタイプ（カーソル）
+		0 ,					//幅。0の場合、イメージサイズに合わせる。
+		0 ,					//高さ。0の場合、イメージサイズに合わせる。
+		LR_DEFAULTCOLOR );	//モノクロではない場合に指定。
 
 	return ( MyHandle != nullptr );
 }

@@ -1,11 +1,11 @@
-//----------------------------------------------------------------------------
+ï»¿//----------------------------------------------------------------------------
 // GUID
 // Copyright (C) 2024 Crea Inc. All rights reserved.
 // This program is released under the MIT License. 
 // see http://opensource.org/licenses/mit-license.php
-// ’˜ìŒ •\¦‚âƒ‰ƒCƒZƒ“ƒX‚Ì‰ü•Ï‚Í‹Ö~‚³‚ê‚Ä‚¢‚Ü‚·B
-// ‚±‚Ìƒ\[ƒXƒR[ƒh‚ÉŠÖ‚µ‚ÄAã‹Lƒ‰ƒCƒZƒ“ƒXˆÈŠO‚ÌŒ_–ñ“™‚ÍˆêØ‘¶İ‚µ‚Ü‚¹‚ñB
-// (‰½‚ç‚©‚ÌŒ_–ñ‚ª‚ ‚éê‡‚Å‚àA–{ƒ\[ƒXƒR[ƒh‚Í‚»‚Ì‘ÎÛŠO‚Æ‚È‚è‚Ü‚·)
+// è‘—ä½œæ¨©è¡¨ç¤ºã‚„ãƒ©ã‚¤ã‚»ãƒ³ã‚¹ã®æ”¹å¤‰ã¯ç¦æ­¢ã•ã‚Œã¦ã„ã¾ã™ã€‚
+// ã“ã®ã‚½ãƒ¼ã‚¹ã‚³ãƒ¼ãƒ‰ã«é–¢ã—ã¦ã€ä¸Šè¨˜ãƒ©ã‚¤ã‚»ãƒ³ã‚¹ä»¥å¤–ã®å¥‘ç´„ç­‰ã¯ä¸€åˆ‡å­˜åœ¨ã—ã¾ã›ã‚“ã€‚
+// (ä½•ã‚‰ã‹ã®å¥‘ç´„ãŒã‚ã‚‹å ´åˆã§ã‚‚ã€æœ¬ã‚½ãƒ¼ã‚¹ã‚³ãƒ¼ãƒ‰ã¯ãã®å¯¾è±¡å¤–ã¨ãªã‚Šã¾ã™)
 //----------------------------------------------------------------------------
 
 #define MGUID_CPP_COMPILING
@@ -71,13 +71,13 @@ mGUID::~mGUID()
 {
 }
 
-//’l‚ğ‚OƒNƒŠƒA‚·‚é
+//å€¤ã‚’ï¼ã‚¯ãƒªã‚¢ã™ã‚‹
 void mGUID::Clear( void )
 {
 	ZeroMemory( &MyGUID , sizeof( MyGUID ) );
 }
 
-//’l‚ğİ’è‚·‚é
+//å€¤ã‚’è¨­å®šã™ã‚‹
 bool mGUID::Set( const WString& src )
 {
 	if( UuidFromStringW( (RPC_WSTR)src.c_str() , &MyGUID ) == RPC_S_OK )
@@ -86,7 +86,7 @@ bool mGUID::Set( const WString& src )
 	}
 	return false;
 }
-//’l‚ğİ’è‚·‚é
+//å€¤ã‚’è¨­å®šã™ã‚‹
 bool mGUID::Set( const AString& src )
 {
 	if( UuidFromStringA( (RPC_CSTR)src.c_str() , &MyGUID ) == RPC_S_OK )
@@ -95,7 +95,7 @@ bool mGUID::Set( const AString& src )
 	}
 	return false;
 }
-//’l‚ğİ’è‚·‚é
+//å€¤ã‚’è¨­å®šã™ã‚‹
 bool mGUID::Set( const GUID& src )
 {
 	MyGUID.Data1 = src.Data1;
@@ -107,7 +107,7 @@ bool mGUID::Set( const GUID& src )
 	}
 	return true;
 }
-//’l‚ğİ’è‚·‚é
+//å€¤ã‚’è¨­å®šã™ã‚‹
 bool mGUID::Set( const mGUID& src )
 {
 	MyGUID.Data1 = src.MyGUID.Data1;
@@ -119,7 +119,7 @@ bool mGUID::Set( const mGUID& src )
 	}
 	return true;
 }
-//’l‚ğİ’è‚·‚é
+//å€¤ã‚’è¨­å®šã™ã‚‹
 bool mGUID::Set( uint32_t dt1 , uint16_t dt2 , uint16_t dt3 , uint64_t dt4 )
 {
 	MyGUID.Data1 = dt1;
@@ -140,7 +140,7 @@ bool mGUID::Set( uint32_t dt1 , uint16_t dt2 , uint16_t dt3 , uint64_t dt4 )
 	return true;
 }
 
-//V‚µ‚¢GUID‚ğ¶¬‚·‚é
+//æ–°ã—ã„GUIDã‚’ç”Ÿæˆã™ã‚‹
 bool mGUID::Create( void )
 {
 	switch( UuidCreate( &MyGUID ) )
@@ -155,25 +155,25 @@ bool mGUID::Create( void )
 	return false;
 }
 
-//GUID‚ğæ“¾
+//GUIDã‚’å–å¾—
 mGUID::operator const GUID&( void )const
 {
 	return MyGUID;
 }
 
-//GUID‚ğæ“¾
+//GUIDã‚’å–å¾—
 const GUID& mGUID::ToGUID( void )const
 {
 	return MyGUID;
 }
 
-//GUID‚ğæ“¾
+//GUIDã‚’å–å¾—
 mGUID::operator AString( void )const
 {
 	return ToAString();
 }
 
-//GUID‚ğæ“¾
+//GUIDã‚’å–å¾—
 const AString mGUID::ToAString( void )const
 {
 	RPC_CSTR str;
@@ -187,13 +187,13 @@ const AString mGUID::ToAString( void )const
 	return std::move( result );
 }
 
-//GUID‚ğæ“¾
+//GUIDã‚’å–å¾—
 mGUID::operator WString( void )const
 {
 	return ToWString();
 }
 
-//GUID‚ğæ“¾
+//GUIDã‚’å–å¾—
 const WString mGUID::ToWString( void )const
 {
 	RPC_WSTR str;

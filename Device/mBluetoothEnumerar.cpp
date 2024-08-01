@@ -1,11 +1,11 @@
-//----------------------------------------------------------------------------
-// Bluetoothƒnƒ“ƒhƒ‰ƒNƒ‰ƒX
+ï»¿//----------------------------------------------------------------------------
+// Bluetoothãƒãƒ³ãƒ‰ãƒ©ã‚¯ãƒ©ã‚¹
 // Copyright (C) 2019- Crea Inc. All rights reserved.
 // This program is released under the MIT License. 
 // see http://opensource.org/licenses/mit-license.php
-// ’˜ìŒ •\¦‚âƒ‰ƒCƒZƒ“ƒX‚Ì‰ü•Ï‚Í‹Ö~‚³‚ê‚Ä‚¢‚Ü‚·B
-// ‚±‚Ìƒ\[ƒXƒR[ƒh‚ÉŠÖ‚µ‚ÄAã‹Lƒ‰ƒCƒZƒ“ƒXˆÈŠO‚ÌŒ_–ñ“™‚ÍˆêØ‘¶İ‚µ‚Ü‚¹‚ñB
-// (‰½‚ç‚©‚ÌŒ_–ñ‚ª‚ ‚éê‡‚Å‚àA–{ƒ\[ƒXƒR[ƒh‚Í‚»‚Ì‘ÎÛŠO‚Æ‚È‚è‚Ü‚·)
+// è‘—ä½œæ¨©è¡¨ç¤ºã‚„ãƒ©ã‚¤ã‚»ãƒ³ã‚¹ã®æ”¹å¤‰ã¯ç¦æ­¢ã•ã‚Œã¦ã„ã¾ã™ã€‚
+// ã“ã®ã‚½ãƒ¼ã‚¹ã‚³ãƒ¼ãƒ‰ã«é–¢ã—ã¦ã€ä¸Šè¨˜ãƒ©ã‚¤ã‚»ãƒ³ã‚¹ä»¥å¤–ã®å¥‘ç´„ç­‰ã¯ä¸€åˆ‡å­˜åœ¨ã—ã¾ã›ã‚“ã€‚
+// (ä½•ã‚‰ã‹ã®å¥‘ç´„ãŒã‚ã‚‹å ´åˆã§ã‚‚ã€æœ¬ã‚½ãƒ¼ã‚¹ã‚³ãƒ¼ãƒ‰ã¯ãã®å¯¾è±¡å¤–ã¨ãªã‚Šã¾ã™)
 //----------------------------------------------------------------------------
 
 #include "mBluetoothEnumerar.h"
@@ -17,9 +17,9 @@
 #pragma comment(lib, "Bthprops.lib")
 #pragma comment(lib, "BluetoothAPIs.lib" )
 
-//ƒCƒ“ƒ^[ƒtƒFƒCƒXŒo—R‚ÅClassicƒfƒoƒCƒX‚Ìˆê——‚ğæ‚é—á
+//ã‚¤ãƒ³ã‚¿ãƒ¼ãƒ•ã‚§ã‚¤ã‚¹çµŒç”±ã§Classicãƒ‡ãƒã‚¤ã‚¹ã®ä¸€è¦§ã‚’å–ã‚‹ä¾‹
 //  mDeviceEnumerar dev( GUID_BTH_RFCOMM_SERVICE_DEVICE_INTERFACE , false );
-//ƒCƒ“ƒ^[ƒtƒFƒCƒXŒo—R‚ÅBLEƒfƒoƒCƒX‚Ìˆê——‚ğæ‚é—á
+//ã‚¤ãƒ³ã‚¿ãƒ¼ãƒ•ã‚§ã‚¤ã‚¹çµŒç”±ã§BLEãƒ‡ãƒã‚¤ã‚¹ã®ä¸€è¦§ã‚’å–ã‚‹ä¾‹
 //  mDeviceEnumerar dev( GUID_BLUETOOTHLE_DEVICE_INTERFACE , false );
 
 mBluetoothEnumerar::mBluetoothEnumerar()
@@ -44,7 +44,7 @@ bool mBluetoothEnumerar::SearchDevice( BluetoothDeviceCatalog& retCatalog , bool
 	params.fIssueInquiry = issue_inquiry;
 	if( issue_inquiry )
 	{
-		//128’PˆÊ‚ÉØ‚èã‚°
+		//128å˜ä½ã«åˆ‡ã‚Šä¸Šã’
 		DWORD multiplier = ( timeout_ms + 127 ) / 128;
 		if( multiplier == 0 )
 		{
@@ -52,7 +52,7 @@ bool mBluetoothEnumerar::SearchDevice( BluetoothDeviceCatalog& retCatalog , bool
 		}
 		else if( 48 < multiplier )
 		{
-			//‘Ò‚¿ŠÔ‚ÌÅ‘å’l‚Í48
+			//å¾…ã¡æ™‚é–“ã®æœ€å¤§å€¤ã¯48
 			params.cTimeoutMultiplier = 48;
 		}
 		else
@@ -122,13 +122,13 @@ bool mBluetoothEnumerar::SearchRadio( BluetoothRadioCatalog& retCatalog )
 
 static bool GetGATTServiceCharacteristic( HANDLE handle , const BTH_LE_GATT_SERVICE& svc , mBluetoothEnumerar::BluetoothLECatalogEntryBase& retentry )
 {
-	HRESULT hr;	//Œ‹‰ÊƒR[ƒh
-	USHORT sz;	//ƒoƒbƒtƒ@ƒTƒCƒY
+	HRESULT hr;	//çµæœã‚³ãƒ¼ãƒ‰
+	USHORT sz;	//ãƒãƒƒãƒ•ã‚¡ã‚µã‚¤ã‚º
 
 	hr = BluetoothGATTGetCharacteristics( handle , const_cast<PBTH_LE_GATT_SERVICE>( &svc ) , 0 , nullptr , &sz , BLUETOOTH_GATT_FLAG_NONE );
 	if( hr != HRESULT_FROM_WIN32( ERROR_MORE_DATA ) )
 	{
-		RaiseError( g_ErrorLogger , 0 , L"BLEƒfƒoƒCƒX‚ÌÚ×î•ñƒGƒ“ƒgƒŠ”‚ğæ“¾‚Å‚«‚Ü‚¹‚ñ" );
+		RaiseError( g_ErrorLogger , 0 , L"BLEãƒ‡ãƒã‚¤ã‚¹ã®è©³ç´°æƒ…å ±ã‚¨ãƒ³ãƒˆãƒªæ•°ã‚’å–å¾—ã§ãã¾ã›ã‚“" );
 		return false;
 	}
 
@@ -139,11 +139,11 @@ static bool GetGATTServiceCharacteristic( HANDLE handle , const BTH_LE_GATT_SERV
 	hr = BluetoothGATTGetCharacteristics( handle , const_cast<PBTH_LE_GATT_SERVICE>( &svc ) , sz , gatt_characteristics.data() , &sz , BLUETOOTH_GATT_FLAG_NONE );
 	if( hr != S_OK )
 	{
-		RaiseError( g_ErrorLogger , 0 , L"BLEƒfƒoƒCƒX‚ÌƒT[ƒrƒX‚ğæ“¾‚Å‚«‚Ü‚¹‚ñ" );
+		RaiseError( g_ErrorLogger , 0 , L"BLEãƒ‡ãƒã‚¤ã‚¹ã®ã‚µãƒ¼ãƒ“ã‚¹ã‚’å–å¾—ã§ãã¾ã›ã‚“" );
 		return false;
 	}
 
-	//ŠeƒGƒ“ƒgƒŠ‚ÌÚ×î•ñ‚ğæ“¾‚·‚é
+	//å„ã‚¨ãƒ³ãƒˆãƒªã®è©³ç´°æƒ…å ±ã‚’å–å¾—ã™ã‚‹
 	for( GattCharacteristics::const_iterator gattitr = gatt_characteristics.begin() ; gattitr != gatt_characteristics.end() ; gattitr++ )
 	{
 		if( !gattitr->IsReadable )
@@ -153,7 +153,7 @@ static bool GetGATTServiceCharacteristic( HANDLE handle , const BTH_LE_GATT_SERV
 		hr = BluetoothGATTGetCharacteristicValue( handle , const_cast<PBTH_LE_GATT_CHARACTERISTIC>( &(*gattitr) ) , 0 , nullptr , &sz , BLUETOOTH_GATT_FLAG_NONE );
 		if( hr != HRESULT_FROM_WIN32( ERROR_MORE_DATA ) )
 		{
-			RaiseError( g_ErrorLogger , 0 , L"BLEƒfƒoƒCƒX‚ÌƒT[ƒrƒX‚ÌƒGƒ“ƒgƒŠ”‚ğæ“¾‚Å‚«‚Ü‚¹‚ñ" );
+			RaiseError( g_ErrorLogger , 0 , L"BLEãƒ‡ãƒã‚¤ã‚¹ã®ã‚µãƒ¼ãƒ“ã‚¹ã®ã‚¨ãƒ³ãƒˆãƒªæ•°ã‚’å–å¾—ã§ãã¾ã›ã‚“" );
 			return false;
 		}
 
@@ -170,14 +170,14 @@ static bool GetGATTServiceCharacteristic( HANDLE handle , const BTH_LE_GATT_SERV
 
 static bool GetGATTServiceInfo( HANDLE handle , mBluetoothEnumerar::BluetoothLECatalogEntryBase& retentry )
 {
-	HRESULT hr;	//Œ‹‰ÊƒR[ƒh
-	USHORT sz;	//ƒoƒbƒtƒ@ƒTƒCƒY
+	HRESULT hr;	//çµæœã‚³ãƒ¼ãƒ‰
+	USHORT sz;	//ãƒãƒƒãƒ•ã‚¡ã‚µã‚¤ã‚º
 	
-	//ƒT[ƒrƒX‚Ìˆê——‚ğæ“¾‚·‚é
+	//ã‚µãƒ¼ãƒ“ã‚¹ã®ä¸€è¦§ã‚’å–å¾—ã™ã‚‹
 	hr = BluetoothGATTGetServices( handle , 0 , nullptr , &sz , BLUETOOTH_GATT_FLAG_NONE );
 	if( hr != HRESULT_FROM_WIN32( ERROR_MORE_DATA ) )
 	{
-		RaiseError( g_ErrorLogger , 0 , L"BLEƒfƒoƒCƒX‚ÌƒT[ƒrƒX‚ÌƒGƒ“ƒgƒŠ”‚ğæ“¾‚Å‚«‚Ü‚¹‚ñ" );
+		RaiseError( g_ErrorLogger , 0 , L"BLEãƒ‡ãƒã‚¤ã‚¹ã®ã‚µãƒ¼ãƒ“ã‚¹ã®ã‚¨ãƒ³ãƒˆãƒªæ•°ã‚’å–å¾—ã§ãã¾ã›ã‚“" );
 		return false;
 	}
 
@@ -188,11 +188,11 @@ static bool GetGATTServiceInfo( HANDLE handle , mBluetoothEnumerar::BluetoothLEC
 	hr = BluetoothGATTGetServices( handle , sz , gatt_services.data() , &sz , BLUETOOTH_GATT_FLAG_NONE );
 	if( hr != S_OK )
 	{
-		RaiseError( g_ErrorLogger , 0 , L"BLEƒfƒoƒCƒX‚ÌƒT[ƒrƒX‚ğæ“¾‚Å‚«‚Ü‚¹‚ñ" );
+		RaiseError( g_ErrorLogger , 0 , L"BLEãƒ‡ãƒã‚¤ã‚¹ã®ã‚µãƒ¼ãƒ“ã‚¹ã‚’å–å¾—ã§ãã¾ã›ã‚“" );
 		return false;
 	}
 
-	//ŠeƒT[ƒrƒX‚ÌÚ×î•ñ‚ğæ“¾‚·‚é
+	//å„ã‚µãƒ¼ãƒ“ã‚¹ã®è©³ç´°æƒ…å ±ã‚’å–å¾—ã™ã‚‹
 	for( GattServices::const_iterator gattitr = gatt_services.begin() ; gattitr != gatt_services.end() ; gattitr++ )
 	{
 		if( !GetGATTServiceCharacteristic( handle , *gattitr , retentry ) )

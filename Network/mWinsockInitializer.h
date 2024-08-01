@@ -1,11 +1,11 @@
-//----------------------------------------------------------------------------
-// Winsock���[�e�B���e�B
+﻿//----------------------------------------------------------------------------
+// Winsockユーティリティ
 // Copyright (C) 2024 Crea Inc. All rights reserved.
 // This program is released under the MIT License. 
 // see http://opensource.org/licenses/mit-license.php
-// ���쌠�\���⃉�C�Z���X�̉��ς͋֎~����Ă��܂��B
-// ���̃\�[�X�R�[�h�Ɋւ��āA��L���C�Z���X�ȊO�̌_�񓙂͈�ؑ��݂��܂���B
-// (���炩�̌_�񂪂���ꍇ�ł��A�{�\�[�X�R�[�h�͂��̑ΏۊO�ƂȂ�܂�)
+// 著作権表示やライセンスの改変は禁止されています。
+// このソースコードに関して、上記ライセンス以外の契約等は一切存在しません。
+// (何らかの契約がある場合でも、本ソースコードはその対象外となります)
 //----------------------------------------------------------------------------
 
 #ifndef MWINSOCKINITIALIZER_H_INCLUDED
@@ -20,10 +20,10 @@ public:
 	mWinsockInitializer();
 	virtual ~mWinsockInitializer();
 
-	//Winsock���C�j�V�����C�Y����Ă��邩�ǂ���
+	//Winsockがイニシャライズされているかどうか
 	bool IsInitialized( void )const;
 
-	//Winsock���C�j�V�����C�Y����Ă��邩�ǂ���
+	//Winsockがイニシャライズされているかどうか
 	operator bool() const;
 
 private:

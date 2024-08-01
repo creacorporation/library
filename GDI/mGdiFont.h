@@ -1,13 +1,13 @@
-//----------------------------------------------------------------------------
-// �E�C���h�E�Ǘ��iGDI�t�H���g�j
+﻿//----------------------------------------------------------------------------
+// ウインドウ管理（GDIフォント）
 // Copyright (C) 2016 Fingerling. All rights reserved. 
 // This program is released under the MIT License. 
 // see http://opensource.org/licenses/mit-license.php
 //----------------------------------------------------------------------------
 
 /*
-���p�r
-GDI�̃t�H���g�ł��B
+●用途
+GDIのフォントです。
 */
 
 #ifndef MGDIFONT_H_INCLUDED
@@ -22,59 +22,59 @@ GDI�̃t�H���g�ł��B
 https://msdn.microsoft.com/ja-jp/library/cc428368.aspx
 http://chokuto.ifdef.jp/urawaza/api/CreateFont.html
 
-int nHeight,               // �t�H���g�̍���
-int nWidth,                // ���ϕ�����
-int nEscapement,           // ������������̊p�x
-int nOrientation,          // �x�[�X���C���̊p�x
-int fnWeight,              // �t�H���g�̑���
-DWORD fdwItalic,           // �Α̂ɂ��邩�ǂ���
-DWORD fdwUnderline,        // ������t���邩�ǂ���
-DWORD fdwStrikeOut,        // ����������t���邩�ǂ���
-DWORD fdwCharSet,          // �L�����N�^�Z�b�g
-DWORD fdwOutputPrecision,  // �o�͐��x
-DWORD fdwClipPrecision,    // �N���b�s���O���x
-DWORD fdwQuality,          // �o�͕i��
-DWORD fdwPitchAndFamily,   // �s�b�`�ƃt�@�~��
-LPCTSTR lpszFace           // �t�H���g��
+int nHeight,               // フォントの高さ
+int nWidth,                // 平均文字幅
+int nEscapement,           // 文字送り方向の角度
+int nOrientation,          // ベースラインの角度
+int fnWeight,              // フォントの太さ
+DWORD fdwItalic,           // 斜体にするかどうか
+DWORD fdwUnderline,        // 下線を付けるかどうか
+DWORD fdwStrikeOut,        // 取り消し線を付けるかどうか
+DWORD fdwCharSet,          // キャラクタセット
+DWORD fdwOutputPrecision,  // 出力精度
+DWORD fdwClipPrecision,    // クリッピング精度
+DWORD fdwQuality,          // 出力品質
+DWORD fdwPitchAndFamily,   // ピッチとファミリ
+LPCTSTR lpszFace           // フォント名
 */
 
 namespace mGdiFont_Definitions
 {
-	//�t�H���g���쐬����Ƃ��Ɏg�p����L�����N�^�Z�b�g
+	//フォントを作成するときに使用するキャラクタセット
 	typedef enum FontCharSet
 	{
-		ANSI,			//�p��
-		BALTIC,			//�o���g�O���̕���(���g�A�j�A��A���g�r�A�ꓙ)
-		GB2312,			//�ȑ̎�������(�����A�V���K�|�[��)
-		CHINESEBIG5,	//�ɑ̎�������(���ؖ����A���`�A�}�J�I)
-		EASTEUROPE,		//�����n����̕���
-		GREEK,			//�M���V����
-		HANGUL,			//�؍���
-		SHIFTJIS,		//���{��
-		RUSSIAN,		//���V�A��
-		TURKISH,		//�g���R��
-		HEBREW,			//�w�u���C��
-		ARABIC,			//�A���r�A��
-		THAI,			//�^�C��
-		LOCALE,			//���݂̃��P�[��(����ݒ�)�Ɋ�Â��Č��߂�
-		OEM,			//����ŃE�C���h�E�Y���Ō��߂�
+		ANSI,			//英語
+		BALTIC,			//バルト三国の文字(リトアニア語、ラトビア語等)
+		GB2312,			//簡体字中国語(中国、シンガポール)
+		CHINESEBIG5,	//繁体字中国語(中華民国、香港、マカオ)
+		EASTEUROPE,		//東欧系言語の文字
+		GREEK,			//ギリシャ語
+		HANGUL,			//韓国語
+		SHIFTJIS,		//日本語
+		RUSSIAN,		//ロシア語
+		TURKISH,		//トルコ語
+		HEBREW,			//ヘブライ語
+		ARABIC,			//アラビア語
+		THAI,			//タイ語
+		LOCALE,			//現在のロケール(言語設定)に基づいて決める
+		OEM,			//何語版ウインドウズかで決める
 		eMAX_FontCharSet,
 	}FontCharSet;
 
-	//�t�H���g���쐬����Ƃ����Y�킳
+	//フォントを作成するときの綺麗さ
 	enum PrintQuality
 	{
-		NORMAL ,		//�f�t�H���g�B�R���g���[���p�l���̐ݒ�ɏ]���B
-		ANTIALIAESED ,	//�W���̃A���`�G�C���A�X������B�ׂ������̕\�����C�}�C�`�B
-		CLEARTYPE ,		//ClearType���g���BXP�ȍ~�̂݁B�Y��B
+		NORMAL ,		//デフォルト。コントロールパネルの設定に従う。
+		ANTIALIAESED ,	//標準のアンチエイリアスをする。細い部分の表現がイマイチ。
+		CLEARTYPE ,		//ClearTypeを使う。XP以降のみ。綺麗。
 	};
 
-	//�t�H���g���󎚂���Ƃ��̃s�b�`
+	//フォントを印字するときのピッチ
 	enum PrintPitch
 	{
-		DEFAULT ,		//�t�H���g�C���ɂ���
-		FIXED ,			//�Œ蕝�ɂ���
-		VARIABLE ,		//�ϕ��ɂ���
+		DEFAULT ,		//フォント任せにする
+		FIXED ,			//固定幅にする
+		VARIABLE ,		//可変幅にする
 	};
 }
 
@@ -83,23 +83,23 @@ class mGdiFont : public mGdiHandle
 public:
 
 
-	//�I�v�V�����\����
-	//���ۂɃt�H���g���쐬����Ƃ��́AOption�\���̂𒼐ڎg�킸�ɁA��肽�����ɍ��킹�Ĉȉ����g���ĉ������B
-	//�EOption_UseOption �c �����o�ϐ��𖄂߂ăI�v�V������ݒ肵�����Ƃ�
+	//オプション構造体
+	//実際にフォントを作成するときは、Option構造体を直接使わずに、作りたい物に合わせて以下を使って下さい。
+	//・Option_UseOption … メンバ変数を埋めてオプションを設定したいとき
 	struct Option
 	{
-		//�t�H���g�����̕��@
+		//フォント生成の方法
 		enum CreateMethod
 		{
-			USEOPTION,		//�ʏ�̕��@
+			USEOPTION,		//通常の方法
 		};
 
-		//�C���e���Z���X�ɒl�������o�Ă��Ďז��Ȃ̂ŊO�ɒǂ��o���Ă���܂�
+		//インテリセンスに値がわらわら出てきて邪魔なので外に追い出してあります
 		using FontCharSet = mGdiFont_Definitions::FontCharSet;
 		using PrintQuality = mGdiFont_Definitions::PrintQuality;
 		using PrintPitch = mGdiFont_Definitions::PrintPitch;
 
-		const CreateMethod method;	//RTTI�̑�p�ł��B�ύX�̕K�v�͂���܂���B
+		const CreateMethod method;	//RTTIの代用です。変更の必要はありません。
 	protected:
 		Option() = delete;
 		Option( CreateMethod create_method ) : method( create_method )
@@ -107,71 +107,71 @@ public:
 		}
 	};
 
-	//�t�H���g�����̃I�v�V����
-	//�ǂ�ȃt�H���g�𐶐����邩���R�R�Ŏw�肵�܂��B
+	//フォント生成のオプション
+	//どんなフォントを生成するかをココで指定します。
 	struct Option_UseOption : public Option
 	{
-		WString name;			//�g�p�������t�H���g�̖��O
-		LONG height;			//�t�H���g�̍���
-		LONG width;				//�t�H���g�̕�(0�ō������玩���ݒ�)
-		bool isbold;			//�����ɂ������ꍇ��true
-		bool isitalic;			//�C�^���b�N�ɂ������ꍇ��true
-		bool isunderline;		//�A���_�[���C�����~�����ꍇ��true
-		bool isstrikeout;		//�ł���������t�������ꍇ��true
-		FontCharSet charset;	//�g�p����L�����N�^�Z�b�g
-		PrintQuality quality;	//�󎚕i��
-		PrintPitch pitch;		//������
-		LONG orientation;		//�����̉�]�p�x(�����v���0.1�x�P��) �������̏ꍇ0�A�c�����̏ꍇ-900�������l�ł��B
+		WString name;			//使用したいフォントの名前
+		LONG height;			//フォントの高さ
+		LONG width;				//フォントの幅(0で高さから自動設定)
+		bool isbold;			//太字にしたい場合はtrue
+		bool isitalic;			//イタリックにしたい場合はtrue
+		bool isunderline;		//アンダーラインが欲しい場合はtrue
+		bool isstrikeout;		//打ち消し線を付けたい場合はtrue
+		FontCharSet charset;	//使用するキャラクタセット
+		PrintQuality quality;	//印字品質
+		PrintPitch pitch;		//文字幅
+		LONG orientation;		//文字の回転角度(反時計回り0.1度単位) 横書きの場合0、縦書きの場合-900が推奨値です。
 
 		Option_UseOption() : Option( CreateMethod::USEOPTION )
 		{
-			name = L"";	//�t�H���g�����󕶎���̏ꍇ�AWindows���K���Ɍ��߂Ă����
+			name = L"";	//フォント名が空文字列の場合、Windowsが適当に決めてくれる
 			height = 9;
-			width = 0;							//�������玩���ݒ�
+			width = 0;							//高さから自動設定
 			isbold = false;
 			isitalic = false;
 			isunderline = false;
 			isstrikeout = false;
-			charset = FontCharSet::LOCALE;		//���݂̃��P�[���Ō��߂�
-			quality = PrintQuality::NORMAL;		//�f�t�H���g�B�A���`�G�C���A�X�͂��Ȃ�
-			pitch = PrintPitch::DEFAULT;		//���̓t�H���g�C���Ō��߂�
-			orientation = 0;					//��]�p�x
+			charset = FontCharSet::LOCALE;		//現在のロケールで決める
+			quality = PrintQuality::NORMAL;		//デフォルト。アンチエイリアスはしない
+			pitch = PrintPitch::DEFAULT;		//幅はフォント任せで決める
+			orientation = 0;					//回転角度
 		}
 	};
 
-	//�t�@�N�g�����\�b�h
+	//ファクトリメソッド
 	static mGdiHandle* Factory( const void* opt )throw( )
 	{
 		mGdiHandle* result;
 		try
 		{
-			//�V�����t�H���g�̃C���X�^���X���쐬����
+			//新しいフォントのインスタンスを作成する
 			result = mNew mGdiFont( (const Option*)opt );
 		}
 		catch( mException )
 		{
-			//�t�H���g�̐����Ɏ��s�����ꍇ�̓k���|�C���^��Ԃ�
+			//フォントの生成に失敗した場合はヌルポインタを返す
 			result = nullptr;
 		}
 		return result;
 	}
 
-	//�R���X�g���N�^
-	//���̃R���X�g���N�^�́AMyHandle�Ɋi�[����u���V�̐������s���ɗ�O�𓊂��܂��B
+	//コンストラクタ
+	//このコンストラクタは、MyHandleに格納するブラシの生成失敗時に例外を投げます。
 	mGdiFont( const Option* opt )throw( mException );
 
-	//�f�X�g���N�^
+	//デストラクタ
 	virtual ~mGdiFont();
 	
-	//�n���h���̒l���擾����(�L���X�g���Z�q�o�[�W����)
+	//ハンドルの値を取得する(キャスト演算子バージョン)
 	operator HFONT()const;
 
-	//�n���h���̒l���擾����(���ʂ̊֐��o�[�W����)
+	//ハンドルの値を取得する(普通の関数バージョン)
 	virtual HGDIOBJ GetHandle( void )const override;
 
 private:
 
-	//�ȉ��A�f�t�H���g�n�̂̓R�s�[�����Ɩʓ|�������̂Ŏg�p�֎~
+	//以下、デフォルト系のはコピーされると面倒くさいので使用禁止
 
 	mGdiFont() = delete;
 	mGdiFont( const mGdiFont& src ) = delete;
@@ -179,13 +179,13 @@ private:
 
 private:
 
-	//Option�Ɏw�肵�����e�Ɍ������t�H���g�𐶐����AMyHandle�ɓo�^����
-	//�R���X�g���N�^����Ăяo�����z��
+	//Optionに指定した内容に見合うフォントを生成し、MyHandleに登録する
+	//コンストラクタから呼び出される想定
 	bool MakeFont( const Option_UseOption* opt );
 
 
 protected:
-	//�n���h���̎���
+	//ハンドルの実体
 	HFONT MyHandle;
 };
 

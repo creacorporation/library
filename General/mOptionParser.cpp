@@ -1,5 +1,5 @@
-//----------------------------------------------------------------------------
-// ƒRƒ}ƒ“ƒhƒ‰ƒCƒ“•¶š—ñŠÇ—ƒNƒ‰ƒX
+ï»¿//----------------------------------------------------------------------------
+// ã‚³ãƒãƒ³ãƒ‰ãƒ©ã‚¤ãƒ³æ–‡å­—åˆ—ç®¡ç†ã‚¯ãƒ©ã‚¹
 // Copyright (C) 2016 Fingerling. All rights reserved. 
 // This program is released under the MIT License. 
 // see http://opensource.org/licenses/mit-license.php
@@ -11,7 +11,7 @@
 
 mOptionParser::mOptionParser()
 {
-	//ƒRƒ}ƒ“ƒhƒ‰ƒCƒ“•¶š—ñ“Çæ‚è
+	//ã‚³ãƒãƒ³ãƒ‰ãƒ©ã‚¤ãƒ³æ–‡å­—åˆ—èª­å–ã‚Š
 	LPWSTR command_line = GetCommandLineW();
 	if( !command_line )
 	{
@@ -19,7 +19,7 @@ mOptionParser::mOptionParser()
 		return;
 	}
 
-	//argc/argvŒ`®‚Éƒp[ƒX‚·‚é
+	//argc/argvå½¢å¼ã«ãƒ‘ãƒ¼ã‚¹ã™ã‚‹
 	int argc = 0;
 	LPWSTR* argv = CommandLineToArgvW( command_line , &argc );
 	if( argv == nullptr )
@@ -28,7 +28,7 @@ mOptionParser::mOptionParser()
 		return;
 	}
 
-	//ƒƒ“ƒo•Ï”‚Æ‚µ‚Ä•Û‘¶
+	//ãƒ¡ãƒ³ãƒå¤‰æ•°ã¨ã—ã¦ä¿å­˜
 	MyArgs.resize( argc );
 	for( int i = 0 ; i < argc ; i++ )
 	{
@@ -60,7 +60,7 @@ INT mOptionParser::GetPosition( WCHAR opt_char )const
 	{
 		if( GetArgType( i ) == ArgType::ARGTYPE_OPT_CHAR )
 		{
-			//•¶šŒ`®
+			//æ–‡å­—å½¢å¼
 			if( MyArgs[ i ].find( opt_char ) != WString::npos )
 			{
 				return i;
@@ -72,7 +72,7 @@ INT mOptionParser::GetPosition( WCHAR opt_char )const
 
 INT mOptionParser::GetPosition( const WString& opt_string )const
 {
-	//•¶š—ñŒ`®‚Ìê‡‚ÍAŠ®‘Sˆê’v‚Å”»’è‚·‚é
+	//æ–‡å­—åˆ—å½¢å¼ã®å ´åˆã¯ã€å®Œå…¨ä¸€è‡´ã§åˆ¤å®šã™ã‚‹
 	WString req_string = L"--" + opt_string;
 
 	for( DWORD i = 0 ; i < MyArgs.size() ; i++ )
@@ -87,14 +87,14 @@ INT mOptionParser::GetPosition( const WString& opt_string )const
 
 INT mOptionParser::GetPosition( WCHAR opt_char , const WString& opt_string )const
 {
-	//•¶šŒ`®‚Åƒ`ƒFƒbƒN
+	//æ–‡å­—å½¢å¼ã§ãƒã‚§ãƒƒã‚¯
 	INT index = GetPosition( opt_string );
 	if( 0 <= index )
 	{
 		return index;
 	}
 
-	//Œ©‚Â‚©‚ç‚È‚¢‚Ì‚Å•¶š—ñŒ`®‚Åƒ`ƒFƒbƒN
+	//è¦‹ã¤ã‹ã‚‰ãªã„ã®ã§æ–‡å­—åˆ—å½¢å¼ã§ãƒã‚§ãƒƒã‚¯
 	return GetPosition( opt_char );
 }
 
@@ -105,7 +105,7 @@ INT mOptionParser::GetLastOptPosition( void )const
 		return -1;
 	}
 
-	//ƒRƒ}ƒ“ƒhƒ‰ƒCƒ“ˆø”‚Ì”‚ÍINT‚Å‚½‚è‚é‚ÉŒˆ‚Ü‚Á‚Ä‚¢‚é‚Ì‚ÅOK
+	//ã‚³ãƒãƒ³ãƒ‰ãƒ©ã‚¤ãƒ³å¼•æ•°ã®æ•°ã¯INTã§ãŸã‚Šã‚‹ã«æ±ºã¾ã£ã¦ã„ã‚‹ã®ã§OK
 	for( INT i = (INT)MyArgs.size() - 1 ; 0 <= i ; i-- )
 	{
 		if( GetArgType( i ) != ArgType::ARGTYPE_NOTOPTION )
@@ -123,7 +123,7 @@ INT mOptionParser::GetFirstOptPosition( void )const
 		return -1;
 	}
 
-	//ƒRƒ}ƒ“ƒhƒ‰ƒCƒ“ˆø”‚Ì”‚ÍINT‚Å‚½‚è‚é‚ÉŒˆ‚Ü‚Á‚Ä‚¢‚é‚Ì‚ÅOK
+	//ã‚³ãƒãƒ³ãƒ‰ãƒ©ã‚¤ãƒ³å¼•æ•°ã®æ•°ã¯INTã§ãŸã‚Šã‚‹ã«æ±ºã¾ã£ã¦ã„ã‚‹ã®ã§OK
 	for( INT i = 0 ; 0 < MyArgs.size() ; i++ )
 	{
 		if( GetArgType( i ) != ArgType::ARGTYPE_NOTOPTION )
@@ -138,33 +138,33 @@ INT mOptionParser::GetFirstOptPosition( void )const
 
 mOptionParser::ArgType mOptionParser::GetArgType( INT index )const
 {
-	//”ÍˆÍŠOH
+	//ç¯„å›²å¤–ï¼Ÿ
 	if( index < 0 || MyArgs.size() <= (DWORD)index )
 	{
 		return ArgType::ARGTYPE_ERROR;
 	}
 
-	//1•¶š–Ú‚ª-‚¾‚Á‚½‚çA•¶šŒ`®‚©•¶š—ñŒ`®
+	//1æ–‡å­—ç›®ãŒ-ã ã£ãŸã‚‰ã€æ–‡å­—å½¢å¼ã‹æ–‡å­—åˆ—å½¢å¼
 	if( MyArgs[ index ][ 0 ] == L'-' )
 	{
 		if( 2 < MyArgs[ index ].size() && MyArgs[ index ][ 1 ] == L'-' )
 		{
-			//•¶š—ñŒ`®
+			//æ–‡å­—åˆ—å½¢å¼
 			return ArgType::ARGTYPE_OPT_STRING;
 		}
 		else
 		{
-			//•¶šŒ`®
+			//æ–‡å­—å½¢å¼
 			return ArgType::ARGTYPE_OPT_CHAR;
 		}
 	}
-	//1•¶š–Ú‚ª/‚¾‚Á‚½‚ç•¶šŒ`®
+	//1æ–‡å­—ç›®ãŒ/ã ã£ãŸã‚‰æ–‡å­—å½¢å¼
 	if( MyArgs[ index ][ 0 ] == L'/' )
 	{
-		//•¶šŒ`®
+		//æ–‡å­—å½¢å¼
 		return ArgType::ARGTYPE_OPT_CHAR;
 	}
-	//ƒIƒvƒVƒ‡ƒ“‚Å‚Í‚È‚¢
+	//ã‚ªãƒ—ã‚·ãƒ§ãƒ³ã§ã¯ãªã„
 	return ArgType::ARGTYPE_NOTOPTION;
 }
 

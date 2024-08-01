@@ -1,11 +1,11 @@
-//----------------------------------------------------------------------------
-// COM�ւ̃X�g���[�~���O�������ݑ���
+﻿//----------------------------------------------------------------------------
+// COMへのストリーミング書き込み操作
 // Copyright (C) 2024 Crea Inc. All rights reserved.
 // This program is released under the MIT License. 
 // see http://opensource.org/licenses/mit-license.php
-// ���쌠�\���⃉�C�Z���X�̉��ς͋֎~����Ă��܂��B
-// ���̃\�[�X�R�[�h�Ɋւ��āA��L���C�Z���X�ȊO�̌_�񓙂͈�ؑ��݂��܂���B
-// (���炩�̌_�񂪂���ꍇ�ł��A�{�\�[�X�R�[�h�͂��̑ΏۊO�ƂȂ�܂�)
+// 著作権表示やライセンスの改変は禁止されています。
+// このソースコードに関して、上記ライセンス以外の契約等は一切存在しません。
+// (何らかの契約がある場合でも、本ソースコードはその対象外となります)
 //----------------------------------------------------------------------------
 
 #ifndef MCOMMEMSTREAM_H_INCLUDED
@@ -16,7 +16,7 @@
 #include "General/mTCHAR.h"
 #include <objidl.h>
 
-//COM�̃��b�p�[
+//COMのラッパー
 class mComMemStream : public mComStream
 {
 public:
@@ -24,44 +24,44 @@ public:
 	mComMemStream( DWORD buffersize = 4096 );
 	virtual ~mComMemStream();
 
-	//�t�@�C������܂�
+	//ファイルを閉じます
 	virtual bool Close( void );
 
-	//�P������������
+	//１文字書き込み
 	virtual bool Write( INT data );
 
-	//�P�����i�P�o�C�g�j�ǂݍ��݂܂�
+	//１文字（１バイト）読み込みます
 	virtual INT Read( void );
 
-	//�J���Ă��邩�ǂ���
+	//開いているかどうか
 	virtual bool IsOpen( void )const;
 
-	//EOF�ɒB���Ă��邩�𒲂ׂ܂�
+	//EOFに達しているかを調べます
 	virtual bool IsEOF( void )const;
 
-	//�L���b�V������������
+	//キャッシュを書き込み
 	virtual bool FlushCache( void );
 
-	//�w��̈ʒu�Ƀ|�C���^���ړ����܂�
-	//�w�肷��̂́A�t�@�C���̐擪����̈ʒu�ɂȂ�܂��B
+	//指定の位置にポインタを移動します
+	//指定するのは、ファイルの先頭からの位置になります。
 	bool SetPointer( ULONGLONG pos );
 
-	//�t�@�C���|�C���^��O��Ɉړ�
-	//distance : �ړ�����
-	//ret : ������true
-	//�w��ʒu��EOF�𒴂���ꍇ���G���[�ɂȂ�܂���B
+	//ファイルポインタを前後に移動
+	//distance : 移動距離
+	//ret : 成功時true
+	//指定位置がEOFを超える場合もエラーになりません。
 	bool MovePointer( LONGLONG distance );
 
-	//�t�@�C���|�C���^���t�@�C���̖����Ɉړ�
+	//ファイルポインタをファイルの末尾に移動
 	bool SetPointerToEnd( void );
 
-	//�t�@�C���|�C���^���t�@�C���̐擪�Ɉړ�
+	//ファイルポインタをファイルの先頭に移動
 	bool SetPointerToBegin( void );
 
-	//�C���^�[�t�F�C�X���擾
+	//インターフェイスを取得
 	IStream* Get( void )const;
 
-	//�C���^�[�t�F�C�X���擾
+	//インターフェイスを取得
 	operator IStream*( void )const;
 
 private:
@@ -71,10 +71,10 @@ private:
 
 protected:
 
-	//���̃V�X�e���R�[���œǂݎ��T�C�Y
+	//一回のシステムコールで読み取るサイズ
 	const DWORD MAX_BUFFER_SIZE;
 
-	//�����݃L���b�V����j��
+	//書込みキャッシュを破棄
 	void ResetWriteCache( void );
 
 	IStream* MyStream;

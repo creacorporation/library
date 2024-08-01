@@ -1,11 +1,11 @@
-//----------------------------------------------------------------------------
-// �v�����^�񋓃N���X
+﻿//----------------------------------------------------------------------------
+// プリンタ列挙クラス
 // Copyright (C) 2019- Crea Inc. All rights reserved.
 // This program is released under the MIT License. 
 // see http://opensource.org/licenses/mit-license.php
-// ���쌠�\���⃉�C�Z���X�̉��ς͋֎~����Ă��܂��B
-// ���̃\�[�X�R�[�h�Ɋւ��āA��L���C�Z���X�ȊO�̌_�񓙂͈�ؑ��݂��܂���B
-// (���炩�̌_�񂪂���ꍇ�ł��A�{�\�[�X�R�[�h�͂��̑ΏۊO�ƂȂ�܂�)
+// 著作権表示やライセンスの改変は禁止されています。
+// このソースコードに関して、上記ライセンス以外の契約等は一切存在しません。
+// (何らかの契約がある場合でも、本ソースコードはその対象外となります)
 //----------------------------------------------------------------------------
 
 #ifndef MPRINTERENUMERAR_H_INCLUDED
@@ -23,29 +23,29 @@ public:
 	mPrinterEnumerar() noexcept;
 	virtual ~mPrinterEnumerar();
 
-	//�f�t�H���g�̃v�����^�[�̖��O�𓾂�
+	//デフォルトのプリンターの名前を得る
 	bool GetDefaultPrinterName( WString& retName ) noexcept;
 
-	//�v�����^�[���
+	//プリンター情報
 	using PrinterInfo = mPrinterInfo::PrinterInfo;
 
-	//�V�X�e�����猩���Ă���v�����^�̈ꗗ�𓾂�
-	//retinfo : ���ʂ̊i�[��
-	// reload : �^�̎��ēǂݍ��݂���B�U�̎��L���b�V��������΂�����g���B
-	// ret : �������^
+	//システムから見えているプリンタの一覧を得る
+	//retinfo : 結果の格納先
+	// reload : 真の時再読み込みする。偽の時キャッシュがあればそれを使う。
+	// ret : 成功時真
 	bool GetPrinterInfo( PrinterInfo& retinfo , bool reload = true ) noexcept;
 
-	//�V�X�e�����猩���Ă���v�����^�̈ꗗ�𓾂�
-	// reload : �^�̎��ēǂݍ��݂���B�U�̎��L���b�V��������΂�����g���B
-	// ret : ���ʂւ̎Q��
+	//システムから見えているプリンタの一覧を得る
+	// reload : 真の時再読み込みする。偽の時キャッシュがあればそれを使う。
+	// ret : 結果への参照
 	const PrinterInfo& GetPrinterInfo( bool reload = true ) noexcept;
 
-	//�v�����^�[�ݒ���
+	//プリンター設定情報
 	using PrinterProperty = mPrinterInfo::PrinterProperty;
 
-	//�v�����^�[�̐ݒ�����擾����
-	// name : �擾�������v�����^�[�̖��O
-	// retProperty : �擾��������
+	//プリンターの設定情報を取得する
+	// name : 取得したいプリンターの名前
+	// retProperty : 取得した結果
 	bool GetPrinterProperty( const WString& name , PrinterProperty& retProperty ) noexcept;
 
 private:

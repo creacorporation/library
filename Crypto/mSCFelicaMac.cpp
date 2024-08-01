@@ -1,11 +1,11 @@
-//----------------------------------------------------------------------------
-// Felica”FØƒR[ƒhŒvZ‹@
+ï»¿//----------------------------------------------------------------------------
+// Felicaèªè¨¼ã‚³ãƒ¼ãƒ‰è¨ˆç®—æ©Ÿ
 // Copyright (C) 2021- Crea Inc. All rights reserved.
 // This program is released under the MIT License. 
 // see http://opensource.org/licenses/mit-license.php
-// ’˜ìŒ •\¦‚âƒ‰ƒCƒZƒ“ƒX‚Ì‰ü•Ï‚Í‹Ö~‚³‚ê‚Ä‚¢‚Ü‚·B
-// ‚±‚Ìƒ\[ƒXƒR[ƒh‚ÉŠÖ‚µ‚ÄAã‹Lƒ‰ƒCƒZƒ“ƒXˆÈŠO‚ÌŒ_–ñ“™‚ÍˆêØ‘¶İ‚µ‚Ü‚¹‚ñB
-// (‰½‚ç‚©‚ÌŒ_–ñ‚ª‚ ‚éê‡‚Å‚àA–{ƒ\[ƒXƒR[ƒh‚Í‚»‚Ì‘ÎÛŠO‚Æ‚È‚è‚Ü‚·)
+// è‘—ä½œæ¨©è¡¨ç¤ºã‚„ãƒ©ã‚¤ã‚»ãƒ³ã‚¹ã®æ”¹å¤‰ã¯ç¦æ­¢ã•ã‚Œã¦ã„ã¾ã™ã€‚
+// ã“ã®ã‚½ãƒ¼ã‚¹ã‚³ãƒ¼ãƒ‰ã«é–¢ã—ã¦ã€ä¸Šè¨˜ãƒ©ã‚¤ã‚»ãƒ³ã‚¹ä»¥å¤–ã®å¥‘ç´„ç­‰ã¯ä¸€åˆ‡å­˜åœ¨ã—ã¾ã›ã‚“ã€‚
+// (ä½•ã‚‰ã‹ã®å¥‘ç´„ãŒã‚ã‚‹å ´åˆã§ã‚‚ã€æœ¬ã‚½ãƒ¼ã‚¹ã‚³ãƒ¼ãƒ‰ã¯ãã®å¯¾è±¡å¤–ã¨ãªã‚Šã¾ã™)
 //----------------------------------------------------------------------------
 
 #include "mSCFelicaMac.h"
@@ -27,9 +27,9 @@ mSCFelicaMac::mSCFelicaMac()
 
 mSCFelicaMac::~mSCFelicaMac()
 {
-	//ƒL[‚Ìƒnƒ“ƒhƒ‹
+	//ã‚­ãƒ¼ã®ãƒãƒ³ãƒ‰ãƒ«
 	ClearKey();
-	//ƒAƒ‹ƒSƒŠƒYƒ€‚Ìƒnƒ“ƒhƒ‹
+	//ã‚¢ãƒ«ã‚´ãƒªã‚ºãƒ ã®ãƒãƒ³ãƒ‰ãƒ«
 	if( MyAlgHandle )
 	{
 		BCryptCloseAlgorithmProvider( MyAlgHandle , 0 );
@@ -42,23 +42,23 @@ bool mSCFelicaMac::Initialize( void )
 	NTSTATUS stat;
 	if( MyAlgHandle )
 	{
-		RaiseError( g_ErrorLogger , 0 , L"“ñd‚Éƒnƒ“ƒhƒ‹‚ğŠJ‚±‚¤‚Æ‚µ‚Ä‚¢‚Ü‚·" );
+		RaiseError( g_ErrorLogger , 0 , L"äºŒé‡ã«ãƒãƒ³ãƒ‰ãƒ«ã‚’é–‹ã“ã†ã¨ã—ã¦ã„ã¾ã™" );
 		return false;
 	}
 
-	//2key triple des‚Ìƒnƒ“ƒhƒ‹‚ğ—v‹
+	//2key triple desã®ãƒãƒ³ãƒ‰ãƒ«ã‚’è¦æ±‚
 	stat = BCryptOpenAlgorithmProvider( &MyAlgHandle , BCRYPT_3DES_112_ALGORITHM , nullptr , 0 );
 	if( !NT_SUCCESS( stat ) )
 	{
-		RaiseError( g_ErrorLogger , stat , L"ˆÃ†ƒvƒƒoƒCƒ_‚Ìƒnƒ“ƒhƒ‹‚ğæ“¾‚Å‚«‚Ü‚¹‚ñ" );
+		RaiseError( g_ErrorLogger , stat , L"æš—å·ãƒ—ãƒ­ãƒã‚¤ãƒ€ã®ãƒãƒ³ãƒ‰ãƒ«ã‚’å–å¾—ã§ãã¾ã›ã‚“" );
 		return false;
 	}
 
-	//ˆÃ†‰»ƒ‚[ƒh‚ğw’è
+	//æš—å·åŒ–ãƒ¢ãƒ¼ãƒ‰ã‚’æŒ‡å®š
 	stat = BCryptSetProperty( MyAlgHandle , BCRYPT_CHAINING_MODE , (PUCHAR)BCRYPT_CHAIN_MODE_CBC , sizeof( BCRYPT_CHAIN_MODE_CBC ) , 0 );
 	if( !NT_SUCCESS( stat ) )
 	{
-		RaiseError( g_ErrorLogger , stat , L"ˆÃ†‰»ƒ‚[ƒh‚ğİ’è‚Å‚«‚Ü‚¹‚ñ" );
+		RaiseError( g_ErrorLogger , stat , L"æš—å·åŒ–ãƒ¢ãƒ¼ãƒ‰ã‚’è¨­å®šã§ãã¾ã›ã‚“" );
 		return false;
 	}
 	return true;
@@ -71,12 +71,12 @@ bool mSCFelicaMac::CheckIsWeakKey( const mSecureBinary& key )
 		unsigned long long keyval = 0;
 		static const unsigned long long weak_key_table[] =
 		{
-			0x0101010101010101u,0xFEFEFEFEFEFEFEFEu,0xE0E0E0E0F1F1F1F1u,0x1F1F1F1F0E0E0E0Eu,	//ãŒ®
+			0x0101010101010101u,0xFEFEFEFEFEFEFEFEu,0xE0E0E0E0F1F1F1F1u,0x1F1F1F1F0E0E0E0Eu,	//å¼±éµ
 			0x0000000000000000u,0xFFFFFFFFFFFFFFFFu,0xE1E1E1E1F0F0F0F0u,0x1E1E1E1E0F0F0F0Fu,
-			0x011F011F010E010Eu,0x1F011F010E010E01u,0x01E001E001F101F1u,0xE001E001F101F101u,	//‡ãŒ®
+			0x011F011F010E010Eu,0x1F011F010E010E01u,0x01E001E001F101F1u,0xE001E001F101F101u,	//é †å¼±éµ
 			0x01FE01FE01FE01FEu,0xFE01FE01FE01FE01u,0x1FE01FE00EF10EF1u,0xE01FE01FF10EF10Eu,
 			0x1FFE1FFE0EFE0EFEu,0xFE1FFE1FFE0EFE0Eu,0xE0FEE0FEF1FEF1FEu,0xFEE0FEE0FEF1FEF1u,
-			0x01011F1F01010E0Eu,0x1F1F01010E0E0101u,0xE0E01F1FF1F10E0Eu,0x0101E0E00101F1F1u,	//ãŒ®Œó•â
+			0x01011F1F01010E0Eu,0x1F1F01010E0E0101u,0xE0E01F1FF1F10E0Eu,0x0101E0E00101F1F1u,	//å¼±éµå€™è£œ
 			0x1F1FE0E00E0EF1F1u,0xE0E0FEFEF1F1FEFEu,0x0101FEFE0101FEFEu,0x1F1FFEFE0E0EFEFEu,
 			0xE0FE011FF1FE010Eu,0x011F1F01010E0E01u,0x1FE001FE0EF101FEu,0xE0FE1F01F1FE0E01u,
 			0x011FE0FE010EF1FEu,0x1FE0E01F0EF1F10Eu,0xE0FEFEE0F1FEFEF1u,0x011FFEE0010EFEF1u,
@@ -109,22 +109,22 @@ bool mSCFelicaMac::CheckIsWeakKey( const mSecureBinary& key )
 	//CK1
 	if( !Check( key , 0 ) )
 	{
-		//ãŒ®‚È‚Ì‚Åƒ_ƒ
+		//å¼±éµãªã®ã§ãƒ€ãƒ¡
 		return false;
 	}
 	//CK2
 	if( !Check( key , 8 ) )
 	{
-		//ãŒ®‚È‚Ì‚Åƒ_ƒ
+		//å¼±éµãªã®ã§ãƒ€ãƒ¡
 		return false;
 	}
-	//ãŒ®‚Å‚Í‚È‚¢
+	//å¼±éµã§ã¯ãªã„
 	return true;
 }
 
 void mSCFelicaMac::ClearKey( void )
 {
-	//ƒL[‚Ìƒnƒ“ƒhƒ‹
+	//ã‚­ãƒ¼ã®ãƒãƒ³ãƒ‰ãƒ«
 	if( MyRKeyHandle )
 	{
 		BCryptDestroyKey( MyRKeyHandle );
@@ -139,7 +139,7 @@ void mSCFelicaMac::ClearKey( void )
 	}
 	MyWKeyObject.reset();
 
-	//ƒ`ƒƒƒŒƒ“ƒW
+	//ãƒãƒ£ãƒ¬ãƒ³ã‚¸
 	MyChallenge.clear();
 }
 
@@ -151,24 +151,24 @@ bool mSCFelicaMac::SetKey( const mSecureBinary& key , mBinary& retChallenge )
 	NTSTATUS stat;
 	if( !MyAlgHandle )
 	{
-		RaiseError( g_ErrorLogger , 0 , L"‰Šú‰»‚³‚ê‚Ä‚¢‚Ü‚¹‚ñ" );
+		RaiseError( g_ErrorLogger , 0 , L"åˆæœŸåŒ–ã•ã‚Œã¦ã„ã¾ã›ã‚“" );
 		goto badend;
 	}
 	ClearKey();
 
-	//Œ®‚ÌƒTƒCƒY‚ğŠm”F
+	//éµã®ã‚µã‚¤ã‚ºã‚’ç¢ºèª
 	if( key.size() != 16 )
 	{
-		RaiseError( g_ErrorLogger , 0 , L"Œ®‚ÌƒTƒCƒY‚ªˆá‚¢‚Ü‚·" );
+		RaiseError( g_ErrorLogger , 0 , L"éµã®ã‚µã‚¤ã‚ºãŒé•ã„ã¾ã™" );
 		goto badend;
 	}
 
-	//ƒ`ƒƒƒŒƒ“ƒW‚ğ¶¬
+	//ãƒãƒ£ãƒ¬ãƒ³ã‚¸ã‚’ç”Ÿæˆ
 	MyChallenge.resize( 16 );
 	stat = BCryptGenRandom( nullptr , (PUCHAR)MyChallenge.data() , (ULONG)MyChallenge.size() , BCRYPT_USE_SYSTEM_PREFERRED_RNG );
 	if( !NT_SUCCESS( stat ) )
 	{
-		RaiseError( g_ErrorLogger , stat , L"—”¶¬ƒGƒ‰[" );
+		RaiseError( g_ErrorLogger , stat , L"ä¹±æ•°ç”Ÿæˆã‚¨ãƒ©ãƒ¼" );
 		goto badend;
 	}
 	retChallenge.resize( 16 );
@@ -178,14 +178,14 @@ bool mSCFelicaMac::SetKey( const mSecureBinary& key , mBinary& retChallenge )
 		retChallenge[ i + 8 ] = MyChallenge[ 15 - i ];
 	}
 
-	//ƒZƒbƒVƒ‡ƒ“Œ®‚Ìƒnƒ“ƒhƒ‹‚ğì¬‚·‚é
+	//ã‚»ãƒƒã‚·ãƒ§ãƒ³éµã®ãƒãƒ³ãƒ‰ãƒ«ã‚’ä½œæˆã™ã‚‹
 	if( !CreateSessionKey( key ) )
 	{
-		RaiseError( g_ErrorLogger , 0 , L"ƒZƒbƒVƒ‡ƒ“Œ®‚Ì¶¬‚ª¸”s‚µ‚Ü‚µ‚½" );
+		RaiseError( g_ErrorLogger , 0 , L"ã‚»ãƒƒã‚·ãƒ§ãƒ³éµã®ç”ŸæˆãŒå¤±æ•—ã—ã¾ã—ãŸ" );
 		goto badend;
 	}
 
-	//ƒ`ƒƒƒŒƒ“ƒW‚ÌŒã”¼‚Í—v‚ç‚ñ‚©‚çÁ‚·
+	//ãƒãƒ£ãƒ¬ãƒ³ã‚¸ã®å¾ŒåŠã¯è¦ã‚‰ã‚“ã‹ã‚‰æ¶ˆã™
 	SecureZeroMemory( &MyChallenge.data()[ 8 ] , 8 );
 	MyChallenge.resize( 8 );
 	return true;
@@ -205,19 +205,19 @@ bool mSCFelicaMac::CreateSessionKey( const mSecureBinary& key )
 {
 	NTSTATUS stat;
 
-	//ƒL[ƒIƒuƒWƒFƒNƒg‚ÌƒTƒCƒY‚ğZ’è
+	//ã‚­ãƒ¼ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã®ã‚µã‚¤ã‚ºã‚’ç®—å®š
 	DWORD key_obj_size = 0;
 	DWORD result_size = 0;
 	stat = BCryptGetProperty( MyAlgHandle , BCRYPT_OBJECT_LENGTH , (PBYTE)&key_obj_size , sizeof( key_obj_size ) , &result_size , 0 );
 	if( !NT_SUCCESS( stat ) )
 	{
-		RaiseError( g_ErrorLogger , stat , L"ƒL[ƒIƒuƒWƒFƒNƒg‚ÌƒTƒCƒY‚ğæ“¾‚Å‚«‚Ü‚¹‚ñ" );
+		RaiseError( g_ErrorLogger , stat , L"ã‚­ãƒ¼ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã®ã‚µã‚¤ã‚ºã‚’å–å¾—ã§ãã¾ã›ã‚“" );
 		return false;
 	}
 	MyRKeyObject.reset( mNew BYTE[ key_obj_size ] );
 	MyWKeyObject.reset( mNew BYTE[ key_obj_size ] );
 
-	//ƒJ[ƒhŒ®‚Ìƒnƒ“ƒhƒ‹æ“¾
+	//ã‚«ãƒ¼ãƒ‰éµã®ãƒãƒ³ãƒ‰ãƒ«å–å¾—
 	BYTE byte_swapped_data[ 16 ];
 	for( DWORD i = 0 ; i < 8 ; i++ )
 	{
@@ -228,40 +228,40 @@ bool mSCFelicaMac::CreateSessionKey( const mSecureBinary& key )
 	SecureZeroMemory( byte_swapped_data , sizeof( byte_swapped_data ) );
 	if( !NT_SUCCESS( stat ) )
 	{
-		RaiseError( g_ErrorLogger , stat , L"ƒJ[ƒhŒ®‚Ìƒnƒ“ƒhƒ‹‚ğæ“¾‚Å‚«‚Ü‚¹‚ñ" );
+		RaiseError( g_ErrorLogger , stat , L"ã‚«ãƒ¼ãƒ‰éµã®ãƒãƒ³ãƒ‰ãƒ«ã‚’å–å¾—ã§ãã¾ã›ã‚“" );
 		return false;
 	}
 
-	//ƒZƒbƒVƒ‡ƒ“Œ®‚Ì’l‚ğZo
+	//ã‚»ãƒƒã‚·ãƒ§ãƒ³éµã®å€¤ã‚’ç®—å‡º
 	BYTE session_key[ 16 ];
 	ULONG resultsize = 0;
 	BYTE init_vector[ 8 ] = { 0 };
 	stat = BCryptEncrypt( MyRKeyHandle , &MyChallenge.data()[ 0 ] , 8 , nullptr , init_vector , sizeof( init_vector ) , &session_key[ 0 ] , 8 , &resultsize , 0 );
 	if( !NT_SUCCESS( stat ) )
 	{
-		RaiseError( g_ErrorLogger , stat , L"ƒZƒbƒVƒ‡ƒ“Œ®“±oƒGƒ‰[‚P" );
+		RaiseError( g_ErrorLogger , stat , L"ã‚»ãƒƒã‚·ãƒ§ãƒ³éµå°å‡ºã‚¨ãƒ©ãƒ¼ï¼‘" );
 		return false;
 	}
 	stat = BCryptEncrypt( MyRKeyHandle , &MyChallenge.data()[ 8 ] , 8 , nullptr , init_vector , sizeof( init_vector ) , &session_key[ 8 ] , 8 , &resultsize , 0 );
 	if( !NT_SUCCESS( stat ) )
 	{
-		RaiseError( g_ErrorLogger , stat , L"ƒZƒbƒVƒ‡ƒ“Œ®“±oƒGƒ‰[‚Q" );
+		RaiseError( g_ErrorLogger , stat , L"ã‚»ãƒƒã‚·ãƒ§ãƒ³éµå°å‡ºã‚¨ãƒ©ãƒ¼ï¼’" );
 		return false;
 	}
 
-	//ƒJ[ƒhŒ®‚Ìƒnƒ“ƒhƒ‹íœ
+	//ã‚«ãƒ¼ãƒ‰éµã®ãƒãƒ³ãƒ‰ãƒ«å‰Šé™¤
 	BCryptDestroyKey( MyRKeyHandle );
 	MyRKeyHandle = 0;
 
-	//ƒZƒbƒVƒ‡ƒ“Œ®‚Ìƒnƒ“ƒhƒ‹‚ğ¶¬(ƒŠ[ƒh—p)
+	//ã‚»ãƒƒã‚·ãƒ§ãƒ³éµã®ãƒãƒ³ãƒ‰ãƒ«ã‚’ç”Ÿæˆ(ãƒªãƒ¼ãƒ‰ç”¨)
 	stat = BCryptGenerateSymmetricKey( MyAlgHandle , &MyRKeyHandle , MyRKeyObject.get() , key_obj_size , session_key , sizeof( session_key ) , 0 );
 	if( !NT_SUCCESS( stat ) )
 	{
-		RaiseError( g_ErrorLogger , stat , L"ƒŠ[ƒh—pƒZƒbƒVƒ‡ƒ“Œ®‚Ìƒnƒ“ƒhƒ‹‚ğæ“¾‚Å‚«‚Ü‚¹‚ñ" );
+		RaiseError( g_ErrorLogger , stat , L"ãƒªãƒ¼ãƒ‰ç”¨ã‚»ãƒƒã‚·ãƒ§ãƒ³éµã®ãƒãƒ³ãƒ‰ãƒ«ã‚’å–å¾—ã§ãã¾ã›ã‚“" );
 		return false;
 	}
 
-	//ƒ‰ƒCƒg—pƒZƒbƒVƒ‡ƒ“Œ®‚ÍSK1‚ÆSK2‚ğ“ü‚ê‘Ö‚¦‚é
+	//ãƒ©ã‚¤ãƒˆç”¨ã‚»ãƒƒã‚·ãƒ§ãƒ³éµã¯SK1ã¨SK2ã‚’å…¥ã‚Œæ›¿ãˆã‚‹
 	for( DWORD i = 0 ; i < 8 ; i++ )
 	{
 		BYTE tmp = session_key[ i ];
@@ -269,12 +269,12 @@ bool mSCFelicaMac::CreateSessionKey( const mSecureBinary& key )
 		session_key[ i + 8 ] = tmp;
 	}
 
-	//ƒZƒbƒVƒ‡ƒ“Œ®‚Ìƒnƒ“ƒhƒ‹‚ğ¶¬(ƒ‰ƒCƒg—p)
+	//ã‚»ãƒƒã‚·ãƒ§ãƒ³éµã®ãƒãƒ³ãƒ‰ãƒ«ã‚’ç”Ÿæˆ(ãƒ©ã‚¤ãƒˆç”¨)
 	stat = BCryptGenerateSymmetricKey( MyAlgHandle , &MyWKeyHandle , MyWKeyObject.get() , key_obj_size , session_key , sizeof( session_key ) , 0 );
 	SecureZeroMemory( session_key , sizeof( session_key ) );
 	if( !NT_SUCCESS( stat ) )
 	{
-		RaiseError( g_ErrorLogger , stat , L"ƒ‰ƒCƒg—pƒZƒbƒVƒ‡ƒ“Œ®‚Ìƒnƒ“ƒhƒ‹‚ğæ“¾‚Å‚«‚Ü‚¹‚ñ" );
+		RaiseError( g_ErrorLogger , stat , L"ãƒ©ã‚¤ãƒˆç”¨ã‚»ãƒƒã‚·ãƒ§ãƒ³éµã®ãƒãƒ³ãƒ‰ãƒ«ã‚’å–å¾—ã§ãã¾ã›ã‚“" );
 		return false;
 	}
 
@@ -283,25 +283,25 @@ bool mSCFelicaMac::CreateSessionKey( const mSecureBinary& key )
 }
 
 
-//“Ç‚İ‚İ‚É‚¨‚¯‚éMAC_A‚Ì‘ÌÙ‚ğƒ`ƒFƒbƒN‚·‚éBˆÈ‰º‚ğ–‚½‚¹‚Î‡ŠiB
-//EMAC_A(ƒuƒƒbƒN91h)‚ª––”ö‚É‚Â‚¢‚Ä‚¢‚é‚±‚Æ
-//EMAC_A‚ª‚Q‚ÂˆÈã‚ ‚Á‚Ä‚Í‚¢‚¯‚È‚¢
-//EMAC_A‚ğŠÜ‚ßAƒuƒƒbƒN”‚Í‚Q`‚SŒÂ
-//EMAC_A‚Éƒf[ƒ^‚ª‚WƒoƒCƒgˆÈãŠi”[‚³‚ê‚Ä‚¢‚é
-//EMAC_AˆÈŠO‚Éƒf[ƒ^‚ª‚P‚UƒoƒCƒgˆÈãŠi”[‚³‚ê‚Ä‚¢‚é
+//èª­ã¿è¾¼ã¿æ™‚ã«ãŠã‘ã‚‹MAC_Aã®ä½“è£ã‚’ãƒã‚§ãƒƒã‚¯ã™ã‚‹ã€‚ä»¥ä¸‹ã‚’æº€ãŸã›ã°åˆæ ¼ã€‚
+//ãƒ»MAC_A(ãƒ–ãƒ­ãƒƒã‚¯91h)ãŒæœ«å°¾ã«ã¤ã„ã¦ã„ã‚‹ã“ã¨
+//ãƒ»MAC_AãŒï¼’ã¤ä»¥ä¸Šã‚ã£ã¦ã¯ã„ã‘ãªã„
+//ãƒ»MAC_Aã‚’å«ã‚ã€ãƒ–ãƒ­ãƒƒã‚¯æ•°ã¯ï¼’ã€œï¼”å€‹
+//ãƒ»MAC_Aã«ãƒ‡ãƒ¼ã‚¿ãŒï¼˜ãƒã‚¤ãƒˆä»¥ä¸Šæ ¼ç´ã•ã‚Œã¦ã„ã‚‹
+//ãƒ»MAC_Aä»¥å¤–ã«ãƒ‡ãƒ¼ã‚¿ãŒï¼‘ï¼–ãƒã‚¤ãƒˆä»¥ä¸Šæ ¼ç´ã•ã‚Œã¦ã„ã‚‹
 static bool CheckDataBlockMacStructure( const mSCFelicaMac::DataBlock& data )
 {
-	//ƒTƒCƒYƒ`ƒFƒbƒN
+	//ã‚µã‚¤ã‚ºãƒã‚§ãƒƒã‚¯
 	if( data.size() < 2 || 4 < data.size() )
 	{
 		return false;
 	}
-	//––”ö‚ÌƒuƒƒbƒN”Ô†‚ÍMAC_A‚©
+	//æœ«å°¾ã®ãƒ–ãƒ­ãƒƒã‚¯ç•ªå·ã¯MAC_Aã‹
 	if( data.back().BlockNumber != 0x91u )
 	{
 		return false;
 	}
-	//MAC_A‚ª‚Q‚ÂˆÈã‘¶İ‚µ‚È‚¢‚©AMAC_AˆÈŠO‚É‚Í‚P‚UƒoƒCƒg‚Ìƒf[ƒ^‚ª‚ ‚é‚©
+	//MAC_AãŒï¼’ã¤ä»¥ä¸Šå­˜åœ¨ã—ãªã„ã‹ã€MAC_Aä»¥å¤–ã«ã¯ï¼‘ï¼–ãƒã‚¤ãƒˆã®ãƒ‡ãƒ¼ã‚¿ãŒã‚ã‚‹ã‹
 	for( DWORD i = 0 ; i < data.size() - 1 ; i++ )
 	{
 		if( data[ i ].BlockNumber == 0x91u )
@@ -313,12 +313,12 @@ static bool CheckDataBlockMacStructure( const mSCFelicaMac::DataBlock& data )
 			return false;
 		}
 	}
-	//MAC_A‚Éƒf[ƒ^‚ª“ü‚Á‚Ä‚¢‚é‚©
+	//MAC_Aã«ãƒ‡ãƒ¼ã‚¿ãŒå…¥ã£ã¦ã„ã‚‹ã‹
 	if( data.back().Data.size() < 8 )
 	{
 		return false;
 	}
-	//‡Ši
+	//åˆæ ¼
 	return true;
 }
 
@@ -328,17 +328,17 @@ bool mSCFelicaMac::ValidateMacA( const DataBlock& data )
 
 	if( !MyRKeyHandle )
 	{
-		RaiseError( g_ErrorLogger , 0 , L"ƒZƒbƒVƒ‡ƒ“Œ®‚ª–¢¶¬‚Å‚·" );
+		RaiseError( g_ErrorLogger , 0 , L"ã‚»ãƒƒã‚·ãƒ§ãƒ³éµãŒæœªç”Ÿæˆã§ã™" );
 		return false;
 	}
 
 	if( !CheckDataBlockMacStructure( data ) )
 	{
-		RaiseError( g_ErrorLogger , 0 , L"MAC_A‚ª³‚µ‚­Ši”[‚³‚ê‚Ä‚¢‚Ü‚¹‚ñ" );
+		RaiseError( g_ErrorLogger , 0 , L"MAC_AãŒæ­£ã—ãæ ¼ç´ã•ã‚Œã¦ã„ã¾ã›ã‚“" );
 		return false;
 	}
 
-	//•½•¶ƒf[ƒ^‚Ìì¬
+	//å¹³æ–‡ãƒ‡ãƒ¼ã‚¿ã®ä½œæˆ
 	BYTE plain[ 8 ];
 	plain[ 0 ] = ( data.size() < 4 ) ? ( 0xFFu ) : ( 0x00u );
 	plain[ 1 ] = ( data.size() < 4 ) ? ( 0xFFu ) : ( (BYTE)data[ 3 ].BlockNumber );
@@ -349,24 +349,24 @@ bool mSCFelicaMac::ValidateMacA( const DataBlock& data )
 	plain[ 6 ] = 0x00u;
 	plain[ 7 ] = (BYTE)data[ 0 ].BlockNumber;
 
-	//IV‚Ìì¬
+	//IVã®ä½œæˆ
 	BYTE init_vector[ 8 ];
 	for( DWORD i = 0 ; i < 8 ; i++ )
 	{
 		init_vector[ i ] = MyChallenge[ i ];
 	}
 
-	//ˆÃ†‰»(1) ƒuƒƒbƒN”Ô†
+	//æš—å·åŒ–(1) ãƒ–ãƒ­ãƒƒã‚¯ç•ªå·
 	ULONG resultsize;
 	BYTE cryptdata[ 8 ];
 	stat = BCryptEncrypt( MyRKeyHandle , plain , 8 , nullptr , init_vector , sizeof( init_vector ) , cryptdata , sizeof( cryptdata ) , &resultsize , 0 );
 	if( !NT_SUCCESS( stat ) )
 	{
-		RaiseError( g_ErrorLogger , stat , L"MAC_A“±oƒGƒ‰[1" );
+		RaiseError( g_ErrorLogger , stat , L"MAC_Aå°å‡ºã‚¨ãƒ©ãƒ¼1" );
 		return false;
 	}
 
-	//ˆÃ†‰»(2) ƒuƒƒbƒNƒf[ƒ^
+	//æš—å·åŒ–(2) ãƒ–ãƒ­ãƒƒã‚¯ãƒ‡ãƒ¼ã‚¿
 	for( DWORD i = 0 ; i < data.size() - 1 ; i++ )
 	{
 		for( DWORD j = 0 ; j < 8 ; j++ )
@@ -376,7 +376,7 @@ bool mSCFelicaMac::ValidateMacA( const DataBlock& data )
 		stat = BCryptEncrypt( MyRKeyHandle , plain , 8 , nullptr , init_vector , sizeof( init_vector ) , cryptdata , sizeof( cryptdata ) , &resultsize , 0 );
 		if( !NT_SUCCESS( stat ) )
 		{
-			RaiseError( g_ErrorLogger , stat , L"MAC_A“±oƒGƒ‰[2" );
+			RaiseError( g_ErrorLogger , stat , L"MAC_Aå°å‡ºã‚¨ãƒ©ãƒ¼2" );
 			return false;
 		}
 		for( DWORD j = 0 ; j < 8 ; j++ )
@@ -386,23 +386,23 @@ bool mSCFelicaMac::ValidateMacA( const DataBlock& data )
 		stat = BCryptEncrypt( MyRKeyHandle , plain , 8 , nullptr , init_vector , sizeof( init_vector ) , cryptdata , sizeof( cryptdata ) , &resultsize , 0 );
 		if( !NT_SUCCESS( stat ) )
 		{
-			RaiseError( g_ErrorLogger , stat , L"MAC_A“±oƒGƒ‰[3" );
+			RaiseError( g_ErrorLogger , stat , L"MAC_Aå°å‡ºã‚¨ãƒ©ãƒ¼3" );
 			return false;
 		}
 	}
 
-	//“¾‚ç‚ê‚½ˆÃ†‰»Œ‹‰Ê‚ªMAC_A‚Ì’l‚Æ‡’v‚·‚é‚©Šm”F
+	//å¾—ã‚‰ã‚ŒãŸæš—å·åŒ–çµæœãŒMAC_Aã®å€¤ã¨åˆè‡´ã™ã‚‹ã‹ç¢ºèª
 	for( DWORD i = 0 ; i < 8 ; i++ )
 	{
 		if( data.back().Data[ i ] != cryptdata[ 7 - i ] )
 		{
-			//‡’v‚µ‚Ä‚È‚¢‚©‚ç”FØ¸”s
-			RaiseError( g_ErrorLogger , 0 , L"MAC_A‚ÌZoŒ‹‰Ê‚ª‡’v‚µ‚Ü‚¹‚ñ" );
+			//åˆè‡´ã—ã¦ãªã„ã‹ã‚‰èªè¨¼å¤±æ•—
+			RaiseError( g_ErrorLogger , 0 , L"MAC_Aã®ç®—å‡ºçµæœãŒåˆè‡´ã—ã¾ã›ã‚“" );
 			return false;
 		}
 	}
 
-	//”FØ¬Œ÷
+	//èªè¨¼æˆåŠŸ
 	return true;
 }
 
@@ -410,26 +410,26 @@ bool mSCFelicaMac::ValidateMacA( const DataBlock& data )
 bool mSCFelicaMac::CreateMacA( const DataBlockEntry& data , DataBlockEntry& retMacA , DWORD wcnt )
 {
 	retMacA.BlockNumber = 0x91u;	//MAC_A
-	retMacA.Data.assign( 16 , 0 );	//0x00~16ŒÂ‚É‰Šú‰»
+	retMacA.Data.assign( 16 , 0 );	//0x00Ã—16å€‹ã«åˆæœŸåŒ–
 
 	NTSTATUS stat;
 	if( !MyWKeyHandle )
 	{
-		RaiseError( g_ErrorLogger , 0 , L"ƒZƒbƒVƒ‡ƒ“Œ®‚ª–¢¶¬‚Å‚·" );
+		RaiseError( g_ErrorLogger , 0 , L"ã‚»ãƒƒã‚·ãƒ§ãƒ³éµãŒæœªç”Ÿæˆã§ã™" );
 		return false;
 	}
 	if( data.Data.size() < 16 )
 	{
-		RaiseError( g_ErrorLogger , 0 , L"MAC_A¶¬‘ÎÛ‚Ìƒf[ƒ^‚ª‚ ‚è‚Ü‚¹‚ñ" );
+		RaiseError( g_ErrorLogger , 0 , L"MAC_Aç”Ÿæˆå¯¾è±¡ã®ãƒ‡ãƒ¼ã‚¿ãŒã‚ã‚Šã¾ã›ã‚“" );
 		return false;
 	}
 	if( 0x00FF'FFFFu <= wcnt )
 	{
-		RaiseError( g_ErrorLogger , 0 , L"WCNT‚ªÅ‘å’l‚É“’B‚µ‚Ä‚¢‚Ü‚·" );
+		RaiseError( g_ErrorLogger , 0 , L"WCNTãŒæœ€å¤§å€¤ã«åˆ°é”ã—ã¦ã„ã¾ã™" );
 		return false;
 	}
 
-	//•½•¶ƒf[ƒ^‚Ìì¬
+	//å¹³æ–‡ãƒ‡ãƒ¼ã‚¿ã®ä½œæˆ
 	BYTE plain[ 8 ];
 	plain[ 0 ] = 0x00u;
 	plain[ 1 ] = 0x91u;
@@ -440,24 +440,24 @@ bool mSCFelicaMac::CreateMacA( const DataBlockEntry& data , DataBlockEntry& retM
 	plain[ 6 ] = (BYTE)( ( wcnt >>  8 ) & 0xFFu );
 	plain[ 7 ] = (BYTE)( ( wcnt >>  0 ) & 0xFFu );
 
-	//IV‚Ìì¬
+	//IVã®ä½œæˆ
 	BYTE init_vector[ 8 ];
 	for( DWORD i = 0 ; i < 8 ; i++ )
 	{
 		init_vector[ i ] = MyChallenge[ i ];
 	}	
 
-	//ˆÃ†‰»(1) ƒuƒƒbƒN”Ô†
+	//æš—å·åŒ–(1) ãƒ–ãƒ­ãƒƒã‚¯ç•ªå·
 	ULONG resultsize;
 	BYTE cryptdata[ 8 ];
 	stat = BCryptEncrypt( MyWKeyHandle , plain , 8 , nullptr , init_vector , sizeof( init_vector ) , cryptdata , sizeof( cryptdata ) , &resultsize , 0 );
 	if( !NT_SUCCESS( stat ) )
 	{
-		RaiseError( g_ErrorLogger , stat , L"MAC_A“±oƒGƒ‰[1" );
+		RaiseError( g_ErrorLogger , stat , L"MAC_Aå°å‡ºã‚¨ãƒ©ãƒ¼1" );
 		return false;
 	}
 
-	//ˆÃ†‰»(2) ƒuƒƒbƒNƒf[ƒ^
+	//æš—å·åŒ–(2) ãƒ–ãƒ­ãƒƒã‚¯ãƒ‡ãƒ¼ã‚¿
 	for( DWORD i = 0 ; i < 8 ; i++ )
 	{
 		plain[ i ] = data.Data[ 7 - i ];
@@ -465,7 +465,7 @@ bool mSCFelicaMac::CreateMacA( const DataBlockEntry& data , DataBlockEntry& retM
 	stat = BCryptEncrypt( MyWKeyHandle , plain , 8 , nullptr , init_vector , sizeof( init_vector ) , cryptdata , sizeof( cryptdata ) , &resultsize , 0 );
 	if( !NT_SUCCESS( stat ) )
 	{
-		RaiseError( g_ErrorLogger , stat , L"MAC_A“±oƒGƒ‰[2" );
+		RaiseError( g_ErrorLogger , stat , L"MAC_Aå°å‡ºã‚¨ãƒ©ãƒ¼2" );
 		return false;
 	}
 	for( DWORD i = 0 ; i < 8 ; i++ )
@@ -475,11 +475,11 @@ bool mSCFelicaMac::CreateMacA( const DataBlockEntry& data , DataBlockEntry& retM
 	stat = BCryptEncrypt( MyWKeyHandle , plain , 8 , nullptr , init_vector , sizeof( init_vector ) , cryptdata , sizeof( cryptdata ) , &resultsize , 0 );
 	if( !NT_SUCCESS( stat ) )
 	{
-		RaiseError( g_ErrorLogger , stat , L"MAC_A“±oƒGƒ‰[3" );
+		RaiseError( g_ErrorLogger , stat , L"MAC_Aå°å‡ºã‚¨ãƒ©ãƒ¼3" );
 		return false;
 	}
 
-	//Œ‹‰ÊƒZƒbƒg
+	//çµæœã‚»ãƒƒãƒˆ
 	for( DWORD i = 0 ; i < 8 ; i++ )
 	{
 		retMacA.Data[ i ] = cryptdata[ 7 - i ];
@@ -505,8 +505,8 @@ static uint64_t ByteSwap( uint64_t in )
 
 bool mSCFelicaMac::CalcDiversifiedKey( const mSecureBinary& master , const mBinary& id , mSecureBinary& retcardkey )
 {
-	//ƒ\ƒj[‚Ìd—l‘‚É‚ÍƒGƒ“ƒfƒBƒAƒ“‚ªƒrƒbƒO‚Æ‚àƒŠƒgƒ‹‚Æ‚à‘‚¢‚Ä‚È‚¢‚ªA
-	//Ql‚É‚µ‚½ƒ\[ƒX‚ÍƒrƒbƒOƒGƒ“ƒfƒBƒAƒ“‚Ì‚æ‚¤‚È‚Ì‚ÅAuÅãˆÊƒrƒbƒgv‚Æ‚©u‚PƒrƒbƒgƒVƒtƒgv‚Æ‚©‚ÍƒrƒbƒOƒGƒ“ƒfƒBƒAƒ“‚É‡‚í‚¹‚Äˆ—‚·‚éB
+	//ã‚½ãƒ‹ãƒ¼ã®ä»•æ§˜æ›¸ã«ã¯ã‚¨ãƒ³ãƒ‡ã‚£ã‚¢ãƒ³ãŒãƒ“ãƒƒã‚°ã¨ã‚‚ãƒªãƒˆãƒ«ã¨ã‚‚æ›¸ã„ã¦ãªã„ãŒã€
+	//å‚è€ƒã«ã—ãŸã‚½ãƒ¼ã‚¹ã¯ãƒ“ãƒƒã‚°ã‚¨ãƒ³ãƒ‡ã‚£ã‚¢ãƒ³ã®ã‚ˆã†ãªã®ã§ã€ã€Œæœ€ä¸Šä½ãƒ“ãƒƒãƒˆã€ã¨ã‹ã€Œï¼‘ãƒ“ãƒƒãƒˆã‚·ãƒ•ãƒˆã€ã¨ã‹ã¯ãƒ“ãƒƒã‚°ã‚¨ãƒ³ãƒ‡ã‚£ã‚¢ãƒ³ã«åˆã‚ã›ã¦å‡¦ç†ã™ã‚‹ã€‚
 	// ttps://github.com/ode1022/esp32_felica_lite
 
 	NTSTATUS stat;
@@ -517,49 +517,49 @@ bool mSCFelicaMac::CalcDiversifiedKey( const mSecureBinary& master , const mBina
 	retcardkey.clear();
 	retcardkey.assign( 16 , 0 );
 
-	//ƒTƒCƒYƒ`ƒFƒbƒN
+	//ã‚µã‚¤ã‚ºãƒã‚§ãƒƒã‚¯
 	if( master.size() != 24 || id.size() != 16 )
 	{
-		RaiseError( g_ErrorLogger , 0 , L"Œ®‚Ü‚½‚ÍIDƒuƒƒbƒN‚ÌƒTƒCƒY‚ªˆá‚¢‚Ü‚·" );
+		RaiseError( g_ErrorLogger , 0 , L"éµã¾ãŸã¯IDãƒ–ãƒ­ãƒƒã‚¯ã®ã‚µã‚¤ã‚ºãŒé•ã„ã¾ã™" );
 		return false;
 	}
 
-	//3DES‚Ìƒnƒ“ƒhƒ‹‚ğ—v‹
+	//3DESã®ãƒãƒ³ãƒ‰ãƒ«ã‚’è¦æ±‚
 	stat = BCryptOpenAlgorithmProvider( &alghandle , BCRYPT_3DES_ALGORITHM , nullptr , 0 );
 	if( !NT_SUCCESS( stat ) )
 	{
-		RaiseError( g_ErrorLogger , stat , L"ˆÃ†ƒvƒƒoƒCƒ_‚Ìƒnƒ“ƒhƒ‹‚ğæ“¾‚Å‚«‚Ü‚¹‚ñ" );
+		RaiseError( g_ErrorLogger , stat , L"æš—å·ãƒ—ãƒ­ãƒã‚¤ãƒ€ã®ãƒãƒ³ãƒ‰ãƒ«ã‚’å–å¾—ã§ãã¾ã›ã‚“" );
 		goto ending;
 	}
 
-	//ˆÃ†‰»ƒ‚[ƒh‚ğw’è
+	//æš—å·åŒ–ãƒ¢ãƒ¼ãƒ‰ã‚’æŒ‡å®š
 	stat = BCryptSetProperty( alghandle , BCRYPT_CHAINING_MODE , (PUCHAR)BCRYPT_CHAIN_MODE_CBC , sizeof( BCRYPT_CHAIN_MODE_CBC ) , 0 );
 	if( !NT_SUCCESS( stat ) )
 	{
-		RaiseError( g_ErrorLogger , stat , L"ˆÃ†‰»ƒ‚[ƒh‚ğİ’è‚Å‚«‚Ü‚¹‚ñ" );
+		RaiseError( g_ErrorLogger , stat , L"æš—å·åŒ–ãƒ¢ãƒ¼ãƒ‰ã‚’è¨­å®šã§ãã¾ã›ã‚“" );
 		goto ending;
 	}
 
-	//ƒL[ƒIƒuƒWƒFƒNƒg‚ÌƒTƒCƒY‚ğZ’è
+	//ã‚­ãƒ¼ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã®ã‚µã‚¤ã‚ºã‚’ç®—å®š
 	DWORD key_obj_size;
 	DWORD result_size;
 	stat = BCryptGetProperty( alghandle , BCRYPT_OBJECT_LENGTH , (PBYTE)&key_obj_size , sizeof( key_obj_size ) , &result_size , 0 );
 	if( !NT_SUCCESS( stat ) )
 	{
-		RaiseError( g_ErrorLogger , stat , L"ƒL[ƒIƒuƒWƒFƒNƒg‚ÌƒTƒCƒY‚ğæ“¾‚Å‚«‚Ü‚¹‚ñ" );
+		RaiseError( g_ErrorLogger , stat , L"ã‚­ãƒ¼ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã®ã‚µã‚¤ã‚ºã‚’å–å¾—ã§ãã¾ã›ã‚“" );
 		goto ending;
 	}
 	keyobject = mNew BYTE[ key_obj_size ];
 
-	//ƒJ[ƒhŒ®‚Ìƒnƒ“ƒhƒ‹æ“¾
+	//ã‚«ãƒ¼ãƒ‰éµã®ãƒãƒ³ãƒ‰ãƒ«å–å¾—
 	stat = BCryptGenerateSymmetricKey( alghandle , &keyhandle , keyobject , key_obj_size , (PUCHAR)master.data() , (ULONG)master.size() , 0 );
 	if( !NT_SUCCESS( stat ) )
 	{
-		RaiseError( g_ErrorLogger , stat , L"ƒJ[ƒhŒ®‚Ìƒnƒ“ƒhƒ‹‚ğæ“¾‚Å‚«‚Ü‚¹‚ñ" );
+		RaiseError( g_ErrorLogger , stat , L"ã‚«ãƒ¼ãƒ‰éµã®ãƒãƒ³ãƒ‰ãƒ«ã‚’å–å¾—ã§ãã¾ã›ã‚“" );
 		goto ending;
 	}
 
-	//(2)L‚Ì“±o
+	//(2)Lã®å°å‡º
 	uint64_t ivector = 0;
 	uint64_t plain = 0;
 	uint64_t value_L;
@@ -567,68 +567,68 @@ bool mSCFelicaMac::CalcDiversifiedKey( const mSecureBinary& master , const mBina
 	stat = BCryptEncrypt( keyhandle , (PUCHAR)&plain , sizeof( plain ) , nullptr , (PUCHAR)&ivector , sizeof( ivector ) , (PUCHAR)&value_L , sizeof( value_L ) , &resultsize , 0 );
 	if( !NT_SUCCESS( stat ) )
 	{
-		RaiseError( g_ErrorLogger , stat , L"L’l“±oƒGƒ‰[" );
+		RaiseError( g_ErrorLogger , stat , L"Lå€¤å°å‡ºã‚¨ãƒ©ãƒ¼" );
 		goto ending;
 	}
 
-	//(3)ƒrƒbƒgƒVƒtƒg
-	uint64_t value_K1 = ByteSwap( value_L );	//‚±‚±‚©‚çK1ƒŠƒgƒ‹ƒGƒ“ƒfƒBƒAƒ“‚Ì•À‚Ñ
+	//(3)ãƒ“ãƒƒãƒˆã‚·ãƒ•ãƒˆ
+	uint64_t value_K1 = ByteSwap( value_L );	//ã“ã“ã‹ã‚‰K1ï¼ãƒªãƒˆãƒ«ã‚¨ãƒ³ãƒ‡ã‚£ã‚¢ãƒ³ã®ä¸¦ã³
 	value_K1 <<= 1;
-	if( value_L & 0x0000'0000'0000'0080u )		//©ƒrƒbƒOƒGƒ“ƒfƒBƒAƒ“‚ÌÅãˆÊƒrƒbƒg‚ÌˆÊ’u
+	if( value_L & 0x0000'0000'0000'0080u )		//â†ãƒ“ãƒƒã‚°ã‚¨ãƒ³ãƒ‡ã‚£ã‚¢ãƒ³ã®æœ€ä¸Šä½ãƒ“ãƒƒãƒˆã®ä½ç½®
 	{
 		value_K1 ^= 0x0000'0000'0000'001Bu;
 	}
-	value_K1 = ByteSwap( value_K1 );			//‚±‚±‚Ü‚ÅK1ƒŠƒgƒ‹ƒGƒ“ƒfƒBƒAƒ“‚Ì•À‚Ñ
+	value_K1 = ByteSwap( value_K1 );			//ã“ã“ã¾ã§K1ï¼ãƒªãƒˆãƒ«ã‚¨ãƒ³ãƒ‡ã‚£ã‚¢ãƒ³ã®ä¸¦ã³
 
-	//(4)M‚Ì•ªŠ„A(5)M2‚Ì“±o
+	//(4)Mã®åˆ†å‰²ã€(5)M2ã®å°å‡º
 	uint64_t value_M1 = ( *(const uint64_t*)( &id[ 0 ] ) ) ^ ( 0        );
 	uint64_t value_M2 = ( *(const uint64_t*)( &id[ 8 ] ) ) ^ ( value_K1 );
 
-	//(6)C1‚Ì“±o
+	//(6)C1ã®å°å‡º
 	ivector = 0;
 	plain = value_M1;
 	uint64_t value_C1a;
 	stat = BCryptEncrypt( keyhandle , (PUCHAR)&plain , sizeof( plain ) , nullptr , (PUCHAR)&ivector , sizeof( ivector ) , (PUCHAR)&value_C1a , sizeof( value_C1a ) , &resultsize , 0 );
 	if( !NT_SUCCESS( stat ) )
 	{
-		RaiseError( g_ErrorLogger , stat , L"C1’l“±oƒGƒ‰[" );
+		RaiseError( g_ErrorLogger , stat , L"C1å€¤å°å‡ºã‚¨ãƒ©ãƒ¼" );
 		goto ending;
 	}
 
-	//(7)T‚Ì“±o
+	//(7)Tã®å°å‡º
 	ivector = 0;
 	plain = value_C1a ^ value_M2;
 	stat = BCryptEncrypt( keyhandle , (PUCHAR)&plain , sizeof( plain ) , nullptr , (PUCHAR)&ivector , sizeof( ivector ) , (PUCHAR)&retcardkey[ 0 ] , 8 , &resultsize , 0 );
 	if( !NT_SUCCESS( stat ) )
 	{
-		RaiseError( g_ErrorLogger , stat , L"T’l“±oƒGƒ‰[" );
+		RaiseError( g_ErrorLogger , stat , L"Tå€¤å°å‡ºã‚¨ãƒ©ãƒ¼" );
 		goto ending;
 	}
 
-	//(8)M1'A(9)C1'‚Ì“±o
+	//(8)M1'ã€(9)C1'ã®å°å‡º
 	ivector = 0;
-	plain = value_M1 ^ 0x0000'0000'0000'0080u;	//©ƒrƒbƒOƒGƒ“ƒfƒBƒAƒ“‚ÌÅãˆÊƒrƒbƒg‚ÌˆÊ’u
+	plain = value_M1 ^ 0x0000'0000'0000'0080u;	//â†ãƒ“ãƒƒã‚°ã‚¨ãƒ³ãƒ‡ã‚£ã‚¢ãƒ³ã®æœ€ä¸Šä½ãƒ“ãƒƒãƒˆã®ä½ç½®
 	uint64_t value_C1b;
 	stat = BCryptEncrypt( keyhandle , (PUCHAR)&plain , sizeof( plain ) , nullptr , (PUCHAR)&ivector , sizeof( ivector ) , (PUCHAR)&value_C1b , sizeof( value_C1b ) , &resultsize , 0 );
 	if( !NT_SUCCESS( stat ) )
 	{
-		RaiseError( g_ErrorLogger , stat , L"C1'’l“±oƒGƒ‰[" );
+		RaiseError( g_ErrorLogger , stat , L"C1'å€¤å°å‡ºã‚¨ãƒ©ãƒ¼" );
 		goto ending;
 	}
 
-	//(10)T'‚Ì“±o
+	//(10)T'ã®å°å‡º
 	ivector = 0;
 	plain = value_C1b ^ value_M2;
 	stat = BCryptEncrypt( keyhandle , (PUCHAR)&plain , sizeof( plain ) , nullptr , (PUCHAR)&ivector , sizeof( ivector ) , (PUCHAR)&retcardkey[ 8 ] , 8 , &resultsize , 0 );
 	if( !NT_SUCCESS( stat ) )
 	{
-		RaiseError( g_ErrorLogger , stat , L"T'’l“±oƒGƒ‰[" );
+		RaiseError( g_ErrorLogger , stat , L"T'å€¤å°å‡ºã‚¨ãƒ©ãƒ¼" );
 		goto ending;
 	}
 
 ending:
 	bool result = NT_SUCCESS( stat );
-	//ƒAƒ‹ƒSƒŠƒYƒ€‚Ìƒnƒ“ƒhƒ‹
+	//ã‚¢ãƒ«ã‚´ãƒªã‚ºãƒ ã®ãƒãƒ³ãƒ‰ãƒ«
 	if( keyhandle )
 	{
 		BCryptDestroyKey( keyhandle );

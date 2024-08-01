@@ -1,5 +1,5 @@
-//----------------------------------------------------------------------------
-// ƒtƒ@ƒCƒ‹ŠÇ—
+ï»¿//----------------------------------------------------------------------------
+// ãƒ•ã‚¡ã‚¤ãƒ«ç®¡ç†
 // Copyright (C) 2005,2016 Fingerling. All rights reserved. 
 // This program is released under the MIT License. 
 // see http://opensource.org/licenses/mit-license.php
@@ -40,62 +40,62 @@ bool mFile::Close( void )
 
 bool mFile::Open( const mFile::Option& opt )
 {
-	//“ñd‚ÉŠJ‚¯‚È‚¢‚æ‚¤‚É‚·‚é
+	//äºŒé‡ã«é–‹ã‘ãªã„ã‚ˆã†ã«ã™ã‚‹
 	if( MyHandle != INVALID_HANDLE_VALUE )
 	{
-		//“ñd‚Éƒtƒ@ƒCƒ‹‚ğƒI[ƒvƒ“‚µ‚æ‚¤‚Æ‚µ‚Ä‚¢‚é
+		//äºŒé‡ã«ãƒ•ã‚¡ã‚¤ãƒ«ã‚’ã‚ªãƒ¼ãƒ—ãƒ³ã—ã‚ˆã†ã¨ã—ã¦ã„ã‚‹
 		RaiseError( g_ErrorLogger , 0 , L"Already opened : " + opt.Path );
 		return false;
 	}
 
-	//“Ç‚İ‘‚«ƒ‚[ƒh
+	//èª­ã¿æ›¸ããƒ¢ãƒ¼ãƒ‰
 	DWORD open_mode = 0;
 	open_mode |= ( opt.AccessRead ) ? ( GENERIC_READ ) : ( 0 );
 	open_mode |= ( opt.AccessWrite ) ? ( GENERIC_WRITE ) : ( 0 );
 
-	//‹¤—Lƒ‚[ƒh
+	//å…±æœ‰ãƒ¢ãƒ¼ãƒ‰
 	DWORD share_mode = 0;
 	share_mode |= ( opt.ShareRead ) ? ( FILE_SHARE_READ ) : ( 0 );
 	share_mode |= ( opt.ShareWrite ) ? ( FILE_SHARE_WRITE ) : ( 0 );
 
-	//ì¬ƒ‚[ƒh
+	//ä½œæˆãƒ¢ãƒ¼ãƒ‰
 	DWORD create_mode = 0;
 	switch( opt.Mode )
 	{
-	case CreateMode::CreateNew:			//V‚µ‚­ƒtƒ@ƒCƒ‹‚ğì¬B‚·‚Å‚É‚ ‚éê‡‚ÍƒGƒ‰[
+	case CreateMode::CreateNew:			//æ–°ã—ããƒ•ã‚¡ã‚¤ãƒ«ã‚’ä½œæˆã€‚ã™ã§ã«ã‚ã‚‹å ´åˆã¯ã‚¨ãƒ©ãƒ¼
 		create_mode = CREATE_NEW;
 		break;
-	case CreateMode::CreateAlways:		//V‚µ‚­ƒtƒ@ƒCƒ‹‚ğì¬B‚·‚Å‚É‚ ‚éê‡‚Íã‘‚«i’†g‚ğÌ‚Ä‚éj
+	case CreateMode::CreateAlways:		//æ–°ã—ããƒ•ã‚¡ã‚¤ãƒ«ã‚’ä½œæˆã€‚ã™ã§ã«ã‚ã‚‹å ´åˆã¯ä¸Šæ›¸ãï¼ˆä¸­èº«ã‚’æ¨ã¦ã‚‹ï¼‰
 		create_mode = CREATE_ALWAYS;
 		break;
-	case CreateMode::OpenExisting:		//‚·‚Å‚É‚ ‚éƒtƒ@ƒCƒ‹‚ğŠJ‚­B‚È‚¢ê‡‚ÍƒGƒ‰[
+	case CreateMode::OpenExisting:		//ã™ã§ã«ã‚ã‚‹ãƒ•ã‚¡ã‚¤ãƒ«ã‚’é–‹ãã€‚ãªã„å ´åˆã¯ã‚¨ãƒ©ãƒ¼
 		create_mode = OPEN_EXISTING;
 		break;
-	case CreateMode::OpenAlways:		//‚·‚Å‚É‚ ‚éƒtƒ@ƒCƒ‹‚ğŠJ‚­B‚È‚¢ê‡‚ÍV‚µ‚¢ƒtƒ@ƒCƒ‹‚ğŠJ‚­
+	case CreateMode::OpenAlways:		//ã™ã§ã«ã‚ã‚‹ãƒ•ã‚¡ã‚¤ãƒ«ã‚’é–‹ãã€‚ãªã„å ´åˆã¯æ–°ã—ã„ãƒ•ã‚¡ã‚¤ãƒ«ã‚’é–‹ã
 		create_mode = OPEN_ALWAYS;
 		break;
-	case CreateMode::TruncateExisting:	//‚·‚Å‚É‚ ‚éƒtƒ@ƒCƒ‹‚ğŠJ‚¢‚Ä’†g‚ğÌ‚Ä‚éB‚È‚¢ê‡‚ÍƒGƒ‰[B
+	case CreateMode::TruncateExisting:	//ã™ã§ã«ã‚ã‚‹ãƒ•ã‚¡ã‚¤ãƒ«ã‚’é–‹ã„ã¦ä¸­èº«ã‚’æ¨ã¦ã‚‹ã€‚ãªã„å ´åˆã¯ã‚¨ãƒ©ãƒ¼ã€‚
 		create_mode = TRUNCATE_EXISTING;
 		break;
 	case CreateMode::CreateWithDirectory:
 		create_mode = CREATE_ALWAYS;
 		if( !mFileUtility::CreateMiddleDirectory( opt.Path ) )
 		{
-			RaiseError( g_ErrorLogger , 0 , L"’†ŠÔ‚ÌƒfƒBƒŒƒNƒgƒŠ‚ğì¬‚Å‚«‚Ü‚¹‚ñ" + opt.Path );
+			RaiseError( g_ErrorLogger , 0 , L"ä¸­é–“ã®ãƒ‡ã‚£ãƒ¬ã‚¯ãƒˆãƒªã‚’ä½œæˆã§ãã¾ã›ã‚“" + opt.Path );
 			return false;
 		}
 		break;
 	default:
-		//•s³‚Èƒ‚[ƒh‚ğw’è‚µ‚Ä‚¢‚é
+		//ä¸æ­£ãªãƒ¢ãƒ¼ãƒ‰ã‚’æŒ‡å®šã—ã¦ã„ã‚‹
 		RaiseAssert( g_ErrorLogger , (ULONG_PTR)opt.Mode , L"Invalid creation disposition" );
 		break;
 	}
 
-	//”X‚Ìİ’è‚ª‚Å‚«‚½‚©‚çAƒtƒ@ƒCƒ‹‚ğŠJ‚«‚Ü‚·
+	//è«¸ã€…ã®è¨­å®šãŒã§ããŸã‹ã‚‰ã€ãƒ•ã‚¡ã‚¤ãƒ«ã‚’é–‹ãã¾ã™
 	MyHandle = CreateFileW( opt.Path.c_str() , open_mode , share_mode , nullptr , create_mode , FILE_ATTRIBUTE_NORMAL , nullptr );
 	if( MyHandle == INVALID_HANDLE_VALUE )
 	{
-		//c”OBƒtƒ@ƒCƒ‹‚ğŠJ‚­‚Ì‚É¸”s‚µ‚Ü‚µ‚½B
+		//æ®‹å¿µã€‚ãƒ•ã‚¡ã‚¤ãƒ«ã‚’é–‹ãã®ã«å¤±æ•—ã—ã¾ã—ãŸã€‚
 		RaiseError( g_ErrorLogger , 0 , L"CreateFileW failed : " + opt.Path );
 		return false;
 	}
@@ -106,13 +106,13 @@ bool mFile::Open( const mFile::Option& opt )
 
 WString mFile::GetPath( bool fullpath )const
 {
-	//ƒtƒ‹ƒpƒX•s—v‚È‚ç‚»‚Ì‚Ü‚Ü•Ô‚µ‚ÄI‚í‚è
+	//ãƒ•ãƒ«ãƒ‘ã‚¹ä¸è¦ãªã‚‰ãã®ã¾ã¾è¿”ã—ã¦çµ‚ã‚ã‚Š
 	if( !fullpath )
 	{
 		return MyPath;
 	}
 
-	//ƒoƒbƒtƒ@‚ÌŠm•Û
+	//ãƒãƒƒãƒ•ã‚¡ã®ç¢ºä¿
 	DWORD reqsize = GetFullPathNameW( MyPath.c_str() , 0 , nullptr , nullptr );
 	if( reqsize == 0 )
 	{
@@ -120,7 +120,7 @@ WString mFile::GetPath( bool fullpath )const
 	}
 	std::unique_ptr< wchar_t > buffer( mNew wchar_t[ reqsize ] );
 
-	//æ“¾
+	//å–å¾—
 	DWORD usedsize = GetFullPathNameW( MyPath.c_str() , reqsize , buffer.get() , nullptr );
 	if( reqsize != usedsize )
 	{
@@ -131,17 +131,17 @@ WString mFile::GetPath( bool fullpath )const
 }
 
 bool mFile::Read(
-	void*	Buffer ,							//“Ç‚İæ‚Á‚½ƒf[ƒ^‚ğŠi”[‚·‚éƒoƒbƒtƒ@
-	ULONGLONG	ReadSize ,						//“Ç‚İæ‚éƒoƒCƒg”
-	ULONGLONG& retReadSize )					//“Ç‚İæ‚Á‚½ƒoƒCƒg”
+	void*	Buffer ,							//èª­ã¿å–ã£ãŸãƒ‡ãƒ¼ã‚¿ã‚’æ ¼ç´ã™ã‚‹ãƒãƒƒãƒ•ã‚¡
+	ULONGLONG	ReadSize ,						//èª­ã¿å–ã‚‹ãƒã‚¤ãƒˆæ•°
+	ULONGLONG& retReadSize )					//èª­ã¿å–ã£ãŸãƒã‚¤ãƒˆæ•°
 {
 	retReadSize = 0;
 	BYTE* tmp_buffer = (BYTE*)Buffer;
 
 	while( ReadSize )
 	{
-		//‚Ü‚ ¶‚«‚Ä‚¢‚éŠÔ‚É‚Í–³‚¢‚Æ‚Ív‚¤‚ñ‚¾‚¯‚ÇA«—ˆ“I‚É32bit‚ğ’´‚¦‚éƒTƒCƒY‚ğ
-		//ˆê‹C‚É“Ç‚İ‚à‚¤‚Æ‚µ‚½ê‡‚É”õ‚¦‚ÄA32bit’PˆÊ‚É‹æØ‚Á‚ÄƒAƒNƒZƒX‚·‚éB
+		//ã¾ã‚ç”Ÿãã¦ã„ã‚‹é–“ã«ã¯ç„¡ã„ã¨ã¯æ€ã†ã‚“ã ã‘ã©ã€å°†æ¥çš„ã«32bitã‚’è¶…ãˆã‚‹ã‚µã‚¤ã‚ºã‚’
+		//ä¸€æ°—ã«èª­ã¿è¾¼ã‚‚ã†ã¨ã—ãŸå ´åˆã«å‚™ãˆã¦ã€32bitå˜ä½ã«åŒºåˆ‡ã£ã¦ã‚¢ã‚¯ã‚»ã‚¹ã™ã‚‹ã€‚
 		DWORD tmp_read_size = ( MAXDWORD < ReadSize ) ? ( MAXDWORD ) : ( (DWORD)ReadSize );
 		DWORD tmp_stored_size = 0;
 		
@@ -158,21 +158,21 @@ bool mFile::Read(
 }
 
 bool mFile::Read(
-	void*	Buffer ,							//“Ç‚İæ‚Á‚½ƒf[ƒ^‚ğŠi”[‚·‚éƒoƒbƒtƒ@
-	DWORD	ReadSize ,							//“Ç‚İæ‚éƒoƒCƒg”
-	DWORD&	retReadSize )						//“Ç‚İæ‚Á‚½ƒoƒCƒg”
+	void*	Buffer ,							//èª­ã¿å–ã£ãŸãƒ‡ãƒ¼ã‚¿ã‚’æ ¼ç´ã™ã‚‹ãƒãƒƒãƒ•ã‚¡
+	DWORD	ReadSize ,							//èª­ã¿å–ã‚‹ãƒã‚¤ãƒˆæ•°
+	DWORD&	retReadSize )						//èª­ã¿å–ã£ãŸãƒã‚¤ãƒˆæ•°
 {
-	//•s³“ü—Í‚Ìƒ`ƒFƒbƒN
+	//ä¸æ­£å…¥åŠ›ã®ãƒã‚§ãƒƒã‚¯
 	if( MyHandle == INVALID_HANDLE_VALUE )
 	{
 		RaiseAssert( g_ErrorLogger , 0 , L"" );
 		return false;
 	}
 
-	//“Ç‚İæ‚èˆ—
+	//èª­ã¿å–ã‚Šå‡¦ç†
 	if( !ReadFile( MyHandle , Buffer , ReadSize , &retReadSize , nullptr ) )
 	{
-		//ƒtƒ@ƒCƒ‹‚Ì“Ç‚İæ‚è‚ª‚Å‚«‚È‚©‚Á‚½
+		//ãƒ•ã‚¡ã‚¤ãƒ«ã®èª­ã¿å–ã‚ŠãŒã§ããªã‹ã£ãŸ
 		RaiseError( g_ErrorLogger , ReadSize , L"ReadFile failed" );
 		return false;
 	}
@@ -181,18 +181,18 @@ bool mFile::Read(
 
 
 bool mFile::Write(
-	void*	Buffer ,							//‘‚«‚Şƒf[ƒ^‚ğŠi”[‚µ‚Ä‚ ‚éƒoƒbƒtƒ@
-	ULONGLONG	WriteSize ,						//‘‚«‚ŞƒoƒCƒg”
-	ULONGLONG& retWriteSize )					//‘‚«‚ñ‚¾ƒoƒCƒg”
+	void*	Buffer ,							//æ›¸ãè¾¼ã‚€ãƒ‡ãƒ¼ã‚¿ã‚’æ ¼ç´ã—ã¦ã‚ã‚‹ãƒãƒƒãƒ•ã‚¡
+	ULONGLONG	WriteSize ,						//æ›¸ãè¾¼ã‚€ãƒã‚¤ãƒˆæ•°
+	ULONGLONG& retWriteSize )					//æ›¸ãè¾¼ã‚“ã ãƒã‚¤ãƒˆæ•°
 {
 	retWriteSize = 0;
 	BYTE* tmp_buffer = (BYTE*)Buffer;
 
 	while( WriteSize )
 	{
-		//32bit•‚ğ’´‚¦‚éƒTƒCƒY‚ğˆê‹C‚É‘‚«‚à‚¤‚Æ‚µ‚Ä‚¢‚éê‡A
-		//WriteFile‚ªDWORD‚É‚È‚Á‚Ä‚é‚Ì‚ÅA32bit’PˆÊ‚Å‹æØ‚Á‚Äo—Í‚ğs‚¤B
-		//‚Å‚à‚»‚Ì‘O‚Éƒƒ‚ƒŠ‚ª‘«‚è‚È‚­‚È‚Á‚ÄI—¹‚¾‚Æv‚¤B
+		//32bitå¹…ã‚’è¶…ãˆã‚‹ã‚µã‚¤ã‚ºã‚’ä¸€æ°—ã«æ›¸ãè¾¼ã‚‚ã†ã¨ã—ã¦ã„ã‚‹å ´åˆã€
+		//WriteFileãŒDWORDã«ãªã£ã¦ã‚‹ã®ã§ã€32bitå˜ä½ã§åŒºåˆ‡ã£ã¦å‡ºåŠ›ã‚’è¡Œã†ã€‚
+		//ã§ã‚‚ãã®å‰ã«ãƒ¡ãƒ¢ãƒªãŒè¶³ã‚Šãªããªã£ã¦çµ‚äº†ã ã¨æ€ã†ã€‚
 		DWORD tmp_write_size = ( MAXDWORD < WriteSize ) ? ( MAXDWORD ) : ( (DWORD)WriteSize );
 		DWORD tmp_stored_size = 0;
 
@@ -210,17 +210,17 @@ bool mFile::Write(
 }
 
 bool mFile::Write(
-	void*	Buffer ,							//‘‚«‚Şƒf[ƒ^‚ğŠi”[‚µ‚Ä‚ ‚éƒoƒbƒtƒ@
-	DWORD	WriteSize ,							//‘‚«‚ŞƒoƒCƒg”
-	DWORD&  retWriteSize )						//‘‚«‚ñ‚¾ƒoƒCƒg”
+	void*	Buffer ,							//æ›¸ãè¾¼ã‚€ãƒ‡ãƒ¼ã‚¿ã‚’æ ¼ç´ã—ã¦ã‚ã‚‹ãƒãƒƒãƒ•ã‚¡
+	DWORD	WriteSize ,							//æ›¸ãè¾¼ã‚€ãƒã‚¤ãƒˆæ•°
+	DWORD&  retWriteSize )						//æ›¸ãè¾¼ã‚“ã ãƒã‚¤ãƒˆæ•°
 {
-	//•s³“ü—Í‚Ìƒ`ƒFƒbƒN
+	//ä¸æ­£å…¥åŠ›ã®ãƒã‚§ãƒƒã‚¯
 	if( MyHandle == INVALID_HANDLE_VALUE || Buffer == nullptr )
 	{
 		RaiseAssert( g_ErrorLogger , 0 , L"" );
 		return false;
 	}
-	//‘‚«‚İˆ—
+	//æ›¸ãè¾¼ã¿å‡¦ç†
 	if( !WriteFile( MyHandle , Buffer , WriteSize , &retWriteSize , nullptr ) )
 	{
 		RaiseError( g_ErrorLogger , WriteSize , L"WriteFile failed" );
@@ -232,16 +232,16 @@ bool mFile::Write(
 
 bool mFile::SetPointer( ULONGLONG newpos )
 {
-	//•s³“ü—Í‚Ìƒ`ƒFƒbƒN
+	//ä¸æ­£å…¥åŠ›ã®ãƒã‚§ãƒƒã‚¯
 	if( MyHandle == INVALID_HANDLE_VALUE )
 	{
 		RaiseAssert( g_ErrorLogger , 0 , L"Invalid handle" );
 		return false;
 	}
 
-	//ƒtƒ@ƒCƒ‹ƒ|ƒCƒ“ƒ^‚ÌˆÚ“®(SetPointer‚Å‚Íƒtƒ@ƒCƒ‹‚Ìæ“ª‚©‚ç)
+	//ãƒ•ã‚¡ã‚¤ãƒ«ãƒã‚¤ãƒ³ã‚¿ã®ç§»å‹•(SetPointerã§ã¯ãƒ•ã‚¡ã‚¤ãƒ«ã®å…ˆé ­ã‹ã‚‰)
 	LARGE_INTEGER pos;
-	pos.QuadPart = (LONGLONG)( newpos & 0x7FFF'FFFF'FFFF'FFFFULL );	//API‚Ìˆø”‚É‚Í•„†‚ª‚ ‚é‚Ì‚ÅÁ‚·
+	pos.QuadPart = (LONGLONG)( newpos & 0x7FFF'FFFF'FFFF'FFFFULL );	//APIã®å¼•æ•°ã«ã¯ç¬¦å·ãŒã‚ã‚‹ã®ã§æ¶ˆã™
 	if( !SetFilePointerEx( MyHandle , pos , nullptr , FILE_BEGIN ) )
 	{
 		RaiseAssert( g_ErrorLogger , 0 , L"SetFilePointerEx failed" );
@@ -249,7 +249,7 @@ bool mFile::SetPointer( ULONGLONG newpos )
 	}
 	if( newpos & 0x8000'0000'0000'0000ULL )
 	{
-		//w’èˆÊ’u‚ªƒtƒ@ƒCƒ‹‚Ìæ“ª‚©‚ç8ƒGƒNƒTƒoƒCƒgˆÈã‚Ìê‡i“–•ª‚Í‚ ‚è“¾‚È‚¢jB
+		//æŒ‡å®šä½ç½®ãŒãƒ•ã‚¡ã‚¤ãƒ«ã®å…ˆé ­ã‹ã‚‰8ã‚¨ã‚¯ã‚µãƒã‚¤ãƒˆä»¥ä¸Šã®å ´åˆï¼ˆå½“åˆ†ã¯ã‚ã‚Šå¾—ãªã„ï¼‰ã€‚
 		bool result = true;
 		pos.QuadPart = (LONGLONG)( 0x7FFF'FFFF'FFFF'FFFFULL );
 		result &= SetFilePointerEx( MyHandle , pos , nullptr , FILE_CURRENT ) != FALSE;
@@ -266,7 +266,7 @@ bool mFile::SetPointer( ULONGLONG newpos )
 
 bool mFile::MovePointer( LONGLONG distance )
 {
-	//•s³“ü—Í‚Ìƒ`ƒFƒbƒN
+	//ä¸æ­£å…¥åŠ›ã®ãƒã‚§ãƒƒã‚¯
 	if( MyHandle == INVALID_HANDLE_VALUE )
 	{
 		RaiseAssert( g_ErrorLogger , 0 , L"Invalid handle" );
@@ -334,7 +334,7 @@ bool mFile::GetFileSize( ULONGLONG& retSize )const
 		return false;
 	}
 
-	//ƒtƒ@ƒCƒ‹ƒTƒCƒY‚Ìæ“¾
+	//ãƒ•ã‚¡ã‚¤ãƒ«ã‚µã‚¤ã‚ºã®å–å¾—
 	LARGE_INTEGER result;
 	if( !GetFileSizeEx( MyHandle , &result ) )
 	{
@@ -353,7 +353,7 @@ bool mFile::GetFileSize( DWORD* high , DWORD& low )const
 		return false;
 	}
 
-	//ƒtƒ@ƒCƒ‹ƒTƒCƒY‚Ìæ“¾
+	//ãƒ•ã‚¡ã‚¤ãƒ«ã‚µã‚¤ã‚ºã®å–å¾—
 	LARGE_INTEGER result;
 	if( !GetFileSizeEx( MyHandle , &result ) )
 	{
@@ -366,7 +366,7 @@ bool mFile::GetFileSize( DWORD* high , DWORD& low )const
 	}
 	else if( result.HighPart )
 	{
-		RaiseAssert( g_ErrorLogger , 0 , L"ƒtƒ@ƒCƒ‹ƒTƒCƒY‚ª4GB‚ğ’´‚¦‚Ä‚¢‚Ü‚·" );
+		RaiseAssert( g_ErrorLogger , 0 , L"ãƒ•ã‚¡ã‚¤ãƒ«ã‚µã‚¤ã‚ºãŒ4GBã‚’è¶…ãˆã¦ã„ã¾ã™" );
 		return false;
 	}
 	low = result.LowPart;
@@ -426,7 +426,7 @@ bool mFile::ExecIoControl( DWORD code , const mBinary* in , mBinary* retResult )
 	in_ptr = ( in ) ? ( const_cast< mBinary* >( in ) ) : ( &in_dummy );
 	out_ptr = ( retResult ) ? ( retResult ) : ( &out_dummy );
 
-	//•K—vƒTƒCƒY‚Ì’²¸
+	//å¿…è¦ã‚µã‚¤ã‚ºã®èª¿æŸ»
 	DWORD response_size = 0;
 	while( !DeviceIoControl( MyHandle , code , in_ptr->data() , in_ptr->size() , out_ptr->data() , out_ptr->size() , &response_size , nullptr ) )
 	{
@@ -436,14 +436,14 @@ bool mFile::ExecIoControl( DWORD code , const mBinary* in , mBinary* retResult )
 		{
 			if( !retResult )
 			{
-				RaiseAssert( g_ErrorLogger , 0 , L"Œ‹‰Ê‚ª•Ô‚³‚ê‚Ä‚¢‚é‚ªó‚¯æ‚é‚æ‚¤‚É‚È‚Á‚Ä‚¢‚È‚¢" );
+				RaiseAssert( g_ErrorLogger , 0 , L"çµæœãŒè¿”ã•ã‚Œã¦ã„ã‚‹ãŒå—ã‘å–ã‚‹ã‚ˆã†ã«ãªã£ã¦ã„ãªã„" );
 				return false;
 			}
 			out_ptr->resize( out_ptr->capacity() * 2 + 32 );
 		}
 		else
 		{
-			RaiseAssert( g_ErrorLogger , 0 , L"DeviceIoControl‚ª¸”s" );
+			RaiseAssert( g_ErrorLogger , 0 , L"DeviceIoControlãŒå¤±æ•—" );
 			return false;
 		}
 	}

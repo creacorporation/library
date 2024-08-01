@@ -1,11 +1,11 @@
-//----------------------------------------------------------------------------
-// COM‚Ö‚ÌƒXƒgƒŠ[ƒ~ƒ“ƒO‘‚«‚İ‘€ì
+ï»¿//----------------------------------------------------------------------------
+// COMã¸ã®ã‚¹ãƒˆãƒªãƒ¼ãƒŸãƒ³ã‚°æ›¸ãè¾¼ã¿æ“ä½œ
 // Copyright (C) 2024 Crea Inc. All rights reserved.
 // This program is released under the MIT License. 
 // see http://opensource.org/licenses/mit-license.php
-// ’˜ìŒ •\¦‚âƒ‰ƒCƒZƒ“ƒX‚Ì‰ü•Ï‚Í‹Ö~‚³‚ê‚Ä‚¢‚Ü‚·B
-// ‚±‚Ìƒ\[ƒXƒR[ƒh‚ÉŠÖ‚µ‚ÄAã‹Lƒ‰ƒCƒZƒ“ƒXˆÈŠO‚ÌŒ_–ñ“™‚ÍˆêØ‘¶İ‚µ‚Ü‚¹‚ñB
-// (‰½‚ç‚©‚ÌŒ_–ñ‚ª‚ ‚éê‡‚Å‚àA–{ƒ\[ƒXƒR[ƒh‚Í‚»‚Ì‘ÎÛŠO‚Æ‚È‚è‚Ü‚·)
+// è‘—ä½œæ¨©è¡¨ç¤ºã‚„ãƒ©ã‚¤ã‚»ãƒ³ã‚¹ã®æ”¹å¤‰ã¯ç¦æ­¢ã•ã‚Œã¦ã„ã¾ã™ã€‚
+// ã“ã®ã‚½ãƒ¼ã‚¹ã‚³ãƒ¼ãƒ‰ã«é–¢ã—ã¦ã€ä¸Šè¨˜ãƒ©ã‚¤ã‚»ãƒ³ã‚¹ä»¥å¤–ã®å¥‘ç´„ç­‰ã¯ä¸€åˆ‡å­˜åœ¨ã—ã¾ã›ã‚“ã€‚
+// (ä½•ã‚‰ã‹ã®å¥‘ç´„ãŒã‚ã‚‹å ´åˆã§ã‚‚ã€æœ¬ã‚½ãƒ¼ã‚¹ã‚³ãƒ¼ãƒ‰ã¯ãã®å¯¾è±¡å¤–ã¨ãªã‚Šã¾ã™)
 //----------------------------------------------------------------------------
 
 #define MCOMFILESTREAM_CPP_COMPILING
@@ -34,10 +34,10 @@ bool mComFileStream::Close( void )
 bool mComFileStream::Write( INT data )
 {
 
-	//ƒLƒƒƒbƒVƒ…‚Ìc‚è‚ª‚ ‚éH
+	//ã‚­ãƒ£ãƒƒã‚·ãƒ¥ã®æ®‹ã‚ŠãŒã‚ã‚‹ï¼Ÿ
 	if( MyWriteCacheRemain == 0 )
 	{
-		RaiseError( g_ErrorLogger , 0 , L"‘‚«‚İƒLƒƒƒbƒVƒ…‚Ìc—Ê‚ª‚ ‚è‚Ü‚¹‚ñ" );
+		RaiseError( g_ErrorLogger , 0 , L"æ›¸ãè¾¼ã¿ã‚­ãƒ£ãƒƒã‚·ãƒ¥ã®æ®‹é‡ãŒã‚ã‚Šã¾ã›ã‚“" );
 		return false;
 	}
 
@@ -68,17 +68,17 @@ INT mComFileStream::Read( void )
 		return EOF;
 	}
 
-	//UnRead‚³‚ê‚½•¶š‚ª‚ ‚éê‡‚Íƒ\ƒŒ‚ğ•Ô‚·
+	//UnReadã•ã‚ŒãŸæ–‡å­—ãŒã‚ã‚‹å ´åˆã¯ã‚½ãƒ¬ã‚’è¿”ã™
 	if( !MyUnReadBuffer.IsEmpty() )
 	{
 		return MyUnReadBuffer.Read();
 	}
 
-	//ƒLƒƒƒbƒVƒ…‚Ìc—Ê‚ª‚ ‚ê‚ÎƒLƒƒƒbƒVƒ…‚ğ“Ç‚İ‚Ş
-	//ƒLƒƒƒbƒVƒ…‚Ìc—Ê‚ª‚È‚¢‚È‚çƒLƒ…[‚©‚çæ“¾‚·‚é
+	//ã‚­ãƒ£ãƒƒã‚·ãƒ¥ã®æ®‹é‡ãŒã‚ã‚Œã°ã‚­ãƒ£ãƒƒã‚·ãƒ¥ã‚’èª­ã¿è¾¼ã‚€
+	//ã‚­ãƒ£ãƒƒã‚·ãƒ¥ã®æ®‹é‡ãŒãªã„ãªã‚‰ã‚­ãƒ¥ãƒ¼ã‹ã‚‰å–å¾—ã™ã‚‹
 	if( MyReadCacheRemain == 0 )
 	{
-		//“Ç‚İæ‚èƒLƒƒƒbƒVƒ…‚ÉƒZƒbƒg
+		//èª­ã¿å–ã‚Šã‚­ãƒ£ãƒƒã‚·ãƒ¥ã«ã‚»ãƒƒãƒˆ
 		if( MyReadCacheHead.get() == nullptr )
 		{
 			MyReadCacheHead.reset( mNew BYTE[ MAX_BUFFER_SIZE ] );
@@ -114,13 +114,13 @@ bool mComFileStream::IsEOF( void )const
 
 bool mComFileStream::FlushCache( void )
 {
-	//‘‚«‚Ş‚à‚Ì‚ª‚È‚¢‚Æ‚«‚Í‚»‚Ì‚Ü‚Ü–ß‚é
+	//æ›¸ãè¾¼ã‚€ã‚‚ã®ãŒãªã„ã¨ãã¯ãã®ã¾ã¾æˆ»ã‚‹
 	if( MyWriteCacheWritten == 0 )
 	{
 		return true;
 	}
 
-	//ƒtƒ@ƒCƒ‹‚Ì‘‚«‚İ‚ğs‚¤
+	//ãƒ•ã‚¡ã‚¤ãƒ«ã®æ›¸ãè¾¼ã¿ã‚’è¡Œã†
 	DWORD written;
 	bool result = true;
 	HRESULT hr = MyStream->Write( MyWriteCacheHead.get() , MyWriteCacheWritten , &written );
@@ -131,7 +131,7 @@ bool mComFileStream::FlushCache( void )
 		result = false;
 	}
 
-	//ƒoƒbƒtƒ@‚ğƒŠƒZƒbƒg
+	//ãƒãƒƒãƒ•ã‚¡ã‚’ãƒªã‚»ãƒƒãƒˆ
 	ResetWriteCache();
 
 	return result;
@@ -139,7 +139,7 @@ bool mComFileStream::FlushCache( void )
 
 void mComFileStream::ResetWriteCache( void )
 {
-	//‚à‚µƒLƒƒƒbƒVƒ…‚ª‚È‚¢‚æ‚¤‚È‚çì¬
+	//ã‚‚ã—ã‚­ãƒ£ãƒƒã‚·ãƒ¥ãŒãªã„ã‚ˆã†ãªã‚‰ä½œæˆ
 	if( MyWriteCacheHead.get() == nullptr )
 	{
 		MyWriteCacheHead.reset( mNew BYTE[ MAX_BUFFER_SIZE ] );
@@ -212,7 +212,7 @@ bool mComFileStream::SetPointerToBegin( void )
 	return SetPointer( 0 );
 }
 
-//ƒtƒ@ƒCƒ‹‚ğŠJ‚«‚Ü‚·B
+//ãƒ•ã‚¡ã‚¤ãƒ«ã‚’é–‹ãã¾ã™ã€‚
 bool mComFileStream::Open( const mFile::Option& opt )
 {
 	if( IsOpen() )
@@ -222,7 +222,7 @@ bool mComFileStream::Open( const mFile::Option& opt )
 
 	DWORD mode = 0;
 	BOOL create = FALSE;
-	//ƒAƒNƒZƒXƒ‚[ƒh
+	//ã‚¢ã‚¯ã‚»ã‚¹ãƒ¢ãƒ¼ãƒ‰
 	if( opt.AccessWrite )
 	{
 		mode |= ( opt.AccessRead ) ? ( STGM_READWRITE ) : ( STGM_WRITE );
@@ -231,7 +231,7 @@ bool mComFileStream::Open( const mFile::Option& opt )
 	{
 		mode |= STGM_READ;
 	}
-	//‹¤—L
+	//å…±æœ‰
 	if( opt.ShareRead && opt.ShareWrite )
 	{
 		mode |= STGM_SHARE_DENY_NONE;
@@ -248,22 +248,22 @@ bool mComFileStream::Open( const mFile::Option& opt )
 	{
 		mode |= STGM_SHARE_EXCLUSIVE;
 	}
-	//ŠJ‚«•û
+	//é–‹ãæ–¹
 	switch( opt.Mode )
 	{
-	case mFile::CreateMode::CreateNew:				//V‚µ‚­ƒtƒ@ƒCƒ‹‚ğì¬B‚·‚Å‚É‚ ‚éê‡‚ÍƒGƒ‰[
+	case mFile::CreateMode::CreateNew:				//æ–°ã—ããƒ•ã‚¡ã‚¤ãƒ«ã‚’ä½œæˆã€‚ã™ã§ã«ã‚ã‚‹å ´åˆã¯ã‚¨ãƒ©ãƒ¼
 		mode |= STGM_FAILIFTHERE;
 		create = TRUE;
 		break;
-	case mFile::CreateMode::CreateAlways:			//V‚µ‚­ƒtƒ@ƒCƒ‹‚ğì¬B‚·‚Å‚É‚ ‚éê‡‚Íã‘‚«i’†g‚ğÌ‚Ä‚éj
+	case mFile::CreateMode::CreateAlways:			//æ–°ã—ããƒ•ã‚¡ã‚¤ãƒ«ã‚’ä½œæˆã€‚ã™ã§ã«ã‚ã‚‹å ´åˆã¯ä¸Šæ›¸ãï¼ˆä¸­èº«ã‚’æ¨ã¦ã‚‹ï¼‰
 		mode |= STGM_CREATE;
 		create = FALSE;
 		break;
-	case mFile::CreateMode::OpenExisting:			//‚·‚Å‚É‚ ‚éƒtƒ@ƒCƒ‹‚ğŠJ‚­B‚È‚¢ê‡‚ÍƒGƒ‰[
+	case mFile::CreateMode::OpenExisting:			//ã™ã§ã«ã‚ã‚‹ãƒ•ã‚¡ã‚¤ãƒ«ã‚’é–‹ãã€‚ãªã„å ´åˆã¯ã‚¨ãƒ©ãƒ¼
 		mode |= STGM_FAILIFTHERE;
 		create = FALSE;
 		break;
-	case mFile::CreateMode::OpenAlways:				//¦‚·‚Å‚É‚ ‚éƒtƒ@ƒCƒ‹‚ğŠJ‚­B‚È‚¢ê‡‚ÍV‚µ‚¢ƒtƒ@ƒCƒ‹‚ğŠJ‚­
+	case mFile::CreateMode::OpenAlways:				//â€»ã™ã§ã«ã‚ã‚‹ãƒ•ã‚¡ã‚¤ãƒ«ã‚’é–‹ãã€‚ãªã„å ´åˆã¯æ–°ã—ã„ãƒ•ã‚¡ã‚¤ãƒ«ã‚’é–‹ã
 		if( PathFileExistsW( opt.Path.c_str() ) )
 		{
 			mode |= STGM_FAILIFTHERE;
@@ -275,14 +275,14 @@ bool mComFileStream::Open( const mFile::Option& opt )
 			create = FALSE;
 		}
 		break;
-	case mFile::CreateMode::TruncateExisting:		//¦‚·‚Å‚É‚ ‚éƒtƒ@ƒCƒ‹‚ğŠJ‚¢‚Ä’†g‚ğÌ‚Ä‚éB‚È‚¢ê‡‚ÍƒGƒ‰[B
+	case mFile::CreateMode::TruncateExisting:		//â€»ã™ã§ã«ã‚ã‚‹ãƒ•ã‚¡ã‚¤ãƒ«ã‚’é–‹ã„ã¦ä¸­èº«ã‚’æ¨ã¦ã‚‹ã€‚ãªã„å ´åˆã¯ã‚¨ãƒ©ãƒ¼ã€‚
 		mode |= STGM_FAILIFTHERE;
 		create = FALSE;
 		break;
-	case mFile::CreateMode::CreateWithDirectory:	//V‚µ‚­ƒtƒ@ƒCƒ‹‚ğì¬BƒfƒBƒŒƒNƒgƒŠ‚ª‚È‚¢ê‡‚ÍƒfƒBƒŒƒNƒgƒŠ‚àì¬‚·‚éB‚·‚Å‚É‚ ‚éê‡‚Íã‘‚«i’†g‚ğÌ‚Ä‚éjB
+	case mFile::CreateMode::CreateWithDirectory:	//æ–°ã—ããƒ•ã‚¡ã‚¤ãƒ«ã‚’ä½œæˆã€‚ãƒ‡ã‚£ãƒ¬ã‚¯ãƒˆãƒªãŒãªã„å ´åˆã¯ãƒ‡ã‚£ãƒ¬ã‚¯ãƒˆãƒªã‚‚ä½œæˆã™ã‚‹ã€‚ã™ã§ã«ã‚ã‚‹å ´åˆã¯ä¸Šæ›¸ãï¼ˆä¸­èº«ã‚’æ¨ã¦ã‚‹ï¼‰ã€‚
 		if( !mFileUtility::CreateMiddleDirectory( opt.Path ) )
 		{
-			RaiseError( g_ErrorLogger , 0 , L"’†ŠÔ‚ÌƒfƒBƒŒƒNƒgƒŠ‚ğì¬‚Å‚«‚Ü‚¹‚ñ" + opt.Path );
+			RaiseError( g_ErrorLogger , 0 , L"ä¸­é–“ã®ãƒ‡ã‚£ãƒ¬ã‚¯ãƒˆãƒªã‚’ä½œæˆã§ãã¾ã›ã‚“" + opt.Path );
 			return false;
 		}
 		mode |= STGM_CREATE;
@@ -296,7 +296,7 @@ bool mComFileStream::Open( const mFile::Option& opt )
 	if( FAILED( hr ) )
 	{
 		SetLastError( hr );
-		RaiseError( g_ErrorLogger , 0 , L"ƒtƒ@ƒCƒ‹‚ÌƒI[ƒvƒ“‚ª¸”s‚µ‚Ü‚µ‚½" + opt.Path );
+		RaiseError( g_ErrorLogger , 0 , L"ãƒ•ã‚¡ã‚¤ãƒ«ã®ã‚ªãƒ¼ãƒ—ãƒ³ãŒå¤±æ•—ã—ã¾ã—ãŸ" + opt.Path );
 		return false;
 	}
 	if( opt.Mode == mFile::CreateMode::TruncateExisting )

@@ -1,10 +1,10 @@
-//----------------------------------------------------------------------------
-// �t�|�[�����h�ϊ��N���X
+﻿//----------------------------------------------------------------------------
+// 逆ポーランド変換クラス
 // Copyright (C) 2018- Crea Inc. All rights reserved.
 // This program is released under the MIT License. 
 // see http://opensource.org/licenses/mit-license.php
-// ���쌠�\���⃉�C�Z���X�̉��ς͋֎~����Ă��܂��B
-// ���̃\�[�X�R�[�h�Ɋւ��āA��L���C�Z���X�ȊO�̌_�񓙂͈�ؑ��݂��܂���B
+// 著作権表示やライセンスの改変は禁止されています。
+// このソースコードに関して、上記ライセンス以外の契約等は一切存在しません。
 //----------------------------------------------------------------------------
 
 #ifndef MREVPOLISH_H_INCLUDED
@@ -20,24 +20,24 @@ namespace mRevPolish
 {
 	enum ExprKind
 	{
-		OPERATOR_PLUS,		//���Z�q�{
-		OPERATOR_MINUS,		//���Z�q�|
-		OPERATOR_MULTIPLY,	//���Z�q�~
-		OPERATOR_DIVIDE,	//���Z�q��
-		VALUE_INTEGER,		//�����l�̒l
-		VALUE_FLOAT,		//���������_�̒l
-		VALUE_VARIABLE,		//�ϐ��l
+		OPERATOR_PLUS,		//演算子＋
+		OPERATOR_MINUS,		//演算子−
+		OPERATOR_MULTIPLY,	//演算子×
+		OPERATOR_DIVIDE,	//演算子÷
+		VALUE_INTEGER,		//整数値の値
+		VALUE_FLOAT,		//浮動小数点の値
+		VALUE_VARIABLE,		//変数値
 	};
 
 	struct ExprEntry
 	{
-		//�g�[�N���̎��
-		ExprKind kind;			//�g�[�N���̎��
+		//トークンの種類
+		ExprKind kind;			//トークンの種類
 
-		//�g�[�N���̒l
-		//���l�̏ꍇ�́A���l���e�L�X�g�ŕ\������������
-		//�ϐ����̏ꍇ�́A�ϐ���
-		//���Z�q�̏ꍇ�́A���Z�q���e�L�X�g�ŕ\������������
+		//トークンの値
+		//数値の場合は、数値をテキストで表現した文字列
+		//変数名の場合は、変数名
+		//演算子の場合は、演算子をテキストで表現した文字列
 		WString variable;
 
 		operator int()const
@@ -67,14 +67,14 @@ namespace mRevPolish
 
 	};
 
-	//�t�|�[�����h�L�@�ւ̕ϊ����ʊi�[��
+	//逆ポーランド記法への変換結果格納先
 	typedef std::deque<ExprEntry> Expr;
 
-	//���ԋL�@�̎����t�|�[�����h�L�@�ɕϊ�����
-	// src : ���ԋL�@�̎�
-	// retPolish : �t�|�[�����h�L�@�ɕϊ�������
-	// ret : ����ɕϊ��o�����ꍇtrue
-	//       �v�Z���ɖ�肪����(���ʂ��Ή����Ă��Ȃ��Ȃ�)�ꍇfalse
+	//中間記法の式を逆ポーランド記法に変換する
+	// src : 中間記法の式
+	// retPolish : 逆ポーランド記法に変換した式
+	// ret : 正常に変換出来た場合true
+	//       計算式に問題がある(括弧が対応していないなど)場合false
 	bool Convert( const WString& src , Expr& retPolish );
 
 }

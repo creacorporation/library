@@ -1,13 +1,13 @@
-//----------------------------------------------------------------------------
-// ƒEƒCƒ“ƒhƒEŠÇ—iƒŠƒXƒgƒ{ƒbƒNƒXj
+ï»¿//----------------------------------------------------------------------------
+// ã‚¦ã‚¤ãƒ³ãƒ‰ã‚¦ç®¡ç†ï¼ˆãƒªã‚¹ãƒˆãƒœãƒƒã‚¯ã‚¹ï¼‰
 // Copyright (C) 2016 Fingerling. All rights reserved. 
 // This program is released under the MIT License. 
 // see http://opensource.org/licenses/mit-license.php
 //----------------------------------------------------------------------------
 
 /*
-œ—p“r
-ƒŠƒXƒgƒ{ƒbƒNƒX‚ÌƒNƒ‰ƒX‚Å‚·BƒEƒCƒ“ƒhƒE‚É“\‚è•t‚¯‚é‚±‚Æ‚ª‚Å‚«‚Ü‚·B
+â—ç”¨é€”
+ãƒªã‚¹ãƒˆãƒœãƒƒã‚¯ã‚¹ã®ã‚¯ãƒ©ã‚¹ã§ã™ã€‚ã‚¦ã‚¤ãƒ³ãƒ‰ã‚¦ã«è²¼ã‚Šä»˜ã‘ã‚‹ã“ã¨ãŒã§ãã¾ã™ã€‚
 
 */
 
@@ -22,18 +22,18 @@ class mListBox : public mListboxFamily
 public:
 
 
-	//ƒŠƒXƒgƒ{ƒbƒNƒX¶¬‚ÌƒIƒvƒVƒ‡ƒ“
-	//ÀÛ‚Éì¬‚·‚é‚Æ‚«‚ÍAOption\‘¢‘Ì‚ğ’¼Úg‚í‚¸‚ÉAƒVƒ`ƒ…ƒG[ƒVƒ‡ƒ“‚É‡‚í‚¹‚ÄˆÈ‰º‚ğg‚Á‚Ä‰º‚³‚¢B
-	//EOption_UseOption c ƒƒ“ƒo•Ï”‚ğ–„‚ß‚ÄƒIƒvƒVƒ‡ƒ“‚ğİ’è‚µ‚½‚¢‚Æ‚«
+	//ãƒªã‚¹ãƒˆãƒœãƒƒã‚¯ã‚¹ç”Ÿæˆæ™‚ã®ã‚ªãƒ—ã‚·ãƒ§ãƒ³
+	//å®Ÿéš›ã«ä½œæˆã™ã‚‹ã¨ãã¯ã€Optionæ§‹é€ ä½“ã‚’ç›´æ¥ä½¿ã‚ãšã«ã€ã‚·ãƒãƒ¥ã‚¨ãƒ¼ã‚·ãƒ§ãƒ³ã«åˆã‚ã›ã¦ä»¥ä¸‹ã‚’ä½¿ã£ã¦ä¸‹ã•ã„ã€‚
+	//ãƒ»Option_UseOption â€¦ ãƒ¡ãƒ³ãƒå¤‰æ•°ã‚’åŸ‹ã‚ã¦ã‚ªãƒ—ã‚·ãƒ§ãƒ³ã‚’è¨­å®šã—ãŸã„ã¨ã
 	struct Option
 	{
-		//ƒŠƒXƒgƒ{ƒbƒNƒX¶¬‚Ì•û–@
+		//ãƒªã‚¹ãƒˆãƒœãƒƒã‚¯ã‚¹ç”Ÿæˆã®æ–¹æ³•
 		enum CreateMethod
 		{
-			USEOPTION,		//’Êí‚Ì•û–@
+			USEOPTION,		//é€šå¸¸ã®æ–¹æ³•
 		};
 
-		const CreateMethod method;	//RTTI‚Ì‘ã—p‚Å‚·B•ÏX‚Ì•K—v‚Í‚ ‚è‚Ü‚¹‚ñB
+		const CreateMethod method;	//RTTIã®ä»£ç”¨ã§ã™ã€‚å¤‰æ›´ã®å¿…è¦ã¯ã‚ã‚Šã¾ã›ã‚“ã€‚
 	protected:
 		Option() = delete;
 		Option( CreateMethod create_method ) : method( create_method )
@@ -41,15 +41,15 @@ public:
 		}
 	};
 
-	//ƒIƒvƒVƒ‡ƒ“
+	//ã‚ªãƒ—ã‚·ãƒ§ãƒ³
 	struct Option_UseOption : public Option
 	{
-		WindowPosition Pos;		//•\¦ˆÊ’u
-		bool Enable;			//—LŒø/–³Œø
-		bool AutoSort;			//©“®ƒ\[ƒg—LŒø
-		bool Border;			//ƒ{[ƒ_[‚ ‚è
-		bool ScrollBar;			//ƒXƒNƒ[ƒ‹ƒo[‚ ‚è
-		bool Multiple;			//•¡”‘I‘ğ‰Â”\H
+		WindowPosition Pos;		//è¡¨ç¤ºä½ç½®
+		bool Enable;			//æœ‰åŠ¹/ç„¡åŠ¹
+		bool AutoSort;			//è‡ªå‹•ã‚½ãƒ¼ãƒˆæœ‰åŠ¹
+		bool Border;			//ãƒœãƒ¼ãƒ€ãƒ¼ã‚ã‚Š
+		bool ScrollBar;			//ã‚¹ã‚¯ãƒ­ãƒ¼ãƒ«ãƒãƒ¼ã‚ã‚Š
+		bool Multiple;			//è¤‡æ•°é¸æŠå¯èƒ½ï¼Ÿ
 		Option_UseOption() : Option( CreateMethod::USEOPTION )
 		{
 			Enable = true;
@@ -60,43 +60,43 @@ public:
 		}
 	};
 
-	//ƒtƒ@ƒNƒgƒŠƒƒ\ƒbƒh
+	//ãƒ•ã‚¡ã‚¯ãƒˆãƒªãƒ¡ã‚½ãƒƒãƒ‰
 	static mWindow* Factory( const void * option )throw( )
 	{
 		return mNew mListBox;
 	}
 
-	//ƒAƒCƒeƒ€‚ğ’Ç‰Á‚·‚é
+	//ã‚¢ã‚¤ãƒ†ãƒ ã‚’è¿½åŠ ã™ã‚‹
 	virtual bool AddItem( const WString& caption )override;
 	virtual bool AddItem( const WString& caption , const ItemDataEntry& data )override;
 	virtual bool AddItem( const WString& caption , INT index )override;
 	virtual bool AddItem( const WString& caption , const ItemDataEntry& data , INT index )override;
 
-	//ƒAƒCƒeƒ€‚ğíœ‚·‚é
+	//ã‚¢ã‚¤ãƒ†ãƒ ã‚’å‰Šé™¤ã™ã‚‹
 	virtual bool RemoveItem( INT index )override;
 
-	//‘I‘ğ‚³‚ê‚Ä‚¢‚éƒCƒ“ƒfƒbƒNƒX‚Ìˆê——‚ğæ“¾‚·‚é
+	//é¸æŠã•ã‚Œã¦ã„ã‚‹ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹ã®ä¸€è¦§ã‚’å–å¾—ã™ã‚‹
 	virtual SelectedItems GetSelected( void )const override;
 
-	//w’è‚µ‚½ƒCƒ“ƒfƒbƒNƒX‚ÌƒAƒCƒeƒ€‚ğ‘I‘ğó‘Ô‚É‚·‚é
+	//æŒ‡å®šã—ãŸã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹ã®ã‚¢ã‚¤ãƒ†ãƒ ã‚’é¸æŠçŠ¶æ…‹ã«ã™ã‚‹
 	virtual bool SetSelected( const SelectedItems& items )override;
 
-	//w’è‚µ‚½ƒCƒ“ƒfƒbƒNƒX‚ÌƒAƒCƒeƒ€‚ğ‘I‘ğó‘Ô‚É‚·‚é
+	//æŒ‡å®šã—ãŸã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹ã®ã‚¢ã‚¤ãƒ†ãƒ ã‚’é¸æŠçŠ¶æ…‹ã«ã™ã‚‹
 	virtual bool SetSelected( INT item )override;
 
-	//w’è‚µ‚½ƒLƒƒƒvƒVƒ‡ƒ“‚ğ‚à‚ÂƒAƒCƒeƒ€‚ÌƒCƒ“ƒfƒbƒNƒX‚ğ•Ô‚·
+	//æŒ‡å®šã—ãŸã‚­ãƒ£ãƒ—ã‚·ãƒ§ãƒ³ã‚’ã‚‚ã¤ã‚¢ã‚¤ãƒ†ãƒ ã®ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹ã‚’è¿”ã™
 	virtual INT SearchItem( const WString& caption )override;
 
-	//w’èƒCƒ“ƒfƒbƒNƒX‚ÌƒLƒƒƒvƒVƒ‡ƒ“‚ğæ“¾‚·‚é
+	//æŒ‡å®šã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹ã®ã‚­ãƒ£ãƒ—ã‚·ãƒ§ãƒ³ã‚’å–å¾—ã™ã‚‹
 	virtual WString GetItemCaption( INT index )const override;
 
-	//w’èƒCƒ“ƒfƒbƒNƒX‚ÉŠÖ˜A‚Ã‚¯‚ç‚ê‚Ä‚¢‚éƒf[ƒ^‚ğæ“¾‚·‚é
+	//æŒ‡å®šã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹ã«é–¢é€£ã¥ã‘ã‚‰ã‚Œã¦ã„ã‚‹ãƒ‡ãƒ¼ã‚¿ã‚’å–å¾—ã™ã‚‹
 	virtual bool GetItemData( INT index , ItemDataEntry& retdata )const override;
 
-	//‚¢‚­‚ÂƒAƒCƒeƒ€‚ª‚ ‚é‚©‚ğƒJƒEƒ“ƒg‚·‚é
+	//ã„ãã¤ã‚¢ã‚¤ãƒ†ãƒ ãŒã‚ã‚‹ã‹ã‚’ã‚«ã‚¦ãƒ³ãƒˆã™ã‚‹
 	virtual INT GetItemCount( void )const override;
 
-	//ƒAƒCƒeƒ€‚ğˆÚ“®‚·‚é
+	//ã‚¢ã‚¤ãƒ†ãƒ ã‚’ç§»å‹•ã™ã‚‹
 	virtual bool MoveItem( INT index , INT moveto )override;
 
 protected:
@@ -104,10 +104,10 @@ protected:
 	mListBox();
 	virtual ~mListBox();
 
-	//ƒEƒCƒ“ƒhƒEƒNƒ‰ƒX‚Ì“o˜^‚ğ‚·‚é
+	//ã‚¦ã‚¤ãƒ³ãƒ‰ã‚¦ã‚¯ãƒ©ã‚¹ã®ç™»éŒ²ã‚’ã™ã‚‹
 	virtual bool WindowClassSettingCallback( WindowClassSetting& retSetting , const void* opt )override;
 
-	//ƒEƒCƒ“ƒhƒE‚ğŠJ‚­
+	//ã‚¦ã‚¤ãƒ³ãƒ‰ã‚¦ã‚’é–‹ã
 	virtual bool CreateWindowCallback( CreateWindowSetting& retSetting , const void* opt )override;
 
 private:

@@ -1,5 +1,5 @@
-//----------------------------------------------------------------------------
-// �E�C���h�E�Ǘ��i�O���[�o���ȃE�C���h�E�֐��j
+﻿//----------------------------------------------------------------------------
+// ウインドウ管理（グローバルなウインドウ関数）
 // Copyright (C) 2016 Fingerling. All rights reserved. 
 // This program is released under the MIT License. 
 // see http://opensource.org/licenses/mit-license.php
@@ -9,36 +9,36 @@
 #include "mGlobalWindowFunc.h"
 #include "General/mErrorLogger.h"
 
-//�ÓI�ȃ����o�ϐ��̒�`
+//静的なメンバ変数の定義
 mGlobalWindowFunc::HandleObjMap mGlobalWindowFunc::MyHandleObjMap;
 
 LRESULT __stdcall mGlobalWindowFunc::MessageProcedure( HWND hwnd , UINT msg , WPARAM wparam , LPARAM lparam )
 {
-	//hwnd���L�[�Ɍ������āA���������I�u�W�F�N�g�Ƀ��b�Z�[�W������������B
-	//������Ȃ������ꍇ�̓f�t�H���g�N�ɏ���������B
+	//hwndをキーに検索して、見つかったオブジェクトにメッセージを処理させる。
+	//見つからなかった場合はデフォルト君に処理させる。
 
 	HandleObjMap::iterator itr = MyHandleObjMap.find( hwnd );
 	if( itr == MyHandleObjMap.end() )
 	{
-		//�s���ȃI�u�W�F�N�g
+		//不明なオブジェクト
 		return DefWindowProcW( hwnd , msg , wparam , lparam );
 	}
 	else
 	{
-		//�Y���I�u�W�F�N�g����
+		//該当オブジェクトあり
 		return itr->second->WindowProcedure( msg , wparam , lparam );
 	}
 }
 
 bool mGlobalWindowFunc::Attach( const mGlobalWindowFunc::AttachAccessPermission& , HWND hwnd , mWindow* win )
 {
-	//���łɓo�^�ς݁H
+	//すでに登録済み？
 	if( MyHandleObjMap.count( hwnd ) )
 	{
 		RaiseAssert( g_ErrorLogger , (ULONG_PTR)hwnd , L"Duplicate attach" );
 		return false;
 	}
-	//�o�^
+	//登録
 	MyHandleObjMap.insert( HandleObjMap::value_type( hwnd , win ) );
 	return true;
 }
@@ -48,35 +48,35 @@ mWindow* mGlobalWindowFunc::Query( const mGlobalWindowFunc::AttachAccessPermissi
 	HandleObjMap::iterator itr = MyHandleObjMap.find( hwnd );
 	if( itr == MyHandleObjMap.end() )
 	{
-		//�s���ȃI�u�W�F�N�g
+		//不明なオブジェクト
 		return nullptr;
 	}
 	else
 	{
-		//�Y���I�u�W�F�N�g����
+		//該当オブジェクトあり
 		return itr->second;
 	}
 }
 
 bool mGlobalWindowFunc::Detach( const mGlobalWindowFunc::DetachAccessPermission& , HWND hwnd , mWindow* win )
 {
-	//�o�^����H
+	//登録ある？
 	HandleObjMap::iterator itr = MyHandleObjMap.find( hwnd );
 	if( itr == MyHandleObjMap.end() )
 	{
-		//�o�^�Ȃ�
+		//登録なし
 		RaiseAssert( g_ErrorLogger , (ULONG_PTR)hwnd , L"Object not found" );
 		return false;
 	}
 	if( ( itr->first != hwnd ) || ( itr->second != win ) )
 	{
-		//�o�^����Ă�����̂ƁA�폜�������̂��قȂ�ꍇ�B
-		//���̏ꍇ�ł��A���̊֐���Ԃ���win���w���Ă���A�h���X����������\������Ȃ̂ŁA
-		//�G���[�I�������ɁA���̂܂܍폜���Ă��܂��B��ʂ͕���邩������Ȃ����B
+		//登録されているものと、削除されるものが異なる場合。
+		//この場合でも、この関数を返すとwinが指しているアドレスが解放される可能性が大なので、
+		//エラー終了せずに、このまま削除してしまう。画面は崩れるかもしれないが。
 		RaiseAssert( g_ErrorLogger , (ULONG_PTR)hwnd , L"HWND/mWindow mismatch" );
 	}
 
-	//�폜
+	//削除
 	MyHandleObjMap.erase( hwnd );
 	return true;
 }

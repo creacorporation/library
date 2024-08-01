@@ -1,5 +1,5 @@
-//----------------------------------------------------------------------------
-// ƒoƒCƒiƒŠƒ†[ƒeƒBƒŠƒeƒB
+ï»¿//----------------------------------------------------------------------------
+// ãƒã‚¤ãƒŠãƒªãƒ¦ãƒ¼ãƒ†ã‚£ãƒªãƒ†ã‚£
 // Copyright (C) 2019- Crea Inc. All rights reserved.
 // This program is released under the MIT License. 
 // see http://opensource.org/licenses/mit-license.php

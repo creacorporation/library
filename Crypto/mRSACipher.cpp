@@ -1,5 +1,5 @@
-//----------------------------------------------------------------------------
-// RSAˆÃ†‰»ƒNƒ‰ƒX
+ï»¿//----------------------------------------------------------------------------
+// RSAæš—å·åŒ–ã‚¯ãƒ©ã‚¹
 // Copyright (C) 2018- Crea Inc. All rights reserved.
 // This program is released under the MIT License. 
 // see http://opensource.org/licenses/mit-license.php
@@ -18,68 +18,68 @@ mRSACipher::~mRSACipher()
 
 }
 
-//ˆÃ†‰»‚·‚é
+//æš—å·åŒ–ã™ã‚‹
 bool mRSACipher::Encrypt( KEYTYPE type , const BYTE* data , DWORD datalen , EncryptData& retEncrypted , DWORD& retWritten )const
 {
 	if( data == 0 )
 	{
-		RaiseAssert( g_ErrorLogger , 0 , L"ƒoƒbƒtƒ@‚ª–¢w’è‚Å‚·" );
+		RaiseAssert( g_ErrorLogger , 0 , L"ãƒãƒƒãƒ•ã‚¡ãŒæœªæŒ‡å®šã§ã™" );
 		return false;
 	}
 
 	if( type == KEYTYPE::KEY_PRIVATE )
 	{
-		//ˆÃ†‰»Œã‚Ìƒf[ƒ^’·‚ğ‹‚ß‚é
+		//æš—å·åŒ–å¾Œã®ãƒ‡ãƒ¼ã‚¿é•·ã‚’æ±‚ã‚ã‚‹
 		retWritten = datalen;
 		DWORD bufflen = datalen;
 
 		if( !CryptEncrypt( MyCryptKey , 0 , true , 0 , nullptr , &bufflen , 0 ) )
 		{
-			RaiseAssert( g_ErrorLogger , 0 , L"ˆÃ†‰»Œã‚Ìƒf[ƒ^’·‚ğæ“¾‚Å‚«‚Ü‚¹‚ñ" );
+			RaiseAssert( g_ErrorLogger , 0 , L"æš—å·åŒ–å¾Œã®ãƒ‡ãƒ¼ã‚¿é•·ã‚’å–å¾—ã§ãã¾ã›ã‚“" );
 			return false;
 		}
-		//ˆÃ†‰»‘O‚Ìƒf[ƒ^‚ğƒRƒs[‚·‚é
+		//æš—å·åŒ–å‰ã®ãƒ‡ãƒ¼ã‚¿ã‚’ã‚³ãƒ”ãƒ¼ã™ã‚‹
 		retEncrypted.reset( mNew BYTE[ bufflen ] );
 		MoveMemory( retEncrypted.get() , data , datalen );
 
-		//ˆÃ†‰»‚ğs‚¤
+		//æš—å·åŒ–ã‚’è¡Œã†
 		if( !CryptEncrypt( MyCryptKey , 0 , true , 0 , retEncrypted.get() , &retWritten , bufflen ) )
 		{
-			RaiseAssert( g_ErrorLogger , 0 , L"ˆÃ†‰»‚É¸”s‚µ‚Ü‚µ‚½" );
+			RaiseAssert( g_ErrorLogger , 0 , L"æš—å·åŒ–ã«å¤±æ•—ã—ã¾ã—ãŸ" );
 			return false;
 		}
 	}
 	else if( type == KEYTYPE::KEY_PUBLIC )
 	{
-		//ŒöŠJŒ®‚Ìİ’è
+		//å…¬é–‹éµã®è¨­å®š
 		if( !const_cast<mRSACipher*>(this)->ExtractPublicKey() )
 		{
-			RaiseAssert( g_ErrorLogger , 0 , L"ŒöŠJŒ®‚Ìİ’è‚ª¸”s‚µ‚Ü‚µ‚½" );
+			RaiseAssert( g_ErrorLogger , 0 , L"å…¬é–‹éµã®è¨­å®šãŒå¤±æ•—ã—ã¾ã—ãŸ" );
 			return false;
 		}
-		//ˆÃ†‰»Œã‚Ìƒf[ƒ^’·‚ğ‹‚ß‚é
+		//æš—å·åŒ–å¾Œã®ãƒ‡ãƒ¼ã‚¿é•·ã‚’æ±‚ã‚ã‚‹
 		retWritten = datalen;
 		DWORD bufflen = datalen;
 
 		if( !CryptEncrypt( MyCryptKeyPub , 0 , true , 0 , nullptr , &bufflen , 0 ) )
 		{
-			RaiseAssert( g_ErrorLogger , 0 , L"ˆÃ†‰»Œã‚Ìƒf[ƒ^’·‚ğæ“¾‚Å‚«‚Ü‚¹‚ñ" );
+			RaiseAssert( g_ErrorLogger , 0 , L"æš—å·åŒ–å¾Œã®ãƒ‡ãƒ¼ã‚¿é•·ã‚’å–å¾—ã§ãã¾ã›ã‚“" );
 			return false;
 		}
-		//ˆÃ†‰»‘O‚Ìƒf[ƒ^‚ğƒRƒs[‚·‚é
+		//æš—å·åŒ–å‰ã®ãƒ‡ãƒ¼ã‚¿ã‚’ã‚³ãƒ”ãƒ¼ã™ã‚‹
 		retEncrypted.reset( mNew BYTE[ bufflen ] );
 		MoveMemory( retEncrypted.get() , data , datalen );
 
-		//ˆÃ†‰»‚ğs‚¤
+		//æš—å·åŒ–ã‚’è¡Œã†
 		if( !CryptEncrypt( MyCryptKeyPub , 0 , true , 0 , retEncrypted.get() , &retWritten , bufflen ) )
 		{
-			RaiseAssert( g_ErrorLogger , 0 , L"ˆÃ†‰»‚É¸”s‚µ‚Ü‚µ‚½" );
+			RaiseAssert( g_ErrorLogger , 0 , L"æš—å·åŒ–ã«å¤±æ•—ã—ã¾ã—ãŸ" );
 			return false;
 		}
 	}
 	else
 	{
-		RaiseAssert( g_ErrorLogger , 0 , L"•s³‚ÈƒJƒM‚Ìí—Ş‚Å‚·" , type );
+		RaiseAssert( g_ErrorLogger , 0 , L"ä¸æ­£ãªã‚«ã‚®ã®ç¨®é¡ã§ã™" , type );
 		return false;
 	}
 	return true;
@@ -89,47 +89,47 @@ bool mRSACipher::Decrypt( KEYTYPE type , const BYTE* data , DWORD datalen , Encr
 {
 	if( data == 0 )
 	{
-		RaiseAssert( g_ErrorLogger , 0 , L"ƒoƒbƒtƒ@‚ª–¢w’è‚Å‚·" );
+		RaiseAssert( g_ErrorLogger , 0 , L"ãƒãƒƒãƒ•ã‚¡ãŒæœªæŒ‡å®šã§ã™" );
 		return false;
 	}
 
 	if( type == KEYTYPE::KEY_PRIVATE )
 	{
-		//•œ†‘O‚Ìƒf[ƒ^‚ğƒRƒs[‚·‚é
+		//å¾©å·å‰ã®ãƒ‡ãƒ¼ã‚¿ã‚’ã‚³ãƒ”ãƒ¼ã™ã‚‹
 		retDecrypted.reset( mNew BYTE[ datalen ] );
 		MoveMemory( retDecrypted.get() , data , datalen );
 
-		//•œ†‚ğs‚¤
+		//å¾©å·ã‚’è¡Œã†
 		retWritten = datalen;
 		if( !CryptDecrypt( MyCryptKey , 0 , true , 0 , retDecrypted.get() , &retWritten ) )
 		{
-			RaiseAssert( g_ErrorLogger , 0 , L"•œ†‚É¸”s‚µ‚Ü‚µ‚½" );
+			RaiseAssert( g_ErrorLogger , 0 , L"å¾©å·ã«å¤±æ•—ã—ã¾ã—ãŸ" );
 			return false;
 		}
 	}
 	else if( type == KEYTYPE::KEY_PUBLIC )
 	{
-		//ŒöŠJŒ®‚Ìİ’è
+		//å…¬é–‹éµã®è¨­å®š
 		if( !const_cast<mRSACipher*>(this)->ExtractPublicKey() )
 		{
-			RaiseAssert( g_ErrorLogger , 0 , L"ŒöŠJŒ®‚Ìİ’è‚ª¸”s‚µ‚Ü‚µ‚½" );
+			RaiseAssert( g_ErrorLogger , 0 , L"å…¬é–‹éµã®è¨­å®šãŒå¤±æ•—ã—ã¾ã—ãŸ" );
 			return false;
 		}
-		//•œ†‘O‚Ìƒf[ƒ^‚ğƒRƒs[‚·‚é
+		//å¾©å·å‰ã®ãƒ‡ãƒ¼ã‚¿ã‚’ã‚³ãƒ”ãƒ¼ã™ã‚‹
 		retDecrypted.reset( mNew BYTE[ datalen ] );
 		MoveMemory( retDecrypted.get() , data , datalen );
 
-		//•œ†‚ğs‚¤
+		//å¾©å·ã‚’è¡Œã†
 		retWritten = datalen;
 		if( !CryptDecrypt( MyCryptKeyPub , 0 , true , 0 , retDecrypted.get() , &retWritten ) )
 		{
-			RaiseAssert( g_ErrorLogger , 0 , L"•œ†‚É¸”s‚µ‚Ü‚µ‚½" );
+			RaiseAssert( g_ErrorLogger , 0 , L"å¾©å·ã«å¤±æ•—ã—ã¾ã—ãŸ" );
 			return false;
 		}
 	}
 	else
 	{
-		RaiseAssert( g_ErrorLogger , 0 , L"•s³‚ÈƒJƒM‚Ìí—Ş‚Å‚·" , type );
+		RaiseAssert( g_ErrorLogger , 0 , L"ä¸æ­£ãªã‚«ã‚®ã®ç¨®é¡ã§ã™" , type );
 		return false;
 	}
 	return true;

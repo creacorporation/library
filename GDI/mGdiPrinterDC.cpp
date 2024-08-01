@@ -1,11 +1,11 @@
-//----------------------------------------------------------------------------
-// ƒEƒCƒ“ƒhƒEŠÇ—iƒvƒŠƒ“ƒ^[—pƒfƒoƒCƒXƒRƒ“ƒeƒLƒXƒgj
+ï»¿//----------------------------------------------------------------------------
+// ã‚¦ã‚¤ãƒ³ãƒ‰ã‚¦ç®¡ç†ï¼ˆãƒ—ãƒªãƒ³ã‚¿ãƒ¼ç”¨ãƒ‡ãƒã‚¤ã‚¹ã‚³ãƒ³ãƒ†ã‚­ã‚¹ãƒˆï¼‰
 // Copyright (C) 2019 Crea Inc. All rights reserved. 
 // This program is released under the MIT License. 
 // see http://opensource.org/licenses/mit-license.php
-// ’˜ìŒ •\¦‚âƒ‰ƒCƒZƒ“ƒX‚Ì‰ü•Ï‚Í‹Ö~‚³‚ê‚Ä‚¢‚Ü‚·B
-// ‚±‚Ìƒ\[ƒXƒR[ƒh‚ÉŠÖ‚µ‚ÄAã‹Lƒ‰ƒCƒZƒ“ƒXˆÈŠO‚ÌŒ_–ñ“™‚ÍˆêØ‘¶İ‚µ‚Ü‚¹‚ñB
-// (‰½‚ç‚©‚ÌŒ_–ñ‚ª‚ ‚éê‡‚Å‚àA–{ƒ\[ƒXƒR[ƒh‚Í‚»‚Ì‘ÎÛŠO‚Æ‚È‚è‚Ü‚·)
+// è‘—ä½œæ¨©è¡¨ç¤ºã‚„ãƒ©ã‚¤ã‚»ãƒ³ã‚¹ã®æ”¹å¤‰ã¯ç¦æ­¢ã•ã‚Œã¦ã„ã¾ã™ã€‚
+// ã“ã®ã‚½ãƒ¼ã‚¹ã‚³ãƒ¼ãƒ‰ã«é–¢ã—ã¦ã€ä¸Šè¨˜ãƒ©ã‚¤ã‚»ãƒ³ã‚¹ä»¥å¤–ã®å¥‘ç´„ç­‰ã¯ä¸€åˆ‡å­˜åœ¨ã—ã¾ã›ã‚“ã€‚
+// (ä½•ã‚‰ã‹ã®å¥‘ç´„ãŒã‚ã‚‹å ´åˆã§ã‚‚ã€æœ¬ã‚½ãƒ¼ã‚¹ã‚³ãƒ¼ãƒ‰ã¯ãã®å¯¾è±¡å¤–ã¨ãªã‚Šã¾ã™)
 //----------------------------------------------------------------------------
 
 #define MGDIPRINTERDC_CPP_COMPILING
@@ -23,7 +23,7 @@ mGdiPrinterDC::~mGdiPrinterDC()
 	if( MyHdc != nullptr )
 	{
 		Abort();
-		RaiseError( g_ErrorLogger , 0 , L"ˆóü“r’†‚ÅƒIƒuƒWƒFƒNƒg‚ğ”jŠü‚µ‚Ü‚µ‚½" );
+		RaiseError( g_ErrorLogger , 0 , L"å°åˆ·é€”ä¸­ã§ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã‚’ç ´æ£„ã—ã¾ã—ãŸ" );
 	}
 	return;
 }
@@ -32,26 +32,26 @@ bool mGdiPrinterDC::Open( const Option& opt ) noexcept
 {
 	if( MyHdc != nullptr )
 	{
-		RaiseAssert( g_ErrorLogger , 0 , L"ƒvƒŠƒ“ƒ^‚ğ“ñd‚ÉŠJ‚±‚¤‚Æ‚µ‚Ü‚µ‚½" );
+		RaiseAssert( g_ErrorLogger , 0 , L"ãƒ—ãƒªãƒ³ã‚¿ã‚’äºŒé‡ã«é–‹ã“ã†ã¨ã—ã¾ã—ãŸ" );
 		return false;
 	}
 
-	//ì¬•û–@‚Ìw’è‚É‰‚¶‚½•û–@‚ÅƒvƒŠƒ“ƒ^‚ğŠJ‚­
+	//ä½œæˆæ–¹æ³•ã®æŒ‡å®šã«å¿œã˜ãŸæ–¹æ³•ã§ãƒ—ãƒªãƒ³ã‚¿ã‚’é–‹ã
 	if( opt.method == Option::CreateMethod::USEOPTION )
 	{
-		//İ’è‚Ì•Û
+		//è¨­å®šã®ä¿æŒ
 		const Option_UseOption* op = (const Option_UseOption*)&opt;
 		MyOption.reset( mNew Option_UseOption( *op ) );
 
-		//ƒfƒoƒCƒXƒRƒ“ƒeƒLƒXƒg‚ğŠJ‚­
+		//ãƒ‡ãƒã‚¤ã‚¹ã‚³ãƒ³ãƒ†ã‚­ã‚¹ãƒˆã‚’é–‹ã
 		MyHdc = CreateDCW( nullptr , op->PrinterName.c_str() , nullptr , nullptr );
 		if( MyHdc == nullptr )
 		{
-			RaiseError( g_ErrorLogger , 0 , L"ƒvƒŠƒ“ƒ^‚ğŠJ‚­‚±‚Æ‚ª‚Å‚«‚Ü‚¹‚ñ" , op->PrinterName );
+			RaiseError( g_ErrorLogger , 0 , L"ãƒ—ãƒªãƒ³ã‚¿ã‚’é–‹ãã“ã¨ãŒã§ãã¾ã›ã‚“" , op->PrinterName );
 			return false;
 		}
 
-		//ƒhƒLƒ…ƒƒ“ƒg‚ÌŠJn
+		//ãƒ‰ã‚­ãƒ¥ãƒ¡ãƒ³ãƒˆã®é–‹å§‹
 		DOCINFO doc = {};
 		doc.cbSize = sizeof( doc );
 		doc.lpszDocName = op->DocumentName.c_str();
@@ -69,13 +69,13 @@ bool mGdiPrinterDC::Open( const Option& opt ) noexcept
 		SetLastError( 0 );
 		if( StartDocW( MyHdc , &doc ) <= 0 )
 		{
-			RaiseError( g_ErrorLogger , 0 , L"ƒhƒLƒ…ƒƒ“ƒg‚ğŠJ‚­‚±‚Æ‚ª‚Å‚«‚Ü‚¹‚ñ" , op->PrinterName );
+			RaiseError( g_ErrorLogger , 0 , L"ãƒ‰ã‚­ãƒ¥ãƒ¡ãƒ³ãƒˆã‚’é–‹ãã“ã¨ãŒã§ãã¾ã›ã‚“" , op->PrinterName );
 			return false;
 		}
 	}
 	else
 	{
-		RaiseAssert( g_ErrorLogger , 0 , L"ƒvƒŠƒ“ƒ^ƒIƒvƒVƒ‡ƒ“‚ª•s³‚Å‚·" );
+		RaiseAssert( g_ErrorLogger , 0 , L"ãƒ—ãƒªãƒ³ã‚¿ã‚ªãƒ—ã‚·ãƒ§ãƒ³ãŒä¸æ­£ã§ã™" );
 		return false;
 	}
 	return true;
@@ -85,22 +85,22 @@ bool mGdiPrinterDC::Close( void ) noexcept
 {
 	if( MyHdc == nullptr )
 	{
-		RaiseAssert( g_ErrorLogger , 0 , L"ƒvƒŠƒ“ƒ^‚ªŠJ‚©‚ê‚Ä‚¢‚Ü‚¹‚ñ" );
+		RaiseAssert( g_ErrorLogger , 0 , L"ãƒ—ãƒªãƒ³ã‚¿ãŒé–‹ã‹ã‚Œã¦ã„ã¾ã›ã‚“" );
 		return false;
 	}
 
 	SetLastError( 0 );
 	if( ::EndDoc( MyHdc ) <= 0 )
 	{
-		RaiseError( g_ErrorLogger , 0 , L"ˆóü‚ğI—¹‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½" , MyOption->DocumentName );
+		RaiseError( g_ErrorLogger , 0 , L"å°åˆ·ã‚’çµ‚äº†ã§ãã¾ã›ã‚“ã§ã—ãŸ" , MyOption->DocumentName );
 		return false;
 	}
 
-	//‘I‘ğ‚³‚ê‚Ä‚¢‚éGDIƒIƒuƒWƒFƒNƒg‚ğ‘S•”Œ³‚É–ß‚·
-	//¦‚±‚ê‚ğ‚â‚ç‚È‚¢‚ÆƒŠƒ\[ƒXƒŠ[ƒN‚·‚é‚©‚à
+	//é¸æŠã•ã‚Œã¦ã„ã‚‹GDIã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã‚’å…¨éƒ¨å…ƒã«æˆ»ã™
+	//â€»ã“ã‚Œã‚’ã‚„ã‚‰ãªã„ã¨ãƒªã‚½ãƒ¼ã‚¹ãƒªãƒ¼ã‚¯ã™ã‚‹ã‹ã‚‚
 	ResetSelectedObject();
 
-	//ƒfƒoƒCƒXƒRƒ“ƒeƒLƒXƒg‚ÆƒIƒvƒVƒ‡ƒ“‚Í‚à‚¤—v‚ç‚È‚¢‚©‚ç”jŠü‚·‚é
+	//ãƒ‡ãƒã‚¤ã‚¹ã‚³ãƒ³ãƒ†ã‚­ã‚¹ãƒˆã¨ã‚ªãƒ—ã‚·ãƒ§ãƒ³ã¯ã‚‚ã†è¦ã‚‰ãªã„ã‹ã‚‰ç ´æ£„ã™ã‚‹
 	DeleteDC( MyHdc );
 	MyHdc = nullptr;
 	MyOption.reset();
@@ -111,22 +111,22 @@ bool mGdiPrinterDC::Abort( void ) noexcept
 {
 	if( MyHdc == nullptr )
 	{
-		RaiseAssert( g_ErrorLogger , 0 , L"ƒvƒŠƒ“ƒ^‚ªŠJ‚©‚ê‚Ä‚¢‚Ü‚¹‚ñ" );
+		RaiseAssert( g_ErrorLogger , 0 , L"ãƒ—ãƒªãƒ³ã‚¿ãŒé–‹ã‹ã‚Œã¦ã„ã¾ã›ã‚“" );
 		return false;
 	}
 
 	SetLastError( 0 );
 	if( ::AbortDoc( MyHdc ) <= 0 )
 	{
-		RaiseError( g_ErrorLogger , 0 , L"ˆóü‚Ì’†~ˆ—‚ª¸”s‚µ‚Ü‚µ‚½" , MyOption->DocumentName );
+		RaiseError( g_ErrorLogger , 0 , L"å°åˆ·ã®ä¸­æ­¢å‡¦ç†ãŒå¤±æ•—ã—ã¾ã—ãŸ" , MyOption->DocumentName );
 		return false;
 	}
 
-	//‘I‘ğ‚³‚ê‚Ä‚¢‚éGDIƒIƒuƒWƒFƒNƒg‚ğ‘S•”Œ³‚É–ß‚·
-	//¦‚±‚ê‚ğ‚â‚ç‚È‚¢‚ÆƒŠƒ\[ƒXƒŠ[ƒN‚·‚é‚©‚à
+	//é¸æŠã•ã‚Œã¦ã„ã‚‹GDIã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã‚’å…¨éƒ¨å…ƒã«æˆ»ã™
+	//â€»ã“ã‚Œã‚’ã‚„ã‚‰ãªã„ã¨ãƒªã‚½ãƒ¼ã‚¹ãƒªãƒ¼ã‚¯ã™ã‚‹ã‹ã‚‚
 	ResetSelectedObject();
 
-	//ƒfƒoƒCƒXƒRƒ“ƒeƒLƒXƒg‚ÆƒIƒvƒVƒ‡ƒ“‚Í‚à‚¤—v‚ç‚È‚¢‚©‚ç”jŠü‚·‚é
+	//ãƒ‡ãƒã‚¤ã‚¹ã‚³ãƒ³ãƒ†ã‚­ã‚¹ãƒˆã¨ã‚ªãƒ—ã‚·ãƒ§ãƒ³ã¯ã‚‚ã†è¦ã‚‰ãªã„ã‹ã‚‰ç ´æ£„ã™ã‚‹
 	DeleteDC( MyHdc );
 	MyHdc = nullptr;
 	MyOption.reset();
@@ -139,11 +139,11 @@ static bool PageSetup_StandardSize( HDC hdc , const mGdiPrinterDC::PageOption_St
 	devmode.dmSpecVersion = DM_SPECVERSION;
 	devmode.dmSize = sizeof( devmode );
 
-	//—p†ƒTƒCƒY‚Ìİ’è
+	//ç”¨ç´™ã‚µã‚¤ã‚ºã®è¨­å®š
 	devmode.dmFields |= DM_PAPERSIZE;
 	devmode.dmPaperSize = static_cast<short>( opt.Paper );
 
-	//—p†‚ÌŒü‚«
+	//ç”¨ç´™ã®å‘ã
 	switch( opt.Orientation )
 	{
 	case mGdiPrinterDC::PageOption_StandardSize::PaperOrientation::PAPER_LANDSCAPE:
@@ -155,15 +155,15 @@ static bool PageSetup_StandardSize( HDC hdc , const mGdiPrinterDC::PageOption_St
 		devmode.dmOrientation = DMORIENT_PORTRAIT;
 		break;
 	default:
-		RaiseError( g_ErrorLogger , 0 , L"—p†ƒTƒCƒY‚Ìİ’è‚ªŠÔˆá‚Á‚Ä‚¢‚Ü‚·" , opt.Orientation );
+		RaiseError( g_ErrorLogger , 0 , L"ç”¨ç´™ã‚µã‚¤ã‚ºã®è¨­å®šãŒé–“é•ã£ã¦ã„ã¾ã™" , opt.Orientation );
 		break;
 	}
 
-	//ƒJƒ‰[ˆóüH
+	//ã‚«ãƒ©ãƒ¼å°åˆ·ï¼Ÿ
 	devmode.dmFields |= DM_COLOR;
 	devmode.dmColor = ( opt.IsColor ) ? ( DMCOLOR_COLOR ) : ( DMCOLOR_MONOCHROME );
 
-	//—¼–Êˆóüİ’è
+	//ä¸¡é¢å°åˆ·è¨­å®š
 	switch( opt.Duplex )
 	{
 	case mGdiPrinterDC::PageOption_StandardSize::PaperDuplex::PAPER_SIMPLEX:
@@ -179,11 +179,11 @@ static bool PageSetup_StandardSize( HDC hdc , const mGdiPrinterDC::PageOption_St
 		devmode.dmDuplex = DMDUP_VERTICAL;
 		break;
 	default:
-		RaiseError( g_ErrorLogger , 0 , L"—¼–Êˆóü‚Ìİ’è‚ªŠÔˆá‚Á‚Ä‚¢‚Ü‚·" , opt.Duplex );
+		RaiseError( g_ErrorLogger , 0 , L"ä¸¡é¢å°åˆ·ã®è¨­å®šãŒé–“é•ã£ã¦ã„ã¾ã™" , opt.Duplex );
 		break;
 	}
 
-	//İ’è
+	//è¨­å®š
 	ResetDCW( hdc , &devmode );
 	return true;
 }
@@ -197,20 +197,20 @@ bool mGdiPrinterDC::StartPage( const PageOption& opt ) noexcept
 {
 	if( MyHdc == nullptr )
 	{
-		RaiseAssert( g_ErrorLogger , 0 , L"ƒvƒŠƒ“ƒ^‚ªŠJ‚©‚ê‚Ä‚¢‚Ü‚¹‚ñ" );
+		RaiseAssert( g_ErrorLogger , 0 , L"ãƒ—ãƒªãƒ³ã‚¿ãŒé–‹ã‹ã‚Œã¦ã„ã¾ã›ã‚“" );
 		return false;
 	}
 
-	//—p†İ’è‚Ì•ÏX
+	//ç”¨ç´™è¨­å®šã®å¤‰æ›´
 	bool rc;
 	if( opt.method == PageOption::CreateMethod::STANDARD_SIZE )
 	{
-		//‹KŠiƒTƒCƒY‚É•ÏX‚·‚éê‡
+		//è¦æ ¼ã‚µã‚¤ã‚ºã«å¤‰æ›´ã™ã‚‹å ´åˆ
 		rc = PageSetup_StandardSize( MyHdc , (PageOption_StandardSize&)opt );
 	}
 	else if( opt.method == PageOption::CreateMethod::NOCHANGE )
 	{
-		//‘Oƒy[ƒW‚Æ“¯‚¶‚Ìê‡
+		//å‰ãƒšãƒ¼ã‚¸ã¨åŒã˜ã®å ´åˆ
 		rc = PageSetup_Nochange( MyHdc , (PageOption_Nochange&)opt );
 	}
 	else
@@ -219,13 +219,13 @@ bool mGdiPrinterDC::StartPage( const PageOption& opt ) noexcept
 	}
 	if( !rc )
 	{
-		RaiseError( g_ErrorLogger , 0 , L"—p†İ’è‚ğ•ÏX‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½" , MyOption->DocumentName );
+		RaiseError( g_ErrorLogger , 0 , L"ç”¨ç´™è¨­å®šã‚’å¤‰æ›´ã§ãã¾ã›ã‚“ã§ã—ãŸ" , MyOption->DocumentName );
 	}
 
 	SetLastError( 0 );
 	if( ::StartPage( MyHdc ) <= 0 )
 	{
-		RaiseError( g_ErrorLogger , 0 , L"ƒy[ƒW‚ğŠJn‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½" , MyOption->DocumentName );
+		RaiseError( g_ErrorLogger , 0 , L"ãƒšãƒ¼ã‚¸ã‚’é–‹å§‹ã§ãã¾ã›ã‚“ã§ã—ãŸ" , MyOption->DocumentName );
 		return false;
 	}
 	return true;
@@ -235,14 +235,14 @@ bool mGdiPrinterDC::EndPage( void ) noexcept
 {
 	if( MyHdc == nullptr )
 	{
-		RaiseAssert( g_ErrorLogger , 0 , L"ƒvƒŠƒ“ƒ^‚ªŠJ‚©‚ê‚Ä‚¢‚Ü‚¹‚ñ" );
+		RaiseAssert( g_ErrorLogger , 0 , L"ãƒ—ãƒªãƒ³ã‚¿ãŒé–‹ã‹ã‚Œã¦ã„ã¾ã›ã‚“" );
 		return false;
 	}
 
 	SetLastError( 0 );
 	if( ::EndPage( MyHdc ) <= 0 )
 	{
-		RaiseError( g_ErrorLogger , 0 , L"ƒy[ƒW‚ğI—¹‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½" , MyOption->DocumentName );
+		RaiseError( g_ErrorLogger , 0 , L"ãƒšãƒ¼ã‚¸ã‚’çµ‚äº†ã§ãã¾ã›ã‚“ã§ã—ãŸ" , MyOption->DocumentName );
 		return false;
 	}
 	return true;
@@ -252,32 +252,32 @@ bool mGdiPrinterDC::GetPrintableSize( SIZE& retSize ) noexcept
 {
 	if( MyHdc == nullptr )
 	{
-		RaiseAssert( g_ErrorLogger , 0 , L"ƒvƒŠƒ“ƒ^‚ªŠJ‚©‚ê‚Ä‚¢‚Ü‚¹‚ñ" );
+		RaiseAssert( g_ErrorLogger , 0 , L"ãƒ—ãƒªãƒ³ã‚¿ãŒé–‹ã‹ã‚Œã¦ã„ã¾ã›ã‚“" );
 		return false;
 	}
 
-	int sx = GetDeviceCaps( MyHdc , HORZRES );					//‰æ–Ê‚Ì•(ƒsƒNƒZƒ‹’PˆÊ)
-	int sy = GetDeviceCaps( MyHdc , VERTRES );					//‰æ–Ê‚Ì‚‚³(ƒsƒNƒZƒ‹’PˆÊ)
+	int sx = GetDeviceCaps( MyHdc , HORZRES );					//ç”»é¢ã®å¹…(ãƒ”ã‚¯ã‚»ãƒ«å˜ä½)
+	int sy = GetDeviceCaps( MyHdc , VERTRES );					//ç”»é¢ã®é«˜ã•(ãƒ”ã‚¯ã‚»ãƒ«å˜ä½)
 
 	int dpi_x = GetDeviceCaps( MyHdc , LOGPIXELSX );			//DPI
 	int dpi_y = GetDeviceCaps( MyHdc , LOGPIXELSY );			//DPI
 
-	retSize.cx = ( LONG )( ( 254.0 * sx ) / dpi_x ) - 1;		//ŒvZ’l‚Ì1ƒsƒNƒZƒ‹“à‘¤‚Ü‚Å‚ªˆóü‰Â”\”ÍˆÍ
+	retSize.cx = ( LONG )( ( 254.0 * sx ) / dpi_x ) - 1;		//è¨ˆç®—å€¤ã®1ãƒ”ã‚¯ã‚»ãƒ«å†…å´ã¾ã§ãŒå°åˆ·å¯èƒ½ç¯„å›²
 	retSize.cy = ( LONG )( ( 254.0 * sy ) / dpi_y ) - 1;		//
 	return true;
 }
 
-//—p†‚ÌƒTƒCƒY‚ğ“¾‚é
+//ç”¨ç´™ã®ã‚µã‚¤ã‚ºã‚’å¾—ã‚‹
 bool mGdiPrinterDC::GetPaperSize( SIZE& retSize ) noexcept
 {
 	if( MyHdc == nullptr )
 	{
-		RaiseAssert( g_ErrorLogger , 0 , L"ƒvƒŠƒ“ƒ^‚ªŠJ‚©‚ê‚Ä‚¢‚Ü‚¹‚ñ" );
+		RaiseAssert( g_ErrorLogger , 0 , L"ãƒ—ãƒªãƒ³ã‚¿ãŒé–‹ã‹ã‚Œã¦ã„ã¾ã›ã‚“" );
 		return false;
 	}
 
-	int sx = GetDeviceCaps( MyHdc , PHYSICALWIDTH );			//‰æ–Ê‚Ì•(ƒfƒoƒCƒX’PˆÊ)
-	int sy = GetDeviceCaps( MyHdc , PHYSICALHEIGHT );			//‰æ–Ê‚Ì‚‚³(ƒfƒoƒCƒX’PˆÊ)
+	int sx = GetDeviceCaps( MyHdc , PHYSICALWIDTH );			//ç”»é¢ã®å¹…(ãƒ‡ãƒã‚¤ã‚¹å˜ä½)
+	int sy = GetDeviceCaps( MyHdc , PHYSICALHEIGHT );			//ç”»é¢ã®é«˜ã•(ãƒ‡ãƒã‚¤ã‚¹å˜ä½)
 
 	int dpi_x = GetDeviceCaps( MyHdc , LOGPIXELSX );			//DPI
 	int dpi_y = GetDeviceCaps( MyHdc , LOGPIXELSY );			//DPI
@@ -291,16 +291,16 @@ bool mGdiPrinterDC::GetPrintableMargin( RECT& retMargin ) noexcept
 {
 	if( MyHdc == nullptr )
 	{
-		RaiseAssert( g_ErrorLogger , 0 , L"ƒvƒŠƒ“ƒ^‚ªŠJ‚©‚ê‚Ä‚¢‚Ü‚¹‚ñ" );
+		RaiseAssert( g_ErrorLogger , 0 , L"ãƒ—ãƒªãƒ³ã‚¿ãŒé–‹ã‹ã‚Œã¦ã„ã¾ã›ã‚“" );
 		return false;
 	}
 
-	int margin_x = GetDeviceCaps( MyHdc , PHYSICALOFFSETX );	//¶ƒ}[ƒWƒ“(ƒfƒoƒCƒX’PˆÊ)
-	int margin_y = GetDeviceCaps( MyHdc , PHYSICALOFFSETY );	//ãƒ}[ƒWƒ“(ƒfƒoƒCƒX’PˆÊ)
-	int paper_w = GetDeviceCaps( MyHdc , PHYSICALWIDTH );		//—p†‚Ì•(ƒfƒoƒCƒX’PˆÊ)
-	int paper_h = GetDeviceCaps( MyHdc , PHYSICALHEIGHT );		//—p†‚Ì‚‚³(ƒfƒoƒCƒX’PˆÊ)
-	int print_w = GetDeviceCaps( MyHdc , HORZRES );				//ˆóü‰Â”\”ÍˆÍ‚Ì•(ƒsƒNƒZƒ‹’PˆÊ)
-	int print_h = GetDeviceCaps( MyHdc , VERTRES );				//ˆóü‰Â”\”ÍˆÍ‚Ì‚‚³(ƒsƒNƒZƒ‹’PˆÊ)
+	int margin_x = GetDeviceCaps( MyHdc , PHYSICALOFFSETX );	//å·¦ãƒãƒ¼ã‚¸ãƒ³(ãƒ‡ãƒã‚¤ã‚¹å˜ä½)
+	int margin_y = GetDeviceCaps( MyHdc , PHYSICALOFFSETY );	//ä¸Šãƒãƒ¼ã‚¸ãƒ³(ãƒ‡ãƒã‚¤ã‚¹å˜ä½)
+	int paper_w = GetDeviceCaps( MyHdc , PHYSICALWIDTH );		//ç”¨ç´™ã®å¹…(ãƒ‡ãƒã‚¤ã‚¹å˜ä½)
+	int paper_h = GetDeviceCaps( MyHdc , PHYSICALHEIGHT );		//ç”¨ç´™ã®é«˜ã•(ãƒ‡ãƒã‚¤ã‚¹å˜ä½)
+	int print_w = GetDeviceCaps( MyHdc , HORZRES );				//å°åˆ·å¯èƒ½ç¯„å›²ã®å¹…(ãƒ”ã‚¯ã‚»ãƒ«å˜ä½)
+	int print_h = GetDeviceCaps( MyHdc , VERTRES );				//å°åˆ·å¯èƒ½ç¯„å›²ã®é«˜ã•(ãƒ”ã‚¯ã‚»ãƒ«å˜ä½)
 	int dpi_x = GetDeviceCaps( MyHdc , LOGPIXELSX );			//DPI
 	int dpi_y = GetDeviceCaps( MyHdc , LOGPIXELSY );			//DPI
 
@@ -335,7 +335,7 @@ bool mGdiPrinterDC::SetView( Origin origin , const SIZE& size , const RECT& marg
 
 	if( MyHdc == nullptr )
 	{
-		RaiseAssert( g_ErrorLogger , 0 , L"ƒvƒŠƒ“ƒ^‚ªŠJ‚©‚ê‚Ä‚¢‚Ü‚¹‚ñ" );
+		RaiseAssert( g_ErrorLogger , 0 , L"ãƒ—ãƒªãƒ³ã‚¿ãŒé–‹ã‹ã‚Œã¦ã„ã¾ã›ã‚“" );
 		return false;
 	}
 
@@ -354,13 +354,13 @@ bool mGdiPrinterDC::SetView( Origin origin , const SIZE& size , const RECT& marg
 		if( origin == Origin::ORIGIN_PRINTABLEAREA )
 		{
 			Check<err>( SetMapMode( MyHdc , MM_ANISOTROPIC) );
-			int sx = GetDeviceCaps( MyHdc , HORZRES );				//‰æ–Ê‚Ì•(ƒfƒoƒCƒX’PˆÊ)
-			int sy = GetDeviceCaps( MyHdc , VERTRES );				//‰æ–Ê‚Ì‚‚³(ƒfƒoƒCƒX’PˆÊ)		
+			int sx = GetDeviceCaps( MyHdc , HORZRES );				//ç”»é¢ã®å¹…(ãƒ‡ãƒã‚¤ã‚¹å˜ä½)
+			int sy = GetDeviceCaps( MyHdc , VERTRES );				//ç”»é¢ã®é«˜ã•(ãƒ‡ãƒã‚¤ã‚¹å˜ä½)		
 			Check<err>( SetViewportExtEx( MyHdc , 
 				sx - MyOption->PrintAreaMargin * 2 - margin_dev.left - margin_dev.right ,
 				sy - MyOption->PrintAreaMargin * 2 - margin_dev.top - margin_dev.bottom ,
-				nullptr ) );	//˜_—À•WŒn
-			Check<err>( SetWindowExtEx( MyHdc , size.cx , size.cy , nullptr ) );	//•¨—À•WŒn
+				nullptr ) );	//è«–ç†åº§æ¨™ç³»
+			Check<err>( SetWindowExtEx( MyHdc , size.cx , size.cy , nullptr ) );	//ç‰©ç†åº§æ¨™ç³»
 
 			Check<err>( SetViewportOrgEx( MyHdc ,
 				MyOption->PrintAreaMargin + margin_dev.left ,
@@ -370,16 +370,16 @@ bool mGdiPrinterDC::SetView( Origin origin , const SIZE& size , const RECT& marg
 		else if( origin == Origin::ORIGIN_PAPEREDGE )
 		{
 			Check<err>( SetMapMode( MyHdc , MM_ANISOTROPIC) );
-			int px = GetDeviceCaps( MyHdc , PHYSICALWIDTH );		//‰æ–Ê‚Ì•(ƒfƒoƒCƒX’PˆÊ)
-			int py = GetDeviceCaps( MyHdc , PHYSICALHEIGHT );		//‰æ–Ê‚Ì‚‚³(ƒfƒoƒCƒX’PˆÊ)		
+			int px = GetDeviceCaps( MyHdc , PHYSICALWIDTH );		//ç”»é¢ã®å¹…(ãƒ‡ãƒã‚¤ã‚¹å˜ä½)
+			int py = GetDeviceCaps( MyHdc , PHYSICALHEIGHT );		//ç”»é¢ã®é«˜ã•(ãƒ‡ãƒã‚¤ã‚¹å˜ä½)		
 			Check<err>( SetViewportExtEx( MyHdc ,
 				px - MyOption->PrintAreaMargin * 2 - margin_dev.left - margin_dev.right ,
 				py - MyOption->PrintAreaMargin * 2 - margin_dev.top - margin_dev.bottom ,
-				nullptr ) );	//˜_—À•WŒn
-			Check<err>( SetWindowExtEx( MyHdc , size.cx , size.cy , nullptr ) );	//•¨—À•WŒn
+				nullptr ) );	//è«–ç†åº§æ¨™ç³»
+			Check<err>( SetWindowExtEx( MyHdc , size.cx , size.cy , nullptr ) );	//ç‰©ç†åº§æ¨™ç³»
 
-			int margin_l = GetDeviceCaps( MyHdc , PHYSICALOFFSETX );		//¶ƒ}[ƒWƒ“(ƒfƒoƒCƒX’PˆÊ)
-			int margin_u = GetDeviceCaps( MyHdc , PHYSICALOFFSETY );		//ãƒ}[ƒWƒ“(ƒfƒoƒCƒX’PˆÊ)
+			int margin_l = GetDeviceCaps( MyHdc , PHYSICALOFFSETX );		//å·¦ãƒãƒ¼ã‚¸ãƒ³(ãƒ‡ãƒã‚¤ã‚¹å˜ä½)
+			int margin_u = GetDeviceCaps( MyHdc , PHYSICALOFFSETY );		//ä¸Šãƒãƒ¼ã‚¸ãƒ³(ãƒ‡ãƒã‚¤ã‚¹å˜ä½)
 			Check<err>( SetViewportOrgEx( MyHdc ,
 				MyOption->PrintAreaMargin + margin_dev.left - margin_l ,
 				MyOption->PrintAreaMargin + margin_dev.top - margin_u,
@@ -387,14 +387,14 @@ bool mGdiPrinterDC::SetView( Origin origin , const SIZE& size , const RECT& marg
 		}
 		else
 		{
-			RaiseError( g_ErrorLogger , 0 , L"Œ´“_‚Ìİ’è’l‚ªˆÙí‚Å‚·" , MyOption->DocumentName );
+			RaiseError( g_ErrorLogger , 0 , L"åŸç‚¹ã®è¨­å®šå€¤ãŒç•°å¸¸ã§ã™" , MyOption->DocumentName );
 			return false;
 		}
 	}
 	catch( err& e )
 	{
 		SetLastError( e.GetErrorCode() );
-		RaiseError( g_ErrorLogger , 0 , L"À•Wİ’è‚ª¸”s‚µ‚Ü‚µ‚½" , MyOption->DocumentName );
+		RaiseError( g_ErrorLogger , 0 , L"åº§æ¨™è¨­å®šãŒå¤±æ•—ã—ã¾ã—ãŸ" , MyOption->DocumentName );
 		return false;
 	}
 

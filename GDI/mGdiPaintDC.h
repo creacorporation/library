@@ -1,15 +1,15 @@
-//----------------------------------------------------------------------------
-// �E�C���h�E�Ǘ��i�ĕ`��p�f�o�C�X�R���e�L�X�g�j
+﻿//----------------------------------------------------------------------------
+// ウインドウ管理（再描画用デバイスコンテキスト）
 // Copyright (C) 2016 Fingerling. All rights reserved. 
 // This program is released under the MIT License. 
 // see http://opensource.org/licenses/mit-license.php
 //----------------------------------------------------------------------------
 
 /*
-���p�r
-�ĕ`��p�̃f�o�C�X�R���e�L�X�g�ł��B
-���̃N���X�ł́ABeginPaint()���Ăяo����Windows����f�o�C�X�R���e�L�X�g���擾���܂��B
-�K�X�ĕ`����s���A�S���I������C���X�^���X��j������ƁA�f�X�g���N�^��EndPaint���Ăяo���܂��B
+●用途
+再描画用のデバイスコンテキストです。
+このクラスでは、BeginPaint()を呼び出してWindowsからデバイスコンテキストを取得します。
+適宜再描画を行い、全部終ったらインスタンスを破棄すると、デストラクタがEndPaintを呼び出します。
 */
 
 #ifndef MGDIPAINTDC_H_INCLUDED
@@ -22,16 +22,16 @@ class mGdiPaintDC : public mGdiDC
 {
 public:
 
-	//�R���X�g���N�^
-	//hwnd : �f�o�C�X�R���e�L�X�g���擾����̂Ɏg�p����E�C���h�E�̃n���h���B
-	//       �w�肵���E�C���h�E�̃N���C�A���g�̈�̃f�o�C�X�R���e�L�X�g���擾���܂��B
+	//コンストラクタ
+	//hwnd : デバイスコンテキストを取得するのに使用するウインドウのハンドル。
+	//       指定したウインドウのクライアント領域のデバイスコンテキストを取得します。
 	mGdiPaintDC( HWND hwnd );
 
 	virtual ~mGdiPaintDC();
 
-	//�ĕ`��̈���擾����
-	//retArea : �ĕ`�悪�K�v�ȗ̈�
-	//ret : ������true
+	//再描画領域を取得する
+	//retArea : 再描画が必要な領域
+	//ret : 成功時true
 	bool GetRedrawArea( RECT& retArea )const;
 
 private:
@@ -41,11 +41,11 @@ private:
 
 protected:
 
-	//MyHdc���擾����Ƃ��Ɏg�p�����E�C���h�E�̃n���h��
-	//���R���X�g���N�^�Ŏw�肵������
+	//MyHdcを取得するときに使用したウインドウのハンドル
+	//※コンストラクタで指定したもの
 	HWND MyHwnd;	
 
-	//�ĕ`��͈�
+	//再描画範囲
 	PAINTSTRUCT MyPaintStruct;
 
 };

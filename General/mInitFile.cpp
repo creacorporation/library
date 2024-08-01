@@ -1,11 +1,11 @@
-//----------------------------------------------------------------------------
-// INIƒtƒ@ƒCƒ‹“Ç‚İ‚İ‘€ì
+ï»¿//----------------------------------------------------------------------------
+// INIãƒ•ã‚¡ã‚¤ãƒ«èª­ã¿è¾¼ã¿æ“ä½œ
 // Copyright (C) 2013,2016 Fingerling. All rights reserved. 
 // Copyright (C) 2018- Crea Inc. All rights reserved.
 // This program is released under the MIT License. 
 // see http://opensource.org/licenses/mit-license.php
-// ’˜ìŒ •\¦‚âƒ‰ƒCƒZƒ“ƒX‚Ì‰ü•Ï‚Í‹Ö~‚³‚ê‚Ä‚¢‚Ü‚·B
-// ‚±‚Ìƒ\[ƒXƒR[ƒh‚ÉŠÖ‚µ‚ÄAã‹Lƒ‰ƒCƒZƒ“ƒXˆÈŠO‚ÌŒ_–ñ“™‚ÍˆêØ‘¶İ‚µ‚Ü‚¹‚ñB
+// è‘—ä½œæ¨©è¡¨ç¤ºã‚„ãƒ©ã‚¤ã‚»ãƒ³ã‚¹ã®æ”¹å¤‰ã¯ç¦æ­¢ã•ã‚Œã¦ã„ã¾ã™ã€‚
+// ã“ã®ã‚½ãƒ¼ã‚¹ã‚³ãƒ¼ãƒ‰ã«é–¢ã—ã¦ã€ä¸Šè¨˜ãƒ©ã‚¤ã‚»ãƒ³ã‚¹ä»¥å¤–ã®å¥‘ç´„ç­‰ã¯ä¸€åˆ‡å­˜åœ¨ã—ã¾ã›ã‚“ã€‚
 //----------------------------------------------------------------------------
 
 #define MINITFILE_CPP_COMPINLING
@@ -33,19 +33,19 @@ mInitFile& mInitFile::operator=( const mInitFile& src )
 	return *this;
 }
 
-//“Ç‚İ‚İÏ‚İ‚Ìƒf[ƒ^‚ğ”jŠü‚·‚é
+//èª­ã¿è¾¼ã¿æ¸ˆã¿ã®ãƒ‡ãƒ¼ã‚¿ã‚’ç ´æ£„ã™ã‚‹
 void mInitFile::Clear( void )noexcept
 {
-	//Œ»İ•Û‚µ‚Ä‚¢‚éƒf[ƒ^‚ª—L‚ê‚Î”jŠü‚·‚éB‚»‚µ‚Ä‹ó•¶š—ñ‚ÌƒZƒNƒVƒ‡ƒ“‚ğ’Ç‰Á‚·‚éB
+	//ç¾åœ¨ä¿æŒã—ã¦ã„ã‚‹ãƒ‡ãƒ¼ã‚¿ãŒæœ‰ã‚Œã°ç ´æ£„ã™ã‚‹ã€‚ãã—ã¦ç©ºæ–‡å­—åˆ—ã®ã‚»ã‚¯ã‚·ãƒ§ãƒ³ã‚’è¿½åŠ ã™ã‚‹ã€‚
 	MySectionDataMap.clear();
-	MySectionDataMap[ L"" ];	//‚±‚ê‚Åsecond‘¤‚ªƒfƒtƒHƒ‹ƒgƒRƒ“ƒXƒgƒ‰ƒNƒ^‚Åì¬‚³‚ê‚é
+	MySectionDataMap[ L"" ];	//ã“ã‚Œã§secondå´ãŒãƒ‡ãƒ•ã‚©ãƒ«ãƒˆã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿ã§ä½œæˆã•ã‚Œã‚‹
 	return;
 }
 
-//INIƒtƒ@ƒCƒ‹‚ğ“Ç‚İ‚İ‚Ü‚·
+//INIãƒ•ã‚¡ã‚¤ãƒ«ã‚’èª­ã¿è¾¼ã¿ã¾ã™
 bool mInitFile::Read( const WString& filename , bool tolower , Encode enc )noexcept
 {
-	//ƒtƒ@ƒCƒ‹‚ğŠJ‚­‚Æ‚«‚Ìî•ñ
+	//ãƒ•ã‚¡ã‚¤ãƒ«ã‚’é–‹ãã¨ãã®æƒ…å ±
 	mFileReadStream::Option opt;
 	opt.AccessRead = true;
 	opt.AccessWrite = false;
@@ -54,23 +54,23 @@ bool mInitFile::Read( const WString& filename , bool tolower , Encode enc )noexc
 	opt.ShareWrite = false;
 	opt.Path = filename;
 
-	//ƒtƒ@ƒCƒ‹‚ğŠJ‚­
+	//ãƒ•ã‚¡ã‚¤ãƒ«ã‚’é–‹ã
 	mFileReadStream fp;
 	if( !fp.Open( opt ) )
 	{
-		//ƒtƒ@ƒCƒ‹‚ªŠJ‚¯‚È‚©‚Á‚½
+		//ãƒ•ã‚¡ã‚¤ãƒ«ãŒé–‹ã‘ãªã‹ã£ãŸ
 		RaiseError( g_ErrorLogger , 0 , L"Open file failed" , filename );
 		return false;
 	}
 
-	//ƒGƒ“ƒR[ƒh‚Ìw’è
+	//ã‚¨ãƒ³ã‚³ãƒ¼ãƒ‰ã®æŒ‡å®š
 	if( !fp.SetEncode( enc ) )
 	{
-		RaiseError( g_ErrorLogger , 0 , L"ƒGƒ“ƒR[ƒh‚Ìw’è‚É¸”s‚µ‚Ü‚µ‚½" , filename );
+		RaiseError( g_ErrorLogger , 0 , L"ã‚¨ãƒ³ã‚³ãƒ¼ãƒ‰ã®æŒ‡å®šã«å¤±æ•—ã—ã¾ã—ãŸ" , filename );
 		return false;
 	}
 
-	//ƒtƒ@ƒCƒ‹‚ªŠJ‚¯‚½‚Ì‚Å“Ç‚İ‚İˆ—‚ğ‚·‚é
+	//ãƒ•ã‚¡ã‚¤ãƒ«ãŒé–‹ã‘ãŸã®ã§èª­ã¿è¾¼ã¿å‡¦ç†ã‚’ã™ã‚‹
 	return Read( fp , tolower );
 }
 
@@ -83,19 +83,19 @@ bool mInitFile::Read( mFileReadStream& fp , bool tolower )
 	mRegexpW InitFileKeyValsPattern2( LR"(^\s*(.*?)\s*(;|$))" );
 	mRegexpW InitFileKeyValsPattern3( LR"(^\s*\.([A-Za-z0-9._()@#]+)\s*(\[([0-9]+)\])*\s*=\s*(.*?)\s*(;|$))" );
 
-	//Œ»İ‚ÌƒZƒNƒVƒ‡ƒ“‚ğİ’è
-	//¦‹ó•¶š—ñ‚ÌƒZƒNƒVƒ‡ƒ“‚ª‚È‚¢‰Â”\«‚à‚ ‚é‚Ì‚ÅAæ‚Éƒ^ƒbƒ`‚µ‚Ä‚¨‚­B
-	MySectionDataMap[ L"" ]; //‚±‚ê‚Åsecond‘¤‚ªƒfƒtƒHƒ‹ƒgƒRƒ“ƒXƒgƒ‰ƒNƒ^‚Åì¬‚³‚ê‚é
+	//ç¾åœ¨ã®ã‚»ã‚¯ã‚·ãƒ§ãƒ³ã‚’è¨­å®š
+	//â€»ç©ºæ–‡å­—åˆ—ã®ã‚»ã‚¯ã‚·ãƒ§ãƒ³ãŒãªã„å¯èƒ½æ€§ã‚‚ã‚ã‚‹ã®ã§ã€å…ˆã«ã‚¿ãƒƒãƒã—ã¦ãŠãã€‚
+	MySectionDataMap[ L"" ]; //ã“ã‚Œã§secondå´ãŒãƒ‡ãƒ•ã‚©ãƒ«ãƒˆã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿ã§ä½œæˆã•ã‚Œã‚‹
 	SectionDataMap::iterator sect_itr = MySectionDataMap.find( L"" );
 
-	//ƒtƒ@ƒCƒ‹‚ğ‚Ps‚¸‚Â“Ç‚İæ‚Á‚Ä“à—e‚ğ”»•Ê‚µAƒf[ƒ^‚ğ“o˜^‚·‚éB
-	DWORD line_count = 0;			//s”Ô†
-	bool line_read_mode = false;	//false=[]‚ÌƒZƒNƒVƒ‡ƒ“ true=<>‚ÌƒZƒNƒVƒ‡ƒ“
+	//ãƒ•ã‚¡ã‚¤ãƒ«ã‚’ï¼‘è¡Œãšã¤èª­ã¿å–ã£ã¦å†…å®¹ã‚’åˆ¤åˆ¥ã—ã€ãƒ‡ãƒ¼ã‚¿ã‚’ç™»éŒ²ã™ã‚‹ã€‚
+	DWORD line_count = 0;			//è¡Œç•ªå·
+	bool line_read_mode = false;	//false=[]ã®ã‚»ã‚¯ã‚·ãƒ§ãƒ³ true=<>ã®ã‚»ã‚¯ã‚·ãƒ§ãƒ³
 
-	WString line;				//ƒtƒ@ƒCƒ‹‚©‚ç“Ç‚İæ‚Á‚½s
+	WString line;				//ãƒ•ã‚¡ã‚¤ãƒ«ã‹ã‚‰èª­ã¿å–ã£ãŸè¡Œ
 
-	mInitFileSection::Key key;	//=‚Ì¶‘¤cƒL[
-	WString val;				//=‚Ì‰E‘¤c’l
+	mInitFileSection::Key key;	//=ã®å·¦å´â€¦ã‚­ãƒ¼
+	WString val;				//=ã®å³å´â€¦å€¤
 	while( !fp.IsEOF() )
 	{
 		if( !fp.ReadLine( line ) )
@@ -103,15 +103,15 @@ bool mInitFile::Read( mFileReadStream& fp , bool tolower )
 			continue;
 		}
 
-		//Šes‚Ì”»’è
+		//å„è¡Œã®åˆ¤å®š
 		if( InitFileCommentPattern.Match( line ) )
 		{
-			//ƒRƒƒ“ƒg or ‹ós‚È‚Ì‚Å–³‹
+			//ã‚³ãƒ¡ãƒ³ãƒˆ or ç©ºè¡Œãªã®ã§ç„¡è¦–
 			continue;
 		}
 		else if( InitFileSectionPattern1.Match( line ) )
 		{
-			//ƒZƒNƒVƒ‡ƒ“–¼( []‚ÅˆÍ‚Ü‚ê‚½s )‚Ìˆ—
+			//ã‚»ã‚¯ã‚·ãƒ§ãƒ³å( []ã§å›²ã¾ã‚ŒãŸè¡Œ )ã®å‡¦ç†
 			WString current_section;
 			if( tolower )
 			{
@@ -122,7 +122,7 @@ bool mInitFile::Read( mFileReadStream& fp , bool tolower )
 				current_section = InitFileSectionPattern1.Submatch()[ 1 ];
 			}
 
-			//Šù‘¶ƒIƒuƒWƒFƒNƒg‚ÌƒNƒŠƒA
+			//æ—¢å­˜ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã®ã‚¯ãƒªã‚¢
 			MySectionDataMap[ current_section ].MySectionName = current_section;
 			sect_itr = MySectionDataMap.find( current_section );
 			sect_itr->second.MyKeyValueMap.clear();
@@ -134,7 +134,7 @@ bool mInitFile::Read( mFileReadStream& fp , bool tolower )
 		}
 		else if( InitFileSectionPattern2.Match( line ) )
 		{
-			//ƒZƒNƒVƒ‡ƒ“–¼( <>‚ÅˆÍ‚Ü‚ê‚½s )‚Ìˆ—
+			//ã‚»ã‚¯ã‚·ãƒ§ãƒ³å( <>ã§å›²ã¾ã‚ŒãŸè¡Œ )ã®å‡¦ç†
 			WString current_section;
 			if( tolower )
 			{
@@ -145,7 +145,7 @@ bool mInitFile::Read( mFileReadStream& fp , bool tolower )
 				current_section = InitFileSectionPattern2.Submatch()[ 1 ];
 			}
 
-			//Šù‘¶ƒIƒuƒWƒFƒNƒg‚ÌƒNƒŠƒA
+			//æ—¢å­˜ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã®ã‚¯ãƒªã‚¢
 			MySectionDataMap[ current_section ].MySectionName = current_section;
 			sect_itr = MySectionDataMap.find( current_section );
 			sect_itr->second.MyKeyValueMap.clear();
@@ -156,10 +156,10 @@ bool mInitFile::Read( mFileReadStream& fp , bool tolower )
 			continue;
 		}
 
-		//ƒL[‚Æ’l‚ÌƒyƒA‚Ìˆ—
+		//ã‚­ãƒ¼ã¨å€¤ã®ãƒšã‚¢ã®å‡¦ç†
 		if( line_read_mode )
 		{
-			//s’PˆÊ‚Ì“Ç‚İ‚İ‚Ìê‡
+			//è¡Œå˜ä½ã®èª­ã¿è¾¼ã¿ã®å ´åˆ
 			if( InitFileKeyValsPattern3.Match( line ) )
 			{
 				key.key = L"";
@@ -184,24 +184,24 @@ bool mInitFile::Read( mFileReadStream& fp , bool tolower )
 			}
 			else
 			{
-				RaiseError( g_ErrorLogger , 0 , L"Iniƒtƒ@ƒCƒ‹‚Ì‘®‚ªˆá‚¢‚Ü‚·" , line );
+				RaiseError( g_ErrorLogger , 0 , L"Iniãƒ•ã‚¡ã‚¤ãƒ«ã®æ›¸å¼ãŒé•ã„ã¾ã™" , line );
 				continue;
 			}
 			line_count++;
 		}
 		else
 		{
-			//ƒL[=’l ‚ÌŒ`‚É‚È‚Á‚Ä‚¢‚ésH
+			//ã‚­ãƒ¼=å€¤ ã®å½¢ã«ãªã£ã¦ã„ã‚‹è¡Œï¼Ÿ
 			if( InitFileKeyValsPattern1.Match( line ) )
 			{
-				//=‚Ì¶‘¤cƒL[
+				//=ã®å·¦å´â€¦ã‚­ãƒ¼
 				WString key_str = InitFileKeyValsPattern1.Submatch()[ 1 ];
-				if( key_str[ 0 ] == L'.' )	//.‚Ån‚Ü‚éH
+				if( key_str[ 0 ] == L'.' )	//.ã§å§‹ã¾ã‚‹ï¼Ÿ
 				{
 					key.index = 0;
 					if( key_str.size() == 1 )
 					{
-						//.‚¾‚¯‚Ìê‡
+						//.ã ã‘ã®å ´åˆ
 						key.subkey = L"";
 					}
 					else if( tolower )
@@ -231,36 +231,36 @@ bool mInitFile::Read( mFileReadStream& fp , bool tolower )
 					}
 					key.subkey = L"";
 				}
-				//=‚Ì‰E‘¤c’l
+				//=ã®å³å´â€¦å€¤
 				val = InitFileKeyValsPattern1.Submatch()[ 4 ];
 			}
 			else
 			{
-				RaiseError( g_ErrorLogger , 0 , L"Iniƒtƒ@ƒCƒ‹‚Ì‘®‚ªˆá‚¢‚Ü‚·" , line );
+				RaiseError( g_ErrorLogger , 0 , L"Iniãƒ•ã‚¡ã‚¤ãƒ«ã®æ›¸å¼ãŒé•ã„ã¾ã™" , line );
 				continue;
 			}
 		}
 
-		//‚·‚Å‚É‘¶İ‚·‚éƒL[H
+		//ã™ã§ã«å­˜åœ¨ã™ã‚‹ã‚­ãƒ¼ï¼Ÿ
 		mInitFileSection::KeyValueMap::iterator val_itr = sect_itr->second.MyKeyValueMap.find( key );
 		if( val_itr == sect_itr->second.MyKeyValueMap.end() )
 		{
-			//V‹K‚ÌƒL[‚È‚Ì‚Å’Ç‰Á
+			//æ–°è¦ã®ã‚­ãƒ¼ãªã®ã§è¿½åŠ 
 			sect_itr->second.MyKeyValueMap.insert( mInitFileSection::KeyValueMap::value_type( key , val ) );
 		}
 		else
 		{
-			//Šù‘¶‚ÌƒL[‚È‚Ì‚Åã‘‚«
+			//æ—¢å­˜ã®ã‚­ãƒ¼ãªã®ã§ä¸Šæ›¸ã
 			val_itr->second = val;
 		}
 	}
 	return true;
 }
 
-//INIƒtƒ@ƒCƒ‹‚ğ‘‚«‚İ‚Ü‚·
+//INIãƒ•ã‚¡ã‚¤ãƒ«ã‚’æ›¸ãè¾¼ã¿ã¾ã™
 bool mInitFile::Write( const WString& filename )
 {
-	//ƒtƒ@ƒCƒ‹‚ğŠJ‚­‚Æ‚«‚Ìî•ñ
+	//ãƒ•ã‚¡ã‚¤ãƒ«ã‚’é–‹ãã¨ãã®æƒ…å ±
 	mFileWriteStream::Option opt;
 	opt.AccessRead = false;
 	opt.AccessWrite = true;
@@ -269,48 +269,48 @@ bool mInitFile::Write( const WString& filename )
 	opt.ShareWrite = false;
 	opt.Path = filename;
 
-	//ƒtƒ@ƒCƒ‹‚ğŠJ‚­
+	//ãƒ•ã‚¡ã‚¤ãƒ«ã‚’é–‹ã
 	mFileWriteStream fp;
 	if( !fp.Open( opt ) )
 	{
-		//ƒtƒ@ƒCƒ‹‚ªŠJ‚¯‚È‚©‚Á‚½
+		//ãƒ•ã‚¡ã‚¤ãƒ«ãŒé–‹ã‘ãªã‹ã£ãŸ
 		RaiseError( g_ErrorLogger , 0 , L"Open file failed" , filename );
 		return false;
 	}
 
-	//ƒtƒ@ƒCƒ‹‚ªŠJ‚¯‚½‚Ì‚Å‘‚«‚İˆ—‚ğ‚·‚é
+	//ãƒ•ã‚¡ã‚¤ãƒ«ãŒé–‹ã‘ãŸã®ã§æ›¸ãè¾¼ã¿å‡¦ç†ã‚’ã™ã‚‹
 	return Write( fp );
 }
 
-//INIƒtƒ@ƒCƒ‹‚ğ‘‚«‚İ‚Ü‚·
+//INIãƒ•ã‚¡ã‚¤ãƒ«ã‚’æ›¸ãè¾¼ã¿ã¾ã™
 bool mInitFile::Write( mFileWriteStream& fp )
 {
 	bool result = true;
 
-	//ƒZƒNƒVƒ‡ƒ“ˆê——‚Ìì¬
+	//ã‚»ã‚¯ã‚·ãƒ§ãƒ³ä¸€è¦§ã®ä½œæˆ
 	WStringDeque sectionlist;
 	if( !GetSectionList( sectionlist ) )
 	{
-		RaiseAssert( g_ErrorLogger , 0 , L"ƒZƒNƒVƒ‡ƒ“ˆê——‚ğì¬‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½" );
+		RaiseAssert( g_ErrorLogger , 0 , L"ã‚»ã‚¯ã‚·ãƒ§ãƒ³ä¸€è¦§ã‚’ä½œæˆã§ãã¾ã›ã‚“ã§ã—ãŸ" );
 		return false;
 	}
 
-	//ŠeƒZƒNƒVƒ‡ƒ“‚Ìƒf[ƒ^‚ğo—Í
+	//å„ã‚»ã‚¯ã‚·ãƒ§ãƒ³ã®ãƒ‡ãƒ¼ã‚¿ã‚’å‡ºåŠ›
 	for( WStringDeque::const_iterator itr = sectionlist.begin() ; itr != sectionlist.end() ; itr++ )
 	{
 		const mInitFileSection* section = GetSection( *itr );
 		if( section == nullptr )
 		{
-			RaiseAssert( g_ErrorLogger , 0 , L"ƒZƒNƒVƒ‡ƒ“‚Ìƒ|ƒCƒ“ƒ^‚ªæ“¾‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½" , *itr );
+			RaiseAssert( g_ErrorLogger , 0 , L"ã‚»ã‚¯ã‚·ãƒ§ãƒ³ã®ãƒã‚¤ãƒ³ã‚¿ãŒå–å¾—ã§ãã¾ã›ã‚“ã§ã—ãŸ" , *itr );
 			result = false;
 		}
 		else if( 0 < section->GetCount() )
 		{
-			//1ŒÂˆÈãƒL[‚ğŠÜ‚ñ‚Å‚¢‚éê‡‚Ì‚İo—Í
+			//1å€‹ä»¥ä¸Šã‚­ãƒ¼ã‚’å«ã‚“ã§ã„ã‚‹å ´åˆã®ã¿å‡ºåŠ›
 
 			if( !section->Write( fp ) )
 			{
-				RaiseAssert( g_ErrorLogger , 0 , L"ƒZƒNƒVƒ‡ƒ“‚Ìo—Í‚ª¸”s‚µ‚Ü‚µ‚½" , *itr );
+				RaiseAssert( g_ErrorLogger , 0 , L"ã‚»ã‚¯ã‚·ãƒ§ãƒ³ã®å‡ºåŠ›ãŒå¤±æ•—ã—ã¾ã—ãŸ" , *itr );
 			}
 			fp.WriteString( L"\r\n" );
 		}
@@ -322,7 +322,7 @@ bool mInitFile::Write( mFileWriteStream& fp )
 	return result;
 }
 
-//ƒZƒNƒVƒ‡ƒ“‚ğæ“¾‚µ‚Ü‚·
+//ã‚»ã‚¯ã‚·ãƒ§ãƒ³ã‚’å–å¾—ã—ã¾ã™
 const mInitFileSection* mInitFile::GetSection( const WString& section )const noexcept
 {
 	SectionDataMap::const_iterator itr = MySectionDataMap.find( section );
@@ -333,7 +333,7 @@ const mInitFileSection* mInitFile::GetSection( const WString& section )const noe
 	return &itr->second;
 }
 
-//ƒZƒNƒVƒ‡ƒ“‚ğæ“¾‚µ‚Ü‚·
+//ã‚»ã‚¯ã‚·ãƒ§ãƒ³ã‚’å–å¾—ã—ã¾ã™
 mInitFileSection* mInitFile::GetSectionForModification( const WString& section )noexcept
 {
 	SectionDataMap::iterator itr = MySectionDataMap.find( section );
@@ -344,14 +344,14 @@ mInitFileSection* mInitFile::GetSectionForModification( const WString& section )
 	return &itr->second;
 }
 
-//ƒZƒNƒVƒ‡ƒ“‚ğ’Ç‰Á‚µ‚Ü‚·
+//ã‚»ã‚¯ã‚·ãƒ§ãƒ³ã‚’è¿½åŠ ã—ã¾ã™
 mInitFileSection* mInitFile::CreateNewSection( const WString& section )noexcept
 {
 	MySectionDataMap[ section ];
 	return GetSectionForModification( section );
 }
 
-//ƒZƒNƒVƒ‡ƒ“‚ğíœ‚µ‚Ü‚·
+//ã‚»ã‚¯ã‚·ãƒ§ãƒ³ã‚’å‰Šé™¤ã—ã¾ã™
 bool mInitFile::DeleteSection( const WString& section )noexcept
 {
 	SectionDataMap::iterator itr = MySectionDataMap.find( section );
@@ -364,13 +364,13 @@ bool mInitFile::DeleteSection( const WString& section )noexcept
 	return true;
 }
 
-//ƒZƒNƒVƒ‡ƒ“‚ª‘¶İ‚·‚é‚©‚ğ”»’è‚µ‚Ü‚·
+//ã‚»ã‚¯ã‚·ãƒ§ãƒ³ãŒå­˜åœ¨ã™ã‚‹ã‹ã‚’åˆ¤å®šã—ã¾ã™
 bool mInitFile::IsExistSection( const WString& section )const noexcept
 {
 	return MySectionDataMap.count( section ) != 0;
 }
 
-//ƒZƒNƒVƒ‡ƒ“–¼‚Ìˆê——‚ğì¬‚µ‚Ü‚·
+//ã‚»ã‚¯ã‚·ãƒ§ãƒ³åã®ä¸€è¦§ã‚’ä½œæˆã—ã¾ã™
 bool mInitFile::GetSectionList( WStringDeque& retList )const
 {
 	retList.clear();

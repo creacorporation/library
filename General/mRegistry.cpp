@@ -1,5 +1,5 @@
-//----------------------------------------------------------------------------
-// ƒŒƒWƒXƒgƒŠƒAƒNƒZƒX
+ï»¿//----------------------------------------------------------------------------
+// ãƒ¬ã‚¸ã‚¹ãƒˆãƒªã‚¢ã‚¯ã‚»ã‚¹
 // Copyright (C) 2019- Crea Inc. All rights reserved.
 // This program is released under the MIT License. 
 // see http://opensource.org/licenses/mit-license.php
@@ -34,7 +34,7 @@ bool mRegistry::Open( ParentKey parent , const WString& path , BOOL access_write
 		parent_handle = HKEY_LOCAL_MACHINE;
 		break;
 	default:
-		RaiseAssert( g_ErrorLogger , 0 , L"eƒL[‚Ìw’è‚ª•s³‚Å‚·" );
+		RaiseAssert( g_ErrorLogger , 0 , L"è¦ªã‚­ãƒ¼ã®æŒ‡å®šãŒä¸æ­£ã§ã™" );
 		return false;
 	}
 
@@ -45,20 +45,20 @@ bool mRegistry::Open( ParentKey parent , const WString& path , BOOL access_write
 	}
 
 	LONG result = RegCreateKeyEx( 
-		parent_handle ,				// ŠJ‚¢‚Ä‚¢‚éeƒL[‚Ìƒnƒ“ƒhƒ‹
-		path.c_str(),				// ŠJ‚­‚×‚«ƒTƒuƒL[‚Ì–¼‘O
-		0,							// —\–ñÏ‚İ
-		0,							// ƒNƒ‰ƒX‚Ì•¶š—ñ
-		REG_OPTION_NON_VOLATILE,	// “Á•Ê‚ÈƒIƒvƒVƒ‡ƒ“
-		priv,						// ƒZƒLƒ…ƒŠƒeƒBƒAƒNƒZƒXƒ}ƒXƒN
-		0,							// Œp³‚Ìw’è
-		&MyKey,						// ŠJ‚­‚±‚Æ‚É¬Œ÷‚µ‚½ƒTƒuƒL[‚Ìƒnƒ“ƒhƒ‹
-		0 );						// Šù‘¶‚©‚Ç‚¤‚©‚ğ¦‚·’l‚ªŠi”[‚³‚ê‚é•Ï”
+		parent_handle ,				// é–‹ã„ã¦ã„ã‚‹è¦ªã‚­ãƒ¼ã®ãƒãƒ³ãƒ‰ãƒ«
+		path.c_str(),				// é–‹ãã¹ãã‚µãƒ–ã‚­ãƒ¼ã®åå‰
+		0,							// äºˆç´„æ¸ˆã¿
+		0,							// ã‚¯ãƒ©ã‚¹ã®æ–‡å­—åˆ—
+		REG_OPTION_NON_VOLATILE,	// ç‰¹åˆ¥ãªã‚ªãƒ—ã‚·ãƒ§ãƒ³
+		priv,						// ã‚»ã‚­ãƒ¥ãƒªãƒ†ã‚£ã‚¢ã‚¯ã‚»ã‚¹ãƒã‚¹ã‚¯
+		0,							// ç¶™æ‰¿ã®æŒ‡å®š
+		&MyKey,						// é–‹ãã“ã¨ã«æˆåŠŸã—ãŸã‚µãƒ–ã‚­ãƒ¼ã®ãƒãƒ³ãƒ‰ãƒ«
+		0 );						// æ—¢å­˜ã‹ã©ã†ã‹ã‚’ç¤ºã™å€¤ãŒæ ¼ç´ã•ã‚Œã‚‹å¤‰æ•°
 
 	if( result != ERROR_SUCCESS )
 	{
 		MyKey = (HKEY)INVALID_HANDLE_VALUE;
-		RaiseError( g_ErrorLogger , 0 , L"ƒŒƒWƒXƒgƒŠƒL[‚Ìƒnƒ“ƒhƒ‹‚ğæ“¾‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½" );
+		RaiseError( g_ErrorLogger , 0 , L"ãƒ¬ã‚¸ã‚¹ãƒˆãƒªã‚­ãƒ¼ã®ãƒãƒ³ãƒ‰ãƒ«ã‚’å–å¾—ã§ãã¾ã›ã‚“ã§ã—ãŸ" );
 		return false;
 	}
 
@@ -76,33 +76,33 @@ bool mRegistry::Close( void )
 
 DWORD mRegistry::GetDword( const WString &entry , DWORD def_value )
 {
-	//ƒL[‚ªŠJ‚¢‚Ä‚¢‚È‚¢ê‡‚ÍƒGƒ‰[
+	//ã‚­ãƒ¼ãŒé–‹ã„ã¦ã„ãªã„å ´åˆã¯ã‚¨ãƒ©ãƒ¼
 	if( MyKey == INVALID_HANDLE_VALUE )
 	{
-		RaiseError( g_ErrorLogger , 0 , L"ƒŒƒWƒXƒgƒŠƒL[‚ªŠJ‚©‚ê‚Ä‚¢‚Ü‚¹‚ñ" , entry );
+		RaiseError( g_ErrorLogger , 0 , L"ãƒ¬ã‚¸ã‚¹ãƒˆãƒªã‚­ãƒ¼ãŒé–‹ã‹ã‚Œã¦ã„ã¾ã›ã‚“" , entry );
 		return def_value;
 	}
 
-	//’l“Ç‚İæ‚è
+	//å€¤èª­ã¿å–ã‚Š
 	DWORD data_type;
 	DWORD data_value;
 	DWORD data_size = sizeof( data_value );
 	LONG result = RegQueryValueEx( MyKey , entry.c_str() , 0 , &data_type , (LPBYTE)&data_value , &data_size );
 
-	//ƒ`ƒFƒbƒN
-	if( result != ERROR_SUCCESS )	//ƒGƒ‰[H
+	//ãƒã‚§ãƒƒã‚¯
+	if( result != ERROR_SUCCESS )	//ã‚¨ãƒ©ãƒ¼ï¼Ÿ
 	{
-		RaiseError( g_ErrorLogger , 0 , L"ƒŒƒWƒXƒgƒŠ‚Ì“Ç‚İæ‚è‚ª¸”s‚µ‚Ü‚µ‚½" , entry );
+		RaiseError( g_ErrorLogger , 0 , L"ãƒ¬ã‚¸ã‚¹ãƒˆãƒªã®èª­ã¿å–ã‚ŠãŒå¤±æ•—ã—ã¾ã—ãŸ" , entry );
 		return def_value;
 	}
-	if( data_type != REG_DWORD )	//Œ^‚Ìƒ`ƒFƒbƒN
+	if( data_type != REG_DWORD )	//å‹ã®ãƒã‚§ãƒƒã‚¯
 	{
-		RaiseError( g_ErrorLogger , 0 , L"ƒŒƒWƒXƒgƒŠ‚ÌŒ^‚ªˆá‚¢‚Ü‚·" , entry );
+		RaiseError( g_ErrorLogger , 0 , L"ãƒ¬ã‚¸ã‚¹ãƒˆãƒªã®å‹ãŒé•ã„ã¾ã™" , entry );
 		return def_value;
 	}
-	if( data_size != sizeof( data_value ) )	//ƒTƒCƒY‚Ìƒ`ƒFƒbƒN
+	if( data_size != sizeof( data_value ) )	//ã‚µã‚¤ã‚ºã®ãƒã‚§ãƒƒã‚¯
 	{
-		RaiseError( g_ErrorLogger , 0 , L"ƒŒƒWƒXƒgƒŠ‚Ìƒf[ƒ^ƒTƒCƒY‚ªˆá‚¢‚Ü‚·" , entry );
+		RaiseError( g_ErrorLogger , 0 , L"ãƒ¬ã‚¸ã‚¹ãƒˆãƒªã®ãƒ‡ãƒ¼ã‚¿ã‚µã‚¤ã‚ºãŒé•ã„ã¾ã™" , entry );
 		return def_value;
 	}
 	return data_value;
@@ -110,50 +110,50 @@ DWORD mRegistry::GetDword( const WString &entry , DWORD def_value )
 
 bool mRegistry::SetDword( const WString &entry , DWORD value )
 {
-	//ƒL[‚ªŠJ‚¢‚Ä‚¢‚È‚¢ê‡‚ÍƒGƒ‰[
+	//ã‚­ãƒ¼ãŒé–‹ã„ã¦ã„ãªã„å ´åˆã¯ã‚¨ãƒ©ãƒ¼
 	if( MyKey == INVALID_HANDLE_VALUE )
 	{
-		RaiseError( g_ErrorLogger , 0 , L"ƒŒƒWƒXƒgƒŠƒL[‚ªŠJ‚©‚ê‚Ä‚¢‚Ü‚¹‚ñ" , entry );
+		RaiseError( g_ErrorLogger , 0 , L"ãƒ¬ã‚¸ã‚¹ãƒˆãƒªã‚­ãƒ¼ãŒé–‹ã‹ã‚Œã¦ã„ã¾ã›ã‚“" , entry );
 		return false;
 	}
 
-	//‘‚«‚İ
+	//æ›¸ãè¾¼ã¿
 	if( RegSetValueEx( MyKey , entry.c_str() , 0 , REG_DWORD , (LPCBYTE)&value , sizeof( value ) ) != ERROR_SUCCESS )
 	{
-		RaiseError( g_ErrorLogger , 0 , L"ƒŒƒWƒXƒgƒŠ‚Ö‚Ì‘‚«‚İ‚ª¸”s‚µ‚Ü‚µ‚½" , entry );
+		RaiseError( g_ErrorLogger , 0 , L"ãƒ¬ã‚¸ã‚¹ãƒˆãƒªã¸ã®æ›¸ãè¾¼ã¿ãŒå¤±æ•—ã—ã¾ã—ãŸ" , entry );
 	}
 	return true;
 }
 
 ULONGLONG mRegistry::GetQword( const WString &entry , ULONGLONG def_value )
 {
-	//ƒL[‚ªŠJ‚¢‚Ä‚¢‚È‚¢ê‡‚ÍƒGƒ‰[
+	//ã‚­ãƒ¼ãŒé–‹ã„ã¦ã„ãªã„å ´åˆã¯ã‚¨ãƒ©ãƒ¼
 	if( MyKey == INVALID_HANDLE_VALUE )
 	{
-		RaiseError( g_ErrorLogger , 0 , L"ƒŒƒWƒXƒgƒŠƒL[‚ªŠJ‚©‚ê‚Ä‚¢‚Ü‚¹‚ñ" , entry );
+		RaiseError( g_ErrorLogger , 0 , L"ãƒ¬ã‚¸ã‚¹ãƒˆãƒªã‚­ãƒ¼ãŒé–‹ã‹ã‚Œã¦ã„ã¾ã›ã‚“" , entry );
 		return def_value;
 	}
 
-	//’l“Ç‚İæ‚è
+	//å€¤èª­ã¿å–ã‚Š
 	DWORD data_type;
 	ULONGLONG data_value;
 	DWORD data_size = sizeof( data_value );
 	LONG result = RegQueryValueEx( MyKey , entry.c_str() , 0 , &data_type , (LPBYTE)&data_value , &data_size );
 
-	//ƒ`ƒFƒbƒN
-	if( result != ERROR_SUCCESS )	//ƒGƒ‰[H
+	//ãƒã‚§ãƒƒã‚¯
+	if( result != ERROR_SUCCESS )	//ã‚¨ãƒ©ãƒ¼ï¼Ÿ
 	{
-		RaiseError( g_ErrorLogger , 0 , L"ƒŒƒWƒXƒgƒŠ‚Ì“Ç‚İæ‚è‚ª¸”s‚µ‚Ü‚µ‚½" , entry );
+		RaiseError( g_ErrorLogger , 0 , L"ãƒ¬ã‚¸ã‚¹ãƒˆãƒªã®èª­ã¿å–ã‚ŠãŒå¤±æ•—ã—ã¾ã—ãŸ" , entry );
 		return def_value;
 	}
-	if( data_type != REG_QWORD )	//Œ^‚Ìƒ`ƒFƒbƒN
+	if( data_type != REG_QWORD )	//å‹ã®ãƒã‚§ãƒƒã‚¯
 	{
-		RaiseError( g_ErrorLogger , 0 , L"ƒŒƒWƒXƒgƒŠ‚ÌŒ^‚ªˆá‚¢‚Ü‚·" , entry );
+		RaiseError( g_ErrorLogger , 0 , L"ãƒ¬ã‚¸ã‚¹ãƒˆãƒªã®å‹ãŒé•ã„ã¾ã™" , entry );
 		return def_value;
 	}
-	if( data_size != sizeof( data_value ) )	//ƒTƒCƒY‚Ìƒ`ƒFƒbƒN
+	if( data_size != sizeof( data_value ) )	//ã‚µã‚¤ã‚ºã®ãƒã‚§ãƒƒã‚¯
 	{
-		RaiseError( g_ErrorLogger , 0 , L"ƒŒƒWƒXƒgƒŠ‚Ìƒf[ƒ^ƒTƒCƒY‚ªˆá‚¢‚Ü‚·" , entry );
+		RaiseError( g_ErrorLogger , 0 , L"ãƒ¬ã‚¸ã‚¹ãƒˆãƒªã®ãƒ‡ãƒ¼ã‚¿ã‚µã‚¤ã‚ºãŒé•ã„ã¾ã™" , entry );
 		return def_value;
 	}
 	return data_value;
@@ -161,35 +161,35 @@ ULONGLONG mRegistry::GetQword( const WString &entry , ULONGLONG def_value )
 
 bool mRegistry::SetQword( const WString &entry , ULONGLONG value )
 {
-	//ƒL[‚ªŠJ‚¢‚Ä‚¢‚È‚¢ê‡‚ÍƒGƒ‰[
+	//ã‚­ãƒ¼ãŒé–‹ã„ã¦ã„ãªã„å ´åˆã¯ã‚¨ãƒ©ãƒ¼
 	if( MyKey == INVALID_HANDLE_VALUE )
 	{
-		RaiseError( g_ErrorLogger , 0 , L"ƒŒƒWƒXƒgƒŠƒL[‚ªŠJ‚©‚ê‚Ä‚¢‚Ü‚¹‚ñ" , entry );
+		RaiseError( g_ErrorLogger , 0 , L"ãƒ¬ã‚¸ã‚¹ãƒˆãƒªã‚­ãƒ¼ãŒé–‹ã‹ã‚Œã¦ã„ã¾ã›ã‚“" , entry );
 		return false;
 	}
 
-	//‘‚«‚İ
+	//æ›¸ãè¾¼ã¿
 	if( RegSetValueEx( MyKey , entry.c_str() , 0 , REG_QWORD , (LPCBYTE)&value , sizeof( value ) ) != ERROR_SUCCESS )
 	{
-		RaiseError( g_ErrorLogger , 0 , L"ƒŒƒWƒXƒgƒŠ‚Ö‚Ì‘‚«‚İ‚ª¸”s‚µ‚Ü‚µ‚½" , entry );
+		RaiseError( g_ErrorLogger , 0 , L"ãƒ¬ã‚¸ã‚¹ãƒˆãƒªã¸ã®æ›¸ãè¾¼ã¿ãŒå¤±æ•—ã—ã¾ã—ãŸ" , entry );
 	}
 	return true;
 }
 
-//ƒŒƒWƒXƒgƒŠ‚©‚ç‰Â•Ï’·ƒf[ƒ^‚ğ“Ç‚İæ‚é
+//ãƒ¬ã‚¸ã‚¹ãƒˆãƒªã‹ã‚‰å¯å¤‰é•·ãƒ‡ãƒ¼ã‚¿ã‚’èª­ã¿å–ã‚‹
 static bool ReadInternal( HKEY key , const WString& entry , WString& retData , DWORD& data_type )
 {
 	DWORD required_size = 0;
 	if( RegQueryValueEx( key , entry.c_str() , 0 , nullptr , nullptr , &required_size ) != ERROR_SUCCESS )
 	{
-		RaiseError( g_ErrorLogger , 0 , L"ƒŒƒWƒXƒgƒŠ‚Ì•¶š—ñƒf[ƒ^‚ÌƒTƒCƒY‚ğæ“¾‚Å‚«‚Ü‚¹‚ñ" , entry );
+		RaiseError( g_ErrorLogger , 0 , L"ãƒ¬ã‚¸ã‚¹ãƒˆãƒªã®æ–‡å­—åˆ—ãƒ‡ãƒ¼ã‚¿ã®ã‚µã‚¤ã‚ºã‚’å–å¾—ã§ãã¾ã›ã‚“" , entry );
 		return false;
 	}
 
 	std::unique_ptr<BYTE> ptr( mNew BYTE[ required_size ] );
 	if( RegQueryValueEx( key , entry.c_str() , 0 , &data_type , ptr.get() , &required_size ) != ERROR_SUCCESS )
 	{
-		RaiseError( g_ErrorLogger , 0 , L"ƒŒƒWƒXƒgƒŠ‚Ì•¶š—ñƒf[ƒ^‚ğæ“¾‚Å‚«‚Ü‚¹‚ñ" , entry );
+		RaiseError( g_ErrorLogger , 0 , L"ãƒ¬ã‚¸ã‚¹ãƒˆãƒªã®æ–‡å­—åˆ—ãƒ‡ãƒ¼ã‚¿ã‚’å–å¾—ã§ãã¾ã›ã‚“" , entry );
 		return false;
 	}
 
@@ -199,116 +199,116 @@ static bool ReadInternal( HKEY key , const WString& entry , WString& retData , D
 }
 
 
-//1s“Ç‚İæ‚è
+//1è¡Œèª­ã¿å–ã‚Š
 WString mRegistry::GetString( const WString& entry , const WString& def_value )
 {
-	//ƒL[‚ªŠJ‚¢‚Ä‚¢‚È‚¢ê‡‚ÍƒGƒ‰[
+	//ã‚­ãƒ¼ãŒé–‹ã„ã¦ã„ãªã„å ´åˆã¯ã‚¨ãƒ©ãƒ¼
 	if( MyKey == INVALID_HANDLE_VALUE )
 	{
-		RaiseError( g_ErrorLogger , 0 , L"ƒŒƒWƒXƒgƒŠƒL[‚ªŠJ‚©‚ê‚Ä‚¢‚Ü‚¹‚ñ" , entry );
+		RaiseError( g_ErrorLogger , 0 , L"ãƒ¬ã‚¸ã‚¹ãƒˆãƒªã‚­ãƒ¼ãŒé–‹ã‹ã‚Œã¦ã„ã¾ã›ã‚“" , entry );
 		return def_value;
 	}
 
-	//•¶š—ñ“Ç‚İæ‚è
+	//æ–‡å­—åˆ—èª­ã¿å–ã‚Š
 	DWORD data_type;
 	WString result_string;
 	if( !ReadInternal( MyKey , entry , result_string , data_type ) )
 	{
-		RaiseError( g_ErrorLogger , 0 , L"ƒŒƒWƒXƒgƒŠ‚Ìƒf[ƒ^‚ğ“Ç‚İæ‚ê‚Ü‚¹‚ñ" , entry );
+		RaiseError( g_ErrorLogger , 0 , L"ãƒ¬ã‚¸ã‚¹ãƒˆãƒªã®ãƒ‡ãƒ¼ã‚¿ã‚’èª­ã¿å–ã‚Œã¾ã›ã‚“" , entry );
 		return def_value;
 	}
-	//’l‚Ìí•Ê‚ª•¶š—ñ‚Å‚ ‚é‚©‚ğŠm”F‚·‚é
+	//å€¤ã®ç¨®åˆ¥ãŒæ–‡å­—åˆ—ã§ã‚ã‚‹ã‹ã‚’ç¢ºèªã™ã‚‹
 	if( data_type != REG_SZ )
 	{
-		//•¶š—ñ‚Å‚Í‚È‚¢
-		RaiseError( g_ErrorLogger , 0 , L"ƒŒƒWƒXƒgƒŠ‚ÌŒ^‚ªˆá‚¢‚Ü‚·" , entry );
+		//æ–‡å­—åˆ—ã§ã¯ãªã„
+		RaiseError( g_ErrorLogger , 0 , L"ãƒ¬ã‚¸ã‚¹ãƒˆãƒªã®å‹ãŒé•ã„ã¾ã™" , entry );
 		return def_value;
 	}
 
 	return result_string;
 }
 
-//1s‘‚«o‚µ
+//1è¡Œæ›¸ãå‡ºã—
 bool mRegistry::SetString( const WString& entry , const WString& value )
 {
-	//ƒL[‚ªŠJ‚¢‚Ä‚¢‚È‚¢ê‡‚ÍƒGƒ‰[
+	//ã‚­ãƒ¼ãŒé–‹ã„ã¦ã„ãªã„å ´åˆã¯ã‚¨ãƒ©ãƒ¼
 	if( MyKey == INVALID_HANDLE_VALUE )
 	{
-		RaiseError( g_ErrorLogger , 0 , L"ƒŒƒWƒXƒgƒŠƒL[‚ªŠJ‚©‚ê‚Ä‚¢‚Ü‚¹‚ñ" , entry );
+		RaiseError( g_ErrorLogger , 0 , L"ãƒ¬ã‚¸ã‚¹ãƒˆãƒªã‚­ãƒ¼ãŒé–‹ã‹ã‚Œã¦ã„ã¾ã›ã‚“" , entry );
 		return false;
 	}
 
-	//‘‚«‚İ
-	DWORD write_size = (DWORD)( sizeof( wchar_t ) * ( value.size() + 1 ) );	//+1‚ÍNULL•ª
+	//æ›¸ãè¾¼ã¿
+	DWORD write_size = (DWORD)( sizeof( wchar_t ) * ( value.size() + 1 ) );	//+1ã¯NULLåˆ†
 	if( RegSetValueEx( MyKey , entry.c_str() , 0 , REG_SZ , (LPCBYTE)value.c_str() , write_size ) != ERROR_SUCCESS )
 	{
-		RaiseError( g_ErrorLogger , 0 , L"ƒŒƒWƒXƒgƒŠ‚Ö‚Ì‘‚«‚İ‚ª¸”s‚µ‚Ü‚µ‚½" , entry );
+		RaiseError( g_ErrorLogger , 0 , L"ãƒ¬ã‚¸ã‚¹ãƒˆãƒªã¸ã®æ›¸ãè¾¼ã¿ãŒå¤±æ•—ã—ã¾ã—ãŸ" , entry );
 		return false;
 	}
 	return true;
 }
 
-//•¡”s“Ç‚İæ‚è
+//è¤‡æ•°è¡Œèª­ã¿å–ã‚Š
 bool mRegistry::GetMultiString( const WString& entry , WStringVector& ret_value )
 {
 	ret_value.clear();
 
-	//ƒL[‚ªŠJ‚¢‚Ä‚¢‚È‚¢ê‡‚ÍƒGƒ‰[
+	//ã‚­ãƒ¼ãŒé–‹ã„ã¦ã„ãªã„å ´åˆã¯ã‚¨ãƒ©ãƒ¼
 	if( MyKey == INVALID_HANDLE_VALUE )
 	{
-		RaiseError( g_ErrorLogger , 0 , L"ƒŒƒWƒXƒgƒŠƒL[‚ªŠJ‚©‚ê‚Ä‚¢‚Ü‚¹‚ñ" , entry );
+		RaiseError( g_ErrorLogger , 0 , L"ãƒ¬ã‚¸ã‚¹ãƒˆãƒªã‚­ãƒ¼ãŒé–‹ã‹ã‚Œã¦ã„ã¾ã›ã‚“" , entry );
 		return false;
 	}
 
-	//•¶š—ñ“Ç‚İæ‚è
+	//æ–‡å­—åˆ—èª­ã¿å–ã‚Š
 	DWORD data_type;
 	WString result_string;
 	if( !ReadInternal( MyKey , entry , result_string , data_type ) )
 	{
-		RaiseError( g_ErrorLogger , 0 , L"ƒŒƒWƒXƒgƒŠ‚Ìƒf[ƒ^‚ğ“Ç‚İæ‚ê‚Ü‚¹‚ñ" , entry );
+		RaiseError( g_ErrorLogger , 0 , L"ãƒ¬ã‚¸ã‚¹ãƒˆãƒªã®ãƒ‡ãƒ¼ã‚¿ã‚’èª­ã¿å–ã‚Œã¾ã›ã‚“" , entry );
 		return false;
 	}
-	//’l‚Ìí•Ê‚ª•¶š—ñ‚Å‚ ‚é‚©‚ğŠm”F‚·‚é
+	//å€¤ã®ç¨®åˆ¥ãŒæ–‡å­—åˆ—ã§ã‚ã‚‹ã‹ã‚’ç¢ºèªã™ã‚‹
 	if( data_type != REG_MULTI_SZ )
 	{
-		//•¶š—ñ‚Å‚Í‚È‚¢
-		RaiseError( g_ErrorLogger , 0 , L"ƒŒƒWƒXƒgƒŠ‚ÌŒ^‚ªˆá‚¢‚Ü‚·" , entry );
+		//æ–‡å­—åˆ—ã§ã¯ãªã„
+		RaiseError( g_ErrorLogger , 0 , L"ãƒ¬ã‚¸ã‚¹ãƒˆãƒªã®å‹ãŒé•ã„ã¾ã™" , entry );
 		return false;
 	}
 
-	//Œ‹‰Ê‚ğƒp[ƒX‚·‚é
+	//çµæœã‚’ãƒ‘ãƒ¼ã‚¹ã™ã‚‹
 	ReadDoubleNullString( result_string , ret_value );
 	return true;
 }
 
-//•¡”s‘‚«o‚µ
+//è¤‡æ•°è¡Œæ›¸ãå‡ºã—
 bool mRegistry::SetMultiString( const WString& entry , const WStringVector& value )
 {
-	//ƒL[‚ªŠJ‚¢‚Ä‚¢‚È‚¢ê‡‚ÍƒGƒ‰[
+	//ã‚­ãƒ¼ãŒé–‹ã„ã¦ã„ãªã„å ´åˆã¯ã‚¨ãƒ©ãƒ¼
 	if( MyKey == INVALID_HANDLE_VALUE )
 	{
-		RaiseError( g_ErrorLogger , 0 , L"ƒŒƒWƒXƒgƒŠƒL[‚ªŠJ‚©‚ê‚Ä‚¢‚Ü‚¹‚ñ" , entry );
+		RaiseError( g_ErrorLogger , 0 , L"ãƒ¬ã‚¸ã‚¹ãƒˆãƒªã‚­ãƒ¼ãŒé–‹ã‹ã‚Œã¦ã„ã¾ã›ã‚“" , entry );
 		return false;
 	}
 
 	WString str;
 	MakeDoubleNullString( value , str );
 
-	//‘‚«‚İ
+	//æ›¸ãè¾¼ã¿
 	if( RegSetValueEx( MyKey , entry.c_str() , 0 , REG_MULTI_SZ , (LPCBYTE)str.data() , (DWORD)( str.size() * sizeof( wchar_t ) ) ) != ERROR_SUCCESS )
 	{
-		RaiseError( g_ErrorLogger , 0 , L"ƒŒƒWƒXƒgƒŠ‚Ö‚Ì‘‚«‚İ‚ª¸”s‚µ‚Ü‚µ‚½" , entry );
+		RaiseError( g_ErrorLogger , 0 , L"ãƒ¬ã‚¸ã‚¹ãƒˆãƒªã¸ã®æ›¸ãè¾¼ã¿ãŒå¤±æ•—ã—ã¾ã—ãŸ" , entry );
 		return false;
 	}
 	return true;
 }
 
-//ƒGƒ“ƒgƒŠ‚Ìíœ
+//ã‚¨ãƒ³ãƒˆãƒªã®å‰Šé™¤
 bool mRegistry::DeleteEntry( const WString& entry )
 {
 	if( RegDeleteValue( MyKey , entry.c_str() ) != ERROR_SUCCESS )
 	{
-		RaiseError( g_ErrorLogger , 0 , L"ƒŒƒWƒXƒgƒŠƒGƒ“ƒgƒŠ‚Ìíœ‚ª¸”s‚µ‚Ü‚µ‚½" , entry );
+		RaiseError( g_ErrorLogger , 0 , L"ãƒ¬ã‚¸ã‚¹ãƒˆãƒªã‚¨ãƒ³ãƒˆãƒªã®å‰Šé™¤ãŒå¤±æ•—ã—ã¾ã—ãŸ" , entry );
 		return false;
 	}
 	return true;
@@ -343,12 +343,12 @@ bool mRegistry::EnumValues( WStringDeque& retValues )
 		{
 			if( dynamic_buffer )
 			{
-				RaiseAssert( g_ErrorLogger , 0 , L"ƒŒƒWƒXƒgƒŠƒL[‚Ì—ñ‹“‚Åƒoƒbƒtƒ@‚ª•s‘«‚µ‚Ü‚µ‚½" );
+				RaiseAssert( g_ErrorLogger , 0 , L"ãƒ¬ã‚¸ã‚¹ãƒˆãƒªã‚­ãƒ¼ã®åˆ—æŒ™ã§ãƒãƒƒãƒ•ã‚¡ãŒä¸è¶³ã—ã¾ã—ãŸ" );
 				result = false;
 				break;
 			}
 			buffer_size = 32767;
-			dynamic_buffer = mNew wchar_t[ buffer_size ];	//ƒŒƒWƒXƒgƒŠƒL[‚Ì’·‚³§ŒÀÅ‘å
+			dynamic_buffer = mNew wchar_t[ buffer_size ];	//ãƒ¬ã‚¸ã‚¹ãƒˆãƒªã‚­ãƒ¼ã®é•·ã•åˆ¶é™æœ€å¤§
 			buffer_ptr = dynamic_buffer;
 			continue;
 		}

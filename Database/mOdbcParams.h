@@ -1,5 +1,5 @@
-//----------------------------------------------------------------------------
-// ODBCÚ‘±—pƒ‰ƒCƒuƒ‰ƒŠ
+ï»¿//----------------------------------------------------------------------------
+// ODBCæ¥ç¶šç”¨ãƒ©ã‚¤ãƒ–ãƒ©ãƒª
 // Copyright (C) 2018- Crea Inc. All rights reserved.
 // This program is released under the MIT License. 
 // see http://opensource.org/licenses/mit-license.php
@@ -33,118 +33,118 @@ public:
 	mOdbcParamsEntry( const mOdbcParamsEntry& src );
 	const mOdbcParamsEntry& operator=( const mOdbcParamsEntry& src );
 
-	//‚±‚Ìƒpƒ‰ƒ[ƒ^[‚ªƒkƒ‹‚Å‚ ‚ê‚Î^
+	//ã“ã®ãƒ‘ãƒ©ãƒ¡ãƒ¼ã‚¿ãƒ¼ãŒãƒŒãƒ«ã§ã‚ã‚Œã°çœŸ
 	bool IsNull( void ) const;
 
-	//‚±‚Ìƒpƒ‰ƒ[ƒ^[‚ğƒkƒ‹‚É‚·‚é
+	//ã“ã®ãƒ‘ãƒ©ãƒ¡ãƒ¼ã‚¿ãƒ¼ã‚’ãƒŒãƒ«ã«ã™ã‚‹
 	void SetNull( void );
 
-	//‚±‚Ìƒpƒ‰ƒ[ƒ^[‚Ìí—Ş‚ğ“¾‚é
+	//ã“ã®ãƒ‘ãƒ©ãƒ¡ãƒ¼ã‚¿ãƒ¼ã®ç¨®é¡ã‚’å¾—ã‚‹
 	mOdbc::ParameterType GetParameterType( void )const;
 
-	//[Setter]64ƒrƒbƒg’l‚ğƒZƒbƒg‚µ‚Ü‚·
+	//[Setter]64ãƒ“ãƒƒãƒˆå€¤ã‚’ã‚»ãƒƒãƒˆã—ã¾ã™
 	void Set( int64_t dt );
-	//[Setter]32ƒrƒbƒg’l‚ğƒZƒbƒg‚µ‚Ü‚·
+	//[Setter]32ãƒ“ãƒƒãƒˆå€¤ã‚’ã‚»ãƒƒãƒˆã—ã¾ã™
 	void Set( int32_t dt );
-	//[Setter]16ƒrƒbƒg’l‚ğƒZƒbƒg‚µ‚Ü‚·
+	//[Setter]16ãƒ“ãƒƒãƒˆå€¤ã‚’ã‚»ãƒƒãƒˆã—ã¾ã™
 	void Set( int16_t dt );
-	//[Setter]8ƒrƒbƒg’l‚ğƒZƒbƒg‚µ‚Ü‚·
+	//[Setter]8ãƒ“ãƒƒãƒˆå€¤ã‚’ã‚»ãƒƒãƒˆã—ã¾ã™
 	void Set( int8_t dt );
-	//[Setter]’P¸“x•‚“®¬”“_’l‚ğƒZƒbƒg‚µ‚Ü‚·
+	//[Setter]å˜ç²¾åº¦æµ®å‹•å°æ•°ç‚¹å€¤ã‚’ã‚»ãƒƒãƒˆã—ã¾ã™
 	void Set( float dt );
-	//[Setter]”{¸“x•‚“®¬”“_’l‚ğƒZƒbƒg‚µ‚Ü‚·
+	//[Setter]å€ç²¾åº¦æµ®å‹•å°æ•°ç‚¹å€¤ã‚’ã‚»ãƒƒãƒˆã—ã¾ã™
 	void Set( double dt );
-	//[Setter]ANSI/SJIS•¶š—ñ‚ğƒZƒbƒg‚µ‚Ü‚·
+	//[Setter]ANSI/SJISæ–‡å­—åˆ—ã‚’ã‚»ãƒƒãƒˆã—ã¾ã™
 	void Set( const AString& dt );
-	//[Setter]Unicode•¶š—ñ‚ğƒZƒbƒg‚µ‚Ü‚·
+	//[Setter]Unicodeæ–‡å­—åˆ—ã‚’ã‚»ãƒƒãƒˆã—ã¾ã™
 	void Set( const WString& dt );
-	//[Setter]ƒoƒCƒiƒŠ—ñ‚ğƒZƒbƒg‚µ‚Ü‚·
+	//[Setter]ãƒã‚¤ãƒŠãƒªåˆ—ã‚’ã‚»ãƒƒãƒˆã—ã¾ã™
 	void Set( const mBinary& dt );
-	//[Setter]“ú•t‚ğƒZƒbƒg‚µ‚Ü‚·
+	//[Setter]æ—¥ä»˜ã‚’ã‚»ãƒƒãƒˆã—ã¾ã™
 	void Set( const mDateTime::Date& dt );
-	//[Setter]‚ğƒZƒbƒg‚µ‚Ü‚·
+	//[Setter]æ™‚åˆ»ã‚’ã‚»ãƒƒãƒˆã—ã¾ã™
 	void Set( const mDateTime::Time& dt );
-	//[Setter]ƒ^ƒCƒ€ƒXƒ^ƒ“ƒv‚ğƒZƒbƒg‚µ‚Ü‚·
+	//[Setter]ã‚¿ã‚¤ãƒ ã‚¹ã‚¿ãƒ³ãƒ—ã‚’ã‚»ãƒƒãƒˆã—ã¾ã™
 	void Set( const mDateTime::Timestamp& dt );
 
 
-	//’l‚ğ‚Æ‚éƒRƒ“ƒXƒgƒ‰ƒNƒ^
+	//å€¤ã‚’ã¨ã‚‹ã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
 	template< class T >
 	mOdbcParamsEntry( T value ) : mOdbcParamsEntry()
 	{
 		Set( value );
 	}
 
-	//[Getter]64ƒrƒbƒg’l‚ğæ“¾‚µ‚Ü‚·
-	//retDt : Œ‹‰Ê‚ÌŠi”[æ
-	//retresult : null‚Ìê‡A•Û‚µ‚Ä‚¢‚é’l‚ÌŒ^‚ªˆÙ‚È‚é‚½‚ß•ÏŠ·o—ˆ‚È‚¢ê‡‚Í‹U‚ª•Ô‚è‚Ü‚·
+	//[Getter]64ãƒ“ãƒƒãƒˆå€¤ã‚’å–å¾—ã—ã¾ã™
+	//retDt : çµæœã®æ ¼ç´å…ˆ
+	//retresult : nullã®å ´åˆã€ä¿æŒã—ã¦ã„ã‚‹å€¤ã®å‹ãŒç•°ãªã‚‹ãŸã‚å¤‰æ›å‡ºæ¥ãªã„å ´åˆã¯å½ãŒè¿”ã‚Šã¾ã™
 	void Get( bool& retresult , int64_t& retDt )const;
-	//[Getter]32ƒrƒbƒg’l‚ğæ“¾‚µ‚Ü‚·
-	//retDt : Œ‹‰Ê‚ÌŠi”[æ
-	//retresult : null‚Ìê‡A•Û‚µ‚Ä‚¢‚é’l‚ÌŒ^‚ªˆÙ‚È‚é‚½‚ß•ÏŠ·o—ˆ‚È‚¢ê‡‚Í‹U‚ª•Ô‚è‚Ü‚·
+	//[Getter]32ãƒ“ãƒƒãƒˆå€¤ã‚’å–å¾—ã—ã¾ã™
+	//retDt : çµæœã®æ ¼ç´å…ˆ
+	//retresult : nullã®å ´åˆã€ä¿æŒã—ã¦ã„ã‚‹å€¤ã®å‹ãŒç•°ãªã‚‹ãŸã‚å¤‰æ›å‡ºæ¥ãªã„å ´åˆã¯å½ãŒè¿”ã‚Šã¾ã™
 	void Get( bool& retresult , int32_t& retDt )const;
-	//[Getter]16ƒrƒbƒg’l‚ğæ“¾‚µ‚Ü‚·
-	//retDt : Œ‹‰Ê‚ÌŠi”[æ
-	//retresult : null‚Ìê‡A•Û‚µ‚Ä‚¢‚é’l‚ÌŒ^‚ªˆÙ‚È‚é‚½‚ß•ÏŠ·o—ˆ‚È‚¢ê‡‚Í‹U‚ª•Ô‚è‚Ü‚·
+	//[Getter]16ãƒ“ãƒƒãƒˆå€¤ã‚’å–å¾—ã—ã¾ã™
+	//retDt : çµæœã®æ ¼ç´å…ˆ
+	//retresult : nullã®å ´åˆã€ä¿æŒã—ã¦ã„ã‚‹å€¤ã®å‹ãŒç•°ãªã‚‹ãŸã‚å¤‰æ›å‡ºæ¥ãªã„å ´åˆã¯å½ãŒè¿”ã‚Šã¾ã™
 	void Get( bool& retresult , int16_t& retDt )const;
-	//[Getter]8ƒrƒbƒg’l‚ğæ“¾‚µ‚Ü‚·
-	//retDt : Œ‹‰Ê‚ÌŠi”[æ
-	//retresult : null‚Ìê‡A•Û‚µ‚Ä‚¢‚é’l‚ÌŒ^‚ªˆÙ‚È‚é‚½‚ß•ÏŠ·o—ˆ‚È‚¢ê‡‚Í‹U‚ª•Ô‚è‚Ü‚·
+	//[Getter]8ãƒ“ãƒƒãƒˆå€¤ã‚’å–å¾—ã—ã¾ã™
+	//retDt : çµæœã®æ ¼ç´å…ˆ
+	//retresult : nullã®å ´åˆã€ä¿æŒã—ã¦ã„ã‚‹å€¤ã®å‹ãŒç•°ãªã‚‹ãŸã‚å¤‰æ›å‡ºæ¥ãªã„å ´åˆã¯å½ãŒè¿”ã‚Šã¾ã™
 	void Get( bool& retresult , int8_t& retDt )const;
-	//[Getter]’P¸“x•‚“®¬”“_’l‚ğæ“¾‚µ‚Ü‚·
-	//retDt : Œ‹‰Ê‚ÌŠi”[æ
-	//retresult : null‚Ìê‡A•Û‚µ‚Ä‚¢‚é’l‚ÌŒ^‚ªˆÙ‚È‚é‚½‚ß•ÏŠ·o—ˆ‚È‚¢ê‡‚Í‹U‚ª•Ô‚è‚Ü‚·
+	//[Getter]å˜ç²¾åº¦æµ®å‹•å°æ•°ç‚¹å€¤ã‚’å–å¾—ã—ã¾ã™
+	//retDt : çµæœã®æ ¼ç´å…ˆ
+	//retresult : nullã®å ´åˆã€ä¿æŒã—ã¦ã„ã‚‹å€¤ã®å‹ãŒç•°ãªã‚‹ãŸã‚å¤‰æ›å‡ºæ¥ãªã„å ´åˆã¯å½ãŒè¿”ã‚Šã¾ã™
 	void Get( bool& retresult , float& retDt )const;
-	//[Getter]”{¸“x•‚“®¬”“_’l‚ğæ“¾‚µ‚Ü‚·
-	//retDt : Œ‹‰Ê‚ÌŠi”[æ
-	//retresult : null‚Ìê‡A•Û‚µ‚Ä‚¢‚é’l‚ÌŒ^‚ªˆÙ‚È‚é‚½‚ß•ÏŠ·o—ˆ‚È‚¢ê‡‚Í‹U‚ª•Ô‚è‚Ü‚·
+	//[Getter]å€ç²¾åº¦æµ®å‹•å°æ•°ç‚¹å€¤ã‚’å–å¾—ã—ã¾ã™
+	//retDt : çµæœã®æ ¼ç´å…ˆ
+	//retresult : nullã®å ´åˆã€ä¿æŒã—ã¦ã„ã‚‹å€¤ã®å‹ãŒç•°ãªã‚‹ãŸã‚å¤‰æ›å‡ºæ¥ãªã„å ´åˆã¯å½ãŒè¿”ã‚Šã¾ã™
 	void Get( bool& retresult , double& retDt )const;
-	//[Getter]ANSI/SJIS•¶š—ñ‚ğæ“¾‚µ‚Ü‚·
-	//retDt : Œ‹‰Ê‚ÌŠi”[æ
-	//retresult : null‚Ìê‡A•Û‚µ‚Ä‚¢‚é’l‚ÌŒ^‚ªˆÙ‚È‚é‚½‚ß•ÏŠ·o—ˆ‚È‚¢ê‡‚Í‹U‚ª•Ô‚è‚Ü‚·
+	//[Getter]ANSI/SJISæ–‡å­—åˆ—ã‚’å–å¾—ã—ã¾ã™
+	//retDt : çµæœã®æ ¼ç´å…ˆ
+	//retresult : nullã®å ´åˆã€ä¿æŒã—ã¦ã„ã‚‹å€¤ã®å‹ãŒç•°ãªã‚‹ãŸã‚å¤‰æ›å‡ºæ¥ãªã„å ´åˆã¯å½ãŒè¿”ã‚Šã¾ã™
 	void Get( bool& retresult , AString& retDt )const;
-	//[Getter]Unicode•¶š—ñ‚ğæ“¾‚µ‚Ü‚·
-	//retDt : Œ‹‰Ê‚ÌŠi”[æ
-	//retresult : null‚Ìê‡A•Û‚µ‚Ä‚¢‚é’l‚ÌŒ^‚ªˆÙ‚È‚é‚½‚ß•ÏŠ·o—ˆ‚È‚¢ê‡‚Í‹U‚ª•Ô‚è‚Ü‚·
+	//[Getter]Unicodeæ–‡å­—åˆ—ã‚’å–å¾—ã—ã¾ã™
+	//retDt : çµæœã®æ ¼ç´å…ˆ
+	//retresult : nullã®å ´åˆã€ä¿æŒã—ã¦ã„ã‚‹å€¤ã®å‹ãŒç•°ãªã‚‹ãŸã‚å¤‰æ›å‡ºæ¥ãªã„å ´åˆã¯å½ãŒè¿”ã‚Šã¾ã™
 	void Get( bool& retresult , WString& retDt )const;
-	//[Getter]ƒoƒCƒiƒŠ—ñ‚ğæ“¾‚µ‚Ü‚·
-	//retDt : Œ‹‰Ê‚ÌŠi”[æ
-	//retresult : null‚Ìê‡A•Û‚µ‚Ä‚¢‚é’l‚ÌŒ^‚ªˆÙ‚È‚é‚½‚ß•ÏŠ·o—ˆ‚È‚¢ê‡‚Í‹U‚ª•Ô‚è‚Ü‚·
+	//[Getter]ãƒã‚¤ãƒŠãƒªåˆ—ã‚’å–å¾—ã—ã¾ã™
+	//retDt : çµæœã®æ ¼ç´å…ˆ
+	//retresult : nullã®å ´åˆã€ä¿æŒã—ã¦ã„ã‚‹å€¤ã®å‹ãŒç•°ãªã‚‹ãŸã‚å¤‰æ›å‡ºæ¥ãªã„å ´åˆã¯å½ãŒè¿”ã‚Šã¾ã™
 	void Get( bool& retresult , mBinary& dt )const;
-	//[Getter]“ú•t‚ğæ“¾‚µ‚Ü‚·
-	//retDt : Œ‹‰Ê‚ÌŠi”[æ
-	//retresult : null‚Ìê‡A•Û‚µ‚Ä‚¢‚é’l‚ÌŒ^‚ªˆÙ‚È‚é‚½‚ß•ÏŠ·o—ˆ‚È‚¢ê‡‚Í‹U‚ª•Ô‚è‚Ü‚·
+	//[Getter]æ—¥ä»˜ã‚’å–å¾—ã—ã¾ã™
+	//retDt : çµæœã®æ ¼ç´å…ˆ
+	//retresult : nullã®å ´åˆã€ä¿æŒã—ã¦ã„ã‚‹å€¤ã®å‹ãŒç•°ãªã‚‹ãŸã‚å¤‰æ›å‡ºæ¥ãªã„å ´åˆã¯å½ãŒè¿”ã‚Šã¾ã™
 	void Get( bool& retresult , mDateTime::Date& dt )const;
-	//[Getter]‚ğæ“¾‚µ‚Ü‚·
-	//retDt : Œ‹‰Ê‚ÌŠi”[æ
-	//retresult : null‚Ìê‡A•Û‚µ‚Ä‚¢‚é’l‚ÌŒ^‚ªˆÙ‚È‚é‚½‚ß•ÏŠ·o—ˆ‚È‚¢ê‡‚Í‹U‚ª•Ô‚è‚Ü‚·
+	//[Getter]æ™‚åˆ»ã‚’å–å¾—ã—ã¾ã™
+	//retDt : çµæœã®æ ¼ç´å…ˆ
+	//retresult : nullã®å ´åˆã€ä¿æŒã—ã¦ã„ã‚‹å€¤ã®å‹ãŒç•°ãªã‚‹ãŸã‚å¤‰æ›å‡ºæ¥ãªã„å ´åˆã¯å½ãŒè¿”ã‚Šã¾ã™
 	void Get( bool& retresult , mDateTime::Time& dt )const;
-	//[Getter]ƒ^ƒCƒ€ƒXƒ^ƒ“ƒv‚ğæ“¾‚µ‚Ü‚·
-	//retDt : Œ‹‰Ê‚ÌŠi”[æ
-	//retresult : null‚Ìê‡A•Û‚µ‚Ä‚¢‚é’l‚ÌŒ^‚ªˆÙ‚È‚é‚½‚ß•ÏŠ·o—ˆ‚È‚¢ê‡‚Í‹U‚ª•Ô‚è‚Ü‚·
+	//[Getter]ã‚¿ã‚¤ãƒ ã‚¹ã‚¿ãƒ³ãƒ—ã‚’å–å¾—ã—ã¾ã™
+	//retDt : çµæœã®æ ¼ç´å…ˆ
+	//retresult : nullã®å ´åˆã€ä¿æŒã—ã¦ã„ã‚‹å€¤ã®å‹ãŒç•°ãªã‚‹ãŸã‚å¤‰æ›å‡ºæ¥ãªã„å ´åˆã¯å½ãŒè¿”ã‚Šã¾ã™
 	void Get( bool& retresult , mDateTime::Timestamp& dt )const;
 
-	//[Getter]64ƒrƒbƒg’l‚ğæ“¾‚µ‚Ü‚·
-	//retDt : Œ‹‰Ê‚ÌŠi”[æ
-	//retresult : null‚Ìê‡A•Û‚µ‚Ä‚¢‚é’l‚ÌŒ^‚ªˆÙ‚È‚é‚½‚ß•ÏŠ·o—ˆ‚È‚¢ê‡‚Í‹U‚ª•Ô‚è‚Ü‚·
+	//[Getter]64ãƒ“ãƒƒãƒˆå€¤ã‚’å–å¾—ã—ã¾ã™
+	//retDt : çµæœã®æ ¼ç´å…ˆ
+	//retresult : nullã®å ´åˆã€ä¿æŒã—ã¦ã„ã‚‹å€¤ã®å‹ãŒç•°ãªã‚‹ãŸã‚å¤‰æ›å‡ºæ¥ãªã„å ´åˆã¯å½ãŒè¿”ã‚Šã¾ã™
 	void Get( bool& retresult , uint64_t& retDt )const;
-	//[Getter]32ƒrƒbƒg’l‚ğæ“¾‚µ‚Ü‚·
-	//retDt : Œ‹‰Ê‚ÌŠi”[æ
-	//retresult : null‚Ìê‡A•Û‚µ‚Ä‚¢‚é’l‚ÌŒ^‚ªˆÙ‚È‚é‚½‚ß•ÏŠ·o—ˆ‚È‚¢ê‡‚Í‹U‚ª•Ô‚è‚Ü‚·
+	//[Getter]32ãƒ“ãƒƒãƒˆå€¤ã‚’å–å¾—ã—ã¾ã™
+	//retDt : çµæœã®æ ¼ç´å…ˆ
+	//retresult : nullã®å ´åˆã€ä¿æŒã—ã¦ã„ã‚‹å€¤ã®å‹ãŒç•°ãªã‚‹ãŸã‚å¤‰æ›å‡ºæ¥ãªã„å ´åˆã¯å½ãŒè¿”ã‚Šã¾ã™
 	void Get( bool& retresult , uint32_t& retDt )const;
-	//[Getter]16ƒrƒbƒg’l‚ğæ“¾‚µ‚Ü‚·
-	//retDt : Œ‹‰Ê‚ÌŠi”[æ
-	//retresult : null‚Ìê‡A•Û‚µ‚Ä‚¢‚é’l‚ÌŒ^‚ªˆÙ‚È‚é‚½‚ß•ÏŠ·o—ˆ‚È‚¢ê‡‚Í‹U‚ª•Ô‚è‚Ü‚·
+	//[Getter]16ãƒ“ãƒƒãƒˆå€¤ã‚’å–å¾—ã—ã¾ã™
+	//retDt : çµæœã®æ ¼ç´å…ˆ
+	//retresult : nullã®å ´åˆã€ä¿æŒã—ã¦ã„ã‚‹å€¤ã®å‹ãŒç•°ãªã‚‹ãŸã‚å¤‰æ›å‡ºæ¥ãªã„å ´åˆã¯å½ãŒè¿”ã‚Šã¾ã™
 	void Get( bool& retresult , uint16_t& retDt )const;
-	//[Getter]8ƒrƒbƒg’l‚ğæ“¾‚µ‚Ü‚·
-	//retDt : Œ‹‰Ê‚ÌŠi”[æ
-	//retresult : null‚Ìê‡A•Û‚µ‚Ä‚¢‚é’l‚ÌŒ^‚ªˆÙ‚È‚é‚½‚ß•ÏŠ·o—ˆ‚È‚¢ê‡‚Í‹U‚ª•Ô‚è‚Ü‚·
+	//[Getter]8ãƒ“ãƒƒãƒˆå€¤ã‚’å–å¾—ã—ã¾ã™
+	//retDt : çµæœã®æ ¼ç´å…ˆ
+	//retresult : nullã®å ´åˆã€ä¿æŒã—ã¦ã„ã‚‹å€¤ã®å‹ãŒç•°ãªã‚‹ãŸã‚å¤‰æ›å‡ºæ¥ãªã„å ´åˆã¯å½ãŒè¿”ã‚Šã¾ã™
 	void Get( bool& retresult , uint8_t& retDt )const;
 
-	//•Û‚µ‚Ä‚¢‚é’l‚ğƒeƒ“ƒvƒŒ[ƒg‚Åw’è‚µ‚½Œ^‚Å•Ô‚µ‚Ü‚·
-	//retValid : —LŒø‚È’l‚ğæ“¾‚µ‚½ê‡‚Í^
-	//			 null‚Ìê‡A•Û‚µ‚Ä‚¢‚é’l‚ÌŒ^‚ªˆÙ‚È‚é‚½‚ß•ÏŠ·o—ˆ‚È‚¢ê‡‚Í‹U‚ª•Ô‚è‚Ü‚·
-	//ret : •Û‚µ‚Ä‚¢‚é’lBƒGƒ‰[‚Ìê‡‚Ì’l‚Í•s’èB
+	//ä¿æŒã—ã¦ã„ã‚‹å€¤ã‚’ãƒ†ãƒ³ãƒ—ãƒ¬ãƒ¼ãƒˆã§æŒ‡å®šã—ãŸå‹ã§è¿”ã—ã¾ã™
+	//retValid : æœ‰åŠ¹ãªå€¤ã‚’å–å¾—ã—ãŸå ´åˆã¯çœŸ
+	//			 nullã®å ´åˆã€ä¿æŒã—ã¦ã„ã‚‹å€¤ã®å‹ãŒç•°ãªã‚‹ãŸã‚å¤‰æ›å‡ºæ¥ãªã„å ´åˆã¯å½ãŒè¿”ã‚Šã¾ã™
+	//ret : ä¿æŒã—ã¦ã„ã‚‹å€¤ã€‚ã‚¨ãƒ©ãƒ¼ã®å ´åˆã®å€¤ã¯ä¸å®šã€‚
 	template< class T > T Get( bool& retValid )const
 	{
 		T Dummy;
@@ -152,9 +152,9 @@ public:
 		return Dummy;
 	}
 
-	//•Û‚µ‚Ä‚¢‚é’l‚ğƒeƒ“ƒvƒŒ[ƒg‚Åw’è‚µ‚½Œ^‚Å•Ô‚µ‚Ü‚·
-	//retValue : •Û‚µ‚Ä‚¢‚é’l
-	//ret : —LŒø‚È’l‚ğæ“¾‚µ‚½ê‡‚Í^BƒGƒ‰[‚Ìê‡retValue‚Ì’l‚Í•s’èB
+	//ä¿æŒã—ã¦ã„ã‚‹å€¤ã‚’ãƒ†ãƒ³ãƒ—ãƒ¬ãƒ¼ãƒˆã§æŒ‡å®šã—ãŸå‹ã§è¿”ã—ã¾ã™
+	//retValue : ä¿æŒã—ã¦ã„ã‚‹å€¤
+	//ret : æœ‰åŠ¹ãªå€¤ã‚’å–å¾—ã—ãŸå ´åˆã¯çœŸã€‚ã‚¨ãƒ©ãƒ¼ã®å ´åˆretValueã®å€¤ã¯ä¸å®šã€‚
 	template< class T > bool Query( T& retValue )const
 	{
 		bool result = false;
@@ -162,10 +162,10 @@ public:
 		return result;
 	}
 
-	//•Û‚µ‚Ä‚¢‚é’l‚ğƒeƒ“ƒvƒŒ[ƒg‚Åw’è‚µ‚½Œ^‚Å•Ô‚µ‚Ü‚·
-	//ret : •Û‚µ‚Ä‚¢‚é’l
-	//¸”s‚·‚é‚ÆAƒeƒ“ƒvƒŒ[ƒg‚Ì‘æ“ñƒpƒ‰ƒ[ƒ^‚Åw’è‚µ‚½Œ^‚Ì—áŠO‚ğ“Š‚°‚éB—áŠOƒNƒ‰ƒX‚ÍmExceptionBase‚©‚ç”h¶‚µ‚½‚à‚Ì‚Å‚ ‚é‚±‚ÆB
-	// Ql using err = class ErrorClass : mExceptionBase{};
+	//ä¿æŒã—ã¦ã„ã‚‹å€¤ã‚’ãƒ†ãƒ³ãƒ—ãƒ¬ãƒ¼ãƒˆã§æŒ‡å®šã—ãŸå‹ã§è¿”ã—ã¾ã™
+	//ret : ä¿æŒã—ã¦ã„ã‚‹å€¤
+	//å¤±æ•—ã™ã‚‹ã¨ã€ãƒ†ãƒ³ãƒ—ãƒ¬ãƒ¼ãƒˆã®ç¬¬äºŒãƒ‘ãƒ©ãƒ¡ãƒ¼ã‚¿ã§æŒ‡å®šã—ãŸå‹ã®ä¾‹å¤–ã‚’æŠ•ã’ã‚‹ã€‚ä¾‹å¤–ã‚¯ãƒ©ã‚¹ã¯mExceptionBaseã‹ã‚‰æ´¾ç”Ÿã—ãŸã‚‚ã®ã§ã‚ã‚‹ã“ã¨ã€‚
+	// å‚è€ƒ using err = class ErrorClass : mExceptionBase{};
 	template< class T , class ExceptionIfFailed > T Get( void )const
 	{
 		static_assert( std::is_base_of<mExceptionBase,ExceptionIfFailed>::value == true , "Exception class is not derived from mException" );
@@ -181,9 +181,9 @@ public:
 		throw ExceptionIfFailed();
 	}
 
-	//•Û‚µ‚Ä‚¢‚é’l‚ğƒeƒ“ƒvƒŒ[ƒg‚Åw’è‚µ‚½Œ^‚Å•Ô‚µ‚Ü‚·
-	//defvalue : ƒGƒ‰[‚Ü‚½‚Ínull‚Ìê‡‚É•Ô‚·’l
-	//ret : •Û‚µ‚Ä‚¢‚é’liƒGƒ‰[‚Ìê‡‚Ídefvalue‚Ì’lj
+	//ä¿æŒã—ã¦ã„ã‚‹å€¤ã‚’ãƒ†ãƒ³ãƒ—ãƒ¬ãƒ¼ãƒˆã§æŒ‡å®šã—ãŸå‹ã§è¿”ã—ã¾ã™
+	//defvalue : ã‚¨ãƒ©ãƒ¼ã¾ãŸã¯nullã®å ´åˆã«è¿”ã™å€¤
+	//ret : ä¿æŒã—ã¦ã„ã‚‹å€¤ï¼ˆã‚¨ãƒ©ãƒ¼ã®å ´åˆã¯defvalueã®å€¤ï¼‰
 	template< class T > T Get( const T& defvalue )const
 	{
 		T value;
@@ -196,9 +196,9 @@ public:
 		return defvalue;
 	}
 
-	//•Û‚µ‚Ä‚¢‚é’l‚ğƒeƒ“ƒvƒŒ[ƒg‚Åw’è‚µ‚½Œ^‚Å•Ô‚µ‚Ü‚·
-	//retValue : •Û‚µ‚Ä‚¢‚é’l
-	//ret : —LŒø‚È’l‚ğæ“¾‚µ‚½ê‡‚Í^BƒGƒ‰[‚Ìê‡retValue‚Ì’l‚Í•s’èB
+	//ä¿æŒã—ã¦ã„ã‚‹å€¤ã‚’ãƒ†ãƒ³ãƒ—ãƒ¬ãƒ¼ãƒˆã§æŒ‡å®šã—ãŸå‹ã§è¿”ã—ã¾ã™
+	//retValue : ä¿æŒã—ã¦ã„ã‚‹å€¤
+	//ret : æœ‰åŠ¹ãªå€¤ã‚’å–å¾—ã—ãŸå ´åˆã¯çœŸã€‚ã‚¨ãƒ©ãƒ¼ã®å ´åˆretValueã®å€¤ã¯ä¸å®šã€‚
 	template< class T > bool Query( T& retValue , const T& defvalue )const
 	{
 		bool result;
@@ -213,22 +213,22 @@ public:
 private:
 	friend class mOdbcQuery;
 
-	//[Setter]“ú•t‚ğƒZƒbƒg‚µ‚Ü‚·
+	//[Setter]æ—¥ä»˜ã‚’ã‚»ãƒƒãƒˆã—ã¾ã™
 	void Set( const SQL_DATE_STRUCT& dt );
-	//[Setter]‚ğƒZƒbƒg‚µ‚Ü‚·
+	//[Setter]æ™‚åˆ»ã‚’ã‚»ãƒƒãƒˆã—ã¾ã™
 	void Set( const SQL_TIME_STRUCT& dt );
-	//[Setter]ƒ^ƒCƒ€ƒXƒ^ƒ“ƒv‚ğƒZƒbƒg‚µ‚Ü‚·
+	//[Setter]ã‚¿ã‚¤ãƒ ã‚¹ã‚¿ãƒ³ãƒ—ã‚’ã‚»ãƒƒãƒˆã—ã¾ã™
 	void Set( const SQL_TIMESTAMP_STRUCT& dt );
 
 protected:
 
-	//ƒpƒ‰ƒ[ƒ^[‚Ìí—Ş‚ğŒˆ‚ß‚é(RTTI‘Š“–)
+	//ãƒ‘ãƒ©ãƒ¡ãƒ¼ã‚¿ãƒ¼ã®ç¨®é¡ã‚’æ±ºã‚ã‚‹(RTTIç›¸å½“)
 	mOdbc::ParameterType MyParameterType;
 
-	//‚±‚Ìƒpƒ‰ƒ[ƒ^[‚ªƒkƒ‹‚Å‚ ‚ê‚Î^
+	//ã“ã®ãƒ‘ãƒ©ãƒ¡ãƒ¼ã‚¿ãƒ¼ãŒãƒŒãƒ«ã§ã‚ã‚Œã°çœŸ
 	bool MyIsNull;
 
-	//‚±‚Ìƒpƒ‰ƒ[ƒ^‚ÌÀƒf[ƒ^
+	//ã“ã®ãƒ‘ãƒ©ãƒ¡ãƒ¼ã‚¿ã®å®Ÿãƒ‡ãƒ¼ã‚¿
 	union DataEntry
 	{
 		int64_t deInt64;
@@ -255,20 +255,20 @@ protected:
 
 };
 
-//ƒNƒGƒŠ‚Ìƒpƒ‰ƒ[ƒ^İ’è
+//ã‚¯ã‚¨ãƒªã®ãƒ‘ãƒ©ãƒ¡ãƒ¼ã‚¿è¨­å®š
 typedef std::vector< mOdbcParamsEntry > mOdbcQueryParams;
 
-//Œ‹‰ÊƒZƒbƒg‚Ìæ“¾—p
-// ¶@F@Œ‹‰Ê‚Ì—ñ–¼
-// ‰E@F@æ“¾Œ‹‰Ê
+//çµæœã‚»ãƒƒãƒˆã®å–å¾—ç”¨
+// å·¦ã€€ï¼šã€€çµæœã®åˆ—å
+// å³ã€€ï¼šã€€å–å¾—çµæœ
 typedef std::unordered_map< WString , mOdbcParamsEntry > mOdbcResultParam;
 
-//ƒNƒGƒŠŒ‹‰Ê‚©‚çw’è‚Ì—ñ‚ğæ“¾‚·‚éB
-// param : ƒNƒGƒŠŒ‹‰Ê
-// key : “Ç‚İæ‚é—ñ‚Ì–¼‘O
-// def : ƒfƒtƒHƒ‹ƒg‚Ì’l
-// ret : ¬Œ÷‚µ‚½ê‡A‚»‚Ì—ñ‚Ì’lB
-//       w’è‚Ì—ñ‚ª‘¶İ‚µ‚È‚¢ê‡A‚Ü‚½‚Í“Ç‚İæ‚ê‚È‚¢ê‡‚ÍƒfƒtƒHƒ‹ƒg‚Ì’l
+//ã‚¯ã‚¨ãƒªçµæœã‹ã‚‰æŒ‡å®šã®åˆ—ã‚’å–å¾—ã™ã‚‹ã€‚
+// param : ã‚¯ã‚¨ãƒªçµæœ
+// key : èª­ã¿å–ã‚‹åˆ—ã®åå‰
+// def : ãƒ‡ãƒ•ã‚©ãƒ«ãƒˆã®å€¤
+// ret : æˆåŠŸã—ãŸå ´åˆã€ãã®åˆ—ã®å€¤ã€‚
+//       æŒ‡å®šã®åˆ—ãŒå­˜åœ¨ã—ãªã„å ´åˆã€ã¾ãŸã¯èª­ã¿å–ã‚Œãªã„å ´åˆã¯ãƒ‡ãƒ•ã‚©ãƒ«ãƒˆã®å€¤
 template< class T >
 T ReadOdbcResult( const mOdbcResultParam& param , const WString key , const T& def )
 {
@@ -280,13 +280,13 @@ T ReadOdbcResult( const mOdbcResultParam& param , const WString key , const T& d
 	return itr->second.Get<T>( def );
 }
 
-//ƒNƒGƒŠŒ‹‰Ê‚©‚çw’è‚Ì—ñ‚ğæ“¾‚·‚éB
-// param : ƒNƒGƒŠŒ‹‰Ê
-// key : “Ç‚İæ‚é—ñ‚Ì–¼‘O
-// retValue : ¬Œ÷‚µ‚½ê‡A‚»‚Ì—ñ‚Ì’lB
-//			  w’è‚Ì—ñ‚ª‘¶İ‚µ‚È‚¢ê‡A‚Ü‚½‚Í“Ç‚İæ‚ê‚È‚¢ê‡‚ÍƒfƒtƒHƒ‹ƒg‚Ì’l
-// def : ƒfƒtƒHƒ‹ƒg‚Ì’l
-// ret : ¬Œ÷‚µ‚½ê‡‚Í^Bw’è‚Ì—ñ‚ª‘¶İ‚µ‚È‚¢ê‡A‚Ü‚½‚Í“Ç‚İæ‚ê‚È‚¢ê‡‚Í‹UB
+//ã‚¯ã‚¨ãƒªçµæœã‹ã‚‰æŒ‡å®šã®åˆ—ã‚’å–å¾—ã™ã‚‹ã€‚
+// param : ã‚¯ã‚¨ãƒªçµæœ
+// key : èª­ã¿å–ã‚‹åˆ—ã®åå‰
+// retValue : æˆåŠŸã—ãŸå ´åˆã€ãã®åˆ—ã®å€¤ã€‚
+//			  æŒ‡å®šã®åˆ—ãŒå­˜åœ¨ã—ãªã„å ´åˆã€ã¾ãŸã¯èª­ã¿å–ã‚Œãªã„å ´åˆã¯ãƒ‡ãƒ•ã‚©ãƒ«ãƒˆã®å€¤
+// def : ãƒ‡ãƒ•ã‚©ãƒ«ãƒˆã®å€¤
+// ret : æˆåŠŸã—ãŸå ´åˆã¯çœŸã€‚æŒ‡å®šã®åˆ—ãŒå­˜åœ¨ã—ãªã„å ´åˆã€ã¾ãŸã¯èª­ã¿å–ã‚Œãªã„å ´åˆã¯å½ã€‚
 template< class T >
 bool QueryOdbcResult( const mOdbcResultParam& param , const WString key , T& retValue , const T& def )
 {
@@ -299,12 +299,12 @@ bool QueryOdbcResult( const mOdbcResultParam& param , const WString key , T& ret
 	return itr->second.Query<T>( retValue , def );
 }
 
-//ƒNƒGƒŠŒ‹‰Ê‚©‚çw’è‚Ì—ñ‚ğæ“¾‚·‚éB
-//¸”s‚·‚é‚ÆAƒeƒ“ƒvƒŒ[ƒg‚Ì‘æ“ñƒpƒ‰ƒ[ƒ^‚Åw’è‚µ‚½Œ^‚Ì—áŠO‚ğ“Š‚°‚éB—áŠOƒNƒ‰ƒX‚ÍmExceptionBase‚©‚ç”h¶‚µ‚½‚à‚Ì‚Å‚ ‚é‚±‚ÆB
-// ¦Ql¨ using err = class ErrorClass : mExceptionBase{};
-// param : ƒNƒGƒŠŒ‹‰Ê
-// key : “Ç‚İæ‚é—ñ‚Ì–¼‘O
-// ret : “Ç‚İæ‚Á‚½—ñ‚Ì’l
+//ã‚¯ã‚¨ãƒªçµæœã‹ã‚‰æŒ‡å®šã®åˆ—ã‚’å–å¾—ã™ã‚‹ã€‚
+//å¤±æ•—ã™ã‚‹ã¨ã€ãƒ†ãƒ³ãƒ—ãƒ¬ãƒ¼ãƒˆã®ç¬¬äºŒãƒ‘ãƒ©ãƒ¡ãƒ¼ã‚¿ã§æŒ‡å®šã—ãŸå‹ã®ä¾‹å¤–ã‚’æŠ•ã’ã‚‹ã€‚ä¾‹å¤–ã‚¯ãƒ©ã‚¹ã¯mExceptionBaseã‹ã‚‰æ´¾ç”Ÿã—ãŸã‚‚ã®ã§ã‚ã‚‹ã“ã¨ã€‚
+// â€»å‚è€ƒâ†’ using err = class ErrorClass : mExceptionBase{};
+// param : ã‚¯ã‚¨ãƒªçµæœ
+// key : èª­ã¿å–ã‚‹åˆ—ã®åå‰
+// ret : èª­ã¿å–ã£ãŸåˆ—ã®å€¤
 template< class T , class ExceptionIfFailed >
 T ReadOdbcResult( const mOdbcResultParam& param , const WString key )
 {
@@ -318,12 +318,12 @@ T ReadOdbcResult( const mOdbcResultParam& param , const WString key )
 	return itr->second.Get<T,ExceptionIfFailed>();
 }
 
-//ƒNƒGƒŠŒ‹‰Ê‚©‚çw’è‚Ì—ñ‚ğæ“¾‚·‚éB
-// param : ƒNƒGƒŠŒ‹‰Ê
-// key : “Ç‚İæ‚é—ñ‚Ì–¼‘O
-// retValid : ¬Œ÷‚µ‚½ê‡‚Í^Bw’è‚Ì—ñ‚ª‘¶İ‚µ‚È‚¢ê‡A‚Ü‚½‚Í“Ç‚İæ‚ê‚È‚¢ê‡‚Í‹UB
-// ret : ¬Œ÷‚µ‚½ê‡A‚»‚Ì—ñ‚Ì’lB
-//       w’è‚Ì—ñ‚ª‘¶İ‚µ‚È‚¢ê‡A‚Ü‚½‚Í“Ç‚İæ‚ê‚È‚¢ê‡‚Í•s’èB
+//ã‚¯ã‚¨ãƒªçµæœã‹ã‚‰æŒ‡å®šã®åˆ—ã‚’å–å¾—ã™ã‚‹ã€‚
+// param : ã‚¯ã‚¨ãƒªçµæœ
+// key : èª­ã¿å–ã‚‹åˆ—ã®åå‰
+// retValid : æˆåŠŸã—ãŸå ´åˆã¯çœŸã€‚æŒ‡å®šã®åˆ—ãŒå­˜åœ¨ã—ãªã„å ´åˆã€ã¾ãŸã¯èª­ã¿å–ã‚Œãªã„å ´åˆã¯å½ã€‚
+// ret : æˆåŠŸã—ãŸå ´åˆã€ãã®åˆ—ã®å€¤ã€‚
+//       æŒ‡å®šã®åˆ—ãŒå­˜åœ¨ã—ãªã„å ´åˆã€ã¾ãŸã¯èª­ã¿å–ã‚Œãªã„å ´åˆã¯ä¸å®šã€‚
 template< class T >
 T ReadOdbcResult( const mOdbcResultParam& param , const WString key , bool& retValid )
 {
@@ -335,12 +335,12 @@ T ReadOdbcResult( const mOdbcResultParam& param , const WString key , bool& retV
 	return itr->second.Get<T>( retValid );
 }
 
-//ƒNƒGƒŠŒ‹‰Ê‚©‚çw’è‚Ì—ñ‚ğæ“¾‚·‚éB
-// param : ƒNƒGƒŠŒ‹‰Ê
-// key : “Ç‚İæ‚é—ñ‚Ì–¼‘O
-// retValue : ¬Œ÷‚µ‚½ê‡A‚»‚Ì—ñ‚Ì’lB
-//			  w’è‚Ì—ñ‚ª‘¶İ‚µ‚È‚¢ê‡A‚Ü‚½‚Í“Ç‚İæ‚ê‚È‚¢ê‡‚Í•s’èB
-// ret : ¬Œ÷‚µ‚½ê‡‚Í^Bw’è‚Ì—ñ‚ª‘¶İ‚µ‚È‚¢ê‡A‚Ü‚½‚Í“Ç‚İæ‚ê‚È‚¢ê‡‚Í‹UB
+//ã‚¯ã‚¨ãƒªçµæœã‹ã‚‰æŒ‡å®šã®åˆ—ã‚’å–å¾—ã™ã‚‹ã€‚
+// param : ã‚¯ã‚¨ãƒªçµæœ
+// key : èª­ã¿å–ã‚‹åˆ—ã®åå‰
+// retValue : æˆåŠŸã—ãŸå ´åˆã€ãã®åˆ—ã®å€¤ã€‚
+//			  æŒ‡å®šã®åˆ—ãŒå­˜åœ¨ã—ãªã„å ´åˆã€ã¾ãŸã¯èª­ã¿å–ã‚Œãªã„å ´åˆã¯ä¸å®šã€‚
+// ret : æˆåŠŸã—ãŸå ´åˆã¯çœŸã€‚æŒ‡å®šã®åˆ—ãŒå­˜åœ¨ã—ãªã„å ´åˆã€ã¾ãŸã¯èª­ã¿å–ã‚Œãªã„å ´åˆã¯å½ã€‚
 template< class T >
 bool QueryOdbcResult( const mOdbcResultParam& param , const WString key , T& retValue )
 {

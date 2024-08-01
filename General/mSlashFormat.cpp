@@ -1,10 +1,10 @@
-//----------------------------------------------------------------------------
-// ƒXƒ‰ƒbƒVƒ…‹æØ‚èƒf[ƒ^ƒtƒH[ƒ}ƒbƒg
+ï»¿//----------------------------------------------------------------------------
+// ã‚¹ãƒ©ãƒƒã‚·ãƒ¥åŒºåˆ‡ã‚Šãƒ‡ãƒ¼ã‚¿ãƒ•ã‚©ãƒ¼ãƒãƒƒãƒˆ
 // Copyright (C) 2020- Crea Inc. All rights reserved.
 // This program is released under the MIT License. 
 // see http://opensource.org/licenses/mit-license.php
-// ’˜ìŒ •\¦‚âƒ‰ƒCƒZƒ“ƒX‚Ì‰ü•Ï‚Í‹Ö~‚³‚ê‚Ä‚¢‚Ü‚·B
-// ‚±‚Ìƒ\[ƒXƒR[ƒh‚ÉŠÖ‚µ‚ÄAã‹Lƒ‰ƒCƒZƒ“ƒXˆÈŠO‚ÌŒ_–ñ“™‚ÍˆêØ‘¶İ‚µ‚Ü‚¹‚ñB
+// è‘—ä½œæ¨©è¡¨ç¤ºã‚„ãƒ©ã‚¤ã‚»ãƒ³ã‚¹ã®æ”¹å¤‰ã¯ç¦æ­¢ã•ã‚Œã¦ã„ã¾ã™ã€‚
+// ã“ã®ã‚½ãƒ¼ã‚¹ã‚³ãƒ¼ãƒ‰ã«é–¢ã—ã¦ã€ä¸Šè¨˜ãƒ©ã‚¤ã‚»ãƒ³ã‚¹ä»¥å¤–ã®å¥‘ç´„ç­‰ã¯ä¸€åˆ‡å­˜åœ¨ã—ã¾ã›ã‚“ã€‚
 //----------------------------------------------------------------------------
 
 
@@ -79,17 +79,17 @@ static void ParseTemplate( const std::basic_string<T>& src , S& retData )
 			size_t pos = token.find_first_of( (T)'=' );
 			if( pos == XString::npos )
 			{
-				//‚È‚¢
+				//ãªã„
 				retData.Values[ token ] = XString();
 			}
 			else if( pos == 0 )
 			{
-				//‚ªÅ‰
+				//ï¼ãŒæœ€åˆ
 				retData.Values[ XString() ] = token.substr( pos + 1 );
 			}
 			else
 			{
-				//‚»‚êˆÈŠO
+				//ãã‚Œä»¥å¤–
 				retData.Values[ token.substr( 0 , pos ) ] = token.substr( pos + 1 );
 			}
 		}

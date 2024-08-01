@@ -1,5 +1,5 @@
-//----------------------------------------------------------------------------
-// RSAˆÃ†‰»ƒNƒ‰ƒX
+ï»¿//----------------------------------------------------------------------------
+// RSAæš—å·åŒ–ã‚¯ãƒ©ã‚¹
 // Copyright (C) 2018- Crea Inc. All rights reserved.
 // This program is released under the MIT License. 
 // see http://opensource.org/licenses/mit-license.php
@@ -22,22 +22,22 @@ bool mRSAVerifier::DupeHCRYPTHASH( const mHash& data , HCRYPTHASH& retHash )cons
 	mHash::HashData hash_value;
 	DWORD hash_len;
 
-	//“n‚³‚ê‚½ƒnƒbƒVƒ…‚Ì’l‚ğæ“¾‚µAƒeƒ“ƒ|ƒ‰ƒŠ‚ÌƒnƒbƒVƒ…ƒIƒuƒWƒFƒNƒg‚ğì¬‚·‚é
-	//¦“n‚³‚ê‚½ƒnƒbƒVƒ…ƒIƒuƒWƒFƒNƒg‚ÆA‚±‚ÌƒIƒuƒWƒFƒNƒg‚ÍƒnƒbƒVƒ…ƒvƒƒoƒCƒ_‚ÌƒCƒ“ƒXƒ^ƒ“ƒX‚ªˆá‚¤‚Ì‚ÅA
-	//@‚¢‚Á‚½‚ñƒGƒNƒXƒ|[ƒg‚µ‚È‚¢‚ÆƒGƒ‰[‚É‚È‚é
+	//æ¸¡ã•ã‚ŒãŸãƒãƒƒã‚·ãƒ¥ã®å€¤ã‚’å–å¾—ã—ã€ãƒ†ãƒ³ãƒãƒ©ãƒªã®ãƒãƒƒã‚·ãƒ¥ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã‚’ä½œæˆã™ã‚‹
+	//â€»æ¸¡ã•ã‚ŒãŸãƒãƒƒã‚·ãƒ¥ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã¨ã€ã“ã®ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã¯ãƒãƒƒã‚·ãƒ¥ãƒ—ãƒ­ãƒã‚¤ãƒ€ã®ã‚¤ãƒ³ã‚¹ã‚¿ãƒ³ã‚¹ãŒé•ã†ã®ã§ã€
+	//ã€€ã„ã£ãŸã‚“ã‚¨ã‚¯ã‚¹ãƒãƒ¼ãƒˆã—ãªã„ã¨ã‚¨ãƒ©ãƒ¼ã«ãªã‚‹
 	if( !data.GetResult( hash_value , hash_len ) )
 	{
-		RaiseAssert( g_ErrorLogger , 0 , L"ƒnƒbƒVƒ…’l‚ğæ“¾‚Å‚«‚Ü‚¹‚ñ" );
+		RaiseAssert( g_ErrorLogger , 0 , L"ãƒãƒƒã‚·ãƒ¥å€¤ã‚’å–å¾—ã§ãã¾ã›ã‚“" );
 		return false;
 	}
 	if( !CryptCreateHash( MyCryptProv , data.HashAlgorithm2AlgId( data.MyHashAlgorithm ) , 0 , 0 , &retHash ) )
 	{
-		RaiseAssert( g_ErrorLogger , 0 , L"ƒnƒbƒVƒ…ƒIƒuƒWƒFƒNƒg‚ğ¶¬‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½" );
+		RaiseAssert( g_ErrorLogger , 0 , L"ãƒãƒƒã‚·ãƒ¥ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã‚’ç”Ÿæˆã§ãã¾ã›ã‚“ã§ã—ãŸ" );
 		return false;
 	}
 	if( !CryptSetHashParam( retHash , HP_HASHVAL , hash_value.get() , 0 ) )
 	{
-		RaiseAssert( g_ErrorLogger , 0 , L"ƒnƒbƒVƒ…’l‚ğİ’è‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½" );
+		RaiseAssert( g_ErrorLogger , 0 , L"ãƒãƒƒã‚·ãƒ¥å€¤ã‚’è¨­å®šã§ãã¾ã›ã‚“ã§ã—ãŸ" );
 		return false;
 	}
 
@@ -49,33 +49,33 @@ bool mRSAVerifier::Sign( const mHash& data , SignBuffer& retSign , DWORD& retWri
 	bool result = false;
 	HCRYPTHASH hash = 0;
 
-	//“n‚³‚ê‚½ƒnƒbƒVƒ…‚Ì’l‚ğæ“¾‚µAƒeƒ“ƒ|ƒ‰ƒŠ‚ÌƒnƒbƒVƒ…ƒIƒuƒWƒFƒNƒg‚ğì¬‚·‚é
-	//¦“n‚³‚ê‚½ƒnƒbƒVƒ…ƒIƒuƒWƒFƒNƒg‚ÆA‚±‚ÌƒIƒuƒWƒFƒNƒg‚ÍƒnƒbƒVƒ…ƒvƒƒoƒCƒ_‚ÌƒCƒ“ƒXƒ^ƒ“ƒX‚ªˆá‚¤‚Ì‚ÅA
-	//@‚¢‚Á‚½‚ñƒGƒNƒXƒ|[ƒg‚µ‚È‚¢‚ÆƒGƒ‰[‚É‚È‚é
+	//æ¸¡ã•ã‚ŒãŸãƒãƒƒã‚·ãƒ¥ã®å€¤ã‚’å–å¾—ã—ã€ãƒ†ãƒ³ãƒãƒ©ãƒªã®ãƒãƒƒã‚·ãƒ¥ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã‚’ä½œæˆã™ã‚‹
+	//â€»æ¸¡ã•ã‚ŒãŸãƒãƒƒã‚·ãƒ¥ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã¨ã€ã“ã®ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã¯ãƒãƒƒã‚·ãƒ¥ãƒ—ãƒ­ãƒã‚¤ãƒ€ã®ã‚¤ãƒ³ã‚¹ã‚¿ãƒ³ã‚¹ãŒé•ã†ã®ã§ã€
+	//ã€€ã„ã£ãŸã‚“ã‚¨ã‚¯ã‚¹ãƒãƒ¼ãƒˆã—ãªã„ã¨ã‚¨ãƒ©ãƒ¼ã«ãªã‚‹
 	if( !DupeHCRYPTHASH( data , hash ) )
 	{
-		RaiseAssert( g_ErrorLogger , 0 , L"ƒnƒbƒVƒ…ƒIƒuƒWƒFƒNƒg‚ğ•¡»‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½" );
+		RaiseAssert( g_ErrorLogger , 0 , L"ãƒãƒƒã‚·ãƒ¥ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã‚’è¤‡è£½ã§ãã¾ã›ã‚“ã§ã—ãŸ" );
 		goto errorend;
 	}
 
-	//ƒoƒbƒtƒ@‚ÌŠm•Û
+	//ãƒãƒƒãƒ•ã‚¡ã®ç¢ºä¿
 	retWritten = 0;
 	if( !CryptSignHash( hash , AT_KEYEXCHANGE , nullptr , 0 , nullptr , &retWritten ) )
 	{
-		RaiseAssert( g_ErrorLogger , 0 , L"–¼Ši”[‚É•K—v‚Èƒoƒbƒtƒ@ƒTƒCƒY‚ğZo‚Å‚«‚Ü‚¹‚ñ" );
+		RaiseAssert( g_ErrorLogger , 0 , L"ç½²åæ ¼ç´ã«å¿…è¦ãªãƒãƒƒãƒ•ã‚¡ã‚µã‚¤ã‚ºã‚’ç®—å‡ºã§ãã¾ã›ã‚“" );
 		goto errorend;
 	}
 	retSign.reset( mNew BYTE[ retWritten ] );
 
-	//–¼‚Ìì¬
+	//ç½²åã®ä½œæˆ
 	if( !CryptSignHash( hash , AT_KEYEXCHANGE , nullptr , 0 , retSign.get() , &retWritten ) )
 	{
-		RaiseAssert( g_ErrorLogger , 0 , L"–¼‚É¸”s‚µ‚Ü‚µ‚½" );
+		RaiseAssert( g_ErrorLogger , 0 , L"ç½²åã«å¤±æ•—ã—ã¾ã—ãŸ" );
 		goto errorend;
 	}
-	//¬Œ÷
+	//æˆåŠŸ
 	result = true;
-	CreateLogEntry( g_ErrorLogger , 0 , L"–¼‚ğs‚¢‚Ü‚µ‚½" );
+	CreateLogEntry( g_ErrorLogger , 0 , L"ç½²åã‚’è¡Œã„ã¾ã—ãŸ" );
 
 errorend:
 	CryptDestroyHash( hash );
@@ -88,29 +88,29 @@ bool mRSAVerifier::Verify( const mHash& data , const BYTE* Sign , DWORD SignLen 
 	bool result = false;
 	HCRYPTHASH hash = 0;
 
-	//“ü—Íƒ`ƒFƒbƒN
+	//å…¥åŠ›ãƒã‚§ãƒƒã‚¯
 	if( !Sign )
 	{
-		RaiseAssert( g_ErrorLogger , 0 , L"–¼‚Ìƒoƒbƒtƒ@‚ªƒkƒ‹‚Å‚·" );
+		RaiseAssert( g_ErrorLogger , 0 , L"ç½²åã®ãƒãƒƒãƒ•ã‚¡ãŒãƒŒãƒ«ã§ã™" );
 		goto errorend;
 	}
 
-	//“n‚³‚ê‚½ƒnƒbƒVƒ…‚Ì’l‚ğæ“¾‚µAƒeƒ“ƒ|ƒ‰ƒŠ‚ÌƒnƒbƒVƒ…ƒIƒuƒWƒFƒNƒg‚ğì¬‚·‚é
-	//¦“n‚³‚ê‚½ƒnƒbƒVƒ…ƒIƒuƒWƒFƒNƒg‚ÆA‚±‚ÌƒIƒuƒWƒFƒNƒg‚ÍƒnƒbƒVƒ…ƒvƒƒoƒCƒ_‚ÌƒCƒ“ƒXƒ^ƒ“ƒX‚ªˆá‚¤‚Ì‚ÅA
-	//@‚¢‚Á‚½‚ñƒGƒNƒXƒ|[ƒg‚µ‚È‚¢‚ÆƒGƒ‰[‚É‚È‚é
+	//æ¸¡ã•ã‚ŒãŸãƒãƒƒã‚·ãƒ¥ã®å€¤ã‚’å–å¾—ã—ã€ãƒ†ãƒ³ãƒãƒ©ãƒªã®ãƒãƒƒã‚·ãƒ¥ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã‚’ä½œæˆã™ã‚‹
+	//â€»æ¸¡ã•ã‚ŒãŸãƒãƒƒã‚·ãƒ¥ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã¨ã€ã“ã®ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã¯ãƒãƒƒã‚·ãƒ¥ãƒ—ãƒ­ãƒã‚¤ãƒ€ã®ã‚¤ãƒ³ã‚¹ã‚¿ãƒ³ã‚¹ãŒé•ã†ã®ã§ã€
+	//ã€€ã„ã£ãŸã‚“ã‚¨ã‚¯ã‚¹ãƒãƒ¼ãƒˆã—ãªã„ã¨ã‚¨ãƒ©ãƒ¼ã«ãªã‚‹
 	if( !DupeHCRYPTHASH( data , hash ) )
 	{
-		RaiseAssert( g_ErrorLogger , 0 , L"ƒnƒbƒVƒ…ƒIƒuƒWƒFƒNƒg‚ğ•¡»‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½" );
+		RaiseAssert( g_ErrorLogger , 0 , L"ãƒãƒƒã‚·ãƒ¥ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã‚’è¤‡è£½ã§ãã¾ã›ã‚“ã§ã—ãŸ" );
 		goto errorend;
 	}
 
 	if( !CryptVerifySignature( hash , Sign , SignLen , MyCryptKeyPub , 0 , 0 ) )
 	{
-		RaiseAssert( g_ErrorLogger , 0 , L"–¼‚ÌŒŸØ‚É¸”s‚µ‚Ü‚µ‚½" );
+		RaiseAssert( g_ErrorLogger , 0 , L"ç½²åã®æ¤œè¨¼ã«å¤±æ•—ã—ã¾ã—ãŸ" );
 		goto errorend;
 	}
 
-	//¬Œ÷
+	//æˆåŠŸ
 	result = true;
 
 errorend:

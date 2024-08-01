@@ -1,5 +1,5 @@
-//----------------------------------------------------------------------------
-// ƒEƒCƒ“ƒhƒEŠÇ—iƒ‰ƒxƒ‹j
+ï»¿//----------------------------------------------------------------------------
+// ã‚¦ã‚¤ãƒ³ãƒ‰ã‚¦ç®¡ç†ï¼ˆãƒ©ãƒ™ãƒ«ï¼‰
 // Copyright (C) 2016 Fingerling. All rights reserved. 
 // This program is released under the MIT License. 
 // see http://opensource.org/licenses/mit-license.php
@@ -18,32 +18,32 @@ mLabel::~mLabel()
 {
 }
 
-//ƒEƒCƒ“ƒhƒEƒNƒ‰ƒX‚Ì“o˜^‚ğ‚·‚é
+//ã‚¦ã‚¤ãƒ³ãƒ‰ã‚¦ã‚¯ãƒ©ã‚¹ã®ç™»éŒ²ã‚’ã™ã‚‹
 bool mLabel::WindowClassSettingCallback( WindowClassSetting& retSetting , const void* opt )
 {
-	return false;	//V‚½‚ÈƒEƒCƒ“ƒhƒEƒNƒ‰ƒX‚Ì“o˜^‚Í‚µ‚È‚¢
+	return false;	//æ–°ãŸãªã‚¦ã‚¤ãƒ³ãƒ‰ã‚¦ã‚¯ãƒ©ã‚¹ã®ç™»éŒ²ã¯ã—ãªã„
 }
 
-//ƒEƒCƒ“ƒhƒE‚ğŠJ‚­
+//ã‚¦ã‚¤ãƒ³ãƒ‰ã‚¦ã‚’é–‹ã
 bool mLabel::CreateWindowCallback( CreateWindowSetting& retSetting , const void* opt )
 {
 	retSetting.ClassName = L"STATIC";
-	//ƒIƒvƒVƒ‡ƒ“‚Ìw’è‚ª‚È‚¯‚ê‚Î‚»‚Ì‚Ü‚Ü–ß‚é
+	//ã‚ªãƒ—ã‚·ãƒ§ãƒ³ã®æŒ‡å®šãŒãªã‘ã‚Œã°ãã®ã¾ã¾æˆ»ã‚‹
 	if( opt == nullptr )
 	{
 		return true;
 	}
 
-	//ƒIƒvƒVƒ‡ƒ“‚Ìw’è‚ª‚ ‚ê‚Î‚»‚ê‚É]‚¤
+	//ã‚ªãƒ—ã‚·ãƒ§ãƒ³ã®æŒ‡å®šãŒã‚ã‚Œã°ãã‚Œã«å¾“ã†
 	if( ((const Option*)opt)->method == Option::CreateMethod::USEOPTION )
 	{
 		const mLabel::Option_UseOption* op = (const mLabel::Option_UseOption*)opt;
 
-		//İ’è‚·‚é•¶š—ñ
+		//è¨­å®šã™ã‚‹æ–‡å­—åˆ—
 		retSetting.WindowName = op->Caption;
-		//ƒAƒ“ƒpƒTƒ“ƒh‚Ìˆµ‚¢
+		//ã‚¢ãƒ³ãƒ‘ã‚µãƒ³ãƒ‰ã®æ‰±ã„
 		retSetting.Style |= ( op->NoPrefix ) ? ( SS_NOPREFIX ) : ( 0 );
-		//•¶š‚Ì”z’u
+		//æ–‡å­—ã®é…ç½®
 		switch( op->Justify )
 		{
 		case Option::TextJustify::LEFT:
@@ -62,7 +62,7 @@ bool mLabel::CreateWindowCallback( CreateWindowSetting& retSetting , const void*
 			RaiseAssert( g_ErrorLogger , op->Justify , L"" );
 			break;
 		}
-		//”z’u
+		//é…ç½®
 		SetWindowPosition( op->Pos );
 	}
 	return true;

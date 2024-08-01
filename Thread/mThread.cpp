@@ -1,11 +1,11 @@
-//----------------------------------------------------------------------------
-// ƒ[ƒJ[ƒXƒŒƒbƒh•ƒ^ƒXƒNƒnƒ“ƒhƒ‰
+ï»¿//----------------------------------------------------------------------------
+// ãƒ¯ãƒ¼ã‚«ãƒ¼ã‚¹ãƒ¬ãƒƒãƒ‰ï¼†ã‚¿ã‚¹ã‚¯ãƒãƒ³ãƒ‰ãƒ©
 // Copyright (C) 2019- Crea Inc. All rights reserved.
 // This program is released under the MIT License. 
 // see http://opensource.org/licenses/mit-license.php
-// ’˜ìŒ •\¦‚âƒ‰ƒCƒZƒ“ƒX‚Ì‰ü•Ï‚Í‹Ö~‚³‚ê‚Ä‚¢‚Ü‚·B
-// ‚±‚Ìƒ\[ƒXƒR[ƒh‚ÉŠÖ‚µ‚ÄAã‹Lƒ‰ƒCƒZƒ“ƒXˆÈŠO‚ÌŒ_–ñ“™‚ÍˆêØ‘¶İ‚µ‚Ü‚¹‚ñB
-// (‰½‚ç‚©‚ÌŒ_–ñ‚ª‚ ‚éê‡‚Å‚àA–{ƒ\[ƒXƒR[ƒh‚Í‚»‚Ì‘ÎÛŠO‚Æ‚È‚è‚Ü‚·)
+// è‘—ä½œæ¨©è¡¨ç¤ºã‚„ãƒ©ã‚¤ã‚»ãƒ³ã‚¹ã®æ”¹å¤‰ã¯ç¦æ­¢ã•ã‚Œã¦ã„ã¾ã™ã€‚
+// ã“ã®ã‚½ãƒ¼ã‚¹ã‚³ãƒ¼ãƒ‰ã«é–¢ã—ã¦ã€ä¸Šè¨˜ãƒ©ã‚¤ã‚»ãƒ³ã‚¹ä»¥å¤–ã®å¥‘ç´„ç­‰ã¯ä¸€åˆ‡å­˜åœ¨ã—ã¾ã›ã‚“ã€‚
+// (ä½•ã‚‰ã‹ã®å¥‘ç´„ãŒã‚ã‚‹å ´åˆã§ã‚‚ã€æœ¬ã‚½ãƒ¼ã‚¹ã‚³ãƒ¼ãƒ‰ã¯ãã®å¯¾è±¡å¤–ã¨ãªã‚Šã¾ã™)
 //----------------------------------------------------------------------------
 
 #include "mStandard.h"
@@ -14,7 +14,7 @@
 
 unsigned int __stdcall ThreadBaseFunc( void* arg )
 {
-	//ƒXƒŒƒbƒh‚ÌŠJnƒGƒ“ƒgƒŠƒ|ƒCƒ“ƒg
+	//ã‚¹ãƒ¬ãƒƒãƒ‰ã®é–‹å§‹ã‚¨ãƒ³ãƒˆãƒªãƒã‚¤ãƒ³ãƒˆ
 	mThread* thread_ptr = (mThread*)arg;
 	unsigned result = thread_ptr->TaskFunction();
 
@@ -39,19 +39,19 @@ bool mThread::Begin( std::shared_ptr<void> arg )
 {
 	if( MyHandle != INVALID_HANDLE_VALUE )
 	{
-		RaiseAssert( g_ErrorLogger , 0 , L"ƒXƒŒƒbƒh‚Í‚·‚Å‚Éì¬‚³‚ê‚Ä‚¢‚Ü‚·" , MyThreadId );
+		RaiseAssert( g_ErrorLogger , 0 , L"ã‚¹ãƒ¬ãƒƒãƒ‰ã¯ã™ã§ã«ä½œæˆã•ã‚Œã¦ã„ã¾ã™" , MyThreadId );
 		return false;
 	}
 
-	//I—¹ƒVƒOƒiƒ‹‚ğ¶¬‚·‚é
+	//çµ‚äº†ã‚·ã‚°ãƒŠãƒ«ã‚’ç”Ÿæˆã™ã‚‹
 	MyTerminateSignal = CreateEvent( 0 , true , false , 0 );
 	MyArg = arg;
 
-	//ƒXƒŒƒbƒhŠJn
+	//ã‚¹ãƒ¬ãƒƒãƒ‰é–‹å§‹
 	MyHandle = (HANDLE)_beginthreadex( 0 , 0 , ThreadBaseFunc , this , CREATE_SUSPENDED , &MyThreadId );
 	if( MyHandle == (HANDLE)-1 )
 	{
-		RaiseAssert( g_ErrorLogger , 0 , L"ƒXƒŒƒbƒh‚ğŠJn‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½" );
+		RaiseAssert( g_ErrorLogger , 0 , L"ã‚¹ãƒ¬ãƒƒãƒ‰ã‚’é–‹å§‹ã§ãã¾ã›ã‚“ã§ã—ãŸ" );
 		return false;
 	}
 	return true;
@@ -72,7 +72,7 @@ bool mThread::Resume( DWORD* retPrevCount )
 {
 	if( MyHandle == INVALID_HANDLE_VALUE )
 	{
-		RaiseAssert( g_ErrorLogger , 0 , L"‘¶İ‚µ‚È‚¢ƒXƒŒƒbƒh‚ğƒŒƒWƒ…[ƒ€‚µ‚æ‚¤‚Æ‚µ‚Ü‚µ‚½" );
+		RaiseAssert( g_ErrorLogger , 0 , L"å­˜åœ¨ã—ãªã„ã‚¹ãƒ¬ãƒƒãƒ‰ã‚’ãƒ¬ã‚¸ãƒ¥ãƒ¼ãƒ ã—ã‚ˆã†ã¨ã—ã¾ã—ãŸ" );
 		return false;
 	}
 	DWORD count = ResumeThread( MyHandle );
@@ -87,7 +87,7 @@ bool mThread::Suspend( DWORD* retPrevCount )
 {
 	if( MyHandle == INVALID_HANDLE_VALUE )
 	{
-		RaiseAssert( g_ErrorLogger , 0 , L"‘¶İ‚µ‚È‚¢ƒXƒŒƒbƒh‚ğƒTƒXƒyƒ“ƒh‚µ‚æ‚¤‚Æ‚µ‚Ü‚µ‚½" );
+		RaiseAssert( g_ErrorLogger , 0 , L"å­˜åœ¨ã—ãªã„ã‚¹ãƒ¬ãƒƒãƒ‰ã‚’ã‚µã‚¹ãƒšãƒ³ãƒ‰ã—ã‚ˆã†ã¨ã—ã¾ã—ãŸ" );
 		return false;
 	}
 	DWORD count = SuspendThread( MyHandle );
@@ -117,56 +117,56 @@ bool mThread::Clear()
 
 bool mThread::End( void )
 {
-	//I—¹ƒVƒOƒiƒ‹‚ğƒZƒbƒg‚·‚é
+	//çµ‚äº†ã‚·ã‚°ãƒŠãƒ«ã‚’ã‚»ãƒƒãƒˆã™ã‚‹
 	if( !FinishRequest() )
 	{
 		return false;
 	}
 
-	//©•ª©g‚ğI—¹‚µ‚æ‚¤‚Æ‚µ‚Ä‚¢‚È‚¢‚©ƒ`ƒFƒbƒN‚·‚é
+	//è‡ªåˆ†è‡ªèº«ã‚’çµ‚äº†ã—ã‚ˆã†ã¨ã—ã¦ã„ãªã„ã‹ãƒã‚§ãƒƒã‚¯ã™ã‚‹
 	if( GetCurrentThreadId() == MyThreadId )
 	{
-		RaiseError( g_ErrorLogger , 0 , L"ƒXƒŒƒbƒh‚ª©•ª©g‚ÌI—¹‚ğ‘Ò‹@‚µ‚æ‚¤‚Æ‚µ‚Ü‚µ‚½" , MyThreadId );
+		RaiseError( g_ErrorLogger , 0 , L"ã‚¹ãƒ¬ãƒƒãƒ‰ãŒè‡ªåˆ†è‡ªèº«ã®çµ‚äº†ã‚’å¾…æ©Ÿã—ã‚ˆã†ã¨ã—ã¾ã—ãŸ" , MyThreadId );
 		return false;
 	}
 
-	//I—¹‚Ü‚Å‘Ò‹@‚·‚é
+	//çµ‚äº†ã¾ã§å¾…æ©Ÿã™ã‚‹
 	while( 1 )
 	{
-		//sync=true‚Ìê‡AƒXƒŒƒbƒhƒnƒ“ƒhƒ‹‚ªƒVƒOƒiƒ‹ó‘ÔiƒXƒŒƒbƒh‚ÌI—¹‚ğ¦‚·j‚É‚È‚é‚Ü‚Å‘Ò‹@
-		//‚Æ‚è‚ ‚¦‚¸200ms‘Ò‚Á‚Ä‚İ‚é
+		//sync=trueã®å ´åˆã€ã‚¹ãƒ¬ãƒƒãƒ‰ãƒãƒ³ãƒ‰ãƒ«ãŒã‚·ã‚°ãƒŠãƒ«çŠ¶æ…‹ï¼ˆã‚¹ãƒ¬ãƒƒãƒ‰ã®çµ‚äº†ã‚’ç¤ºã™ï¼‰ã«ãªã‚‹ã¾ã§å¾…æ©Ÿ
+		//ã¨ã‚Šã‚ãˆãš200mså¾…ã£ã¦ã¿ã‚‹
 		DWORD wait_result = WaitForSingleObject( (HANDLE)MyHandle , 200 );
 
 		if( wait_result == WAIT_OBJECT_0 )
 		{
-			//ƒVƒOƒiƒ‹ó‘Ô‚É‚È‚Á‚½ê‡A³íI—¹
+			//ã‚·ã‚°ãƒŠãƒ«çŠ¶æ…‹ã«ãªã£ãŸå ´åˆã€æ­£å¸¸çµ‚äº†
 			break;
 		}
 		else if( wait_result == WAIT_TIMEOUT )
 		{
-			//ƒ^ƒCƒ€ƒAƒEƒg‚Ìê‡AƒTƒXƒyƒ“ƒh‚µ‚Ä‚¢‚È‚¢‚©Šm”F‚·‚é
+			//ã‚¿ã‚¤ãƒ ã‚¢ã‚¦ãƒˆã®å ´åˆã€ã‚µã‚¹ãƒšãƒ³ãƒ‰ã—ã¦ã„ãªã„ã‹ç¢ºèªã™ã‚‹
 			DWORD suspend_count;
 			if( !Suspend( &suspend_count ) )
 			{
-				RaiseError( g_ErrorLogger , 0 , L"ƒXƒŒƒbƒh‚Ìó‘Ô‚ğæ“¾‚Å‚«‚Ü‚¹‚ñ" );
+				RaiseError( g_ErrorLogger , 0 , L"ã‚¹ãƒ¬ãƒƒãƒ‰ã®çŠ¶æ…‹ã‚’å–å¾—ã§ãã¾ã›ã‚“" );
 				return false;
 			}
 			if( suspend_count )
 			{
-				//ƒTƒXƒyƒ“ƒh’†
-				RaiseError( g_ErrorLogger , 0 , L"ƒXƒŒƒbƒh‚ÌƒTƒXƒyƒ“ƒh’†‚É“¯Šúƒ‚[ƒh‚ÅI—¹‚µ‚æ‚¤‚Æ‚µ‚Ü‚µ‚½" );
+				//ã‚µã‚¹ãƒšãƒ³ãƒ‰ä¸­
+				RaiseError( g_ErrorLogger , 0 , L"ã‚¹ãƒ¬ãƒƒãƒ‰ã®ã‚µã‚¹ãƒšãƒ³ãƒ‰ä¸­ã«åŒæœŸãƒ¢ãƒ¼ãƒ‰ã§çµ‚äº†ã—ã‚ˆã†ã¨ã—ã¾ã—ãŸ" );
 				return false;
 			}
 			if( !Resume( &suspend_count ) )
 			{
-				RaiseError( g_ErrorLogger , 0 , L"ƒXƒŒƒbƒh‚Ìó‘Ô‚ğæ“¾‚Å‚«‚Ü‚¹‚ñ" );
+				RaiseError( g_ErrorLogger , 0 , L"ã‚¹ãƒ¬ãƒƒãƒ‰ã®çŠ¶æ…‹ã‚’å–å¾—ã§ãã¾ã›ã‚“" );
 				return false;
 			}
 		}
 		else
 		{
-			//WAIT_OBJECT_0ˆÈŠO‚Ìê‡A‚È‚É‚©–ŒÌ‚Á‚ÄƒXƒŒƒbƒh‚ªÁ–Å‚µ‚Ä‚¢‚é
-			RaiseError( g_ErrorLogger , 0 , L"I—¹‘ÎÛ‚ÌƒXƒŒƒbƒh‚Í‚·‚Å‚É‘¶İ‚µ‚Ü‚¹‚ñ" );
+			//WAIT_OBJECT_0ä»¥å¤–ã®å ´åˆã€ãªã«ã‹äº‹æ•…ã£ã¦ã‚¹ãƒ¬ãƒƒãƒ‰ãŒæ¶ˆæ»…ã—ã¦ã„ã‚‹
+			RaiseError( g_ErrorLogger , 0 , L"çµ‚äº†å¯¾è±¡ã®ã‚¹ãƒ¬ãƒƒãƒ‰ã¯ã™ã§ã«å­˜åœ¨ã—ã¾ã›ã‚“" );
 			Clear();
 			return false;
 		}
@@ -179,14 +179,14 @@ bool mThread::FinishRequest( void )
 {
 	if( MyHandle == INVALID_HANDLE_VALUE )
 	{
-		RaiseAssert( g_ErrorLogger , 0 , L"‘¶İ‚µ‚È‚¢ƒXƒŒƒbƒh‚ğI—¹‚µ‚æ‚¤‚Æ‚µ‚Ü‚µ‚½" );
+		RaiseAssert( g_ErrorLogger , 0 , L"å­˜åœ¨ã—ãªã„ã‚¹ãƒ¬ãƒƒãƒ‰ã‚’çµ‚äº†ã—ã‚ˆã†ã¨ã—ã¾ã—ãŸ" );
 		return false;
 	}
 
-	//I—¹ƒVƒOƒiƒ‹‚ğƒZƒbƒg‚·‚é
+	//çµ‚äº†ã‚·ã‚°ãƒŠãƒ«ã‚’ã‚»ãƒƒãƒˆã™ã‚‹
 	if( !SetEvent( MyTerminateSignal ) )
 	{
-		RaiseError( g_ErrorLogger , 0 , L"I—¹ƒVƒOƒiƒ‹‚ÌƒZƒbƒg‚ª¸”s‚µ‚Ü‚µ‚½" );
+		RaiseError( g_ErrorLogger , 0 , L"çµ‚äº†ã‚·ã‚°ãƒŠãƒ«ã®ã‚»ãƒƒãƒˆãŒå¤±æ•—ã—ã¾ã—ãŸ" );
 		return false;
 	}
 	return true;
@@ -197,13 +197,13 @@ bool mThread::Terminate( void )
 {
 	if( MyHandle == INVALID_HANDLE_VALUE )
 	{
-		RaiseAssert( g_ErrorLogger , 0 , L"‘¶İ‚µ‚È‚¢ƒXƒŒƒbƒh‚ğ‹­§I—¹‚µ‚æ‚¤‚Æ‚µ‚Ü‚µ‚½" );
+		RaiseAssert( g_ErrorLogger , 0 , L"å­˜åœ¨ã—ãªã„ã‚¹ãƒ¬ãƒƒãƒ‰ã‚’å¼·åˆ¶çµ‚äº†ã—ã‚ˆã†ã¨ã—ã¾ã—ãŸ" );
 		return false;
 	}
 
 	if( !TerminateThread( MyHandle , 0 ) )
 	{
-		RaiseAssert( g_ErrorLogger , 0 , L"ƒXƒŒƒbƒh‚Ì‹­§I—¹‚ª¸”s‚µ‚Ü‚µ‚½" );
+		RaiseAssert( g_ErrorLogger , 0 , L"ã‚¹ãƒ¬ãƒƒãƒ‰ã®å¼·åˆ¶çµ‚äº†ãŒå¤±æ•—ã—ã¾ã—ãŸ" );
 		return false;
 	}
 
@@ -217,7 +217,7 @@ bool mThread::IsValid( void )const
 }
 
 
-//ƒXƒŒƒbƒhID‚ğ“¾‚é
+//ã‚¹ãƒ¬ãƒƒãƒ‰IDã‚’å¾—ã‚‹
 threadsafe unsigned int mThread::GetThreadId( void )const
 {
 	return MyThreadId;

@@ -1,4 +1,4 @@
-#include "mStdInStream.h"
+﻿#include "mStdInStream.h"
 
 
 mStdInStream::mStdInStream()
@@ -10,14 +10,14 @@ mStdInStream::~mStdInStream()
 {
 }
 
-//�P�����i�P�o�C�g�j�ǂݍ��݂܂�
-//ret : �ǂݎ��������
-//��EOF�̏ꍇ�A���ݓǂݎ���f�[�^���Ȃ����Ƃ������܂�
-//�i���Ԃ��o�Ă΍ēx�ǂݎ��邩������Ȃ��j
-//���X�g���[�������S�ɏI�����Ă��邩��m��ɂ�IsEOF���g���܂�
+//１文字（１バイト）読み込みます
+//ret : 読み取った文字
+//※EOFの場合、現在読み取れるデータがないことを示します
+//（時間が経てば再度読み取れるかもしれない）
+//※ストリームが完全に終了しているかを知るにはIsEOFを使います
 INT mStdInStream::Read( void )
 {
-	//UnRead���ꂽ����������ꍇ�̓\����Ԃ�
+	//UnReadされた文字がある場合はソレを返す
 	if( !MyUnReadBuffer.IsEmpty() )
 	{
 		return MyUnReadBuffer.Read();
@@ -31,7 +31,7 @@ INT mStdInStream::Read( void )
 	return result;
 }
 
-//EOF�ɒB���Ă��邩�𒲂ׂ܂�
+//EOFに達しているかを調べます
 bool mStdInStream::IsEOF( void )const
 {
 	if( !MyUnReadBuffer.IsEmpty() )
@@ -41,8 +41,8 @@ bool mStdInStream::IsEOF( void )const
 	return MyIsEOF;
 }
 
-//�t�@�C�����J���Ă��邩�𔻒肵�܂�
-//�J���Ă���ꍇ�͐^���Ԃ�܂�
+//ファイルが開いているかを判定します
+//開いている場合は真が返ります
 bool mStdInStream::IsOpen( void )const
 {
 	return true;

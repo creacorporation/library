@@ -1,50 +1,50 @@
-//----------------------------------------------------------------------------
-// ƒNƒŠƒeƒBƒJƒ‹ƒZƒNƒVƒ‡ƒ“ŠÇ—
+ï»¿//----------------------------------------------------------------------------
+// ã‚¯ãƒªãƒ†ã‚£ã‚«ãƒ«ã‚»ã‚¯ã‚·ãƒ§ãƒ³ç®¡ç†
 // Copyright (C) 2016 Fingerling. All rights reserved. 
 // This program is released under the MIT License. 
 // see http://opensource.org/licenses/mit-license.php
 //----------------------------------------------------------------------------
 
 /*
-œ—p“r
-ƒNƒŠƒeƒBƒJƒ‹ƒZƒNƒVƒ‡ƒ“‚ÌŠÇ—‚ð‚µ‚Ü‚·B
+â—ç”¨é€”
+ã‚¯ãƒªãƒ†ã‚£ã‚«ãƒ«ã‚»ã‚¯ã‚·ãƒ§ãƒ³ã®ç®¡ç†ã‚’ã—ã¾ã™ã€‚
 
-EmCriticalSectionContainerƒNƒ‰ƒX
-@¨enter/leave‚ÅƒNƒŠƒeƒBƒJƒ‹ƒZƒNƒVƒ‡ƒ“‚Éo“ü‚è‚µ‚Ü‚·
+ãƒ»mCriticalSectionContainerã‚¯ãƒ©ã‚¹
+ã€€â†’enter/leaveã§ã‚¯ãƒªãƒ†ã‚£ã‚«ãƒ«ã‚»ã‚¯ã‚·ãƒ§ãƒ³ã«å‡ºå…¥ã‚Šã—ã¾ã™
 
- EmCriticalSectionTicketƒNƒ‰ƒX
-@¨“Á•Ê‚ÌƒIƒuƒWƒFƒNƒg‚ðì‚èA‚»‚ÌƒIƒuƒWƒFƒNƒg‚ª¶‘¶‚µ‚Ä‚¢‚éŠÔ‚¾‚¯ƒNƒŠƒeƒBƒJƒ‹ƒZƒNƒVƒ‡ƒ“‚É“ü‚è‚Ü‚·
+ ãƒ»mCriticalSectionTicketã‚¯ãƒ©ã‚¹
+ã€€â†’ç‰¹åˆ¥ã®ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã‚’ä½œã‚Šã€ãã®ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆãŒç”Ÿå­˜ã—ã¦ã„ã‚‹é–“ã ã‘ã‚¯ãƒªãƒ†ã‚£ã‚«ãƒ«ã‚»ã‚¯ã‚·ãƒ§ãƒ³ã«å…¥ã‚Šã¾ã™
 */
 
-//œŽg‚¢•û(1)
+//â—ä½¿ã„æ–¹(1)
 #ifdef SAMPLE_CODE
 void HowToUse1( void )
 {
-	mCriticalSectionContainer cs;	//ƒNƒŠƒeƒBƒJƒ‹ƒZƒNƒVƒ‡ƒ“‚ðì‚é
-	cs.Enter();	//«‚±‚±‚©‚çƒNƒŠƒeƒBƒJƒ‹ƒZƒNƒVƒ‡ƒ“
-		//‚È‚É‚©ˆ—‚·‚é
-		//‚È‚É‚©ˆ—‚·‚é
-		//‚È‚É‚©ˆ—‚·‚é
-		//‚È‚É‚©ˆ—‚·‚é
-	cs.Leave(); //ª‚±‚±‚Ü‚ÅƒNƒŠƒeƒBƒJƒ‹ƒZƒNƒVƒ‡ƒ“
+	mCriticalSectionContainer cs;	//ã‚¯ãƒªãƒ†ã‚£ã‚«ãƒ«ã‚»ã‚¯ã‚·ãƒ§ãƒ³ã‚’ä½œã‚‹
+	cs.Enter();	//â†“ã“ã“ã‹ã‚‰ã‚¯ãƒªãƒ†ã‚£ã‚«ãƒ«ã‚»ã‚¯ã‚·ãƒ§ãƒ³
+		//ãªã«ã‹å‡¦ç†ã™ã‚‹
+		//ãªã«ã‹å‡¦ç†ã™ã‚‹
+		//ãªã«ã‹å‡¦ç†ã™ã‚‹
+		//ãªã«ã‹å‡¦ç†ã™ã‚‹
+	cs.Leave(); //â†‘ã“ã“ã¾ã§ã‚¯ãƒªãƒ†ã‚£ã‚«ãƒ«ã‚»ã‚¯ã‚·ãƒ§ãƒ³
 }
 #endif
 
-//œŽg‚¢•û(2)
+//â—ä½¿ã„æ–¹(2)
 #ifdef SAMPLE_CODE
 
-//ƒOƒ[ƒoƒ‹‚ÈƒNƒŠƒeƒBƒJƒ‹ƒZƒNƒVƒ‡ƒ“ƒIƒuƒWƒFƒNƒg‚ðì‚éê‡‚ÍAlibƒZƒNƒVƒ‡ƒ“‚É”z’u‚·‚éB
-//——RF‘¼‚ÌƒOƒ[ƒoƒ‹‚ÈƒIƒuƒWƒFƒNƒg‚ªAƒRƒ“ƒXƒgƒ‰ƒNƒ^‚ÅƒNƒŠƒeƒBƒJƒ‹ƒZƒNƒVƒ‡ƒ“‚ðŽg‚¤‚ÆA
-//@@@‰Šú‰»‡‚É‚æ‚Á‚Ä‚ÍA–¢‰Šú‰»‚ÌƒNƒŠƒeƒBƒJƒ‹ƒZƒNƒVƒ‡ƒ“ƒIƒuƒWƒFƒNƒg‚ð‚¢‚¶‚Á‚Ä‚µ‚Ü‚¤ŠëŒ¯‚ª‚ ‚é‚½‚ßB
+//ã‚°ãƒ­ãƒ¼ãƒãƒ«ãªã‚¯ãƒªãƒ†ã‚£ã‚«ãƒ«ã‚»ã‚¯ã‚·ãƒ§ãƒ³ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã‚’ä½œã‚‹å ´åˆã¯ã€libã‚»ã‚¯ã‚·ãƒ§ãƒ³ã«é…ç½®ã™ã‚‹ã€‚
+//ç†ç”±ï¼šä»–ã®ã‚°ãƒ­ãƒ¼ãƒãƒ«ãªã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆãŒã€ã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿ã§ã‚¯ãƒªãƒ†ã‚£ã‚«ãƒ«ã‚»ã‚¯ã‚·ãƒ§ãƒ³ã‚’ä½¿ã†ã¨ã€
+//ã€€ã€€ã€€åˆæœŸåŒ–é †ã«ã‚ˆã£ã¦ã¯ã€æœªåˆæœŸåŒ–ã®ã‚¯ãƒªãƒ†ã‚£ã‚«ãƒ«ã‚»ã‚¯ã‚·ãƒ§ãƒ³ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã‚’ã„ã˜ã£ã¦ã—ã¾ã†å±é™ºãŒã‚ã‚‹ãŸã‚ã€‚
 #pragma warning( disable : 4073 )
 #pragma init_seg( lib )
-mCriticalSectionContainer cs;	//ƒOƒ[ƒoƒ‹‚ÈƒNƒŠƒeƒBƒJƒ‹ƒZƒNƒVƒ‡ƒ“
+mCriticalSectionContainer cs;	//ã‚°ãƒ­ãƒ¼ãƒãƒ«ãªã‚¯ãƒªãƒ†ã‚£ã‚«ãƒ«ã‚»ã‚¯ã‚·ãƒ§ãƒ³
 
 void HowToUse2( void )
 {
-	while( 1 )	//‚±‚Á‚¿‚Ìƒ‹[ƒv‚ÍƒNƒŠƒeƒBƒJƒ‹ƒZƒNƒVƒ‡ƒ“‚Å‚Í‚È‚¢
+	while( 1 )	//ã“ã£ã¡ã®ãƒ«ãƒ¼ãƒ—ã¯ã‚¯ãƒªãƒ†ã‚£ã‚«ãƒ«ã‚»ã‚¯ã‚·ãƒ§ãƒ³ã§ã¯ãªã„
 	{
-		//‰½‚©ˆ—‚·‚é
+		//ä½•ã‹å‡¦ç†ã™ã‚‹
 		if( some_condition )
 		{
 			break;
@@ -52,16 +52,16 @@ void HowToUse2( void )
 	}
 
 	{
-		mCriticalSectionTicket( cs );	//«‚±‚±‚©‚çƒNƒŠƒeƒBƒJƒ‹ƒZƒNƒVƒ‡ƒ“
+		mCriticalSectionTicket( cs );	//â†“ã“ã“ã‹ã‚‰ã‚¯ãƒªãƒ†ã‚£ã‚«ãƒ«ã‚»ã‚¯ã‚·ãƒ§ãƒ³
 		for( DWORD i = 0 ; i < MAX_SIZE ; i++ )
 		{
-			//‰½‚©ˆ—‚·‚é
+			//ä½•ã‹å‡¦ç†ã™ã‚‹
 			if( some_condition )
 			{
-				return;	//ª‚±‚±‚Ü‚ÅƒNƒŠƒeƒBƒJƒ‹ƒZƒNƒVƒ‡ƒ“
+				return;	//â†‘ã“ã“ã¾ã§ã‚¯ãƒªãƒ†ã‚£ã‚«ãƒ«ã‚»ã‚¯ã‚·ãƒ§ãƒ³
 			}
 		}
-	}	//ª‚±‚±‚Ü‚ÅƒNƒŠƒeƒBƒJƒ‹ƒZƒNƒVƒ‡ƒ“
+	}	//â†‘ã“ã“ã¾ã§ã‚¯ãƒªãƒ†ã‚£ã‚«ãƒ«ã‚»ã‚¯ã‚·ãƒ§ãƒ³
 	return;
 }
 #endif
@@ -71,66 +71,66 @@ void HowToUse2( void )
 
 #include "mStandard.h"
 
-//1‚Â‚ÌƒNƒŠƒeƒBƒJƒ‹ƒZƒNƒVƒ‡ƒ“‚ðŠÇ—‚·‚éƒNƒ‰ƒX
+//1ã¤ã®ã‚¯ãƒªãƒ†ã‚£ã‚«ãƒ«ã‚»ã‚¯ã‚·ãƒ§ãƒ³ã‚’ç®¡ç†ã™ã‚‹ã‚¯ãƒ©ã‚¹
 class mCriticalSectionContainer
 {
 public:
 	mCriticalSectionContainer()throw();
 	virtual ~mCriticalSectionContainer()throw();
 
-	//ƒNƒŠƒeƒBƒJƒ‹ƒZƒNƒVƒ‡ƒ“‚ÌƒXƒsƒ“ƒJƒEƒ“ƒg‚ðÝ’è‚µ‚Ü‚·
-	//Count : ƒXƒsƒ“ƒJƒEƒ“ƒg‚Ì’l
-	//ret : ˆÈ‘O‚ÉÝ’è‚³‚ê‚Ä‚¢‚½ƒXƒsƒ“ƒJƒEƒ“ƒg‚Ì’l
+	//ã‚¯ãƒªãƒ†ã‚£ã‚«ãƒ«ã‚»ã‚¯ã‚·ãƒ§ãƒ³ã®ã‚¹ãƒ”ãƒ³ã‚«ã‚¦ãƒ³ãƒˆã‚’è¨­å®šã—ã¾ã™
+	//Count : ã‚¹ãƒ”ãƒ³ã‚«ã‚¦ãƒ³ãƒˆã®å€¤
+	//ret : ä»¥å‰ã«è¨­å®šã•ã‚Œã¦ã„ãŸã‚¹ãƒ”ãƒ³ã‚«ã‚¦ãƒ³ãƒˆã®å€¤
 	DWORD SetSpinCount( DWORD Count );
 
-	//ƒNƒŠƒeƒBƒJƒ‹ƒZƒNƒVƒ‡ƒ“‚É“ü‚è‚Ü‚·B
-	//ƒNƒŠƒeƒBƒJƒ‹ƒZƒNƒVƒ‡ƒ“‚É“ü‚ê‚é‚Ü‚Å§Œä‚ð•Ô‚µ‚Ü‚¹‚ñB
+	//ã‚¯ãƒªãƒ†ã‚£ã‚«ãƒ«ã‚»ã‚¯ã‚·ãƒ§ãƒ³ã«å…¥ã‚Šã¾ã™ã€‚
+	//ã‚¯ãƒªãƒ†ã‚£ã‚«ãƒ«ã‚»ã‚¯ã‚·ãƒ§ãƒ³ã«å…¥ã‚Œã‚‹ã¾ã§åˆ¶å¾¡ã‚’è¿”ã—ã¾ã›ã‚“ã€‚
 	void Enter( void );
 
-	//ƒNƒŠƒeƒBƒJƒ‹ƒZƒNƒVƒ‡ƒ“‚©‚ç”²‚¯‚Ü‚·B
+	//ã‚¯ãƒªãƒ†ã‚£ã‚«ãƒ«ã‚»ã‚¯ã‚·ãƒ§ãƒ³ã‹ã‚‰æŠœã‘ã¾ã™ã€‚
 	void Leave( void );
 
-	//ƒNƒŠƒeƒBƒJƒ‹ƒZƒNƒVƒ‡ƒ“‚É“ü‚ê‚ê‚Î“ü‚è‚Ü‚·B“ü‚ê‚È‚©‚Á‚½‚ç‚»‚Ì‚Ü‚Ü•Ô‚è‚Ü‚· ƒÉ....
-	//ret : ƒNƒŠƒeƒBƒJƒ‹ƒZƒNƒVƒ‡ƒ“‚ðŠm•Û‚Å‚«‚½ê‡^
-	//      ƒNƒŠƒeƒBƒJƒ‹ƒZƒNƒVƒ‡ƒ“‚ðŠm•Û‚Å‚«‚È‚©‚Á‚½ê‡‹U(‘¼‚ÌƒXƒŒƒbƒh‚ªŽ‚Á‚Ä‚¢‚éê‡)
+	//ã‚¯ãƒªãƒ†ã‚£ã‚«ãƒ«ã‚»ã‚¯ã‚·ãƒ§ãƒ³ã«å…¥ã‚Œã‚Œã°å…¥ã‚Šã¾ã™ã€‚å…¥ã‚Œãªã‹ã£ãŸã‚‰ãã®ã¾ã¾è¿”ã‚Šã¾ã™ Î»....
+	//ret : ã‚¯ãƒªãƒ†ã‚£ã‚«ãƒ«ã‚»ã‚¯ã‚·ãƒ§ãƒ³ã‚’ç¢ºä¿ã§ããŸå ´åˆçœŸ
+	//      ã‚¯ãƒªãƒ†ã‚£ã‚«ãƒ«ã‚»ã‚¯ã‚·ãƒ§ãƒ³ã‚’ç¢ºä¿ã§ããªã‹ã£ãŸå ´åˆå½(ä»–ã®ã‚¹ãƒ¬ãƒƒãƒ‰ãŒæŒã£ã¦ã„ã‚‹å ´åˆ)
 	bool TryEnter( void );
 
 private:
 
-	//ƒRƒs[‹ÖŽ~
+	//ã‚³ãƒ”ãƒ¼ç¦æ­¢
 	mCriticalSectionContainer( const mCriticalSectionContainer& source ) = delete;
 	const mCriticalSectionContainer& operator=( const mCriticalSectionContainer& source ) = delete;
 
 protected:
-	//ƒNƒŠƒeƒBƒJƒ‹ƒZƒNƒVƒ‡ƒ“‚ÌŽÀ•¨
+	//ã‚¯ãƒªãƒ†ã‚£ã‚«ãƒ«ã‚»ã‚¯ã‚·ãƒ§ãƒ³ã®å®Ÿç‰©
 	CRITICAL_SECTION MyCriticalSection;
 
 };
 
-//ƒNƒŠƒeƒBƒJƒ‹ƒZƒNƒVƒ‡ƒ“‚Ì”ÍˆÍƒCƒ“ƒXƒ^ƒ“ƒX‚ÌƒXƒR[ƒv‚É‚·‚é‚½‚ß‚ÌƒNƒ‰ƒX
+//ã‚¯ãƒªãƒ†ã‚£ã‚«ãƒ«ã‚»ã‚¯ã‚·ãƒ§ãƒ³ã®ç¯„å›²ï¼ã‚¤ãƒ³ã‚¹ã‚¿ãƒ³ã‚¹ã®ã‚¹ã‚³ãƒ¼ãƒ—ã«ã™ã‚‹ãŸã‚ã®ã‚¯ãƒ©ã‚¹
 class mCriticalSectionTicket
 {
 public:
-	//ƒRƒ“ƒXƒgƒ‰ƒNƒ^
-	//ƒRƒ“ƒXƒgƒ‰ƒNƒ^ŽÀsŽž‚ÉƒNƒŠƒeƒBƒJƒ‹ƒZƒNƒVƒ‡ƒ“‚ªŠm•Û‚³‚ê‚Ü‚·B
+	//ã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
+	//ã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿å®Ÿè¡Œæ™‚ã«ã‚¯ãƒªãƒ†ã‚£ã‚«ãƒ«ã‚»ã‚¯ã‚·ãƒ§ãƒ³ãŒç¢ºä¿ã•ã‚Œã¾ã™ã€‚
 	mCriticalSectionTicket( mCriticalSectionContainer& critical_section )throw();
 
-	//ƒfƒXƒgƒ‰ƒNƒ^
-	//ƒfƒXƒgƒ‰ƒNƒ^ŽÀsŽž‚ÉƒNƒŠƒeƒBƒJƒ‹ƒZƒNƒVƒ‡ƒ“‚ª‰ð•ú‚³‚ê‚Ü‚·B
+	//ãƒ‡ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
+	//ãƒ‡ã‚¹ãƒˆãƒ©ã‚¯ã‚¿å®Ÿè¡Œæ™‚ã«ã‚¯ãƒªãƒ†ã‚£ã‚«ãƒ«ã‚»ã‚¯ã‚·ãƒ§ãƒ³ãŒè§£æ”¾ã•ã‚Œã¾ã™ã€‚
 	virtual ~mCriticalSectionTicket()throw();
 
 private:
 
-	//ƒRƒs[‹ÖŽ~
+	//ã‚³ãƒ”ãƒ¼ç¦æ­¢
 	mCriticalSectionTicket() = delete;
 	mCriticalSectionTicket( const mCriticalSectionTicket& source ) = delete;
 	const mCriticalSectionTicket& operator=( const mCriticalSectionTicket& source ) = delete;
 
-	//Šm•Û‘ÎÛ‚ÌƒNƒŠƒeƒBƒJƒ‹ƒZƒNƒVƒ‡ƒ“
+	//ç¢ºä¿å¯¾è±¡ã®ã‚¯ãƒªãƒ†ã‚£ã‚«ãƒ«ã‚»ã‚¯ã‚·ãƒ§ãƒ³
 	mCriticalSectionContainer& MySection;
 };
 
-//ƒOƒ[ƒoƒ‹ƒIƒuƒWƒFƒNƒg
+//ã‚°ãƒ­ãƒ¼ãƒãƒ«ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆ
 #ifndef MCRITICALSECTIONCONTAINER_CPP_COMPILING
 extern mCriticalSectionContainer g_CriticalSection;
 #else

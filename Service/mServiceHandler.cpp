@@ -1,12 +1,12 @@
-//----------------------------------------------------------------------------
-// ƒT[ƒrƒXƒnƒ“ƒhƒ‰
+ï»¿//----------------------------------------------------------------------------
+// ã‚µãƒ¼ãƒ“ã‚¹ãƒãƒ³ãƒ‰ãƒ©
 // Copyright (C) 2016 Fingerling. All rights reserved. 
 // Copyright (C) 2019- Crea Inc. All rights reserved.
 // This program is released under the MIT License. 
 // see http://opensource.org/licenses/mit-license.php
-// ’˜ìŒ •\¦‚âƒ‰ƒCƒZƒ“ƒX‚Ì‰ü•Ï‚Í‹Ö~‚³‚ê‚Ä‚¢‚Ü‚·B
-// ‚±‚Ìƒ\[ƒXƒR[ƒh‚ÉŠÖ‚µ‚ÄAã‹Lƒ‰ƒCƒZƒ“ƒXˆÈŠO‚ÌŒ_–ñ“™‚ÍˆêØ‘¶İ‚µ‚Ü‚¹‚ñB
-// (‰½‚ç‚©‚ÌŒ_–ñ‚ª‚ ‚éê‡‚Å‚àA–{ƒ\[ƒXƒR[ƒh‚Í‚»‚Ì‘ÎÛŠO‚Æ‚È‚è‚Ü‚·)
+// è‘—ä½œæ¨©è¡¨ç¤ºã‚„ãƒ©ã‚¤ã‚»ãƒ³ã‚¹ã®æ”¹å¤‰ã¯ç¦æ­¢ã•ã‚Œã¦ã„ã¾ã™ã€‚
+// ã“ã®ã‚½ãƒ¼ã‚¹ã‚³ãƒ¼ãƒ‰ã«é–¢ã—ã¦ã€ä¸Šè¨˜ãƒ©ã‚¤ã‚»ãƒ³ã‚¹ä»¥å¤–ã®å¥‘ç´„ç­‰ã¯ä¸€åˆ‡å­˜åœ¨ã—ã¾ã›ã‚“ã€‚
+// (ä½•ã‚‰ã‹ã®å¥‘ç´„ãŒã‚ã‚‹å ´åˆã§ã‚‚ã€æœ¬ã‚½ãƒ¼ã‚¹ã‚³ãƒ¼ãƒ‰ã¯ãã®å¯¾è±¡å¤–ã¨ãªã‚Šã¾ã™)
 //----------------------------------------------------------------------------
 
 #include "mServiceHandler.h"
@@ -60,7 +60,7 @@ void mServiceHandler::ServiceMain( DWORD argc , LPTSTR* argv )
 	ServiceInterfaceInfo info;
 	QueryInterface( info );
 
-	//«‚±‚Ìƒnƒ“ƒhƒ‹‚ÍŠJ‚«‚Á‚Ï‚È‚µ‚É‚µ‚Ä‚æ‚¢(MSDN‚æ‚è)
+	//â†“ã“ã®ãƒãƒ³ãƒ‰ãƒ«ã¯é–‹ãã£ã±ãªã—ã«ã—ã¦ã‚ˆã„(MSDNã‚ˆã‚Š)
 	MyStatusHandle = RegisterServiceCtrlHandlerExW( info.ServiceName.c_str() , HandlerProxy , this );	
 	if( MyStatusHandle == 0 )
 	{
@@ -192,17 +192,17 @@ bool mServiceHandler::Start( void )
 	ServiceInterfaceInfo info;
 	QueryInterface( info );
 	MyServiceStatus.dwControlsAccepted =
-		SERVICE_ACCEPT_STOP                  | //ƒT[ƒrƒX‚ğ’â~‚µ‚æ‚¤‚Æ‚µ‚Ä‚¢‚é
-		SERVICE_ACCEPT_PAUSE_CONTINUE        | //ƒT[ƒrƒX‚ğ’â~EÄŠJ‚³‚ê‚æ‚¤‚Æ‚µ‚Ä‚¢‚é
-		SERVICE_ACCEPT_SHUTDOWN              ; //ƒVƒXƒeƒ€‚ÌƒVƒƒƒbƒgƒ_ƒEƒ“
-	MyServiceStatus.dwControlsAccepted |= ( info.HandleParamChange            ) ? ( SERVICE_ACCEPT_PARAMCHANGE           ) : ( 0 ); //ƒT[ƒrƒX‚Ìƒpƒ‰ƒ[ƒ^‚ª•ÏX‚³‚ê‚½
-	MyServiceStatus.dwControlsAccepted |= ( info.HandleNetBindChange          ) ? ( SERVICE_ACCEPT_NETBINDCHANGE         ) : ( 0 ); //ƒlƒbƒgƒ[ƒNÚ‘±‚Ì•ÏX
-	MyServiceStatus.dwControlsAccepted |= ( info.HandleHardwareProfileChange  ) ? ( SERVICE_ACCEPT_HARDWAREPROFILECHANGE ) : ( 0 ); //ƒVƒXƒeƒ€‚Ìƒn[ƒhƒEƒGƒAƒvƒƒtƒ@ƒCƒ‹‚ª•ÏX‚³‚ê‚½
-	MyServiceStatus.dwControlsAccepted |= ( info.HandlePowerChange            ) ? ( SERVICE_ACCEPT_POWEREVENT            ) : ( 0 ); //ƒVƒXƒeƒ€‚Ì“dŒ¹ó‘Ô‚ª•ÏX‚³‚ê‚½
-	MyServiceStatus.dwControlsAccepted |= ( info.HandleSessionChange          ) ? ( SERVICE_ACCEPT_SESSIONCHANGE         ) : ( 0 ); //ƒVƒXƒeƒ€‚ÌƒZƒbƒVƒ‡ƒ“‚ª•ÏX‚³‚ê‚½
-	MyServiceStatus.dwControlsAccepted |= ( info.HandlePreShutdown            ) ? ( SERVICE_ACCEPT_PRESHUTDOWN           ) : ( 0 ); //ƒVƒXƒeƒ€‚ÌƒVƒƒƒbƒgƒ_ƒEƒ“‘OƒCƒxƒ“ƒg‚ª”­¶
-	MyServiceStatus.dwControlsAccepted |= ( info.HandleTimeChange             ) ? ( SERVICE_ACCEPT_TIMECHANGE            ) : ( 0 ); //ƒVƒXƒeƒ€‚ª•ÏX‚³‚ê‚½
-	MyServiceStatus.dwControlsAccepted |= ( info.HandleTriggerEvent           ) ? ( SERVICE_ACCEPT_TRIGGEREVENT          ) : ( 0 ); //“Áê‚ÈƒCƒxƒ“ƒg‚ğó‚¯æ‚é(—v•Ê“rİ’èB–¢À‘•B)
+		SERVICE_ACCEPT_STOP                  | //ã‚µãƒ¼ãƒ“ã‚¹ã‚’åœæ­¢ã—ã‚ˆã†ã¨ã—ã¦ã„ã‚‹
+		SERVICE_ACCEPT_PAUSE_CONTINUE        | //ã‚µãƒ¼ãƒ“ã‚¹ã‚’åœæ­¢ãƒ»å†é–‹ã•ã‚Œã‚ˆã†ã¨ã—ã¦ã„ã‚‹
+		SERVICE_ACCEPT_SHUTDOWN              ; //ã‚·ã‚¹ãƒ†ãƒ ã®ã‚·ãƒ£ãƒƒãƒˆãƒ€ã‚¦ãƒ³
+	MyServiceStatus.dwControlsAccepted |= ( info.HandleParamChange            ) ? ( SERVICE_ACCEPT_PARAMCHANGE           ) : ( 0 ); //ã‚µãƒ¼ãƒ“ã‚¹ã®ãƒ‘ãƒ©ãƒ¡ãƒ¼ã‚¿ãŒå¤‰æ›´ã•ã‚ŒãŸ
+	MyServiceStatus.dwControlsAccepted |= ( info.HandleNetBindChange          ) ? ( SERVICE_ACCEPT_NETBINDCHANGE         ) : ( 0 ); //ãƒãƒƒãƒˆãƒ¯ãƒ¼ã‚¯æ¥ç¶šã®å¤‰æ›´
+	MyServiceStatus.dwControlsAccepted |= ( info.HandleHardwareProfileChange  ) ? ( SERVICE_ACCEPT_HARDWAREPROFILECHANGE ) : ( 0 ); //ã‚·ã‚¹ãƒ†ãƒ ã®ãƒãƒ¼ãƒ‰ã‚¦ã‚¨ã‚¢ãƒ—ãƒ­ãƒ•ã‚¡ã‚¤ãƒ«ãŒå¤‰æ›´ã•ã‚ŒãŸ
+	MyServiceStatus.dwControlsAccepted |= ( info.HandlePowerChange            ) ? ( SERVICE_ACCEPT_POWEREVENT            ) : ( 0 ); //ã‚·ã‚¹ãƒ†ãƒ ã®é›»æºçŠ¶æ…‹ãŒå¤‰æ›´ã•ã‚ŒãŸ
+	MyServiceStatus.dwControlsAccepted |= ( info.HandleSessionChange          ) ? ( SERVICE_ACCEPT_SESSIONCHANGE         ) : ( 0 ); //ã‚·ã‚¹ãƒ†ãƒ ã®ã‚»ãƒƒã‚·ãƒ§ãƒ³ãŒå¤‰æ›´ã•ã‚ŒãŸ
+	MyServiceStatus.dwControlsAccepted |= ( info.HandlePreShutdown            ) ? ( SERVICE_ACCEPT_PRESHUTDOWN           ) : ( 0 ); //ã‚·ã‚¹ãƒ†ãƒ ã®ã‚·ãƒ£ãƒƒãƒˆãƒ€ã‚¦ãƒ³å‰ã‚¤ãƒ™ãƒ³ãƒˆãŒç™ºç”Ÿ
+	MyServiceStatus.dwControlsAccepted |= ( info.HandleTimeChange             ) ? ( SERVICE_ACCEPT_TIMECHANGE            ) : ( 0 ); //ã‚·ã‚¹ãƒ†ãƒ æ™‚åˆ»ãŒå¤‰æ›´ã•ã‚ŒãŸ
+	MyServiceStatus.dwControlsAccepted |= ( info.HandleTriggerEvent           ) ? ( SERVICE_ACCEPT_TRIGGEREVENT          ) : ( 0 ); //ç‰¹æ®Šãªã‚¤ãƒ™ãƒ³ãƒˆã‚’å—ã‘å–ã‚‹(è¦åˆ¥é€”è¨­å®šã€‚æœªå®Ÿè£…ã€‚)
 	MyServiceStatus.dwCurrentState = SERVICE_STOPPED;
 	
 	SERVICE_TABLE_ENTRYW service[ 2 ];
@@ -216,7 +216,7 @@ bool mServiceHandler::Start( void )
 
 	if( !result )
 	{
-		CreateLogEntry( g_ErrorLogger , 0 , L"ƒT[ƒrƒX‚ÌƒfƒBƒXƒpƒbƒ`ƒƒ[‚ğ‹N“®‚Å‚«‚Ü‚¹‚ñ" );
+		CreateLogEntry( g_ErrorLogger , 0 , L"ã‚µãƒ¼ãƒ“ã‚¹ã®ãƒ‡ã‚£ã‚¹ãƒ‘ãƒƒãƒãƒ£ãƒ¼ã‚’èµ·å‹•ã§ãã¾ã›ã‚“" );
 	}
 	return result;
 }

@@ -1,13 +1,13 @@
-//----------------------------------------------------------------------------
-// ƒEƒCƒ“ƒhƒEŠÇ—iƒGƒfƒBƒbƒgƒRƒ“ƒgƒ[ƒ‹j
+ï»¿//----------------------------------------------------------------------------
+// ã‚¦ã‚¤ãƒ³ãƒ‰ã‚¦ç®¡ç†ï¼ˆã‚¨ãƒ‡ã‚£ãƒƒãƒˆã‚³ãƒ³ãƒˆãƒ­ãƒ¼ãƒ«ï¼‰
 // Copyright (C) 2016 Fingerling. All rights reserved. 
 // This program is released under the MIT License. 
 // see http://opensource.org/licenses/mit-license.php
 //----------------------------------------------------------------------------
 
 /*
-œ—p“r
-ƒGƒfƒBƒbƒgƒRƒ“ƒgƒ[ƒ‹‚Å‚·BƒEƒCƒ“ƒhƒE‚É“\‚è•t‚¯‚é‚±‚Æ‚ª‚Å‚«‚Ü‚·B
+â—ç”¨é€”
+ã‚¨ãƒ‡ã‚£ãƒƒãƒˆã‚³ãƒ³ãƒˆãƒ­ãƒ¼ãƒ«ã§ã™ã€‚ã‚¦ã‚¤ãƒ³ãƒ‰ã‚¦ã«è²¼ã‚Šä»˜ã‘ã‚‹ã“ã¨ãŒã§ãã¾ã™ã€‚
 */
 
 #ifndef MEDITBOX_H_INCLUDED
@@ -20,34 +20,34 @@ class mEditBox : public mWindow
 public:
 
 
-	//ƒRƒ“ƒgƒ[ƒ‹¶¬Žž‚ÌƒIƒvƒVƒ‡ƒ“
-	//ŽÀÛ‚Éì¬‚·‚é‚Æ‚«‚ÍAOption\‘¢‘Ì‚ð’¼ÚŽg‚í‚¸‚ÉAƒVƒ`ƒ…ƒG[ƒVƒ‡ƒ“‚É‡‚í‚¹‚ÄˆÈ‰º‚ðŽg‚Á‚Ä‰º‚³‚¢B
-	//EOption_UseOption c ƒƒ“ƒo•Ï”‚ð–„‚ß‚ÄƒIƒvƒVƒ‡ƒ“‚ðÝ’è‚µ‚½‚¢‚Æ‚«
+	//ã‚³ãƒ³ãƒˆãƒ­ãƒ¼ãƒ«ç”Ÿæˆæ™‚ã®ã‚ªãƒ—ã‚·ãƒ§ãƒ³
+	//å®Ÿéš›ã«ä½œæˆã™ã‚‹ã¨ãã¯ã€Optionæ§‹é€ ä½“ã‚’ç›´æŽ¥ä½¿ã‚ãšã«ã€ã‚·ãƒãƒ¥ã‚¨ãƒ¼ã‚·ãƒ§ãƒ³ã«åˆã‚ã›ã¦ä»¥ä¸‹ã‚’ä½¿ã£ã¦ä¸‹ã•ã„ã€‚
+	//ãƒ»Option_UseOption â€¦ ãƒ¡ãƒ³ãƒå¤‰æ•°ã‚’åŸ‹ã‚ã¦ã‚ªãƒ—ã‚·ãƒ§ãƒ³ã‚’è¨­å®šã—ãŸã„ã¨ã
 	struct Option
 	{
-		//ƒGƒfƒBƒbƒgƒ{ƒbƒNƒX¶¬‚Ì•û–@
+		//ã‚¨ãƒ‡ã‚£ãƒƒãƒˆãƒœãƒƒã‚¯ã‚¹ç”Ÿæˆã®æ–¹æ³•
 		enum CreateMethod
 		{
-			USEOPTION,		//’Êí‚Ì•û–@
+			USEOPTION,		//é€šå¸¸ã®æ–¹æ³•
 		};
 
-		//•¶Žš—ñ‚Ì”z’u
+		//æ–‡å­—åˆ—ã®é…ç½®
 		enum TextJustify
 		{
-			LEFT,		//¶‘µ‚¦
-			CENTER,		//’†‰›‘µ‚¦
-			RIGHT		//‰E‘µ‚¦
+			LEFT,		//å·¦æƒãˆ
+			CENTER,		//ä¸­å¤®æƒãˆ
+			RIGHT		//å³æƒãˆ
 		};
 
-		//•¶Žš—ñ‚Ì‘å•¶ŽšE¬•¶Žš‚ðŽ©“®•ÏŠ·‚·‚é
+		//æ–‡å­—åˆ—ã®å¤§æ–‡å­—ãƒ»å°æ–‡å­—ã‚’è‡ªå‹•å¤‰æ›ã™ã‚‹
 		enum TextCase
 		{
-			NOCHANGE,	//ˆ—‚È‚µ
-			UPPERCASE,	//‘å•¶Žš‚É•ÏX
-			LOWERCASE,	//¬•¶Žš‚É•ÏX
+			NOCHANGE,	//å‡¦ç†ãªã—
+			UPPERCASE,	//å¤§æ–‡å­—ã«å¤‰æ›´
+			LOWERCASE,	//å°æ–‡å­—ã«å¤‰æ›´
 		};
 
-		const CreateMethod method;	//RTTI‚Ì‘ã—p‚Å‚·B•ÏX‚Ì•K—v‚Í‚ ‚è‚Ü‚¹‚ñB
+		const CreateMethod method;	//RTTIã®ä»£ç”¨ã§ã™ã€‚å¤‰æ›´ã®å¿…è¦ã¯ã‚ã‚Šã¾ã›ã‚“ã€‚
 	protected:
 		Option() = delete;
 		Option( CreateMethod create_method ) : method( create_method )
@@ -55,20 +55,20 @@ public:
 		}
 	};
 
-	//ƒRƒ“ƒgƒ[ƒ‹¶¬Žž‚ÌƒIƒvƒVƒ‡ƒ“
+	//ã‚³ãƒ³ãƒˆãƒ­ãƒ¼ãƒ«ç”Ÿæˆæ™‚ã®ã‚ªãƒ—ã‚·ãƒ§ãƒ³
 	struct Option_UseOption : public Option
 	{
-		WString Text;			//ƒ{ƒ^ƒ“‚É‘‚¢‚Ä‚ ‚é•¶Žš—ñ
-		WindowPosition Pos;		//•\Ž¦ˆÊ’u
-		bool Multiline;			//•¡”sƒ^ƒCƒv
-		bool HScrollBar;		//…•½ƒXƒNƒ[ƒ‹ƒo[‚ð•\Ž¦‚·‚é
-		bool VScrollBar;		//‚’¼ƒXƒNƒ[ƒ‹ƒo[‚ð•\Ž¦‚·‚é
-		bool Password;			//ƒpƒXƒ[ƒhƒ^ƒCƒv
-		bool Readonly;			//ƒŠ[ƒhƒIƒ“ƒŠ[
-		bool Number;			//”Žš‚Ì‚Ý
-		bool RedirectEnter;		//ƒGƒ“ƒ^[ƒL[‚Ì“ü—Í‚ðƒŠƒ_ƒCƒŒƒNƒg‚·‚é
-		TextJustify Justify;	//•¶Žš—ñ‚Ì”z’u
-		TextCase Case;			//•¶Žš—ñ‚Ì‘å•¶ŽšE¬•¶Žš‚ðŽ©“®•ÏŠ·‚·‚é
+		WString Text;			//ãƒœã‚¿ãƒ³ã«æ›¸ã„ã¦ã‚ã‚‹æ–‡å­—åˆ—
+		WindowPosition Pos;		//è¡¨ç¤ºä½ç½®
+		bool Multiline;			//è¤‡æ•°è¡Œã‚¿ã‚¤ãƒ—
+		bool HScrollBar;		//æ°´å¹³ã‚¹ã‚¯ãƒ­ãƒ¼ãƒ«ãƒãƒ¼ã‚’è¡¨ç¤ºã™ã‚‹
+		bool VScrollBar;		//åž‚ç›´ã‚¹ã‚¯ãƒ­ãƒ¼ãƒ«ãƒãƒ¼ã‚’è¡¨ç¤ºã™ã‚‹
+		bool Password;			//ãƒ‘ã‚¹ãƒ¯ãƒ¼ãƒ‰ã‚¿ã‚¤ãƒ—
+		bool Readonly;			//ãƒªãƒ¼ãƒ‰ã‚ªãƒ³ãƒªãƒ¼
+		bool Number;			//æ•°å­—ã®ã¿
+		bool RedirectEnter;		//ã‚¨ãƒ³ã‚¿ãƒ¼ã‚­ãƒ¼ã®å…¥åŠ›ã‚’ãƒªãƒ€ã‚¤ãƒ¬ã‚¯ãƒˆã™ã‚‹
+		TextJustify Justify;	//æ–‡å­—åˆ—ã®é…ç½®
+		TextCase Case;			//æ–‡å­—åˆ—ã®å¤§æ–‡å­—ãƒ»å°æ–‡å­—ã‚’è‡ªå‹•å¤‰æ›ã™ã‚‹
 
 		Option_UseOption() : Option( CreateMethod::USEOPTION )
 		{
@@ -85,37 +85,37 @@ public:
 		}
 	};
 
-	//ƒGƒfƒBƒbƒgƒRƒ“ƒgƒ[ƒ‹‚Ì•¶Žš—ñ‚ðƒZƒbƒg
+	//ã‚¨ãƒ‡ã‚£ãƒƒãƒˆã‚³ãƒ³ãƒˆãƒ­ãƒ¼ãƒ«ã®æ–‡å­—åˆ—ã‚’ã‚»ãƒƒãƒˆ
 	bool SetText( const WString& NewText );
 
-	//ƒGƒfƒBƒbƒgƒRƒ“ƒgƒ[ƒ‹‚Ì•¶Žš—ñ‚ðŽæ“¾
+	//ã‚¨ãƒ‡ã‚£ãƒƒãƒˆã‚³ãƒ³ãƒˆãƒ­ãƒ¼ãƒ«ã®æ–‡å­—åˆ—ã‚’å–å¾—
 	bool GetText( WString& retText );
 
-	//ƒGƒfƒBƒbƒgƒRƒ“ƒgƒ[ƒ‹‚Ì•¶Žš—ñ‚Ì’·‚³i–ÚˆÀj‚ðŽæ“¾
+	//ã‚¨ãƒ‡ã‚£ãƒƒãƒˆã‚³ãƒ³ãƒˆãƒ­ãƒ¼ãƒ«ã®æ–‡å­—åˆ—ã®é•·ã•ï¼ˆç›®å®‰ï¼‰ã‚’å–å¾—
 	DWORD GetTextLength( void )const;
 
 public:
 
-	//ƒtƒ@ƒNƒgƒŠƒƒ\ƒbƒh
+	//ãƒ•ã‚¡ã‚¯ãƒˆãƒªãƒ¡ã‚½ãƒƒãƒ‰
 	static mWindow* Factory( const void * option )throw( )
 	{
 		return mNew mEditBox;
 	}
 
-	//ƒEƒCƒ“ƒhƒEƒvƒƒV[ƒWƒƒ
+	//ã‚¦ã‚¤ãƒ³ãƒ‰ã‚¦ãƒ—ãƒ­ã‚·ãƒ¼ã‚¸ãƒ£
 	virtual LRESULT WindowProcedure( UINT msg , WPARAM wparam , LPARAM lparam );
 
 protected:
 	mEditBox();
 	virtual ~mEditBox();
 
-	//ƒEƒCƒ“ƒhƒEƒNƒ‰ƒX‚Ì“o˜^‚ð‚·‚é
+	//ã‚¦ã‚¤ãƒ³ãƒ‰ã‚¦ã‚¯ãƒ©ã‚¹ã®ç™»éŒ²ã‚’ã™ã‚‹
 	virtual bool WindowClassSettingCallback( WindowClassSetting& retSetting , const void* opt )override;
 
-	//ƒEƒCƒ“ƒhƒE‚ðŠJ‚­
+	//ã‚¦ã‚¤ãƒ³ãƒ‰ã‚¦ã‚’é–‹ã
 	virtual bool CreateWindowCallback( CreateWindowSetting& retSetting , const void* opt )override;
 
-	//true‚È‚ç‚ÎƒGƒ“ƒ^[ƒL[‚ðeƒEƒCƒ“ƒhƒE‚ÉƒŠƒ_ƒCƒŒƒNƒg‚·‚é
+	//trueãªã‚‰ã°ã‚¨ãƒ³ã‚¿ãƒ¼ã‚­ãƒ¼ã‚’è¦ªã‚¦ã‚¤ãƒ³ãƒ‰ã‚¦ã«ãƒªãƒ€ã‚¤ãƒ¬ã‚¯ãƒˆã™ã‚‹
 	bool MyRedirectEnter;
 
 private:

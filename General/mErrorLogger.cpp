@@ -1,11 +1,11 @@
-//----------------------------------------------------------------------------
-// ƒAƒT[ƒg^ƒGƒ‰[ˆ—
+ï»¿//----------------------------------------------------------------------------
+// ã‚¢ã‚µãƒ¼ãƒˆï¼ã‚¨ãƒ©ãƒ¼å‡¦ç†
 // Copyright (C) 2016 Fingerling. All rights reserved. 
 // Copyright (C) 2020-2023 Crea Inc. All rights reserved. 
 // This program is released under the MIT License. 
 // see http://opensource.org/licenses/mit-license.php
-// ’˜ìŒ •\¦‚âƒ‰ƒCƒZƒ“ƒX‚Ì‰ü•Ï‚Í‹Ö~‚³‚ê‚Ä‚¢‚Ü‚·B
-// ‚±‚Ìƒ\[ƒXƒR[ƒh‚ÉŠÖ‚µ‚ÄAã‹Lƒ‰ƒCƒZƒ“ƒXˆÈŠO‚ÌŒ_–ñ“™‚ÍˆêØ‘¶İ‚µ‚Ü‚¹‚ñB
+// è‘—ä½œæ¨©è¡¨ç¤ºã‚„ãƒ©ã‚¤ã‚»ãƒ³ã‚¹ã®æ”¹å¤‰ã¯ç¦æ­¢ã•ã‚Œã¦ã„ã¾ã™ã€‚
+// ã“ã®ã‚½ãƒ¼ã‚¹ã‚³ãƒ¼ãƒ‰ã«é–¢ã—ã¦ã€ä¸Šè¨˜ãƒ©ã‚¤ã‚»ãƒ³ã‚¹ä»¥å¤–ã®å¥‘ç´„ç­‰ã¯ä¸€åˆ‡å­˜åœ¨ã—ã¾ã›ã‚“ã€‚
 //----------------------------------------------------------------------------
 
 #define MERRORLOGGER_CPP_COMPILING
@@ -13,7 +13,7 @@
 #pragma comment( lib , "winmm.lib" )
 
 //--------------------------------------
-//ˆÈ‰ºAƒƒ\ƒbƒh‚Ì’è‹`
+//ä»¥ä¸‹ã€ãƒ¡ã‚½ãƒƒãƒ‰ã®å®šç¾©
 //--------------------------------------
 mErrorLogger::mErrorLogger( DWORD max_error )
 {
@@ -37,13 +37,13 @@ mErrorLogger::~mErrorLogger()
 	}
 }
 
-//ƒƒO‚Ì‹L˜^‚ğ–³Œø‰»‚·‚é
+//ãƒ­ã‚°ã®è¨˜éŒ²ã‚’ç„¡åŠ¹åŒ–ã™ã‚‹
 void mErrorLogger::Disable( void )
 {
 	MyIsEnabled = false;
 }
 
-//ƒƒO‚Ì‹L˜^‚ğ—LŒø‰»‚·‚é
+//ãƒ­ã‚°ã®è¨˜éŒ²ã‚’æœ‰åŠ¹åŒ–ã™ã‚‹
 void mErrorLogger::Enable( void )
 {
 	MyIsEnabled = true;
@@ -52,7 +52,7 @@ void mErrorLogger::Enable( void )
 
 DWORD mErrorLogger::AddEntry( ErrorLevel level , const WString & file , DWORD line , DWORD ec1 , ULONG_PTR ec2 , const WString& mes1 , const WString& mes2 )
 {
-	//—LŒø‚©‚Ç‚¤‚©Šm”F‚·‚é
+	//æœ‰åŠ¹ã‹ã©ã†ã‹ç¢ºèªã™ã‚‹
 	if( !MyIsEnabled )
 	{
 		return MyCurrentId;
@@ -66,22 +66,22 @@ DWORD mErrorLogger::AddEntry( ErrorLevel level , const WString & file , DWORD li
 
 threadsafe DWORD mErrorLogger::AddEntry( ErrorLevel level , const WString& file , DWORD line , DWORD ec1 , ULONG_PTR ec2 , const WString& mes1 , const WString& mes2 , const mErrorLogger* origin )
 {
-	//—LŒø‚©‚Ç‚¤‚©Šm”F‚·‚é
+	//æœ‰åŠ¹ã‹ã©ã†ã‹ç¢ºèªã™ã‚‹
 	if( !MyIsEnabled )
 	{
 		return MyCurrentId;
 	}
-	//oŒ³‚ª©•ª‚Å‚È‚¢‚©Šm”F‚·‚é
+	//å‡ºå…ƒãŒè‡ªåˆ†ã§ãªã„ã‹ç¢ºèªã™ã‚‹
 	if( origin == this )
 	{
-		//Proxy‚Åˆêü‚µ‚½‚ÆŒ¾‚¤‚±‚Æ‚È‚Ì‚Å”²‚¯‚é
+		//Proxyã§ä¸€å‘¨ã—ãŸã¨è¨€ã†ã“ã¨ãªã®ã§æŠœã‘ã‚‹
 		return 0;
 	}
 
-	//•Ô‚·’l
+	//è¿”ã™å€¤
 	DWORD retval;
 
-	//V‚µ‚¢ƒGƒ“ƒgƒŠ
+	//æ–°ã—ã„ã‚¨ãƒ³ãƒˆãƒª
 	LogEntry entry;
 	entry.Level = level;
 	entry.File = file;
@@ -93,7 +93,7 @@ threadsafe DWORD mErrorLogger::AddEntry( ErrorLevel level , const WString& file 
 	entry.Time = timeGetTime();
 	entry.ThreadId = GetCurrentThreadId();
 
-	//ƒƒO‚É‚Â‚Á‚±‚ñ‚ÅAƒTƒCƒY‚ğŠm”F‚µ‚ÄÅ‘å’l’´‚¦‚Ä‚½‚çÅŒã‚Ì‚ğÁ‚·
+	//ãƒ­ã‚°ã«ã¤ã£ã“ã‚“ã§ã€ã‚µã‚¤ã‚ºã‚’ç¢ºèªã—ã¦æœ€å¤§å€¤è¶…ãˆã¦ãŸã‚‰æœ€å¾Œã®ã‚’æ¶ˆã™
 	{
 		mCriticalSectionTicket Ticket( MyCritical );
 
@@ -110,7 +110,7 @@ threadsafe DWORD mErrorLogger::AddEntry( ErrorLevel level , const WString& file 
 			}
 		}
 	}
-	//‰ñ”ƒJƒEƒ“ƒg
+	//å›æ•°ã‚«ã‚¦ãƒ³ãƒˆ
 	switch( level )
 	{
 	case ErrorLevel::LEVEL_ASSERT:
@@ -121,25 +121,25 @@ threadsafe DWORD mErrorLogger::AddEntry( ErrorLevel level , const WString& file 
 	default:
 		break;
 	}
-	//ƒRƒ“ƒ\[ƒ‹o—Í
+	//ã‚³ãƒ³ã‚½ãƒ¼ãƒ«å‡ºåŠ›
 	switch( MyLogOutputMode )
 	{
-	case LOG_OUTPUT_CONSOLE:	//ƒRƒ}ƒ“ƒhƒ‰ƒCƒ“‚Éo—Í‚·‚é
+	case LOG_OUTPUT_CONSOLE:	//ã‚³ãƒãƒ³ãƒ‰ãƒ©ã‚¤ãƒ³ã«å‡ºåŠ›ã™ã‚‹
 		OutputLogToConsole( entry );
 		break;
-	case LOG_OUTPUT_DEBUGGER:	//ƒfƒoƒbƒK‚Éo—Í‚·‚é
+	case LOG_OUTPUT_DEBUGGER:	//ãƒ‡ãƒãƒƒã‚¬ã«å‡ºåŠ›ã™ã‚‹
 		OutputLogToDebugger( entry );
 		break;
-	case LOG_OUTPUT_FILE:		//ƒtƒ@ƒCƒ‹‚Éo—Í‚·‚é
+	case LOG_OUTPUT_FILE:		//ãƒ•ã‚¡ã‚¤ãƒ«ã«å‡ºåŠ›ã™ã‚‹
 		OutputLogToFile( entry );
 		break;
-	case LOG_OUTPUT_CALLBACK:	//ƒR[ƒ‹ƒoƒbƒNŠÖ”‚ğŒÄ‚Ô
+	case LOG_OUTPUT_CALLBACK:	//ã‚³ãƒ¼ãƒ«ãƒãƒƒã‚¯é–¢æ•°ã‚’å‘¼ã¶
 		if( MyCallback )
 		{
 			MyCallback( entry );
 		}
 		break;
-	case LOG_OUTPUT_NONE:		//‰½‚à‚µ‚È‚¢
+	case LOG_OUTPUT_NONE:		//ä½•ã‚‚ã—ãªã„
 	default:
 		break;
 	}
@@ -160,10 +160,10 @@ threadsafe DWORD mErrorLogger::AddEntry( ErrorLevel level , const WString& file 
 }
 
 
-//ƒGƒ‰[ƒƒO‚ğ’Ç‰Á‚µ‚Ü‚·
+//ã‚¨ãƒ©ãƒ¼ãƒ­ã‚°ã‚’è¿½åŠ ã—ã¾ã™
 DWORD mErrorLogger::AddEntry( const Log& toAppend )
 {
-	//—LŒø‚©‚Ç‚¤‚©Šm”F‚·‚é
+	//æœ‰åŠ¹ã‹ã©ã†ã‹ç¢ºèªã™ã‚‹
 	if( !MyIsEnabled )
 	{
 		return MyCurrentId;
@@ -174,7 +174,7 @@ DWORD mErrorLogger::AddEntry( const Log& toAppend )
 
 		for( Log::const_iterator itr = toAppend.begin() ; itr != toAppend.end() ; itr++ )
 		{
-			//ŒŸõ‘ÎÛ
+			//æ¤œç´¢å¯¾è±¡
 			MyLogError.push_front( *itr );
 			MyLogError.front().Id = MyCurrentId;
 			MyCurrentId++;
@@ -190,17 +190,17 @@ DWORD mErrorLogger::AddEntry( const Log& toAppend )
 
 DWORD mErrorLogger::GetCurrentId( void )const
 {
-	//ƒNƒŠƒeƒBƒJƒ‹ƒZƒNƒVƒ‡ƒ“•s—v
-	//¨æ“¾‚µ‚½’l‚ğAŒÄ‚Ño‚µ‚½ƒXƒŒƒbƒh©g‚ªg‚¤‚È‚ç•Ï‚È’l‚É‚Í‚È‚ç‚È‚¢
-	//¨‘¼‚ÌƒXƒŒƒbƒh‚ğŠÄ‹‚·‚é–Ú“I‚Å‚±‚ÌID‚Í‚»‚à‚»‚àg‚¦‚È‚¢
-	//‚æ‚Á‚Ä•s—v
+	//ã‚¯ãƒªãƒ†ã‚£ã‚«ãƒ«ã‚»ã‚¯ã‚·ãƒ§ãƒ³ä¸è¦
+	//â†’å–å¾—ã—ãŸå€¤ã‚’ã€å‘¼ã³å‡ºã—ãŸã‚¹ãƒ¬ãƒƒãƒ‰è‡ªèº«ãŒä½¿ã†ãªã‚‰å¤‰ãªå€¤ã«ã¯ãªã‚‰ãªã„
+	//â†’ä»–ã®ã‚¹ãƒ¬ãƒƒãƒ‰ã‚’ç›£è¦–ã™ã‚‹ç›®çš„ã§ã“ã®IDã¯ãã‚‚ãã‚‚ä½¿ãˆãªã„
+	//ã‚ˆã£ã¦ä¸è¦
 	return MyCurrentId;
 }
 
 void mErrorLogger::SearchLog( DWORD Id , Log& retLog , const WString& file )const
 {
-	//ƒƒO‚Ì”‚ª32bit‚ğ’´‚¦‚é‚Æ³‚µ‚¢ŒŸõŒ‹‰Ê‚É‚È‚ç‚È‚¢‚ª
-	//‚»‚à‚»‚à‚»‚ñ‚È’·Šú‰Ò“­‚Í‘z’è‚µ‚Ä‚¢‚È‚¢‚Ì‚Å–³‹‚·‚é(1•b‚É50ŒÂƒƒO‚ğ¶¬‚µ‚Ä‚à2.7”N)
+	//ãƒ­ã‚°ã®æ•°ãŒ32bitã‚’è¶…ãˆã‚‹ã¨æ­£ã—ã„æ¤œç´¢çµæœã«ãªã‚‰ãªã„ãŒ
+	//ãã‚‚ãã‚‚ãã‚“ãªé•·æœŸç¨¼åƒã¯æƒ³å®šã—ã¦ã„ãªã„ã®ã§ç„¡è¦–ã™ã‚‹(1ç§’ã«50å€‹ãƒ­ã‚°ã‚’ç”Ÿæˆã—ã¦ã‚‚2.7å¹´)
 
 	DWORD tid = GetCurrentThreadId();
 	retLog.clear();
@@ -217,7 +217,7 @@ void mErrorLogger::SearchLog( DWORD Id , Log& retLog , const WString& file )cons
 			( file == L"" || file == itr->File ) )
 		{
 
-			//ŒŸõ‘ÎÛ
+			//æ¤œç´¢å¯¾è±¡
 			retLog.push_back( *itr );
 		}
 	}
@@ -235,19 +235,19 @@ bool mErrorLogger::SearchLog( DWORD Id , ULONG_PTR code , const WString& file )c
 		{
 			break;
 		}
-		if(	( code == itr->Code2 ) &&				//ƒR[ƒhˆê’v ©¦ƒpƒtƒH[ƒ}ƒ“ƒX‚É‰e‹¿‚ª‚ ‚é‚Ì‚ÅAƒ`ƒFƒbƒN‡’ˆÓ
-			( tid == itr->ThreadId ) &&				//ƒXƒŒƒbƒhIDƒ`ƒFƒbƒN
-			( file == L"" || file == itr->File ) )	//ƒtƒ@ƒCƒ‹–¼ƒ`ƒFƒbƒN
+		if(	( code == itr->Code2 ) &&				//ã‚³ãƒ¼ãƒ‰ä¸€è‡´ â†â€»ãƒ‘ãƒ•ã‚©ãƒ¼ãƒãƒ³ã‚¹ã«å½±éŸ¿ãŒã‚ã‚‹ã®ã§ã€ãƒã‚§ãƒƒã‚¯é †æ³¨æ„
+			( tid == itr->ThreadId ) &&				//ã‚¹ãƒ¬ãƒƒãƒ‰IDãƒã‚§ãƒƒã‚¯
+			( file == L"" || file == itr->File ) )	//ãƒ•ã‚¡ã‚¤ãƒ«åãƒã‚§ãƒƒã‚¯
 		{
-			//”­Œ©
+			//ç™ºè¦‹
 			return true;
 		}
 	}
-	//ŠY“–‚È‚µ
+	//è©²å½“ãªã—
 	return false;
 }
 
-//ƒƒO‚ğæ“¾‚·‚é
+//ãƒ­ã‚°ã‚’å–å¾—ã™ã‚‹
 void mErrorLogger::GetLog( DWORD Id , Log& retLog , const WString& file  )const
 {
 	retLog.clear();
@@ -262,14 +262,14 @@ void mErrorLogger::GetLog( DWORD Id , Log& retLog , const WString& file  )const
 		if( file == L"" || file == itr->File )
 		{
 
-			//ŒŸõ‘ÎÛ
+			//æ¤œç´¢å¯¾è±¡
 			retLog.push_back( *itr );
 		}
 	}
 	return;
 }
 
-//ƒƒO‚ğæ“¾‚·‚é
+//ãƒ­ã‚°ã‚’å–å¾—ã™ã‚‹
 void mErrorLogger::GetLog( DWORD Id_from , DWORD Id_to , Log& retLog , const WString& file )const
 {
 	retLog.clear();
@@ -288,7 +288,7 @@ void mErrorLogger::GetLog( DWORD Id_from , DWORD Id_to , Log& retLog , const WSt
 		if( file == L"" || file == itr->File )
 		{
 
-			//ŒŸõ‘ÎÛ
+			//æ¤œç´¢å¯¾è±¡
 			retLog.push_back( *itr );
 		}
 	}
@@ -306,7 +306,7 @@ void mErrorLogger::Clear( void )
 }
 
 
-//ƒRƒ“ƒ\[ƒ‹‚ÉƒƒO‚ğo—Í‚·‚é
+//ã‚³ãƒ³ã‚½ãƒ¼ãƒ«ã«ãƒ­ã‚°ã‚’å‡ºåŠ›ã™ã‚‹
 void mErrorLogger::OutputLogToConsole( const LogEntry& entry )
 {
 	mCriticalSectionTicket Ticket( MyCritical );
@@ -316,28 +316,28 @@ void mErrorLogger::OutputLogToConsole( const LogEntry& entry )
 	{
 		switch( entry.Level )
 		{
-		case LEVEL_ASSERT:			//ƒAƒT[ƒg‚ª”­¶‚µ‚½‚Æ‚«(’Êí‘€ì‚Å”­¶‚µ‚È‚¢‘z’è‚ÌƒGƒ‰[—p)
+		case LEVEL_ASSERT:			//ã‚¢ã‚µãƒ¼ãƒˆãŒç™ºç”Ÿã—ãŸã¨ã(é€šå¸¸æ“ä½œã§ç™ºç”Ÿã—ãªã„æƒ³å®šã®ã‚¨ãƒ©ãƒ¼ç”¨)
 			#ifdef _WIN64
 			wchar_fprintf( stderr , L"*ASSERT 0x%08llX\n" , entry.Code2 );
 			#else
 			wchar_fprintf( stderr , L"*ASSERT 0x%08X\n" , entry.Code2 );
 			#endif
 			break;
-		case LEVEL_ERROR:			//ˆê”Ê“IƒGƒ‰[‚ª”­¶‚µ‚½‚Æ‚«(ƒtƒ@ƒCƒ‹‚ª–³‚©‚Á‚½“™)
+		case LEVEL_ERROR:			//ä¸€èˆ¬çš„ã‚¨ãƒ©ãƒ¼ãŒç™ºç”Ÿã—ãŸã¨ã(ãƒ•ã‚¡ã‚¤ãƒ«ãŒç„¡ã‹ã£ãŸç­‰)
 			#ifdef _WIN64
 			wchar_fprintf( stderr , L"*ERROR 0x%08llX\n" , entry.Code2 );
 			#else
 			wchar_fprintf( stderr , L"*ERROR 0x%08X\n" , entry.Code2 );
 			#endif
 			break;
-		case LEVEL_LOGGING:			//³íI—¹‚Å‚à‹L˜^‚µ‚Ä‚¨‚«‚½‚¢–•¿‚ª”­¶‚µ‚½‚Æ‚«(Ú‘±Š®—¹‚È‚Ç‚ÌƒCƒxƒ“ƒg)
+		case LEVEL_LOGGING:			//æ­£å¸¸çµ‚äº†ã§ã‚‚è¨˜éŒ²ã—ã¦ãŠããŸã„äº‹æŸ„ãŒç™ºç”Ÿã—ãŸã¨ã(æ¥ç¶šå®Œäº†ãªã©ã®ã‚¤ãƒ™ãƒ³ãƒˆ)
 			#ifdef _WIN64
 			wchar_fprintf( stderr , L"*LOG 0x%08llX\n" , entry.Code2 );
 			#else
 			wchar_fprintf( stderr , L"*LOG 0x%08X\n" , entry.Code2 );
 			break;
 			#endif
-		case LEVEL_EXCEPTION:		//—áŠO‚ªƒXƒ[‚³‚ê‚½‚Æ‚«(mException‚ªg—p‚µ‚Ü‚·)
+		case LEVEL_EXCEPTION:		//ä¾‹å¤–ãŒã‚¹ãƒ­ãƒ¼ã•ã‚ŒãŸã¨ã(mExceptionãŒä½¿ç”¨ã—ã¾ã™)
 			#ifdef _WIN64
 			wchar_fprintf( stderr , L"*EXCEPTION 0x%08llX\n" , entry.Code2 );
 			#else
@@ -364,28 +364,28 @@ void mErrorLogger::OutputLogToConsole( const LogEntry& entry )
 	{
 		switch( entry.Level )
 		{
-		case LEVEL_ASSERT:			//ƒAƒT[ƒg‚ª”­¶‚µ‚½‚Æ‚«(’Êí‘€ì‚Å”­¶‚µ‚È‚¢‘z’è‚ÌƒGƒ‰[—p)
+		case LEVEL_ASSERT:			//ã‚¢ã‚µãƒ¼ãƒˆãŒç™ºç”Ÿã—ãŸã¨ã(é€šå¸¸æ“ä½œã§ç™ºç”Ÿã—ãªã„æƒ³å®šã®ã‚¨ãƒ©ãƒ¼ç”¨)
 			#ifdef _WIN64
 			fprintf( stderr , "*ASSERT 0x%08llX\n" , entry.Code2 );
 			#else
 			fprintf( stderr , "*ASSERT 0x%08X\n" , entry.Code2 );
 			#endif
 			break;
-		case LEVEL_ERROR:			//ˆê”Ê“IƒGƒ‰[‚ª”­¶‚µ‚½‚Æ‚«(ƒtƒ@ƒCƒ‹‚ª–³‚©‚Á‚½“™)
+		case LEVEL_ERROR:			//ä¸€èˆ¬çš„ã‚¨ãƒ©ãƒ¼ãŒç™ºç”Ÿã—ãŸã¨ã(ãƒ•ã‚¡ã‚¤ãƒ«ãŒç„¡ã‹ã£ãŸç­‰)
 			#ifdef _WIN64
 			fprintf( stderr , "*ERROR 0x%08llX\n" , entry.Code2 );
 			#else
 			fprintf( stderr , "*ERROR 0x%08X\n" , entry.Code2 );
 			#endif
 			break;
-		case LEVEL_LOGGING:			//³íI—¹‚Å‚à‹L˜^‚µ‚Ä‚¨‚«‚½‚¢–•¿‚ª”­¶‚µ‚½‚Æ‚«(Ú‘±Š®—¹‚È‚Ç‚ÌƒCƒxƒ“ƒg)
+		case LEVEL_LOGGING:			//æ­£å¸¸çµ‚äº†ã§ã‚‚è¨˜éŒ²ã—ã¦ãŠããŸã„äº‹æŸ„ãŒç™ºç”Ÿã—ãŸã¨ã(æ¥ç¶šå®Œäº†ãªã©ã®ã‚¤ãƒ™ãƒ³ãƒˆ)
 			#ifdef _WIN64
 			fprintf( stderr , "*LOG 0x%08llX\n" , entry.Code2 );
 			#else
 			fprintf( stderr , "*LOG 0x%08X\n" , entry.Code2 );
 			break;
 			#endif
-		case LEVEL_EXCEPTION:		//—áŠO‚ªƒXƒ[‚³‚ê‚½‚Æ‚«(mException‚ªg—p‚µ‚Ü‚·)
+		case LEVEL_EXCEPTION:		//ä¾‹å¤–ãŒã‚¹ãƒ­ãƒ¼ã•ã‚ŒãŸã¨ã(mExceptionãŒä½¿ç”¨ã—ã¾ã™)
 			#ifdef _WIN64
 			fprintf( stderr , "*EXCEPTION 0x%08llX\n" , entry.Code2 );
 			#else
@@ -410,7 +410,7 @@ void mErrorLogger::OutputLogToConsole( const LogEntry& entry )
 	}
 }
 
-//ƒfƒoƒbƒK‚ÉƒƒO‚ğo—Í‚·‚é
+//ãƒ‡ãƒãƒƒã‚¬ã«ãƒ­ã‚°ã‚’å‡ºåŠ›ã™ã‚‹
 void mErrorLogger::OutputLogToDebugger( const LogEntry& entry )
 {
 	mCriticalSectionTicket Ticket( MyCritical );
@@ -418,28 +418,28 @@ void mErrorLogger::OutputLogToDebugger( const LogEntry& entry )
 
 	switch( entry.Level )
 	{
-	case LEVEL_ASSERT:			//ƒAƒT[ƒg‚ª”­¶‚µ‚½‚Æ‚«(’Êí‘€ì‚Å”­¶‚µ‚È‚¢‘z’è‚ÌƒGƒ‰[—p)
+	case LEVEL_ASSERT:			//ã‚¢ã‚µãƒ¼ãƒˆãŒç™ºç”Ÿã—ãŸã¨ã(é€šå¸¸æ“ä½œã§ç™ºç”Ÿã—ãªã„æƒ³å®šã®ã‚¨ãƒ©ãƒ¼ç”¨)
 		#ifdef _WIN64
 		sprintf( str , L"*ASSERT 0x%08llX\n" , entry.Code2 );
 		#else
 		sprintf( str , L"*ASSERT 0x%08X\n" , entry.Code2 );
 		#endif
 		break;
-	case LEVEL_ERROR:			//ˆê”Ê“IƒGƒ‰[‚ª”­¶‚µ‚½‚Æ‚«(ƒtƒ@ƒCƒ‹‚ª–³‚©‚Á‚½“™)
+	case LEVEL_ERROR:			//ä¸€èˆ¬çš„ã‚¨ãƒ©ãƒ¼ãŒç™ºç”Ÿã—ãŸã¨ã(ãƒ•ã‚¡ã‚¤ãƒ«ãŒç„¡ã‹ã£ãŸç­‰)
 		#ifdef _WIN64
 		sprintf( str , L"*ERROR 0x%08llX\n" , entry.Code2 );
 		#else
 		sprintf( str , L"*ERROR 0x%08X\n" , entry.Code2 );
 		#endif
 		break;
-	case LEVEL_LOGGING:			//³íI—¹‚Å‚à‹L˜^‚µ‚Ä‚¨‚«‚½‚¢–•¿‚ª”­¶‚µ‚½‚Æ‚«(Ú‘±Š®—¹‚È‚Ç‚ÌƒCƒxƒ“ƒg)
+	case LEVEL_LOGGING:			//æ­£å¸¸çµ‚äº†ã§ã‚‚è¨˜éŒ²ã—ã¦ãŠããŸã„äº‹æŸ„ãŒç™ºç”Ÿã—ãŸã¨ã(æ¥ç¶šå®Œäº†ãªã©ã®ã‚¤ãƒ™ãƒ³ãƒˆ)
 		#ifdef _WIN64
 		sprintf( str , L"*LOG 0x%08llX\n" , entry.Code2 );
 		#else
 		sprintf( str , L"*LOG 0x%08X\n" , entry.Code2 );
 		#endif
 		break;
-	case LEVEL_EXCEPTION:		//—áŠO‚ªƒXƒ[‚³‚ê‚½‚Æ‚«(mException‚ªg—p‚µ‚Ü‚·)
+	case LEVEL_EXCEPTION:		//ä¾‹å¤–ãŒã‚¹ãƒ­ãƒ¼ã•ã‚ŒãŸã¨ã(mExceptionãŒä½¿ç”¨ã—ã¾ã™)
 		#ifdef _WIN64
 		sprintf( str , L"*EXCEPTION 0x%08llX\n" , entry.Code2 );
 		#else
@@ -485,28 +485,28 @@ void mErrorLogger::OutputLogToFile( const LogEntry& entry )
 
 	switch( entry.Level )
 	{
-	case LEVEL_ASSERT:			//ƒAƒT[ƒg‚ª”­¶‚µ‚½‚Æ‚«(’Êí‘€ì‚Å”­¶‚µ‚È‚¢‘z’è‚ÌƒGƒ‰[—p)
+	case LEVEL_ASSERT:			//ã‚¢ã‚µãƒ¼ãƒˆãŒç™ºç”Ÿã—ãŸã¨ã(é€šå¸¸æ“ä½œã§ç™ºç”Ÿã—ãªã„æƒ³å®šã®ã‚¨ãƒ©ãƒ¼ç”¨)
 		#ifdef _WIN64
 		sprintf( str , L"*ASSERT 0x%08llX\r\n" , entry.Code2 );
 		#else
 		sprintf( str , L"*ASSERT 0x%08X\r\n" , entry.Code2 );
 		#endif
 		break;
-	case LEVEL_ERROR:			//ˆê”Ê“IƒGƒ‰[‚ª”­¶‚µ‚½‚Æ‚«(ƒtƒ@ƒCƒ‹‚ª–³‚©‚Á‚½“™)
+	case LEVEL_ERROR:			//ä¸€èˆ¬çš„ã‚¨ãƒ©ãƒ¼ãŒç™ºç”Ÿã—ãŸã¨ã(ãƒ•ã‚¡ã‚¤ãƒ«ãŒç„¡ã‹ã£ãŸç­‰)
 		#ifdef _WIN64
 		sprintf( str , L"*ERROR 0x%08llX\r\n" , entry.Code2 );
 		#else
 		sprintf( str , L"*ERROR 0x%08X\r\n" , entry.Code2 );
 		#endif
 		break;
-	case LEVEL_LOGGING:			//³íI—¹‚Å‚à‹L˜^‚µ‚Ä‚¨‚«‚½‚¢–•¿‚ª”­¶‚µ‚½‚Æ‚«(Ú‘±Š®—¹‚È‚Ç‚ÌƒCƒxƒ“ƒg)
+	case LEVEL_LOGGING:			//æ­£å¸¸çµ‚äº†ã§ã‚‚è¨˜éŒ²ã—ã¦ãŠããŸã„äº‹æŸ„ãŒç™ºç”Ÿã—ãŸã¨ã(æ¥ç¶šå®Œäº†ãªã©ã®ã‚¤ãƒ™ãƒ³ãƒˆ)
 		#ifdef _WIN64
 		sprintf( str , L"*LOG 0x%08llX\r\n" , entry.Code2 );
 		#else
 		sprintf( str , L"*LOG 0x%08X\r\n" , entry.Code2 );
 		#endif
 		break;
-	case LEVEL_EXCEPTION:		//—áŠO‚ªƒXƒ[‚³‚ê‚½‚Æ‚«(mException‚ªg—p‚µ‚Ü‚·)
+	case LEVEL_EXCEPTION:		//ä¾‹å¤–ãŒã‚¹ãƒ­ãƒ¼ã•ã‚ŒãŸã¨ã(mExceptionãŒä½¿ç”¨ã—ã¾ã™)
 		#ifdef _WIN64
 		sprintf( str , L"*EXCEPTION 0x%08llX\r\n" , entry.Code2 );
 		#else
@@ -537,26 +537,26 @@ void mErrorLogger::OutputLogToFile( const LogEntry& entry )
 	Output( str );
 }
 
-//ƒƒOo—Í‚Ìƒ‚[ƒh‚ğ•ÏX‚·‚é
+//ãƒ­ã‚°å‡ºåŠ›ã®ãƒ¢ãƒ¼ãƒ‰ã‚’å¤‰æ›´ã™ã‚‹
 bool mErrorLogger::ChangeLogOutputMode( const LogOutputModeOpt& setting )
 {
 	mCriticalSectionTicket Ticket( MyCritical );
 
-	//ƒ‚[ƒh‚ğXV
+	//ãƒ¢ãƒ¼ãƒ‰ã‚’æ›´æ–°
 	MyLogOutputMode = setting.Mode;
 	MyProxy = setting.Proxy;
 	MyIsNoTrace = setting.NoTrace;
 
-	//o—Íæ‚ªƒtƒ@ƒCƒ‹‚ÅAƒtƒ@ƒCƒ‹‚ªŠJ‚¢‚Ä‚¢‚é‚È‚ç‚Î•Â‚¶‚é
+	//å‡ºåŠ›å…ˆãŒãƒ•ã‚¡ã‚¤ãƒ«ã§ã€ãƒ•ã‚¡ã‚¤ãƒ«ãŒé–‹ã„ã¦ã„ã‚‹ãªã‚‰ã°é–‰ã˜ã‚‹
 	if( MyHandle != INVALID_HANDLE_VALUE )
 	{
 		CloseHandle( MyHandle );
 		MyHandle = INVALID_HANDLE_VALUE;
 	}
-	//ƒR[ƒ‹ƒoƒbƒNŠÖ”‚ªw’è‚³‚ê‚Ä‚¢‚éê‡‚ÍƒNƒŠƒA‚·‚é
+	//ã‚³ãƒ¼ãƒ«ãƒãƒƒã‚¯é–¢æ•°ãŒæŒ‡å®šã•ã‚Œã¦ã„ã‚‹å ´åˆã¯ã‚¯ãƒªã‚¢ã™ã‚‹
 	MyCallback = nullptr;
 
-	//Vİ’è‚ğ“K—p
+	//æ–°è¨­å®šã‚’é©ç”¨
 	if( setting.Mode == LogOutputMode::LOG_OUTPUT_CONSOLE )
 	{
 		;	//no additional operation required
@@ -600,7 +600,7 @@ bool mErrorLogger::ChangeLogOutputMode( LogOutputMode setting )
 
 	mCriticalSectionTicket Ticket( MyCritical );
 
-	//o—Íæ‚ªƒtƒ@ƒCƒ‹‚ÅAƒtƒ@ƒCƒ‹‚ªŠJ‚¢‚Ä‚¢‚é‚È‚ç‚Î•Â‚¶‚é
+	//å‡ºåŠ›å…ˆãŒãƒ•ã‚¡ã‚¤ãƒ«ã§ã€ãƒ•ã‚¡ã‚¤ãƒ«ãŒé–‹ã„ã¦ã„ã‚‹ãªã‚‰ã°é–‰ã˜ã‚‹
 	if( MyHandle != INVALID_HANDLE_VALUE )
 	{
 		CloseHandle( MyHandle );
@@ -609,13 +609,13 @@ bool mErrorLogger::ChangeLogOutputMode( LogOutputMode setting )
 
 	switch( setting )
 	{
-	case LOG_OUTPUT_CONSOLE:	//ƒRƒ}ƒ“ƒhƒ‰ƒCƒ“‚Éo—Í‚·‚é
-	case LOG_OUTPUT_DEBUGGER:	//ƒfƒoƒbƒK‚Éo—Í‚·‚é
-	case LOG_OUTPUT_NONE:		//‰½‚à‚µ‚È‚¢
+	case LOG_OUTPUT_CONSOLE:	//ã‚³ãƒãƒ³ãƒ‰ãƒ©ã‚¤ãƒ³ã«å‡ºåŠ›ã™ã‚‹
+	case LOG_OUTPUT_DEBUGGER:	//ãƒ‡ãƒãƒƒã‚¬ã«å‡ºåŠ›ã™ã‚‹
+	case LOG_OUTPUT_NONE:		//ä½•ã‚‚ã—ãªã„
 		MyLogOutputMode = setting;
 		return true;
 	default:
-		RaiseAssert( g_ErrorLogger , 0 , L"ƒƒO‚ÌƒRƒ“ƒ\[ƒ‹o—Íƒ‚[ƒh‚É•s³’l‚ªw’è‚³‚ê‚Ü‚µ‚½" );
+		RaiseAssert( g_ErrorLogger , 0 , L"ãƒ­ã‚°ã®ã‚³ãƒ³ã‚½ãƒ¼ãƒ«å‡ºåŠ›ãƒ¢ãƒ¼ãƒ‰ã«ä¸æ­£å€¤ãŒæŒ‡å®šã•ã‚Œã¾ã—ãŸ" );
 		break;
 	}
 	return false;
@@ -625,18 +625,18 @@ DWORD RaiseErrorInternalF( mErrorLogger* obj , mErrorLogger::ErrorLevel level , 
 {
 	if( obj == nullptr )
 	{
-		g_ErrorLogger.AddEntry( mErrorLogger::ErrorLevel::LEVEL_ASSERT , file , line , 0 , 0 , L"ƒGƒ‰[“o˜^æƒIƒuƒWƒFƒNƒg‚ªNULL‚Å‚·" , L"" );
+		g_ErrorLogger.AddEntry( mErrorLogger::ErrorLevel::LEVEL_ASSERT , file , line , 0 , 0 , L"ã‚¨ãƒ©ãƒ¼ç™»éŒ²å…ˆã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆãŒNULLã§ã™" , L"" );
 		obj = &g_ErrorLogger;
 	}
 
-	//‰Â•Ï’·ƒŠƒXƒg
+	//å¯å¤‰é•·ãƒªã‚¹ãƒˆ
 	va_list args;
 	va_start( args , mes2 );
 
 	AString str;
 	INT result = sprintf_va( str , mes2.c_str() , args );
 
-	//‰Â•Ï’·ˆø”ƒŠƒZƒbƒg
+	//å¯å¤‰é•·å¼•æ•°ãƒªã‚»ãƒƒãƒˆ
 	va_end( args );
 
 	return obj->AddEntry( level , file , line , ec1 , ec2 , AString2WString( mes1 ) , AString2WString( str ) );
@@ -646,18 +646,18 @@ DWORD RaiseErrorInternalF( mErrorLogger* obj , mErrorLogger::ErrorLevel level , 
 {
 	if( obj == nullptr )
 	{
-		g_ErrorLogger.AddEntry( mErrorLogger::ErrorLevel::LEVEL_ASSERT , file , line , 0 , 0 , L"ƒGƒ‰[“o˜^æƒIƒuƒWƒFƒNƒg‚ªNULL‚Å‚·" , L"" );
+		g_ErrorLogger.AddEntry( mErrorLogger::ErrorLevel::LEVEL_ASSERT , file , line , 0 , 0 , L"ã‚¨ãƒ©ãƒ¼ç™»éŒ²å…ˆã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆãŒNULLã§ã™" , L"" );
 		obj = &g_ErrorLogger;
 	}
 
-	//‰Â•Ï’·ƒŠƒXƒg
+	//å¯å¤‰é•·ãƒªã‚¹ãƒˆ
 	va_list args;
 	va_start( args , mes2 );
 
 	WString str;
 	INT result = sprintf_va( str , mes2.c_str() , args );
 
-	//‰Â•Ï’·ˆø”ƒŠƒZƒbƒg
+	//å¯å¤‰é•·å¼•æ•°ãƒªã‚»ãƒƒãƒˆ
 	va_end( args );
 
 	return obj->AddEntry( level , file , line , ec1 , ec2 , mes1 , str );
@@ -665,14 +665,14 @@ DWORD RaiseErrorInternalF( mErrorLogger* obj , mErrorLogger::ErrorLevel level , 
 
 DWORD RaiseErrorInternalF( mErrorLogger& obj , mErrorLogger::ErrorLevel level , const WString& file , DWORD line , DWORD ec1 , ULONG_PTR ec2 , const AString& mes1 , const AString mes2 , ... )
 {
-	//‰Â•Ï’·ƒŠƒXƒg
+	//å¯å¤‰é•·ãƒªã‚¹ãƒˆ
 	va_list args;
 	va_start( args , mes2 );
 
 	AString str;
 	INT result = sprintf_va( str , mes2.c_str() , args );
 
-	//‰Â•Ï’·ˆø”ƒŠƒZƒbƒg
+	//å¯å¤‰é•·å¼•æ•°ãƒªã‚»ãƒƒãƒˆ
 	va_end( args );
 
 	return obj.AddEntry( level , file , line , ec1 , ec2 , AString2WString( mes1 ) , AString2WString( str ) );
@@ -681,14 +681,14 @@ DWORD RaiseErrorInternalF( mErrorLogger& obj , mErrorLogger::ErrorLevel level , 
 
 DWORD RaiseErrorInternalF( mErrorLogger& obj , mErrorLogger::ErrorLevel level , const WString& file , DWORD line , DWORD ec1 , ULONG_PTR ec2 , const WString& mes1 , const WString mes2 , ... )
 {
-	//‰Â•Ï’·ƒŠƒXƒg
+	//å¯å¤‰é•·ãƒªã‚¹ãƒˆ
 	va_list args;
 	va_start( args , mes2 );
 
 	WString str;
 	INT result = sprintf_va( str , mes2.c_str() , args );
 
-	//‰Â•Ï’·ˆø”ƒŠƒZƒbƒg
+	//å¯å¤‰é•·å¼•æ•°ãƒªã‚»ãƒƒãƒˆ
 	va_end( args );
 
 	return obj.AddEntry( level , file , line , ec1 , ec2 , mes1 , str );

@@ -1,12 +1,12 @@
-//----------------------------------------------------------------------------
-// �T�[�r�X�n���h��
+﻿//----------------------------------------------------------------------------
+// サービスハンドラ
 // Copyright (C) 2016 Fingerling. All rights reserved. 
 // Copyright (C) 2019- Crea Inc. All rights reserved.
 // This program is released under the MIT License. 
 // see http://opensource.org/licenses/mit-license.php
-// ���쌠�\���⃉�C�Z���X�̉��ς͋֎~����Ă��܂��B
-// ���̃\�[�X�R�[�h�Ɋւ��āA��L���C�Z���X�ȊO�̌_�񓙂͈�ؑ��݂��܂���B
-// (���炩�̌_�񂪂���ꍇ�ł��A�{�\�[�X�R�[�h�͂��̑ΏۊO�ƂȂ�܂�)
+// 著作権表示やライセンスの改変は禁止されています。
+// このソースコードに関して、上記ライセンス以外の契約等は一切存在しません。
+// (何らかの契約がある場合でも、本ソースコードはその対象外となります)
 //----------------------------------------------------------------------------
 
 #ifndef MSERVICEHANDLER_H_INCLUDED
@@ -22,9 +22,9 @@ public:
 	mServiceHandler();
 	virtual ~mServiceHandler();
 
-	//�T�[�r�X���J�n����
-	//���T�[�r�X���I������܂Ő����Ԃ��Ȃ�
-	//ret : �T�[�r�X�̋N���Ɏ��s�����false�B�T�[�r�X������I�������ꍇ��true�B
+	//サービスを開始する
+	//※サービスが終了するまで制御を返さない
+	//ret : サービスの起動に失敗するとfalse。サービスが正常終了した場合はtrue。
 	bool Start( void );
 
 private:
@@ -35,7 +35,7 @@ private:
 	SERVICE_STATUS_HANDLE MyStatusHandle;
 	SERVICE_STATUS MyServiceStatus;
 
-	//�ȉ�Windows����Ă΂�郁���o�B���[�U���Ăяo�����Ƃ͂Ȃ��B
+	//以下Windowsから呼ばれるメンバ。ユーザが呼び出すことはない。
 	static mServiceHandler* MyPtr;
 
 	static void __stdcall  ServiceMainProxy( DWORD argc , LPWSTR* argv );
@@ -49,18 +49,18 @@ private:
 
 protected:
 
-	//�T�[�r�X�̏��
+	//サービスの情報
 	struct ServiceInterfaceInfo
 	{
 		WString ServiceName;
-		bool HandleParamChange;				//�T�[�r�X�̃p�����[�^���ύX���ꂽ
-		bool HandleNetBindChange;			//�l�b�g���[�N�ڑ��̕ύX
-		bool HandleHardwareProfileChange;	//�V�X�e���̃n�[�h�E�G�A�v���t�@�C�����ύX���ꂽ
-		bool HandlePowerChange;				//�V�X�e���̓d����Ԃ��ύX���ꂽ
-		bool HandleSessionChange;			//�V�X�e���̃Z�b�V�������ύX���ꂽ
-		bool HandlePreShutdown;				//�V�X�e���̃V���b�g�_�E���O�C�x���g������
-		bool HandleTimeChange;				//�V�X�e���������ύX���ꂽ
-		bool HandleTriggerEvent;			//����ȃC�x���g���󂯎��B�Ȃ��AmServiceControlManager�ɂ����āA���̐ݒ菈���͖������B
+		bool HandleParamChange;				//サービスのパラメータが変更された
+		bool HandleNetBindChange;			//ネットワーク接続の変更
+		bool HandleHardwareProfileChange;	//システムのハードウエアプロファイルが変更された
+		bool HandlePowerChange;				//システムの電源状態が変更された
+		bool HandleSessionChange;			//システムのセッションが変更された
+		bool HandlePreShutdown;				//システムのシャットダウン前イベントが発生
+		bool HandleTimeChange;				//システム時刻が変更された
+		bool HandleTriggerEvent;			//特殊なイベントを受け取る。なお、mServiceControlManagerにおいて、その設定処理は未実装。
 
 		ServiceInterfaceInfo()
 		{
@@ -80,82 +80,82 @@ protected:
 		}
 	};
 
-	//�T�[�r�X�̏���Ԃ��܂�
+	//サービスの情報を返します
 	virtual void QueryInterface( ServiceInterfaceInfo& retInfo ) = 0;
 
-	//���Ԃ������鏈�����s���ꍇ�̐i����
+	//時間がかかる処理を行う場合の進捗報告
 	void SetCheckPoint( DWORD WaitHint );
 
-	//�T�[�r�X�̏��������ɌĂяo���܂�
-	// ret : �G���[�Ȃ��������ł����ꍇ��NO_ERROR( = 0 )��Ԃ��܂�
-	//       �G���[�����������ꍇ�́ANO_ERROR�ȊO�̒l��Ԃ��܂�
+	//サービスの初期化時に呼び出します
+	// ret : エラーなく初期化できた場合はNO_ERROR( = 0 )を返します
+	//       エラーが発生した場合は、NO_ERROR以外の値を返します
 	virtual DWORD OnInitialize( DWORD argc , LPTSTR* argv );
 
-	//�T�[�r�X�̃��C�����[�`��
-	// ret : �G���[�Ȃ��������ł����ꍇ��NO_ERROR( = 0 )��Ԃ��܂�
-	//       �G���[�����������ꍇ�́ANO_ERROR�ȊO�̒l��Ԃ��܂�
+	//サービスのメインルーチン
+	// ret : エラーなく初期化できた場合はNO_ERROR( = 0 )を返します
+	//       エラーが発生した場合は、NO_ERROR以外の値を返します
 	virtual DWORD Main( DWORD argc , LPTSTR* argv ) = 0;
 
-	//�T�[�r�X�̒�~���v�����ꂽ
+	//サービスの停止が要求された
 	virtual void OnStop( void );
 
-	//�T�[�r�X�̈ꎞ��~���v�����ꂽ
+	//サービスの一時停止が要求された
 	virtual void OnPause( void );
 
-	//�ꎞ��~���̃T�[�r�X�ĊJ��v�����ꂽ
+	//一時停止中のサービス再開を要求された
 	virtual void OnContinue( void );
 
-	//�V�X�e�����V���b�g�_�E�����悤�Ƃ��Ă���
+	//システムがシャットダウンしようとしている
 	virtual void OnShutdown( void );
 
-	//�T�[�r�X�̃p�����[�^���ύX���ꂽ
+	//サービスのパラメータが変更された
 	virtual void OnParamChange( void );
 
-	//�V�����l�b�g���[�N�ڑ������o���ꂽ
-	//��Plug&Play�̎g�p������
+	//新しいネットワーク接続が検出された
+	//※Plug&Playの使用が推奨
 	[[deprecated]]
 	virtual void OnNetBindAdd( void );
 
-	//�L���ł������l�b�g���[�N�ڑ��̂��������ꂩ�������ɂȂ���
-	//��Plug&Play�̎g�p������
+	//有効であったネットワーク接続のうちいずれかが無効になった
+	//※Plug&Playの使用が推奨
 	[[deprecated]]
 	virtual void OnNetBindRemove( void );
 
-	//�����ł������l�b�g���[�N�ڑ��̂��������ꂩ���L���ɂȂ���
-	//��Plug&Play�̎g�p������
+	//無効であったネットワーク接続のうちいずれかが有効になった
+	//※Plug&Playの使用が推奨
 	[[deprecated]]
 	virtual void OnNetBindEnable( void );
 
-	//���݂��Ă����l�b�g���[�N�ڑ����폜���ꂽ
-	//��Plug&Play�̎g�p������
+	//存在していたネットワーク接続が削除された
+	//※Plug&Playの使用が推奨
 	[[deprecated]]
 	virtual void OnNetBindDisable( void );
 
-	//�f�o�C�X�C�x���g����������
-	//�����̃C�x���g���擾����ɂ́A���炩����RegisterDeviceNotification()�œo�^���K�v
+	//デバイスイベントが発生した
+	//※このイベントを取得するには、あらかじめRegisterDeviceNotification()で登録が必要
 	virtual DWORD OnDeviceEvent( DWORD type , const void* data);
 
-	//�n�[�h�E�G�A�̃v���t�@�C�����ς����
+	//ハードウエアのプロファイルが変わった
 	virtual DWORD OnHardwareProfileChange( DWORD type );
 
-	//�d����Ԃ̕ύX
+	//電源状態の変更
 	virtual DWORD OnPowerEvent( DWORD type , const POWERBROADCAST_SETTING& data);
 
-	//�Z�b�V�������ύX���ꂽ
+	//セッションが変更された
 	virtual void OnSessionChange( DWORD type , const WTSSESSION_NOTIFICATION& data);
 
-	//�V�X�e���̃V���b�g�_�E���O�C�x���g������
-	//�����̃C�x���g���n���h�����邱�ƂŁA�T�[�r�X�I���܂ŃV���b�g�_�E�����u���b�N�ł���
+	//システムのシャットダウン前イベントが発生
+	//※このイベントをハンドルすることで、サービス終了までシャットダウンをブロックできる
 	virtual void OnPreShutdown( void );
 
-	//�����ύX
+	//時刻変更
 	virtual void OnTimeChange( const  SERVICE_TIMECHANGE_INFO& data );
 
-	//"Service Trigger Events"������
-	//�����̃C�x���g���擾����ɂ́A���炩����ChangeServiceConfig2()�œo�^���K�v
+	//"Service Trigger Events"が発生
+	//※このイベントを取得するには、あらかじめChangeServiceConfig2()で登録が必要
 	virtual void OnTriggerEvent( void );
 
-	//���[�U�[��`
+	//ユーザー定義
 	virtual DWORD OnUserControlCode( DWORD control , DWORD param1 , void* param2 );
 
 

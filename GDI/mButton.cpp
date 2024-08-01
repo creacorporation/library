@@ -1,5 +1,5 @@
-//----------------------------------------------------------------------------
-// ƒEƒCƒ“ƒhƒEŠÇ—iƒ{ƒ^ƒ“j
+ï»¿//----------------------------------------------------------------------------
+// ã‚¦ã‚¤ãƒ³ãƒ‰ã‚¦ç®¡ç†ï¼ˆãƒœã‚¿ãƒ³ï¼‰
 // Copyright (C) 2016 Fingerling. All rights reserved. 
 // This program is released under the MIT License. 
 // see http://opensource.org/licenses/mit-license.php
@@ -16,35 +16,35 @@ mButton::~mButton()
 {
 }
 
-//ƒEƒCƒ“ƒhƒEƒNƒ‰ƒX‚Ì“o˜^‚ğ‚·‚é
+//ã‚¦ã‚¤ãƒ³ãƒ‰ã‚¦ã‚¯ãƒ©ã‚¹ã®ç™»éŒ²ã‚’ã™ã‚‹
 bool mButton::WindowClassSettingCallback( WindowClassSetting& retSetting , const void* opt )
 {
-	return false;	//V‚½‚ÈƒEƒCƒ“ƒhƒEƒNƒ‰ƒX‚Ì“o˜^‚Í‚µ‚È‚¢
+	return false;	//æ–°ãŸãªã‚¦ã‚¤ãƒ³ãƒ‰ã‚¦ã‚¯ãƒ©ã‚¹ã®ç™»éŒ²ã¯ã—ãªã„
 }
 
-//ƒEƒCƒ“ƒhƒE‚ğŠJ‚­
+//ã‚¦ã‚¤ãƒ³ãƒ‰ã‚¦ã‚’é–‹ã
 bool mButton::CreateWindowCallback( CreateWindowSetting& retSetting , const void* opt )
 {
 	retSetting.ClassName = L"BUTTON";
-	//ƒIƒvƒVƒ‡ƒ“w’è‚ª‚È‚¢ê‡‚Í‚»‚Ì‚Ü‚Ü–ß‚é
+	//ã‚ªãƒ—ã‚·ãƒ§ãƒ³æŒ‡å®šãŒãªã„å ´åˆã¯ãã®ã¾ã¾æˆ»ã‚‹
 	if( opt == nullptr )
 	{
 		return true;
 	}
 
-	//ƒIƒvƒVƒ‡ƒ“‚Ìw’è‚ª‚ ‚ê‚ÎA‚»‚Ìí—Ş‚É‚æ‚è¶¬•û–@‚ğ•ªŠò
+	//ã‚ªãƒ—ã‚·ãƒ§ãƒ³ã®æŒ‡å®šãŒã‚ã‚Œã°ã€ãã®ç¨®é¡ã«ã‚ˆã‚Šç”Ÿæˆæ–¹æ³•ã‚’åˆ†å²
 	if( ( (const Option*)( opt ) )->method == Option::CreateMethod::USEOPTION )
 	{
 		const mButton::Option_UseOption* op = ( const mButton::Option_UseOption* )opt;
 
-		//ƒEƒCƒ“ƒhƒE‚ÌƒLƒƒƒvƒVƒ‡ƒ“
+		//ã‚¦ã‚¤ãƒ³ãƒ‰ã‚¦ã®ã‚­ãƒ£ãƒ—ã‚·ãƒ§ãƒ³
 		retSetting.WindowName = op->Caption;
-		//—LŒøE–³Œø
+		//æœ‰åŠ¹ãƒ»ç„¡åŠ¹
 		if( !op->Enable )
 		{
 			retSetting.Style |= WS_DISABLED;
 		}
-		//ˆÊ’u‚ÆƒTƒCƒY
+		//ä½ç½®ã¨ã‚µã‚¤ã‚º
 		SetWindowPosition( op->Pos );
 	}
 	return true;

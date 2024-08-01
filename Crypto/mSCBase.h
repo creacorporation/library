@@ -1,11 +1,11 @@
-//----------------------------------------------------------------------------
-// ƒXƒ}[ƒgƒJ[ƒhƒnƒ“ƒhƒ‰ƒx[ƒX
+ï»¿//----------------------------------------------------------------------------
+// ã‚¹ãƒžãƒ¼ãƒˆã‚«ãƒ¼ãƒ‰ãƒãƒ³ãƒ‰ãƒ©ãƒ™ãƒ¼ã‚¹
 // Copyright (C) 2021- Crea Inc. All rights reserved.
 // This program is released under the MIT License. 
 // see http://opensource.org/licenses/mit-license.php
-// ’˜ìŒ •\Ž¦‚âƒ‰ƒCƒZƒ“ƒX‚Ì‰ü•Ï‚Í‹ÖŽ~‚³‚ê‚Ä‚¢‚Ü‚·B
-// ‚±‚Ìƒ\[ƒXƒR[ƒh‚ÉŠÖ‚µ‚ÄAã‹Lƒ‰ƒCƒZƒ“ƒXˆÈŠO‚ÌŒ_–ñ“™‚ÍˆêØ‘¶Ý‚µ‚Ü‚¹‚ñB
-// (‰½‚ç‚©‚ÌŒ_–ñ‚ª‚ ‚éê‡‚Å‚àA–{ƒ\[ƒXƒR[ƒh‚Í‚»‚Ì‘ÎÛŠO‚Æ‚È‚è‚Ü‚·)
+// è‘—ä½œæ¨©è¡¨ç¤ºã‚„ãƒ©ã‚¤ã‚»ãƒ³ã‚¹ã®æ”¹å¤‰ã¯ç¦æ­¢ã•ã‚Œã¦ã„ã¾ã™ã€‚
+// ã“ã®ã‚½ãƒ¼ã‚¹ã‚³ãƒ¼ãƒ‰ã«é–¢ã—ã¦ã€ä¸Šè¨˜ãƒ©ã‚¤ã‚»ãƒ³ã‚¹ä»¥å¤–ã®å¥‘ç´„ç­‰ã¯ä¸€åˆ‡å­˜åœ¨ã—ã¾ã›ã‚“ã€‚
+// (ä½•ã‚‰ã‹ã®å¥‘ç´„ãŒã‚ã‚‹å ´åˆã§ã‚‚ã€æœ¬ã‚½ãƒ¼ã‚¹ã‚³ãƒ¼ãƒ‰ã¯ãã®å¯¾è±¡å¤–ã¨ãªã‚Šã¾ã™)
 //----------------------------------------------------------------------------
 
 #ifndef MSCBASE_H_INCLUDED
@@ -21,12 +21,12 @@
 
 namespace Definitions_SCBase
 {
-	//ƒJ[ƒhƒŠ[ƒ_[‚Ìƒ[ƒJ[
+	//ã‚«ãƒ¼ãƒ‰ãƒªãƒ¼ãƒ€ãƒ¼ã®ãƒ¡ãƒ¼ã‚«ãƒ¼
 	enum ReaderMaker
 	{
-		READER_MAKER_GENERAL,	//•s–¾i‰Šú‰»Žž‚ÉŽw’è‚·‚é‚ÆƒŠ[ƒ_[–¼‚©‚ç„’èj
-		READER_MAKER_ACS,		//Advanced Card Systems(ACS12xx“™)
-		READER_MAKER_SONY,		//ƒ\ƒj[(PaSoRi“™)
+		READER_MAKER_GENERAL,	//ä¸æ˜Žï¼ˆåˆæœŸåŒ–æ™‚ã«æŒ‡å®šã™ã‚‹ã¨ãƒªãƒ¼ãƒ€ãƒ¼åã‹ã‚‰æŽ¨å®šï¼‰
+		READER_MAKER_ACS,		//Advanced Card Systems(ACS12xxç­‰)
+		READER_MAKER_SONY,		//ã‚½ãƒ‹ãƒ¼(PaSoRiç­‰)
 	};
 };
 
@@ -38,13 +38,13 @@ public:
 
 	using ReaderMaker = Definitions_SCBase::ReaderMaker;
 
-	//ƒXƒ}[ƒgƒJ[ƒh‚ÉÚ‘±‚·‚é
-	// reader : Ú‘±æ‚ÌƒXƒ}[ƒgƒJ[ƒh‚ª‚Â‚È‚ª‚Á‚Ä‚¢‚éƒŠ[ƒ_[‚Ì–¼‘O
-	// maker : ƒXƒ}[ƒgƒJ[ƒhƒŠ[ƒ_[‚Ìƒ[ƒJ[
-	// ret : ¬Œ÷Žž^
+	//ã‚¹ãƒžãƒ¼ãƒˆã‚«ãƒ¼ãƒ‰ã«æŽ¥ç¶šã™ã‚‹
+	// reader : æŽ¥ç¶šå…ˆã®ã‚¹ãƒžãƒ¼ãƒˆã‚«ãƒ¼ãƒ‰ãŒã¤ãªãŒã£ã¦ã„ã‚‹ãƒªãƒ¼ãƒ€ãƒ¼ã®åå‰
+	// maker : ã‚¹ãƒžãƒ¼ãƒˆã‚«ãƒ¼ãƒ‰ãƒªãƒ¼ãƒ€ãƒ¼ã®ãƒ¡ãƒ¼ã‚«ãƒ¼
+	// ret : æˆåŠŸæ™‚çœŸ
 	bool Connect( const WString& reader , ReaderMaker maker = ReaderMaker::READER_MAKER_GENERAL );
 
-	//ƒJ[ƒh‚ÌID‚ðŽæ“¾‚·‚é
+	//ã‚«ãƒ¼ãƒ‰ã®IDã‚’å–å¾—ã™ã‚‹
 	const mBinary& GetCardId( void )const;
 
 private:
@@ -52,42 +52,42 @@ private:
 	mSCBase( const mSCBase& source );
 	const mSCBase& operator=( const mSCBase& source ) = delete;
 
-	//ƒXƒ}[ƒgƒJ[ƒhƒTƒuƒVƒXƒeƒ€‚Ìƒnƒ“ƒhƒ‹
+	//ã‚¹ãƒžãƒ¼ãƒˆã‚«ãƒ¼ãƒ‰ã‚µãƒ–ã‚·ã‚¹ãƒ†ãƒ ã®ãƒãƒ³ãƒ‰ãƒ«
 	SCARDCONTEXT MySCardContext;
 
-	//ƒXƒ}[ƒgƒJ[ƒh‚Ìƒnƒ“ƒhƒ‹
+	//ã‚¹ãƒžãƒ¼ãƒˆã‚«ãƒ¼ãƒ‰ã®ãƒãƒ³ãƒ‰ãƒ«
 	SCARDHANDLE MySCard;
 
-	//ƒXƒ}[ƒgƒJ[ƒh‚Æ‚Ì’ÊMƒvƒƒgƒRƒ‹
+	//ã‚¹ãƒžãƒ¼ãƒˆã‚«ãƒ¼ãƒ‰ã¨ã®é€šä¿¡ãƒ—ãƒ­ãƒˆã‚³ãƒ«
 	enum Protocol
 	{
-		T0,	//T=0ƒvƒƒgƒRƒ‹
-		T1,	//T=1ƒvƒƒgƒRƒ‹
+		T0,	//T=0ãƒ—ãƒ­ãƒˆã‚³ãƒ«
+		T1,	//T=1ãƒ—ãƒ­ãƒˆã‚³ãƒ«
 		Unknwon
 	};
 
-	//ƒAƒNƒeƒBƒu‚ÈƒvƒƒgƒRƒ‹
+	//ã‚¢ã‚¯ãƒ†ã‚£ãƒ–ãªãƒ—ãƒ­ãƒˆã‚³ãƒ«
 	Protocol MyActiveProtocol;
 
-	//ƒJ[ƒhƒŠ[ƒ_[‚Ìƒ[ƒJ[
+	//ã‚«ãƒ¼ãƒ‰ãƒªãƒ¼ãƒ€ãƒ¼ã®ãƒ¡ãƒ¼ã‚«ãƒ¼
 	ReaderMaker MyReaderMaker;
 
 protected:
 
-	//ƒJ[ƒhID
+	//ã‚«ãƒ¼ãƒ‰ID
 	mBinary MyCardID;
 
-	//Ú‘±Žž‚ÌƒJ[ƒhŒÂ•Ê‚Ìˆ—
-	// ret : ˆ—¬Œ÷Žž^
+	//æŽ¥ç¶šæ™‚ã®ã‚«ãƒ¼ãƒ‰å€‹åˆ¥ã®å‡¦ç†
+	// ret : å‡¦ç†æˆåŠŸæ™‚çœŸ
 	virtual bool OnConnectCallback( void );
 
 	struct TransmitData
 	{
-		uint8_t cla;	//ƒCƒ“ƒXƒgƒ‰ƒNƒVƒ‡ƒ“ƒNƒ‰ƒX
-		uint8_t ins;	//ƒCƒ“ƒXƒgƒ‰ƒNƒVƒ‡ƒ“ƒR[ƒh
-		uint8_t p1;		//ƒpƒ‰ƒ[ƒ^‚P
-		uint8_t p2;		//ƒpƒ‰ƒ[ƒ^‚Q
-		mBinary data;	//’Ç‰Á‘—Mƒf[ƒ^iƒCƒ“ƒXƒgƒ‰ƒNƒVƒ‡ƒ“‚É‚æ‚è•K—vj
+		uint8_t cla;	//ã‚¤ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚·ãƒ§ãƒ³ã‚¯ãƒ©ã‚¹
+		uint8_t ins;	//ã‚¤ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚·ãƒ§ãƒ³ã‚³ãƒ¼ãƒ‰
+		uint8_t p1;		//ãƒ‘ãƒ©ãƒ¡ãƒ¼ã‚¿ï¼‘
+		uint8_t p2;		//ãƒ‘ãƒ©ãƒ¡ãƒ¼ã‚¿ï¼’
+		mBinary data;	//è¿½åŠ é€ä¿¡ãƒ‡ãƒ¼ã‚¿ï¼ˆã‚¤ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚·ãƒ§ãƒ³ã«ã‚ˆã‚Šå¿…è¦ï¼‰
 		TransmitData()
 		{
 			cla = 0xFFu;
@@ -119,11 +119,11 @@ protected:
 
 	struct TransmitDataLen
 	{
-		uint8_t cla;	//ƒCƒ“ƒXƒgƒ‰ƒNƒVƒ‡ƒ“ƒNƒ‰ƒX
-		uint8_t ins;	//ƒCƒ“ƒXƒgƒ‰ƒNƒVƒ‡ƒ“ƒR[ƒh
-		uint8_t p1;		//ƒpƒ‰ƒ[ƒ^‚P
-		uint8_t p2;		//ƒpƒ‰ƒ[ƒ^‚Q
-		uint8_t len;	//ƒf[ƒ^’·
+		uint8_t cla;	//ã‚¤ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚·ãƒ§ãƒ³ã‚¯ãƒ©ã‚¹
+		uint8_t ins;	//ã‚¤ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚·ãƒ§ãƒ³ã‚³ãƒ¼ãƒ‰
+		uint8_t p1;		//ãƒ‘ãƒ©ãƒ¡ãƒ¼ã‚¿ï¼‘
+		uint8_t p2;		//ãƒ‘ãƒ©ãƒ¡ãƒ¼ã‚¿ï¼’
+		uint8_t len;	//ãƒ‡ãƒ¼ã‚¿é•·
 		TransmitDataLen()
 		{
 			cla = 0xFFu;
@@ -136,44 +136,44 @@ protected:
 
 	struct ResponseData
 	{
-		mBinary data;	//‰ž“šƒf[ƒ^
+		mBinary data;	//å¿œç­”ãƒ‡ãƒ¼ã‚¿
 	};
 
-	//ƒXƒ}[ƒgƒJ[ƒh‚Æ’ÊM‚ðs‚¤
-	// dt : ‘—M‚·‚éƒf[ƒ^
-	// retResponse : ŽóM‚µ‚½ƒf[ƒ^
-	// ret : ˆ—‚ª¬Œ÷‚µ‚½ê‡^
-	//       ŠÖ”‚Ì•Ô’l‚Í‚ ‚­‚Ü‚ÅWinAPI‚ª¬Œ÷‚µ‚½‚©‚Ç‚¤‚©‚Å‚ ‚èAƒXƒ}[ƒgƒJ[ƒh‘¤‚Åˆ—‚ª¬Œ÷‚µ‚½‚©‚ÍƒŒƒXƒ|ƒ“ƒX‚Å”»’f‚·‚éB
+	//ã‚¹ãƒžãƒ¼ãƒˆã‚«ãƒ¼ãƒ‰ã¨é€šä¿¡ã‚’è¡Œã†
+	// dt : é€ä¿¡ã™ã‚‹ãƒ‡ãƒ¼ã‚¿
+	// retResponse : å—ä¿¡ã—ãŸãƒ‡ãƒ¼ã‚¿
+	// ret : å‡¦ç†ãŒæˆåŠŸã—ãŸå ´åˆçœŸ
+	//       é–¢æ•°ã®è¿”å€¤ã¯ã‚ãã¾ã§WinAPIãŒæˆåŠŸã—ãŸã‹ã©ã†ã‹ã§ã‚ã‚Šã€ã‚¹ãƒžãƒ¼ãƒˆã‚«ãƒ¼ãƒ‰å´ã§å‡¦ç†ãŒæˆåŠŸã—ãŸã‹ã¯ãƒ¬ã‚¹ãƒãƒ³ã‚¹ã§åˆ¤æ–­ã™ã‚‹ã€‚
 	bool Communicate( const TransmitData& dt , ResponseData& retResponse )const;
 
-	//ƒXƒ}[ƒgƒJ[ƒh‚Æ’ÊM‚ðs‚¤
-	//¦’Ç‰Á‘—Mƒf[ƒ^‚Í‚È‚¢‚ªAƒf[ƒ^’·‚ÉˆÓ–¡‚ª‚ ‚éê‡‚ÉŽg—p‚·‚é
-	// dt : ‘—M‚·‚éƒf[ƒ^
-	// retResponse : ŽóM‚µ‚½ƒf[ƒ^
-	// ret : ˆ—‚ª¬Œ÷‚µ‚½ê‡^
-	//       ŠÖ”‚Ì•Ô’l‚Í‚ ‚­‚Ü‚ÅWinAPI‚ª¬Œ÷‚µ‚½‚©‚Ç‚¤‚©‚Å‚ ‚èAƒXƒ}[ƒgƒJ[ƒh‘¤‚Åˆ—‚ª¬Œ÷‚µ‚½‚©‚ÍƒŒƒXƒ|ƒ“ƒX‚Å”»’f‚·‚éB
+	//ã‚¹ãƒžãƒ¼ãƒˆã‚«ãƒ¼ãƒ‰ã¨é€šä¿¡ã‚’è¡Œã†
+	//â€»è¿½åŠ é€ä¿¡ãƒ‡ãƒ¼ã‚¿ã¯ãªã„ãŒã€ãƒ‡ãƒ¼ã‚¿é•·ã«æ„å‘³ãŒã‚ã‚‹å ´åˆã«ä½¿ç”¨ã™ã‚‹
+	// dt : é€ä¿¡ã™ã‚‹ãƒ‡ãƒ¼ã‚¿
+	// retResponse : å—ä¿¡ã—ãŸãƒ‡ãƒ¼ã‚¿
+	// ret : å‡¦ç†ãŒæˆåŠŸã—ãŸå ´åˆçœŸ
+	//       é–¢æ•°ã®è¿”å€¤ã¯ã‚ãã¾ã§WinAPIãŒæˆåŠŸã—ãŸã‹ã©ã†ã‹ã§ã‚ã‚Šã€ã‚¹ãƒžãƒ¼ãƒˆã‚«ãƒ¼ãƒ‰å´ã§å‡¦ç†ãŒæˆåŠŸã—ãŸã‹ã¯ãƒ¬ã‚¹ãƒãƒ³ã‚¹ã§åˆ¤æ–­ã™ã‚‹ã€‚
 	bool Communicate( const TransmitDataLen& dt , ResponseData& retResponse )const;
 
-	//ƒXƒ}[ƒgƒJ[ƒhƒŠ[ƒ_[‚Æ’ÊM‚ðs‚¤
-	// controlcode : ƒRƒ“ƒgƒ[ƒ‹ƒR[ƒh
-	// senddata : ‘—M‚·‚éƒf[ƒ^
-	// retResponse : ŽóM‚µ‚½ƒf[ƒ^(•s—v‚È‚çnull‰Â)
-	// ret : ˆ—‚ª¬Œ÷‚µ‚½ê‡^
-	//       ŠÖ”‚Ì•Ô’l‚Í‚ ‚­‚Ü‚ÅWinAPI‚ª¬Œ÷‚µ‚½‚©‚Ç‚¤‚©‚Å‚ ‚èAƒXƒ}[ƒgƒJ[ƒhƒŠ[ƒ_[‘¤‚Åˆ—‚ª¬Œ÷‚µ‚½‚©‚ÍƒŒƒXƒ|ƒ“ƒX‚Å”»’f‚·‚éB
+	//ã‚¹ãƒžãƒ¼ãƒˆã‚«ãƒ¼ãƒ‰ãƒªãƒ¼ãƒ€ãƒ¼ã¨é€šä¿¡ã‚’è¡Œã†
+	// controlcode : ã‚³ãƒ³ãƒˆãƒ­ãƒ¼ãƒ«ã‚³ãƒ¼ãƒ‰
+	// senddata : é€ä¿¡ã™ã‚‹ãƒ‡ãƒ¼ã‚¿
+	// retResponse : å—ä¿¡ã—ãŸãƒ‡ãƒ¼ã‚¿(ä¸è¦ãªã‚‰nullå¯)
+	// ret : å‡¦ç†ãŒæˆåŠŸã—ãŸå ´åˆçœŸ
+	//       é–¢æ•°ã®è¿”å€¤ã¯ã‚ãã¾ã§WinAPIãŒæˆåŠŸã—ãŸã‹ã©ã†ã‹ã§ã‚ã‚Šã€ã‚¹ãƒžãƒ¼ãƒˆã‚«ãƒ¼ãƒ‰ãƒªãƒ¼ãƒ€ãƒ¼å´ã§å‡¦ç†ãŒæˆåŠŸã—ãŸã‹ã¯ãƒ¬ã‚¹ãƒãƒ³ã‚¹ã§åˆ¤æ–­ã™ã‚‹ã€‚
 	bool Control( DWORD controlcode , const mBinary& senddata , mBinary* retResponse = nullptr )const;
 
-	//ƒXƒ}[ƒgƒJ[ƒhƒŠ[ƒ_[‚Ìƒ[ƒJ[‚ðŽæ“¾‚·‚é
-	// ret : Žæ“¾‚µ‚½ƒ[ƒJ[
-	//‰Šú‰»Žž‚Éƒ†[ƒU[‚ªŽw’è‚µ‚½‚©AƒŠ[ƒ_[–¼‚©‚ç„’è‚µ‚½ƒ[ƒJ[‚ª•Ô‚è‚Ü‚·
-	//•s–¾‚Èê‡‚ÍREADER_MAKER_GENERAL‚ª•Ô‚é‚±‚Æ‚ª‚ ‚è‚Ü‚·
+	//ã‚¹ãƒžãƒ¼ãƒˆã‚«ãƒ¼ãƒ‰ãƒªãƒ¼ãƒ€ãƒ¼ã®ãƒ¡ãƒ¼ã‚«ãƒ¼ã‚’å–å¾—ã™ã‚‹
+	// ret : å–å¾—ã—ãŸãƒ¡ãƒ¼ã‚«ãƒ¼
+	//åˆæœŸåŒ–æ™‚ã«ãƒ¦ãƒ¼ã‚¶ãƒ¼ãŒæŒ‡å®šã—ãŸã‹ã€ãƒªãƒ¼ãƒ€ãƒ¼åã‹ã‚‰æŽ¨å®šã—ãŸãƒ¡ãƒ¼ã‚«ãƒ¼ãŒè¿”ã‚Šã¾ã™
+	//ä¸æ˜Žãªå ´åˆã¯READER_MAKER_GENERALãŒè¿”ã‚‹ã“ã¨ãŒã‚ã‚Šã¾ã™
 	ReaderMaker QueryMaker( void )const;
 
-	//ƒXƒ}[ƒgƒJ[ƒhƒŠ[ƒ_[‚ÌŽí—Þ‚É‘Î‰ž‚µ‚½’¼Ú’ÊMƒRƒ}ƒ“ƒh‚ðÝ’è‚·‚é
-	// retPacket : ƒRƒ}ƒ“ƒh‚ÌÝ’èæ
+	//ã‚¹ãƒžãƒ¼ãƒˆã‚«ãƒ¼ãƒ‰ãƒªãƒ¼ãƒ€ãƒ¼ã®ç¨®é¡žã«å¯¾å¿œã—ãŸç›´æŽ¥é€šä¿¡ã‚³ãƒžãƒ³ãƒ‰ã‚’è¨­å®šã™ã‚‹
+	// retPacket : ã‚³ãƒžãƒ³ãƒ‰ã®è¨­å®šå…ˆ
 	void SetDirectCommand( TransmitData& retPacket ) const;
 
-	//ƒXƒ}[ƒgƒJ[ƒhƒŠ[ƒ_[‚ÌŽí—Þ‚É‘Î‰ž‚µ‚½’¼Ú’ÊMƒRƒ}ƒ“ƒh‚ðÝ’è‚·‚é
-	// retPacket : ƒRƒ}ƒ“ƒh‚ÌÝ’èæ
+	//ã‚¹ãƒžãƒ¼ãƒˆã‚«ãƒ¼ãƒ‰ãƒªãƒ¼ãƒ€ãƒ¼ã®ç¨®é¡žã«å¯¾å¿œã—ãŸç›´æŽ¥é€šä¿¡ã‚³ãƒžãƒ³ãƒ‰ã‚’è¨­å®šã™ã‚‹
+	// retPacket : ã‚³ãƒžãƒ³ãƒ‰ã®è¨­å®šå…ˆ
 	void SetDirectCommand( TransmitDataLen& retPacket ) const;
 
 };

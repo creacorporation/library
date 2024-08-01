@@ -1,17 +1,17 @@
-//----------------------------------------------------------------------------
-// —áŠOƒNƒ‰ƒX
+ï»¿//----------------------------------------------------------------------------
+// ä¾‹å¤–ã‚¯ãƒ©ã‚¹
 // Copyright (C) 2016 Fingerling. All rights reserved. 
 // This program is released under the MIT License. 
 // see http://opensource.org/licenses/mit-license.php
 //----------------------------------------------------------------------------
 
 /*
-œ—p“r
-—áŠO”­¶Žž‚É“Š‚°‚éƒIƒuƒWƒFƒNƒg‚Ì’è‹`‚Å‚·B
-EXCEPTIONƒ}ƒNƒ‚ðŽg—p‚µ‚Ä“Š‚°‚é‚Ì‚ª‚¨‚·‚·‚ß‚Å‚·B
+â—ç”¨é€”
+ä¾‹å¤–ç™ºç”Ÿæ™‚ã«æŠ•ã’ã‚‹ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã®å®šç¾©ã§ã™ã€‚
+EXCEPTIONãƒžã‚¯ãƒ­ã‚’ä½¿ç”¨ã—ã¦æŠ•ã’ã‚‹ã®ãŒãŠã™ã™ã‚ã§ã™ã€‚
 
-—áF
-	throw EXCEPTION( 0x80007AFF , L"ƒGƒ‰[‚Å‚·" );
+ä¾‹ï¼š
+	throw EXCEPTION( 0x80007AFF , L"ã‚¨ãƒ©ãƒ¼ã§ã™" );
 */
 
 #ifndef MEXCEPTION_H_INCLUDED
@@ -31,7 +31,7 @@ public:
 
 	DWORD GetErrorCode( void )const noexcept;
 protected:
-	//—áŠOƒGƒ‰[”­¶Žž‚ÌƒGƒ‰[ƒR[ƒh(GetLastError‚Ì’l)
+	//ä¾‹å¤–ã‚¨ãƒ©ãƒ¼ç™ºç”Ÿæ™‚ã®ã‚¨ãƒ©ãƒ¼ã‚³ãƒ¼ãƒ‰(GetLastErrorã®å€¤)
 	DWORD MyLastError;
 };
 
@@ -39,24 +39,24 @@ class mException : public mExceptionBase
 {
 public:
 
-	//—áŠOƒIƒuƒWƒFƒNƒg‚ð¶¬‚µ‚Ü‚·
-	//path : —áŠO‚ð”­¶‚µ‚½ƒtƒ@ƒCƒ‹–¼
-	//line : —áŠO‚ð”­¶‚µ‚½s”
-	//code : —áŠO”­¶Žž‚ÌƒGƒ‰[ƒR[ƒh
-	//explain : —áŠO‚É‘Î‚·‚éà–¾
-	//¦Ž©“®“I‚É—áŠO‚Ì”­¶‚ðƒƒO‚É‹L˜^‚µ‚Ü‚·
+	//ä¾‹å¤–ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã‚’ç”Ÿæˆã—ã¾ã™
+	//path : ä¾‹å¤–ã‚’ç™ºç”Ÿã—ãŸãƒ•ã‚¡ã‚¤ãƒ«å
+	//line : ä¾‹å¤–ã‚’ç™ºç”Ÿã—ãŸè¡Œæ•°
+	//code : ä¾‹å¤–ç™ºç”Ÿæ™‚ã®ã‚¨ãƒ©ãƒ¼ã‚³ãƒ¼ãƒ‰
+	//explain : ä¾‹å¤–ã«å¯¾ã™ã‚‹èª¬æ˜Ž
+	//â€»è‡ªå‹•çš„ã«ä¾‹å¤–ã®ç™ºç”Ÿã‚’ãƒ­ã‚°ã«è¨˜éŒ²ã—ã¾ã™
 	mException( const WString& path , DWORD line , ULONG_PTR code , const WString& explain1 , const WString& explain2 = L"" )noexcept;
 
-	//—áŠOƒIƒuƒWƒFƒNƒg‚ð¶¬‚µ‚Ü‚·
-	//path : —áŠO‚ð”­¶‚µ‚½ƒtƒ@ƒCƒ‹–¼
-	//line : —áŠO‚ð”­¶‚µ‚½s”
-	//code : —áŠO”­¶Žž‚ÌƒGƒ‰[ƒR[ƒh
-	//explain : —áŠO‚É‘Î‚·‚éà–¾
-	//¦Ž©“®“I‚É—áŠO‚Ì”­¶‚ðƒƒO‚É‹L˜^‚µ‚Ü‚·
+	//ä¾‹å¤–ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã‚’ç”Ÿæˆã—ã¾ã™
+	//path : ä¾‹å¤–ã‚’ç™ºç”Ÿã—ãŸãƒ•ã‚¡ã‚¤ãƒ«å
+	//line : ä¾‹å¤–ã‚’ç™ºç”Ÿã—ãŸè¡Œæ•°
+	//code : ä¾‹å¤–ç™ºç”Ÿæ™‚ã®ã‚¨ãƒ©ãƒ¼ã‚³ãƒ¼ãƒ‰
+	//explain : ä¾‹å¤–ã«å¯¾ã™ã‚‹èª¬æ˜Ž
+	//â€»è‡ªå‹•çš„ã«ä¾‹å¤–ã®ç™ºç”Ÿã‚’ãƒ­ã‚°ã«è¨˜éŒ²ã—ã¾ã™
 	mException( const WString& path , DWORD line , ULONG_PTR code , const WString& explain1 , DWORD_PTR val )noexcept;
 
-	//‹ó‚Ì—áŠOƒIƒuƒWƒFƒNƒg‚ð¶¬‚µ‚Ü‚·
-	//¦Ž©“®“I‚É—áŠO‚Ì”­¶‚ðƒƒO‚É‹L˜^‚µ‚Ü‚¹‚ñ
+	//ç©ºã®ä¾‹å¤–ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã‚’ç”Ÿæˆã—ã¾ã™
+	//â€»è‡ªå‹•çš„ã«ä¾‹å¤–ã®ç™ºç”Ÿã‚’ãƒ­ã‚°ã«è¨˜éŒ²ã—ã¾ã›ã‚“
 	mException() noexcept;
 
 	virtual ~mException()noexcept;
@@ -65,48 +65,48 @@ public:
 
 public:
 
-	//—áŠO‚ð”­¶‚µ‚½ƒtƒ@ƒCƒ‹–¼‚ðŽæ“¾‚µ‚Ü‚·
-	//ret : —áŠO”­¶Žž‚Ìƒtƒ@ƒCƒ‹–¼
+	//ä¾‹å¤–ã‚’ç™ºç”Ÿã—ãŸãƒ•ã‚¡ã‚¤ãƒ«åã‚’å–å¾—ã—ã¾ã™
+	//ret : ä¾‹å¤–ç™ºç”Ÿæ™‚ã®ãƒ•ã‚¡ã‚¤ãƒ«å
 	WString GetPath( void )const noexcept;
 
-	//—áŠO‚ð”­¶‚µ‚½ƒR[ƒhs‚ð“¾‚Ü‚·
-	//ret : —áŠO”­¶Žž‚ÌƒR[ƒhs
+	//ä¾‹å¤–ã‚’ç™ºç”Ÿã—ãŸã‚³ãƒ¼ãƒ‰è¡Œã‚’å¾—ã¾ã™
+	//ret : ä¾‹å¤–ç™ºç”Ÿæ™‚ã®ã‚³ãƒ¼ãƒ‰è¡Œ
 	DWORD GetLine( void )const noexcept;
 
-	//—áŠO‚ð”­¶‚µ‚½ƒGƒ‰[ƒR[ƒh‚ð“¾‚Ü‚·
-	//ret : —áŠO”­¶Žž‚ÌƒGƒ‰[ƒR[ƒh
+	//ä¾‹å¤–ã‚’ç™ºç”Ÿã—ãŸã‚¨ãƒ©ãƒ¼ã‚³ãƒ¼ãƒ‰ã‚’å¾—ã¾ã™
+	//ret : ä¾‹å¤–ç™ºç”Ÿæ™‚ã®ã‚¨ãƒ©ãƒ¼ã‚³ãƒ¼ãƒ‰
 	ULONG_PTR GetCode( void )const noexcept;
 
-	//—áŠO‚É‘Î‚·‚éà–¾‚ð“¾‚Ü‚·
-	//ret : —áŠO”­¶Žž‚Ìà–¾•¶
+	//ä¾‹å¤–ã«å¯¾ã™ã‚‹èª¬æ˜Žã‚’å¾—ã¾ã™
+	//ret : ä¾‹å¤–ç™ºç”Ÿæ™‚ã®èª¬æ˜Žæ–‡
 	WString GetExplain( void )const noexcept;
 
-	//—áŠO‚É‘Î‚·‚éŠg’£à–¾‚ð“¾‚Ü‚·
-	//ret : —áŠO”­¶Žž‚Ìà–¾•¶
+	//ä¾‹å¤–ã«å¯¾ã™ã‚‹æ‹¡å¼µèª¬æ˜Žã‚’å¾—ã¾ã™
+	//ret : ä¾‹å¤–ç™ºç”Ÿæ™‚ã®èª¬æ˜Žæ–‡
 	WString GetExplainOption( void )const noexcept;
 
 protected:
 
-	//—áŠO”­¶Žž‚Ìƒtƒ@ƒCƒ‹–¼
+	//ä¾‹å¤–ç™ºç”Ÿæ™‚ã®ãƒ•ã‚¡ã‚¤ãƒ«å
 	WString MyPath;
-	//—áŠO”­¶Žž‚ÌƒR[ƒhs
+	//ä¾‹å¤–ç™ºç”Ÿæ™‚ã®ã‚³ãƒ¼ãƒ‰è¡Œ
 	DWORD MyLine;
-	//—áŠO”­¶Žž‚ÌƒGƒ‰[ƒR[ƒh
+	//ä¾‹å¤–ç™ºç”Ÿæ™‚ã®ã‚¨ãƒ©ãƒ¼ã‚³ãƒ¼ãƒ‰
 	ULONG_PTR MyCode;
-	//—áŠO”­¶Žž‚Ìà–¾•¶
+	//ä¾‹å¤–ç™ºç”Ÿæ™‚ã®èª¬æ˜Žæ–‡
 	WString MyExplain1;
 	WString MyExplain2;
 
 };
 
-//—áŠOƒIƒuƒWƒFƒNƒg‚ð¶¬‚µ‚Ü‚·
-//code : —áŠO”­¶Žž‚ÌƒGƒ‰[ƒR[ƒh
-//explain : —áŠO‚É‘Î‚·‚éà–¾
+//ä¾‹å¤–ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã‚’ç”Ÿæˆã—ã¾ã™
+//code : ä¾‹å¤–ç™ºç”Ÿæ™‚ã®ã‚¨ãƒ©ãƒ¼ã‚³ãƒ¼ãƒ‰
+//explain : ä¾‹å¤–ã«å¯¾ã™ã‚‹èª¬æ˜Ž
 #define EXCEPTION(error_code,...) mException( mCURRENT_FILE , __LINE__ , error_code , __VA_ARGS__ )
 
-//ƒ`ƒFƒbƒN‚ÉŽ¸”s‚µ‚½ê‡‚Íƒeƒ“ƒvƒŒ[ƒgˆø”‚ÅŽw’è‚µ‚½—áŠO‚ð“Š‚°‚é
-//—áŠOƒNƒ‰ƒX‚ÍmExceptionBase‚©‚ç”h¶‚µ‚½‚à‚Ì‚Å‚ ‚é‚±‚ÆB
-// ¦ŽQl¨ using err = class ErrorClass : mExceptionBase{};
+//ãƒã‚§ãƒƒã‚¯ã«å¤±æ•—ã—ãŸå ´åˆã¯ãƒ†ãƒ³ãƒ—ãƒ¬ãƒ¼ãƒˆå¼•æ•°ã§æŒ‡å®šã—ãŸä¾‹å¤–ã‚’æŠ•ã’ã‚‹
+//ä¾‹å¤–ã‚¯ãƒ©ã‚¹ã¯mExceptionBaseã‹ã‚‰æ´¾ç”Ÿã—ãŸã‚‚ã®ã§ã‚ã‚‹ã“ã¨ã€‚
+// â€»å‚è€ƒâ†’ using err = class ErrorClass : mExceptionBase{};
 //          Check<err>( SomeFunction() );
 template< class ExceptionIfFailed >
 inline void Check( bool v )

@@ -1,5 +1,5 @@
-//----------------------------------------------------------------------------
-// �E�C���h�E�Ǘ��i�X�e�[�^�X�o�[�j
+﻿//----------------------------------------------------------------------------
+// ウインドウ管理（ステータスバー）
 // Copyright (C) 2016 Fingerling. All rights reserved. 
 // This program is released under the MIT License. 
 // see http://opensource.org/licenses/mit-license.php
@@ -23,92 +23,92 @@ mStatusBar::~mStatusBar()
 {
 }
 
-//�E�C���h�E�N���X�̓o�^������
+//ウインドウクラスの登録をする
 bool mStatusBar::WindowClassSettingCallback( WindowClassSetting& retSetting , const void* opt )
 {
 	::InitCommonControls();
-	return false;	//�V���ȃE�C���h�E�N���X�̓o�^�͂��Ȃ�
+	return false;	//新たなウインドウクラスの登録はしない
 }
 
-//�E�C���h�E���J��
+//ウインドウを開く
 bool mStatusBar::CreateWindowCallback( CreateWindowSetting& retSetting , const void* opt )
 {
 	retSetting.ClassName = STATUSCLASSNAMEW;
-	retSetting.Style |= CCS_BOTTOM;	//�����ɃX�e�[�^�X�o�[��z�u
+	retSetting.Style |= CCS_BOTTOM;	//下部にステータスバーを配置
 	retSetting.ProcedureChange = true;
 
-	//�I�v�V�����̎w�肪�Ȃ���΃R�R�Ŗ߂�
+	//オプションの指定がなければココで戻る
 	if( opt == nullptr )
 	{
 		return true;
 	}
 
-	//�I�v�V�����̎w�肪����΂���ɏ]��
+	//オプションの指定があればそれに従う
 	if( ((const Option*)opt)->method == Option::CreateMethod::USEOPTION )
 	{
-		//�ʏ�̕��@�ł̍쐬�̏ꍇ
+		//通常の方法での作成の場合
 		const mStatusBar::Option_UseOption* op = (const mStatusBar::Option_UseOption*)opt;
-		retSetting.Style |= ( op->SizeGrip ) ? ( SBARS_SIZEGRIP ) : ( 0 );	//�T�C�Y�ύX�p�̃O���b�v��\���H
-		retSetting.Style |= ( op->Tooltip ) ? ( SBARS_TOOLTIPS ) : ( 0 );	//�c�[���`�b�v��\���H
+		retSetting.Style |= ( op->SizeGrip ) ? ( SBARS_SIZEGRIP ) : ( 0 );	//サイズ変更用のグリップを表示？
+		retSetting.Style |= ( op->Tooltip ) ? ( SBARS_TOOLTIPS ) : ( 0 );	//ツールチップを表示？
 	}
 	return true;
 }
 
 bool mStatusBar::OnCreate( const void* opt )
 {
-	//Unicode���[�h�ɂ���
+	//Unicodeモードにする
 	::SendMessageW( GetMyHwnd() , SB_SETUNICODEFORMAT , TRUE , 0 );
 
-	//�I�v�V�����̎w�肪�Ȃ���΃V���v���X�e�[�^�X�o�[�ɕύX
+	//オプションの指定がなければシンプルステータスバーに変更
 	if( opt == nullptr )
 	{
 		::SendMessageW( GetMyHwnd() , SB_SIMPLE , TRUE , 0 );
 		return true;
 	}
 
-	//�I�v�V�����̎w�肪����΂���ɏ]��
+	//オプションの指定があればそれに従う
 	if( ( (const Option*)opt )->method == Option::CreateMethod::USEOPTION )
 	{
-		//�ʏ�̍쐬�̏ꍇ
+		//通常の作成の場合
 		const mStatusBar::Option_UseOption* op = ( const mStatusBar::Option_UseOption* )opt;
 
-		//�����f�[�^�p��PartsOption���R�s�[
+		//内部データ用にPartsOptionをコピー
 		MyPartsOption = op->Parts;
 
-		//�p�[�c�̍\���𔽉f
+		//パーツの構成を反映
 		if( MyPartsOption.size() == 0 )
 		{
-			//�p�[�c�������ꍇ�A�V���v���X�e�[�^�X�o�[�ɕύX
+			//パーツが無い場合、シンプルステータスバーに変更
 			::SendMessageW( GetMyHwnd() , SB_SIMPLE , TRUE , 0 );
 		}
 		else
 		{
-			//�m���V���v���X�e�[�^�X�o�[�ɕύX
+			//ノンシンプルステータスバーに変更
 			::SendMessageW( GetMyHwnd() , SB_SIMPLE , FALSE , 0 );
 
-			//MyPartsOption�̃T�C�Y���ߏ�ł���ꍇ�̓G���[���L�^���āA����؂�B
-			//���G���[�I���͂ł��Ȃ�����L�^�̂�
+			//MyPartsOptionのサイズが過剰である場合はエラーを記録して、後ろを切る。
+			//※エラー終了はできないから記録のみ
 			if( 255 < MyPartsOption.size() )
 			{
 				RaiseAssert( g_ErrorLogger , MyPartsOption.size() , L"Too many parts" );
 				MyPartsOption.resize( 255 );
 			}
 
-			//RightJustifyIndex�̐��������`�F�b�N����
+			//RightJustifyIndexの正当性をチェックする
 			MyRightJustifyIndex = op->RightJustifyIndex;
 			if( (INT)MyPartsOption.size() < MyRightJustifyIndex )
 			{
-				//�s���Ȃ̂őS�����l�i�l�̕␳�͂��邪�A�����L�Q�ł��Ȃ��̂ŁA�G���[�̋L�^�͂��Ȃ��j
+				//不正なので全部左詰（値の補正はするが、そう有害でもないので、エラーの記録はしない）
 				MyRightJustifyIndex = (INT)MyPartsOption.size();
 			}
 
-			//���񂹁A���񂹂̗D��
+			//左寄せ、左寄せの優先
 			MyRightUpper = op->RightUpper;
 
-			//PartsOption�̗v�f���Ɠ����ɂȂ�悤�Ƀp�[�c�𕪊�����
+			//PartsOptionの要素数と同じになるようにパーツを分割する
 			ModifyPartsSize();
 
-			//�p�[�c�̓��e���X�V
+			//パーツの内容を更新
 			for( INT i = 0 ; i < (INT)MyPartsOption.size() ; i++ )
 			{
 				ModifyParts( i );
@@ -120,18 +120,18 @@ bool mStatusBar::OnCreate( const void* opt )
 
 bool mStatusBar::ModifyPartsSize( void )
 {
-	//�T�C�Y��0�̏ꍇ(�V���v���X�e�[�^�X�o�[�ɂȂ��Ă���Ǝv����)�̓G���[��Ԃ�
+	//サイズが0の場合(シンプルステータスバーになっていると思われる)はエラーを返す
 	if( MyPartsOption.size() == 0 )
 	{
 		return false;
 	}
 
-	//�N���C�A���g�G���A�̕����擾
+	//クライアントエリアの幅を取得
 	RECT client_rect;
 	::GetClientRect( GetMyHwnd() , &client_rect );
 
-	//���񂹂̃p�[�c�̈ʒu��ݒ�
-	//�������珇�Ԃɕ����m�ۂ��āA�m�ۂł��Ȃ��Ȃ�����c��͑S���d�˂܂��B
+	//左寄せのパーツの位置を設定
+	//左側から順番に幅を確保して、確保できなくなったら残りは全部重ねます。
 	auto LeftJustifier = [this]( UINT position_max ) -> UINT
 	{
 		UINT position_l = 0;
@@ -147,8 +147,8 @@ bool mStatusBar::ModifyPartsSize( void )
 		return position_l;
 	};
 	
-	//�E�񂹂̃p�[�c�̈ʒu��ݒ�
-	//�E�����珇�Ԃɕ����m�ۂ��Ă����A�m�ۂł��Ȃ��Ȃ�����c���S���d�˂܂�
+	//右寄せのパーツの位置を設定
+	//右側から順番に幅を確保していき、確保できなくなったら残りを全部重ねます
 	auto RightJustifier = [this,client_rect]( UINT position_min )-> UINT
 	{
 		UINT position_r = client_rect.right - client_rect.left;
@@ -171,22 +171,22 @@ bool mStatusBar::ModifyPartsSize( void )
 		return position_r;
 	};
 
-	//�D�悷�鑤����l��ݒ肷��
+	//優先する側から値を設定する
 	if( MyRightUpper )
 	{
-		//�E�����D��̏ꍇ�A�E������ݒ肷��
+		//右側が優先の場合、右側から設定する
 		UINT position_min = RightJustifier( 0 );
 		LeftJustifier( position_min );
 	}
 	else
 	{
-		//�������D��̏ꍇ�A��������ݒ肷��
+		//左側が優先の場合、左側から設定する
 		UINT position_max = client_rect.right - client_rect.left;
 		position_max = LeftJustifier( position_max );
 		RightJustifier( position_max );
 	}
 
-	//API�Ă�ŁA�p�[�c�𕪊�����
+	//API呼んで、パーツを分割する
 	if( !::SendMessageW( GetMyHwnd() , SB_SETPARTS , MyPartsOption.size() + 1 , (LPARAM)MyPartsPos ) )
 	{
 		RaiseAssert( g_ErrorLogger , MyPartsOption.size() , L"SB_SETPARTS failed" );
@@ -205,7 +205,7 @@ LRESULT mStatusBar::WindowProcedure( UINT msg , WPARAM wparam , LPARAM lparam )
 	return __super::WindowProcedure( msg , wparam , lparam );
 }
 
-//�S�p�[�c���X�L�������AID����v���镨�ɑ΂��ăR�[���o�b�N���Ăяo��
+//全パーツをスキャンし、IDが一致する物に対してコールバックを呼び出す
 bool mStatusBar::ScanItem( const WString& id , ScanItemCallback callback )
 {
 	bool result = true;
@@ -219,10 +219,10 @@ bool mStatusBar::ScanItem( const WString& id , ScanItemCallback callback )
 	return result;
 }
 
-//�w�肵���C���f�b�N�X�̃p�[�c���Đݒ肷��
+//指定したインデックスのパーツを再設定する
 bool mStatusBar::ModifyParts( INT index )
 {
-	//�v���p�e�B��ݒ�l�ɕϊ�
+	//プロパティを設定値に変換
 	WORD form = 0;
 	form |= ( MyPartsOption[ index ].Notab ) ? ( SBT_NOTABPARSING ) : ( 0 );
 	switch( MyPartsOption[ index ].Border )
@@ -238,7 +238,7 @@ bool mStatusBar::ModifyParts( INT index )
 		break;
 	}
 
-	//API�Ă�ŁA�p�[�c�𕪊�����
+	//API呼んで、パーツを分割する
 	if( !::SendMessageW( GetMyHwnd() , SB_SETTEXT , ( form | LOBYTE(index) ) , (LPARAM)MyPartsOption[ index ].Str.c_str() ) )
 	{
 		RaiseAssert( g_ErrorLogger , index , L"SB_SETTEXT failed" );
@@ -247,51 +247,51 @@ bool mStatusBar::ModifyParts( INT index )
 	return true;
 }
 
-//�p�[�c�ɕ������ݒ肷��
+//パーツに文字列を設定する
 bool mStatusBar::SetText( const WString& id , const WString& str , bool notab )
 {
-	//�R�[���o�b�N�֐��̒�`
+	//コールバック関数の定義
 	auto SetStringCallback = [ this , str , notab ]( INT index ) -> bool
 	{
-		//�v���p�e�B�̍X�V
+		//プロパティの更新
 		MyPartsOption[ index ].Notab = notab;
 		MyPartsOption[ index ].Str = str;
 
 		return ModifyParts( index );
 	};
 
-	//ID���������A������̍X�V������
+	//IDを検索し、文字列の更新をする
 	return ScanItem( id , SetStringCallback );
 }
 
-//�{�[�_�[���C���̎�ނ�ύX����
+//ボーダーラインの種類を変更する
 bool mStatusBar::SetBorder( const WString& id , BorderType border )
 {
-	//�R�[���o�b�N�֐��̒�`
+	//コールバック関数の定義
 	auto SetBorderCallback = [ this , border ]( INT index ) -> bool
 	{
-		//�v���p�e�B�̍X�V
+		//プロパティの更新
 		MyPartsOption[ index ].Border = border;
 
 		return ModifyParts( index );
 	};
 
-	//ID���������A������̍X�V������
+	//IDを検索し、文字列の更新をする
 	return ScanItem( id , SetBorderCallback );
 }
 
-//����ύX����
+//幅を変更する
 bool mStatusBar::SetWidth( const WString& id , UINT width )
 {
-	//�R�[���o�b�N�֐��̒�`
+	//コールバック関数の定義
 	auto SetWidthCallback = [ this , width ]( INT index ) -> bool
 	{
-		//�v���p�e�B�̍X�V
+		//プロパティの更新
 		MyPartsOption[ index ].Width = width;
 
 		return ModifyParts( index );
 	};
 
-	//ID���������A������̍X�V������
+	//IDを検索し、文字列の更新をする
 	return ScanItem( id , SetWidthCallback );
 }

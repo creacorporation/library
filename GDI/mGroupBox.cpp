@@ -1,5 +1,5 @@
-//----------------------------------------------------------------------------
-// ƒEƒCƒ“ƒhƒEŠÇ—iƒOƒ‹[ƒvƒ{ƒbƒNƒXj
+ï»¿//----------------------------------------------------------------------------
+// ã‚¦ã‚¤ãƒ³ãƒ‰ã‚¦ç®¡ç†ï¼ˆã‚°ãƒ«ãƒ¼ãƒ—ãƒœãƒƒã‚¯ã‚¹ï¼‰
 // Copyright (C) 2016 Fingerling. All rights reserved. 
 // This program is released under the MIT License. 
 // see http://opensource.org/licenses/mit-license.php
@@ -24,7 +24,7 @@ LRESULT mGroupBox::WindowProcedure( UINT msg , WPARAM wparam , LPARAM lparam )
 		switch( msg )
 		{
 		case WM_SIZE:
-			//qƒIƒuƒWƒFƒNƒg‚ª‘¶İ‚·‚ê‚ÎA‚»‚ê‚ç‚ÉƒTƒCƒY‚ğ“`”d‚µ‚Ü‚·
+			//å­ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆãŒå­˜åœ¨ã™ã‚Œã°ã€ãã‚Œã‚‰ã«ã‚µã‚¤ã‚ºã‚’ä¼æ’­ã—ã¾ã™
 			MyChild->AdjustSize( GetMyHwnd() );
 			break;
 		default:
@@ -35,30 +35,30 @@ LRESULT mGroupBox::WindowProcedure( UINT msg , WPARAM wparam , LPARAM lparam )
 }
 
 
-//ƒEƒCƒ“ƒhƒEƒNƒ‰ƒX‚Ì“o˜^‚ğ‚·‚é
+//ã‚¦ã‚¤ãƒ³ãƒ‰ã‚¦ã‚¯ãƒ©ã‚¹ã®ç™»éŒ²ã‚’ã™ã‚‹
 bool mGroupBox::WindowClassSettingCallback( WindowClassSetting& retSetting , const void* opt )
 {
-	return false;	//V‚½‚ÈƒEƒCƒ“ƒhƒEƒNƒ‰ƒX‚Ì“o˜^‚Í‚µ‚È‚¢
+	return false;	//æ–°ãŸãªã‚¦ã‚¤ãƒ³ãƒ‰ã‚¦ã‚¯ãƒ©ã‚¹ã®ç™»éŒ²ã¯ã—ãªã„
 }
 
-//ƒEƒCƒ“ƒhƒE‚ğŠJ‚­
+//ã‚¦ã‚¤ãƒ³ãƒ‰ã‚¦ã‚’é–‹ã
 bool mGroupBox::CreateWindowCallback( CreateWindowSetting& retSetting , const void* opt )
 {
 	retSetting.ClassName = L"BUTTON";
 
-	//ƒIƒvƒVƒ‡ƒ“‚Ìw’è‚ª‚È‚¯‚ê‚Î‚»‚Ì‚Ü‚Ü–ß‚é(ƒfƒtƒHƒ‹ƒg‚É‚È‚é)
+	//ã‚ªãƒ—ã‚·ãƒ§ãƒ³ã®æŒ‡å®šãŒãªã‘ã‚Œã°ãã®ã¾ã¾æˆ»ã‚‹(ãƒ‡ãƒ•ã‚©ãƒ«ãƒˆã«ãªã‚‹)
 	if( opt == nullptr )
 	{
 		return true;
 	}
-	//ƒIƒvƒVƒ‡ƒ“‚Ìw’è‚ª‚ ‚ê‚ÎA‚»‚ê‚É]‚¤
+	//ã‚ªãƒ—ã‚·ãƒ§ãƒ³ã®æŒ‡å®šãŒã‚ã‚Œã°ã€ãã‚Œã«å¾“ã†
 	if( ((const Option*)opt)->method == Option::CreateMethod::USEOPTION )
 	{
 		const mGroupBox::Option_UseOption* op = (const mGroupBox::Option_UseOption*)opt;
 		retSetting.Style |= BS_GROUPBOX;
-		//ƒLƒƒƒvƒVƒ‡ƒ“
+		//ã‚­ãƒ£ãƒ—ã‚·ãƒ§ãƒ³
 		retSetting.WindowName = op->Caption;
-		//ˆÊ’u‚ÆƒTƒCƒY
+		//ä½ç½®ã¨ã‚µã‚¤ã‚º
 		SetWindowPosition( op->Pos );
 	}
 	return true;

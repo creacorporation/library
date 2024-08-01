@@ -1,12 +1,12 @@
-//----------------------------------------------------------------------------
-// ƒXƒgƒŠ[ƒ~ƒ“ƒOƒtƒ@ƒCƒ‹‘‚«‚İ‘€ì
+ï»¿//----------------------------------------------------------------------------
+// ã‚¹ãƒˆãƒªãƒ¼ãƒŸãƒ³ã‚°ãƒ•ã‚¡ã‚¤ãƒ«æ›¸ãè¾¼ã¿æ“ä½œ
 // Copyright (C) 2013,2016 Fingerling. All rights reserved. 
 // Copyright (C) 2019- Crea Inc. All rights reserved.
 // This program is released under the MIT License. 
 // see http://opensource.org/licenses/mit-license.php
-// ’˜ìŒ •\¦‚âƒ‰ƒCƒZƒ“ƒX‚Ì‰ü•Ï‚Í‹Ö~‚³‚ê‚Ä‚¢‚Ü‚·B
-// ‚±‚Ìƒ\[ƒXƒR[ƒh‚ÉŠÖ‚µ‚ÄAã‹Lƒ‰ƒCƒZƒ“ƒXˆÈŠO‚ÌŒ_–ñ“™‚ÍˆêØ‘¶İ‚µ‚Ü‚¹‚ñB
-// (‰½‚ç‚©‚ÌŒ_–ñ‚ª‚ ‚éê‡‚Å‚àA–{ƒ\[ƒXƒR[ƒh‚Í‚»‚Ì‘ÎÛŠO‚Æ‚È‚è‚Ü‚·)
+// è‘—ä½œæ¨©è¡¨ç¤ºã‚„ãƒ©ã‚¤ã‚»ãƒ³ã‚¹ã®æ”¹å¤‰ã¯ç¦æ­¢ã•ã‚Œã¦ã„ã¾ã™ã€‚
+// ã“ã®ã‚½ãƒ¼ã‚¹ã‚³ãƒ¼ãƒ‰ã«é–¢ã—ã¦ã€ä¸Šè¨˜ãƒ©ã‚¤ã‚»ãƒ³ã‚¹ä»¥å¤–ã®å¥‘ç´„ç­‰ã¯ä¸€åˆ‡å­˜åœ¨ã—ã¾ã›ã‚“ã€‚
+// (ä½•ã‚‰ã‹ã®å¥‘ç´„ãŒã‚ã‚‹å ´åˆã§ã‚‚ã€æœ¬ã‚½ãƒ¼ã‚¹ã‚³ãƒ¼ãƒ‰ã¯ãã®å¯¾è±¡å¤–ã¨ãªã‚Šã¾ã™)
 //----------------------------------------------------------------------------
 
 #define MFILEWRITESTREAM_CPP_COMPILING
@@ -27,13 +27,13 @@ mFileWriteStream::~mFileWriteStream()
 
 bool mFileWriteStream::FlushCache( void )
 {
-	//‘‚«‚Ş‚à‚Ì‚ª‚È‚¢‚Æ‚«‚Í‚»‚Ì‚Ü‚Ü–ß‚é
+	//æ›¸ãè¾¼ã‚€ã‚‚ã®ãŒãªã„ã¨ãã¯ãã®ã¾ã¾æˆ»ã‚‹
 	if( MyWriteCacheWritten == 0 )
 	{
 		return true;
 	}
 
-	//ƒtƒ@ƒCƒ‹‚Ì‘‚«‚İ‚ğs‚¤
+	//ãƒ•ã‚¡ã‚¤ãƒ«ã®æ›¸ãè¾¼ã¿ã‚’è¡Œã†
 	DWORD written;
 	bool result = true;
 	if( !MyHandle.Write( MyWriteCacheHead.get() , MyWriteCacheWritten , written ) || ( written != MyWriteCacheWritten  ) )
@@ -42,7 +42,7 @@ bool mFileWriteStream::FlushCache( void )
 		result = false;
 	}
 
-	//ƒoƒbƒtƒ@‚ğƒŠƒZƒbƒg
+	//ãƒãƒƒãƒ•ã‚¡ã‚’ãƒªã‚»ãƒƒãƒˆ
 	mFileWriteStream::ResetCache();
 
 	return result;
@@ -57,14 +57,14 @@ void mFileWriteStream::ResetCache( void )
 bool mFileWriteStream::Open( const mFile::Option& opt )
 {
 
-	//ƒtƒ@ƒCƒ‹‚ğƒI[ƒvƒ“
-	//¦“ñd‚ÉŠJ‚±‚¤‚Æ‚·‚é‚Æ‚±‚Ìƒƒ\ƒbƒh‚Í¸”s‚·‚é
+	//ãƒ•ã‚¡ã‚¤ãƒ«ã‚’ã‚ªãƒ¼ãƒ—ãƒ³
+	//â€»äºŒé‡ã«é–‹ã“ã†ã¨ã™ã‚‹ã¨ã“ã®ãƒ¡ã‚½ãƒƒãƒ‰ã¯å¤±æ•—ã™ã‚‹
 	if( !MyHandle.Open( opt ) )
 	{
 		return false;
 	}
 
-	//ƒtƒ@ƒCƒ‹‚ğŠJ‚­‚±‚Æ‚ªo—ˆ‚½ê‡‚ÍAƒtƒ@ƒCƒ‹–¼‚ğƒRƒs[‚µ‚ÄAƒLƒƒƒbƒVƒ…‚ğ–³Œø‰»
+	//ãƒ•ã‚¡ã‚¤ãƒ«ã‚’é–‹ãã“ã¨ãŒå‡ºæ¥ãŸå ´åˆã¯ã€ãƒ•ã‚¡ã‚¤ãƒ«åã‚’ã‚³ãƒ”ãƒ¼ã—ã¦ã€ã‚­ãƒ£ãƒƒã‚·ãƒ¥ã‚’ç„¡åŠ¹åŒ–
 	ResetCache();
 
 	return true;
@@ -109,14 +109,14 @@ bool mFileWriteStream::MovePointer( LONGLONG distance )
 	return MyHandle.MovePointer( distance );
 }
 
-//ƒtƒ@ƒCƒ‹ƒ|ƒCƒ“ƒ^‚ğƒtƒ@ƒCƒ‹‚Ì––”ö‚ÉˆÚ“®
+//ãƒ•ã‚¡ã‚¤ãƒ«ãƒã‚¤ãƒ³ã‚¿ã‚’ãƒ•ã‚¡ã‚¤ãƒ«ã®æœ«å°¾ã«ç§»å‹•
 bool mFileWriteStream::SetPointerToEnd( void )
 {
 	FlushCache();
 	return MyHandle.SetPointerToEnd();
 }
 
-//ƒtƒ@ƒCƒ‹ƒ|ƒCƒ“ƒ^‚ğƒtƒ@ƒCƒ‹‚Ìæ“ª‚ÉˆÚ“®
+//ãƒ•ã‚¡ã‚¤ãƒ«ãƒã‚¤ãƒ³ã‚¿ã‚’ãƒ•ã‚¡ã‚¤ãƒ«ã®å…ˆé ­ã«ç§»å‹•
 bool mFileWriteStream::SetPointerToBegin( void )
 {
 	FlushCache();
@@ -170,7 +170,7 @@ bool mFileWriteStream::GetFileSize( DWORD* high , DWORD& low )const
 	}
 	else if( li.HighPart )
 	{
-		RaiseAssert( g_ErrorLogger , 0 , L"ƒtƒ@ƒCƒ‹ƒTƒCƒY‚ª4GB‚ğ’´‚¦‚Ä‚¢‚Ü‚·" );
+		RaiseAssert( g_ErrorLogger , 0 , L"ãƒ•ã‚¡ã‚¤ãƒ«ã‚µã‚¤ã‚ºãŒ4GBã‚’è¶…ãˆã¦ã„ã¾ã™" );
 		return false;
 	}
 	low = li.LowPart;

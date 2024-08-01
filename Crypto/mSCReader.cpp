@@ -1,11 +1,11 @@
-//----------------------------------------------------------------------------
-// ƒXƒ}[ƒgƒJ[ƒhƒŠ[ƒ_[ƒnƒ“ƒhƒ‰
+ï»¿//----------------------------------------------------------------------------
+// ã‚¹ãƒãƒ¼ãƒˆã‚«ãƒ¼ãƒ‰ãƒªãƒ¼ãƒ€ãƒ¼ãƒãƒ³ãƒ‰ãƒ©
 // Copyright (C) 2021- Crea Inc. All rights reserved.
 // This program is released under the MIT License. 
 // see http://opensource.org/licenses/mit-license.php
-// ’˜ìŒ •\¦‚âƒ‰ƒCƒZƒ“ƒX‚Ì‰ü•Ï‚Í‹Ö~‚³‚ê‚Ä‚¢‚Ü‚·B
-// ‚±‚Ìƒ\[ƒXƒR[ƒh‚ÉŠÖ‚µ‚ÄAã‹Lƒ‰ƒCƒZƒ“ƒXˆÈŠO‚ÌŒ_–ñ“™‚ÍˆêØ‘¶İ‚µ‚Ü‚¹‚ñB
-// (‰½‚ç‚©‚ÌŒ_–ñ‚ª‚ ‚éê‡‚Å‚àA–{ƒ\[ƒXƒR[ƒh‚Í‚»‚Ì‘ÎÛŠO‚Æ‚È‚è‚Ü‚·)
+// è‘—ä½œæ¨©è¡¨ç¤ºã‚„ãƒ©ã‚¤ã‚»ãƒ³ã‚¹ã®æ”¹å¤‰ã¯ç¦æ­¢ã•ã‚Œã¦ã„ã¾ã™ã€‚
+// ã“ã®ã‚½ãƒ¼ã‚¹ã‚³ãƒ¼ãƒ‰ã«é–¢ã—ã¦ã€ä¸Šè¨˜ãƒ©ã‚¤ã‚»ãƒ³ã‚¹ä»¥å¤–ã®å¥‘ç´„ç­‰ã¯ä¸€åˆ‡å­˜åœ¨ã—ã¾ã›ã‚“ã€‚
+// (ä½•ã‚‰ã‹ã®å¥‘ç´„ãŒã‚ã‚‹å ´åˆã§ã‚‚ã€æœ¬ã‚½ãƒ¼ã‚¹ã‚³ãƒ¼ãƒ‰ã¯ãã®å¯¾è±¡å¤–ã¨ãªã‚Šã¾ã™)
 //----------------------------------------------------------------------------
 
 #include "mSCReader.h"
@@ -20,9 +20,9 @@ mSCReader::mSCReader()
 
 mSCReader::~mSCReader()
 {
-	//ƒŠ[ƒ_[‚ÌŠÄ‹’†‚Å‚ ‚ê‚Î‚â‚ß‚³‚¹‚é
+	//ãƒªãƒ¼ãƒ€ãƒ¼ã®ç›£è¦–ä¸­ã§ã‚ã‚Œã°ã‚„ã‚ã•ã›ã‚‹
 	EndWatch();
-	//ƒŠƒ\[ƒX‚ÌŠJ•ú
+	//ãƒªã‚½ãƒ¼ã‚¹ã®é–‹æ”¾
 	if( MyServiceAvailableSignal != NULL )
 	{
 		SCardReleaseStartedEvent();
@@ -51,23 +51,23 @@ bool mSCReader::WaitForServiceAvailable( DWORD waittime )
 
 bool mSCReader::OpenContext( void )const
 {
-	//‰Šú‰»Ï‚İƒ`ƒFƒbƒN
+	//åˆæœŸåŒ–æ¸ˆã¿ãƒã‚§ãƒƒã‚¯
 	if( MySCardContext )
 	{
 		return true;
 	}
 
-	//Ú‘±
+	//æ¥ç¶š
 	LONG result = SCardEstablishContext( SCARD_SCOPE_USER , nullptr , nullptr , &MySCardContext );
 	switch( result )
 	{
 	case SCARD_S_SUCCESS:
 		break;
 	case SCARD_E_NO_SERVICE:
-		RaiseError( g_ErrorLogger , result , L"ƒXƒ}[ƒgƒJ[ƒhƒT[ƒrƒX‚ª‹N“®‚µ‚Ä‚¢‚Ü‚¹‚ñ" );
+		RaiseError( g_ErrorLogger , result , L"ã‚¹ãƒãƒ¼ãƒˆã‚«ãƒ¼ãƒ‰ã‚µãƒ¼ãƒ“ã‚¹ãŒèµ·å‹•ã—ã¦ã„ã¾ã›ã‚“" );
 		return false;
 	default:
-		RaiseError( g_ErrorLogger , result , L"ƒXƒ}[ƒgƒJ[ƒh‚Ì‰Šú‰»‚ª¸”s‚µ‚Ü‚µ‚½" );
+		RaiseError( g_ErrorLogger , result , L"ã‚¹ãƒãƒ¼ãƒˆã‚«ãƒ¼ãƒ‰ã®åˆæœŸåŒ–ãŒå¤±æ•—ã—ã¾ã—ãŸ" );
 		return false;
 	}
 	return true;
@@ -77,13 +77,13 @@ bool mSCReader::GetCardReaderList( WStringVector& retReader )const
 {
 	retReader.clear();
 
-	//‰Šú‰»Ï‚İƒ`ƒFƒbƒN
+	//åˆæœŸåŒ–æ¸ˆã¿ãƒã‚§ãƒƒã‚¯
 	if( !OpenContext() )
 	{
 		return false;
 	}
 
-	//ƒJ[ƒhƒŠ[ƒ_[‚Ìˆê——‚ğæ“¾‚·‚é
+	//ã‚«ãƒ¼ãƒ‰ãƒªãƒ¼ãƒ€ãƒ¼ã®ä¸€è¦§ã‚’å–å¾—ã™ã‚‹
 	BYTE* buffer = nullptr;
 	DWORD length = SCARD_AUTOALLOCATE;
 	LONG result = SCardListReadersW( MySCardContext , nullptr , (LPWSTR)&buffer, &length);
@@ -92,23 +92,23 @@ bool mSCReader::GetCardReaderList( WStringVector& retReader )const
 	case SCARD_S_SUCCESS:
 		break;
 	case SCARD_E_NO_READERS_AVAILABLE:
-		RaiseError( g_ErrorLogger , result , L"ƒJ[ƒhƒŠ[ƒ_[‚ªÚ‘±‚³‚ê‚Ä‚¢‚Ü‚¹‚ñ" );
+		RaiseError( g_ErrorLogger , result , L"ã‚«ãƒ¼ãƒ‰ãƒªãƒ¼ãƒ€ãƒ¼ãŒæ¥ç¶šã•ã‚Œã¦ã„ã¾ã›ã‚“" );
 		return false;
 	case SCARD_E_READER_UNAVAILABLE:
-		RaiseError( g_ErrorLogger , result , L"ƒJ[ƒhƒŠ[ƒ_[‚ª—˜—p‚Å‚«‚Ü‚¹‚ñ" );
+		RaiseError( g_ErrorLogger , result , L"ã‚«ãƒ¼ãƒ‰ãƒªãƒ¼ãƒ€ãƒ¼ãŒåˆ©ç”¨ã§ãã¾ã›ã‚“" );
 		return false;
 	default:
-		RaiseError( g_ErrorLogger , result , L"ƒJ[ƒhƒŠ[ƒ_[‚Ì–¼‘O‚ğæ“¾‚Å‚«‚Ü‚¹‚ñ" );
+		RaiseError( g_ErrorLogger , result , L"ã‚«ãƒ¼ãƒ‰ãƒªãƒ¼ãƒ€ãƒ¼ã®åå‰ã‚’å–å¾—ã§ãã¾ã›ã‚“" );
 		return false;
 	}
 
-	//ƒ_ƒuƒ‹ƒkƒ‹‚Ì•¶š—ñ‚ğƒp[ƒX
+	//ãƒ€ãƒ–ãƒ«ãƒŒãƒ«ã®æ–‡å­—åˆ—ã‚’ãƒ‘ãƒ¼ã‚¹
 	ReadDoubleNullString( (const WCHAR*)buffer , retReader );
 	SCardFreeMemory( MySCardContext , buffer );
 	return true;
 }
 
-//ŠÄ‹ƒXƒŒƒbƒh
+//ç›£è¦–ã‚¹ãƒ¬ãƒƒãƒ‰
 class SCReaderWatchThread : public mThread
 {
 public:
@@ -132,20 +132,20 @@ public:
 
 		while( 1 )
 		{
-			//I—¹—v‹‚Ìƒ`ƒFƒbƒN
+			//çµ‚äº†è¦æ±‚ã®ãƒã‚§ãƒƒã‚¯
 			DWORD code = WaitForSingleObject( MyTerminateSignal , 0 );
 			switch( code )
 			{
-			case WAIT_OBJECT_0:	//I—¹—v‹‚ ‚è
+			case WAIT_OBJECT_0:	//çµ‚äº†è¦æ±‚ã‚ã‚Š
 				return 0;
-			case WAIT_TIMEOUT:	//I—¹—v‹‚È‚µ
+			case WAIT_TIMEOUT:	//çµ‚äº†è¦æ±‚ãªã—
 				break;
-			default:			//ƒGƒ‰[
-				RaiseError( g_ErrorLogger , 0 , L"ƒXƒŒƒbƒhó‘Ô‚ªˆÙí‚Å‚·" );
+			default:			//ã‚¨ãƒ©ãƒ¼
+				RaiseError( g_ErrorLogger , 0 , L"ã‚¹ãƒ¬ãƒƒãƒ‰çŠ¶æ…‹ãŒç•°å¸¸ã§ã™" );
 				return GetLastError();
 			}
 
-			//ƒXƒ}[ƒgƒJ[ƒhƒŠ[ƒ_[‚Ìó‘Ô‚ğƒ`ƒFƒbƒN‚·‚é
+			//ã‚¹ãƒãƒ¼ãƒˆã‚«ãƒ¼ãƒ‰ãƒªãƒ¼ãƒ€ãƒ¼ã®çŠ¶æ…‹ã‚’ãƒã‚§ãƒƒã‚¯ã™ã‚‹
 			LONG result = SCardGetStatusChangeW( MySCardContext , waittime , &stat , 1 );
 			switch( result )
 			{
@@ -155,7 +155,7 @@ public:
 			case SCARD_E_CANCELLED:
 				break;
 			default:
-				RaiseError( g_ErrorLogger , result , L"ƒXƒ}[ƒgƒJ[ƒh‚ÌŠÄ‹‚ª¸”s‚µ‚Ü‚µ‚½" );
+				RaiseError( g_ErrorLogger , result , L"ã‚¹ãƒãƒ¼ãƒˆã‚«ãƒ¼ãƒ‰ã®ç›£è¦–ãŒå¤±æ•—ã—ã¾ã—ãŸ" );
 				return result;
 			}
 
@@ -179,7 +179,7 @@ private:
 
 	using CardKind = Definitions_SCReader::CardKind;
 	
-	//ƒJ[ƒh‚Ìí—Ş‚ğ”»•Ê‚·‚é
+	//ã‚«ãƒ¼ãƒ‰ã®ç¨®é¡ã‚’åˆ¤åˆ¥ã™ã‚‹
 	static CardKind GetCardKind( const mBinary& atr )
 	{
 		//                                    0    1    2    3    4    5    6    7    8    9    A    B    C    D    E    F   10   11   12   13
@@ -202,17 +202,17 @@ private:
 			return true;
 		};
 
-		//Mifare1K‚©H
+		//Mifare1Kã‹ï¼Ÿ
 		if( Compare( atr , AtrMifare1K , sizeof( AtrMifare1K ) ) )
 		{
 			return CardKind::MIFARE_CLASSIC_1K;
 		}
-		//Felica‚©H
+		//Felicaã‹ï¼Ÿ
 		if( Compare( atr , AtrFelica , sizeof( AtrFelica ) ) )
 		{
 			return CardKind::FELICA;
 		}
-		//‚»‚Ì‘¼‚ÌƒJ[ƒh
+		//ãã®ä»–ã®ã‚«ãƒ¼ãƒ‰
 		return CardKind::UNKNOWN;
 	}
 
@@ -263,7 +263,7 @@ private:
 		return;
 	}
 
-	//ƒR[ƒ‹ƒoƒbƒN
+	//ã‚³ãƒ¼ãƒ«ãƒãƒƒã‚¯
 	static void AsyncEvent( mSCReader& view , const mSCReader::NotifyOption::NotifierInfo& info , mSCReader::NotifyFunctionOptPtr* opt )
 	{
 		if( info.Mode == mSCReader::NotifyOption::NotifyMode::NOTIFY_NONE )
@@ -301,29 +301,29 @@ private:
 		}
 		else
 		{
-			RaiseAssert( g_ErrorLogger , 0 , L"”ñ“¯Šú‘€ì‚ÌŠ®—¹’Ê’m•û–@‚ª•s³‚Å‚·" , info.Mode );
+			RaiseAssert( g_ErrorLogger , 0 , L"éåŒæœŸæ“ä½œã®å®Œäº†é€šçŸ¥æ–¹æ³•ãŒä¸æ­£ã§ã™" , info.Mode );
 		}
 		return;
 	}
 };
 
-//ƒJ[ƒhƒŠ[ƒ_[‚ÌŠÄ‹‚ğŠJn‚·‚é
+//ã‚«ãƒ¼ãƒ‰ãƒªãƒ¼ãƒ€ãƒ¼ã®ç›£è¦–ã‚’é–‹å§‹ã™ã‚‹
 bool mSCReader::StartWatch( const WString& readername , const NotifyOption& opt )
 {
-	//“ñd‹N“®ƒ`ƒFƒbƒN
+	//äºŒé‡èµ·å‹•ãƒã‚§ãƒƒã‚¯
 	if( MyThread )
 	{
-		RaiseError( g_ErrorLogger , 0 , L"‚·‚Å‚ÉƒJ[ƒhƒŠ[ƒ_[‚ÌŠÄ‹’†‚Å‚·" );
+		RaiseError( g_ErrorLogger , 0 , L"ã™ã§ã«ã‚«ãƒ¼ãƒ‰ãƒªãƒ¼ãƒ€ãƒ¼ã®ç›£è¦–ä¸­ã§ã™" );
 		return false;
 	}
 
-	//‰Šú‰»Ï‚İƒ`ƒFƒbƒN
+	//åˆæœŸåŒ–æ¸ˆã¿ãƒã‚§ãƒƒã‚¯
 	if( !OpenContext() )
 	{
 		return false;
 	}
 
-	//ƒXƒŒƒbƒh‚Ì‹N“®
+	//ã‚¹ãƒ¬ãƒƒãƒ‰ã®èµ·å‹•
 	MyThread = mNew SCReaderWatchThread( *this , MySCardContext , readername , opt );
 	if( !MyThread->Begin() )
 	{
@@ -338,42 +338,42 @@ bool mSCReader::StartWatch( const WString& readername , const NotifyOption& opt 
 	return true;
 
 errorend:
-	RaiseError( g_ErrorLogger , 0 , L"ŠÄ‹ƒXƒŒƒbƒh‚ğ‹N“®‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½" );
+	RaiseError( g_ErrorLogger , 0 , L"ç›£è¦–ã‚¹ãƒ¬ãƒƒãƒ‰ã‚’èµ·å‹•ã§ãã¾ã›ã‚“ã§ã—ãŸ" );
 	mDelete MyThread;
 	MyThread = nullptr;
 	MyCardReaderName = L"";
 	return false;
 }
 
-//ƒJ[ƒhƒŠ[ƒ_[‚ÌŠÄ‹‚ğI—¹‚·‚é
+//ã‚«ãƒ¼ãƒ‰ãƒªãƒ¼ãƒ€ãƒ¼ã®ç›£è¦–ã‚’çµ‚äº†ã™ã‚‹
 bool mSCReader::EndWatch( void )
 {
-	//‹N“®ƒ`ƒFƒbƒN
+	//èµ·å‹•ãƒã‚§ãƒƒã‚¯
 	if( !MyThread )
 	{
 		return true;
 	}
 
-	//I—¹ƒVƒOƒiƒ‹‚ğ‘—M
+	//çµ‚äº†ã‚·ã‚°ãƒŠãƒ«ã‚’é€ä¿¡
 	if( !MyThread->FinishRequest() )
 	{
-		RaiseError( g_ErrorLogger , 0 , L"I—¹—v‹‚ª¸”s‚µ‚Ü‚µ‚½" );
+		RaiseError( g_ErrorLogger , 0 , L"çµ‚äº†è¦æ±‚ãŒå¤±æ•—ã—ã¾ã—ãŸ" );
 		return false;
 	}
 
-	//‘Ò‹@’†‚Ì•ÏX’Ê’m‚ğƒLƒƒƒ“ƒZƒ‹
-	//”I—¹ƒVƒOƒiƒ‹‚Æ‚Ìˆ—‡”Ô‚É’ˆÓ
+	//å¾…æ©Ÿä¸­ã®å¤‰æ›´é€šçŸ¥ã‚’ã‚­ãƒ£ãƒ³ã‚»ãƒ«
+	//ï¼ƒçµ‚äº†ã‚·ã‚°ãƒŠãƒ«ã¨ã®å‡¦ç†é †ç•ªã«æ³¨æ„
 	LONG result = SCardCancel( MySCardContext );
 	if( result != SCARD_S_SUCCESS )
 	{
-		RaiseError( g_ErrorLogger , 0 , L"ƒXƒ}[ƒgƒJ[ƒh‚Ì‘Ò‹@‚ğƒLƒƒƒ“ƒZƒ‹‚Å‚«‚Ü‚¹‚ñ" );
+		RaiseError( g_ErrorLogger , 0 , L"ã‚¹ãƒãƒ¼ãƒˆã‚«ãƒ¼ãƒ‰ã®å¾…æ©Ÿã‚’ã‚­ãƒ£ãƒ³ã‚»ãƒ«ã§ãã¾ã›ã‚“" );
 		return false;
 	}
 
-	//ƒXƒŒƒbƒh‚ÌI—¹‘Ò‹@
+	//ã‚¹ãƒ¬ãƒƒãƒ‰ã®çµ‚äº†å¾…æ©Ÿ
 	if( !MyThread->End() )
 	{
-		RaiseError( g_ErrorLogger , 0 , L"ƒXƒŒƒbƒh‚ÌI—¹‚ª‚Å‚«‚Ü‚¹‚ñ" );
+		RaiseError( g_ErrorLogger , 0 , L"ã‚¹ãƒ¬ãƒƒãƒ‰ã®çµ‚äº†ãŒã§ãã¾ã›ã‚“" );
 		return false;
 	}
 

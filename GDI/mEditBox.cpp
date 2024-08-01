@@ -1,5 +1,5 @@
-//----------------------------------------------------------------------------
-// ƒEƒCƒ“ƒhƒEŠÇ—iƒGƒfƒBƒbƒgƒRƒ“ƒgƒ[ƒ‹j
+ï»¿//----------------------------------------------------------------------------
+// ã‚¦ã‚¤ãƒ³ãƒ‰ã‚¦ç®¡ç†ï¼ˆã‚¨ãƒ‡ã‚£ãƒƒãƒˆã‚³ãƒ³ãƒˆãƒ­ãƒ¼ãƒ«ï¼‰
 // Copyright (C) 2016 Fingerling. All rights reserved. 
 // This program is released under the MIT License. 
 // see http://opensource.org/licenses/mit-license.php
@@ -19,45 +19,45 @@ mEditBox::~mEditBox()
 {
 }
 
-//ƒEƒCƒ“ƒhƒEƒNƒ‰ƒX‚Ì“o˜^‚ğ‚·‚é
+//ã‚¦ã‚¤ãƒ³ãƒ‰ã‚¦ã‚¯ãƒ©ã‚¹ã®ç™»éŒ²ã‚’ã™ã‚‹
 bool mEditBox::WindowClassSettingCallback( WindowClassSetting& retSetting , const void* opt )
 {
-	return false;	//V‚½‚ÈƒEƒCƒ“ƒhƒEƒNƒ‰ƒX‚Ì“o˜^‚Í‚µ‚È‚¢
+	return false;	//æ–°ãŸãªã‚¦ã‚¤ãƒ³ãƒ‰ã‚¦ã‚¯ãƒ©ã‚¹ã®ç™»éŒ²ã¯ã—ãªã„
 }
 
-//ƒEƒCƒ“ƒhƒE‚ğŠJ‚­
+//ã‚¦ã‚¤ãƒ³ãƒ‰ã‚¦ã‚’é–‹ã
 bool mEditBox::CreateWindowCallback( CreateWindowSetting& retSetting , const void* opt )
 {
 	retSetting.ClassName = L"EDIT";
-	//ƒIƒvƒVƒ‡ƒ“w’è‚ª‚È‚¢ê‡‚Í‚»‚Ì‚Ü‚Ü–ß‚é
+	//ã‚ªãƒ—ã‚·ãƒ§ãƒ³æŒ‡å®šãŒãªã„å ´åˆã¯ãã®ã¾ã¾æˆ»ã‚‹
 	if( opt == nullptr )
 	{
 		return true;
 	}
 
-	//ƒIƒvƒVƒ‡ƒ“‚Ìw’è‚ª‚ ‚ê‚ÎA‚»‚Ìí—Ş‚É‚æ‚è¶¬•û–@‚ğ•ªŠò
+	//ã‚ªãƒ—ã‚·ãƒ§ãƒ³ã®æŒ‡å®šãŒã‚ã‚Œã°ã€ãã®ç¨®é¡ã«ã‚ˆã‚Šç”Ÿæˆæ–¹æ³•ã‚’åˆ†å²
 	if( ((const Option*)(opt))->method == Option::CreateMethod::USEOPTION )
 	{
 		const mEditBox::Option_UseOption* op = (const mEditBox::Option_UseOption*)opt;
 
-		//İ’è‚·‚é•¶š—ñ
+		//è¨­å®šã™ã‚‹æ–‡å­—åˆ—
 		retSetting.WindowName = op->Text;
-		//•¡”sƒ^ƒCƒv
+		//è¤‡æ•°è¡Œã‚¿ã‚¤ãƒ—
 		retSetting.Style |= ( op->Multiline != 0 ) ? ( ES_MULTILINE ) : ( 0 );
-		//…•½ƒXƒNƒ[ƒ‹ƒo[‚ğ•\¦‚·‚é
+		//æ°´å¹³ã‚¹ã‚¯ãƒ­ãƒ¼ãƒ«ãƒãƒ¼ã‚’è¡¨ç¤ºã™ã‚‹
 		retSetting.Style |= ( op->HScrollBar != 0 ) ? ( ES_AUTOHSCROLL ) : ( 0 );
-		//‚’¼ƒXƒNƒ[ƒ‹ƒo[‚ğ•\¦‚·‚é
+		//å‚ç›´ã‚¹ã‚¯ãƒ­ãƒ¼ãƒ«ãƒãƒ¼ã‚’è¡¨ç¤ºã™ã‚‹
 		retSetting.Style |= ( op->VScrollBar != 0 ) ? ( ES_AUTOVSCROLL ) : ( 0 );
-		//ƒpƒXƒ[ƒhƒ^ƒCƒv
+		//ãƒ‘ã‚¹ãƒ¯ãƒ¼ãƒ‰ã‚¿ã‚¤ãƒ—
 		retSetting.Style |= ( op->Password != 0 ) ? ( ES_PASSWORD ) : ( 0 );
-		//ƒŠ[ƒhƒIƒ“ƒŠ[
+		//ãƒªãƒ¼ãƒ‰ã‚ªãƒ³ãƒªãƒ¼
 		retSetting.Style |= ( op->Readonly != 0 ) ? ( ES_READONLY ) : ( 0 );
-		//”š‚Ì‚İ
+		//æ•°å­—ã®ã¿
 		retSetting.Style |= ( op->Number != 0 ) ? ( ES_NUMBER ) : ( 0 );
-		//ƒGƒ“ƒ^[ƒL[‚ÌƒŠƒ_ƒCƒŒƒNƒg
+		//ã‚¨ãƒ³ã‚¿ãƒ¼ã‚­ãƒ¼ã®ãƒªãƒ€ã‚¤ãƒ¬ã‚¯ãƒˆ
 		MyRedirectEnter = op->RedirectEnter != 0;
 
-		//•¶š—ñ‚Ì”z’u
+		//æ–‡å­—åˆ—ã®é…ç½®
 		switch( op->Justify ) 
 		{
 		case Option::TextJustify::LEFT:
@@ -72,7 +72,7 @@ bool mEditBox::CreateWindowCallback( CreateWindowSetting& retSetting , const voi
 		default:
 			break;
 		}
-		//•¶š—ñ‚Ì‘å•¶šE¬•¶š‚ğ©“®•ÏŠ·‚·‚é
+		//æ–‡å­—åˆ—ã®å¤§æ–‡å­—ãƒ»å°æ–‡å­—ã‚’è‡ªå‹•å¤‰æ›ã™ã‚‹
 		switch( op->Case )
 		{
 		case Option::TextCase::NOCHANGE:
@@ -86,11 +86,11 @@ bool mEditBox::CreateWindowCallback( CreateWindowSetting& retSetting , const voi
 		default:
 			break;
 		}
-		//”z’u
+		//é…ç½®
 		SetWindowPosition( op->Pos );
 	}
 
-	//ƒvƒƒV[ƒWƒƒ‚Ì·‚µ‘Ö‚¦‚ª•K—v‚Å‚ ‚ê‚Îƒtƒ‰ƒO‚ğƒZƒbƒg
+	//ãƒ—ãƒ­ã‚·ãƒ¼ã‚¸ãƒ£ã®å·®ã—æ›¿ãˆãŒå¿…è¦ã§ã‚ã‚Œã°ãƒ•ãƒ©ã‚°ã‚’ã‚»ãƒƒãƒˆ
 	if( MyRedirectEnter )
 	{
 		retSetting.ProcedureChange = true;
@@ -98,12 +98,12 @@ bool mEditBox::CreateWindowCallback( CreateWindowSetting& retSetting , const voi
 	return true;
 }
 
-//ƒEƒCƒ“ƒhƒEƒvƒƒV[ƒWƒƒ
+//ã‚¦ã‚¤ãƒ³ãƒ‰ã‚¦ãƒ—ãƒ­ã‚·ãƒ¼ã‚¸ãƒ£
 LRESULT mEditBox::WindowProcedure( UINT msg , WPARAM wparam , LPARAM lparam )
 {
 	if( msg == WM_CHAR )
 	{
-		//ƒGƒ“ƒ^[ƒL[‚ğƒŠƒ_ƒCƒŒƒNƒg‚·‚é‚©H
+		//ã‚¨ãƒ³ã‚¿ãƒ¼ã‚­ãƒ¼ã‚’ãƒªãƒ€ã‚¤ãƒ¬ã‚¯ãƒˆã™ã‚‹ã‹ï¼Ÿ
 		if( ( MyRedirectEnter ) && ( wparam == VK_RETURN ) )
 		{
 			PostMessageW( GetMyParent() , msg , wparam , lparam );
@@ -112,13 +112,13 @@ LRESULT mEditBox::WindowProcedure( UINT msg , WPARAM wparam , LPARAM lparam )
 	return __super::WindowProcedure( msg , wparam , lparam );
 }
 
-//ƒGƒfƒBƒbƒgƒRƒ“ƒgƒ[ƒ‹‚Ì•¶š—ñ‚ğƒZƒbƒg
+//ã‚¨ãƒ‡ã‚£ãƒƒãƒˆã‚³ãƒ³ãƒˆãƒ­ãƒ¼ãƒ«ã®æ–‡å­—åˆ—ã‚’ã‚»ãƒƒãƒˆ
 bool mEditBox::SetText( const WString& NewText )
 {
 	return SetWindowTextW( GetMyHwnd() , NewText.c_str() );
 }
 
-//ƒGƒfƒBƒbƒgƒRƒ“ƒgƒ[ƒ‹‚Ì•¶š—ñ‚ğæ“¾
+//ã‚¨ãƒ‡ã‚£ãƒƒãƒˆã‚³ãƒ³ãƒˆãƒ­ãƒ¼ãƒ«ã®æ–‡å­—åˆ—ã‚’å–å¾—
 bool mEditBox::GetText( WString& retText )
 {
 	wchar_t* str = 0;
@@ -131,7 +131,7 @@ bool mEditBox::GetText( WString& retText )
 		str = mNew wchar_t[ len + 1 ];
 		if( !str )
 		{
-			RaiseAssert( g_ErrorLogger , 0 , L"mNew‚ª¸”s‚µ‚Ü‚µ‚½" );
+			RaiseAssert( g_ErrorLogger , 0 , L"mNewãŒå¤±æ•—ã—ã¾ã—ãŸ" );
 			return false;
 		}
 		if( GetWindowTextW( GetMyHwnd() , str , len + 1 ) )
@@ -143,7 +143,7 @@ bool mEditBox::GetText( WString& retText )
 	return true;
 }
 
-//ƒGƒfƒBƒbƒgƒRƒ“ƒgƒ[ƒ‹‚Ì•¶š—ñ‚Ì’·‚³i–ÚˆÀj‚ğæ“¾
+//ã‚¨ãƒ‡ã‚£ãƒƒãƒˆã‚³ãƒ³ãƒˆãƒ­ãƒ¼ãƒ«ã®æ–‡å­—åˆ—ã®é•·ã•ï¼ˆç›®å®‰ï¼‰ã‚’å–å¾—
 DWORD mEditBox::GetTextLength( void )const
 {
 	return (DWORD)GetWindowTextLengthW( GetMyHwnd() );

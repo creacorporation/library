@@ -1,5 +1,5 @@
-//----------------------------------------------------------------------------
-// “ú•tŠÇ—
+ï»¿//----------------------------------------------------------------------------
+// æ—¥ä»˜æ™‚åˆ»ç®¡ç†
 // Copyright (C) 2018- Crea Inc. All rights reserved.
 // This program is released under the MIT License. 
 // see http://opensource.org/licenses/mit-license.php
@@ -7,16 +7,16 @@
 
 #include "mDateTime.h"
 
-//ƒƒ‚
-//o“TFhttp://astronomy.webcrow.jp/time/gregoriancalendar-julianday.html
-//(1)‚»‚Ì‘E’nˆæ‚ªƒOƒŒƒSƒŠƒI—ïÌ—p‚µ‚Ä‚©‚çŒ»İ‚Ü‚Å—LŒø‚ÈƒOƒŒƒSƒŠƒI—ï¨ƒ†ƒŠƒEƒX’Ê“ú‚Ì•ÏŠ·Œö®
+//ãƒ¡ãƒ¢
+//å‡ºå…¸ï¼šhttp://astronomy.webcrow.jp/time/gregoriancalendar-julianday.html
+//(1)ãã®å›½ãƒ»åœ°åŸŸãŒã‚°ãƒ¬ã‚´ãƒªã‚ªæš¦æ¡ç”¨ã—ã¦ã‹ã‚‰ç¾åœ¨ã¾ã§æœ‰åŠ¹ãªã‚°ãƒ¬ã‚´ãƒªã‚ªæš¦â†’ãƒ¦ãƒªã‚¦ã‚¹é€šæ—¥ã®å¤‰æ›å…¬å¼
 //	[365.25 * Y] + [Y / 400] - [Y / 100] + [30.59 * (M - 2)] + D + 1721088.5 + h / 24 + m / 1440 + s / 86400
-//(2)‹IŒ³Œã‚Ìƒ†ƒŠƒEƒX—ï¨ƒ†ƒŠƒEƒX’Ê“ú‚Ì•ÏŠ·Œö®
-//@[365.25 * Y] + [30.59 * (M - 2)] + D + 1721086.5 + h / 24 + m / 1440 + s / 86400
-//(3)‹IŒ³‘O‚Ìƒ†ƒŠƒEƒX—ï¨ƒ†ƒŠƒEƒX’Ê“ú‚Ì•ÏŠ·Œö®
-//@‚½‚¾‚µA‹IŒ³‘O1”N‚ÌY=1‚Æ‚·‚éB
-//@(¦“V•¶Šw‚Å‚Í‹IŒ³‘O1”N‚ğY=0‚Æ‚·‚éê‡‚ª‚ ‚é)
-//@[-365.25 * Y - 0.75] + [30.59 * (M - 2)] + D + 366 + 1721086.5 + h / 24 + m / 1440 + s / 86400
+//(2)ç´€å…ƒå¾Œã®ãƒ¦ãƒªã‚¦ã‚¹æš¦â†’ãƒ¦ãƒªã‚¦ã‚¹é€šæ—¥ã®å¤‰æ›å…¬å¼
+//ã€€[365.25 * Y] + [30.59 * (M - 2)] + D + 1721086.5 + h / 24 + m / 1440 + s / 86400
+//(3)ç´€å…ƒå‰ã®ãƒ¦ãƒªã‚¦ã‚¹æš¦â†’ãƒ¦ãƒªã‚¦ã‚¹é€šæ—¥ã®å¤‰æ›å…¬å¼
+//ã€€ãŸã ã—ã€ç´€å…ƒå‰1å¹´ã®Y=1ã¨ã™ã‚‹ã€‚
+//ã€€(â€»å¤©æ–‡å­¦ã§ã¯ç´€å…ƒå‰1å¹´ã‚’Y=0ã¨ã™ã‚‹å ´åˆãŒã‚ã‚‹)
+//ã€€[-365.25 * Y - 0.75] + [30.59 * (M - 2)] + D + 366 + 1721086.5 + h / 24 + m / 1440 + s / 86400
 
 void mDateTime::Date::SetCurrentLocal( void )
 {
@@ -209,7 +209,7 @@ void mDateTime::AdjustYearMonth( INT& ioYear , INT& ioMonth )
 	}
 }
 
-//w’è”NŒ‚Ì‰“ú‚Éİ’è‚µ‚Ü‚·
+//æŒ‡å®šå¹´æœˆã®åˆæ—¥ã«è¨­å®šã—ã¾ã™
 void mDateTime::Date::SetFirstDay( INT year , INT month )noexcept
 {
 	AdjustYearMonth( year , month );
@@ -223,7 +223,7 @@ void mDateTime::Date::SetFirstDay( const YearMonth& ym )noexcept
 	SetFirstDay( ym.Year , ym.Month );
 }
 
-//w’è”NŒ‚ÌÅI“ú‚Éİ’è‚µ‚Ü‚·
+//æŒ‡å®šå¹´æœˆã®æœ€çµ‚æ—¥ã«è¨­å®šã—ã¾ã™
 void mDateTime::Date::SetLastDay( INT year , INT month )noexcept
 {
 	AdjustYearMonth( year , month );
@@ -239,8 +239,8 @@ void mDateTime::Date::SetLastDay( const YearMonth& ym )noexcept
 
 void mDateTime::Date::AddDay( int offset )
 {
-	//ƒIƒtƒZƒbƒg‚Ìâ‘Î’l‚ª29–¢–‚Å‚ ‚ê‚ÎA2ƒ–Œ‚Ü‚½‚®‰Â”\«‚Í‚È‚¢‚©‚ç
-	//ŠÈˆÕ‚ÈŒvZ‚Åˆ—‚·‚éB
+	//ã‚ªãƒ•ã‚»ãƒƒãƒˆã®çµ¶å¯¾å€¤ãŒ29æœªæº€ã§ã‚ã‚Œã°ã€2ãƒ¶æœˆã¾ãŸãå¯èƒ½æ€§ã¯ãªã„ã‹ã‚‰
+	//ç°¡æ˜“ãªè¨ˆç®—ã§å‡¦ç†ã™ã‚‹ã€‚
 	if( offset == 0 )
 	{
 	}
@@ -302,15 +302,15 @@ void mDateTime::Date::AddMonth( int offset )
 static const wchar_t* JapaneseEraWordTable[] =
 {
 	L"",		//JPERA_UNKNOWN,
-	L"—ß˜a",	//JPERA_REIWA,
-	L"•½¬",	//JPERA_HEISEI,
-	L"º˜a",	//JPERA_SHOWA,
-	L"‘å³",	//JPERA_TAISYO,
-	L"–¾¡",	//JPERA_MEIJI,
+	L"ä»¤å’Œ",	//JPERA_REIWA,
+	L"å¹³æˆ",	//JPERA_HEISEI,
+	L"æ˜­å’Œ",	//JPERA_SHOWA,
+	L"å¤§æ­£",	//JPERA_TAISYO,
+	L"æ˜æ²»",	//JPERA_MEIJI,
 };
 
 
-//“ú•t‚É‘Î‚·‚é˜a—ï‚ğ‹‚ß‚Ü‚·
+//æ—¥ä»˜ã«å¯¾ã™ã‚‹å’Œæš¦ã‚’æ±‚ã‚ã¾ã™
 bool mDateTime::Date::GetJapaneseEra( JapaneseEra& retEra )const noexcept
 {
 	mDateTime::Date end_day;
@@ -363,7 +363,7 @@ bool mDateTime::Date::GetJapaneseEra( JapaneseEra& retEra )const noexcept
 }
 
 
-//Ši”[‚µ‚Ä‚¢‚é‚ª—LŒø‚Å‚ ‚é‚©”Û‚©‚ğ•Ô‚µ‚Ü‚·
+//æ ¼ç´ã—ã¦ã„ã‚‹æ™‚åˆ»ãŒæœ‰åŠ¹ã§ã‚ã‚‹ã‹å¦ã‹ã‚’è¿”ã—ã¾ã™
 bool mDateTime::Time::IsValid( void )const
 {
 	if( Hour < 0 || 23 < Hour )
@@ -385,7 +385,7 @@ bool mDateTime::Time::IsValid( void )const
 	return true;
 }
 
-//Ši”[‚µ‚Ä‚¢‚é‚É‘Î‚µ‚ÄA1“ú‚ğ1.0‚Æ‚µ‚½”ä—¦‚ğ‹‚ß‚Ü‚·
+//æ ¼ç´ã—ã¦ã„ã‚‹æ™‚åˆ»ã«å¯¾ã—ã¦ã€1æ—¥ã‚’1.0ã¨ã—ãŸæ¯”ç‡ã‚’æ±‚ã‚ã¾ã™
 double mDateTime::Time::ToValue( void )const
 {
 	return ( ( 3600000 * Hour ) + ( 60000 * Minute ) + ( Second * 1000 ) + ( Milliseconds ) ) / 86400000.5;
@@ -406,7 +406,7 @@ double mDateTime::Time::ToSecond( void )const
 	return ( Hour * 3600 ) + ( Minute * 60 ) + ( Second ) + ( Milliseconds / 1000.0 );
 }
 
-//1“ú‚ğ1.0‚Æ‚µ‚½”ä—¦‚©‚ç‚ğæ“¾‚µ‚ÄŠi”[‚µ‚Ü‚·
+//1æ—¥ã‚’1.0ã¨ã—ãŸæ¯”ç‡ã‹ã‚‰æ™‚åˆ»ã‚’å–å¾—ã—ã¦æ ¼ç´ã—ã¾ã™
 void mDateTime::Time::FromValue( double value )
 {
 	const double factor = ( 1 / 86400000.5 ); 
@@ -442,7 +442,7 @@ void mDateTime::Time::FromValue( double value )
 
 void mDateTime::Time::Normalize( void )noexcept
 {
-	//¦‚‘¬‰»‚µ‚æ‚¤‚Æê‡•ª‚¯‚µ‚Ä‚İ‚½‚¯‚ÇAŒ‹‹ÇŠ„‚èZ‚ª‚¢‚Á‚Ï‚¢o‚Ä‚«‚½‚Ì‚ÅAŠÈ’P‚É‰ğŒˆ‚·‚é‚±‚Æ‚É‚µ‚½
+	//â€»é«˜é€ŸåŒ–ã—ã‚ˆã†ã¨å ´åˆåˆ†ã‘ã—ã¦ã¿ãŸã‘ã©ã€çµå±€å‰²ã‚Šç®—ãŒã„ã£ã±ã„å‡ºã¦ããŸã®ã§ã€ç°¡å˜ã«è§£æ±ºã™ã‚‹ã“ã¨ã«ã—ãŸ
 	FromValue( ToValue() );
 }
 
@@ -513,7 +513,7 @@ void mDateTime::Time::operator%=( double v )
 	FromValue( ::fmod( ToValue() , v ) );
 }
 
-//Ši”[‚µ‚Ä‚¢‚é“ú•t‚ÌC³ƒ†ƒŠƒEƒX’Ê“ú‚ğ‹‚ß‚Ü‚·
+//æ ¼ç´ã—ã¦ã„ã‚‹æ—¥ä»˜ã®ä¿®æ­£ãƒ¦ãƒªã‚¦ã‚¹é€šæ—¥ã‚’æ±‚ã‚ã¾ã™
 double mDateTime::Timestamp::ToModJulian( void )const
 {
 	Date date = GetDate();
@@ -537,7 +537,7 @@ void mDateTime::Timestamp::FromModJulian( double julian )
 	return;
 }
 
-//Ši”[‚µ‚Ä‚¢‚é“ú•t‚ª—LŒø‚Å‚ ‚é‚©”Û‚©‚ğ•Ô‚µ‚Ü‚·
+//æ ¼ç´ã—ã¦ã„ã‚‹æ—¥ä»˜ãŒæœ‰åŠ¹ã§ã‚ã‚‹ã‹å¦ã‹ã‚’è¿”ã—ã¾ã™
 bool mDateTime::Timestamp::IsValid( void )const
 {
 	Date date = GetDate();
@@ -550,7 +550,7 @@ bool mDateTime::Timestamp::IsValid( void )const
 	return time.IsValid();
 }
 
-//“ú•t‚ğæ‚èo‚µ‚Ü‚·
+//æ—¥ä»˜ã‚’å–ã‚Šå‡ºã—ã¾ã™
 mDateTime::Date mDateTime::Timestamp::GetDate( void )const
 {
 	Date date;
@@ -560,7 +560,7 @@ mDateTime::Date mDateTime::Timestamp::GetDate( void )const
 	return date;
 }
 
-//‚ğæ‚èo‚µ‚Ü‚·
+//æ™‚åˆ»ã‚’å–ã‚Šå‡ºã—ã¾ã™
 mDateTime::Time mDateTime::Timestamp::GetTime( void )const
 {
 	Time time;
@@ -571,7 +571,7 @@ mDateTime::Time mDateTime::Timestamp::GetTime( void )const
 	return time;
 }
 
-//“ú•t‚ğƒZƒbƒg‚µ‚Ü‚·B‚Í•Ï‰»‚µ‚Ü‚¹‚ñB
+//æ—¥ä»˜ã‚’ã‚»ãƒƒãƒˆã—ã¾ã™ã€‚æ™‚åˆ»ã¯å¤‰åŒ–ã—ã¾ã›ã‚“ã€‚
 void mDateTime::Timestamp::Set( const Date& date )
 {
 	Year = date.Year;
@@ -580,7 +580,7 @@ void mDateTime::Timestamp::Set( const Date& date )
 	return;
 }
 
-//‚ğƒZƒbƒg‚µ‚Ü‚·B“ú•t‚Í•Ï‰»‚µ‚Ü‚¹‚ñB
+//æ™‚åˆ»ã‚’ã‚»ãƒƒãƒˆã—ã¾ã™ã€‚æ—¥ä»˜ã¯å¤‰åŒ–ã—ã¾ã›ã‚“ã€‚
 void mDateTime::Timestamp::Set( const Time& time )
 {
 	Hour = time.Hour;
@@ -590,7 +590,7 @@ void mDateTime::Timestamp::Set( const Time& time )
 	return;
 }
 
-//“ú•t‚Æ‚ğƒZƒbƒg‚µ‚Ü‚·
+//æ—¥ä»˜ã¨æ™‚åˆ»ã‚’ã‚»ãƒƒãƒˆã—ã¾ã™
 void mDateTime::Timestamp::Set( const Date& date , const Time& time )
 {
 	Set( date );
@@ -598,7 +598,7 @@ void mDateTime::Timestamp::Set( const Date& date , const Time& time )
 	return;
 }
 
-//w’è”NŒ‚Ì‰“ú‚Éİ’è‚µ‚Ü‚·
+//æŒ‡å®šå¹´æœˆã®åˆæ—¥ã«è¨­å®šã—ã¾ã™
 void mDateTime::Timestamp::SetFirstDay( INT year , INT month )noexcept
 {
 	Year = year;
@@ -606,7 +606,7 @@ void mDateTime::Timestamp::SetFirstDay( INT year , INT month )noexcept
 	Day = 1;
 }
 
-//w’è”NŒ‚ÌÅI“ú‚Éİ’è‚µ‚Ü‚·
+//æŒ‡å®šå¹´æœˆã®æœ€çµ‚æ—¥ã«è¨­å®šã—ã¾ã™
 void mDateTime::Timestamp::SetLastDay( INT year , INT month )noexcept
 {
 	Year = year;
@@ -619,7 +619,7 @@ mDateTime::DAYOFWEEK mDateTime::Timestamp::DayOfWeek( void ) const noexcept
 	return GetDate().DayOfWeek();
 }
 
-//“ú•t‚É‘Î‚·‚é˜a—ï‚ğ‹‚ß‚Ü‚·
+//æ—¥ä»˜ã«å¯¾ã™ã‚‹å’Œæš¦ã‚’æ±‚ã‚ã¾ã™
 bool mDateTime::Timestamp::GetJapaneseEra( JapaneseEra& retEra )const noexcept
 {
 	return GetDate().GetJapaneseEra( retEra );

@@ -1,12 +1,12 @@
-//----------------------------------------------------------------------------
-//�����Z���k�E�c�C�X�^���������N���X
+﻿//----------------------------------------------------------------------------
+//メルセンヌ・ツイスタ乱数発生クラス
 // Copyright (C) 2005 Fingerling. All rights reserved.
 // Copyright (C) 2018- Crea Inc. All rights reserved.
 // This program is released under the MIT License. 
 // see http://opensource.org/licenses/mit-license.php
-// ���쌠�\���⃉�C�Z���X�̉��ς͋֎~����Ă��܂��B
-// ���̃\�[�X�R�[�h�Ɋւ��āA��L���C�Z���X�ȊO�̌_�񓙂͈�ؑ��݂��܂���B
-// ��2018�N6���̃o�[�W�������AC++11��random�ˑ��ɂȂ�܂����B
+// 著作権表示やライセンスの改変は禁止されています。
+// このソースコードに関して、上記ライセンス以外の契約等は一切存在しません。
+// ※2018年6月のバージョンより、C++11のrandom依存になりました。
 //----------------------------------------------------------------------------
 
 #ifndef MMTWISTER_H_INCLUDED
@@ -14,10 +14,10 @@
 
 #include <random>
 
-//�������C�u����
-//�E�����Z���k�c�C�X�^�^�������𗘗p���ė����𓾂܂�
-//�E�Í��ɂ͂��̂܂܂ł͎g�p�s��
-//�E��Ԃ̃Z�[�u��
+//乱数ライブラリ
+//・メルセンヌツイスタ疑似乱数を利用して乱数を得ます
+//・暗号にはそのままでは使用不可
+//・状態のセーブ可
 
 #include "mStandard.h"
 #include <memory>
@@ -28,40 +28,40 @@ public:
 
 	mMTwister();
 
-	//�����n���������
+	//乱数系列を初期化
 	bool Initialize( void );
 
-	//UINT�`���A32�r�b�g�̗���
+	//UINT形式、32ビットの乱数
 	UINT RandInt32( void );
 
-	//���̐�����A31�r�b�g�̗���
+	//正の数限定、31ビットの乱数
 	INT RandUInt31( void );
 
-	//���[0,1]�̎���(0�ȏ�1�ȉ�)
+	//閉区間[0,1]の実数(0以上1以下)
 	DOUBLE RandDouble1( void );
 
-	//���J���[0,1)�̎���(0�ȏ�1����)
+	//半開区間[0,1)の実数(0以上1未満)
 	DOUBLE RandDouble2( void );
 
-	//�J���(0,1)�̎���(0���傫��1��菬����)
+	//開区間(0,1)の実数(0より大きく1より小さい)
 	DOUBLE RandDouble3( void );
 
-	//���[0,1]�̎���(0�ȏ�1�ȉ�)
+	//閉区間[0,1]の実数(0以上1以下)
 	DOUBLE RandClose( void );
 
-	//���J���[0,1)�̎���(0�ȏ�1����)
+	//半開区間[0,1)の実数(0以上1未満)
 	DOUBLE RandSemiOpen( void );
 
-	//�J���(0,1)�̎���(0���傫��1��菬����)
+	//開区間(0,1)の実数(0より大きく1より小さい)
 	DOUBLE RandOpen( void );
 
-	//�n�����o�b�t�@�𗐐��l�Ŗ��߂�
-	//buffer : �����f�[�^�̊i�[��
-	//bufferlen : �i�[����o�C�g��
+	//渡したバッファを乱数値で埋める
+	//buffer : 乱数データの格納先
+	//bufferlen : 格納するバイト数
 	void RandFill( BYTE* buffer , DWORD bufferlen );
 
-	//�w�肵��2�l�Ԃɋϓ����z����l
-	// ret : val1�`val2�̒l�ɕ��z����l(val1�Aval2�Ƃ��o�����܂�)
+	//指定した2値間に均等分布する値
+	// ret : val1〜val2の値に分布する値(val1、val2とも出現します)
 	UINT RandBetween( UINT val1 , UINT val2 );
 
 private:

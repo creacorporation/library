@@ -1,5 +1,5 @@
-//----------------------------------------------------------------------------
-// �o�C�i�����[�e�B���e�B
+﻿//----------------------------------------------------------------------------
+// バイナリユーティリティ
 // Copyright (C) 2019- Crea Inc. All rights reserved.
 // This program is released under the MIT License. 
 // see http://opensource.org/licenses/mit-license.php
@@ -46,9 +46,9 @@ int BitCount( const void* p , size_t sz )
 #if 0 
 
 /*
-popcnt��SSE4.2(Core i)�v���Z�b�T���炾��B
-Core2�Ƃ��͔�Ή������炵�傤���Ȃ��ˁB
-���݂����ȃA���S���Y���ł��˂���񂷂��A�e�[�u���������������炵����B
+popcntはSSE4.2(Core i)プロセッサからだよ。
+Core2とかは非対応だからしょうがないね。
+下みたいなアルゴリズムでこねくり回すより、テーブル引く方が速いらしいよ。
 */
 
 //#include <intrin.h>

@@ -1,10 +1,10 @@
-//----------------------------------------------------------------------------
-// �F���Ǘ�
+﻿//----------------------------------------------------------------------------
+// 色情報管理
 // Copyright (C) 2018- Crea Inc. All rights reserved.
 // This program is released under the MIT License. 
 // see http://opensource.org/licenses/mit-license.php
-// ���쌠�\���⃉�C�Z���X�̉��ς͋֎~����Ă��܂��B
-// ���̃\�[�X�R�[�h�Ɋւ��āA��L���C�Z���X�ȊO�̌_�񓙂͈�ؑ��݂��܂���B
+// 著作権表示やライセンスの改変は禁止されています。
+// このソースコードに関して、上記ライセンス以外の契約等は一切存在しません。
 //----------------------------------------------------------------------------
 
 #ifndef MGDICOLOR_H_INCLUDED
@@ -21,15 +21,15 @@ public:
 	mGdiColor( const mGdiColor& source );
 	const mGdiColor& operator=( const mGdiColor& source );
 
-	//�g�r�u�F��Ԃɂ��F�\��
-	//�E�ŏ�=0�`�ő�=1�ƂȂ�܂����A�l�Ƃ��Ă͂��͈̔͊O�̒l���ێ��ł��܂��B
-	//�����̒l�́AHSV�F��ԁERGBQUAD�Ƃ̕ϊ�����0�`1�͈̔͂ɕ␳����܂�
+	//ＨＳＶ色空間による色表現
+	//・最小=0〜最大=1となりますが、値としてはその範囲外の値も保持できます。
+	//これらの値は、HSV色空間・RGBQUADとの変換時に0〜1の範囲に補正されます
 	struct RGBColor
 	{
-		DOUBLE R;	//0��R��1�ɐ��K�����ꂽ�q�l
-		DOUBLE G;	//0��R��1�ɐ��K�����ꂽ�f�l
-		DOUBLE B;	//0��R��1�ɐ��K�����ꂽ�a�l
-		DOUBLE A;	//0��R��1�ɐ��K�����ꂽ�A���t�@�l
+		DOUBLE R;	//0≦R≦1に正規化されたＲ値
+		DOUBLE G;	//0≦R≦1に正規化されたＧ値
+		DOUBLE B;	//0≦R≦1に正規化されたＢ値
+		DOUBLE A;	//0≦R≦1に正規化されたアルファ値
 
 		void clear( void )
 		{
@@ -40,16 +40,16 @@ public:
 		}
 	};
 
-	//�g�r�u�F��Ԃɂ��F�\��
-	//�E�F����1��=1�Ƃ����l�ł��B
-	//�E�ʓx�A���x�A�A���t�@�l�́A�ŏ�=0�`�ő�=1�ƂȂ�܂����A�l�Ƃ��Ă͂��͈̔͊O�̒l���ێ��ł��܂��B
-	//�����̒l�́ARGB�F��ԁERGBQUAD�Ƃ̕ϊ�����0�`1�͈̔͂ɕ␳����܂�
+	//ＨＳＶ色空間による色表現
+	//・色相は1周=1とした値です。
+	//・彩度、明度、アルファ値は、最小=0〜最大=1となりますが、値としてはその範囲外の値も保持できます。
+	//これらの値は、RGB色空間・RGBQUADとの変換時に0〜1の範囲に補正されます
 	struct HSVColor
 	{
-		DOUBLE H;	//�����1.0�ɐ��K�����ꂽ�F��
-		DOUBLE S;	//0��R��1�ɐ��K�����ꂽ�ʓx
-		DOUBLE V;	//0��R��1�ɐ��K�����ꂽ���x
-		DOUBLE A;	//0��R��1�ɐ��K�����ꂽ�A���t�@�l
+		DOUBLE H;	//一周＝1.0に正規化された色相
+		DOUBLE S;	//0≦R≦1に正規化された彩度
+		DOUBLE V;	//0≦R≦1に正規化された明度
+		DOUBLE A;	//0≦R≦1に正規化されたアルファ値
 
 		void clear( void )
 		{
@@ -60,7 +60,7 @@ public:
 		}
 	};
 
-	//�P�x�l
+	//輝度値
 	template< class T > struct Brightness
 	{
 		DOUBLE v;
@@ -74,491 +74,491 @@ public:
 		}
 	};
 
-	//�ԋP�x�l(0�`1)
+	//赤輝度値(0〜1)
 	using BrR = Brightness< struct BrR >;
-	//�΋P�x�l(0�`1)
+	//緑輝度値(0〜1)
 	using BrG = Brightness< struct BrG >;
-	//�P�x�l(0�`1)
+	//青輝度値(0〜1)
 	using BrB = Brightness< struct BrB >;
-	//�A���t�@�l(0�`1)
+	//アルファ値(0〜1)
 	using BrA = Brightness< struct BrA >;
-	//�F��(0�`1)
+	//色相(0〜1)
 	using BrH = Brightness< struct BrH >;
-	//�ʓx(0�`1)
+	//彩度(0〜1)
 	using BrS = Brightness< struct BrS >;
-	//���x(0�`1)
+	//明度(0〜1)
 	using BrV = Brightness< struct BrV >;
 
 	//---------------------------------------------
-	//�l�ݒ�n
+	//値設定系
 	//---------------------------------------------
 
-	//�l�̐ݒ�(�R���X�g���N�^Ver)
-	// source : �ݒ肵�����l
+	//値の設定(コンストラクタVer)
+	// source : 設定したい値
 	mGdiColor( const RGBColor& source );
 
-	//�l�̐ݒ�(�R���X�g���N�^Ver)
-	// source : �ݒ肵�����l
+	//値の設定(コンストラクタVer)
+	// source : 設定したい値
 	mGdiColor( const HSVColor& source );
 
-	//�l�̐ݒ�(�R���X�g���N�^Ver)
-	// source : �ݒ肵�����l
+	//値の設定(コンストラクタVer)
+	// source : 設定したい値
 	mGdiColor( const RGBQUAD& source );
 
-	//�l�̐ݒ�(�R���X�g���N�^Ver)
-	// source : �ݒ肵�����l
+	//値の設定(コンストラクタVer)
+	// source : 設定したい値
 	mGdiColor( COLORREF source );
 
-	//�l�̐ݒ�
-	// col : �ݒ肵�����l
+	//値の設定
+	// col : 設定したい値
 	void Set( const RGBColor& col );
 
-	//�l�̐ݒ�
-	// col : �ݒ肵�����l
+	//値の設定
+	// col : 設定したい値
 	void Set( const HSVColor& col );
 
-	//�l�̐ݒ�
-	// col : �ݒ肵�����l
+	//値の設定
+	// col : 設定したい値
 	void Set( const RGBQUAD& col );
 
-	//�l�̐ݒ�
-	// col : �ݒ肵�����l
+	//値の設定
+	// col : 設定したい値
 	void Set( COLORREF col );
 
-	//�l�̐ݒ�i�ԋP�x�l�̂݁j
-	// col : �ݒ肵�����l
+	//値の設定（赤輝度値のみ）
+	// col : 設定したい値
 	void Set( const BrR& col );
 
-	//�l�̐ݒ�i�΋P�x�l�̂݁j
-	// col : �ݒ肵�����l
+	//値の設定（緑輝度値のみ）
+	// col : 設定したい値
 	void Set( const BrG& col );
 
-	//�l�̐ݒ�i�P�x�l�̂݁j
-	// col : �ݒ肵�����l
+	//値の設定（青輝度値のみ）
+	// col : 設定したい値
 	void Set( const BrB& col );
 
-	//�l�̐ݒ�i�A���t�@�l�̂݁j
-	// col : �ݒ肵�����l
+	//値の設定（アルファ値のみ）
+	// col : 設定したい値
 	void Set( const BrA& col );
 
-	//�l�̐ݒ�i�F���l�̂݁j
-	// col : �ݒ肵�����l
+	//値の設定（色相値のみ）
+	// col : 設定したい値
 	void Set( const BrH& col );
 
-	//�l�̐ݒ�i�ʓx�l�̂݁j
-	// col : �ݒ肵�����l
+	//値の設定（彩度値のみ）
+	// col : 設定したい値
 	void Set( const BrS& col );
 
-	//�l�̐ݒ�i���x�l�̂݁j
-	// col : �ݒ肵�����l
+	//値の設定（明度値のみ）
+	// col : 設定したい値
 	void Set( const BrV& col );
 
-	//�l�̐ݒ�
-	// src : �ݒ肵�����l
+	//値の設定
+	// src : 設定したい値
 	const mGdiColor& operator=( const RGBColor& src );
 
-	//�l�̐ݒ�
-	// src : �ݒ肵�����l
+	//値の設定
+	// src : 設定したい値
 	const mGdiColor& operator=( const HSVColor& src );
 
-	//�l�̐ݒ�
-	// src : �ݒ肵�����l
+	//値の設定
+	// src : 設定したい値
 	const mGdiColor& operator=( const RGBQUAD& src );
 
-	//�l�̐ݒ�
-	// src : �ݒ肵�����l
+	//値の設定
+	// src : 設定したい値
 	const mGdiColor& operator=( COLORREF src );
 
 	//---------------------------------------------
-	//�l�擾�n
+	//値取得系
 	//---------------------------------------------
 
-	//�l�̎擾
-	//���݂̒l��RGB�ł͂Ȃ��ꍇ�́ARGB�ɕϊ������l���擾���܂����A
-	//�C���X�^���X���ێ����Ă���l�͕ω����܂���B
-	// retCol : �擾�����l
+	//値の取得
+	//現在の値がRGBではない場合は、RGBに変換した値を取得しますが、
+	//インスタンスが保持している値は変化しません。
+	// retCol : 取得した値
 	void Get( RGBColor& retCol )const;
 
-	//�l�̎擾
-	//���݂̒l��HSV�ł͂Ȃ��ꍇ�́AHSV�ɕϊ������l���擾���܂����A
-	//�C���X�^���X���ێ����Ă���l�͕ω����܂���B
-	// retCol : �擾�����l
+	//値の取得
+	//現在の値がHSVではない場合は、HSVに変換した値を取得しますが、
+	//インスタンスが保持している値は変化しません。
+	// retCol : 取得した値
 	void Get( HSVColor& retCol )const;
 
-	//�l�̎擾
-	//���݂̒l��RGB�ł͂Ȃ��ꍇ�́ARGB�ɕϊ������l���擾���܂����A
-	//�C���X�^���X���ێ����Ă���l�͕ω����܂���B
-	// retCol : �擾�����l
+	//値の取得
+	//現在の値がRGBではない場合は、RGBに変換した値を取得しますが、
+	//インスタンスが保持している値は変化しません。
+	// retCol : 取得した値
 	void Get( RGBQUAD& retCol )const;
 
-	//�l�̎擾
-	//���݂̒l��RGB�ł͂Ȃ��ꍇ�́ARGB�ɕϊ������l���擾���܂����A
-	//�C���X�^���X���ێ����Ă���l�͕ω����܂���B
-	// retCol : �擾�����l
+	//値の取得
+	//現在の値がRGBではない場合は、RGBに変換した値を取得しますが、
+	//インスタンスが保持している値は変化しません。
+	// retCol : 取得した値
 	void Get( COLORREF& retCol )const;
 
-	//�l�̎擾
-	//���݂̒l��RGB�ł͂Ȃ��ꍇ�́ARGB�ɕϊ������l���擾���܂����A
-	//�C���X�^���X���ێ����Ă���l�͕ω����܂���B
-	// ret : RGB�l
+	//値の取得
+	//現在の値がRGBではない場合は、RGBに変換した値を取得しますが、
+	//インスタンスが保持している値は変化しません。
+	// ret : RGB値
 	operator RGBColor( void )const;
 
-	//�l�̎擾
-	//���݂̒l��HSV�ł͂Ȃ��ꍇ�́AHSV�ɕϊ������l���擾���܂����A
-	//�C���X�^���X���ێ����Ă���l�͕ω����܂���B
-	// ret : HSV�l
+	//値の取得
+	//現在の値がHSVではない場合は、HSVに変換した値を取得しますが、
+	//インスタンスが保持している値は変化しません。
+	// ret : HSV値
 	operator HSVColor( void )const;
 
-	//�l�̎擾
-	//���݂̒l��RGB�ł͂Ȃ��ꍇ�́ARGB�ɕϊ������l���擾���܂����A
-	//�C���X�^���X���ێ����Ă���l�͕ω����܂���B
-	// ret : RGBQUAD�l
+	//値の取得
+	//現在の値がRGBではない場合は、RGBに変換した値を取得しますが、
+	//インスタンスが保持している値は変化しません。
+	// ret : RGBQUAD値
 	operator RGBQUAD( void )const;
 
-	//�l�̎擾
-	//���݂̒l��RGB�ł͂Ȃ��ꍇ�́ARGB�ɕϊ������l���擾���܂����A
-	//�C���X�^���X���ێ����Ă���l�͕ω����܂���B
-	// ret : RGBQUAD�l
+	//値の取得
+	//現在の値がRGBではない場合は、RGBに変換した値を取得しますが、
+	//インスタンスが保持している値は変化しません。
+	// ret : RGBQUAD値
 	operator COLORREF( void )const;
 
 	//---------------------------------------------
-	//�l���Z�n
+	//値演算系
 	//---------------------------------------------
 
-	//�l�̉��Z(�eRGB�P�x�l)
-	//�E���݂̒l��RGB�ł͂Ȃ��ꍇ�ARGB�ɕϊ����Ă�����Z���܂��B
-	//�@���̂Ƃ��A�l��0�`1�͈̔͂ɂȂ��ꍇ�́A0�`1�ɕ␳����܂��B
-	// src : ���Z����l
-	// ret : ���݂̒l
+	//値の加算(各RGB輝度値)
+	//・現在の値がRGBではない場合、RGBに変換してから加算します。
+	//　このとき、値が0〜1の範囲にない場合は、0〜1に補正されます。
+	// src : 加算する値
+	// ret : 現在の値
 	const mGdiColor& operator+=( const RGBColor& src );
 
-	//�l�̉��Z(HSV�l�ɂ��)
-	//�E���݂̒l��HSV�ł͂Ȃ��ꍇ�AHSV�ɕϊ����Ă�����Z���܂��B
-	//�@���̂Ƃ��A�l��0�`1�͈̔͂ɂȂ��ꍇ�́A0�`1�ɕ␳����܂��B
-	// src : ���Z����l
-	// ret : ���݂̒l
+	//値の加算(HSV値による)
+	//・現在の値がHSVではない場合、HSVに変換してから加算します。
+	//　このとき、値が0〜1の範囲にない場合は、0〜1に補正されます。
+	// src : 加算する値
+	// ret : 現在の値
 	const mGdiColor& operator+=( const HSVColor& src );
 
-	//�l�̉��Z(255�K��RGB�l)
-	//�E���݂̒l��RGB�ł͂Ȃ��ꍇ�ARGB�ɕϊ����Ă�����Z���܂��B
-	//�@���̂Ƃ��A�l��0�`1�͈̔͂ɂȂ��ꍇ�́A0�`1�ɕ␳����܂��B
-	// src : ���Z����l
-	// ret : ���݂̒l
+	//値の加算(255階調RGB値)
+	//・現在の値がRGBではない場合、RGBに変換してから加算します。
+	//　このとき、値が0〜1の範囲にない場合は、0〜1に補正されます。
+	// src : 加算する値
+	// ret : 現在の値
 	const mGdiColor& operator+=( const RGBQUAD& src );
 
-	//�l�̉��Z(255�K��RGB�l)
-	//�E���݂̒l��RGB�ł͂Ȃ��ꍇ�ARGB�ɕϊ����Ă�����Z���܂��B
-	//�@���̂Ƃ��A�l��0�`1�͈̔͂ɂȂ��ꍇ�́A0�`1�ɕ␳����܂��B
-	// src : ���Z����l
-	// ret : ���݂̒l
+	//値の加算(255階調RGB値)
+	//・現在の値がRGBではない場合、RGBに変換してから加算します。
+	//　このとき、値が0〜1の範囲にない場合は、0〜1に補正されます。
+	// src : 加算する値
+	// ret : 現在の値
 	const mGdiColor& operator+=( COLORREF src );
 
-	//�l�̉��Z(�ԋP�x�l)
-	//�E���݂̒l��RGB�ł͂Ȃ��ꍇ�ARGB�ɕϊ����Ă�����Z���܂��B
-	//�@���̂Ƃ��A�l��0�`1�͈̔͂ɂȂ��ꍇ�́A0�`1�ɕ␳����܂��B
-	// src : ���Z����l
-	// ret : ���݂̒l
+	//値の加算(赤輝度値)
+	//・現在の値がRGBではない場合、RGBに変換してから加算します。
+	//　このとき、値が0〜1の範囲にない場合は、0〜1に補正されます。
+	// src : 加算する値
+	// ret : 現在の値
 	const mGdiColor& operator+=( const BrR& src );
 
-	//�l�̉��Z(�΋P�x�l)
-	//�E���݂̒l��RGB�ł͂Ȃ��ꍇ�ARGB�ɕϊ����Ă�����Z���܂��B
-	//�@���̂Ƃ��A�l��0�`1�͈̔͂ɂȂ��ꍇ�́A0�`1�ɕ␳����܂��B
-	// src : ���Z����l
-	// ret : ���݂̒l
+	//値の加算(緑輝度値)
+	//・現在の値がRGBではない場合、RGBに変換してから加算します。
+	//　このとき、値が0〜1の範囲にない場合は、0〜1に補正されます。
+	// src : 加算する値
+	// ret : 現在の値
 	const mGdiColor& operator+=( const BrG& src );
 
-	//�l�̉��Z(�P�x�l)
-	//�E���݂̒l��RGB�ł͂Ȃ��ꍇ�ARGB�ɕϊ����Ă�����Z���܂��B
-	//�@���̂Ƃ��A�l��0�`1�͈̔͂ɂȂ��ꍇ�́A0�`1�ɕ␳����܂��B
-	// src : ���Z����l
-	// ret : ���݂̒l
+	//値の加算(青輝度値)
+	//・現在の値がRGBではない場合、RGBに変換してから加算します。
+	//　このとき、値が0〜1の範囲にない場合は、0〜1に補正されます。
+	// src : 加算する値
+	// ret : 現在の値
 	const mGdiColor& operator+=( const BrB& src );
 
-	//�l�̉��Z(�A���t�@�l)
-	// src : ���Z����l
-	// ret : ���݂̒l
+	//値の加算(アルファ値)
+	// src : 加算する値
+	// ret : 現在の値
 	const mGdiColor& operator+=( const BrA& src );
 
-	//�l�̉��Z(�F��)
-	//�E���݂̒l��HSV�ł͂Ȃ��ꍇ�AHSV�ɕϊ����Ă�����Z���܂��B
-	//�@���̂Ƃ��A�l��0�`1�͈̔͂ɂȂ��ꍇ�́A0�`1�ɕ␳����܂��B
-	// src : ���Z����l
-	// ret : ���݂̒l
+	//値の加算(色相)
+	//・現在の値がHSVではない場合、HSVに変換してから加算します。
+	//　このとき、値が0〜1の範囲にない場合は、0〜1に補正されます。
+	// src : 加算する値
+	// ret : 現在の値
 	const mGdiColor& operator+=( const BrH& src );
 
-	//�l�̉��Z(�ʓx)
-	//�E���݂̒l��HSV�ł͂Ȃ��ꍇ�AHSV�ɕϊ����Ă�����Z���܂��B
-	//�@���̂Ƃ��A�l��0�`1�͈̔͂ɂȂ��ꍇ�́A0�`1�ɕ␳����܂��B
-	// src : ���Z����l
-	// ret : ���݂̒l
+	//値の加算(彩度)
+	//・現在の値がHSVではない場合、HSVに変換してから加算します。
+	//　このとき、値が0〜1の範囲にない場合は、0〜1に補正されます。
+	// src : 加算する値
+	// ret : 現在の値
 	const mGdiColor& operator+=( const BrS& src );
 
-	//�l�̉��Z(���x)
-	//�E���݂̒l��HSV�ł͂Ȃ��ꍇ�AHSV�ɕϊ����Ă�����Z���܂��B
-	//�@���̂Ƃ��A�l��0�`1�͈̔͂ɂȂ��ꍇ�́A0�`1�ɕ␳����܂��B
-	// src : ���Z����l
-	// ret : ���݂̒l
+	//値の加算(明度)
+	//・現在の値がHSVではない場合、HSVに変換してから加算します。
+	//　このとき、値が0〜1の範囲にない場合は、0〜1に補正されます。
+	// src : 加算する値
+	// ret : 現在の値
 	const mGdiColor& operator+=( const BrV& src );
 
-	//�l�̌��Z(�eRGB�P�x�l)
-	//�E���݂̒l��RGB�ł͂Ȃ��ꍇ�ARGB�ɕϊ����Ă��猸�Z���܂��B
-	//�@���̂Ƃ��A�l��0�`1�͈̔͂ɂȂ��ꍇ�́A0�`1�ɕ␳����܂��B
-	// src : ���Z����l
-	// ret : ���݂̒l
+	//値の減算(各RGB輝度値)
+	//・現在の値がRGBではない場合、RGBに変換してから減算します。
+	//　このとき、値が0〜1の範囲にない場合は、0〜1に補正されます。
+	// src : 減算する値
+	// ret : 現在の値
 	const mGdiColor& operator-=( const RGBColor& src );
 
-	//�l�̌��Z(HSV�l�ɂ��)
-	//�E���݂̒l��HSV�ł͂Ȃ��ꍇ�AHSV�ɕϊ����Ă��猸�Z���܂��B
-	//�@���̂Ƃ��A�l��0�`1�͈̔͂ɂȂ��ꍇ�́A0�`1�ɕ␳����܂��B
-	// src : ���Z����l
-	// ret : ���݂̒l
+	//値の減算(HSV値による)
+	//・現在の値がHSVではない場合、HSVに変換してから減算します。
+	//　このとき、値が0〜1の範囲にない場合は、0〜1に補正されます。
+	// src : 減算する値
+	// ret : 現在の値
 	const mGdiColor& operator-=( const HSVColor& src );
 
-	//�l�̌��Z(255�K��RGB�l)
-	//�E���݂̒l��RGB�ł͂Ȃ��ꍇ�ARGB�ɕϊ����Ă��猸�Z���܂��B
-	//�@���̂Ƃ��A�l��0�`1�͈̔͂ɂȂ��ꍇ�́A0�`1�ɕ␳����܂��B
-	// src : ���Z����l
-	// ret : ���݂̒l
+	//値の減算(255階調RGB値)
+	//・現在の値がRGBではない場合、RGBに変換してから減算します。
+	//　このとき、値が0〜1の範囲にない場合は、0〜1に補正されます。
+	// src : 減算する値
+	// ret : 現在の値
 	const mGdiColor& operator-=( const RGBQUAD& src );
 
-	//�l�̌��Z(255�K��RGB�l)
-	//�E���݂̒l��RGB�ł͂Ȃ��ꍇ�ARGB�ɕϊ����Ă��猸�Z���܂��B
-	//�@���̂Ƃ��A�l��0�`1�͈̔͂ɂȂ��ꍇ�́A0�`1�ɕ␳����܂��B
-	// src : ���Z����l
-	// ret : ���݂̒l
+	//値の減算(255階調RGB値)
+	//・現在の値がRGBではない場合、RGBに変換してから減算します。
+	//　このとき、値が0〜1の範囲にない場合は、0〜1に補正されます。
+	// src : 減算する値
+	// ret : 現在の値
 	const mGdiColor& operator-=( COLORREF src );
 
-	//�l�̌��Z(�ԋP�x�l)
-	//�E���݂̒l��RGB�ł͂Ȃ��ꍇ�ARGB�ɕϊ����Ă��猸�Z���܂��B
-	//�@���̂Ƃ��A�l��0�`1�͈̔͂ɂȂ��ꍇ�́A0�`1�ɕ␳����܂��B
-	// src : ���Z����l
-	// ret : ���݂̒l
+	//値の減算(赤輝度値)
+	//・現在の値がRGBではない場合、RGBに変換してから減算します。
+	//　このとき、値が0〜1の範囲にない場合は、0〜1に補正されます。
+	// src : 減算する値
+	// ret : 現在の値
 	const mGdiColor& operator-=( const BrR& src );
 
-	//�l�̌��Z(�΋P�x�l)
-	//�E���݂̒l��RGB�ł͂Ȃ��ꍇ�ARGB�ɕϊ����Ă��猸�Z���܂��B
-	//�@���̂Ƃ��A�l��0�`1�͈̔͂ɂȂ��ꍇ�́A0�`1�ɕ␳����܂��B
-	// src : ���Z����l
-	// ret : ���݂̒l
+	//値の減算(緑輝度値)
+	//・現在の値がRGBではない場合、RGBに変換してから減算します。
+	//　このとき、値が0〜1の範囲にない場合は、0〜1に補正されます。
+	// src : 減算する値
+	// ret : 現在の値
 	const mGdiColor& operator-=( const BrG& src );
 
-	//�l�̌��Z(�P�x�l)
-	//�E���݂̒l��RGB�ł͂Ȃ��ꍇ�ARGB�ɕϊ����Ă��猸�Z���܂��B
-	//�@���̂Ƃ��A�l��0�`1�͈̔͂ɂȂ��ꍇ�́A0�`1�ɕ␳����܂��B
-	// src : ���Z����l
-	// ret : ���݂̒l
+	//値の減算(青輝度値)
+	//・現在の値がRGBではない場合、RGBに変換してから減算します。
+	//　このとき、値が0〜1の範囲にない場合は、0〜1に補正されます。
+	// src : 減算する値
+	// ret : 現在の値
 	const mGdiColor& operator-=( const BrB& src );
 
-	//�l�̌��Z(�A���t�@�l)
-	// src : ���Z����l
-	// ret : ���݂̒l
+	//値の減算(アルファ値)
+	// src : 減算する値
+	// ret : 現在の値
 	const mGdiColor& operator-=( const BrA& src );
 
-	//�l�̌��Z(�F��)
-	//�E���݂̒l��HSV�ł͂Ȃ��ꍇ�AHSV�ɕϊ����Ă��猸�Z���܂��B
-	//�@���̂Ƃ��A�l��0�`1�͈̔͂ɂȂ��ꍇ�́A0�`1�ɕ␳����܂��B
-	// src : ���Z����l
-	// ret : ���݂̒l
+	//値の減算(色相)
+	//・現在の値がHSVではない場合、HSVに変換してから減算します。
+	//　このとき、値が0〜1の範囲にない場合は、0〜1に補正されます。
+	// src : 減算する値
+	// ret : 現在の値
 	const mGdiColor& operator-=( const BrH& src );
 
-	//�l�̌��Z(�ʓx)
-	//�E���݂̒l��HSV�ł͂Ȃ��ꍇ�AHSV�ɕϊ����Ă��猸�Z���܂��B
-	//�@���̂Ƃ��A�l��0�`1�͈̔͂ɂȂ��ꍇ�́A0�`1�ɕ␳����܂��B
-	// src : ���Z����l
-	// ret : ���݂̒l
+	//値の減算(彩度)
+	//・現在の値がHSVではない場合、HSVに変換してから減算します。
+	//　このとき、値が0〜1の範囲にない場合は、0〜1に補正されます。
+	// src : 減算する値
+	// ret : 現在の値
 	const mGdiColor& operator-=( const BrS& src );
 
-	//�l�̌��Z(���x)
-	//�E���݂̒l��HSV�ł͂Ȃ��ꍇ�AHSV�ɕϊ����Ă��猸�Z���܂��B
-	//�@���̂Ƃ��A�l��0�`1�͈̔͂ɂȂ��ꍇ�́A0�`1�ɕ␳����܂��B
-	// src : ���Z����l
-	// ret : ���݂̒l
+	//値の減算(明度)
+	//・現在の値がHSVではない場合、HSVに変換してから減算します。
+	//　このとき、値が0〜1の範囲にない場合は、0〜1に補正されます。
+	// src : 減算する値
+	// ret : 現在の値
 	const mGdiColor& operator-=( const BrV& src );
 
-	//�l�̏�Z(�eRGB�P�x�l)
-	//�E���݂̒l��RGB�ł͂Ȃ��ꍇ�ARGB�ɕϊ����Ă����Z���܂��B
-	//�@���̂Ƃ��A�l��0�`1�͈̔͂ɂȂ��ꍇ�́A0�`1�ɕ␳����܂��B
-	// src : ��Z����l
-	// ret : ���݂̒l
+	//値の乗算(各RGB輝度値)
+	//・現在の値がRGBではない場合、RGBに変換してから乗算します。
+	//　このとき、値が0〜1の範囲にない場合は、0〜1に補正されます。
+	// src : 乗算する値
+	// ret : 現在の値
 	const mGdiColor& operator*=( const RGBColor& src );
 
-	//�l�̏�Z(HSV�l�ɂ��)
-	//�E���݂̒l��HSV�ł͂Ȃ��ꍇ�AHSV�ɕϊ����Ă����Z���܂��B
-	//�@���̂Ƃ��A�l��0�`1�͈̔͂ɂȂ��ꍇ�́A0�`1�ɕ␳����܂��B
-	// src : ��Z����l
-	// ret : ���݂̒l
+	//値の乗算(HSV値による)
+	//・現在の値がHSVではない場合、HSVに変換してから乗算します。
+	//　このとき、値が0〜1の範囲にない場合は、0〜1に補正されます。
+	// src : 乗算する値
+	// ret : 現在の値
 	const mGdiColor& operator*=( const HSVColor& src );
 
-	//�l�̏�Z(255�K��RGB�l)
-	//�E���݂̒l��RGB�ł͂Ȃ��ꍇ�ARGB�ɕϊ����Ă����Z���܂��B
-	//�@���̂Ƃ��A�l��0�`1�͈̔͂ɂȂ��ꍇ�́A0�`1�ɕ␳����܂��B
-	// src : ��Z����l
-	// ret : ���݂̒l
+	//値の乗算(255階調RGB値)
+	//・現在の値がRGBではない場合、RGBに変換してから乗算します。
+	//　このとき、値が0〜1の範囲にない場合は、0〜1に補正されます。
+	// src : 乗算する値
+	// ret : 現在の値
 	const mGdiColor& operator*=( const RGBQUAD& src );
 
-	//�l�̏�Z(255�K��RGB�l)
-	//�E���݂̒l��RGB�ł͂Ȃ��ꍇ�ARGB�ɕϊ����Ă����Z���܂��B
-	//�@���̂Ƃ��A�l��0�`1�͈̔͂ɂȂ��ꍇ�́A0�`1�ɕ␳����܂��B
-	// src : ��Z����l
-	// ret : ���݂̒l
+	//値の乗算(255階調RGB値)
+	//・現在の値がRGBではない場合、RGBに変換してから乗算します。
+	//　このとき、値が0〜1の範囲にない場合は、0〜1に補正されます。
+	// src : 乗算する値
+	// ret : 現在の値
 	const mGdiColor& operator*=( COLORREF src );
 
-	//�l�̏�Z(�ԋP�x�l)
-	//�E���݂̒l��RGB�ł͂Ȃ��ꍇ�ARGB�ɕϊ����Ă����Z���܂��B
-	//�@���̂Ƃ��A�l��0�`1�͈̔͂ɂȂ��ꍇ�́A0�`1�ɕ␳����܂��B
-	// src : ��Z����l
-	// ret : ���݂̒l
+	//値の乗算(赤輝度値)
+	//・現在の値がRGBではない場合、RGBに変換してから乗算します。
+	//　このとき、値が0〜1の範囲にない場合は、0〜1に補正されます。
+	// src : 乗算する値
+	// ret : 現在の値
 	const mGdiColor& operator*=( const BrR& src );
 
-	//�l�̏�Z(�΋P�x�l)
-	//�E���݂̒l��RGB�ł͂Ȃ��ꍇ�ARGB�ɕϊ����Ă����Z���܂��B
-	//�@���̂Ƃ��A�l��0�`1�͈̔͂ɂȂ��ꍇ�́A0�`1�ɕ␳����܂��B
-	// src : ��Z����l
-	// ret : ���݂̒l
+	//値の乗算(緑輝度値)
+	//・現在の値がRGBではない場合、RGBに変換してから乗算します。
+	//　このとき、値が0〜1の範囲にない場合は、0〜1に補正されます。
+	// src : 乗算する値
+	// ret : 現在の値
 	const mGdiColor& operator*=( const BrG& src );
 
-	//�l�̏�Z(�P�x�l)
-	//�E���݂̒l��RGB�ł͂Ȃ��ꍇ�ARGB�ɕϊ����Ă����Z���܂��B
-	//�@���̂Ƃ��A�l��0�`1�͈̔͂ɂȂ��ꍇ�́A0�`1�ɕ␳����܂��B
-	// src : ��Z����l
-	// ret : ���݂̒l
+	//値の乗算(青輝度値)
+	//・現在の値がRGBではない場合、RGBに変換してから乗算します。
+	//　このとき、値が0〜1の範囲にない場合は、0〜1に補正されます。
+	// src : 乗算する値
+	// ret : 現在の値
 	const mGdiColor& operator*=( const BrB& src );
 
-	//�l�̏�Z(�A���t�@�l)
-	// src : ��Z����l
-	// ret : ���݂̒l
+	//値の乗算(アルファ値)
+	// src : 乗算する値
+	// ret : 現在の値
 	const mGdiColor& operator*=( const BrA& src );
 
-	//�l�̏�Z(�F��)
-	//�E���݂̒l��HSV�ł͂Ȃ��ꍇ�AHSV�ɕϊ����Ă����Z���܂��B
-	//�@���̂Ƃ��A�l��0�`1�͈̔͂ɂȂ��ꍇ�́A0�`1�ɕ␳����܂��B
-	// src : ��Z����l
-	// ret : ���݂̒l
+	//値の乗算(色相)
+	//・現在の値がHSVではない場合、HSVに変換してから乗算します。
+	//　このとき、値が0〜1の範囲にない場合は、0〜1に補正されます。
+	// src : 乗算する値
+	// ret : 現在の値
 	const mGdiColor& operator*=( const BrH& src );
 
-	//�l�̏�Z(�ʓx)
-	//�E���݂̒l��HSV�ł͂Ȃ��ꍇ�AHSV�ɕϊ����Ă����Z���܂��B
-	//�@���̂Ƃ��A�l��0�`1�͈̔͂ɂȂ��ꍇ�́A0�`1�ɕ␳����܂��B
-	// src : ��Z����l
-	// ret : ���݂̒l
+	//値の乗算(彩度)
+	//・現在の値がHSVではない場合、HSVに変換してから乗算します。
+	//　このとき、値が0〜1の範囲にない場合は、0〜1に補正されます。
+	// src : 乗算する値
+	// ret : 現在の値
 	const mGdiColor& operator*=( const BrS& src );
 
-	//�l�̏�Z(���x)
-	//�E���݂̒l��HSV�ł͂Ȃ��ꍇ�AHSV�ɕϊ����Ă����Z���܂��B
-	//�@���̂Ƃ��A�l��0�`1�͈̔͂ɂȂ��ꍇ�́A0�`1�ɕ␳����܂��B
-	// src : ��Z����l
-	// ret : ���݂̒l
+	//値の乗算(明度)
+	//・現在の値がHSVではない場合、HSVに変換してから乗算します。
+	//　このとき、値が0〜1の範囲にない場合は、0〜1に補正されます。
+	// src : 乗算する値
+	// ret : 現在の値
 	const mGdiColor& operator*=( const BrV& src );
 
-	//�l�̏�]�Z(�eRGB�P�x�l)
-	//�E���݂̒l��RGB�ł͂Ȃ��ꍇ�ARGB�ɕϊ����Ă����]�����߂܂��B
-	//�@���̂Ƃ��A�l��0�`1�͈̔͂ɂȂ��ꍇ�́A0�`1�ɕ␳����܂��B
-	// src : ��]�Z����l
-	// ret : ���݂̒l
+	//値の剰余算(各RGB輝度値)
+	//・現在の値がRGBではない場合、RGBに変換してから剰余を求めます。
+	//　このとき、値が0〜1の範囲にない場合は、0〜1に補正されます。
+	// src : 剰余算する値
+	// ret : 現在の値
 	const mGdiColor& operator/=( const RGBColor& src );
 
-	//�l�̏�]�Z(HSV�l�ɂ��)
-	//�E���݂̒l��HSV�ł͂Ȃ��ꍇ�AHSV�ɕϊ����Ă����]�����߂܂��B
-	//�@���̂Ƃ��A�l��0�`1�͈̔͂ɂȂ��ꍇ�́A0�`1�ɕ␳����܂��B
-	// src : ��]�Z����l
-	// ret : ���݂̒l
+	//値の剰余算(HSV値による)
+	//・現在の値がHSVではない場合、HSVに変換してから剰余を求めます。
+	//　このとき、値が0〜1の範囲にない場合は、0〜1に補正されます。
+	// src : 剰余算する値
+	// ret : 現在の値
 	const mGdiColor& operator/=( const HSVColor& src );
 
-	//�l�̏�]�Z(255�K��RGB�l)
-	//�E���݂̒l��RGB�ł͂Ȃ��ꍇ�ARGB�ɕϊ����Ă����]�����߂܂��B
-	//�@���̂Ƃ��A�l��0�`1�͈̔͂ɂȂ��ꍇ�́A0�`1�ɕ␳����܂��B
-	// src : ��]�Z����l
-	// ret : ���݂̒l
+	//値の剰余算(255階調RGB値)
+	//・現在の値がRGBではない場合、RGBに変換してから剰余を求めます。
+	//　このとき、値が0〜1の範囲にない場合は、0〜1に補正されます。
+	// src : 剰余算する値
+	// ret : 現在の値
 	const mGdiColor& operator/=( const RGBQUAD& src );
 
-	//�l�̏�]�Z(255�K��RGB�l)
-	//�E���݂̒l��RGB�ł͂Ȃ��ꍇ�ARGB�ɕϊ����Ă����]�����߂܂��B
-	//�@���̂Ƃ��A�l��0�`1�͈̔͂ɂȂ��ꍇ�́A0�`1�ɕ␳����܂��B
-	// src : ��]�Z����l
-	// ret : ���݂̒l
+	//値の剰余算(255階調RGB値)
+	//・現在の値がRGBではない場合、RGBに変換してから剰余を求めます。
+	//　このとき、値が0〜1の範囲にない場合は、0〜1に補正されます。
+	// src : 剰余算する値
+	// ret : 現在の値
 	const mGdiColor& operator/=( COLORREF src );
 
-	//�l�̏�]�Z(�ԋP�x�l)
-	//�E���݂̒l��RGB�ł͂Ȃ��ꍇ�ARGB�ɕϊ����Ă����]�����߂܂��B
-	//�@���̂Ƃ��A�l��0�`1�͈̔͂ɂȂ��ꍇ�́A0�`1�ɕ␳����܂��B
-	// src : ��]�Z����l
-	// ret : ���݂̒l
+	//値の剰余算(赤輝度値)
+	//・現在の値がRGBではない場合、RGBに変換してから剰余を求めます。
+	//　このとき、値が0〜1の範囲にない場合は、0〜1に補正されます。
+	// src : 剰余算する値
+	// ret : 現在の値
 	const mGdiColor& operator/=( const BrR& src );
 
-	//�l�̏�]�Z(�΋P�x�l)
-	//�E���݂̒l��RGB�ł͂Ȃ��ꍇ�ARGB�ɕϊ����Ă����]�����߂܂��B
-	//�@���̂Ƃ��A�l��0�`1�͈̔͂ɂȂ��ꍇ�́A0�`1�ɕ␳����܂��B
-	// src : ��]�Z����l
-	// ret : ���݂̒l
+	//値の剰余算(緑輝度値)
+	//・現在の値がRGBではない場合、RGBに変換してから剰余を求めます。
+	//　このとき、値が0〜1の範囲にない場合は、0〜1に補正されます。
+	// src : 剰余算する値
+	// ret : 現在の値
 	const mGdiColor& operator/=( const BrG& src );
 
-	//�l�̏�]�Z(�P�x�l)
-	//�E���݂̒l��RGB�ł͂Ȃ��ꍇ�ARGB�ɕϊ����Ă����]�����߂܂��B
-	//�@���̂Ƃ��A�l��0�`1�͈̔͂ɂȂ��ꍇ�́A0�`1�ɕ␳����܂��B
-	// src : ��]�Z����l
-	// ret : ���݂̒l
+	//値の剰余算(青輝度値)
+	//・現在の値がRGBではない場合、RGBに変換してから剰余を求めます。
+	//　このとき、値が0〜1の範囲にない場合は、0〜1に補正されます。
+	// src : 剰余算する値
+	// ret : 現在の値
 	const mGdiColor& operator/=( const BrB& src );
 
-	//�l�̏�]�Z(�A���t�@�l)
-	// src : ��]�Z����l
-	// ret : ���݂̒l
+	//値の剰余算(アルファ値)
+	// src : 剰余算する値
+	// ret : 現在の値
 	const mGdiColor& operator/=( const BrA& src );
 
-	//�l�̏�]�Z(�F��)
-	//�E���݂̒l��HSV�ł͂Ȃ��ꍇ�AHSV�ɕϊ����Ă����]�����߂܂��B
-	//�@���̂Ƃ��A�l��0�`1�͈̔͂ɂȂ��ꍇ�́A0�`1�ɕ␳����܂��B
-	// src : ��]�Z����l
-	// ret : ���݂̒l
+	//値の剰余算(色相)
+	//・現在の値がHSVではない場合、HSVに変換してから剰余を求めます。
+	//　このとき、値が0〜1の範囲にない場合は、0〜1に補正されます。
+	// src : 剰余算する値
+	// ret : 現在の値
 	const mGdiColor& operator/=( const BrH& src );
 
-	//�l�̏�]�Z(�ʓx)
-	//�E���݂̒l��HSV�ł͂Ȃ��ꍇ�AHSV�ɕϊ����Ă����]�����߂܂��B
-	//�@���̂Ƃ��A�l��0�`1�͈̔͂ɂȂ��ꍇ�́A0�`1�ɕ␳����܂��B
-	// src : ��]�Z����l
-	// ret : ���݂̒l
+	//値の剰余算(彩度)
+	//・現在の値がHSVではない場合、HSVに変換してから剰余を求めます。
+	//　このとき、値が0〜1の範囲にない場合は、0〜1に補正されます。
+	// src : 剰余算する値
+	// ret : 現在の値
 	const mGdiColor& operator/=( const BrS& src );
 
-	//�l�̏�]�Z(���x)
-	//�E���݂̒l��HSV�ł͂Ȃ��ꍇ�AHSV�ɕϊ����Ă����]�����߂܂��B
-	//�@���̂Ƃ��A�l��0�`1�͈̔͂ɂȂ��ꍇ�́A0�`1�ɕ␳����܂��B
-	// src : ��]�Z����l
-	// ret : ���݂̒l
+	//値の剰余算(明度)
+	//・現在の値がHSVではない場合、HSVに変換してから剰余を求めます。
+	//　このとき、値が0〜1の範囲にない場合は、0〜1に補正されます。
+	// src : 剰余算する値
+	// ret : 現在の値
 	const mGdiColor& operator/=( const BrV& src );
 
 	//---------------------------------------------
-	//�l�ϊ��n
+	//値変換系
 	//---------------------------------------------
 
-	//RGB�F��Ԃ�HSV�F��Ԃɕϊ�����
-	//���̊֐��́A�N���X�̃C���X�^���X���쐬���Ȃ��Ă��Ăяo�����Ƃ��o���܂��B
+	//RGB色空間をHSV色空間に変換する
+	//この関数は、クラスのインスタンスを作成しなくても呼び出すことが出来ます。
 	static HSVColor RGBtoHSV( const RGBColor& src );
 
-	//RGBQUAD�l��HSV�F��Ԃɕϊ�����
-	//���̊֐��́A�N���X�̃C���X�^���X���쐬���Ȃ��Ă��Ăяo�����Ƃ��o���܂��B
+	//RGBQUAD値をHSV色空間に変換する
+	//この関数は、クラスのインスタンスを作成しなくても呼び出すことが出来ます。
 	static HSVColor RGBQUADtoHSV( const RGBQUAD& src ); 
 
-	//RGB�F��Ԃ�RGB�F��Ԃɕϊ�����
-	//���̊֐��́A�N���X�̃C���X�^���X���쐬���Ȃ��Ă��Ăяo�����Ƃ��o���܂��B
+	//RGB色空間をRGB色空間に変換する
+	//この関数は、クラスのインスタンスを作成しなくても呼び出すことが出来ます。
 	static RGBColor HSVtoRGB( const HSVColor& src );
 
-	//RGBQUAD�l��RGB�F��Ԃɕϊ�����
-	//���̊֐��́A�N���X�̃C���X�^���X���쐬���Ȃ��Ă��Ăяo�����Ƃ��o���܂��B
+	//RGBQUAD値をRGB色空間に変換する
+	//この関数は、クラスのインスタンスを作成しなくても呼び出すことが出来ます。
 	static RGBColor RGBQUADtoRGB( const RGBQUAD& src );
 
-	//HSV�F��Ԃ�RGBQUAD�l�ϊ�����
-	//���̊֐��́A�N���X�̃C���X�^���X���쐬���Ȃ��Ă��Ăяo�����Ƃ��o���܂��B
+	//HSV色空間をRGBQUAD値変換する
+	//この関数は、クラスのインスタンスを作成しなくても呼び出すことが出来ます。
 	static RGBQUAD HSVtoRGBQUAD( const HSVColor& src );
 
-	//RGB�F��Ԃ�RGBQUAD�l�ϊ�����
-	//���̊֐��́A�N���X�̃C���X�^���X���쐬���Ȃ��Ă��Ăяo�����Ƃ��o���܂��B
+	//RGB色空間をRGBQUAD値変換する
+	//この関数は、クラスのインスタンスを作成しなくても呼び出すことが出来ます。
 	static RGBQUAD RGBtoRGBQUAD( const RGBColor& src );
 
 protected:
 
 	enum PrimaryColorSpace
 	{
-		COLORSPACE_RGB,		//RGB�F���
-		COLORSPACE_HSV,		//HSV�F���
+		COLORSPACE_RGB,		//RGB色空間
+		COLORSPACE_HSV,		//HSV色空間
 	};
 	PrimaryColorSpace MyPrimaryColorSpace;
 

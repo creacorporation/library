@@ -1,30 +1,30 @@
-//----------------------------------------------------------------------------
-// �E�C���h�E�Ǘ��i�O���[�o���ȃE�C���h�E�֐��j
+﻿//----------------------------------------------------------------------------
+// ウインドウ管理（グローバルなウインドウ関数）
 // Copyright (C) 2016 Fingerling. All rights reserved. 
 // This program is released under the MIT License. 
 // see http://opensource.org/licenses/mit-license.php
 //----------------------------------------------------------------------------
 
 /*
-�p�r�F
-�O���[�o���ȃ��b�Z�[�W�v���V�[�W���B
+用途：
+グローバルなメッセージプロシージャ。
 
-HWND��mWindow�̑g��o�^
-�@��
-�S�ẴE�C���h�E���b�Z�[�W�͈�U���̃N���X�ɓ͂�
-�@��
-�K�؂ȃC���X�^���X��mWindow::WindowProcedure���Ăяo�����
-�@��
-mWindow::WindowProcedure�Ń��b�Z�[�W������
+HWNDとmWindowの組を登録
+　↓
+全てのウインドウメッセージは一旦このクラスに届く
+　↓
+適切なインスタンスのmWindow::WindowProcedureが呼び出される
+　↓
+mWindow::WindowProcedureでメッセージを処理
 
-�Q�l�F
-CreateMessageEx�ŌĂяo����鏇��
-���������Ă�Ƃ�
+参考：
+CreateMessageExで呼び出される順番
+●成功してるとき
 (1)WM_GETMINMAXINFO
 (2)WM_NCCREATE
 (3)WM_NCCALCSIZE
 (4)WM_CREATE
-�����s���Ă���Ƃ�
+●失敗しているとき
 (1)WM_GETMINMAXINFO
 (2)WM_NCCREATE
 (3)WM_NCDESTROY
@@ -41,70 +41,70 @@ class mGlobalWindowFunc
 {
 public:
 
-	//���b�Z�[�W�v���V�[�W��
-	//�E�C���h�E���b�Z�[�W���󂯎��Ahwnd�̒l����Ɏ󂯎��ׂ��I�u�W�F�N�g�𒲂�
-	//���̃I�u�W�F�N�g�̃R�[���o�b�N���Ăяo���܂��B
-	//�Y���̃I�u�W�F�N�g�����݂��Ȃ��ꍇ�́ADefWindowProcW()�ɏ��������܂��B
-	//hwnd : ����E�C���h�E�n���h��
-	//msg : �E�C���h�E���b�Z�[�W
-	//wparam : WPARAM�̒l�i���b�Z�[�W�ɂ��Ӗ��͈قȂ�j
-	//lparam : LPARAM�̒l�i���b�Z�[�W�ɂ��Ӗ��͈قȂ�j
-	//���L�z���AWindows����R�[���o�b�N���邽�߂̊֐��ł��B
-	//�@���[�U�A�v�����璼�ڌĂяo����SendMessage()�����s�����݂����Ȍ��ʂɂȂ�͂��B
+	//メッセージプロシージャ
+	//ウインドウメッセージを受け取り、hwndの値を基に受け取るべくオブジェクトを調べ
+	//そのオブジェクトのコールバックを呼び出します。
+	//該当のオブジェクトが存在しない場合は、DefWindowProcW()に処理させます。
+	//hwnd : 宛先ウインドウハンドル
+	//msg : ウインドウメッセージ
+	//wparam : WPARAMの値（メッセージにより意味は異なる）
+	//lparam : LPARAMの値（メッセージにより意味は異なる）
+	//※キホン、Windowsからコールバックするための関数です。
+	//　ユーザアプリから直接呼び出すとSendMessage()を実行したみたいな結果になるはず。
 	static LRESULT __stdcall MessageProcedure( HWND hwnd , UINT msg , WPARAM wparam , LPARAM lparam );
 
 public:
 	//------------------------------------
-	//�@�ȉ����������p
+	//　以下内部処理用
 	//------------------------------------
 
-	//�A�N�Z�X���ݒ�p�I�u�W�F�N�g
-	//���̃N���X�̃R���X�g���N�^���Ăяo����҂ɂ̂݃A�N�Z�X����^����B
+	//アクセス権設定用オブジェクト
+	//このクラスのコンストラクタを呼び出せる者にのみアクセス許可を与える。
 	class AttachAccessPermission
 	{
 	private:
-		friend class mWindowCollection;		//�A�N�Z�X������N���X
+		friend class mWindowCollection;		//アクセス許可するクラス
 		AttachAccessPermission()
 		{
 			return;
 		}
 	};
 
-	//�E�C���h�E�n���h��(hwnd)�ƁA���̃n���h�����ẴE�C���h�E���b�Z�[�W���󂯎��
-	//�I�u�W�F�N�g(win)�̑g��o�^���܂��B���̊֐��́AmWindowCollection����̂݃A�N�Z�X�������܂��B
-	//hwnd : �o�^����E�C���h�E�n���h��
-	//win : hwnd�Ɋ֘A�Â���I�u�W�F�N�g
-	//ret : ����ɓo�^�ł����ꍇtrue
+	//ウインドウハンドル(hwnd)と、そのハンドル宛てのウインドウメッセージを受け取る
+	//オブジェクト(win)の組を登録します。この関数は、mWindowCollectionからのみアクセスを許可します。
+	//hwnd : 登録するウインドウハンドル
+	//win : hwndに関連づけるオブジェクト
+	//ret : 正常に登録できた場合true
 	static bool Attach( const AttachAccessPermission& perm , HWND hwnd , mWindow* win );
 
-	//�w�肷��E�C���h�E�n���h���Ɋ֘A�Â����Ă���I�u�W�F�N�g���擾���܂��B
-	//���̊֐��́AmWindowCollection����̂݃A�N�Z�X�������܂��B
-	//hwnd : ��������E�C���h�E�n���h��
-	//ret : �֘A�Â����Ă���I�u�W�F�N�g�B���݂��Ȃ��ꍇ��nullptr
+	//指定するウインドウハンドルに関連づけられているオブジェクトを取得します。
+	//この関数は、mWindowCollectionからのみアクセスを許可します。
+	//hwnd : 検索するウインドウハンドル
+	//ret : 関連づけられているオブジェクト。存在しない場合はnullptr
 	static mWindow* Query( const AttachAccessPermission& perm , HWND hwnd );
 
-	//�A�N�Z�X���ݒ�p�I�u�W�F�N�g
-	//���̃N���X�̃R���X�g���N�^���Ăяo����҂ɂ̂݃A�N�Z�X����^����B
+	//アクセス権設定用オブジェクト
+	//このクラスのコンストラクタを呼び出せる者にのみアクセス許可を与える。
 	class DetachAccessPermission
 	{
 	private:
-		friend class mWindow;	//�A�N�Z�X������N���X
+		friend class mWindow;	//アクセス許可するクラス
 		DetachAccessPermission()
 		{
 			return;
 		}
 	};
 
-	//�w�肳�ꂽ�E�C���h�E�n���h���ƃI�u�W�F�N�g�̑g��o�^��������B
-	//���̊֐��́AmWindow����̂݃A�N�Z�X�������܂��B
-	//hwnd : �o�^��������E�C���h�E�n���h��
-	//win : hwnd�Ɋ֘A�Â����Ă���I�u�W�F�N�g
-	//ret : �w�肳�ꂽ�g�����݂��A�o�^�����ł����ꍇ��true�B
+	//指定されたウインドウハンドルとオブジェクトの組を登録解除する。
+	//この関数は、mWindowからのみアクセスを許可します。
+	//hwnd : 登録解除するウインドウハンドル
+	//win : hwndに関連づけられているオブジェクト
+	//ret : 指定された組が存在し、登録解除できた場合はtrue。
 	static bool Detach( const DetachAccessPermission& perm , HWND hwnd , mWindow* win );
 
 private:
 
-	//HWND-mWindow�̃}�b�v
+	//HWND-mWindowのマップ
 	typedef std::unordered_map<HWND,mWindow*> HandleObjMap;
 	static HandleObjMap MyHandleObjMap;
 

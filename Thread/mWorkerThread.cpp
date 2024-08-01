@@ -1,11 +1,11 @@
-//----------------------------------------------------------------------------
-// ƒ[ƒJ[ƒXƒŒƒbƒh•ƒ^ƒXƒNƒnƒ“ƒhƒ‰
+ï»¿//----------------------------------------------------------------------------
+// ãƒ¯ãƒ¼ã‚«ãƒ¼ã‚¹ãƒ¬ãƒƒãƒ‰ï¼†ã‚¿ã‚¹ã‚¯ãƒãƒ³ãƒ‰ãƒ©
 // Copyright (C) 2019- Crea Inc. All rights reserved.
 // This program is released under the MIT License. 
 // see http://opensource.org/licenses/mit-license.php
-// ’˜ìŒ •\¦‚âƒ‰ƒCƒZƒ“ƒX‚Ì‰ü•Ï‚Í‹Ö~‚³‚ê‚Ä‚¢‚Ü‚·B
-// ‚±‚Ìƒ\[ƒXƒR[ƒh‚ÉŠÖ‚µ‚ÄAã‹Lƒ‰ƒCƒZƒ“ƒXˆÈŠO‚ÌŒ_–ñ“™‚ÍˆêØ‘¶İ‚µ‚Ü‚¹‚ñB
-// (‰½‚ç‚©‚ÌŒ_–ñ‚ª‚ ‚éê‡‚Å‚àA–{ƒ\[ƒXƒR[ƒh‚Í‚»‚Ì‘ÎÛŠO‚Æ‚È‚è‚Ü‚·)
+// è‘—ä½œæ¨©è¡¨ç¤ºã‚„ãƒ©ã‚¤ã‚»ãƒ³ã‚¹ã®æ”¹å¤‰ã¯ç¦æ­¢ã•ã‚Œã¦ã„ã¾ã™ã€‚
+// ã“ã®ã‚½ãƒ¼ã‚¹ã‚³ãƒ¼ãƒ‰ã«é–¢ã—ã¦ã€ä¸Šè¨˜ãƒ©ã‚¤ã‚»ãƒ³ã‚¹ä»¥å¤–ã®å¥‘ç´„ç­‰ã¯ä¸€åˆ‡å­˜åœ¨ã—ã¾ã›ã‚“ã€‚
+// (ä½•ã‚‰ã‹ã®å¥‘ç´„ãŒã‚ã‚‹å ´åˆã§ã‚‚ã€æœ¬ã‚½ãƒ¼ã‚¹ã‚³ãƒ¼ãƒ‰ã¯ãã®å¯¾è±¡å¤–ã¨ãªã‚Šã¾ã™)
 //----------------------------------------------------------------------------
 
 
@@ -28,8 +28,8 @@ unsigned int mWorkerThread::TaskFunction( void )
 
 	while( 1 )
 	{
-		DWORD bytes = 0;	//“Ç‚İæ‚Á‚½ƒoƒCƒg”
-		ULONG_PTR key = 0;	//ƒL[iŠ®—¹ŠÖ”‚ğ“ü‚ê‚Ä‚¢‚éj
+		DWORD bytes = 0;	//èª­ã¿å–ã£ãŸãƒã‚¤ãƒˆæ•°
+		ULONG_PTR key = 0;	//ã‚­ãƒ¼ï¼ˆå®Œäº†é–¢æ•°ã‚’å…¥ã‚Œã¦ã„ã‚‹ï¼‰
 		LPOVERLAPPED ov;
 
 		SetLastError( 0 );
@@ -37,7 +37,7 @@ unsigned int mWorkerThread::TaskFunction( void )
 		{
 			if( ov == nullptr )
 			{
-				RaiseAssert( g_ErrorLogger , 0 , L"IOŠ®—¹ƒ|[ƒg‚Ì‘Ò‚¿ó‚¯‚ª¸”s‚µ‚Ü‚µ‚½" , (ULONG_PTR)handle );
+				RaiseAssert( g_ErrorLogger , 0 , L"IOå®Œäº†ãƒãƒ¼ãƒˆã®å¾…ã¡å—ã‘ãŒå¤±æ•—ã—ã¾ã—ãŸ" , (ULONG_PTR)handle );
 				return 2;
 			}
 		}
@@ -49,7 +49,7 @@ unsigned int mWorkerThread::TaskFunction( void )
 		}
 		else
 		{
-			RaiseAssert( g_ErrorLogger , 0 , L"IOŠ®—¹ƒL[‚ªw’è‚³‚ê‚Ä‚¢‚Ü‚¹‚ñ" , (ULONG_PTR)handle );
+			RaiseAssert( g_ErrorLogger , 0 , L"IOå®Œäº†ã‚­ãƒ¼ãŒæŒ‡å®šã•ã‚Œã¦ã„ã¾ã›ã‚“" , (ULONG_PTR)handle );
 		}
 
 
@@ -57,12 +57,12 @@ unsigned int mWorkerThread::TaskFunction( void )
 		switch( signaled )
 		{
 		case WAIT_OBJECT_0 + 0:
-			//I—¹ƒVƒOƒiƒ‹
+			//çµ‚äº†ã‚·ã‚°ãƒŠãƒ«
 			return 0;
 		case WAIT_TIMEOUT:
 			break;
 		default:
-			RaiseAssert( g_ErrorLogger , 0 , L"ƒ[ƒJ[ƒXƒŒƒbƒh‚ÌI—¹ƒVƒOƒiƒ‹‚ªˆÙí‚Å‚·" );
+			RaiseAssert( g_ErrorLogger , 0 , L"ãƒ¯ãƒ¼ã‚«ãƒ¼ã‚¹ãƒ¬ãƒƒãƒ‰ã®çµ‚äº†ã‚·ã‚°ãƒŠãƒ«ãŒç•°å¸¸ã§ã™" );
 			return 1;
 		}
 	}

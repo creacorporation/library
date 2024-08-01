@@ -1,13 +1,13 @@
-//----------------------------------------------------------------------------
-// GDI—pƒ†[ƒeƒBƒŠƒeƒBƒ‹[ƒ`ƒ“
+ï»¿//----------------------------------------------------------------------------
+// GDIç”¨ãƒ¦ãƒ¼ãƒ†ã‚£ãƒªãƒ†ã‚£ãƒ«ãƒ¼ãƒãƒ³
 // Copyright (C) 2016 Fingerling. All rights reserved. 
 // This program is released under the MIT License. 
 // see http://opensource.org/licenses/mit-license.php
 //----------------------------------------------------------------------------
 
 /*
-œ—p“r
-GDI—p‚Ì•Ö—˜‚»‚¤‚ÈŠÖ”ŒQ
+â—ç”¨é€”
+GDIç”¨ã®ä¾¿åˆ©ãã†ãªé–¢æ•°ç¾¤
 
 */
 #ifndef MGDIUTIL_H_INCLUDED
@@ -15,9 +15,9 @@ GDI—p‚Ì•Ö—˜‚»‚¤‚ÈŠÖ”ŒQ
 
 #include "mStandard.h"
 
-//COLORREF‚ğRGBQUAD‚É•ÏŠ·‚·‚é
-//src : •ÏŠ·Œ³‚ÌCOLORREF
-//ret : •ÏŠ·‚µ‚½RGBQUAD\‘¢‘Ì
+//COLORREFã‚’RGBQUADã«å¤‰æ›ã™ã‚‹
+//src : å¤‰æ›å…ƒã®COLORREF
+//ret : å¤‰æ›ã—ãŸRGBQUADæ§‹é€ ä½“
 inline RGBQUAD COLORREF2RGBQUAD( COLORREF src )
 {
 	RGBQUAD rgb;
@@ -28,9 +28,9 @@ inline RGBQUAD COLORREF2RGBQUAD( COLORREF src )
 	return rgb;
 }
 
-//RGBQUAD‚ğCOLORREF‚É•ÏŠ·‚·‚é
-//src : •ÏŠ·Œ³‚ÌRGBQUAD\‘¢‘Ì
-//ret : •ÏŠ·‚µ‚½COLORREF
+//RGBQUADã‚’COLORREFã«å¤‰æ›ã™ã‚‹
+//src : å¤‰æ›å…ƒã®RGBQUADæ§‹é€ ä½“
+//ret : å¤‰æ›ã—ãŸCOLORREF
 inline COLORREF RGBQUAD2COLORREF( const RGBQUAD& src )
 {
 	return RGB( src.rgbRed , src.rgbGreen , src.rgbBlue );

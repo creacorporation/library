@@ -1,11 +1,11 @@
-//----------------------------------------------------------------------------
-// ƒ^ƒCƒ}[ƒRƒ“ƒgƒ[ƒ‹
+ï»¿//----------------------------------------------------------------------------
+// ã‚¿ã‚¤ãƒžãƒ¼ã‚³ãƒ³ãƒˆãƒ­ãƒ¼ãƒ«
 // Copyright (C) 2019- Crea Inc. All rights reserved.
 // This program is released under the MIT License. 
 // see http://opensource.org/licenses/mit-license.php
-// ’˜ìŒ •\Ž¦‚âƒ‰ƒCƒZƒ“ƒX‚Ì‰ü•Ï‚Í‹ÖŽ~‚³‚ê‚Ä‚¢‚Ü‚·B
-// ‚±‚Ìƒ\[ƒXƒR[ƒh‚ÉŠÖ‚µ‚ÄAã‹Lƒ‰ƒCƒZƒ“ƒXˆÈŠO‚ÌŒ_–ñ“™‚ÍˆêØ‘¶Ý‚µ‚Ü‚¹‚ñB
-// (‰½‚ç‚©‚ÌŒ_–ñ‚ª‚ ‚éê‡‚Å‚àA–{ƒ\[ƒXƒR[ƒh‚Í‚»‚Ì‘ÎÛŠO‚Æ‚È‚è‚Ü‚·)
+// è‘—ä½œæ¨©è¡¨ç¤ºã‚„ãƒ©ã‚¤ã‚»ãƒ³ã‚¹ã®æ”¹å¤‰ã¯ç¦æ­¢ã•ã‚Œã¦ã„ã¾ã™ã€‚
+// ã“ã®ã‚½ãƒ¼ã‚¹ã‚³ãƒ¼ãƒ‰ã«é–¢ã—ã¦ã€ä¸Šè¨˜ãƒ©ã‚¤ã‚»ãƒ³ã‚¹ä»¥å¤–ã®å¥‘ç´„ç­‰ã¯ä¸€åˆ‡å­˜åœ¨ã—ã¾ã›ã‚“ã€‚
+// (ä½•ã‚‰ã‹ã®å¥‘ç´„ãŒã‚ã‚‹å ´åˆã§ã‚‚ã€æœ¬ã‚½ãƒ¼ã‚¹ã‚³ãƒ¼ãƒ‰ã¯ãã®å¯¾è±¡å¤–ã¨ãªã‚Šã¾ã™)
 //----------------------------------------------------------------------------
 
 #include "mTimer.h"
@@ -65,7 +65,7 @@ bool mTimer::Setup( const NotificationOption& opt )
 		MyOption.reset( mNew Option_CallbackFunction( *(Option_CallbackFunction*)&opt ) );
 		break;
 	default:
-		RaiseAssert( g_ErrorLogger , 0 , L"ƒCƒxƒ“ƒg’Ê’m•û–@‚ÌŽw’è‚ªŒë‚Á‚Ä‚¢‚Ü‚·" , opt.Method );
+		RaiseAssert( g_ErrorLogger , 0 , L"ã‚¤ãƒ™ãƒ³ãƒˆé€šçŸ¥æ–¹æ³•ã®æŒ‡å®šãŒèª¤ã£ã¦ã„ã¾ã™" , opt.Method );
 		MyOption.reset( mNew Option_None( *(Option_None*)&opt ) );
 		break;
 	}
@@ -87,13 +87,13 @@ bool mTimer::Restart( void )
 	{
 		if( !CreateTimerQueueTimer( &MyHandle , g_TimerQueue , TimerRoutine , this , MyOption->Interval , 0 , WT_EXECUTEONLYONCE ) )
 		{
-			RaiseError( g_ErrorLogger , 0 , L"ƒ^ƒCƒ}[‚ðŠJŽn‚Å‚«‚Ü‚¹‚ñ" );
+			RaiseError( g_ErrorLogger , 0 , L"ã‚¿ã‚¤ãƒžãƒ¼ã‚’é–‹å§‹ã§ãã¾ã›ã‚“" );
 			return false;
 		}
 	}
 	else
 	{
-		RaiseError( g_ErrorLogger , 0 , L"ƒ^ƒCƒ}[‚ÌŽc‚èŽÀs‰ñ”‚Í0‚Å‚·" );
+		RaiseError( g_ErrorLogger , 0 , L"ã‚¿ã‚¤ãƒžãƒ¼ã®æ®‹ã‚Šå®Ÿè¡Œå›žæ•°ã¯0ã§ã™" );
 		return false;
 	}
 	return true;
@@ -120,7 +120,7 @@ bool mTimer::Stop( void )
 	{
 		if( GetLastError() != ERROR_IO_PENDING )
 		{
-			RaiseError( g_ErrorLogger , 0 , L"ƒ^ƒCƒ}[‚ð’âŽ~‚Å‚«‚Ü‚¹‚ñ" );
+			RaiseError( g_ErrorLogger , 0 , L"ã‚¿ã‚¤ãƒžãƒ¼ã‚’åœæ­¢ã§ãã¾ã›ã‚“" );
 			return false;
 		}
 	}
@@ -145,24 +145,24 @@ int mTimer::GetCount( void )const
 
 VOID CALLBACK mTimer::TimerRoutine( PVOID param , BOOLEAN istimer )
 {
-	//‘ÎÛƒIƒuƒWƒFƒNƒgŒŸõ
+	//å¯¾è±¡ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆæ¤œç´¢
 	mTimer* parent = (mTimer*)param;
 
-	//Žc‚è‰ñ”Œ¸ŽZ
+	//æ®‹ã‚Šå›žæ•°æ¸›ç®—
 	long Value = parent->MyCount;
 	if( Value < 0 )
 	{
-		;	//–³ŒÀŒJ‚è•Ô‚µ‚È‚Ì‚ÅŒ¸ŽZ‚È‚µ
+		;	//ç„¡é™ç¹°ã‚Šè¿”ã—ãªã®ã§æ¸›ç®—ãªã—
 	}
 	else if( Value == 0 )
 	{
-		//0‚É‚È‚Á‚Ä‚¢‚é‚Ì‚Å–³‚µ
+		//0ã«ãªã£ã¦ã„ã‚‹ã®ã§ç„¡ã—
 		parent->Stop();
 		return;
 	}
 	else
 	{
-		//—LŒÀ‰ñ”‚ÌŒJ‚è•Ô‚µ‚È‚Ì‚Å‰ñ”‚ÌXV
+		//æœ‰é™å›žæ•°ã®ç¹°ã‚Šè¿”ã—ãªã®ã§å›žæ•°ã®æ›´æ–°
 		do
 		{
 			if( InterlockedCompareExchange( &parent->MyCount , Value - 1 , Value ) == Value )
@@ -170,7 +170,7 @@ VOID CALLBACK mTimer::TimerRoutine( PVOID param , BOOLEAN istimer )
 				Value--;
 				if( Value == 0 )
 				{
-					//0‰ñ‚É‚È‚Á‚½‚Ì‚Åƒ^ƒCƒ}‚ðŽ~‚ß‚é
+					//0å›žã«ãªã£ãŸã®ã§ã‚¿ã‚¤ãƒžã‚’æ­¢ã‚ã‚‹
 					parent->Stop();
 				}
 				break;
@@ -179,23 +179,23 @@ VOID CALLBACK mTimer::TimerRoutine( PVOID param , BOOLEAN istimer )
 		}while( 1 );
 	}
 
-	//ƒLƒ…[‚Ìæ“ª‚Ìê‡‚ÍŠ®—¹ƒCƒxƒ“ƒg‚ðƒR[ƒ‹
+	//ã‚­ãƒ¥ãƒ¼ã®å…ˆé ­ã®å ´åˆã¯å®Œäº†ã‚¤ãƒ™ãƒ³ãƒˆã‚’ã‚³ãƒ¼ãƒ«
 	switch( parent->MyOption->Method )
 	{
 	case NotificationOption::METHOD_NONE:
 		break;
 	case NotificationOption::METHOD_WINDOW_MESSAGE:
 	{
-		//ƒEƒCƒ“ƒhƒEƒƒbƒZ[ƒW‚Ìê‡
-		// wparam : ŒÄo‚µŒ³mASyncNamedPipe‚Ö‚Ìƒ|ƒCƒ“ƒ^
-		// lparam : Parameter‚Ì’l
+		//ã‚¦ã‚¤ãƒ³ãƒ‰ã‚¦ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸ã®å ´åˆ
+		// wparam : å‘¼å‡ºã—å…ƒmASyncNamedPipeã¸ã®ãƒã‚¤ãƒ³ã‚¿
+		// lparam : Parameterã®å€¤
 		Option_WindowMessage* op = (Option_WindowMessage*)( parent->MyOption.get() );
 		PostMessageW( op->Sendto , op->OnTimer , (WPARAM)parent , op->Parameter );
 		break;
 	}
 	case NotificationOption::METHOD_CALLBACK_FUNCTION:
 	{
-		//ƒR[ƒ‹ƒoƒbƒNŠÖ”‚Ìê‡
+		//ã‚³ãƒ¼ãƒ«ãƒãƒƒã‚¯é–¢æ•°ã®å ´åˆ
 		Option_CallbackFunction* op = (Option_CallbackFunction*)( parent->MyOption.get() );
 		if( op->OnTimer )
 		{
@@ -205,7 +205,7 @@ VOID CALLBACK mTimer::TimerRoutine( PVOID param , BOOLEAN istimer )
 	}
 	case NotificationOption::METHOD_SIGNAL_OBJECT:
 	{
-		//ƒVƒOƒiƒ‹ƒIƒuƒWƒFƒNƒg‚Ìê‡
+		//ã‚·ã‚°ãƒŠãƒ«ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã®å ´åˆ
 		Option_SignalObject* op = (Option_SignalObject*)( parent->MyOption.get() );
 		if( op->OnTimer != INVALID_HANDLE_VALUE )
 		{
@@ -213,11 +213,11 @@ VOID CALLBACK mTimer::TimerRoutine( PVOID param , BOOLEAN istimer )
 		}
 	}
 	default:
-		RaiseAssert( g_ErrorLogger , 0 , L"”ñ“¯Šú‘€ì‚ÌŠ®—¹’Ê’m•û–@‚ª•s³‚Å‚·" , parent->MyOption->Method );
+		RaiseAssert( g_ErrorLogger , 0 , L"éžåŒæœŸæ“ä½œã®å®Œäº†é€šçŸ¥æ–¹æ³•ãŒä¸æ­£ã§ã™" , parent->MyOption->Method );
 		break;
 	}
 
-	//V‚µ‚¢ƒ^ƒCƒ}[‚ðì‚é
+	//æ–°ã—ã„ã‚¿ã‚¤ãƒžãƒ¼ã‚’ä½œã‚‹
 	if( parent->MyHandle != INVALID_HANDLE_VALUE && 0 != Value )
 	{
 		parent->Stop();

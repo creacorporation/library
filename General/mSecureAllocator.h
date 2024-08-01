@@ -1,15 +1,15 @@
-//----------------------------------------------------------------------------
-// ƒƒ‚ƒŠ”jŠü‚Éƒ[ƒƒNƒŠƒA‚·‚éƒAƒƒP[ƒ^
+ï»¿//----------------------------------------------------------------------------
+// ãƒ¡ãƒ¢ãƒªç ´æ£„æ™‚ã«ã‚¼ãƒ­ã‚¯ãƒªã‚¢ã™ã‚‹ã‚¢ãƒ­ã‚±ãƒ¼ã‚¿
 // Copyright (C) 2018- Crea Inc. All rights reserved.
 // This program is released under the MIT License. 
 // see http://opensource.org/licenses/mit-license.php
 //----------------------------------------------------------------------------
 
 /*
-	EˆÈ‰ºƒNƒ‰ƒX‚Åg—p
-	@mSecureBinary
-	@mSecureAString
-	@mSecureWString
+	ãƒ»ä»¥ä¸‹ã‚¯ãƒ©ã‚¹ã§ä½¿ç”¨
+	ã€€mSecureBinary
+	ã€€mSecureAString
+	ã€€mSecureWString
 */
 
 #ifndef MSECUREALLOCATOR_H_INCLUDED
@@ -21,7 +21,7 @@
 template< class T >
 struct mSecureAllocator {
 
-	// —v‘f‚ÌŒ^
+	// è¦ç´ ã®å‹
 	using value_type = T;
 
 	mSecureAllocator()
@@ -33,13 +33,13 @@ struct mSecureAllocator {
 	{
 	}
 
-	// ƒƒ‚ƒŠŠm•Û
+	// ãƒ¡ãƒ¢ãƒªç¢ºä¿
 	T* allocate( std::size_t size )
 	{
 		return reinterpret_cast< T* >( std::malloc( sizeof( T ) * size ) );
 	}
 
-	// ƒƒ‚ƒŠ‰ğ•ú
+	// ãƒ¡ãƒ¢ãƒªè§£æ”¾
 	void deallocate( T* ptr, std::size_t size )
 	{
 		SecureZeroMemory( static_cast< PVOID >( ptr ) , size );
@@ -50,7 +50,7 @@ struct mSecureAllocator {
 
 };
 
-// ”äŠr‰‰Zq
+// æ¯”è¼ƒæ¼”ç®—å­
 template< class T , class U >
 bool operator==( const mSecureAllocator< T >& , const mSecureAllocator< U >& )
 {

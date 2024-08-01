@@ -1,5 +1,5 @@
-//----------------------------------------------------------------------------
-// —”Šî’êƒNƒ‰ƒX
+ï»¿//----------------------------------------------------------------------------
+// ä¹±æ•°åŸºåº•ã‚¯ãƒ©ã‚¹
 // Copyright (C) 2018- Crea Inc. All rights reserved.
 // This program is released under the MIT License. 
 // see http://opensource.org/licenses/mit-license.php
@@ -19,25 +19,25 @@ mRand::~mRand()
 	FreeProvider();
 }
 
-//ƒvƒƒoƒCƒ_‚Ì‰Šú‰»
+//ãƒ—ãƒ­ãƒã‚¤ãƒ€ã®åˆæœŸåŒ–
 bool mRand::InitProvider( void )
 {
-	//ˆÃ†‰»ƒvƒƒoƒCƒ_‚Í‰Šú‰»‚¸‚İH
+	//æš—å·åŒ–ãƒ—ãƒ­ãƒã‚¤ãƒ€ã¯åˆæœŸåŒ–ãšã¿ï¼Ÿ
 	if( MyCryptProv )
 	{
-		//Šù‚É‰Šú‰»Ï‚İ
+		//æ—¢ã«åˆæœŸåŒ–æ¸ˆã¿
 		return true;
 	}
-	//ˆÃ†‰»ƒvƒƒoƒCƒ_‚Ì‰Šú‰»
+	//æš—å·åŒ–ãƒ—ãƒ­ãƒã‚¤ãƒ€ã®åˆæœŸåŒ–
 	if( !CryptAcquireContext( &MyCryptProv , nullptr , MS_ENH_RSA_AES_PROV , PROV_RSA_AES , CRYPT_VERIFYCONTEXT ) )
 	{
-		RaiseAssert( g_ErrorLogger , 0 , L"ˆÃ†‰»ƒvƒƒoƒCƒ_‚Ì‰Šú‰»‚É¸”s‚µ‚Ü‚µ‚½" );
+		RaiseAssert( g_ErrorLogger , 0 , L"æš—å·åŒ–ãƒ—ãƒ­ãƒã‚¤ãƒ€ã®åˆæœŸåŒ–ã«å¤±æ•—ã—ã¾ã—ãŸ" );
 		return false;
 	}
 	return true;
 }
 
-//ƒvƒƒoƒCƒ_‚Ì‰ğ•ú
+//ãƒ—ãƒ­ãƒã‚¤ãƒ€ã®è§£æ”¾
 bool mRand::FreeProvider( void )
 {
 	if( MyCryptProv )
@@ -48,7 +48,7 @@ bool mRand::FreeProvider( void )
 	return true;
 }
 
-//UINTŒ`®A32ƒrƒbƒg‚Ì—”
+//UINTå½¢å¼ã€32ãƒ“ãƒƒãƒˆã®ä¹±æ•°
 UINT  mRand::RandInt32( void )
 {
 	UINT val;
@@ -56,7 +56,7 @@ UINT  mRand::RandInt32( void )
 	return val;
 }
 
-//³‚Ì”ŒÀ’èA31ƒrƒbƒg‚Ì—”
+//æ­£ã®æ•°é™å®šã€31ãƒ“ãƒƒãƒˆã®ä¹±æ•°
 INT   mRand::RandUInt31( void )
 {
 	UINT val;
@@ -64,7 +64,7 @@ INT   mRand::RandUInt31( void )
 	return (INT)( val >> 1 );
 }
 
-//•Â‹æŠÔ[0,1]‚ÌÀ”(0ˆÈã1ˆÈ‰º)
+//é–‰åŒºé–“[0,1]ã®å®Ÿæ•°(0ä»¥ä¸Š1ä»¥ä¸‹)
 DOUBLE mRand::RandDouble1( void )
 {
 	UINT val;
@@ -73,7 +73,7 @@ DOUBLE mRand::RandDouble1( void )
 	return (DOUBLE)val * ( 1.0 / 4294967295.0 ); 
 }
 
-//”¼ŠJ‹æŠÔ[0,1)‚ÌÀ”(0ˆÈã1–¢–)
+//åŠé–‹åŒºé–“[0,1)ã®å®Ÿæ•°(0ä»¥ä¸Š1æœªæº€)
 DOUBLE mRand::RandDouble2( void )
 {
 	UINT val;
@@ -82,7 +82,7 @@ DOUBLE mRand::RandDouble2( void )
 	return (DOUBLE)val * ( 1.0 / 4294967296.0 ); 
 }
 
-//ŠJ‹æŠÔ(0,1)‚ÌÀ”(0‚æ‚è‘å‚«‚­1‚æ‚è¬‚³‚¢)
+//é–‹åŒºé–“(0,1)ã®å®Ÿæ•°(0ã‚ˆã‚Šå¤§ãã1ã‚ˆã‚Šå°ã•ã„)
 DOUBLE mRand::RandDouble3( void )
 {
 	UINT val;
@@ -91,47 +91,47 @@ DOUBLE mRand::RandDouble3( void )
 	return ( (DOUBLE)val + 0.5 ) * ( 1.0 / 4294967296.0 ); 
 }
 
-//•Â‹æŠÔ[0,1]‚ÌÀ”(0ˆÈã1ˆÈ‰º)
+//é–‰åŒºé–“[0,1]ã®å®Ÿæ•°(0ä»¥ä¸Š1ä»¥ä¸‹)
 DOUBLE mRand::RandClose( void )
 {
 	return RandDouble1();
 }
 
-//”¼ŠJ‹æŠÔ[0,1)‚ÌÀ”(0ˆÈã1–¢–)
+//åŠé–‹åŒºé–“[0,1)ã®å®Ÿæ•°(0ä»¥ä¸Š1æœªæº€)
 DOUBLE mRand::RandSemiOpen( void )
 {
 	return RandDouble2();
 }
 
-//ŠJ‹æŠÔ(0,1)‚ÌÀ”(0‚æ‚è‘å‚«‚­1‚æ‚è¬‚³‚¢)
+//é–‹åŒºé–“(0,1)ã®å®Ÿæ•°(0ã‚ˆã‚Šå¤§ãã1ã‚ˆã‚Šå°ã•ã„)
 DOUBLE mRand::RandOpen( void )
 {
 	return RandDouble3();
 }
 
-//“n‚µ‚½ƒoƒbƒtƒ@‚ğ—”’l‚Å–„‚ß‚é
+//æ¸¡ã—ãŸãƒãƒƒãƒ•ã‚¡ã‚’ä¹±æ•°å€¤ã§åŸ‹ã‚ã‚‹
 void mRand::RandFill( BYTE* buffer , DWORD bufferlen )
 {
 	if( !buffer )
 	{
-		RaiseAssert( g_ErrorLogger , 0 , L"ƒoƒbƒtƒ@‚ªw’è‚³‚ê‚Ä‚¢‚Ü‚¹‚ñ" );
+		RaiseAssert( g_ErrorLogger , 0 , L"ãƒãƒƒãƒ•ã‚¡ãŒæŒ‡å®šã•ã‚Œã¦ã„ã¾ã›ã‚“" );
 		return;
 	}
 	if( !InitProvider() )
 	{
-		RaiseAssert( g_ErrorLogger , 0 , L"ˆÃ†‰»ƒvƒƒoƒCƒ_‚ª‰Šú‰»‚³‚ê‚Ä‚¢‚Ü‚¹‚ñ" );
+		RaiseAssert( g_ErrorLogger , 0 , L"æš—å·åŒ–ãƒ—ãƒ­ãƒã‚¤ãƒ€ãŒåˆæœŸåŒ–ã•ã‚Œã¦ã„ã¾ã›ã‚“" );
 		SecureZeroMemory( buffer , bufferlen );
 		return;
 	}
 	if( !CryptGenRandom( MyCryptProv , bufferlen , buffer ) )
 	{
-		RaiseAssert( g_ErrorLogger , 0 , L"ƒnƒbƒVƒ…ˆ—Œ‹‰Ê‚ğæ“¾‚Å‚«‚Ü‚¹‚ñ" );
+		RaiseAssert( g_ErrorLogger , 0 , L"ãƒãƒƒã‚·ãƒ¥å‡¦ç†çµæœã‚’å–å¾—ã§ãã¾ã›ã‚“" );
 		return;
 	}
 	return;
 }
 
-//w’è‚µ‚½2’lŠÔ‚É‹Ï“™•ª•z‚·‚é’l
+//æŒ‡å®šã—ãŸ2å€¤é–“ã«å‡ç­‰åˆ†å¸ƒã™ã‚‹å€¤
 UINT mRand::RandBetween( UINT val1 , UINT val2 )
 {
 	if( val1 == val2 )

@@ -1,24 +1,24 @@
-//----------------------------------------------------------------------------
-// WebView2ƒnƒ“ƒhƒ‰[
+ï»¿//----------------------------------------------------------------------------
+// WebView2ãƒãƒ³ãƒ‰ãƒ©ãƒ¼
 // Copyright (C) 2021 Crea Inc. All rights reserved.
 // This program is released under the MIT License. 
 // see http://opensource.org/licenses/mit-license.php
-// ’˜ìŒ •\Ž¦‚âƒ‰ƒCƒZƒ“ƒX‚Ì‰ü•Ï‚Í‹ÖŽ~‚³‚ê‚Ä‚¢‚Ü‚·B
-// ‚±‚Ìƒ\[ƒXƒR[ƒh‚ÉŠÖ‚µ‚ÄAã‹Lƒ‰ƒCƒZƒ“ƒXˆÈŠO‚ÌŒ_–ñ“™‚ÍˆêØ‘¶Ý‚µ‚Ü‚¹‚ñB
+// è‘—ä½œæ¨©è¡¨ç¤ºã‚„ãƒ©ã‚¤ã‚»ãƒ³ã‚¹ã®æ”¹å¤‰ã¯ç¦æ­¢ã•ã‚Œã¦ã„ã¾ã™ã€‚
+// ã“ã®ã‚½ãƒ¼ã‚¹ã‚³ãƒ¼ãƒ‰ã«é–¢ã—ã¦ã€ä¸Šè¨˜ãƒ©ã‚¤ã‚»ãƒ³ã‚¹ä»¥å¤–ã®å¥‘ç´„ç­‰ã¯ä¸€åˆ‡å­˜åœ¨ã—ã¾ã›ã‚“ã€‚
 //----------------------------------------------------------------------------
 
 #define MWEBVIWEW2_CPP_COMPILING
 #include "mWebView2.h"
 #ifndef LIBRARY_ENABLE_WEBVIEW2
-// WebView2‚ÍƒpƒbƒP[ƒW‚ðƒCƒ“ƒXƒg[ƒ‹‚µ‚È‚¢‚Æ—˜—p‚Å‚«‚Ü‚¹‚ñ
-// NuGetƒpƒbƒP[ƒWƒ}ƒl[ƒWƒƒ[‚æ‚èMicrosoft.Web.WebView2‚ðƒCƒ“ƒXƒg[ƒ‹‚µ‚Ä‚­‚¾‚³‚¢B
-// ‚Ü‚½A$(SolutionDir)libconfig.conf‚ð•ÒW‚Ü‚½‚Íì¬‚µ‚ÄWebView2‚ðŽg—p‚·‚é‚æ‚¤‚É•ÏX‚·‚é•K—v‚ª‚ ‚è‚Ü‚·B
-// ŽÀs‚É‚Íƒ‰ƒ“ƒ^ƒCƒ€ƒ‰ƒCƒuƒ‰ƒŠ‚ðƒCƒ“ƒXƒg[ƒ‹‚·‚é•K—v‚ª‚ ‚è‚Ü‚·(¦Win10ˆÈ‰º‚Ìê‡)B
+// WebView2ã¯ãƒ‘ãƒƒã‚±ãƒ¼ã‚¸ã‚’ã‚¤ãƒ³ã‚¹ãƒˆãƒ¼ãƒ«ã—ãªã„ã¨åˆ©ç”¨ã§ãã¾ã›ã‚“
+// NuGetãƒ‘ãƒƒã‚±ãƒ¼ã‚¸ãƒžãƒãƒ¼ã‚¸ãƒ£ãƒ¼ã‚ˆã‚ŠMicrosoft.Web.WebView2ã‚’ã‚¤ãƒ³ã‚¹ãƒˆãƒ¼ãƒ«ã—ã¦ãã ã•ã„ã€‚
+// ã¾ãŸã€$(SolutionDir)libconfig.confã‚’ç·¨é›†ã¾ãŸã¯ä½œæˆã—ã¦WebView2ã‚’ä½¿ç”¨ã™ã‚‹ã‚ˆã†ã«å¤‰æ›´ã™ã‚‹å¿…è¦ãŒã‚ã‚Šã¾ã™ã€‚
+// å®Ÿè¡Œã«ã¯ãƒ©ãƒ³ã‚¿ã‚¤ãƒ ãƒ©ã‚¤ãƒ–ãƒ©ãƒªã‚’ã‚¤ãƒ³ã‚¹ãƒˆãƒ¼ãƒ«ã™ã‚‹å¿…è¦ãŒã‚ã‚Šã¾ã™(â€»Win10ä»¥ä¸‹ã®å ´åˆ)ã€‚
 #pragma message("   *Notice* : WebView2 is disabled")
 #else
 #include <General/mErrorLogger.h>
 
-//ƒCƒxƒ“ƒg’Ê’mŠÖ”
+//ã‚¤ãƒ™ãƒ³ãƒˆé€šçŸ¥é–¢æ•°
 static void AsyncEvent( mWebView2& view , const mWebView2::NotifyOption::NotifierInfo& info , mWebView2::NotifyFunctionOptPtr* opt );
 
 mWebView2::mWebView2()
@@ -36,19 +36,19 @@ mWebView2::~mWebView2()
 
 bool mWebView2::WindowClassSettingCallback( WindowClassSetting& retSetting , const void* opt )
 {
-	//ƒEƒCƒ“ƒhƒEƒNƒ‰ƒX‚Ì“o˜^‚ðs‚í‚È‚¢‚½‚ß‚»‚Ì‚Ü‚Üfalse‚Å–ß‚é
+	//ã‚¦ã‚¤ãƒ³ãƒ‰ã‚¦ã‚¯ãƒ©ã‚¹ã®ç™»éŒ²ã‚’è¡Œã‚ãªã„ãŸã‚ãã®ã¾ã¾falseã§æˆ»ã‚‹
 	return false;
 }
 
 bool mWebView2::CreateWindowCallback( CreateWindowSetting& retSetting , const void* opt )
 {
-	//ƒEƒCƒ“ƒhƒE‚Ì¶¬‚ðŽ©—Í‚Ås‚¤‚½‚ß‚»‚Ì‚Ü‚Üfalse‚Å–ß‚é
+	//ã‚¦ã‚¤ãƒ³ãƒ‰ã‚¦ã®ç”Ÿæˆã‚’è‡ªåŠ›ã§è¡Œã†ãŸã‚ãã®ã¾ã¾falseã§æˆ»ã‚‹
 	return false;
 }
 
 bool mWebView2::OnCreate( const void* opt )
 {
-	WString user_data_folder;	//ƒ†[ƒU[ƒf[ƒ^ƒtƒHƒ‹ƒ_
+	WString user_data_folder;	//ãƒ¦ãƒ¼ã‚¶ãƒ¼ãƒ‡ãƒ¼ã‚¿ãƒ•ã‚©ãƒ«ãƒ€
 
 	if( opt )
 	{
@@ -62,7 +62,7 @@ bool mWebView2::OnCreate( const void* opt )
 			break;
 		}
 		default:
-			RaiseError( g_ErrorLogger , 0 , L"WebView2‚Ì‰Šú‰»ƒf[ƒ^Œ`Ž®‚ªˆá‚¢‚Ü‚·" );
+			RaiseError( g_ErrorLogger , 0 , L"WebView2ã®åˆæœŸåŒ–ãƒ‡ãƒ¼ã‚¿å½¢å¼ãŒé•ã„ã¾ã™" );
 			MyOption.reset( mNew Option_UseOption );
 			break;
 		}
@@ -78,7 +78,7 @@ bool mWebView2::OnCreate( const void* opt )
 	HRESULT result = CreateCoreWebView2EnvironmentWithOptions( nullptr , user_data_folder.c_str() , nullptr , handler.Get() );
 	if( FAILED( result ) )
 	{
-		RaiseError( g_ErrorLogger , result , L"WebView2‚Ì‰Šú‰»‚ªŽ¸”s‚µ‚Ü‚µ‚½" );
+		RaiseError( g_ErrorLogger , result , L"WebView2ã®åˆæœŸåŒ–ãŒå¤±æ•—ã—ã¾ã—ãŸ" );
 		MyOption.reset();
 		return false;
 	}
@@ -89,7 +89,7 @@ HRESULT mWebView2::OnCreateEnvComplete( HRESULT callback_result , ICoreWebView2E
 {
 	if( !env )
 	{
-		RaiseError( g_ErrorLogger , callback_result , L"ŠÂ‹«ƒnƒ“ƒhƒ‹‚ª•s³‚Å‚·" );
+		RaiseError( g_ErrorLogger , callback_result , L"ç’°å¢ƒãƒãƒ³ãƒ‰ãƒ«ãŒä¸æ­£ã§ã™" );
 		MyOption.reset();
 		return E_FAIL;
 	}
@@ -106,45 +106,45 @@ HRESULT mWebView2::OnCreateEnvComplete( HRESULT callback_result , ICoreWebView2E
 HRESULT mWebView2::OnCreateCntComplete( HRESULT callback_result , ICoreWebView2Controller* cnt )
 {
 
-	//ƒRƒ“ƒgƒ[ƒ‰[‚Ìƒnƒ“ƒhƒ‹‚ð•Û‘¶
+	//ã‚³ãƒ³ãƒˆãƒ­ãƒ¼ãƒ©ãƒ¼ã®ãƒãƒ³ãƒ‰ãƒ«ã‚’ä¿å­˜
 	if( !cnt )
 	{
-		RaiseError( g_ErrorLogger , callback_result , L"ƒRƒ“ƒgƒ[ƒ‰[‚Ìƒnƒ“ƒhƒ‹‚ª•s³‚Å‚·" );
+		RaiseError( g_ErrorLogger , callback_result , L"ã‚³ãƒ³ãƒˆãƒ­ãƒ¼ãƒ©ãƒ¼ã®ãƒãƒ³ãƒ‰ãƒ«ãŒä¸æ­£ã§ã™" );
 		MyOption.reset();
 		return E_FAIL;
 	}
 	MyControllerHandle = cnt;
 
-	//ƒrƒ…[‚Ìƒnƒ“ƒhƒ‹‚ð•Û‘¶
+	//ãƒ“ãƒ¥ãƒ¼ã®ãƒãƒ³ãƒ‰ãƒ«ã‚’ä¿å­˜
 	HRESULT hr = MyControllerHandle->get_CoreWebView2( &MyViewHandle );
 	if( FAILED( hr ) )
 	{
-		RaiseError( g_ErrorLogger , hr , L"ƒRƒ“ƒgƒ[ƒ‰[‚Ìƒnƒ“ƒhƒ‹‚ª•s³‚Å‚·" );
+		RaiseError( g_ErrorLogger , hr , L"ã‚³ãƒ³ãƒˆãƒ­ãƒ¼ãƒ©ãƒ¼ã®ãƒãƒ³ãƒ‰ãƒ«ãŒä¸æ­£ã§ã™" );
 		MyOption.reset();
 		return E_FAIL;
 	}
 
-	//ƒrƒ…[‚ÌÝ’è
+	//ãƒ“ãƒ¥ãƒ¼ã®è¨­å®š
 	ICoreWebView2Settings2* settings;
 	MyViewHandle->get_Settings( (ICoreWebView2Settings**)&settings );
 
-	//•W€‚ÌƒXƒNƒŠƒvƒg‚Ìƒ_ƒCƒAƒƒO‚ðŽg—p‚·‚é‚©
+	//æ¨™æº–ã®ã‚¹ã‚¯ãƒªãƒ—ãƒˆã®ãƒ€ã‚¤ã‚¢ãƒ­ã‚°ã‚’ä½¿ç”¨ã™ã‚‹ã‹
 	settings->put_AreDefaultScriptDialogsEnabled( true );
-	//webmessage‚ð—LŒø‚É‚·‚é‚©
+	//webmessageã‚’æœ‰åŠ¹ã«ã™ã‚‹ã‹
 	settings->put_IsWebMessageEnabled( true );
 
-	//ƒIƒvƒVƒ‡ƒ“‚ÌŽw’è‚ª‚ ‚ê‚ÎA‚»‚ÌŽí—Þ‚É‚æ‚è¶¬•û–@‚ð•ªŠò(‰Šú‰»ƒR[ƒ‹ƒoƒbƒN‘O)
+	//ã‚ªãƒ—ã‚·ãƒ§ãƒ³ã®æŒ‡å®šãŒã‚ã‚Œã°ã€ãã®ç¨®é¡žã«ã‚ˆã‚Šç”Ÿæˆæ–¹æ³•ã‚’åˆ†å²(åˆæœŸåŒ–ã‚³ãƒ¼ãƒ«ãƒãƒƒã‚¯å‰)
 	if( MyOption->method == Option::CreateMethod::USEOPTION )
 	{
 		const mWebView2::Option_UseOption* op = ( const mWebView2::Option_UseOption* )MyOption.get();
-		//ˆÊ’u‚ÆƒTƒCƒY
+		//ä½ç½®ã¨ã‚µã‚¤ã‚º
 		SetWindowPosition( op->Pos );
-		//ƒ†[ƒU[ƒG[ƒWƒFƒ“ƒg
+		//ãƒ¦ãƒ¼ã‚¶ãƒ¼ã‚¨ãƒ¼ã‚¸ã‚§ãƒ³ãƒˆ
 		if( op->UserAgent != L"" )
 		{
 			if( op->IsAppendUserAgent )
 			{
-				//Œ³‚ÌUA‚É•t‚¯‘«‚·ê‡
+				//å…ƒã®UAã«ä»˜ã‘è¶³ã™å ´åˆ
 				WString ua = L"";
 				LPWSTR str = nullptr;
 				if( SUCCEEDED( settings->get_UserAgent( &str ) ) )
@@ -158,35 +158,35 @@ HRESULT mWebView2::OnCreateCntComplete( HRESULT callback_result , ICoreWebView2C
 			}
 			else
 			{
-				//Œ³‚ÌUA‚ð’u‚«Š·‚¦‚éê‡
+				//å…ƒã®UAã‚’ç½®ãæ›ãˆã‚‹å ´åˆ
 				settings->put_UserAgent( op->UserAgent.c_str() );
 			}
 		}
-		//‰EƒNƒŠƒbƒNƒƒjƒ…[—LŒøE–³ŒøƒXƒCƒbƒ`
+		//å³ã‚¯ãƒªãƒƒã‚¯ãƒ¡ãƒ‹ãƒ¥ãƒ¼æœ‰åŠ¹ãƒ»ç„¡åŠ¹ã‚¹ã‚¤ãƒƒãƒ
 		settings->put_AreDefaultContextMenusEnabled( op->IsEnableContextMenu );
-		//ŠJ”­ƒc[ƒ‹‚ð—LŒøE–³ŒøƒXƒCƒbƒ`
+		//é–‹ç™ºãƒ„ãƒ¼ãƒ«ã‚’æœ‰åŠ¹ãƒ»ç„¡åŠ¹ã‚¹ã‚¤ãƒƒãƒ
 		settings->put_AreDevToolsEnabled( op->IsEnableDevTool );
-		//ƒXƒe[ƒ^ƒXƒo[—LŒøE–³ŒøƒXƒCƒbƒ`
+		//ã‚¹ãƒ†ãƒ¼ã‚¿ã‚¹ãƒãƒ¼æœ‰åŠ¹ãƒ»ç„¡åŠ¹ã‚¹ã‚¤ãƒƒãƒ
 		settings->put_IsStatusBarEnabled( op->IsEnableStatusBar );
-		//ƒXƒNƒŠƒvƒg—LŒøE–³ŒøƒXƒCƒbƒ`
+		//ã‚¹ã‚¯ãƒªãƒ—ãƒˆæœ‰åŠ¹ãƒ»ç„¡åŠ¹ã‚¹ã‚¤ãƒƒãƒ
 		settings->put_IsScriptEnabled( op->IsEnableScript );
-		//ƒY[ƒ€—LŒøE–³ŒøƒXƒCƒbƒ`
+		//ã‚ºãƒ¼ãƒ æœ‰åŠ¹ãƒ»ç„¡åŠ¹ã‚¹ã‚¤ãƒƒãƒ
 		settings->put_IsZoomControlEnabled( op->IsEnableZoom );
-		//ƒrƒ‹ƒgƒCƒ“ƒGƒ‰[ƒy[ƒW‚Ì—LŒøE–³ŒøƒXƒCƒbƒ`
+		//ãƒ“ãƒ«ãƒˆã‚¤ãƒ³ã‚¨ãƒ©ãƒ¼ãƒšãƒ¼ã‚¸ã®æœ‰åŠ¹ãƒ»ç„¡åŠ¹ã‚¹ã‚¤ãƒƒãƒ
 		settings->put_IsBuiltInErrorPageEnabled( op->IsEnableBuiltinErrorPage );
 	}
 
-	//ƒfƒŠƒQ[ƒg‚ÌÄ\’z
+	//ãƒ‡ãƒªã‚²ãƒ¼ãƒˆã®å†æ§‹ç¯‰
 	UpdateDelegate();
 
-	//‰Šú‰»Š®—¹’Ê’m
+	//åˆæœŸåŒ–å®Œäº†é€šçŸ¥
 	AsyncEvent( *this , MyOption->Notify.OnInitialized , nullptr ); 
 
-	//ƒIƒvƒVƒ‡ƒ“‚ÌŽw’è‚ª‚ ‚ê‚ÎA‚»‚ÌŽí—Þ‚É‚æ‚è¶¬•û–@‚ð•ªŠò(‰Šú‰»ƒR[ƒ‹ƒoƒbƒNŒã)
+	//ã‚ªãƒ—ã‚·ãƒ§ãƒ³ã®æŒ‡å®šãŒã‚ã‚Œã°ã€ãã®ç¨®é¡žã«ã‚ˆã‚Šç”Ÿæˆæ–¹æ³•ã‚’åˆ†å²(åˆæœŸåŒ–ã‚³ãƒ¼ãƒ«ãƒãƒƒã‚¯å¾Œ)
 	if( MyOption->method == Option::CreateMethod::USEOPTION )
 	{
 		const mWebView2::Option_UseOption* op = ( const mWebView2::Option_UseOption* )MyOption.get();
-		//‰Šúƒy[ƒW
+		//åˆæœŸãƒšãƒ¼ã‚¸
 		if( op->OnCreateNavigation != L"" )
 		{
 			if( op->IsNavigationUrl )
@@ -325,13 +325,13 @@ static void AsyncEvent( mWebView2& view , const mWebView2::NotifyOption::Notifie
 	}
 	else
 	{
-		RaiseAssert( g_ErrorLogger , 0 , L"”ñ“¯Šú‘€ì‚ÌŠ®—¹’Ê’m•û–@‚ª•s³‚Å‚·" , info.Mode );
+		RaiseAssert( g_ErrorLogger , 0 , L"éžåŒæœŸæ“ä½œã®å®Œäº†é€šçŸ¥æ–¹æ³•ãŒä¸æ­£ã§ã™" , info.Mode );
 	}
 }
 
 void mWebView2::UpdateDelegate( void )
 {
-	//ƒiƒrƒQ[ƒVƒ‡ƒ“ƒXƒ^[ƒgŽž‚ÌƒfƒŠƒQ[ƒg
+	//ãƒŠãƒ“ã‚²ãƒ¼ã‚·ãƒ§ãƒ³ã‚¹ã‚¿ãƒ¼ãƒˆæ™‚ã®ãƒ‡ãƒªã‚²ãƒ¼ãƒˆ
 	if( MyOption && MyOption->Notify.OnNavigationStarting.Mode != mWebView2::NotifyOption::NotifyMode::NOTIFY_NONE )
 	{
 		if( !MyOnNavigationStartingToken.value )
@@ -349,7 +349,7 @@ void mWebView2::UpdateDelegate( void )
 			MyOnNavigationStartingToken = { 0 };
 		}
 	}
-	//ƒiƒrƒQ[ƒVƒ‡ƒ“Š®—¹Žž‚ÌƒfƒŠƒQ[ƒg
+	//ãƒŠãƒ“ã‚²ãƒ¼ã‚·ãƒ§ãƒ³å®Œäº†æ™‚ã®ãƒ‡ãƒªã‚²ãƒ¼ãƒˆ
 	if( MyOption && MyOption->Notify.OnNavigationCompleted.Mode != mWebView2::NotifyOption::NotifyMode::NOTIFY_NONE )
 	{
 		if( !MyOnNavigationCompletedToken.value )
@@ -367,7 +367,7 @@ void mWebView2::UpdateDelegate( void )
 			MyOnNavigationCompletedToken = { 0 };
 		}
 	}
-	//ƒEƒFƒuƒƒbƒZ[ƒWŽóMŽž‚ÌƒfƒŠƒQ[ƒg
+	//ã‚¦ã‚§ãƒ–ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸å—ä¿¡æ™‚ã®ãƒ‡ãƒªã‚²ãƒ¼ãƒˆ
 	if( MyOption && MyOption->Notify.OnWebMessageReceived.Mode != mWebView2::NotifyOption::NotifyMode::NOTIFY_NONE )
 	{
 		if( !MyOnWebMessageReceivedToken.value )
@@ -396,20 +396,20 @@ HRESULT mWebView2::OnNavigationStarting( ICoreWebView2* sender , ICoreWebView2Na
 	else if( mWebView2::NotifyOption::IsCallback( MyOption->Notify.OnNavigationStarting.Mode ) )
 	{
 		Definitions_WebView2::OnNavigationStartingOpt opt;
-		//ƒu[ƒ‹’l‚Ìƒpƒ‰ƒ[ƒ^Žæ“¾
+		//ãƒ–ãƒ¼ãƒ«å€¤ã®ãƒ‘ãƒ©ãƒ¡ãƒ¼ã‚¿å–å¾—
 		{
 			BOOL boolval;
-			//ƒŠƒ_ƒCƒŒƒNƒg‚©‚Ç‚¤‚©
+			//ãƒªãƒ€ã‚¤ãƒ¬ã‚¯ãƒˆã‹ã©ã†ã‹
 			args->get_IsRedirected( &boolval );
 			opt.IsRedirected = boolval;
-			//ƒ†[ƒU[ŠJŽn‚©‚Ç‚¤‚©
+			//ãƒ¦ãƒ¼ã‚¶ãƒ¼é–‹å§‹ã‹ã©ã†ã‹
 			args->get_IsUserInitiated( &boolval );
 			opt.IsUserInitiated = boolval;
 		}
-		//•¶Žš—ñ‚Ìƒpƒ‰ƒ[ƒ^Žæ“¾
+		//æ–‡å­—åˆ—ã®ãƒ‘ãƒ©ãƒ¡ãƒ¼ã‚¿å–å¾—
 		{
 			LPWSTR str = nullptr;
-			//ŠJŽn‚·‚éURI
+			//é–‹å§‹ã™ã‚‹URI
 			args->get_Uri( &str );
 			if( str )
 			{
@@ -417,17 +417,17 @@ HRESULT mWebView2::OnNavigationStarting( ICoreWebView2* sender , ICoreWebView2Na
 			}
 			CoTaskMemFree( str );
 		}
-		//ŒÅ’è’l‚Ìƒpƒ‰ƒ[ƒ^Ý’è
+		//å›ºå®šå€¤ã®ãƒ‘ãƒ©ãƒ¡ãƒ¼ã‚¿è¨­å®š
 		{
-			//ˆ—‹–‰Âƒtƒ‰ƒO
+			//å‡¦ç†è¨±å¯ãƒ•ãƒ©ã‚°
 			opt.IsAllowed = true;
 		}
-		//ƒCƒxƒ“ƒg‚ÌŒÄ‚Ño‚µ
+		//ã‚¤ãƒ™ãƒ³ãƒˆã®å‘¼ã³å‡ºã—
 		NotifyFunctionOptPtr optptr;
 		optptr.OnNavigationStarting = &opt;
 		AsyncEvent( *this , MyOption->Notify.OnNavigationStarting , &optptr );
 
-		//ˆ—‹–‰Âƒtƒ‰ƒO‚ª•ÏX‚³‚ê‚Ä‚¢‚éê‡‚Éˆ—
+		//å‡¦ç†è¨±å¯ãƒ•ãƒ©ã‚°ãŒå¤‰æ›´ã•ã‚Œã¦ã„ã‚‹å ´åˆã«å‡¦ç†
 		if( !opt.IsAllowed )
 		{
 			args->put_Cancel( true );
@@ -435,7 +435,7 @@ HRESULT mWebView2::OnNavigationStarting( ICoreWebView2* sender , ICoreWebView2Na
 	}
 	else
 	{
-		//ƒCƒxƒ“ƒg‚ÌŒÄ‚Ño‚µ
+		//ã‚¤ãƒ™ãƒ³ãƒˆã®å‘¼ã³å‡ºã—
 		AsyncEvent( *this , MyOption->Notify.OnNavigationStarting , nullptr );
 	}
 	return S_OK;
@@ -450,27 +450,27 @@ HRESULT mWebView2::OnNavigationCompleted( ICoreWebView2* sender , ICoreWebView2N
 	else if( mWebView2::NotifyOption::IsCallback( MyOption->Notify.OnNavigationCompleted.Mode ) )
 	{
 		Definitions_WebView2::OnNavigationCompletedOpt opt;
-		//ƒu[ƒ‹’l‚Ìƒpƒ‰ƒ[ƒ^Žæ“¾
+		//ãƒ–ãƒ¼ãƒ«å€¤ã®ãƒ‘ãƒ©ãƒ¡ãƒ¼ã‚¿å–å¾—
 		{
 			BOOL boolval;
-			//¬Œ÷‚©‚Ç‚¤‚©
+			//æˆåŠŸã‹ã©ã†ã‹
 			args->get_IsSuccess( &boolval );
 			opt.IsSuccess = boolval;
 		}
-		//ƒXƒe[ƒ^ƒXƒR[ƒh
+		//ã‚¹ãƒ†ãƒ¼ã‚¿ã‚¹ã‚³ãƒ¼ãƒ‰
 		{
 			COREWEBVIEW2_WEB_ERROR_STATUS code;
 			args->get_WebErrorStatus( &code );
 			opt.Status = code;
 		}
-		//ƒCƒxƒ“ƒg‚ÌŒÄ‚Ño‚µ
+		//ã‚¤ãƒ™ãƒ³ãƒˆã®å‘¼ã³å‡ºã—
 		NotifyFunctionOptPtr optptr;
 		optptr.OnNavigationCompleted = &opt;
 		AsyncEvent( *this , MyOption->Notify.OnNavigationCompleted , &optptr );
 	}
 	else
 	{
-		//ƒCƒxƒ“ƒg‚ÌŒÄ‚Ño‚µ
+		//ã‚¤ãƒ™ãƒ³ãƒˆã®å‘¼ã³å‡ºã—
 		AsyncEvent( *this , MyOption->Notify.OnNavigationCompleted , nullptr );
 	}
 	return S_OK;
@@ -480,13 +480,13 @@ bool mWebView2::Navigate( const WString& uri )
 {
 	if( !MyViewHandle )
 	{
-		RaiseError( g_ErrorLogger , 0 , L"ƒrƒ…[‚ª‰Šú‰»‚³‚ê‚Ä‚¢‚Ü‚¹‚ñ" );
+		RaiseError( g_ErrorLogger , 0 , L"ãƒ“ãƒ¥ãƒ¼ãŒåˆæœŸåŒ–ã•ã‚Œã¦ã„ã¾ã›ã‚“" );
 		return false;
 	}
 	HRESULT hr = MyViewHandle->Navigate( uri.c_str() );
 	if( FAILED( hr ) )
 	{
-		RaiseError( g_ErrorLogger , hr , L"ƒiƒrƒQ[ƒg‚ªŽ¸”s‚µ‚Ü‚µ‚½" , uri );
+		RaiseError( g_ErrorLogger , hr , L"ãƒŠãƒ“ã‚²ãƒ¼ãƒˆãŒå¤±æ•—ã—ã¾ã—ãŸ" , uri );
 		return false;
 	}
 	return true;
@@ -496,13 +496,13 @@ bool mWebView2::PutHTML( const WString& html )
 {
 	if( !MyViewHandle )
 	{
-		RaiseError( g_ErrorLogger , 0 , L"ƒrƒ…[‚ª‰Šú‰»‚³‚ê‚Ä‚¢‚Ü‚¹‚ñ" );
+		RaiseError( g_ErrorLogger , 0 , L"ãƒ“ãƒ¥ãƒ¼ãŒåˆæœŸåŒ–ã•ã‚Œã¦ã„ã¾ã›ã‚“" );
 		return false;
 	}
 	HRESULT hr = MyViewHandle->NavigateToString( html.c_str() );
 	if( FAILED( hr ) )
 	{
-		RaiseError( g_ErrorLogger , hr , L"ƒiƒrƒQ[ƒg‚ªŽ¸”s‚µ‚Ü‚µ‚½" );
+		RaiseError( g_ErrorLogger , hr , L"ãƒŠãƒ“ã‚²ãƒ¼ãƒˆãŒå¤±æ•—ã—ã¾ã—ãŸ" );
 		return false;
 	}
 	return true;
@@ -512,13 +512,13 @@ bool mWebView2::Reload( void )
 {
 	if( !MyViewHandle )
 	{
-		RaiseError( g_ErrorLogger , 0 , L"ƒrƒ…[‚ª‰Šú‰»‚³‚ê‚Ä‚¢‚Ü‚¹‚ñ" );
+		RaiseError( g_ErrorLogger , 0 , L"ãƒ“ãƒ¥ãƒ¼ãŒåˆæœŸåŒ–ã•ã‚Œã¦ã„ã¾ã›ã‚“" );
 		return false;
 	}
 	HRESULT hr = MyViewHandle->Reload();
 	if( FAILED( hr ) )
 	{
-		RaiseError( g_ErrorLogger , hr , L"ƒŠƒ[ƒh‚ªŽ¸”s‚µ‚Ü‚µ‚½" );
+		RaiseError( g_ErrorLogger , hr , L"ãƒªãƒ­ãƒ¼ãƒ‰ãŒå¤±æ•—ã—ã¾ã—ãŸ" );
 		return false;
 	}
 	return true;
@@ -528,83 +528,83 @@ bool mWebView2::Stop( void )
 {
 	if( !MyViewHandle )
 	{
-		RaiseError( g_ErrorLogger , 0 , L"ƒrƒ…[‚ª‰Šú‰»‚³‚ê‚Ä‚¢‚Ü‚¹‚ñ" );
+		RaiseError( g_ErrorLogger , 0 , L"ãƒ“ãƒ¥ãƒ¼ãŒåˆæœŸåŒ–ã•ã‚Œã¦ã„ã¾ã›ã‚“" );
 		return false;
 	}
 	HRESULT hr = MyViewHandle->Stop();
 	if( FAILED( hr ) )
 	{
-		RaiseError( g_ErrorLogger , hr , L"ƒŠƒ[ƒh‚ªŽ¸”s‚µ‚Ü‚µ‚½" );
+		RaiseError( g_ErrorLogger , hr , L"ãƒªãƒ­ãƒ¼ãƒ‰ãŒå¤±æ•—ã—ã¾ã—ãŸ" );
 		return false;
 	}
 	return true;
 }
 
-//[–ß‚é]‚ªŽg—p‰Â”\‚©Šm”F‚·‚é
+//[æˆ»ã‚‹]ãŒä½¿ç”¨å¯èƒ½ã‹ç¢ºèªã™ã‚‹
 bool mWebView2::IsBackAvailable( void )
 {
 	if( !MyViewHandle )
 	{
-		RaiseError( g_ErrorLogger , 0 , L"ƒrƒ…[‚ª‰Šú‰»‚³‚ê‚Ä‚¢‚Ü‚¹‚ñ" );
+		RaiseError( g_ErrorLogger , 0 , L"ãƒ“ãƒ¥ãƒ¼ãŒåˆæœŸåŒ–ã•ã‚Œã¦ã„ã¾ã›ã‚“" );
 		return false;
 	}
 	BOOL result;
 	HRESULT hr = MyViewHandle->get_CanGoBack( &result );
 	if( FAILED( hr ) )
 	{
-		RaiseError( g_ErrorLogger , hr , L"ó‘ÔŽæ“¾‚ªŽ¸”s‚µ‚Ü‚µ‚½" );
+		RaiseError( g_ErrorLogger , hr , L"çŠ¶æ…‹å–å¾—ãŒå¤±æ•—ã—ã¾ã—ãŸ" );
 		return false;
 	}
 	return result;
 }
 
-//[i‚Þ]‚ªŽg—p‰Â”\‚©Šm”F‚·‚é
+//[é€²ã‚€]ãŒä½¿ç”¨å¯èƒ½ã‹ç¢ºèªã™ã‚‹
 bool mWebView2::IsForwardAvailable( void )
 {
 	if( !MyViewHandle )
 	{
-		RaiseError( g_ErrorLogger , 0 , L"ƒrƒ…[‚ª‰Šú‰»‚³‚ê‚Ä‚¢‚Ü‚¹‚ñ" );
+		RaiseError( g_ErrorLogger , 0 , L"ãƒ“ãƒ¥ãƒ¼ãŒåˆæœŸåŒ–ã•ã‚Œã¦ã„ã¾ã›ã‚“" );
 		return false;
 	}
 	BOOL result;
 	HRESULT hr = MyViewHandle->get_CanGoForward( &result );
 	if( FAILED( hr ) )
 	{
-		RaiseError( g_ErrorLogger , hr , L"ó‘ÔŽæ“¾‚ªŽ¸”s‚µ‚Ü‚µ‚½" );
+		RaiseError( g_ErrorLogger , hr , L"çŠ¶æ…‹å–å¾—ãŒå¤±æ•—ã—ã¾ã—ãŸ" );
 		return false;
 	}
 	return result;
 }
 
-//[–ß‚é]
+//[æˆ»ã‚‹]
 bool mWebView2::Back( void )
 {
 	if( !MyViewHandle )
 	{
-		RaiseError( g_ErrorLogger , 0 , L"ƒrƒ…[‚ª‰Šú‰»‚³‚ê‚Ä‚¢‚Ü‚¹‚ñ" );
+		RaiseError( g_ErrorLogger , 0 , L"ãƒ“ãƒ¥ãƒ¼ãŒåˆæœŸåŒ–ã•ã‚Œã¦ã„ã¾ã›ã‚“" );
 		return false;
 	}
 	HRESULT hr = MyViewHandle->GoBack();
 	if( FAILED( hr ) )
 	{
-		//•’Ê‚É‘z’è‚³‚ê‚é‚Ì‚ÅƒGƒ‰[‚ð‹L˜^‚µ‚È‚¢
+		//æ™®é€šã«æƒ³å®šã•ã‚Œã‚‹ã®ã§ã‚¨ãƒ©ãƒ¼ã‚’è¨˜éŒ²ã—ãªã„
 		return false;
 	}
 	return true;
 }
 
-//[i‚Þ]
+//[é€²ã‚€]
 bool mWebView2::Forward( void )
 {
 	if( !MyViewHandle )
 	{
-		RaiseError( g_ErrorLogger , 0 , L"ƒrƒ…[‚ª‰Šú‰»‚³‚ê‚Ä‚¢‚Ü‚¹‚ñ" );
+		RaiseError( g_ErrorLogger , 0 , L"ãƒ“ãƒ¥ãƒ¼ãŒåˆæœŸåŒ–ã•ã‚Œã¦ã„ã¾ã›ã‚“" );
 		return false;
 	}
 	HRESULT hr = MyViewHandle->GoForward();
 	if( FAILED( hr ) )
 	{
-		//•’Ê‚É‘z’è‚³‚ê‚é‚Ì‚ÅƒGƒ‰[‚ð‹L˜^‚µ‚È‚¢
+		//æ™®é€šã«æƒ³å®šã•ã‚Œã‚‹ã®ã§ã‚¨ãƒ©ãƒ¼ã‚’è¨˜éŒ²ã—ãªã„
 		return false;
 	}
 	return true;
@@ -614,7 +614,7 @@ WString mWebView2::GetDocumentTitle( void )
 {
 	if( !MyViewHandle )
 	{
-		RaiseError( g_ErrorLogger , 0 , L"ƒrƒ…[‚ª‰Šú‰»‚³‚ê‚Ä‚¢‚Ü‚¹‚ñ" );
+		RaiseError( g_ErrorLogger , 0 , L"ãƒ“ãƒ¥ãƒ¼ãŒåˆæœŸåŒ–ã•ã‚Œã¦ã„ã¾ã›ã‚“" );
 		return L"";
 	}
 
@@ -634,7 +634,7 @@ WString mWebView2::GetURI( void )
 {
 	if( !MyViewHandle )
 	{
-		RaiseError( g_ErrorLogger , 0 , L"ƒrƒ…[‚ª‰Šú‰»‚³‚ê‚Ä‚¢‚Ü‚¹‚ñ" );
+		RaiseError( g_ErrorLogger , 0 , L"ãƒ“ãƒ¥ãƒ¼ãŒåˆæœŸåŒ–ã•ã‚Œã¦ã„ã¾ã›ã‚“" );
 		return L"";
 	}
 
@@ -654,7 +654,7 @@ bool mWebView2::InjectOnCreateScript( const WString& scr )
 {
 	if( !MyViewHandle )
 	{
-		RaiseError( g_ErrorLogger , 0 , L"ƒrƒ…[‚ª‰Šú‰»‚³‚ê‚Ä‚¢‚Ü‚¹‚ñ" );
+		RaiseError( g_ErrorLogger , 0 , L"ãƒ“ãƒ¥ãƒ¼ãŒåˆæœŸåŒ–ã•ã‚Œã¦ã„ã¾ã›ã‚“" );
 		return L"";
 	}
 
@@ -676,14 +676,14 @@ HRESULT mWebView2::OnCreateScriptCompleted( HRESULT callback_result , LPCWSTR id
 		Definitions_WebView2::OnCreateScriptCompletedOpt opt;
 		opt.IsSuccess = SUCCEEDED( callback_result );
 		opt.ScriptId = id;
-		//ƒCƒxƒ“ƒg‚ÌŒÄ‚Ño‚µ
+		//ã‚¤ãƒ™ãƒ³ãƒˆã®å‘¼ã³å‡ºã—
 		NotifyFunctionOptPtr optptr;
 		optptr.OnCreateScriptCompleted = &opt;
 		AsyncEvent( *this , MyOption->Notify.OnCreateScriptCompleted , &optptr );
 	}
 	else
 	{
-		//ƒCƒxƒ“ƒg‚ÌŒÄ‚Ño‚µ
+		//ã‚¤ãƒ™ãƒ³ãƒˆã®å‘¼ã³å‡ºã—
 		AsyncEvent( *this , MyOption->Notify.OnCreateScriptCompleted , nullptr );
 	}
 	return S_OK;
@@ -693,7 +693,7 @@ bool mWebView2::RemoveOnCreateScript( const WString& id )
 {
 	if( !MyViewHandle )
 	{
-		RaiseError( g_ErrorLogger , 0 , L"ƒrƒ…[‚ª‰Šú‰»‚³‚ê‚Ä‚¢‚Ü‚¹‚ñ" );
+		RaiseError( g_ErrorLogger , 0 , L"ãƒ“ãƒ¥ãƒ¼ãŒåˆæœŸåŒ–ã•ã‚Œã¦ã„ã¾ã›ã‚“" );
 		return false;
 	}
 
@@ -740,50 +740,50 @@ HRESULT mWebView2::OnWebMessageReceived( ICoreWebView2* sender , ICoreWebView2We
 			}
 			CoTaskMemFree( str );
 		}
-		//ƒCƒxƒ“ƒg‚ÌŒÄ‚Ño‚µ
+		//ã‚¤ãƒ™ãƒ³ãƒˆã®å‘¼ã³å‡ºã—
 		NotifyFunctionOptPtr optptr;
 		optptr.OnWebMessageRecievedOpt = &opt;
 		AsyncEvent( *this , MyOption->Notify.OnWebMessageReceived , &optptr );
 	}
 	else
 	{
-		//ƒCƒxƒ“ƒg‚ÌŒÄ‚Ño‚µ
+		//ã‚¤ãƒ™ãƒ³ãƒˆã®å‘¼ã³å‡ºã—
 		AsyncEvent( *this , MyOption->Notify.OnWebMessageReceived , nullptr );
 	}
 	return S_OK;
 }
 
-//ƒEƒFƒuƒƒbƒZ[ƒW‚ð‘—M‚·‚éiJSONŒ`Ž®j
+//ã‚¦ã‚§ãƒ–ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸ã‚’é€ä¿¡ã™ã‚‹ï¼ˆJSONå½¢å¼ï¼‰
 bool mWebView2::SendMessageAsJson( const WString& message )
 {
 	if( !MyViewHandle )
 	{
-		RaiseError( g_ErrorLogger , 0 , L"ƒrƒ…[‚ª‰Šú‰»‚³‚ê‚Ä‚¢‚Ü‚¹‚ñ" );
+		RaiseError( g_ErrorLogger , 0 , L"ãƒ“ãƒ¥ãƒ¼ãŒåˆæœŸåŒ–ã•ã‚Œã¦ã„ã¾ã›ã‚“" );
 		return L"";
 	}
 
 	HRESULT hr = MyViewHandle->PostWebMessageAsJson( message.c_str() );
 	if( FAILED( hr ) )
 	{
-		RaiseError( g_ErrorLogger , 0 , L"ƒEƒFƒuƒƒbƒZ[ƒW‘—M‚ªŽ¸”s‚µ‚Ü‚µ‚½" );
+		RaiseError( g_ErrorLogger , 0 , L"ã‚¦ã‚§ãƒ–ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸é€ä¿¡ãŒå¤±æ•—ã—ã¾ã—ãŸ" );
 		return L"";
 	}
 	return true;
 }
 
-//ƒEƒFƒuƒƒbƒZ[ƒW‚ð‘—M‚·‚éi•¶Žš—ñŒ`Ž®j
+//ã‚¦ã‚§ãƒ–ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸ã‚’é€ä¿¡ã™ã‚‹ï¼ˆæ–‡å­—åˆ—å½¢å¼ï¼‰
 bool mWebView2::SendMessageAsString( const WString& message )
 {
 	if( !MyViewHandle )
 	{
-		RaiseError( g_ErrorLogger , 0 , L"ƒrƒ…[‚ª‰Šú‰»‚³‚ê‚Ä‚¢‚Ü‚¹‚ñ" );
+		RaiseError( g_ErrorLogger , 0 , L"ãƒ“ãƒ¥ãƒ¼ãŒåˆæœŸåŒ–ã•ã‚Œã¦ã„ã¾ã›ã‚“" );
 		return L"";
 	}
 
 	HRESULT hr = MyViewHandle->PostWebMessageAsString( message.c_str() );
 	if( FAILED( hr ) )
 	{
-		RaiseError( g_ErrorLogger , hr , L"ƒEƒFƒuƒƒbƒZ[ƒW‘—M‚ªŽ¸”s‚µ‚Ü‚µ‚½" );
+		RaiseError( g_ErrorLogger , hr , L"ã‚¦ã‚§ãƒ–ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸é€ä¿¡ãŒå¤±æ•—ã—ã¾ã—ãŸ" );
 		return L"";
 	}
 	return true;
@@ -793,7 +793,7 @@ bool mWebView2::ExecScript( const WString& scr )
 {
 	if( !MyViewHandle )
 	{
-		RaiseError( g_ErrorLogger , 0 , L"ƒrƒ…[‚ª‰Šú‰»‚³‚ê‚Ä‚¢‚Ü‚¹‚ñ" );
+		RaiseError( g_ErrorLogger , 0 , L"ãƒ“ãƒ¥ãƒ¼ãŒåˆæœŸåŒ–ã•ã‚Œã¦ã„ã¾ã›ã‚“" );
 		return false;
 	}
 
@@ -803,7 +803,7 @@ bool mWebView2::ExecScript( const WString& scr )
 
 	if( FAILED( hr ) )
 	{
-		RaiseError( g_ErrorLogger , hr , L"ƒXƒNƒŠƒvƒg‚ðŽÀs‚Å‚«‚Ü‚¹‚ñ" );
+		RaiseError( g_ErrorLogger , hr , L"ã‚¹ã‚¯ãƒªãƒ—ãƒˆã‚’å®Ÿè¡Œã§ãã¾ã›ã‚“" );
 		return false;
 	}
 	return true;
@@ -820,14 +820,14 @@ HRESULT mWebView2::OnScriptCompleted( HRESULT callback_result , LPCWSTR response
 	{
 		Definitions_WebView2::OnScriptCompletedOpt opt;
 		opt.Message = response;
-		//ƒCƒxƒ“ƒg‚ÌŒÄ‚Ño‚µ
+		//ã‚¤ãƒ™ãƒ³ãƒˆã®å‘¼ã³å‡ºã—
 		NotifyFunctionOptPtr optptr;
 		optptr.OnScriptCompletedOpt = &opt;
 		AsyncEvent( *this , MyOption->Notify.OnScriptCompleted , &optptr );
 	}
 	else
 	{
-		//ƒCƒxƒ“ƒg‚ÌŒÄ‚Ño‚µ
+		//ã‚¤ãƒ™ãƒ³ãƒˆã®å‘¼ã³å‡ºã—
 		AsyncEvent( *this , MyOption->Notify.OnScriptCompleted , nullptr );
 	}
 	return S_OK;
@@ -837,7 +837,7 @@ double mWebView2::GetZoomFactor( double errorvalue )
 {
 	if( !MyControllerHandle )
 	{
-		RaiseError( g_ErrorLogger , 0 , L"ƒRƒ“ƒgƒ[ƒ‰[‚ª‰Šú‰»‚³‚ê‚Ä‚¢‚Ü‚¹‚ñ" );
+		RaiseError( g_ErrorLogger , 0 , L"ã‚³ãƒ³ãƒˆãƒ­ãƒ¼ãƒ©ãƒ¼ãŒåˆæœŸåŒ–ã•ã‚Œã¦ã„ã¾ã›ã‚“" );
 		return errorvalue;
 	}
 
@@ -845,7 +845,7 @@ double mWebView2::GetZoomFactor( double errorvalue )
 	HRESULT hr = MyControllerHandle->get_ZoomFactor( &result );
 	if( FAILED( hr ) )
 	{
-		RaiseError( g_ErrorLogger , hr , L"•\Ž¦”{—¦‚ðŽæ“¾‚Å‚«‚Ü‚¹‚ñ" );
+		RaiseError( g_ErrorLogger , hr , L"è¡¨ç¤ºå€çŽ‡ã‚’å–å¾—ã§ãã¾ã›ã‚“" );
 		return errorvalue;
 	}
 	return result;
@@ -855,14 +855,14 @@ bool mWebView2::SetZoomFactor( double factor )
 {
 	if( !MyViewHandle )
 	{
-		RaiseError( g_ErrorLogger , 0 , L"ƒRƒ“ƒgƒ[ƒ‰[‚ª‰Šú‰»‚³‚ê‚Ä‚¢‚Ü‚¹‚ñ" );
+		RaiseError( g_ErrorLogger , 0 , L"ã‚³ãƒ³ãƒˆãƒ­ãƒ¼ãƒ©ãƒ¼ãŒåˆæœŸåŒ–ã•ã‚Œã¦ã„ã¾ã›ã‚“" );
 		return false;
 	}
 
 	HRESULT hr = MyControllerHandle->put_ZoomFactor( factor );
 	if( FAILED( hr ) )
 	{
-		RaiseError( g_ErrorLogger , hr , L"•\Ž¦”{—¦‚ð•ÏX‚Å‚«‚Ü‚¹‚ñ" );
+		RaiseError( g_ErrorLogger , hr , L"è¡¨ç¤ºå€çŽ‡ã‚’å¤‰æ›´ã§ãã¾ã›ã‚“" );
 		return false;
 	}
 	return true;
@@ -872,7 +872,7 @@ WString mWebView2::GetUserAgant( void )
 {
 	if( !MyViewHandle )
 	{
-		RaiseError( g_ErrorLogger , 0 , L"ƒrƒ…[‚ª‰Šú‰»‚³‚ê‚Ä‚¢‚Ü‚¹‚ñ" );
+		RaiseError( g_ErrorLogger , 0 , L"ãƒ“ãƒ¥ãƒ¼ãŒåˆæœŸåŒ–ã•ã‚Œã¦ã„ã¾ã›ã‚“" );
 		return L"";
 	}
 
@@ -895,7 +895,7 @@ bool mWebView2::SetUserAgant( const WString& ua )
 {
 	if( !MyViewHandle )
 	{
-		RaiseError( g_ErrorLogger , 0 , L"ƒrƒ…[‚ª‰Šú‰»‚³‚ê‚Ä‚¢‚Ü‚¹‚ñ" );
+		RaiseError( g_ErrorLogger , 0 , L"ãƒ“ãƒ¥ãƒ¼ãŒåˆæœŸåŒ–ã•ã‚Œã¦ã„ã¾ã›ã‚“" );
 		return false;
 	}
 
@@ -905,7 +905,7 @@ bool mWebView2::SetUserAgant( const WString& ua )
 	HRESULT hr = settings->put_UserAgent( ua.c_str() );
 	if( FAILED( hr ) )
 	{
-		RaiseError( g_ErrorLogger , hr , L"ƒ†[ƒU[ƒG[ƒWƒFƒ“ƒg‚ð•ÏX‚Å‚«‚Ü‚¹‚ñ" );
+		RaiseError( g_ErrorLogger , hr , L"ãƒ¦ãƒ¼ã‚¶ãƒ¼ã‚¨ãƒ¼ã‚¸ã‚§ãƒ³ãƒˆã‚’å¤‰æ›´ã§ãã¾ã›ã‚“" );
 		return false;
 	}
 	return true;

@@ -1,11 +1,11 @@
-//----------------------------------------------------------------------------
-//ƒƒ‹ƒZƒ“ƒkEƒcƒCƒXƒ^—””­¶ƒNƒ‰ƒX
+ï»¿//----------------------------------------------------------------------------
+//ãƒ¡ãƒ«ã‚»ãƒ³ãƒŒãƒ»ãƒ„ã‚¤ã‚¹ã‚¿ä¹±æ•°ç™ºç”Ÿã‚¯ãƒ©ã‚¹
 // Copyright (C) 2005 Fingerling. All rights reserved.
 // Copyright (C) 2018- Crea Inc. All rights reserved.
 // This program is released under the MIT License. 
 // see http://opensource.org/licenses/mit-license.php
-// ’˜ìŒ •\¦‚âƒ‰ƒCƒZƒ“ƒX‚Ì‰ü•Ï‚Í‹Ö~‚³‚ê‚Ä‚¢‚Ü‚·B
-// ‚±‚Ìƒ\[ƒXƒR[ƒh‚ÉŠÖ‚µ‚ÄAã‹Lƒ‰ƒCƒZƒ“ƒXˆÈŠO‚ÌŒ_–ñ“™‚ÍˆêØ‘¶İ‚µ‚Ü‚¹‚ñB
+// è‘—ä½œæ¨©è¡¨ç¤ºã‚„ãƒ©ã‚¤ã‚»ãƒ³ã‚¹ã®æ”¹å¤‰ã¯ç¦æ­¢ã•ã‚Œã¦ã„ã¾ã™ã€‚
+// ã“ã®ã‚½ãƒ¼ã‚¹ã‚³ãƒ¼ãƒ‰ã«é–¢ã—ã¦ã€ä¸Šè¨˜ãƒ©ã‚¤ã‚»ãƒ³ã‚¹ä»¥å¤–ã®å¥‘ç´„ç­‰ã¯ä¸€åˆ‡å­˜åœ¨ã—ã¾ã›ã‚“ã€‚
 //----------------------------------------------------------------------------
 
 #include "mMTwister.h"
@@ -20,17 +20,17 @@ mMTwister::mMTwister()
 
 bool mMTwister::Initialize( void )
 {
-	std::array< std::seed_seq::result_type , RandSource::state_size	> seed_data;	//ƒV[ƒh‚Ì’l
+	std::array< std::seed_seq::result_type , RandSource::state_size	> seed_data;	//ã‚·ãƒ¼ãƒ‰ã®å€¤
 
-	//ƒV[ƒh‚Ì‰Šú‰»
+	//ã‚·ãƒ¼ãƒ‰ã®åˆæœŸåŒ–
 	mRand rnd;
 	rnd.RandFill( reinterpret_cast<BYTE*>( seed_data.data() ) , DWORD( sizeof( seed_data[ 0 ] ) * seed_data.size() ) );
 
-	//ì‚Á‚½ƒV[ƒh‚ğ“K—p
+	//ä½œã£ãŸã‚·ãƒ¼ãƒ‰ã‚’é©ç”¨
 	std::seed_seq seq( seed_data.begin() , seed_data.end() );
 	MyRandSource.seed( seq );
 
-	//“K“–‚É“Ç‚İ”ò‚Î‚µ‚ğs‚¤
+	//é©å½“ã«èª­ã¿é£›ã°ã—ã‚’è¡Œã†
 	MyRandSource.discard( ( ( timeGetTime() >> 3 ) & 0x0000FFFFUL ) + 10000 );
 
 	return true;
@@ -52,8 +52,8 @@ INT mMTwister::RandUInt31( void )
 
 }
 
-// # a…x…b‚ğ–‚½‚·À”x‚ÌW‡‚ğ•Â‹æŠÔ‚Æ‚¢‚¢A[a,b]‚Å•\‚·
-// # 0ˆÈã1ˆÈ‰ºB
+// # aâ‰¦xâ‰¦bã‚’æº€ãŸã™å®Ÿæ•°xã®é›†åˆã‚’é–‰åŒºé–“ã¨ã„ã„ã€[a,b]ã§è¡¨ã™
+// # 0ä»¥ä¸Š1ä»¥ä¸‹ã€‚
 DOUBLE mMTwister::RandDouble1( void )
 {
 
@@ -69,7 +69,7 @@ DOUBLE mMTwister::RandClose( void )
 
 }
 
-// # 0ˆÈã1–¢–B
+// # 0ä»¥ä¸Š1æœªæº€ã€‚
 DOUBLE mMTwister::RandDouble2( void )
 {
 
@@ -85,7 +85,7 @@ DOUBLE mMTwister::RandSemiOpen( void )
 
 }
 
-// # 0‚æ‚è‘å‚«‚­1‚æ‚è¬‚³‚¢B
+// # 0ã‚ˆã‚Šå¤§ãã1ã‚ˆã‚Šå°ã•ã„ã€‚
 DOUBLE mMTwister::RandDouble3( void )
 {
 
@@ -101,7 +101,7 @@ DOUBLE mMTwister::RandOpen( void )
 
 }
 
-//“n‚µ‚½ƒoƒbƒtƒ@‚ğ—”’l‚Å–„‚ß‚é
+//æ¸¡ã—ãŸãƒãƒƒãƒ•ã‚¡ã‚’ä¹±æ•°å€¤ã§åŸ‹ã‚ã‚‹
 void mMTwister::RandFill( BYTE* buffer , DWORD bufferlen )
 {
 	while( ( 0 < bufferlen ) && ( (ULONG_PTR)buffer & 0x03 ) )
@@ -125,7 +125,7 @@ void mMTwister::RandFill( BYTE* buffer , DWORD bufferlen )
 	return;
 }
 
-//w’è‚µ‚½2’lŠÔ‚É‹Ï“™•ª•z‚·‚é’l
+//æŒ‡å®šã—ãŸ2å€¤é–“ã«å‡ç­‰åˆ†å¸ƒã™ã‚‹å€¤
 UINT mMTwister::RandBetween( UINT val1 , UINT val2 )
 {
 	if( val1 == val2 )

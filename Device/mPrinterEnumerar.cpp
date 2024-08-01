@@ -1,11 +1,11 @@
-//----------------------------------------------------------------------------
-// ƒvƒŠƒ“ƒ^—ñ‹“ƒNƒ‰ƒX
+ï»¿//----------------------------------------------------------------------------
+// ãƒ—ãƒªãƒ³ã‚¿åˆ—æŒ™ã‚¯ãƒ©ã‚¹
 // Copyright (C) 2019- Crea Inc. All rights reserved.
 // This program is released under the MIT License. 
 // see http://opensource.org/licenses/mit-license.php
-// ’˜ìŒ •\¦‚âƒ‰ƒCƒZƒ“ƒX‚Ì‰ü•Ï‚Í‹Ö~‚³‚ê‚Ä‚¢‚Ü‚·B
-// ‚±‚Ìƒ\[ƒXƒR[ƒh‚ÉŠÖ‚µ‚ÄAã‹Lƒ‰ƒCƒZƒ“ƒXˆÈŠO‚ÌŒ_–ñ“™‚ÍˆêØ‘¶İ‚µ‚Ü‚¹‚ñB
-// (‰½‚ç‚©‚ÌŒ_–ñ‚ª‚ ‚éê‡‚Å‚àA–{ƒ\[ƒXƒR[ƒh‚Í‚»‚Ì‘ÎÛŠO‚Æ‚È‚è‚Ü‚·)
+// è‘—ä½œæ¨©è¡¨ç¤ºã‚„ãƒ©ã‚¤ã‚»ãƒ³ã‚¹ã®æ”¹å¤‰ã¯ç¦æ­¢ã•ã‚Œã¦ã„ã¾ã™ã€‚
+// ã“ã®ã‚½ãƒ¼ã‚¹ã‚³ãƒ¼ãƒ‰ã«é–¢ã—ã¦ã€ä¸Šè¨˜ãƒ©ã‚¤ã‚»ãƒ³ã‚¹ä»¥å¤–ã®å¥‘ç´„ç­‰ã¯ä¸€åˆ‡å­˜åœ¨ã—ã¾ã›ã‚“ã€‚
+// (ä½•ã‚‰ã‹ã®å¥‘ç´„ãŒã‚ã‚‹å ´åˆã§ã‚‚ã€æœ¬ã‚½ãƒ¼ã‚¹ã‚³ãƒ¼ãƒ‰ã¯ãã®å¯¾è±¡å¤–ã¨ãªã‚Šã¾ã™)
 //----------------------------------------------------------------------------
 
 #include "mPrinterEnumerar.h"
@@ -32,7 +32,7 @@ static bool QueryDefaultPrinter( WString& retDefaultPrinterName )
 		switch( GetLastError() )
 		{
 		case ERROR_FILE_NOT_FOUND:
-			//ƒfƒtƒHƒ‹ƒgƒvƒŠƒ“ƒ^[‚Íİ’è‚³‚ê‚Ä‚¢‚È‚¢
+			//ãƒ‡ãƒ•ã‚©ãƒ«ãƒˆãƒ—ãƒªãƒ³ã‚¿ãƒ¼ã¯è¨­å®šã•ã‚Œã¦ã„ãªã„
 			return true;
 		case ERROR_INSUFFICIENT_BUFFER:
 			break;
@@ -51,7 +51,7 @@ static bool QueryDefaultPrinter( WString& retDefaultPrinterName )
 	return true;
 }
 
-//ƒfƒtƒHƒ‹ƒg‚ÌƒvƒŠƒ“ƒ^[‚Ì–¼‘O‚ğ“¾‚é
+//ãƒ‡ãƒ•ã‚©ãƒ«ãƒˆã®ãƒ—ãƒªãƒ³ã‚¿ãƒ¼ã®åå‰ã‚’å¾—ã‚‹
 bool mPrinterEnumerar::GetDefaultPrinterName( WString& retName ) noexcept
 {
 	return QueryDefaultPrinter( retName );
@@ -59,33 +59,33 @@ bool mPrinterEnumerar::GetDefaultPrinterName( WString& retName ) noexcept
 
 bool mPrinterEnumerar::Reload( void )
 {
-	//‘O‚Ìƒf[ƒ^‚ğÁ‚·
+	//å‰ã®ãƒ‡ãƒ¼ã‚¿ã‚’æ¶ˆã™
 	MyPrinterInfo.clear();
 
-	//ƒfƒtƒHƒ‹ƒg‚ÌƒvƒŠƒ“ƒ^‚ğæ“¾
+	//ãƒ‡ãƒ•ã‚©ãƒ«ãƒˆã®ãƒ—ãƒªãƒ³ã‚¿ã‚’å–å¾—
 	WString default_printer;
 	if( !QueryDefaultPrinter( default_printer ) )
 	{
-		RaiseError( g_ErrorLogger , 0 , L"ƒfƒtƒHƒ‹ƒg‚ÌƒvƒŠƒ“ƒ^[î•ñ‚ªæ“¾‚Å‚«‚Ü‚¹‚ñ" );
+		RaiseError( g_ErrorLogger , 0 , L"ãƒ‡ãƒ•ã‚©ãƒ«ãƒˆã®ãƒ—ãƒªãƒ³ã‚¿ãƒ¼æƒ…å ±ãŒå–å¾—ã§ãã¾ã›ã‚“" );
 		return false;
 	}
 
 	if( !CreateCatalog() )
 	{
-		RaiseError( g_ErrorLogger , 0 , L"ƒfƒoƒCƒXˆê——‚ğì¬‚Å‚«‚Ü‚¹‚ñ" );
+		RaiseError( g_ErrorLogger , 0 , L"ãƒ‡ãƒã‚¤ã‚¹ä¸€è¦§ã‚’ä½œæˆã§ãã¾ã›ã‚“" );
 		return false;
 	}
 
 	for( DWORD i = 0 ; i < MyDevInfoData.size() ; i++ )
 	{
-		//Šî–{“I‚Èî•ñ‚ğˆÚs
+		//åŸºæœ¬çš„ãªæƒ…å ±ã‚’ç§»è¡Œ
 		bool result = true;
 		mPrinterInfo::PrinterInfoEntry entry;
 
-		result &= GetProperty( i , SPDRP_FRIENDLYNAME , entry.Name );			//ƒRƒ“ƒgƒ[ƒ‹ƒpƒlƒ‹‚ÌuƒtƒŒƒ“ƒhƒŠ–¼v‚Æ“¯‚¶
-		result &= GetProperty( i , SPDRP_DEVICEDESC , entry.Description );		//ƒRƒ“ƒgƒ[ƒ‹ƒpƒlƒ‹‚ÌuƒfƒoƒCƒX‚Ìà–¾v‚Æ“¯‚¶
+		result &= GetProperty( i , SPDRP_FRIENDLYNAME , entry.Name );			//ã‚³ãƒ³ãƒˆãƒ­ãƒ¼ãƒ«ãƒ‘ãƒãƒ«ã®ã€Œãƒ•ãƒ¬ãƒ³ãƒ‰ãƒªåã€ã¨åŒã˜
+		result &= GetProperty( i , SPDRP_DEVICEDESC , entry.Description );		//ã‚³ãƒ³ãƒˆãƒ­ãƒ¼ãƒ«ãƒ‘ãƒãƒ«ã®ã€Œãƒ‡ãƒã‚¤ã‚¹ã®èª¬æ˜ã€ã¨åŒã˜
 
-		//ƒAƒŒƒC‚É’Ç‰Á
+		//ã‚¢ãƒ¬ã‚¤ã«è¿½åŠ 
 		MyPrinterInfo.push_back( entry );
 	}
 	return true;
@@ -123,7 +123,7 @@ static bool GetDevModeStructure( HANDLE handle , DWORD level , std::unique_ptr<P
 	case 9: // PRINTER_INFO_9
 		break;
 	default:
-		//‘Î‰ŠO
+		//å¯¾å¿œå¤–
 		return false;
 	}
 
@@ -135,26 +135,26 @@ static bool GetDevModeStructure( HANDLE handle , DWORD level , std::unique_ptr<P
 		case ERROR_INSUFFICIENT_BUFFER:
 			break;
 		default:
-			RaiseError( g_ErrorLogger , 0 , L"ƒvƒŠƒ“ƒ^[î•ñ‚ªæ“¾‚Å‚«‚Ü‚¹‚ñ" );
+			RaiseError( g_ErrorLogger , 0 , L"ãƒ—ãƒªãƒ³ã‚¿ãƒ¼æƒ…å ±ãŒå–å¾—ã§ãã¾ã›ã‚“" );
 			return false;
 		}
 	}
 	if( sz == sizeof( PRINTER_INFO_8 ) )
 	{
-		//ƒTƒCƒY‚ª\‘¢‘Ì‚ÌƒTƒCƒY‚»‚Ì‚à‚Ì‚Ìê‡ƒf[ƒ^‚È‚µ
+		//ã‚µã‚¤ã‚ºãŒæ§‹é€ ä½“ã®ã‚µã‚¤ã‚ºãã®ã‚‚ã®ã®å ´åˆãƒ‡ãƒ¼ã‚¿ãªã—
 		return false;
 	}
 
 	retDevmode.reset( (PRINTER_INFO_8*)mNew BYTE[ sz ] );
 	if( !GetPrinterW( handle , level , (BYTE*)retDevmode.get() , sz , &sz ) )
 	{
-		//æ“¾‚Å‚«‚¸
+		//å–å¾—ã§ããš
 		return false;
 	}
 	if( ( sz <= sizeof( PRINTER_INFO_8 ) ) ||
 		( ((PRINTER_INFO_8*)retDevmode.get())->pDevMode == nullptr ) )
 	{
-		//ƒf[ƒ^‚È‚µz
+		//ãƒ‡ãƒ¼ã‚¿ãªã—z
 		return false;
 	}
 
@@ -170,17 +170,17 @@ bool FillDevModeStructure( const std::unique_ptr<PRINTER_INFO_8>& info , mPrinte
 	const DEVMODE* dev = info->pDevMode;
 
 	int rc;
-	//†‚Ìî•ñ‚ğæ“¾
+	//ç´™ã®æƒ…å ±ã‚’å–å¾—
 	{
-		//ƒGƒ“ƒgƒŠ”‚ğ’²‚×‚é
+		//ã‚¨ãƒ³ãƒˆãƒªæ•°ã‚’èª¿ã¹ã‚‹
 		int count = DeviceCapabilities( dev->dmDeviceName , L"" , DC_PAPERNAMES , nullptr , dev );
 		if( count <= 0 )
 		{
-			//†‚Ì”‚ª•ª‚©‚ç‚È‚¢
-			RaiseError( g_ErrorLogger , 0 , L"ƒvƒŠƒ“ƒ^[î•ñ‚É—p†î•ñ‚ª‚ ‚è‚Ü‚¹‚ñ" );
+			//ç´™ã®æ•°ãŒåˆ†ã‹ã‚‰ãªã„
+			RaiseError( g_ErrorLogger , 0 , L"ãƒ—ãƒªãƒ³ã‚¿ãƒ¼æƒ…å ±ã«ç”¨ç´™æƒ…å ±ãŒã‚ã‚Šã¾ã›ã‚“" );
 			return false;
 		}
-		std::unique_ptr<wchar_t[]> papernames( mNew wchar_t[ count * 64 ] );	//©1ƒGƒ“ƒgƒŠ64•¶šŒÅ’è
+		std::unique_ptr<wchar_t[]> papernames( mNew wchar_t[ count * 64 ] );	//â†1ã‚¨ãƒ³ãƒˆãƒª64æ–‡å­—å›ºå®š
 		std::unique_ptr<WORD[]> papers( mNew WORD[ count ] );
 		std::unique_ptr<POINT[]> sizes( mNew POINT[ count ] );
 
@@ -193,12 +193,12 @@ bool FillDevModeStructure( const std::unique_ptr<PRINTER_INFO_8>& info , mPrinte
 			mPrinterInfo::PaperInfoEntry entry;
 			if( papernames[ i * 64 + 63 ] == L'\0' )
 			{
-				//ƒkƒ‹I’[‚³‚ê‚Ä‚¢‚é
+				//ãƒŒãƒ«çµ‚ç«¯ã•ã‚Œã¦ã„ã‚‹
 				entry.FriendlyName = &papernames.get()[ i * 64 ];
 			}
 			else
 			{
-				//ƒkƒ‹I’[‚³‚ê‚Ä‚¢‚È‚¢‚Ì‚Åˆê’UƒRƒs[‚·‚é
+				//ãƒŒãƒ«çµ‚ç«¯ã•ã‚Œã¦ã„ãªã„ã®ã§ä¸€æ—¦ã‚³ãƒ”ãƒ¼ã™ã‚‹
 				wchar_t tmp_name[ 65 ];
 				MoveMemory( tmp_name , &papernames[ i * 64 ] , 64 * sizeof( wchar_t ) );
 				tmp_name[ 64 ] = L'\0';
@@ -211,9 +211,9 @@ bool FillDevModeStructure( const std::unique_ptr<PRINTER_INFO_8>& info , mPrinte
 			retprop.AcceptablePaper.push_back( std::move( entry ) );
 		}
 	}
-	//ƒJƒ‰[H
+	//ã‚«ãƒ©ãƒ¼ï¼Ÿ
 	retprop.IsColor = DeviceCapabilities( dev->dmDeviceName , L"" , DC_COLORDEVICE , nullptr , dev );
-	//—¼–Ê‘Î‰H
+	//ä¸¡é¢å¯¾å¿œï¼Ÿ
 	retprop.IsDuplex = DeviceCapabilities( dev->dmDeviceName , L"" , DC_DUPLEX , nullptr , dev );
 	//DPI
 	retprop.Dpi = dev->dmPrintQuality;
@@ -231,30 +231,30 @@ bool mPrinterEnumerar::GetPrinterProperty( const WString& name , PrinterProperty
 	}
 
 	//https://docs.microsoft.com/ja-jp/windows/win32/printdocs/getprinter
-	//‚Ü‚¸‚ÍLv9 (ƒ†[ƒU[‚²‚Æ‚Ìİ’è)‚Åæ“¾‚µ‚ÄA
-	//æ“¾‚Å‚«‚È‚¯‚ê‚ÎLv8(ƒOƒ[ƒoƒ‹‚Ìİ’è)‚Åæ“¾‚·‚éB
-	//‚Ç‚¿‚ç‚àæ‚ê‚È‚¯‚ê‚ÎƒMƒuƒAƒbƒv
+	//ã¾ãšã¯Lv9 (ãƒ¦ãƒ¼ã‚¶ãƒ¼ã”ã¨ã®è¨­å®š)ã§å–å¾—ã—ã¦ã€
+	//å–å¾—ã§ããªã‘ã‚Œã°Lv8(ã‚°ãƒ­ãƒ¼ãƒãƒ«ã®è¨­å®š)ã§å–å¾—ã™ã‚‹ã€‚
+	//ã©ã¡ã‚‰ã‚‚å–ã‚Œãªã‘ã‚Œã°ã‚®ãƒ–ã‚¢ãƒƒãƒ—
 	std::unique_ptr<PRINTER_INFO_8> info;
 	if( GetDevModeStructure( handle , 9 , info ) )
 	{
-		//ƒŒƒxƒ‹9‚Åæ“¾¬Œ÷
+		//ãƒ¬ãƒ™ãƒ«9ã§å–å¾—æˆåŠŸ
 		;
 	}
 	else if( GetDevModeStructure( handle , 8 , info ) )
 	{
-		//ƒŒƒxƒ‹8‚Åæ“¾¬Œ÷
+		//ãƒ¬ãƒ™ãƒ«8ã§å–å¾—æˆåŠŸ
 		;
 	}
 	else
 	{
-		//æ‚ê‚È‚¢
-		RaiseError( g_ErrorLogger , 0 , L"ƒvƒŠƒ“ƒ^[î•ñ‚Ìæ“¾‚ª¸”s‚µ‚Ü‚µ‚½" );
+		//å–ã‚Œãªã„
+		RaiseError( g_ErrorLogger , 0 , L"ãƒ—ãƒªãƒ³ã‚¿ãƒ¼æƒ…å ±ã®å–å¾—ãŒå¤±æ•—ã—ã¾ã—ãŸ" );
 		goto err;
 	}
 
 	if( !FillDevModeStructure( info , retProperty ) )
 	{
-		RaiseError( g_ErrorLogger , 0 , L"ƒvƒŠƒ“ƒ^[î•ñ‚ğ“Ç‚İæ‚ê‚Ü‚¹‚ñ‚Å‚µ‚½" );
+		RaiseError( g_ErrorLogger , 0 , L"ãƒ—ãƒªãƒ³ã‚¿ãƒ¼æƒ…å ±ã‚’èª­ã¿å–ã‚Œã¾ã›ã‚“ã§ã—ãŸ" );
 		goto err;
 	}
 

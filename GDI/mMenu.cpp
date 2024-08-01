@@ -1,5 +1,5 @@
-//----------------------------------------------------------------------------
-// ƒEƒCƒ“ƒhƒEŠÇ—iƒƒjƒ…[j
+ï»¿//----------------------------------------------------------------------------
+// ã‚¦ã‚¤ãƒ³ãƒ‰ã‚¦ç®¡ç†ï¼ˆãƒ¡ãƒ‹ãƒ¥ãƒ¼ï¼‰
 // Copyright (C) 2016 Fingerling. All rights reserved. 
 // This program is released under the MIT License. 
 // see http://opensource.org/licenses/mit-license.php
@@ -13,27 +13,27 @@
 
 mMenu::mMenu( const Option* opt )
 {
-	//ƒ|ƒbƒvƒAƒbƒvƒƒjƒ…[‚É‚·‚é‚©‚ğ”»’è
+	//ãƒãƒƒãƒ—ã‚¢ãƒƒãƒ—ãƒ¡ãƒ‹ãƒ¥ãƒ¼ã«ã™ã‚‹ã‹ã‚’åˆ¤å®š
 	bool popup;
 	if( opt == nullptr )
 	{
-		//ƒIƒvƒVƒ‡ƒ“‚ªw’è‚µ‚Ä‚È‚¯‚ê‚ÎAƒ|ƒbƒvƒAƒbƒvƒƒjƒ…[‚É‚µ‚È‚¢
+		//ã‚ªãƒ—ã‚·ãƒ§ãƒ³ãŒæŒ‡å®šã—ã¦ãªã‘ã‚Œã°ã€ãƒãƒƒãƒ—ã‚¢ãƒƒãƒ—ãƒ¡ãƒ‹ãƒ¥ãƒ¼ã«ã—ãªã„
 		popup = false;
 	}
 	else if( opt->method == Option::CreateMethod::USEOPTION )
 	{
-		//ƒIƒvƒVƒ‡ƒ“‚ªw’è‚µ‚Ä‚ ‚ê‚ÎA‚»‚ê‚ğ“Ç‚İæ‚é
+		//ã‚ªãƒ—ã‚·ãƒ§ãƒ³ãŒæŒ‡å®šã—ã¦ã‚ã‚Œã°ã€ãã‚Œã‚’èª­ã¿å–ã‚‹
 		const Option_UseOption* option = (const Option_UseOption*)opt;
 		popup = option->IsPopup;
 	}
 	else
 	{
-		//‚È‚ñ‚©•Ï‚È‚à‚Ì‚ª“n‚³‚ê‚½ê‡‚ÍƒGƒ‰[‚ğ‹L˜^‚µ‚ÄAƒ|ƒbƒvƒAƒbƒvƒƒjƒ…[‚É‚µ‚È‚¢
+		//ãªã‚“ã‹å¤‰ãªã‚‚ã®ãŒæ¸¡ã•ã‚ŒãŸå ´åˆã¯ã‚¨ãƒ©ãƒ¼ã‚’è¨˜éŒ²ã—ã¦ã€ãƒãƒƒãƒ—ã‚¢ãƒƒãƒ—ãƒ¡ãƒ‹ãƒ¥ãƒ¼ã«ã—ãªã„
 		RaiseAssert( g_ErrorLogger , opt->method , L"Unknown create method" );
 		popup = false;
 	}
 
-	//ƒƒjƒ…[‚Ìì¬
+	//ãƒ¡ãƒ‹ãƒ¥ãƒ¼ã®ä½œæˆ
 	MyRootMenu = mNew MenuHandle( popup );
 }
 
@@ -42,17 +42,17 @@ mMenu::~mMenu()
 	mDelete MyRootMenu;
 }
 
-//ƒƒjƒ…[‚ÉƒAƒCƒeƒ€‚ğ’Ç‰Á‚·‚é
+//ãƒ¡ãƒ‹ãƒ¥ãƒ¼ã«ã‚¢ã‚¤ãƒ†ãƒ ã‚’è¿½åŠ ã™ã‚‹
 bool mMenu::AddItem( const MenuOption& item , const mGdiResource* resource )
 {
-	//FunctionID‚ªƒŠƒWƒFƒNƒg‚³‚ê‚Ä‚¢‚È‚¢‚©ƒ`ƒFƒbƒN‚·‚é
+	//FunctionIDãŒãƒªã‚¸ã‚§ã‚¯ãƒˆã•ã‚Œã¦ã„ãªã„ã‹ãƒã‚§ãƒƒã‚¯ã™ã‚‹
 	if( item.FunctionId == 0 )
 	{
 		RaiseError( g_ErrorLogger , 0 , L"FunctionID is zero" );
-		return false;	//FunctionID=0‚Íw’è‚ª‚È‚­‚Ä‚àƒŠƒWƒFƒNƒg
+		return false;	//FunctionID=0ã¯æŒ‡å®šãŒãªãã¦ã‚‚ãƒªã‚¸ã‚§ã‚¯ãƒˆ
 	}
 
-	//ƒAƒCƒeƒ€‚ğæ“¾(‚È‚¢ê‡‚ÍV‹Kì¬)
+	//ã‚¢ã‚¤ãƒ†ãƒ ã‚’å–å¾—(ãªã„å ´åˆã¯æ–°è¦ä½œæˆ)
 	MenuItemEntry* entry = SearchItemEntry( item.Path , true );
 	if( entry == nullptr )
 	{
@@ -61,26 +61,26 @@ bool mMenu::AddItem( const MenuOption& item , const mGdiResource* resource )
 	}
 
 	//-------------------
-	//¦“à•”ƒf[ƒ^‚ÌXV
+	//â€»å†…éƒ¨ãƒ‡ãƒ¼ã‚¿ã®æ›´æ–°
 	//-------------------
 
-	//€–Ú‚Ìƒrƒbƒgƒ}ƒbƒv‚ª—L‚ê‚Îİ’è
+	//é …ç›®ã®ãƒ“ãƒƒãƒˆãƒãƒƒãƒ—ãŒæœ‰ã‚Œã°è¨­å®š
 	entry->CheckedBitmap = item.CheckedBitmap;
 	entry->UnchedkedBitmap = item.UncheckedBitmap;
-	//€–Ú‚Ìƒ`ƒFƒbƒN‚ğ‚Ç‚ê‚É‚·‚é‚©B‚ ‚ÆƒZƒpƒŒ[ƒ^‚É‚·‚é‚©B
+	//é …ç›®ã®ãƒã‚§ãƒƒã‚¯ã‚’ã©ã‚Œã«ã™ã‚‹ã‹ã€‚ã‚ã¨ã‚»ãƒ‘ãƒ¬ãƒ¼ã‚¿ã«ã™ã‚‹ã‹ã€‚
 	entry->Type = item.Type;
-	//‹@”\ID
+	//æ©Ÿèƒ½ID
 	entry->FunctionId = item.FunctionId;
-	//ƒLƒƒƒvƒVƒ‡ƒ“
+	//ã‚­ãƒ£ãƒ—ã‚·ãƒ§ãƒ³
 	entry->OptString = item.OptString;
 	entry->UserData = item.UserData;
 
-	//ƒƒjƒ…[‚ÌŒ©‚½–Ú‚ÌXV
+	//ãƒ¡ãƒ‹ãƒ¥ãƒ¼ã®è¦‹ãŸç›®ã®æ›´æ–°
 	MENUITEMINFOW info;
 	SetMenuItemInfoStruct( *entry , info , resource );
 	if( !::SetMenuItemInfoW( entry->Parent.Handle , entry->InternalId , false , &info ) )
 	{
-		//ƒTƒuƒƒjƒ…[‚Ìİ’è‚É¸”s
+		//ã‚µãƒ–ãƒ¡ãƒ‹ãƒ¥ãƒ¼ã®è¨­å®šã«å¤±æ•—
 		RaiseAssert( g_ErrorLogger , 0 , L"SetMenuItemInfoW failed" );
 		return false;
 	}
@@ -88,31 +88,31 @@ bool mMenu::AddItem( const MenuOption& item , const mGdiResource* resource )
 
 }
 
-//ƒƒjƒ…[‚©‚çƒAƒCƒeƒ€‚ğíœ‚·‚é
+//ãƒ¡ãƒ‹ãƒ¥ãƒ¼ã‹ã‚‰ã‚¢ã‚¤ãƒ†ãƒ ã‚’å‰Šé™¤ã™ã‚‹
 bool mMenu::RemoveItem( const WStringVector& Path )
 {
-	//ƒAƒCƒeƒ€‚ğæ“¾(ŠY“–ƒAƒCƒeƒ€‚ª‚È‚¢ê‡‚Í•Ê‚Éíœ‚Æ‚©‚Ç‚¤‚Å‚à‚¢‚¢‚Ì‚Å³íI—¹‚Å–ß‚é)
+	//ã‚¢ã‚¤ãƒ†ãƒ ã‚’å–å¾—(è©²å½“ã‚¢ã‚¤ãƒ†ãƒ ãŒãªã„å ´åˆã¯åˆ¥ã«å‰Šé™¤ã¨ã‹ã©ã†ã§ã‚‚ã„ã„ã®ã§æ­£å¸¸çµ‚äº†ã§æˆ»ã‚‹)
 	MenuItemEntry* entry = SearchItemEntry( Path , false );
 	if( entry == nullptr )
 	{
 		return true;
 	}
 
-	//ŠY“–ƒAƒCƒeƒ€‚ÌƒCƒeƒŒ[ƒ^‚ğ’T‚·
+	//è©²å½“ã‚¢ã‚¤ãƒ†ãƒ ã®ã‚¤ãƒ†ãƒ¬ãƒ¼ã‚¿ã‚’æ¢ã™
 	MenuHandle* ptr = &entry->Parent;
 	MenuItem::iterator remove_itr = entry->Parent.Items.begin();
 	for( remove_itr = ptr->Items.begin() ; remove_itr != ptr->Items.end() ; remove_itr++ )
 	{
 		if( *remove_itr == entry )
 		{
-			//Œ»İƒCƒeƒŒ[ƒ^‚Ííœ‘ÎÛ‚ğw‚µ‚Ä‚¢‚é‚Ì‚ÅAíœˆ—‚ğs‚¤
+			//ç¾åœ¨ã‚¤ãƒ†ãƒ¬ãƒ¼ã‚¿ã¯å‰Šé™¤å¯¾è±¡ã‚’æŒ‡ã—ã¦ã„ã‚‹ã®ã§ã€å‰Šé™¤å‡¦ç†ã‚’è¡Œã†
 			if( ::DeleteMenu( entry->Parent.Handle , entry->InternalId , MF_BYCOMMAND ) )
 			{
 				RaiseAssert( g_ErrorLogger , entry->InternalId , L"DeleteMenu failed" );
-				//‹L˜^‚Í‚·‚é‚ªAƒGƒ‰[I—¹‚É‚Í‚µ‚È‚¢
+				//è¨˜éŒ²ã¯ã™ã‚‹ãŒã€ã‚¨ãƒ©ãƒ¼çµ‚äº†ã«ã¯ã—ãªã„
 			}
-			mDelete *remove_itr;					//ƒAƒCƒeƒ€‚ğíœ
-			ptr->Items.erase( remove_itr );		//ƒTƒuƒƒjƒ…[‚Ìî•ñ‚©‚çíœ
+			mDelete *remove_itr;					//ã‚¢ã‚¤ãƒ†ãƒ ã‚’å‰Šé™¤
+			ptr->Items.erase( remove_itr );		//ã‚µãƒ–ãƒ¡ãƒ‹ãƒ¥ãƒ¼ã®æƒ…å ±ã‹ã‚‰å‰Šé™¤
 			return true;
 		}
 	}
@@ -124,32 +124,32 @@ bool mMenu::RemoveItem( const WStringVector& Path )
 
 bool mMenu::ScanFunctionId( MenuHandle* menu , UINT functionid , ScanItemCallback callback_func )const
 {
-	//ƒkƒ‹‚¾‚Á‚½ê‡‚Í‚»‚Ì‚Ü‚Ü–ß‚é
+	//ãƒŒãƒ«ã ã£ãŸå ´åˆã¯ãã®ã¾ã¾æˆ»ã‚‹
 	if( menu == nullptr )
 	{
 		return true;
 	}
 
-	//”z‰º‚Ì€–Ú‘S•”‚ğƒXƒLƒƒƒ“
+	//é…ä¸‹ã®é …ç›®å…¨éƒ¨ã‚’ã‚¹ã‚­ãƒ£ãƒ³
 	bool result = true;
 	MenuItem::iterator itr;
 	for( itr = menu->Items.begin() ; itr != menu->Items.end() ; itr++ )
 	{
-		//‹@”\ID‚ªˆê’v‚µ‚Ä‚¢‚ê‚Î‘ÎÛ‚¾‚©‚çƒR[ƒ‹ƒoƒbƒNŠÖ”‚ğŒÄ‚Ô
+		//æ©Ÿèƒ½IDãŒä¸€è‡´ã—ã¦ã„ã‚Œã°å¯¾è±¡ã ã‹ã‚‰ã‚³ãƒ¼ãƒ«ãƒãƒƒã‚¯é–¢æ•°ã‚’å‘¼ã¶
 		if( ( *itr )->FunctionId == functionid )
 		{
 			result &= callback_func( *itr );
 		}
-		//ƒTƒuƒƒjƒ…[‚àƒXƒLƒƒƒ“
+		//ã‚µãƒ–ãƒ¡ãƒ‹ãƒ¥ãƒ¼ã‚‚ã‚¹ã‚­ãƒ£ãƒ³
 		result &= ScanFunctionId( ( *itr )->Child , functionid , callback_func );
 	}
 	return result;
 }
 
-//ƒƒjƒ…[‚ğ—LŒøE–³Œø‚É‚·‚éBƒ`ƒFƒbƒN‚Ìó‘Ô‚ğXV‚·‚éB
+//ãƒ¡ãƒ‹ãƒ¥ãƒ¼ã‚’æœ‰åŠ¹ãƒ»ç„¡åŠ¹ã«ã™ã‚‹ã€‚ãƒã‚§ãƒƒã‚¯ã®çŠ¶æ…‹ã‚’æ›´æ–°ã™ã‚‹ã€‚
 bool mMenu::SetState( UINT FunctionId , bool enable , bool checked )
 {
-	//—LŒø–³Œø‚ğ•ÏX‚·‚é—p\‘¢‘Ì
+	//æœ‰åŠ¹ç„¡åŠ¹ã‚’å¤‰æ›´ã™ã‚‹ç”¨æ§‹é€ ä½“
 	MENUITEMINFOW info;
 	::ZeroMemory( &info , sizeof( MENUITEMINFOW ) );
 	info.cbSize = sizeof( MENUITEMINFOW );
@@ -157,10 +157,10 @@ bool mMenu::SetState( UINT FunctionId , bool enable , bool checked )
 	info.fState |= ( enable ) ? ( MFS_ENABLED ) : ( MFS_DISABLED );
 	info.fState |= ( checked ) ? ( MFS_CHECKED ) : ( MFS_UNCHECKED );
 
-	//ƒR[ƒ‹ƒoƒbƒNŠÖ”‚Ì’è‹`
+	//ã‚³ãƒ¼ãƒ«ãƒãƒƒã‚¯é–¢æ•°ã®å®šç¾©
 	ScanItemCallback CallbackAction = [ &info ]( MenuItemEntry* entry ) -> bool
 	{
-		//î•ñ‚ğXV
+		//æƒ…å ±ã‚’æ›´æ–°
 		if( !::SetMenuItemInfoW( entry->Parent.Handle , entry->InternalId , false , &info ) )
 		{
 			RaiseAssert( g_ErrorLogger , 0 , L"SetMenuItemInfoW failed" );
@@ -169,50 +169,50 @@ bool mMenu::SetState( UINT FunctionId , bool enable , bool checked )
 		return true;
 	};
 
-	//ƒXƒLƒƒƒ“ˆ—
+	//ã‚¹ã‚­ãƒ£ãƒ³å‡¦ç†
 	return ScanFunctionId( MyRootMenu , FunctionId , CallbackAction );
 }
 
-//w’è‚µ‚½ƒpƒX‚ğ‚ÂƒAƒCƒeƒ€‚Ö‚Ìƒ|ƒCƒ“ƒ^‚ğ•Ô‚µ‚Ü‚·
+//æŒ‡å®šã—ãŸãƒ‘ã‚¹ã‚’æŒã¤ã‚¢ã‚¤ãƒ†ãƒ ã¸ã®ãƒã‚¤ãƒ³ã‚¿ã‚’è¿”ã—ã¾ã™
 mMenu::MenuItemEntry* mMenu::SearchItemEntry( const WStringVector& Path , bool Create )
 {
-	//w’è‚µ‚½MenuHandle‚Ì”z‰º‚©‚çpathitem‚Ì–¼‘O‚ğ’T‚µA‚»‚Ìƒ|ƒCƒ“ƒ^‚ğ•Ô‚·B
-	//menu_ptr : ’Tõ‚·‚é‘ÎÛ
-	//pathitem : ’T‚µo‚·–¼‘O
-	//ret : Œ©‚Â‚©‚ê‚Î‚»‚Ìƒ|ƒCƒ“ƒ^BŒ©‚Â‚©‚ç‚È‚¯‚ê‚ÎnullptrB
+	//æŒ‡å®šã—ãŸMenuHandleã®é…ä¸‹ã‹ã‚‰pathitemã®åå‰ã‚’æ¢ã—ã€ãã®ãƒã‚¤ãƒ³ã‚¿ã‚’è¿”ã™ã€‚
+	//menu_ptr : æ¢ç´¢ã™ã‚‹å¯¾è±¡
+	//pathitem : æ¢ã—å‡ºã™åå‰
+	//ret : è¦‹ã¤ã‹ã‚Œã°ãã®ãƒã‚¤ãƒ³ã‚¿ã€‚è¦‹ã¤ã‹ã‚‰ãªã‘ã‚Œã°nullptrã€‚
 	auto SubMenuIndexQuery = []( MenuHandle* menu_ptr , const WString& pathitem ) -> MenuItemEntry*
 	{
-		//ƒƒjƒ…[€–Ú‚Ì‚È‚©‚©‚çŠY“–‚Ì€–Ú‚ğ’T‚·
+		//ãƒ¡ãƒ‹ãƒ¥ãƒ¼é …ç›®ã®ãªã‹ã‹ã‚‰è©²å½“ã®é …ç›®ã‚’æ¢ã™
 		MenuItem::iterator itr;
 		for( itr = menu_ptr->Items.begin() ; itr != menu_ptr->Items.end() ; itr++ )
 		{
 			if( ( *itr )->Name == pathitem )
 			{
-				//Œ©‚Â‚©‚Á‚½
+				//è¦‹ã¤ã‹ã£ãŸ
 				return *itr;
 			}
 		}
-		//Œ©‚Â‚©‚ç‚È‚©‚Á‚½
+		//è¦‹ã¤ã‹ã‚‰ãªã‹ã£ãŸ
 		return nullptr;
 	};
 
-	MenuItemEntry* item_ptr = nullptr;		//Œ»İ’–Ú‚µ‚Ä‚¢‚éƒAƒCƒeƒ€iÅI“I‚ÉŒ‹‰Ê‚É‚È‚éj
-	MenuHandle** menu_ptr = &MyRootMenu;	//Œ»İ’–Ú‚µ‚Ä‚¢‚éƒTƒuƒƒjƒ…[
+	MenuItemEntry* item_ptr = nullptr;		//ç¾åœ¨æ³¨ç›®ã—ã¦ã„ã‚‹ã‚¢ã‚¤ãƒ†ãƒ ï¼ˆæœ€çµ‚çš„ã«çµæœã«ãªã‚‹ï¼‰
+	MenuHandle** menu_ptr = &MyRootMenu;	//ç¾åœ¨æ³¨ç›®ã—ã¦ã„ã‚‹ã‚µãƒ–ãƒ¡ãƒ‹ãƒ¥ãƒ¼
 
 	WStringVector::const_iterator path_itr;
 	for( path_itr = Path.begin() ; path_itr != Path.end() ; path_itr++ )
 	{
-		//ƒTƒuƒƒjƒ…[‚ ‚éH
+		//ã‚µãƒ–ãƒ¡ãƒ‹ãƒ¥ãƒ¼ã‚ã‚‹ï¼Ÿ
 		if( *menu_ptr == nullptr )
 		{
-			//‚±‚ÌƒAƒCƒeƒ€‚É‚ÍƒTƒuƒƒjƒ…[‚Í‚Ü‚¾–³‚¢
+			//ã“ã®ã‚¢ã‚¤ãƒ†ãƒ ã«ã¯ã‚µãƒ–ãƒ¡ãƒ‹ãƒ¥ãƒ¼ã¯ã¾ã ç„¡ã„
 			if( Create )
 			{
-				//Createw’è‚ª‚ ‚éê‡‚ÍAV‚µ‚¢ƒTƒuƒƒjƒ…[‚ğ¶¬‚·‚é
+				//CreateæŒ‡å®šãŒã‚ã‚‹å ´åˆã¯ã€æ–°ã—ã„ã‚µãƒ–ãƒ¡ãƒ‹ãƒ¥ãƒ¼ã‚’ç”Ÿæˆã™ã‚‹
 				*menu_ptr = mNew MenuHandle( true );
 				if( *menu_ptr == nullptr )
 				{
-					RaiseAssert( g_ErrorLogger , 0 , L"mNew‚ª¸”s‚µ‚Ü‚µ‚½" );
+					RaiseAssert( g_ErrorLogger , 0 , L"mNewãŒå¤±æ•—ã—ã¾ã—ãŸ" );
 					return nullptr;
 				}
 				if( item_ptr != nullptr )
@@ -225,7 +225,7 @@ mMenu::MenuItemEntry* mMenu::SearchItemEntry( const WStringVector& Path , bool C
 
 					if( !::SetMenuItemInfoW( item_ptr->Parent.Handle , item_ptr->InternalId , false , &info ) )
 					{
-						//ƒTƒuƒƒjƒ…[‚Ìİ’è‚É¸”s
+						//ã‚µãƒ–ãƒ¡ãƒ‹ãƒ¥ãƒ¼ã®è¨­å®šã«å¤±æ•—
 						RaiseAssert( g_ErrorLogger , 0 , L"SetMenuItemInfoW failed" );
 						return nullptr;
 					}
@@ -233,23 +233,23 @@ mMenu::MenuItemEntry* mMenu::SearchItemEntry( const WStringVector& Path , bool C
 			}
 			else
 			{
-				//w’è‚ª‚È‚¢ê‡‚Í•s‘¶İƒGƒ‰[
+				//æŒ‡å®šãŒãªã„å ´åˆã¯ä¸å­˜åœ¨ã‚¨ãƒ©ãƒ¼
 				RaiseError( g_ErrorLogger , 0 , L"Menu ID is not found : " + *path_itr );
 				return nullptr;
 			}
 		}
-		//ƒƒjƒ…[€–Ú‚Ì‚È‚©‚©‚çŠY“–‚Ì€–Ú‚ğ’T‚·
+		//ãƒ¡ãƒ‹ãƒ¥ãƒ¼é …ç›®ã®ãªã‹ã‹ã‚‰è©²å½“ã®é …ç›®ã‚’æ¢ã™
 		item_ptr = SubMenuIndexQuery( *menu_ptr , *path_itr ); 
 		if( item_ptr == nullptr )
 		{
-			//ŠY“–€–Ú‚È‚µ
+			//è©²å½“é …ç›®ãªã—
 			if( Create )
 			{
-				//Createw’è‚ª‚ ‚éê‡AV‚µ‚¢ƒGƒ“ƒgƒŠ‚ğ¶¬‚µ‚Ä‘}“ü
+				//CreateæŒ‡å®šãŒã‚ã‚‹å ´åˆã€æ–°ã—ã„ã‚¨ãƒ³ãƒˆãƒªã‚’ç”Ÿæˆã—ã¦æŒ¿å…¥
 				item_ptr = mNew MenuItemEntry( **menu_ptr , *this );
 				if( item_ptr == nullptr )
 				{
-					RaiseAssert( g_ErrorLogger , 0 , L"mNew‚ª¸”s‚µ‚Ü‚µ‚½" );
+					RaiseAssert( g_ErrorLogger , 0 , L"mNewãŒå¤±æ•—ã—ã¾ã—ãŸ" );
 					return nullptr;
 				}
 				( *menu_ptr )->Items.push_back( item_ptr );
@@ -257,10 +257,10 @@ mMenu::MenuItemEntry* mMenu::SearchItemEntry( const WStringVector& Path , bool C
 				item_ptr->Name = *path_itr;
 				item_ptr->InternalId = MyInternalIdStock.Get();
 
-				//‘}“üˆÊ’u
+				//æŒ¿å…¥ä½ç½®
 				INT item_count = GetMenuItemCount( item_ptr->Parent.Handle );
 
-				//ƒAƒCƒeƒ€‚Ì‘}“ü
+				//ã‚¢ã‚¤ãƒ†ãƒ ã®æŒ¿å…¥
 				MENUITEMINFOW info;
 				::ZeroMemory( &info , sizeof( MENUITEMINFOW ) );
 				info.cbSize = sizeof( MENUITEMINFOW );
@@ -271,14 +271,14 @@ mMenu::MenuItemEntry* mMenu::SearchItemEntry( const WStringVector& Path , bool C
 
 				if( !::InsertMenuItemW( item_ptr->Parent.Handle , (UINT)item_count , true , &info ) )
 				{
-					//ƒAƒCƒeƒ€‚Ì‘}“ü‚É¸”s
+					//ã‚¢ã‚¤ãƒ†ãƒ ã®æŒ¿å…¥ã«å¤±æ•—
 					RaiseAssert( g_ErrorLogger , 0 , L"InsertMenuItemW failed" );
 					return nullptr;
 				}
 			}
 			else
 			{
-				//w’è‚ª‚È‚¢ê‡‚Í•s‘¶İƒGƒ‰[
+				//æŒ‡å®šãŒãªã„å ´åˆã¯ä¸å­˜åœ¨ã‚¨ãƒ©ãƒ¼
 				RaiseError( g_ErrorLogger , 0 , L"Menu ID is not found : " + *path_itr );
 				return nullptr;
 			}
@@ -295,26 +295,26 @@ HMENU mMenu::GetMenuHandle( void )
 
 bool mMenu::SetMenuItemInfoStruct( const MenuItemEntry& src , MENUITEMINFOW& retDst , const mGdiResource* res )const
 {
-	//src‚Ì“à—e‚ğ”½‰f‚Å‚«‚éMENUITEMINFOW\‘¢‘Ì‚ğì¬‚µ‚Ä•Ô‚·B
+	//srcã®å†…å®¹ã‚’åæ˜ ã§ãã‚‹MENUITEMINFOWæ§‹é€ ä½“ã‚’ä½œæˆã—ã¦è¿”ã™ã€‚
 	::ZeroMemory( &retDst , sizeof( MENUITEMINFOW ) );
 	retDst.cbSize = sizeof( MENUITEMINFOW );
 	retDst.fMask = MIIM_ID | MIIM_STRING;
 	retDst.wID = src.InternalId;
 
-	//ƒ`ƒFƒbƒN‚Ìƒ^ƒCƒv‚ğİ’è
+	//ãƒã‚§ãƒƒã‚¯ã®ã‚¿ã‚¤ãƒ—ã‚’è¨­å®š
 	switch( src.Type )
 	{
-	case MenuType::NORMALCHECK:	//‚Ó‚Â[‚Ìƒ`ƒFƒbƒNiƒŒˆój
+	case MenuType::NORMALCHECK:	//ãµã¤ãƒ¼ã®ãƒã‚§ãƒƒã‚¯ï¼ˆãƒ¬å°ï¼‰
 		retDst.fMask |= MIIM_FTYPE;
 		retDst.fType |= 0;
 		retDst.dwTypeData = const_cast<LPWSTR>( src.Name.c_str() );
 		break;
-	case MenuType::RADIOCHECK:	//œˆó
+	case MenuType::RADIOCHECK:	//â—å°
 		retDst.fMask |= MIIM_FTYPE;
 		retDst.fType |= MFT_RADIOCHECK;
 		retDst.dwTypeData = const_cast<LPWSTR>( src.Name.c_str() );
 		break;
-	case MenuType::SEPARATOR:	//ƒZƒpƒŒ[ƒ^BƒZƒpƒŒ[ƒ^‚È‚Ì‚ÅƒLƒƒƒvƒVƒ‡ƒ“‚Æ‚©w’è‚µ‚Ä‚à–³‘ÊB
+	case MenuType::SEPARATOR:	//ã‚»ãƒ‘ãƒ¬ãƒ¼ã‚¿ã€‚ã‚»ãƒ‘ãƒ¬ãƒ¼ã‚¿ãªã®ã§ã‚­ãƒ£ãƒ—ã‚·ãƒ§ãƒ³ã¨ã‹æŒ‡å®šã—ã¦ã‚‚ç„¡é§„ã€‚
 		retDst.fMask |= MIIM_FTYPE;
 		retDst.fType |= MFT_SEPARATOR;
 		break;
@@ -326,7 +326,7 @@ bool mMenu::SetMenuItemInfoStruct( const MenuItemEntry& src , MENUITEMINFOW& ret
 		return false;
 	}
 
-	//ƒƒjƒ…[€–Ú‚Ìƒrƒbƒgƒ}ƒbƒv‚ª‚ ‚ê‚Îİ’è
+	//ãƒ¡ãƒ‹ãƒ¥ãƒ¼é …ç›®ã®ãƒ“ãƒƒãƒˆãƒãƒƒãƒ—ãŒã‚ã‚Œã°è¨­å®š
 	if( res != nullptr )
 	{
 		const mGdiBitmap* checked_bmp = res->GetItem< mGdiBitmap >( src.CheckedBitmap );
@@ -347,26 +347,26 @@ bool mMenu::SetMenuItemInfoStruct( const MenuItemEntry& src , MENUITEMINFOW& ret
 
 bool mMenu::ScanInternalId( MenuHandle* menu , USHORT internalid , WStringDeque& retPath )const
 {
-	//ƒkƒ‹‚¾‚Á‚½ê‡‚Í‚»‚Ì‚Ü‚Ü–ß‚é
+	//ãƒŒãƒ«ã ã£ãŸå ´åˆã¯ãã®ã¾ã¾æˆ»ã‚‹
 	if( menu == nullptr )
 	{
 		RaiseError( g_ErrorLogger , 0 , L"Handle is null" );
 		return false;
 	}
 
-	//”z‰º‚Ì€–Ú‘S•”‚ğƒXƒLƒƒƒ“
+	//é…ä¸‹ã®é …ç›®å…¨éƒ¨ã‚’ã‚¹ã‚­ãƒ£ãƒ³
 	bool result = true;
 	MenuItem::iterator itr;
 	for( itr = menu->Items.begin() ; itr != menu->Items.end() ; itr++ )
 	{
 		retPath.push_back( ( *itr )->Name );
 
-		//“à•”ID‚ªˆê’v‚µ‚Ä‚¢‚ê‚Î‚±‚ê
+		//å†…éƒ¨IDãŒä¸€è‡´ã—ã¦ã„ã‚Œã°ã“ã‚Œ
 		if( ( *itr )->InternalId == internalid )
 		{
 			return true;
 		}
-		//ƒTƒuƒƒjƒ…[‚àƒXƒLƒƒƒ“‚µA”­Œ©‚³‚ê‚½‚çI—¹
+		//ã‚µãƒ–ãƒ¡ãƒ‹ãƒ¥ãƒ¼ã‚‚ã‚¹ã‚­ãƒ£ãƒ³ã—ã€ç™ºè¦‹ã•ã‚ŒãŸã‚‰çµ‚äº†
 		if( ScanInternalId( ( *itr )->Child , internalid , retPath ) )
 		{
 			return true;
@@ -374,14 +374,14 @@ bool mMenu::ScanInternalId( MenuHandle* menu , USHORT internalid , WStringDeque&
 
 		retPath.pop_back();
 	}
-	//ŠY“–‚È‚µ
+	//è©²å½“ãªã—
 	RaiseError( g_ErrorLogger , 0 , L"Menu scanning failed" );
 	return false;
 }
 
 bool mMenu::QuerySelectedMenu( WPARAM wparam , MenuOption& retItem )const
 {
-	//ŠY“–ƒAƒCƒeƒ€‚ğ’Tõ
+	//è©²å½“ã‚¢ã‚¤ãƒ†ãƒ ã‚’æ¢ç´¢
 	WStringDeque path;
 	if( !ScanInternalId( MyRootMenu , LOWORD( wparam ) , path ) )
 	{
@@ -389,7 +389,7 @@ bool mMenu::QuerySelectedMenu( WPARAM wparam , MenuOption& retItem )const
 		return false;
 	}
 
-	//Deque‚ğVector‚É•ÏŠ·
+	//Dequeã‚’Vectorã«å¤‰æ›
 	retItem.Path.clear();
 	retItem.Path.reserve( path.size() );
 	while( !path.empty() )
@@ -398,8 +398,8 @@ bool mMenu::QuerySelectedMenu( WPARAM wparam , MenuOption& retItem )const
 		path.pop_front();
 	}
 
-	//ƒAƒCƒeƒ€‚Ìƒ|ƒCƒ“ƒ^‚ğæ“¾
-	//Createƒpƒ‰ƒ[ƒ^‚ªfalse‚Ìê‡‚Íƒƒ“ƒo•Ï”‚Í•Ï‰»‚µ‚È‚¢
+	//ã‚¢ã‚¤ãƒ†ãƒ ã®ãƒã‚¤ãƒ³ã‚¿ã‚’å–å¾—
+	//Createãƒ‘ãƒ©ãƒ¡ãƒ¼ã‚¿ãŒfalseã®å ´åˆã¯ãƒ¡ãƒ³ãƒå¤‰æ•°ã¯å¤‰åŒ–ã—ãªã„
 	MenuItemEntry* item = const_cast<mMenu*>(this)->SearchItemEntry( retItem.Path , false );
 	if( item == nullptr )
 	{
@@ -407,7 +407,7 @@ bool mMenu::QuerySelectedMenu( WPARAM wparam , MenuOption& retItem )const
 		return false;
 	}
 
-	//Œ‹‰Ê‚ğƒRƒs[
+	//çµæœã‚’ã‚³ãƒ”ãƒ¼
 	retItem.Type = item->Type;
 	retItem.CheckedBitmap = item->CheckedBitmap;
 	retItem.UncheckedBitmap = item->UnchedkedBitmap;
@@ -419,24 +419,24 @@ bool mMenu::QuerySelectedMenu( WPARAM wparam , MenuOption& retItem )const
 
 bool mMenu::QueryItem( UINT function_id , MenuOptionArray& retItem )const
 {
-	//‚Æ‚è‚ ‚¦‚¸Œ‹‰Ê‚ğƒNƒŠƒA
+	//ã¨ã‚Šã‚ãˆãšçµæœã‚’ã‚¯ãƒªã‚¢
 	retItem.clear();
 
-	//ƒR[ƒ‹ƒoƒbƒNŠÖ”‚ğ€”õ‚µ‚Ä
+	//ã‚³ãƒ¼ãƒ«ãƒãƒƒã‚¯é–¢æ•°ã‚’æº–å‚™ã—ã¦
 	ScanItemCallback CallbackAction = [ &retItem , this ]( MenuItemEntry* item ) -> bool
 	{
 		MenuOption entry;
-		//“n‚³‚ê‚½item‚Ìî•ñ‚ğInternalId‚ğg‚Á‚ÄŒŸõ‚·‚é
+		//æ¸¡ã•ã‚ŒãŸitemã®æƒ…å ±ã‚’InternalIdã‚’ä½¿ã£ã¦æ¤œç´¢ã™ã‚‹
 		QuerySelectedMenu( item->InternalId , entry );
-		//Œ‹‰Êˆê——‚É’Ç‰Á
+		//çµæœä¸€è¦§ã«è¿½åŠ 
 		retItem.push_back( entry );
 		return true;
 	};
 
-	//function_id‚ÅƒXƒLƒƒƒ“
+	//function_idã§ã‚¹ã‚­ãƒ£ãƒ³
 	ScanFunctionId( MyRootMenu , function_id , CallbackAction );
 
-	//Œ‹‰Ê‚ª‚PŒÂ‚Å‚à“o˜^‚³‚ê‚Ä‚¢‚ê‚ÎŠY“–€–Ú‚ª‚ ‚Á‚½‚Æ‚¢‚¤‚±‚Æ‚È‚Ì‚Å^‚ğ•Ô‚·
+	//çµæœãŒï¼‘å€‹ã§ã‚‚ç™»éŒ²ã•ã‚Œã¦ã„ã‚Œã°è©²å½“é …ç›®ãŒã‚ã£ãŸã¨ã„ã†ã“ã¨ãªã®ã§çœŸã‚’è¿”ã™
 	return !retItem.empty();
 
 }

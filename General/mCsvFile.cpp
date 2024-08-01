@@ -1,10 +1,10 @@
-//----------------------------------------------------------------------------
-// CSVƒtƒ@ƒCƒ‹ƒnƒ“ƒhƒ‰
+ï»¿//----------------------------------------------------------------------------
+// CSVãƒ•ã‚¡ã‚¤ãƒ«ãƒãƒ³ãƒ‰ãƒ©
 // Copyright (C) 2020-2024 Crea Inc. All rights reserved.
 // This program is released under the MIT License. 
 // see http://opensource.org/licenses/mit-license.php
-// ’˜ìŒ •\¦‚âƒ‰ƒCƒZƒ“ƒX‚Ì‰ü•Ï‚Í‹Ö~‚³‚ê‚Ä‚¢‚Ü‚·B
-// ‚±‚Ìƒ\[ƒXƒR[ƒh‚ÉŠÖ‚µ‚ÄAã‹Lƒ‰ƒCƒZƒ“ƒXˆÈŠO‚ÌŒ_–ñ“™‚ÍˆêØ‘¶İ‚µ‚Ü‚¹‚ñB
+// è‘—ä½œæ¨©è¡¨ç¤ºã‚„ãƒ©ã‚¤ã‚»ãƒ³ã‚¹ã®æ”¹å¤‰ã¯ç¦æ­¢ã•ã‚Œã¦ã„ã¾ã™ã€‚
+// ã“ã®ã‚½ãƒ¼ã‚¹ã‚³ãƒ¼ãƒ‰ã«é–¢ã—ã¦ã€ä¸Šè¨˜ãƒ©ã‚¤ã‚»ãƒ³ã‚¹ä»¥å¤–ã®å¥‘ç´„ç­‰ã¯ä¸€åˆ‡å­˜åœ¨ã—ã¾ã›ã‚“ã€‚
 //----------------------------------------------------------------------------
 
 #include "mCsvFile.h"
@@ -13,7 +13,7 @@
 
 static bool OpenCsvFile( const WString& filename , mFileReadStream& retfp )
 {
-	//ƒtƒ@ƒCƒ‹‚ğŠJ‚­‚Æ‚«‚Ìî•ñ
+	//ãƒ•ã‚¡ã‚¤ãƒ«ã‚’é–‹ãã¨ãã®æƒ…å ±
 	mFileReadStream::Option opt;
 	opt.AccessRead = true;
 	opt.AccessWrite = false;
@@ -22,11 +22,11 @@ static bool OpenCsvFile( const WString& filename , mFileReadStream& retfp )
 	opt.ShareWrite = false;
 	opt.Path = filename;
 
-	//ƒtƒ@ƒCƒ‹‚ğŠJ‚­
+	//ãƒ•ã‚¡ã‚¤ãƒ«ã‚’é–‹ã
 	if( !retfp.Open( opt ) )
 	{
-		//ƒtƒ@ƒCƒ‹‚ªŠJ‚¯‚È‚©‚Á‚½
-		RaiseError( g_ErrorLogger , 0 , L"ƒtƒ@ƒCƒ‹‚ğŠJ‚¯‚Ü‚¹‚ñ" );
+		//ãƒ•ã‚¡ã‚¤ãƒ«ãŒé–‹ã‘ãªã‹ã£ãŸ
+		RaiseError( g_ErrorLogger , 0 , L"ãƒ•ã‚¡ã‚¤ãƒ«ã‚’é–‹ã‘ã¾ã›ã‚“" );
 		return false;
 	}
 	return true;
@@ -45,14 +45,14 @@ template< class base_type >
 static bool ReadCsvFileTemplate( mFileReadStreamBase& fp , Table< base_type >& retTable )
 {
 
-	//“Áê•¶š‚ÌŒŸoó‘Ô
-	bool quote_detect = false;	//ƒ_ƒuƒ‹ƒNƒH[ƒe[ƒVƒ‡ƒ“‚ÌŒŸo
-	bool quoted = false;		//ƒ_ƒuƒ‹ƒNƒH[ƒe[ƒVƒ‡ƒ“‚ÅˆÍ‚Ü‚ê‚Ä‚¢‚é
-	bool cr_detect = false;		//‰üsƒR[ƒh(CR)‚ÌŒŸo
-	Cell< base_type > cell;		//“Ç‚İæ‚è’†‚ÌƒZƒ‹
-	Row< base_type > row;		//“Ç‚İæ‚è’†‚Ìs
+	//ç‰¹æ®Šæ–‡å­—ã®æ¤œå‡ºçŠ¶æ…‹
+	bool quote_detect = false;	//ãƒ€ãƒ–ãƒ«ã‚¯ã‚©ãƒ¼ãƒ†ãƒ¼ã‚·ãƒ§ãƒ³ã®æ¤œå‡º
+	bool quoted = false;		//ãƒ€ãƒ–ãƒ«ã‚¯ã‚©ãƒ¼ãƒ†ãƒ¼ã‚·ãƒ§ãƒ³ã§å›²ã¾ã‚Œã¦ã„ã‚‹
+	bool cr_detect = false;		//æ”¹è¡Œã‚³ãƒ¼ãƒ‰(CR)ã®æ¤œå‡º
+	Cell< base_type > cell;		//èª­ã¿å–ã‚Šä¸­ã®ã‚»ãƒ«
+	Row< base_type > row;		//èª­ã¿å–ã‚Šä¸­ã®è¡Œ
 
-	//s‚ğˆÚ“®‚·‚éƒ‰ƒ€ƒ_
+	//è¡Œã‚’ç§»å‹•ã™ã‚‹ãƒ©ãƒ ãƒ€
 	auto InsertCell = [&row,&cell]( bool noempty ) -> void 
 	{
 		if( !noempty || !cell.empty() )
@@ -62,7 +62,7 @@ static bool ReadCsvFileTemplate( mFileReadStreamBase& fp , Table< base_type >& r
 		}
 	};
 
-	//s‚ğˆÚ“®‚·‚éƒ‰ƒ€ƒ_
+	//è¡Œã‚’ç§»å‹•ã™ã‚‹ãƒ©ãƒ ãƒ€
 	auto InsertRow = [&retTable,&row]( bool noempty ) -> void 
 	{
 		if( !noempty || !row.empty() )
@@ -72,7 +72,7 @@ static bool ReadCsvFileTemplate( mFileReadStreamBase& fp , Table< base_type >& r
 		}
 	};
 
-	//“Ç‚İæ‚èƒƒCƒ“ƒ‹[ƒv
+	//èª­ã¿å–ã‚Šãƒ¡ã‚¤ãƒ³ãƒ«ãƒ¼ãƒ—
 	while( !fp.IsEOF() )
 	{
 		base_type c;
@@ -81,12 +81,12 @@ static bool ReadCsvFileTemplate( mFileReadStreamBase& fp , Table< base_type >& r
 			continue;
 		}
 
-		//‰üsˆ—
+		//æ”¹è¡Œå‡¦ç†
 		if( c == (base_type)'\n' )
 		{
 			if( !quoted )
 			{
-				//s‚Ì‹æØ‚è(LF/CRLF‰üs)
+				//è¡Œã®åŒºåˆ‡ã‚Š(LF/CRLFæ”¹è¡Œ)
 				InsertCell( true );
 				InsertRow( false );
 				cr_detect = false;
@@ -99,7 +99,7 @@ static bool ReadCsvFileTemplate( mFileReadStreamBase& fp , Table< base_type >& r
 			{
 				if( cr_detect )
 				{
-					//s‚Ì‹æØ‚è(CR‰üs){CR
+					//è¡Œã®åŒºåˆ‡ã‚Š(CRæ”¹è¡Œ)ï¼‹CR
 					InsertCell( true );
 					InsertRow( false );
 				}
@@ -111,24 +111,24 @@ static bool ReadCsvFileTemplate( mFileReadStreamBase& fp , Table< base_type >& r
 		{
 			if( cr_detect )
 			{
-				//s‚Ì‹æØ‚è(CR‰üs)
+				//è¡Œã®åŒºåˆ‡ã‚Š(CRæ”¹è¡Œ)
 				InsertCell( true );
 				InsertRow( false );
 			}
 			cr_detect = false;
 		}
 
-		//ƒ_ƒuƒ‹ƒNƒH[ƒe[ƒVƒ‡ƒ“ˆ—
+		//ãƒ€ãƒ–ãƒ«ã‚¯ã‚©ãƒ¼ãƒ†ãƒ¼ã‚·ãƒ§ãƒ³å‡¦ç†
 		if( c == (base_type)'"' )
 		{
 			if( quote_detect )
 			{
-				//2˜A‘±
+				//2é€£ç¶š
 				quote_detect = false;
 			}
 			else
 			{
-				//ƒ_ƒuƒ‹ƒNƒH[ƒe[ƒVƒ‡ƒ“ŒŸo
+				//ãƒ€ãƒ–ãƒ«ã‚¯ã‚©ãƒ¼ãƒ†ãƒ¼ã‚·ãƒ§ãƒ³æ¤œå‡º
 				quote_detect = true;
 				continue;
 			}
@@ -137,24 +137,24 @@ static bool ReadCsvFileTemplate( mFileReadStreamBase& fp , Table< base_type >& r
 		{
 			if( quote_detect )
 			{
-				//ˆÍ‚İŠJnEI—¹
+				//å›²ã¿é–‹å§‹ãƒ»çµ‚äº†
 				quoted = !quoted;
 				quote_detect = false;
 			}
 		}
 
-		//ƒRƒ“ƒ}ˆ—
+		//ã‚³ãƒ³ãƒå‡¦ç†
 		if( c == (base_type)',' )
 		{
 			if( !quoted )
 			{
-				//—ñ(ƒZƒ‹)‚Ì‹æØ‚è
+				//åˆ—(ã‚»ãƒ«)ã®åŒºåˆ‡ã‚Š
 				InsertCell( false );
 				continue;
 			}
 		}
 
-		//‚»‚Ì‘¼
+		//ãã®ä»–
 		cell.push_back( c );
 	}
 
@@ -188,38 +188,38 @@ static void FillEmptyCell( Table< base_type >& retTable , const std::basic_strin
 
 bool mCsvFile::ReadCsvFile( const WString& filename , WTable& retTable , const WString* empty_str )
 {
-	//ƒtƒ@ƒCƒ‹‚ğŠJ‚­iƒeƒ“ƒvƒŒ[ƒg‚ÆŠÖŒW‚È‚¢§Œä‚ÍŠO‚É’Ç‚¢o‚·j
+	//ãƒ•ã‚¡ã‚¤ãƒ«ã‚’é–‹ãï¼ˆãƒ†ãƒ³ãƒ—ãƒ¬ãƒ¼ãƒˆã¨é–¢ä¿‚ãªã„åˆ¶å¾¡ã¯å¤–ã«è¿½ã„å‡ºã™ï¼‰
 	mFileReadStream fp;
 	if( !OpenCsvFile( filename , fp ) )
 	{
 		return false;
 	}
-	//“Ç‚İæ‚è
+	//èª­ã¿å–ã‚Š
 	return ReadCsvFile( fp , retTable , empty_str );
 }
 
 bool mCsvFile::ReadCsvFile( const WString& filename , ATable& retTable , const AString* empty_str )
 {
-	//ƒtƒ@ƒCƒ‹‚ğŠJ‚­iƒeƒ“ƒvƒŒ[ƒg‚ÆŠÖŒW‚È‚¢§Œä‚ÍŠO‚É’Ç‚¢o‚·j
+	//ãƒ•ã‚¡ã‚¤ãƒ«ã‚’é–‹ãï¼ˆãƒ†ãƒ³ãƒ—ãƒ¬ãƒ¼ãƒˆã¨é–¢ä¿‚ãªã„åˆ¶å¾¡ã¯å¤–ã«è¿½ã„å‡ºã™ï¼‰
 	mFileReadStream fp;
 	if( !OpenCsvFile( filename , fp ) )
 	{
 		return false;
 	}
-	//“Ç‚İæ‚è
+	//èª­ã¿å–ã‚Š
 	return ReadCsvFile( fp , retTable , empty_str );
 }
 
-//CSVƒtƒ@ƒCƒ‹‚ğ“Ç‚İæ‚Á‚Ä”z—ñ‚ÉŠi”[‚·‚é
-//E“Ç‚İæ‚é‚Æ‚«‚Ì•¶šƒR[ƒh‚ÍAretTable‚Éw’è‚µ‚½Œ^‚É‡‚í‚¹‚é
-//stream : “Ç‚İæ‚éƒXƒgƒŠ[ƒ€
-//retTable : Ši”[æ
-//empty_str : “Ç‚İæ‚èŒ‹‰Ê‚ª’·•ûŒ`‚É‚È‚Á‚Ä‚¢‚È‚¢‚Æ‚«is^—ñ”‚ª‚Å‚±‚Ú‚±‚É‚È‚Á‚Ä‚¢‚é‚Æ‚«j
-//@@@@@@’·•ûŒ`‚É‚È‚é‚æ‚¤‚É‚±‚Ìƒf[ƒ^‚ğ•â‚Á‚Ä®Œ`‚·‚éBnullptr‚È‚ç®Œ`‚µ‚È‚¢B
-//ret : ¬Œ÷^
+//CSVãƒ•ã‚¡ã‚¤ãƒ«ã‚’èª­ã¿å–ã£ã¦é…åˆ—ã«æ ¼ç´ã™ã‚‹
+//ãƒ»èª­ã¿å–ã‚‹ã¨ãã®æ–‡å­—ã‚³ãƒ¼ãƒ‰ã¯ã€retTableã«æŒ‡å®šã—ãŸå‹ã«åˆã‚ã›ã‚‹
+//stream : èª­ã¿å–ã‚‹ã‚¹ãƒˆãƒªãƒ¼ãƒ 
+//retTable : æ ¼ç´å…ˆ
+//empty_str : èª­ã¿å–ã‚ŠçµæœãŒé•·æ–¹å½¢ã«ãªã£ã¦ã„ãªã„ã¨ãï¼ˆè¡Œï¼åˆ—æ•°ãŒã§ã“ã¼ã“ã«ãªã£ã¦ã„ã‚‹ã¨ãï¼‰
+//ã€€ã€€ã€€ã€€ã€€ã€€é•·æ–¹å½¢ã«ãªã‚‹ã‚ˆã†ã«ã“ã®ãƒ‡ãƒ¼ã‚¿ã‚’è£œã£ã¦æ•´å½¢ã™ã‚‹ã€‚nullptrãªã‚‰æ•´å½¢ã—ãªã„ã€‚
+//ret : æˆåŠŸæ™‚çœŸ
 bool mCsvFile::ReadCsvFile( mFileReadStreamBase& stream , WTable& retTable , const WString* empty_str )
 {
-	//“Ç‚İæ‚è
+	//èª­ã¿å–ã‚Š
 	if( !ReadCsvFileTemplate( stream , retTable ) )
 	{
 		return false;
@@ -228,16 +228,16 @@ bool mCsvFile::ReadCsvFile( mFileReadStreamBase& stream , WTable& retTable , con
 	return true;
 }
 
-//CSVƒtƒ@ƒCƒ‹‚ğ“Ç‚İæ‚Á‚Ä”z—ñ‚ÉŠi”[‚·‚é
-//E“Ç‚İæ‚é‚Æ‚«‚Ì•¶šƒR[ƒh‚ÍAretTable‚Éw’è‚µ‚½Œ^‚É‡‚í‚¹‚é
-//stream : “Ç‚İæ‚éƒXƒgƒŠ[ƒ€
-//retTable : Ši”[æ
-//empty_str : “Ç‚İæ‚èŒ‹‰Ê‚ª’·•ûŒ`‚É‚È‚Á‚Ä‚¢‚È‚¢‚Æ‚«is^—ñ”‚ª‚Å‚±‚Ú‚±‚É‚È‚Á‚Ä‚¢‚é‚Æ‚«j
-//@@@@@@’·•ûŒ`‚É‚È‚é‚æ‚¤‚É‚±‚Ìƒf[ƒ^‚ğ•â‚Á‚Ä®Œ`‚·‚éBnullptr‚È‚ç®Œ`‚µ‚È‚¢B
-//ret : ¬Œ÷^
+//CSVãƒ•ã‚¡ã‚¤ãƒ«ã‚’èª­ã¿å–ã£ã¦é…åˆ—ã«æ ¼ç´ã™ã‚‹
+//ãƒ»èª­ã¿å–ã‚‹ã¨ãã®æ–‡å­—ã‚³ãƒ¼ãƒ‰ã¯ã€retTableã«æŒ‡å®šã—ãŸå‹ã«åˆã‚ã›ã‚‹
+//stream : èª­ã¿å–ã‚‹ã‚¹ãƒˆãƒªãƒ¼ãƒ 
+//retTable : æ ¼ç´å…ˆ
+//empty_str : èª­ã¿å–ã‚ŠçµæœãŒé•·æ–¹å½¢ã«ãªã£ã¦ã„ãªã„ã¨ãï¼ˆè¡Œï¼åˆ—æ•°ãŒã§ã“ã¼ã“ã«ãªã£ã¦ã„ã‚‹ã¨ãï¼‰
+//ã€€ã€€ã€€ã€€ã€€ã€€é•·æ–¹å½¢ã«ãªã‚‹ã‚ˆã†ã«ã“ã®ãƒ‡ãƒ¼ã‚¿ã‚’è£œã£ã¦æ•´å½¢ã™ã‚‹ã€‚nullptrãªã‚‰æ•´å½¢ã—ãªã„ã€‚
+//ret : æˆåŠŸæ™‚çœŸ
 bool mCsvFile::ReadCsvFile( mFileReadStreamBase& stream , ATable& retTable , const AString* empty_str )
 {
-	//“Ç‚İæ‚è
+	//èª­ã¿å–ã‚Š
 	if( !ReadCsvFileTemplate( stream , retTable ) )
 	{
 		return false;

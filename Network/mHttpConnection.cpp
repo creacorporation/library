@@ -1,12 +1,12 @@
-//----------------------------------------------------------------------------
-// HTTPƒAƒNƒZƒX
+ï»¿//----------------------------------------------------------------------------
+// HTTPã‚¢ã‚¯ã‚»ã‚¹
 // Copyright (C) 2013 Fingerling. All rights reserved. 
 // Copyright (C) 2019-2020 Crea Inc. All rights reserved.
 // This program is released under the MIT License. 
 // see http://opensource.org/licenses/mit-license.php
-// ’˜ìŒ •\¦‚âƒ‰ƒCƒZƒ“ƒX‚Ì‰ü•Ï‚Í‹Ö~‚³‚ê‚Ä‚¢‚Ü‚·B
-// ‚±‚Ìƒ\[ƒXƒR[ƒh‚ÉŠÖ‚µ‚ÄAã‹Lƒ‰ƒCƒZƒ“ƒXˆÈŠO‚ÌŒ_–ñ“™‚ÍˆêØ‘¶İ‚µ‚Ü‚¹‚ñB
-// (‰½‚ç‚©‚ÌŒ_–ñ‚ª‚ ‚éê‡‚Å‚àA–{ƒ\[ƒXƒR[ƒh‚Í‚»‚Ì‘ÎÛŠO‚Æ‚È‚è‚Ü‚·)
+// è‘—ä½œæ¨©è¡¨ç¤ºã‚„ãƒ©ã‚¤ã‚»ãƒ³ã‚¹ã®æ”¹å¤‰ã¯ç¦æ­¢ã•ã‚Œã¦ã„ã¾ã™ã€‚
+// ã“ã®ã‚½ãƒ¼ã‚¹ã‚³ãƒ¼ãƒ‰ã«é–¢ã—ã¦ã€ä¸Šè¨˜ãƒ©ã‚¤ã‚»ãƒ³ã‚¹ä»¥å¤–ã®å¥‘ç´„ç­‰ã¯ä¸€åˆ‡å­˜åœ¨ã—ã¾ã›ã‚“ã€‚
+// (ä½•ã‚‰ã‹ã®å¥‘ç´„ãŒã‚ã‚‹å ´åˆã§ã‚‚ã€æœ¬ã‚½ãƒ¼ã‚¹ã‚³ãƒ¼ãƒ‰ã¯ãã®å¯¾è±¡å¤–ã¨ãªã‚Šã¾ã™)
 //----------------------------------------------------------------------------
 
 #include "mStandard.h"
@@ -74,36 +74,36 @@ private:
 
 bool mHttpConnection::NewRequest( const RequestOption& opt , const NotifyOption& notifier , mHttpRequest& retReq )
 {
-	//ƒZƒbƒVƒ‡ƒ“‚ğ‚Ü‚¾ŠJ‚¢‚Ä‚È‚¢ê‡‚Í¸”s
+	//ã‚»ãƒƒã‚·ãƒ§ãƒ³ã‚’ã¾ã é–‹ã„ã¦ãªã„å ´åˆã¯å¤±æ•—
 	if( !*this )
 	{
-		RaiseError( g_ErrorLogger , 0 , L"ƒRƒlƒNƒVƒ‡ƒ“ƒnƒ“ƒhƒ‹‚ªŠJ‚¢‚Ä‚¢‚Ü‚¹‚ñ" );
+		RaiseError( g_ErrorLogger , 0 , L"ã‚³ãƒã‚¯ã‚·ãƒ§ãƒ³ãƒãƒ³ãƒ‰ãƒ«ãŒé–‹ã„ã¦ã„ã¾ã›ã‚“" );
 		return false;
 	}
 
-	//‚·‚Å‚ÉŠJ‚¢‚Ä‚¢‚éê‡‚Í¸”s
+	//ã™ã§ã«é–‹ã„ã¦ã„ã‚‹å ´åˆã¯å¤±æ•—
 	if( retReq )
 	{
-		RaiseError( g_ErrorLogger , 0 , L"‚·‚Å‚Éƒnƒ“ƒhƒ‹‚ªŠJ‚©‚ê‚Ä‚¢‚Ü‚·" );
+		RaiseError( g_ErrorLogger , 0 , L"ã™ã§ã«ãƒãƒ³ãƒ‰ãƒ«ãŒé–‹ã‹ã‚Œã¦ã„ã¾ã™" );
 		return false;
 	}
 
-	//İ’èî•ñ‚Ìƒ`ƒFƒbƒN
+	//è¨­å®šæƒ…å ±ã®ãƒã‚§ãƒƒã‚¯
 	if( ( opt.RecievePacketMaxActive < 1 ) ||
 		( opt.RecievePacketMaxStock < 1 ) ||
 		( opt.RecievePacketSize < 1 ) ||
 		( opt.SendPacketSize < 1 ) )
 	{
-		RaiseError( g_ErrorLogger , 0 , L"ƒoƒbƒtƒ@ƒTƒCƒY‚Ìw’è‚ª•s³‚Å‚·" );
+		RaiseError( g_ErrorLogger , 0 , L"ãƒãƒƒãƒ•ã‚¡ã‚µã‚¤ã‚ºã®æŒ‡å®šãŒä¸æ­£ã§ã™" );
 		return false;
 	}
 
-	//İ’èî•ñ‚ÌƒRƒs[
+	//è¨­å®šæƒ…å ±ã®ã‚³ãƒ”ãƒ¼
 	retReq.MyOption = opt;
 	retReq.MyNotifyOption = notifier;
 
-	//ƒŠƒNƒGƒXƒg‚ğŠJ‚­
-	//“®Œ
+	//ãƒªã‚¯ã‚¨ã‚¹ãƒˆã‚’é–‹ã
+	//å‹•è©
 	const WCHAR* verb;
 	switch( opt.Verb )
 	{
@@ -120,14 +120,14 @@ bool mHttpConnection::NewRequest( const RequestOption& opt , const NotifyOption&
 		verb = L"HEADER";
 		break;
 	default:
-		RaiseError( g_ErrorLogger , 0 , L"“®Œ‚ª•s³‚Å‚·" );
+		RaiseError( g_ErrorLogger , 0 , L"å‹•è©ãŒä¸æ­£ã§ã™" );
 		return false;
 	}
 
-	//ƒo[ƒWƒ‡ƒ“
-	const WCHAR* version = nullptr;	//ƒfƒtƒHƒ‹ƒg‚É‚·‚é(1.1 or 2.0)
+	//ãƒãƒ¼ã‚¸ãƒ§ãƒ³
+	const WCHAR* version = nullptr;	//ãƒ‡ãƒ•ã‚©ãƒ«ãƒˆã«ã™ã‚‹(1.1 or 2.0)
 
-	//URLƒpƒX
+	//URLãƒ‘ã‚¹
 	URL_COMPONENTS url;
 	const WCHAR* urlpath;
 	ZeroMemory( &url , sizeof( URL_COMPONENTS ) );
@@ -142,10 +142,10 @@ bool mHttpConnection::NewRequest( const RequestOption& opt , const NotifyOption&
 		urlpath = opt.Url.c_str();
 	}
 	
-	//ƒƒfƒBƒAƒ^ƒCƒv
+	//ãƒ¡ãƒ‡ã‚£ã‚¢ã‚¿ã‚¤ãƒ—
 	MediaTypeArray mediatype( opt.AcceptType );
 
-	//ƒŠƒtƒ@ƒ‰
+	//ãƒªãƒ•ã‚¡ãƒ©
 	const WCHAR* ref;
 	if( opt.Referer.empty() )
 	{
@@ -156,7 +156,7 @@ bool mHttpConnection::NewRequest( const RequestOption& opt , const NotifyOption&
 		ref = opt.Referer.c_str();
 	}
 
-	//ƒtƒ‰ƒOŠÖŒW
+	//ãƒ•ãƒ©ã‚°é–¢ä¿‚
 	DWORD flags = 0;
 	if( opt.Reload )
 	{
@@ -167,14 +167,14 @@ bool mHttpConnection::NewRequest( const RequestOption& opt , const NotifyOption&
 		flags |= WINHTTP_FLAG_SECURE;
 	}
 
-	//ƒŠƒNƒGƒXƒg¶¬
+	//ãƒªã‚¯ã‚¨ã‚¹ãƒˆç”Ÿæˆ
 	retReq.MyRequest = WinHttpOpenRequest( MyConnection , verb , urlpath , version , ref , mediatype , flags );
 	if( retReq.MyRequest == 0 )
 	{
 		return false;
 	}
 	
-	//ƒR[ƒ‹ƒoƒbƒNŠÖ”‚ğƒCƒ“ƒXƒg[ƒ‹‚·‚é
+	//ã‚³ãƒ¼ãƒ«ãƒãƒƒã‚¯é–¢æ•°ã‚’ã‚¤ãƒ³ã‚¹ãƒˆãƒ¼ãƒ«ã™ã‚‹
 	DWORD notifyflag = WINHTTP_CALLBACK_FLAG_ALL_COMPLETIONS;
 	// = ( WINHTTP_CALLBACK_STATUS_SENDREQUEST_COMPLETE  \
 	//	 | WINHTTP_CALLBACK_STATUS_HEADERS_AVAILABLE     \
@@ -183,17 +183,17 @@ bool mHttpConnection::NewRequest( const RequestOption& opt , const NotifyOption&
 	//	 | WINHTTP_CALLBACK_STATUS_WRITE_COMPLETE        \
 	//	 | WINHTTP_CALLBACK_STATUS_REQUEST_ERROR         \
 	//	 | WINHTTP_CALLBACK_STATUS_GETPROXYFORURL_COMPLETE )
-	notifyflag |= WINHTTP_CALLBACK_FLAG_SECURE_FAILURE;			//SSL‚ª¸”s‚µ‚½‚Æ‚«
-	notifyflag |= WINHTTP_CALLBACK_FLAG_REDIRECT;				//ƒŠƒ_ƒCƒŒƒNƒg‚³‚ê‚½‚Æ‚«
-	//notifyflag |= WINHTTP_CALLBACK_FLAG_CLOSE_CONNECTION;		//Ú‘±‚ª•Â‚¶‚ç‚ê‚½‚Æ‚«
+	notifyflag |= WINHTTP_CALLBACK_FLAG_SECURE_FAILURE;			//SSLãŒå¤±æ•—ã—ãŸã¨ã
+	notifyflag |= WINHTTP_CALLBACK_FLAG_REDIRECT;				//ãƒªãƒ€ã‚¤ãƒ¬ã‚¯ãƒˆã•ã‚ŒãŸã¨ã
+	//notifyflag |= WINHTTP_CALLBACK_FLAG_CLOSE_CONNECTION;		//æ¥ç¶šãŒé–‰ã˜ã‚‰ã‚ŒãŸã¨ã
 
 	if( WinHttpSetStatusCallback( retReq.MyRequest , mHttpRequest::WinhttpStatusCallback , notifyflag , 0 ) == WINHTTP_INVALID_STATUS_CALLBACK )
 	{
-		RaiseError( g_ErrorLogger , 0 , L"ƒR[ƒ‹ƒoƒbƒNŠÖ”‚ğƒCƒ“ƒXƒg[ƒ‹‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½" );
+		RaiseError( g_ErrorLogger , 0 , L"ã‚³ãƒ¼ãƒ«ãƒãƒƒã‚¯é–¢æ•°ã‚’ã‚¤ãƒ³ã‚¹ãƒˆãƒ¼ãƒ«ã§ãã¾ã›ã‚“ã§ã—ãŸ" );
 		return false;
 	}
 
-	//ƒƒ“ƒo•Ï”‚ğƒZƒbƒg
+	//ãƒ¡ãƒ³ãƒå¤‰æ•°ã‚’ã‚»ãƒƒãƒˆ
 	retReq.MyRequestStatus = mHttpRequest::RequestStatus::REQUEST_PREEXEC;
 
 	return true;

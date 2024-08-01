@@ -1,5 +1,5 @@
-//----------------------------------------------------------------------------
-// RSAˆÃ†‰»ƒNƒ‰ƒX
+ï»¿//----------------------------------------------------------------------------
+// RSAæš—å·åŒ–ã‚¯ãƒ©ã‚¹
 // Copyright (C) 2018- Crea Inc. All rights reserved.
 // This program is released under the MIT License. 
 // see http://opensource.org/licenses/mit-license.php
@@ -20,24 +20,24 @@ public:
 	mRSAVerifier();
 	virtual ~mRSAVerifier();
 
-	//–¼‘‚«‚İ—pƒoƒbƒtƒ@
+	//ç½²åæ›¸ãè¾¼ã¿ç”¨ãƒãƒƒãƒ•ã‚¡
 	typedef std::unique_ptr<BYTE> SignBuffer;
 
-	//–¼‚ğs‚¤
-	//•K—v‚ÈŒ®F”é–§Œ®
-	//data : –¼‚ğs‚¤ƒnƒbƒVƒ…’l
-	//retSign : –¼‚ğŠi”[‚·‚éƒoƒbƒtƒ@
-	//retWritten : ‘‚«‚Ü‚ê‚½ƒoƒCƒg”
-	//ret : ¬Œ÷^
+	//ç½²åã‚’è¡Œã†
+	//å¿…è¦ãªéµï¼šç§˜å¯†éµ
+	//data : ç½²åã‚’è¡Œã†ãƒãƒƒã‚·ãƒ¥å€¤
+	//retSign : ç½²åã‚’æ ¼ç´ã™ã‚‹ãƒãƒƒãƒ•ã‚¡
+	//retWritten : æ›¸ãè¾¼ã¾ã‚ŒãŸãƒã‚¤ãƒˆæ•°
+	//ret : æˆåŠŸæ™‚çœŸ
 	bool Sign( const mHash& data , SignBuffer& retSign , DWORD& retWritten )const;
 
-	//ŒŸØ‚ğs‚¤
-	//¨³“–‚É–¼‚³‚ê‚Ä‚¢‚é‚©‚ğ”»’è‚µ‚Ü‚·
-	//•K—v‚ÈŒ®FŒöŠJŒ®
-	//data : –¼‚³‚ê‚Ä‚¢‚éƒf[ƒ^‚ÌƒnƒbƒVƒ…
-	//Sign : –¼
-	//SignLen : –¼‚Ì’·‚³
-	//ret : ŒŸØ¬Œ÷^
+	//æ¤œè¨¼ã‚’è¡Œã†
+	//â†’æ­£å½“ã«ç½²åã•ã‚Œã¦ã„ã‚‹ã‹ã‚’åˆ¤å®šã—ã¾ã™
+	//å¿…è¦ãªéµï¼šå…¬é–‹éµ
+	//data : ç½²åã•ã‚Œã¦ã„ã‚‹ãƒ‡ãƒ¼ã‚¿ã®ãƒãƒƒã‚·ãƒ¥
+	//Sign : ç½²å
+	//SignLen : ç½²åã®é•·ã•
+	//ret : æ¤œè¨¼æˆåŠŸæ™‚çœŸ
 	bool Verify( const mHash& data , const BYTE* Sign , DWORD SignLen )const;
 
 private:
@@ -46,51 +46,51 @@ private:
 
 protected:
 
-	//“n‚³‚ê‚½mHashƒIƒuƒWƒFƒNƒg‚Æ“¯ˆêƒnƒbƒVƒ…’l‚ğ‚à‚Âƒnƒ“ƒhƒ‹‚ğì‚é
-	//ì¬‚µ‚½ƒnƒ“ƒhƒ‹‚ÌƒvƒƒoƒCƒ_‚ÍA‚±‚ÌƒCƒ“ƒXƒ^ƒ“ƒX‚ÌƒvƒƒoƒCƒ_‚ğg‚¤
-	//data : ƒRƒs[Œ³‚ÌƒIƒuƒWƒFƒNƒg
-	//retHash : ƒRƒs[‚ÌŠi”[æ
-	//ret : ¬Œ÷^
+	//æ¸¡ã•ã‚ŒãŸmHashã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã¨åŒä¸€ãƒãƒƒã‚·ãƒ¥å€¤ã‚’ã‚‚ã¤ãƒãƒ³ãƒ‰ãƒ«ã‚’ä½œã‚‹
+	//ä½œæˆã—ãŸãƒãƒ³ãƒ‰ãƒ«ã®ãƒ—ãƒ­ãƒã‚¤ãƒ€ã¯ã€ã“ã®ã‚¤ãƒ³ã‚¹ã‚¿ãƒ³ã‚¹ã®ãƒ—ãƒ­ãƒã‚¤ãƒ€ã‚’ä½¿ã†
+	//data : ã‚³ãƒ”ãƒ¼å…ƒã®ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆ
+	//retHash : ã‚³ãƒ”ãƒ¼ã®æ ¼ç´å…ˆ
+	//ret : æˆåŠŸæ™‚çœŸ
 	bool DupeHCRYPTHASH( const mHash& data , HCRYPTHASH& retHash )const;
 };
 
 #ifdef SAMPLE_CODE
-//g‚¢•û
+//ä½¿ã„æ–¹
 int main( int argc , char** argv )
 {
 	InitializeLibrary();
 
-	//ƒ–¼„
-	//Eƒf[ƒ^‚ÌƒnƒbƒVƒ…’l‚ğ‹‚ß‚é
+	//ï¼œç½²åï¼
+	//ãƒ»ãƒ‡ãƒ¼ã‚¿ã®ãƒãƒƒã‚·ãƒ¥å€¤ã‚’æ±‚ã‚ã‚‹
 	BYTE Data1[] = "Secret Data";
 	mHash hash;
 	hash.Init( mHash::HashAlgorithm::SHA256 );
 	hash.Hash( Data1 , sizeof( Data1 ) );
 
-	//E–¼—p‚ÌƒIƒuƒWƒFƒNƒg‚ğì‚èAV‚µ‚¢Œ®ƒyƒA‚ğ‚Â‚­‚é
-	//EƒL[ƒRƒ“ƒeƒi‚Ì–¼‘O‚ğw’è‚µ‚È‚¢ê‡‚ÍA–¼‚Ég‚¦‚È‚¢
+	//ãƒ»ç½²åç”¨ã®ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã‚’ä½œã‚Šã€æ–°ã—ã„éµãƒšã‚¢ã‚’ã¤ãã‚‹
+	//ãƒ»ã‚­ãƒ¼ã‚³ãƒ³ãƒ†ãƒŠã®åå‰ã‚’æŒ‡å®šã—ãªã„å ´åˆã¯ã€ç½²åã«ä½¿ãˆãªã„
 	mRSAVerifier sign;
 	sign.Init( L"Test Program" , false );
 	sign.GenerateNewKey( mRSA::KEYLENGTH::KEYLEN_2048BIT );
 
-	//EŒöŠJŒ®‚ğƒGƒNƒXƒ|[ƒgi–¼ŒŸØ‚Ég‚¤j
+	//ãƒ»å…¬é–‹éµã‚’ã‚¨ã‚¯ã‚¹ãƒãƒ¼ãƒˆï¼ˆç½²åæ¤œè¨¼æ™‚ã«ä½¿ã†ï¼‰
 	DWORD pubkey_size;
 	mRSA::KeyBinary pubkey;
 	sign.ExportKey( mRSA::KEYTYPE::KEY_PUBLIC , pubkey , pubkey_size );
 
-	//E–¼‚·‚é
+	//ãƒ»ç½²åã™ã‚‹
 	mRSAVerifier::SignBuffer signbuffer;
 	DWORD signlen;
 	sign.Sign( hash , signbuffer , signlen );
 
-	//ƒŒŸØ„
-	//Eƒf[ƒ^‚ÌƒnƒbƒVƒ…’l‚ğ‹‚ß‚é
+	//ï¼œæ¤œè¨¼ï¼
+	//ãƒ»ãƒ‡ãƒ¼ã‚¿ã®ãƒãƒƒã‚·ãƒ¥å€¤ã‚’æ±‚ã‚ã‚‹
 	hash.Init( mHash::HashAlgorithm::SHA256 );
 	hash.Hash( Data1 , sizeof( Data1 ) );
 
-	//EŒŸØ‚ÍƒL[ƒRƒ“ƒeƒi‚ğì‚é•K—v‚Í‚È‚¢
-	//EŒŸØ‘¤‚É‚Í”é–§Œ®‚Í‚È‚¢‘O’ñ‚È‚Ì‚ÅA‚±‚±‚Å‚ÍŒöŠJŒ®‚Ì‚İƒCƒ“ƒ|[ƒg‚·‚é
-	//EVerify()‚ÅŒŸØ‚·‚é
+	//ãƒ»æ¤œè¨¼æ™‚ã¯ã‚­ãƒ¼ã‚³ãƒ³ãƒ†ãƒŠã‚’ä½œã‚‹å¿…è¦ã¯ãªã„
+	//ãƒ»æ¤œè¨¼å´ã«ã¯ç§˜å¯†éµã¯ãªã„å‰æãªã®ã§ã€ã“ã“ã§ã¯å…¬é–‹éµã®ã¿ã‚¤ãƒ³ãƒãƒ¼ãƒˆã™ã‚‹
+	//ãƒ»Verify()ã§æ¤œè¨¼ã™ã‚‹
 	mRSAVerifier verify;
 	verify.Init();
 	verify.ImportKey( pubkey.get() , pubkey_size );

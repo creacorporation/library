@@ -1,30 +1,30 @@
-//----------------------------------------------------------------------------
-// �t�@�C���Ǘ�
+﻿//----------------------------------------------------------------------------
+// ファイル管理
 // Copyright (C) 2005,2016 Fingerling. All rights reserved. 
 // This program is released under the MIT License. 
 // see http://opensource.org/licenses/mit-license.php
 //----------------------------------------------------------------------------
 
 /*
-���p�r
-�t�@�C����������܂��B
+●用途
+ファイルをいじります。
 
-�g�����F
+使い方：
 void TestFunction( void )
 {
-	//�t�@�C�����J���Ƃ��̏��
+	//ファイルを開くときの情報
 	mFile::Option opt;	
-	opt.Path = L"d:\\test.dat";	//�t�@�C����
-	opt.AccessRead = true;		//�ǂݎ��A�N�Z�X������
-	opt.ShareWrite = false;		//���\����̏������݃A�N�Z�X���֎~
+	opt.Path = L"d:\\test.dat";	//ファイル名
+	opt.AccessRead = true;		//読み取りアクセスをする
+	opt.ShareWrite = false;		//ヨソからの書き込みアクセスを禁止
 
-	//�t�@�C�����J��
+	//ファイルを開く
 	mFile fp;
 	fp.Open( opt );
 
-	//�J�����t�@�C������data�ɒl��ǂݎ��܂�
-	DWORD data;		//�ǂݎ���
-	DWORD size;		//�ǂݎ�����T�C�Y
+	//開いたファイルからdataに値を読み取ります
+	DWORD data;		//読み取り先
+	DWORD size;		//読み取ったサイズ
 	fp.Read( &data , sizeof( data ) , &size );
 }
 */
@@ -44,25 +44,25 @@ public:
 	mFile();
 	virtual ~mFile();
 
-	//�t�@�C�����J���Ƃ��̃��[�h
+	//ファイルを開くときのモード
 	enum CreateMode
 	{
-		CreateNew ,				//�V�����t�@�C�����쐬�B���łɂ���ꍇ�̓G���[
-		CreateAlways ,			//�V�����t�@�C�����쐬�B���łɂ���ꍇ�͏㏑���i���g���̂Ă�j
-		OpenExisting ,			//���łɂ���t�@�C�����J���B�Ȃ��ꍇ�̓G���[
-		OpenAlways ,			//���łɂ���t�@�C�����J���B�Ȃ��ꍇ�͐V�����t�@�C�����J��
-		TruncateExisting ,		//���łɂ���t�@�C�����J���Ē��g���̂Ă�B�Ȃ��ꍇ�̓G���[�B
-		CreateWithDirectory,	//�V�����t�@�C�����쐬�B�f�B���N�g�����Ȃ��ꍇ�̓f�B���N�g�����쐬����B���łɂ���ꍇ�͏㏑���i���g���̂Ă�j�B
+		CreateNew ,				//新しくファイルを作成。すでにある場合はエラー
+		CreateAlways ,			//新しくファイルを作成。すでにある場合は上書き（中身を捨てる）
+		OpenExisting ,			//すでにあるファイルを開く。ない場合はエラー
+		OpenAlways ,			//すでにあるファイルを開く。ない場合は新しいファイルを開く
+		TruncateExisting ,		//すでにあるファイルを開いて中身を捨てる。ない場合はエラー。
+		CreateWithDirectory,	//新しくファイルを作成。ディレクトリがない場合はディレクトリも作成する。すでにある場合は上書き（中身を捨てる）。
 	};
 
 	struct Option
 	{
-		WString Path;		//�J���t�@�C���̃p�X
-		bool ShareWrite;	//true�̏ꍇ������̏������݃A�N�Z�X��F�߂�
-		bool ShareRead;		//true�̏ꍇ������̓ǂݍ��݃A�N�Z�X��F�߂�
-		bool AccessWrite;	//�������݃A�N�Z�X���s��
-		bool AccessRead;	//�ǂݎ��A�N�Z�X���s��
-		CreateMode Mode;	//�t�@�C�����J���Ƃ��̃��[�h
+		WString Path;		//開くファイルのパス
+		bool ShareWrite;	//trueの場合他からの書き込みアクセスを認める
+		bool ShareRead;		//trueの場合他からの読み込みアクセスを認める
+		bool AccessWrite;	//書き込みアクセスを行う
+		bool AccessRead;	//読み取りアクセスを行う
+		CreateMode Mode;	//ファイルを開くときのモード
 		Option()
 		{
 			ShareWrite = false;
@@ -73,98 +73,98 @@ public:
 		}
 	};
 
-	//�t�@�C�����J��
+	//ファイルを開く
 	bool Open( const Option& opt );
 
-	//�t�@�C�������
-	//�f�X�g���N�^�ŕ���悤�ɂȂ��Ă��邩��ʂɌĂ΂Ȃ��ĉB
-	//�t�@�C������ĕʂ̃t�@�C�����J�������Ƃ��p�B
+	//ファイルを閉じる
+	//デストラクタで閉じるようになっているから別に呼ばなくて可。
+	//ファイルを閉じて別のファイルを開きたいとき用。
 	bool Close( void );
 
-	//�t�@�C������ǂݍ���
-	// Buffer : �ǂݎ�����f�[�^���i�[����o�b�t�@
-	// ReadSize : �ǂݎ�肽���T�C�Y
-	// retReadSize : ���ۂɓǂݎ�����T�C�Y
+	//ファイルから読み込み
+	// Buffer : 読み取ったデータを格納するバッファ
+	// ReadSize : 読み取りたいサイズ
+	// retReadSize : 実際に読み取ったサイズ
 	bool Read(
-		void*	Buffer ,							//�ǂݎ�����f�[�^���i�[����o�b�t�@
-		ULONGLONG  ReadSize ,						//�ǂݎ��o�C�g��
-		ULONGLONG& retReadSize );					//�ǂݎ�����o�C�g��
+		void*	Buffer ,							//読み取ったデータを格納するバッファ
+		ULONGLONG  ReadSize ,						//読み取るバイト数
+		ULONGLONG& retReadSize );					//読み取ったバイト数
 	
 	bool Read(
-		void*	Buffer ,							//�ǂݎ�����f�[�^���i�[����o�b�t�@
-		DWORD	ReadSize ,							//�ǂݎ��o�C�g��
-		DWORD&	retReadSize );						//�ǂݎ�����o�C�g��
+		void*	Buffer ,							//読み取ったデータを格納するバッファ
+		DWORD	ReadSize ,							//読み取るバイト数
+		DWORD&	retReadSize );						//読み取ったバイト数
 
-	//�t�@�C���ɏ�������
-	// Buffer : �ǂݎ�����f�[�^���i�[����o�b�t�@
-	// WriteSize : �ǂݎ�肽���T�C�Y
-	// retWriteSize : ���ۂɓǂݎ�����T�C�Y
+	//ファイルに書き込み
+	// Buffer : 読み取ったデータを格納するバッファ
+	// WriteSize : 読み取りたいサイズ
+	// retWriteSize : 実際に読み取ったサイズ
 	bool Write(
-		void*	Buffer,								//�������ރf�[�^���i�[���Ă���o�b�t�@
-		ULONGLONG  WriteSize,						//�������ރo�C�g��
-		ULONGLONG& retWriteSize );					//�������񂾃o�C�g��
+		void*	Buffer,								//書き込むデータを格納してあるバッファ
+		ULONGLONG  WriteSize,						//書き込むバイト数
+		ULONGLONG& retWriteSize );					//書き込んだバイト数
 
 	bool Write(
-		void*  Buffer ,								//�������ރf�[�^���i�[���Ă���o�b�t�@
-		DWORD  WriteSize ,							//�������ރo�C�g��
-		DWORD& retWriteSize );						//�������񂾃o�C�g��
+		void*  Buffer ,								//書き込むデータを格納してあるバッファ
+		DWORD  WriteSize ,							//書き込むバイト数
+		DWORD& retWriteSize );						//書き込んだバイト数
 													
-	//�t�@�C���|�C���^���w��ʒu�Ɉړ�
-	//newpos : �V�����ʒu�i�擪����̃o�C�g���j
-	//ret : ������true
-	//�w��ʒu��EOF�𒴂���ꍇ���G���[�ɂȂ�܂���B
+	//ファイルポインタを指定位置に移動
+	//newpos : 新しい位置（先頭からのバイト数）
+	//ret : 成功時true
+	//指定位置がEOFを超える場合もエラーになりません。
 	bool SetPointer( ULONGLONG newpos );
 
-	//�t�@�C���|�C���^��O��Ɉړ�
-	//distance : �ړ�����
-	//ret : ������true
-	//�w��ʒu��EOF�𒴂���ꍇ���G���[�ɂȂ�܂���B
+	//ファイルポインタを前後に移動
+	//distance : 移動距離
+	//ret : 成功時true
+	//指定位置がEOFを超える場合もエラーになりません。
 	bool MovePointer( LONGLONG distance );
 
-	//�t�@�C���|�C���^���t�@�C���̖����Ɉړ�
+	//ファイルポインタをファイルの末尾に移動
 	bool SetPointerToEnd( void );
 
-	//�t�@�C���|�C���^���t�@�C���̐擪�Ɉړ�
+	//ファイルポインタをファイルの先頭に移動
 	bool SetPointerToBegin( void );
 
-	//�t�@�C���̃o�b�t�@���t���b�V������
+	//ファイルのバッファをフラッシュする
 	bool FlushBuffer( void );
 
-	//�t�@�C���̃T�C�Y���擾
+	//ファイルのサイズを取得
 	bool GetFileSize( ULONGLONG& retSize )const;
 
-	//�t�@�C���̃T�C�Y���擾
-	// high �͕s�v�ȏꍇ�k���ł��B������high�ɓ���ׂ����ʂ�1�ȏ�̎��G���[�ɂȂ�B
+	//ファイルのサイズを取得
+	// high は不要な場合ヌルでも可。ただしhighに入るべき結果が1以上の時エラーになる。
 	bool GetFileSize( DWORD* high , DWORD& low )const;
 
-	//�t�@�C���̃T�C�Y���擾
-	// �G���[�̏ꍇ�͂O
+	//ファイルのサイズを取得
+	// エラーの場合は０
 	ULONGLONG GetFileSize( void )const;
 
-	//���݂̃t�@�C���|�C���^�ʒu�̎擾
+	//現在のファイルポインタ位置の取得
 	bool GetPosition( ULONGLONG& retPos )const;
 
-	//�t�@�C�����J���Ă��邩�𔻒肵�܂�
-	//�J���Ă���ꍇ�͐^���Ԃ�܂�
+	//ファイルが開いているかを判定します
+	//開いている場合は真が返ります
 	bool IsOpen( void )const;
 
-	//�J���Ă���p�X��Ԃ��܂�
-	// fullpath : true�̏ꍇ�A�J���Ă���p�X���t���p�X�ɕϊ����悤�Ƃ��܂�
-	//            false�̏ꍇ�Atrue�ł��ϊ��Ɏ��s�����ꍇ�́A�t�@�C���I�[�v�����ɓn�����p�X�����̂܂ܕԂ�܂�
+	//開いているパスを返します
+	// fullpath : trueの場合、開いているパスをフルパスに変換しようとします
+	//            falseの場合、trueでも変換に失敗した場合は、ファイルオープン時に渡したパスがそのまま返ります
 	WString GetPath( bool fullpath )const;
 
-	//���݂̃t�@�C���|�C���^�̈ʒu��EOF�Ɏw�肵�܂�
+	//現在のファイルポインタの位置をEOFに指定します
 	bool SetEof( void );
 
-	//�R���g���[���R�[�h�̑��M
-	// code : �R���g���[���R�[�h
-	// in : ���̓f�[�^�B�����n���Ȃ��Ȃ�nullptr
-	// in : �o�̓f�[�^�B�����󂯎��Ȃ��Ȃ�nullptr
+	//コントロールコードの送信
+	// code : コントロールコード
+	// in : 入力データ。何も渡さないならnullptr
+	// in : 出力データ。何も受け取らないならnullptr
 	bool ExecIoControl( DWORD code , const mBinary* in , mBinary* retResult );
 
 private:
 
-	//�R�s�[�֎~
+	//コピー禁止
 	mFile( const mFile& source ) = delete;
 	void operator=( const mFile& source ) = delete;
 

@@ -1,11 +1,11 @@
-//----------------------------------------------------------------------------
-// ƒVƒŠƒAƒ‹ƒ|[ƒgƒnƒ“ƒhƒ‰
+ï»¿//----------------------------------------------------------------------------
+// ã‚·ãƒªã‚¢ãƒ«ãƒãƒ¼ãƒˆãƒãƒ³ãƒ‰ãƒ©
 // Copyright (C) 2019- Crea Inc. All rights reserved.
 // This program is released under the MIT License. 
 // see http://opensource.org/licenses/mit-license.php
-// ’˜ìŒ •\¦‚âƒ‰ƒCƒZƒ“ƒX‚Ì‰ü•Ï‚Í‹Ö~‚³‚ê‚Ä‚¢‚Ü‚·B
-// ‚±‚Ìƒ\[ƒXƒR[ƒh‚ÉŠÖ‚µ‚ÄAã‹Lƒ‰ƒCƒZƒ“ƒXˆÈŠO‚ÌŒ_–ñ“™‚ÍˆêØ‘¶İ‚µ‚Ü‚¹‚ñB
-// (‰½‚ç‚©‚ÌŒ_–ñ‚ª‚ ‚éê‡‚Å‚àA–{ƒ\[ƒXƒR[ƒh‚Í‚»‚Ì‘ÎÛŠO‚Æ‚È‚è‚Ü‚·)
+// è‘—ä½œæ¨©è¡¨ç¤ºã‚„ãƒ©ã‚¤ã‚»ãƒ³ã‚¹ã®æ”¹å¤‰ã¯ç¦æ­¢ã•ã‚Œã¦ã„ã¾ã™ã€‚
+// ã“ã®ã‚½ãƒ¼ã‚¹ã‚³ãƒ¼ãƒ‰ã«é–¢ã—ã¦ã€ä¸Šè¨˜ãƒ©ã‚¤ã‚»ãƒ³ã‚¹ä»¥å¤–ã®å¥‘ç´„ç­‰ã¯ä¸€åˆ‡å­˜åœ¨ã—ã¾ã›ã‚“ã€‚
+// (ä½•ã‚‰ã‹ã®å¥‘ç´„ãŒã‚ã‚‹å ´åˆã§ã‚‚ã€æœ¬ã‚½ãƒ¼ã‚¹ã‚³ãƒ¼ãƒ‰ã¯ãã®å¯¾è±¡å¤–ã¨ãªã‚Šã¾ã™)
 //----------------------------------------------------------------------------
 
 #include "mASyncSerialPort.h"
@@ -22,7 +22,7 @@ mASyncSerialPort::mASyncSerialPort()
 mASyncSerialPort::~mASyncSerialPort()
 {
 	{
-		//Š®—¹ŠÖ”‚©‚ç‚±‚ÌƒIƒuƒWƒFƒNƒg‚ªŒÄ‚Ño‚³‚ê‚È‚¢‚æ‚¤‚É‚·‚é
+		//å®Œäº†é–¢æ•°ã‹ã‚‰ã“ã®ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆãŒå‘¼ã³å‡ºã•ã‚Œãªã„ã‚ˆã†ã«ã™ã‚‹
 		mCriticalSectionTicket critical( MyCritical );
 
 		for( BufferQueue::iterator itr = MyWriteQueue.begin() ; itr != MyWriteQueue.end() ; itr++ )
@@ -35,7 +35,7 @@ mASyncSerialPort::~mASyncSerialPort()
 		}
 	}
 
-	//ƒnƒ“ƒhƒ‹”pŠü
+	//ãƒãƒ³ãƒ‰ãƒ«å»ƒæ£„
 	if( MyHandle != INVALID_HANDLE_VALUE )
 	{
 		CloseHandle( MyHandle );
@@ -45,15 +45,15 @@ mASyncSerialPort::~mASyncSerialPort()
 	return;
 }
 
-//ƒVƒŠƒAƒ‹ƒ|[ƒg‚ğŠJ‚­
+//ã‚·ãƒªã‚¢ãƒ«ãƒãƒ¼ãƒˆã‚’é–‹ã
 bool mASyncSerialPort::Open( mWorkerThreadPool& wtp , const Option& opt , const NotifyOption& notifier )
 {
 	if( MyHandle != INVALID_HANDLE_VALUE )
 	{
-		RaiseAssert( g_ErrorLogger , 0 , L"“ñd‚Éƒ|[ƒg‚ğŠJ‚±‚¤‚Æ‚µ‚Ä‚¢‚Ü‚·" );
+		RaiseAssert( g_ErrorLogger , 0 , L"äºŒé‡ã«ãƒãƒ¼ãƒˆã‚’é–‹ã“ã†ã¨ã—ã¦ã„ã¾ã™" );
 		return false;
 	}
-	//ˆø”‚ğWinSDK‚Ì’è‹`’l‚É’u‚«Š·‚¦‚é
+	//å¼•æ•°ã‚’WinSDKã®å®šç¾©å€¤ã«ç½®ãæ›ãˆã‚‹
 	DWORD access = 0;
 	access |= ( opt.Fileinfo.AccessRead ) ? ( GENERIC_READ ) : ( 0 );
 	access |= ( opt.Fileinfo.AccessWrite ) ? ( GENERIC_WRITE ) : ( 0 );
@@ -81,37 +81,37 @@ bool mASyncSerialPort::Open( mWorkerThreadPool& wtp , const Option& opt , const 
 		return false;
 	}
 
-	//ƒtƒ@ƒCƒ‹‚ğŠJ‚­
+	//ãƒ•ã‚¡ã‚¤ãƒ«ã‚’é–‹ã
 	MyHandle = CreateFileW( opt.Fileinfo.Path.c_str() , access , share , 0 , create_dispo , FILE_FLAG_OVERLAPPED | FILE_ATTRIBUTE_NORMAL , 0 );
 	if( MyHandle == INVALID_HANDLE_VALUE )
 	{
-		//ŠJ‚¯‚È‚©‚Á‚½
-		RaiseError( g_ErrorLogger , 0 , L"ƒ|[ƒg‚ğŠJ‚­‚±‚Æ‚ª‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½" , opt.Fileinfo.Path );
+		//é–‹ã‘ãªã‹ã£ãŸ
+		RaiseError( g_ErrorLogger , 0 , L"ãƒãƒ¼ãƒˆã‚’é–‹ãã“ã¨ãŒã§ãã¾ã›ã‚“ã§ã—ãŸ" , opt.Fileinfo.Path );
 		return false;
 	}
 
-	//COMƒ|[ƒg‚Ìİ’è‚ğs‚¤
+	//COMãƒãƒ¼ãƒˆã®è¨­å®šã‚’è¡Œã†
 	if( !ComPortSetting( MyHandle , opt ) )
 	{
-		RaiseError( g_ErrorLogger , 0 , L"ƒ|[ƒg‚Ì‰Šúİ’è‚ª¸”s‚µ‚Ü‚µ‚½" , opt.Fileinfo.Path );
+		RaiseError( g_ErrorLogger , 0 , L"ãƒãƒ¼ãƒˆã®åˆæœŸè¨­å®šãŒå¤±æ•—ã—ã¾ã—ãŸ" , opt.Fileinfo.Path );
 		return false;
 	}
 
-	//ƒ[ƒJ[ƒXƒŒƒbƒhƒv[ƒ‹‚É“o˜^‚·‚é
+	//ãƒ¯ãƒ¼ã‚«ãƒ¼ã‚¹ãƒ¬ãƒƒãƒ‰ãƒ—ãƒ¼ãƒ«ã«ç™»éŒ²ã™ã‚‹
 	if( !wtp.Attach( MyHandle , CompleteRoutine ) )
 	{
-		RaiseError( g_ErrorLogger , 0 , L"ƒ[ƒJ[ƒXƒŒƒbƒhƒv[ƒ‹‚É“o˜^‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½" );
+		RaiseError( g_ErrorLogger , 0 , L"ãƒ¯ãƒ¼ã‚«ãƒ¼ã‚¹ãƒ¬ãƒƒãƒ‰ãƒ—ãƒ¼ãƒ«ã«ç™»éŒ²ã§ãã¾ã›ã‚“ã§ã—ãŸ" );
 		return false;
 	}
 
-	//ƒtƒ@ƒCƒ‹‚ğŠJ‚¯‚½‚Ì‚ÅA’Ê’m•û–@‚ğƒXƒgƒbƒN
+	//ãƒ•ã‚¡ã‚¤ãƒ«ã‚’é–‹ã‘ãŸã®ã§ã€é€šçŸ¥æ–¹æ³•ã‚’ã‚¹ãƒˆãƒƒã‚¯
 	MyOption = opt;
 	MyNotifyOption = notifier;
 
-	//‘‘¬“Ç‚İ‚İƒoƒbƒtƒ@‚ğÏ‚Ş
+	//æ—©é€Ÿèª­ã¿è¾¼ã¿ãƒãƒƒãƒ•ã‚¡ã‚’ç©ã‚€
 	if( !PrepareReadBuffer( MyOption.ReadPacketCount ) )
 	{
-		RaiseAssert( g_ErrorLogger , 0 , L"“Ç‚İ‚İ—p‚Ìƒoƒbƒtƒ@‚ğ€”õ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½" );
+		RaiseAssert( g_ErrorLogger , 0 , L"èª­ã¿è¾¼ã¿ç”¨ã®ãƒãƒƒãƒ•ã‚¡ã‚’æº–å‚™ã§ãã¾ã›ã‚“ã§ã—ãŸ" );
 		return false;
 	}
 	return true;
@@ -119,12 +119,12 @@ bool mASyncSerialPort::Open( mWorkerThreadPool& wtp , const Option& opt , const 
 
 bool mASyncSerialPort::PrepareReadBuffer( DWORD count )
 {
-	//ƒNƒŠƒeƒBƒJƒ‹ƒZƒNƒVƒ‡ƒ“
+	//ã‚¯ãƒªãƒ†ã‚£ã‚«ãƒ«ã‚»ã‚¯ã‚·ãƒ§ãƒ³
 	mCriticalSectionTicket critical( MyCritical );
 
 	if( MyIsEOF )
 	{
-		//EOFİ’èÏ‚İ
+		//EOFè¨­å®šæ¸ˆã¿
 		return true;
 	}
 
@@ -152,7 +152,7 @@ bool mASyncSerialPort::PrepareReadBuffer( DWORD count )
 		case ERROR_SUCCESS:
 			break;
 		default:
-			RaiseError( g_ErrorLogger , 0 , L"“Ç‚İ‚İ‚Ì”ñ“¯Šú‘€ì‚ªŠJn‚µ‚Ü‚¹‚ñ‚Å‚µ‚½" );
+			RaiseError( g_ErrorLogger , 0 , L"èª­ã¿è¾¼ã¿ã®éåŒæœŸæ“ä½œãŒé–‹å§‹ã—ã¾ã›ã‚“ã§ã—ãŸ" );
 			MyReadQueue.pop_back();
 			mDelete[] entry->Buffer;
 			mDelete entry;
@@ -199,7 +199,7 @@ static void AsyncEvent( mASyncSerialPort& pipe , const mASyncSerialPort::NotifyO
 	}
 	else
 	{
-		RaiseAssert( g_ErrorLogger , 0 , L"”ñ“¯Šú‘€ì‚ÌŠ®—¹’Ê’m•û–@‚ª•s³‚Å‚·" , info.Mode );
+		RaiseAssert( g_ErrorLogger , 0 , L"éåŒæœŸæ“ä½œã®å®Œäº†é€šçŸ¥æ–¹æ³•ãŒä¸æ­£ã§ã™" , info.Mode );
 	}
 }
 
@@ -213,9 +213,9 @@ VOID CALLBACK mASyncSerialPort::CompleteRoutine( DWORD ec , DWORD len , LPOVERLA
 
 	if( !entry->Parent )
 	{
-		//e‚ªÁ–Å‚µ‚Ä‚¢‚éê‡‚Í‚»‚Á‚Æíœ‚µ‚Ä‚¨‚­
+		//è¦ªãŒæ¶ˆæ»…ã—ã¦ã„ã‚‹å ´åˆã¯ãã£ã¨å‰Šé™¤ã—ã¦ãŠã
 		SetLastError( ec );
-		RaiseAssert( g_ErrorLogger , 0 , L"eƒIƒuƒWƒFƒNƒg‚ªÁ–Å‚µ‚Ä‚¢‚Ü‚·" , entry->Type );
+		RaiseAssert( g_ErrorLogger , 0 , L"è¦ªã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆãŒæ¶ˆæ»…ã—ã¦ã„ã¾ã™" , entry->Type );
 
 		mDelete[] entry->Buffer;
 		mDelete entry;
@@ -238,17 +238,17 @@ VOID CALLBACK mASyncSerialPort::CompleteRoutine( DWORD ec , DWORD len , LPOVERLA
 	return;
 }
 
-//“Ç‚İæ‚è‚ÌŠ®—¹ƒ‹[ƒ`ƒ“
+//èª­ã¿å–ã‚Šæ™‚ã®å®Œäº†ãƒ«ãƒ¼ãƒãƒ³
 VOID CALLBACK mASyncSerialPort::ReadCompleteRoutine( DWORD ec , DWORD len , LPOVERLAPPED ov )
 {
 	bool complete_callback = true;
 	BufferQueueEntry* entry = CONTAINING_RECORD( ov ,  BufferQueueEntry , Ov );
 
 	{
-		//‚±‚ÌƒuƒƒbƒN‚ÍƒNƒŠƒeƒBƒJƒ‹ƒZƒNƒVƒ‡ƒ“
+		//ã“ã®ãƒ–ãƒ­ãƒƒã‚¯ã¯ã‚¯ãƒªãƒ†ã‚£ã‚«ãƒ«ã‚»ã‚¯ã‚·ãƒ§ãƒ³
 		mCriticalSectionTicket critical( entry->Parent->MyCritical );
 
-		//ƒLƒ…[‚ğŠ®—¹ó‘Ô‚É‚·‚é
+		//ã‚­ãƒ¥ãƒ¼ã‚’å®Œäº†çŠ¶æ…‹ã«ã™ã‚‹
 		if( !entry->Completed )
 		{
 			entry->Completed = true;
@@ -256,7 +256,7 @@ VOID CALLBACK mASyncSerialPort::ReadCompleteRoutine( DWORD ec , DWORD len , LPOV
 			entry->BytesTransfered = len;
 		}
 
-		//ƒLƒ…[‚Ìæ“ª‚Å‚Í‚È‚¢ê‡‚ÍƒR[ƒ‹ƒoƒbƒN‚ğŒÄ‚Î‚È‚¢
+		//ã‚­ãƒ¥ãƒ¼ã®å…ˆé ­ã§ã¯ãªã„å ´åˆã¯ã‚³ãƒ¼ãƒ«ãƒãƒƒã‚¯ã‚’å‘¼ã°ãªã„
 		if( entry->Parent->MyReadQueue.empty() || entry->Parent->MyReadQueue.front() != entry )
 		{
 			complete_callback = false;
@@ -272,7 +272,7 @@ VOID CALLBACK mASyncSerialPort::ReadCompleteRoutine( DWORD ec , DWORD len , LPOV
 		default:
 			{
 				SetLastError( ec );
-				RaiseAssert( g_ErrorLogger , 0 , L"”ñ“¯Šú“Ç‚İ‚İ‘€ì‚ª¸”s‚µ‚Ü‚µ‚½" );
+				RaiseAssert( g_ErrorLogger , 0 , L"éåŒæœŸèª­ã¿è¾¼ã¿æ“ä½œãŒå¤±æ•—ã—ã¾ã—ãŸ" );
 
 				NotifyFunctionOpt opt;
 				opt.OnError.Action = NotifyFunctionOpt::OnErrorOpt::ErrorAction::ERROR_ON_READ;
@@ -285,7 +285,7 @@ VOID CALLBACK mASyncSerialPort::ReadCompleteRoutine( DWORD ec , DWORD len , LPOV
 	{
 		if( complete_callback )
 		{
-			//ƒLƒ…[‚Ìæ“ª‚Ìê‡‚ÍŠ®—¹ƒCƒxƒ“ƒg‚ğƒR[ƒ‹
+			//ã‚­ãƒ¥ãƒ¼ã®å…ˆé ­ã®å ´åˆã¯å®Œäº†ã‚¤ãƒ™ãƒ³ãƒˆã‚’ã‚³ãƒ¼ãƒ«
 			NotifyFunctionOpt opt;
 			AsyncEvent( *entry->Parent , entry->Parent->MyNotifyOption.OnRead , opt );
 		}
@@ -298,13 +298,13 @@ VOID CALLBACK mASyncSerialPort::WriteCompleteRoutine( DWORD ec , DWORD len , LPO
 {
 	BufferQueueEntry* entry = CONTAINING_RECORD( ov ,  BufferQueueEntry , Ov );
 
-	BufferQueue remove_queue;	//íœ—\’è‚ÌƒLƒ…[
-	size_t queue_size = 0;		//íœŒã‚ÌƒLƒ…[ƒTƒCƒY
+	BufferQueue remove_queue;	//å‰Šé™¤äºˆå®šã®ã‚­ãƒ¥ãƒ¼
+	size_t queue_size = 0;		//å‰Šé™¤å¾Œã®ã‚­ãƒ¥ãƒ¼ã‚µã‚¤ã‚º
 	{
-		//‚±‚ÌƒuƒƒbƒN‚ÍƒNƒŠƒeƒBƒJƒ‹ƒZƒNƒVƒ‡ƒ“
+		//ã“ã®ãƒ–ãƒ­ãƒƒã‚¯ã¯ã‚¯ãƒªãƒ†ã‚£ã‚«ãƒ«ã‚»ã‚¯ã‚·ãƒ§ãƒ³
 		mCriticalSectionTicket critical( entry->Parent->MyCritical );
 
-		//ƒLƒ…[‚ğŠ®—¹ó‘Ô‚É‚·‚é
+		//ã‚­ãƒ¥ãƒ¼ã‚’å®Œäº†çŠ¶æ…‹ã«ã™ã‚‹
 		if( !entry->Completed )
 		{
 			entry->Completed = true;
@@ -312,7 +312,7 @@ VOID CALLBACK mASyncSerialPort::WriteCompleteRoutine( DWORD ec , DWORD len , LPO
 			entry->BytesTransfered = len;
 		}
 
-		//ƒLƒ…[‚Ìæ“ª‚©‚çƒXƒLƒƒƒ“‚µAŠ®—¹Ï‚İ‚ÌƒpƒPƒbƒg‚ğ‡Ÿíœ
+		//ã‚­ãƒ¥ãƒ¼ã®å…ˆé ­ã‹ã‚‰ã‚¹ã‚­ãƒ£ãƒ³ã—ã€å®Œäº†æ¸ˆã¿ã®ãƒ‘ã‚±ãƒƒãƒˆã‚’é †æ¬¡å‰Šé™¤
 		while( !entry->Parent->MyWriteQueue.empty() )
 		{
 			if( entry->Parent->MyWriteQueue.front()->Completed )
@@ -328,13 +328,13 @@ VOID CALLBACK mASyncSerialPort::WriteCompleteRoutine( DWORD ec , DWORD len , LPO
 		queue_size = entry->Parent->MyWriteQueue.size();
 	}
 
-	//ƒCƒxƒ“ƒgŒÄ‚Ño‚µ
+	//ã‚¤ãƒ™ãƒ³ãƒˆå‘¼ã³å‡ºã—
 	if( ec != ERROR_SUCCESS )
 	{
 		SetLastError( ec );
-		RaiseAssert( g_ErrorLogger , 0 , L"”ñ“¯Šú‘‚«‚İ‘€ì‚ª¸”s‚µ‚Ü‚µ‚½" );
+		RaiseAssert( g_ErrorLogger , 0 , L"éåŒæœŸæ›¸ãè¾¼ã¿æ“ä½œãŒå¤±æ•—ã—ã¾ã—ãŸ" );
 
-		//ƒGƒ‰[‚ª‹N‚«‚Ä‚¢‚é‚©‚çƒCƒxƒ“ƒg‚ğƒR[ƒ‹
+		//ã‚¨ãƒ©ãƒ¼ãŒèµ·ãã¦ã„ã‚‹ã‹ã‚‰ã‚¤ãƒ™ãƒ³ãƒˆã‚’ã‚³ãƒ¼ãƒ«
 		NotifyFunctionOpt opt;
 		opt.OnError.Action = NotifyFunctionOpt::OnErrorOpt::ErrorAction::ERROR_ON_WRITE;
 		opt.OnError.ErrorCode = ec;
@@ -342,12 +342,12 @@ VOID CALLBACK mASyncSerialPort::WriteCompleteRoutine( DWORD ec , DWORD len , LPO
 	}
 	else if( queue_size < entry->Parent->MyOption.WritePacketNotifyCount )
 	{
-		//ƒLƒ…[‚ÌƒGƒ“ƒgƒŠ”‚ªŒ¸‚Á‚½‚©‚çƒCƒxƒ“ƒg‚ğƒR[ƒ‹
+		//ã‚­ãƒ¥ãƒ¼ã®ã‚¨ãƒ³ãƒˆãƒªæ•°ãŒæ¸›ã£ãŸã‹ã‚‰ã‚¤ãƒ™ãƒ³ãƒˆã‚’ã‚³ãƒ¼ãƒ«
 		NotifyFunctionOpt opt;
 		AsyncEvent( *entry->Parent , entry->Parent->MyNotifyOption.OnWrite , opt );
 	}
 
-	//ƒ|ƒCƒ“ƒ^‚Ìíœ‚ğs‚¤
+	//ãƒã‚¤ãƒ³ã‚¿ã®å‰Šé™¤ã‚’è¡Œã†
 	for( BufferQueue::iterator itr = remove_queue.begin() ; itr != remove_queue.end() ; itr++ )
 	{
 		mDelete (*itr)->Buffer;
@@ -356,42 +356,42 @@ VOID CALLBACK mASyncSerialPort::WriteCompleteRoutine( DWORD ec , DWORD len , LPO
 	return;
 }
 
-//‚P•¶ši‚PƒoƒCƒgj“Ç‚İ‚İ‚Ü‚·
+//ï¼‘æ–‡å­—ï¼ˆï¼‘ãƒã‚¤ãƒˆï¼‰èª­ã¿è¾¼ã¿ã¾ã™
 INT mASyncSerialPort::Read( void )
 {
-	//UnRead‚³‚ê‚½•¶š‚ª‚ ‚éê‡‚Íƒ\ƒŒ‚ğ•Ô‚·
+	//UnReadã•ã‚ŒãŸæ–‡å­—ãŒã‚ã‚‹å ´åˆã¯ã‚½ãƒ¬ã‚’è¿”ã™
 	if( !MyUnReadBuffer.IsEmpty() )
 	{
 		return MyUnReadBuffer.Read();
 	}
 
-	//ƒLƒƒƒbƒVƒ…‚Ìc—Ê‚ª‚ ‚ê‚ÎƒLƒƒƒbƒVƒ…‚ğ“Ç‚İ‚Ş
-	//ƒLƒƒƒbƒVƒ…‚Ìc—Ê‚ª‚È‚¢‚È‚çƒLƒ…[‚©‚çæ“¾‚·‚é
+	//ã‚­ãƒ£ãƒƒã‚·ãƒ¥ã®æ®‹é‡ãŒã‚ã‚Œã°ã‚­ãƒ£ãƒƒã‚·ãƒ¥ã‚’èª­ã¿è¾¼ã‚€
+	//ã‚­ãƒ£ãƒƒã‚·ãƒ¥ã®æ®‹é‡ãŒãªã„ãªã‚‰ã‚­ãƒ¥ãƒ¼ã‹ã‚‰å–å¾—ã™ã‚‹
 	if( MyReadCacheRemain == 0 )
 	{
-		//‚±‚ÌƒuƒƒbƒN‚ÍƒNƒŠƒeƒBƒJƒ‹ƒZƒNƒVƒ‡ƒ“
+		//ã“ã®ãƒ–ãƒ­ãƒƒã‚¯ã¯ã‚¯ãƒªãƒ†ã‚£ã‚«ãƒ«ã‚»ã‚¯ã‚·ãƒ§ãƒ³
 		mCriticalSectionTicket critical( MyCritical );
 		do
 		{
-			//“Ç‚İ‚İƒLƒ…[‚ª‚È‚¢ê‡‚ÍEOF
+			//èª­ã¿è¾¼ã¿ã‚­ãƒ¥ãƒ¼ãŒãªã„å ´åˆã¯EOF
 			if( MyReadQueue.empty() )
 			{
-				//“Ç‚İæ‚èƒoƒbƒtƒ@‚ğ•â[
+				//èª­ã¿å–ã‚Šãƒãƒƒãƒ•ã‚¡ã‚’è£œå……
 				PrepareReadBuffer( MyOption.ReadPacketCount );
 				return EOF;
 			}
 
-			//“Ç‚İ‚İƒLƒ…[‚Ìæ“ª‚ªIO–¢Š®—¹‚È‚çEOF
+			//èª­ã¿è¾¼ã¿ã‚­ãƒ¥ãƒ¼ã®å…ˆé ­ãŒIOæœªå®Œäº†ãªã‚‰EOF
 			if( !MyReadQueue.front()->Completed )
 			{
 				return EOF;
 			}
 
-			//“Ç‚İ‚İƒLƒ…[‚Ìæ“ª‚ğæ‚èo‚·
+			//èª­ã¿è¾¼ã¿ã‚­ãƒ¥ãƒ¼ã®å…ˆé ­ã‚’å–ã‚Šå‡ºã™
 			BufferQueueEntry* entry = MyReadQueue.front();
 			MyReadQueue.pop_front();
 
-			//“Ç‚İæ‚èƒLƒƒƒbƒVƒ…‚ÉƒZƒbƒg
+			//èª­ã¿å–ã‚Šã‚­ãƒ£ãƒƒã‚·ãƒ¥ã«ã‚»ãƒƒãƒˆ
 			MyReadCacheHead.reset( entry->Buffer );
 			MyReadCacheCurrent = 0;
 			MyReadCacheRemain = entry->BytesTransfered;
@@ -399,10 +399,10 @@ INT mASyncSerialPort::Read( void )
 
 		}while( MyReadCacheRemain == 0 );
 
-		//“Ç‚İæ‚èƒoƒbƒtƒ@‚ğ•â[
+		//èª­ã¿å–ã‚Šãƒãƒƒãƒ•ã‚¡ã‚’è£œå……
 		if( !PrepareReadBuffer( MyOption.ReadPacketCount ) )
 		{
-			RaiseAssert( g_ErrorLogger , 0 , L"“Ç‚İ‚İ—p‚Ìƒoƒbƒtƒ@‚ğ€”õ‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½" );
+			RaiseAssert( g_ErrorLogger , 0 , L"èª­ã¿è¾¼ã¿ç”¨ã®ãƒãƒƒãƒ•ã‚¡ã‚’æº–å‚™ã§ãã¾ã›ã‚“ã§ã—ãŸ" );
 		}
 	}
 
@@ -412,7 +412,7 @@ INT mASyncSerialPort::Read( void )
 	return result;
 }
 
-//EOF‚É’B‚µ‚Ä‚¢‚é‚©‚ğ’²‚×‚Ü‚·
+//EOFã«é”ã—ã¦ã„ã‚‹ã‹ã‚’èª¿ã¹ã¾ã™
 bool mASyncSerialPort::IsEOF( void )const
 {
 	if( !MyIsEOF )
@@ -425,13 +425,13 @@ bool mASyncSerialPort::IsEOF( void )const
 	}
 	else
 	{
-		//‚±‚±‚¾‚¯ƒNƒŠƒeƒBƒJƒ‹ƒZƒNƒVƒ‡ƒ“
+		//ã“ã“ã ã‘ã‚¯ãƒªãƒ†ã‚£ã‚«ãƒ«ã‚»ã‚¯ã‚·ãƒ§ãƒ³
 		mCriticalSectionTicket critical( MyCritical );
 		return MyReadQueue.empty() && ( MyNotifyEventToken.use_count() == 1 );
 	}
 }
 
-//‘‚«‚İ‘¤‚ÌŒo˜H‚ğ•Â‚¶‚Ü‚·
+//æ›¸ãè¾¼ã¿å´ã®çµŒè·¯ã‚’é–‰ã˜ã¾ã™
 bool mASyncSerialPort::Close( void )
 {
 	MyIsClosed = true;
@@ -439,10 +439,10 @@ bool mASyncSerialPort::Close( void )
 	return true;
 }
 
-//“Ç‚İ‚İ‘¤‚ÌŒo˜H‚ğ•Â‚¶‚Ü‚·
+//èª­ã¿è¾¼ã¿å´ã®çµŒè·¯ã‚’é–‰ã˜ã¾ã™
 bool mASyncSerialPort::SetEOF( void )
 {
-	//‚±‚±‚¾‚¯ƒNƒŠƒeƒBƒJƒ‹ƒZƒNƒVƒ‡ƒ“
+	//ã“ã“ã ã‘ã‚¯ãƒªãƒ†ã‚£ã‚«ãƒ«ã‚»ã‚¯ã‚·ãƒ§ãƒ³
 	mCriticalSectionTicket critical( MyCritical );
 	MyIsEOF = true;
 
@@ -457,17 +457,17 @@ bool mASyncSerialPort::SetEOF( void )
 	return true;
 }
 
-//‚P•¶š‘‚«‚İ
+//ï¼‘æ–‡å­—æ›¸ãè¾¼ã¿
 bool mASyncSerialPort::Write( INT data )
 {
-	//ƒNƒ[ƒYÏ‚İH
+	//ã‚¯ãƒ­ãƒ¼ã‚ºæ¸ˆã¿ï¼Ÿ
 	if( MyIsClosed )
 	{
-		RaiseError( g_ErrorLogger , 0 , L"COMƒ|[ƒg‚Í‚·‚Å‚É•Â‚¶‚ç‚ê‚Ä‚¢‚Ü‚·" );
+		RaiseError( g_ErrorLogger , 0 , L"COMãƒãƒ¼ãƒˆã¯ã™ã§ã«é–‰ã˜ã‚‰ã‚Œã¦ã„ã¾ã™" );
 		return false;
 	}
 
-	//‚à‚µƒLƒƒƒbƒVƒ…‚ª‚È‚¢‚æ‚¤‚È‚çì¬
+	//ã‚‚ã—ã‚­ãƒ£ãƒƒã‚·ãƒ¥ãŒãªã„ã‚ˆã†ãªã‚‰ä½œæˆ
 	if( MyWriteCacheHead.get() == nullptr )
 	{
 		MyWriteCacheHead.reset( mNew BYTE[ MyOption.WritePacketSize ] );
@@ -475,19 +475,19 @@ bool mASyncSerialPort::Write( INT data )
 		MyWriteCacheWritten = 0;
 	}
 
-	//ƒLƒƒƒbƒVƒ…‚Ìc‚è‚ª‚ ‚éH
+	//ã‚­ãƒ£ãƒƒã‚·ãƒ¥ã®æ®‹ã‚ŠãŒã‚ã‚‹ï¼Ÿ
 	if( MyWriteCacheRemain == 0 )
 	{
-		RaiseError( g_ErrorLogger , 0 , L"‘‚«‚İƒLƒƒƒbƒVƒ…‚Ìc—Ê‚ª‚ ‚è‚Ü‚¹‚ñ" );
+		RaiseError( g_ErrorLogger , 0 , L"æ›¸ãè¾¼ã¿ã‚­ãƒ£ãƒƒã‚·ãƒ¥ã®æ®‹é‡ãŒã‚ã‚Šã¾ã›ã‚“" );
 		return false;
 	}
 
-	//ƒLƒƒƒbƒVƒ…‚É‘‚ñ‚Å
+	//ã‚­ãƒ£ãƒƒã‚·ãƒ¥ã«æ›¸è¾¼ã‚“ã§
 	MyWriteCacheHead[ MyWriteCacheWritten ] = (BYTE)data;
 	MyWriteCacheRemain--;
 	MyWriteCacheWritten++;
 
-	//ƒLƒƒƒbƒVƒ…‚ª–ƒ^ƒ“‚¾‚Á‚½‚ç©“®‘—M
+	//ã‚­ãƒ£ãƒƒã‚·ãƒ¥ãŒæº€ã‚¿ãƒ³ã ã£ãŸã‚‰è‡ªå‹•é€ä¿¡
 	if( MyWriteCacheRemain == 0 )
 	{
 		return FlushCache();
@@ -496,26 +496,26 @@ bool mASyncSerialPort::Write( INT data )
 	return true;
 }
 
-//ƒLƒƒƒbƒVƒ…‚ğ‘‚«‚İ
-//‚±‚ê‚ğŒÄ‚Î‚È‚¢‚ÆÀÛ‚Ì‘—M‚Í”­¶‚µ‚Ü‚¹‚ñ
+//ã‚­ãƒ£ãƒƒã‚·ãƒ¥ã‚’æ›¸ãè¾¼ã¿
+//ã“ã‚Œã‚’å‘¼ã°ãªã„ã¨å®Ÿéš›ã®é€ä¿¡ã¯ç™ºç”Ÿã—ã¾ã›ã‚“
 bool mASyncSerialPort::FlushCache( void )
 {
 	BufferQueueEntry* entry = nullptr;
 	{
-		//ƒNƒŠƒeƒBƒJƒ‹ƒZƒNƒVƒ‡ƒ“
+		//ã‚¯ãƒªãƒ†ã‚£ã‚«ãƒ«ã‚»ã‚¯ã‚·ãƒ§ãƒ³
 		mCriticalSectionTicket critical( MyCritical );
 
-		//‘‚Şƒf[ƒ^‚ª‚È‚¢ê‡‚Í‚»‚Ì‚Ü‚Ü–ß‚é
+		//æ›¸è¾¼ã‚€ãƒ‡ãƒ¼ã‚¿ãŒãªã„å ´åˆã¯ãã®ã¾ã¾æˆ»ã‚‹
 		if( MyWriteCacheWritten == 0 || MyWriteCacheHead.get() == nullptr )
 		{
-			//ƒf[ƒ^‚È‚µ‚Í³íI—¹ˆµ‚¢
+			//ãƒ‡ãƒ¼ã‚¿ãªã—ã¯æ­£å¸¸çµ‚äº†æ‰±ã„
 			return true;
 		}
 
 		if( ( MyOption.WritePacketLimit ) &&
 			( MyOption.WritePacketLimit < MyWriteQueue.size() ) )
 		{
-			RaiseError( g_ErrorLogger , 0 , L"‘‚«‚İ‘Ò‚¿ƒpƒPƒbƒg‚Ì”‚ªãŒÀ‚É“’B‚µ‚Ü‚µ‚½" );
+			RaiseError( g_ErrorLogger , 0 , L"æ›¸ãè¾¼ã¿å¾…ã¡ãƒ‘ã‚±ãƒƒãƒˆã®æ•°ãŒä¸Šé™ã«åˆ°é”ã—ã¾ã—ãŸ" );
 			return false;
 		}
 
@@ -552,24 +552,24 @@ bool mASyncSerialPort::FlushCache( void )
 		}
 	}
 
-	//‘‚«‚İ‚É¸”s‚µ‚Ä‚¢‚é‚Ì‚Å‚±‚ÌƒLƒ…[‚ğíœ‚·‚é
-	//¦ƒf[ƒ^‚Í‘¹¸‚µ‚Ä‚¢‚é
+	//æ›¸ãè¾¼ã¿ã«å¤±æ•—ã—ã¦ã„ã‚‹ã®ã§ã“ã®ã‚­ãƒ¥ãƒ¼ã‚’å‰Šé™¤ã™ã‚‹
+	//â€»ãƒ‡ãƒ¼ã‚¿ã¯æå¤±ã—ã¦ã„ã‚‹
 	mDelete[] entry->Buffer;
 	mDelete entry;
-	RaiseError( g_ErrorLogger , 0 , L"‘‚«‚İ‚Ì”ñ“¯Šú‘€ì‚ªŠJn‚µ‚Ü‚¹‚ñ‚Å‚µ‚½" );
+	RaiseError( g_ErrorLogger , 0 , L"æ›¸ãè¾¼ã¿ã®éåŒæœŸæ“ä½œãŒé–‹å§‹ã—ã¾ã›ã‚“ã§ã—ãŸ" );
 	return false;
 }
 
-//‘—M–¢Š®—¹‚Ìƒf[ƒ^‚ª‚ ‚é‚©‚ğ•Ô‚µ‚Ü‚·
+//é€ä¿¡æœªå®Œäº†ã®ãƒ‡ãƒ¼ã‚¿ãŒã‚ã‚‹ã‹ã‚’è¿”ã—ã¾ã™
 DWORD mASyncSerialPort::IsWriting( void )const
 {
-	//‚±‚ÌƒuƒƒbƒN‚ÍƒNƒŠƒeƒBƒJƒ‹ƒZƒNƒVƒ‡ƒ“
+	//ã“ã®ãƒ–ãƒ­ãƒƒã‚¯ã¯ã‚¯ãƒªãƒ†ã‚£ã‚«ãƒ«ã‚»ã‚¯ã‚·ãƒ§ãƒ³
 	mCriticalSectionTicket critical( MyCritical );
 
 	return (DWORD)MyWriteQueue.size();
 }
 
-//‘—M–¢Š®—¹‚Ìƒf[ƒ^‚ğ”jŠü‚µ‚Ü‚·
+//é€ä¿¡æœªå®Œäº†ã®ãƒ‡ãƒ¼ã‚¿ã‚’ç ´æ£„ã—ã¾ã™
 bool mASyncSerialPort::Cancel( void )
 {
 	mCriticalSectionTicket critical( MyCritical );
@@ -587,16 +587,16 @@ bool mASyncSerialPort::Cancel( void )
 	return true;
 }
 
-//Œ»İ–¢Š®—¹‚Ì’ÊM(‘—óM‚Æ‚à)‚ğ‘S‚Ä”jŠü‚µAÚ‘±‚ğ•Â‚¶‚Ü‚·
+//ç¾åœ¨æœªå®Œäº†ã®é€šä¿¡(é€å—ä¿¡ã¨ã‚‚)ã‚’å…¨ã¦ç ´æ£„ã—ã€æ¥ç¶šã‚’é–‰ã˜ã¾ã™
 bool mASyncSerialPort::Abort( void )
 {
-	//‘‚«‚İI—¹‚µƒLƒ…[‚ğƒLƒƒƒ“ƒZƒ‹
+	//æ›¸ãè¾¼ã¿çµ‚äº†ã—ã‚­ãƒ¥ãƒ¼ã‚’ã‚­ãƒ£ãƒ³ã‚»ãƒ«
 	Close();
 	Cancel();
-	//“Ç‚İ‚İI—¹‚µ‚ÄƒLƒ…[‚ğƒLƒƒƒ“ƒZƒ‹
+	//èª­ã¿è¾¼ã¿çµ‚äº†ã—ã¦ã‚­ãƒ¥ãƒ¼ã‚’ã‚­ãƒ£ãƒ³ã‚»ãƒ«
 	SetEOF();
 
-	//–¢ˆ—‚ÌƒLƒ…[”jŠü
+	//æœªå‡¦ç†ã®ã‚­ãƒ¥ãƒ¼ç ´æ£„
 	DWORD wait_time = 0;
 	while( 1 )
 	{
@@ -659,16 +659,16 @@ static bool ComPortSetting( HANDLE handle , const mASyncSerialPort::Option& sett
 {
 	DCB dcb;
 
-	//Œ»İ‚Ìİ’è‚ğæ“¾
+	//ç¾åœ¨ã®è¨­å®šã‚’å–å¾—
 	if( !GetCommState( handle , &dcb ) )
 	{
-		RaiseError( g_ErrorLogger , 0 , L"COMƒ|[ƒg‚ÌŒ»İ‚Ìİ’è‚ğæ“¾‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½" );
+		RaiseError( g_ErrorLogger , 0 , L"COMãƒãƒ¼ãƒˆã®ç¾åœ¨ã®è¨­å®šã‚’å–å¾—ã§ãã¾ã›ã‚“ã§ã—ãŸ" );
 		return false;
 	}
 
-	//İ’è‚ÌXV
+	//è¨­å®šã®æ›´æ–°
 
-	//ƒpƒŠƒeƒB
+	//ãƒ‘ãƒªãƒ†ã‚£
 	switch( setting.Parity )
 	{
 	case mASyncSerialPort::ParityType::PARITYTYPE_NOPARITY:
@@ -684,10 +684,10 @@ static bool ComPortSetting( HANDLE handle , const mASyncSerialPort::Option& sett
 		dcb.fParity = true;
 		break;
 	default:
-		RaiseAssert( g_ErrorLogger , 0 , L"ƒpƒŠƒeƒBİ’è‚ª•s³‚Å‚·" , setting.Parity );
+		RaiseAssert( g_ErrorLogger , 0 , L"ãƒ‘ãƒªãƒ†ã‚£è¨­å®šãŒä¸æ­£ã§ã™" , setting.Parity );
 		return false;
 	}
-	//ƒXƒgƒbƒvƒrƒbƒg
+	//ã‚¹ãƒˆãƒƒãƒ—ãƒ“ãƒƒãƒˆ
 	switch( setting.StopBit )
 	{
 	case mASyncSerialPort::StopBitType::STOPBIT_ONE:
@@ -700,24 +700,24 @@ static bool ComPortSetting( HANDLE handle , const mASyncSerialPort::Option& sett
 		dcb.StopBits = TWOSTOPBITS;
 		break;
 	default:
-		RaiseAssert( g_ErrorLogger , 0 , L"ƒXƒgƒbƒvƒrƒbƒgİ’è‚ª•s³‚Å‚·" , setting.StopBit );
+		RaiseAssert( g_ErrorLogger , 0 , L"ã‚¹ãƒˆãƒƒãƒ—ãƒ“ãƒƒãƒˆè¨­å®šãŒä¸æ­£ã§ã™" , setting.StopBit );
 		return false;
 	}
-	//ƒ{[ƒŒ[ƒg
+	//ãƒœãƒ¼ãƒ¬ãƒ¼ãƒˆ
 	dcb.BaudRate = setting.BaudRate;
 
-	//ƒoƒCƒgƒTƒCƒY
+	//ãƒã‚¤ãƒˆã‚µã‚¤ã‚º
 	if( 0xffu < setting.ByteSize )
 	{
-		RaiseAssert( g_ErrorLogger , 0 , L"ƒoƒCƒgƒTƒCƒYİ’è‚ª•s³‚Å‚·" , setting.ByteSize );
+		RaiseAssert( g_ErrorLogger , 0 , L"ãƒã‚¤ãƒˆã‚µã‚¤ã‚ºè¨­å®šãŒä¸æ­£ã§ã™" , setting.ByteSize );
 		return false;
 	}
 	dcb.ByteSize = (BYTE)setting.ByteSize;
 
-	//İ’è‚Ì“K—p
+	//è¨­å®šã®é©ç”¨
 	if( !SetCommState( handle , &dcb ) )
 	{
-		RaiseError( g_ErrorLogger , 0 , L"COMƒ|[ƒg‚Ìİ’è‚ğXV‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½" );
+		RaiseError( g_ErrorLogger , 0 , L"COMãƒãƒ¼ãƒˆã®è¨­å®šã‚’æ›´æ–°ã§ãã¾ã›ã‚“ã§ã—ãŸ" );
 	}
 
 
@@ -730,7 +730,7 @@ static bool ComPortSetting( HANDLE handle , const mASyncSerialPort::Option& sett
 	timeout.WriteTotalTimeoutMultiplier = 0;
 	if( !SetCommTimeouts( handle , &timeout ) )
 	{
-		RaiseError( g_ErrorLogger , 0 , L"COMƒ|[ƒg‚Ìƒ^ƒCƒ€ƒAƒEƒgİ’è‚ğXV‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½" );
+		RaiseError( g_ErrorLogger , 0 , L"COMãƒãƒ¼ãƒˆã®ã‚¿ã‚¤ãƒ ã‚¢ã‚¦ãƒˆè¨­å®šã‚’æ›´æ–°ã§ãã¾ã›ã‚“ã§ã—ãŸ" );
 	}
 
 	return true;

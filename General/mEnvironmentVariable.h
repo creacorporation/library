@@ -1,5 +1,5 @@
-//----------------------------------------------------------------------------
-// ŠÂ‹«•Ï”
+ï»¿//----------------------------------------------------------------------------
+// ç’°å¢ƒå¤‰æ•°
 // Copyright (C) 2023- Crea Inc. All rights reserved.
 // This program is released under the MIT License. 
 // see http://opensource.org/licenses/mit-license.php
@@ -14,17 +14,17 @@
 namespace mEnvironmentVariable
 {
 
-	//ŠÂ‹«•Ï”‚ğæ“¾‚µ‚Ü‚·
-	// key : æ“¾‚·‚éŠÂ‹«•Ï”
-	// retResult : Œ‹‰Ê‚Ì‘‚İæ
-	// def : ƒGƒ‰[‚Ì’l
-	// ret : ¬Œ÷^
+	//ç’°å¢ƒå¤‰æ•°ã‚’å–å¾—ã—ã¾ã™
+	// key : å–å¾—ã™ã‚‹ç’°å¢ƒå¤‰æ•°
+	// retResult : çµæœã®æ›¸è¾¼ã¿å…ˆ
+	// def : ã‚¨ãƒ©ãƒ¼æ™‚ã®å€¤
+	// ret : æˆåŠŸæ™‚çœŸ
 	bool GetVariable( const WString& key , WString& retResult , const WString& def );
 
-	//ŠÂ‹«•Ï”‚ğæ“¾‚µ‚Ü‚·
-	// key : æ“¾‚·‚éŠÂ‹«•Ï”
-	// def : ƒGƒ‰[‚Ì’l
-	// ret : ŠÂ‹«•Ï”‚Ì’lAƒGƒ‰[‚Ìê‡‚Ídef‚Ì’l
+	//ç’°å¢ƒå¤‰æ•°ã‚’å–å¾—ã—ã¾ã™
+	// key : å–å¾—ã™ã‚‹ç’°å¢ƒå¤‰æ•°
+	// def : ã‚¨ãƒ©ãƒ¼æ™‚ã®å€¤
+	// ret : ç’°å¢ƒå¤‰æ•°ã®å€¤ã€ã‚¨ãƒ©ãƒ¼ã®å ´åˆã¯defã®å€¤
 	inline WString GetVariable( const WString& key , const WString& def )
 	{
 		WString result;
@@ -32,9 +32,9 @@ namespace mEnvironmentVariable
 		return result;
 	}
 
-	//ŠÂ‹«•Ï”‚ğæ“¾‚µ‚Ü‚·BƒGƒ‰[‚Ìê‡‚Í—áŠO‚ª”­¶‚µ‚Ü‚·B
-	// key : æ“¾‚·‚éŠÂ‹«•Ï”
-	// ret : ŠÂ‹«•Ï”‚Ì’l
+	//ç’°å¢ƒå¤‰æ•°ã‚’å–å¾—ã—ã¾ã™ã€‚ã‚¨ãƒ©ãƒ¼ã®å ´åˆã¯ä¾‹å¤–ãŒç™ºç”Ÿã—ã¾ã™ã€‚
+	// key : å–å¾—ã™ã‚‹ç’°å¢ƒå¤‰æ•°
+	// ret : ç’°å¢ƒå¤‰æ•°ã®å€¤
 	template< class ExceptionIfFailed >
 	inline WString GetVariable( const WString& key )
 	{
@@ -48,10 +48,10 @@ namespace mEnvironmentVariable
 	}
 
 
-	//ŠÂ‹«•Ï”‚ğİ’è‚µ‚Ü‚·BƒGƒ‰[‚Ìê‡‚Í—áŠO‚ª”­¶‚µ‚Ü‚·B
-	// key : İ’è‚·‚éŠÂ‹«•Ï”
-	// val : İ’è‚·‚é’l
-	// ret : ^
+	//ç’°å¢ƒå¤‰æ•°ã‚’è¨­å®šã—ã¾ã™ã€‚ã‚¨ãƒ©ãƒ¼ã®å ´åˆã¯ä¾‹å¤–ãŒç™ºç”Ÿã—ã¾ã™ã€‚
+	// key : è¨­å®šã™ã‚‹ç’°å¢ƒå¤‰æ•°
+	// val : è¨­å®šã™ã‚‹å€¤
+	// ret : çœŸ
 	template< class ExceptionIfFailed = bool >
 	bool SetVariable( const WString& key , const WString& val )
 	{
@@ -63,10 +63,10 @@ namespace mEnvironmentVariable
 		return true;
 	}
 
-	//ŠÂ‹«•Ï”‚ğİ’è‚µ‚Ü‚·B
-	// key : İ’è‚·‚éŠÂ‹«•Ï”
-	// val : İ’è‚·‚é’l
-	// ret : ¬Œ÷^
+	//ç’°å¢ƒå¤‰æ•°ã‚’è¨­å®šã—ã¾ã™ã€‚
+	// key : è¨­å®šã™ã‚‹ç’°å¢ƒå¤‰æ•°
+	// val : è¨­å®šã™ã‚‹å€¤
+	// ret : æˆåŠŸæ™‚çœŸ
 	template<>
 	bool SetVariable< bool >( const WString& key , const WString& val );
 

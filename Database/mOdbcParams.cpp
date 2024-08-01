@@ -1,5 +1,5 @@
-//----------------------------------------------------------------------------
-// ODBCÚ‘±—pƒ‰ƒCƒuƒ‰ƒŠ
+ï»¿//----------------------------------------------------------------------------
+// ODBCæ¥ç¶šç”¨ãƒ©ã‚¤ãƒ–ãƒ©ãƒª
 // Copyright (C) 2018- Crea Inc. All rights reserved.
 // This program is released under the MIT License. 
 // see http://opensource.org/licenses/mit-license.php
@@ -36,44 +36,44 @@ const mOdbcParamsEntry& mOdbcParamsEntry::operator=( const mOdbcParamsEntry& src
 	{
 		switch( MyParameterType )
 		{
-		case mOdbc::ParameterType::Int64:		//•„†‚ ‚è64ƒrƒbƒg®”Œ^(•„†‚È‚µ‚Í‚ ‚è‚Ü‚¹‚ñ)
+		case mOdbc::ParameterType::Int64:		//ç¬¦å·ã‚ã‚Š64ãƒ“ãƒƒãƒˆæ•´æ•°å‹(ç¬¦å·ãªã—ã¯ã‚ã‚Šã¾ã›ã‚“)
 			MyDataEntry.deInt64 = src.MyDataEntry.deInt64;
 			break;
-		case mOdbc::ParameterType::Int32:		//•„†‚ ‚è32ƒrƒbƒg®”Œ^(•„†‚È‚µ‚Í‚ ‚è‚Ü‚¹‚ñ)
+		case mOdbc::ParameterType::Int32:		//ç¬¦å·ã‚ã‚Š32ãƒ“ãƒƒãƒˆæ•´æ•°å‹(ç¬¦å·ãªã—ã¯ã‚ã‚Šã¾ã›ã‚“)
 			MyDataEntry.deInt32 = src.MyDataEntry.deInt32;
 			break;
-		case mOdbc::ParameterType::Int16:		//•„†‚ ‚è16ƒrƒbƒg®”Œ^(•„†‚È‚µ‚Í‚ ‚è‚Ü‚¹‚ñ)
+		case mOdbc::ParameterType::Int16:		//ç¬¦å·ã‚ã‚Š16ãƒ“ãƒƒãƒˆæ•´æ•°å‹(ç¬¦å·ãªã—ã¯ã‚ã‚Šã¾ã›ã‚“)
 			MyDataEntry.deInt16 = src.MyDataEntry.deInt16;
 			break;
-		case mOdbc::ParameterType::Int8:		//•„†‚ ‚è8ƒrƒbƒg®”Œ^(•„†‚È‚µ‚Í‚ ‚è‚Ü‚¹‚ñ)
+		case mOdbc::ParameterType::Int8:		//ç¬¦å·ã‚ã‚Š8ãƒ“ãƒƒãƒˆæ•´æ•°å‹(ç¬¦å·ãªã—ã¯ã‚ã‚Šã¾ã›ã‚“)
 			MyDataEntry.deInt8 = src.MyDataEntry.deInt8;
 			break;
-		case mOdbc::ParameterType::Float:		//’P¸“x•‚“®¬”“_
+		case mOdbc::ParameterType::Float:		//å˜ç²¾åº¦æµ®å‹•å°æ•°ç‚¹
 			MyDataEntry.deFloat = src.MyDataEntry.deFloat;
 			break;
-		case mOdbc::ParameterType::Double:		//”{¸“x•‚“®¬”“_
+		case mOdbc::ParameterType::Double:		//å€ç²¾åº¦æµ®å‹•å°æ•°ç‚¹
 			MyDataEntry.deDouble = src.MyDataEntry.deDouble;
 			break;
-		case mOdbc::ParameterType::AString:		//ANSI•¶š—ñ
+		case mOdbc::ParameterType::AString:		//ANSIæ–‡å­—åˆ—
 			Set( src.MyDataEntry.deAString );
 			break;
-		case mOdbc::ParameterType::WString:		//UNICODE•¶š—ñ
+		case mOdbc::ParameterType::WString:		//UNICODEæ–‡å­—åˆ—
 			Set( src.MyDataEntry.deWString );
 			break;
-		case mOdbc::ParameterType::Binary:			//ƒoƒCƒiƒŠ
+		case mOdbc::ParameterType::Binary:			//ãƒã‚¤ãƒŠãƒª
 			Set( src.MyDataEntry.deBinary );
 			break;
-		case mOdbc::ParameterType::Date:		//“ú•t
+		case mOdbc::ParameterType::Date:		//æ—¥ä»˜
 			MyDataEntry.deDate = src.MyDataEntry.deDate;
 			break;
-		case mOdbc::ParameterType::Time:		//
+		case mOdbc::ParameterType::Time:		//æ™‚åˆ»
 			MyDataEntry.deTime = src.MyDataEntry.deTime;
 			break;
-		case mOdbc::ParameterType::Timestamp:	//ƒ^ƒCƒ€ƒXƒ^ƒ“ƒv
+		case mOdbc::ParameterType::Timestamp:	//ã‚¿ã‚¤ãƒ ã‚¹ã‚¿ãƒ³ãƒ—
 			MyDataEntry.deTimestamp = src.MyDataEntry.deTimestamp;
 			break;
 		default:
-			RaiseAssert( g_ErrorLogger , 0 , L"ƒpƒ‰ƒ[ƒ^‚ª•s³‚Å‚·" , MyParameterType );
+			RaiseAssert( g_ErrorLogger , 0 , L"ãƒ‘ãƒ©ãƒ¡ãƒ¼ã‚¿ãŒä¸æ­£ã§ã™" , MyParameterType );
 		}
 		MyIsNull = false;
 	}
@@ -94,28 +94,28 @@ void mOdbcParamsEntry::SetNull( void )
 
 	switch( MyParameterType )
 	{
-	case mOdbc::ParameterType::Int64:		//•„†‚ ‚è64ƒrƒbƒg®”Œ^(•„†‚È‚µ‚Í‚ ‚è‚Ü‚¹‚ñ)
-	case mOdbc::ParameterType::Int32:		//•„†‚ ‚è32ƒrƒbƒg®”Œ^(•„†‚È‚µ‚Í‚ ‚è‚Ü‚¹‚ñ)
-	case mOdbc::ParameterType::Int16:		//•„†‚ ‚è16ƒrƒbƒg®”Œ^(•„†‚È‚µ‚Í‚ ‚è‚Ü‚¹‚ñ)
-	case mOdbc::ParameterType::Int8:		//•„†‚ ‚è8ƒrƒbƒg®”Œ^(•„†‚È‚µ‚Í‚ ‚è‚Ü‚¹‚ñ)
-	case mOdbc::ParameterType::Float:		//’P¸“x•‚“®¬”“_
-	case mOdbc::ParameterType::Double:		//”{¸“x•‚“®¬”“_
+	case mOdbc::ParameterType::Int64:		//ç¬¦å·ã‚ã‚Š64ãƒ“ãƒƒãƒˆæ•´æ•°å‹(ç¬¦å·ãªã—ã¯ã‚ã‚Šã¾ã›ã‚“)
+	case mOdbc::ParameterType::Int32:		//ç¬¦å·ã‚ã‚Š32ãƒ“ãƒƒãƒˆæ•´æ•°å‹(ç¬¦å·ãªã—ã¯ã‚ã‚Šã¾ã›ã‚“)
+	case mOdbc::ParameterType::Int16:		//ç¬¦å·ã‚ã‚Š16ãƒ“ãƒƒãƒˆæ•´æ•°å‹(ç¬¦å·ãªã—ã¯ã‚ã‚Šã¾ã›ã‚“)
+	case mOdbc::ParameterType::Int8:		//ç¬¦å·ã‚ã‚Š8ãƒ“ãƒƒãƒˆæ•´æ•°å‹(ç¬¦å·ãªã—ã¯ã‚ã‚Šã¾ã›ã‚“)
+	case mOdbc::ParameterType::Float:		//å˜ç²¾åº¦æµ®å‹•å°æ•°ç‚¹
+	case mOdbc::ParameterType::Double:		//å€ç²¾åº¦æµ®å‹•å°æ•°ç‚¹
 		break;
-	case mOdbc::ParameterType::AString:		//ANSI•¶š—ñ
+	case mOdbc::ParameterType::AString:		//ANSIæ–‡å­—åˆ—
 		MyDataEntry.deAString.~AString();
 		break;
-	case mOdbc::ParameterType::WString:		//UNICODE•¶š—ñ
+	case mOdbc::ParameterType::WString:		//UNICODEæ–‡å­—åˆ—
 		MyDataEntry.deWString.~WString();
 		break;
-	case mOdbc::ParameterType::Binary:		//ƒoƒCƒiƒŠ
+	case mOdbc::ParameterType::Binary:		//ãƒã‚¤ãƒŠãƒª
 		MyDataEntry.deBinary.~mBinary();
 		break;
-	case mOdbc::ParameterType::Date:		//“ú•t
-	case mOdbc::ParameterType::Time:		//
-	case mOdbc::ParameterType::Timestamp:	//ƒ^ƒCƒ€ƒXƒ^ƒ“ƒv
+	case mOdbc::ParameterType::Date:		//æ—¥ä»˜
+	case mOdbc::ParameterType::Time:		//æ™‚åˆ»
+	case mOdbc::ParameterType::Timestamp:	//ã‚¿ã‚¤ãƒ ã‚¹ã‚¿ãƒ³ãƒ—
 		break;
 	default:
-		RaiseAssert( g_ErrorLogger , 0 , L"ƒpƒ‰ƒ[ƒ^‚ª•s³‚Å‚·" , MyParameterType );
+		RaiseAssert( g_ErrorLogger , 0 , L"ãƒ‘ãƒ©ãƒ¡ãƒ¼ã‚¿ãŒä¸æ­£ã§ã™" , MyParameterType );
 	}
 	return;
 
@@ -225,7 +225,7 @@ void mOdbcParamsEntry::Set( const mBinary& dt )
 	return;
 }
 
-//[Setter]“ú•t‚ğƒZƒbƒg‚µ‚Ü‚·
+//[Setter]æ—¥ä»˜ã‚’ã‚»ãƒƒãƒˆã—ã¾ã™
 void mOdbcParamsEntry::Set( const mDateTime::Date& dt )
 {
 	SetNull();
@@ -238,7 +238,7 @@ void mOdbcParamsEntry::Set( const mDateTime::Date& dt )
 	return;
 }
 
-//[Setter]‚ğƒZƒbƒg‚µ‚Ü‚·
+//[Setter]æ™‚åˆ»ã‚’ã‚»ãƒƒãƒˆã—ã¾ã™
 void mOdbcParamsEntry::Set( const mDateTime::Time& dt )
 {
 	SetNull();
@@ -250,7 +250,7 @@ void mOdbcParamsEntry::Set( const mDateTime::Time& dt )
 	MyDataEntry.deTime.second = static_cast<SQLUSMALLINT>( dt.Second );
 }
 
-//[Setter]ƒ^ƒCƒ€ƒXƒ^ƒ“ƒv‚ğƒZƒbƒg‚µ‚Ü‚·
+//[Setter]ã‚¿ã‚¤ãƒ ã‚¹ã‚¿ãƒ³ãƒ—ã‚’ã‚»ãƒƒãƒˆã—ã¾ã™
 void mOdbcParamsEntry::Set( const mDateTime::Timestamp& dt )
 {
 	SetNull();
@@ -266,7 +266,7 @@ void mOdbcParamsEntry::Set( const mDateTime::Timestamp& dt )
 	MyDataEntry.deTimestamp.fraction = dt.Milliseconds * 1000000;
 }
 
-//[Setter]“ú•t‚ğƒZƒbƒg‚µ‚Ü‚·
+//[Setter]æ—¥ä»˜ã‚’ã‚»ãƒƒãƒˆã—ã¾ã™
 void mOdbcParamsEntry::Set( const SQL_DATE_STRUCT& dt )
 {
 	SetNull();
@@ -276,7 +276,7 @@ void mOdbcParamsEntry::Set( const SQL_DATE_STRUCT& dt )
 	MyDataEntry.deDate = dt;
 }
 
-//[Setter]‚ğƒZƒbƒg‚µ‚Ü‚·
+//[Setter]æ™‚åˆ»ã‚’ã‚»ãƒƒãƒˆã—ã¾ã™
 void mOdbcParamsEntry::Set( const SQL_TIME_STRUCT& dt )
 {
 	SetNull();
@@ -286,7 +286,7 @@ void mOdbcParamsEntry::Set( const SQL_TIME_STRUCT& dt )
 	MyDataEntry.deTime = dt;
 }
 
-//[Setter]ƒ^ƒCƒ€ƒXƒ^ƒ“ƒv‚ğƒZƒbƒg‚µ‚Ü‚·
+//[Setter]ã‚¿ã‚¤ãƒ ã‚¹ã‚¿ãƒ³ãƒ—ã‚’ã‚»ãƒƒãƒˆã—ã¾ã™
 void mOdbcParamsEntry::Set( const SQL_TIMESTAMP_STRUCT& dt )
 {
 	SetNull();
@@ -311,31 +311,31 @@ void mOdbcParamsEntry::Get( bool& retresult , int64_t& retDt )const
 
 	switch( MyParameterType )
 	{
-	case mOdbc::ParameterType::Int64:		//•„†‚ ‚è64ƒrƒbƒg®”Œ^(•„†‚È‚µ‚Í‚ ‚è‚Ü‚¹‚ñ)
+	case mOdbc::ParameterType::Int64:		//ç¬¦å·ã‚ã‚Š64ãƒ“ãƒƒãƒˆæ•´æ•°å‹(ç¬¦å·ãªã—ã¯ã‚ã‚Šã¾ã›ã‚“)
 		retDt = MyDataEntry.deInt64;
 		break;
-	case mOdbc::ParameterType::Int32:		//•„†‚ ‚è32ƒrƒbƒg®”Œ^(•„†‚È‚µ‚Í‚ ‚è‚Ü‚¹‚ñ)
+	case mOdbc::ParameterType::Int32:		//ç¬¦å·ã‚ã‚Š32ãƒ“ãƒƒãƒˆæ•´æ•°å‹(ç¬¦å·ãªã—ã¯ã‚ã‚Šã¾ã›ã‚“)
 		retDt = MyDataEntry.deInt32;
 		break;
-	case mOdbc::ParameterType::Int16:		//•„†‚ ‚è16ƒrƒbƒg®”Œ^(•„†‚È‚µ‚Í‚ ‚è‚Ü‚¹‚ñ)
+	case mOdbc::ParameterType::Int16:		//ç¬¦å·ã‚ã‚Š16ãƒ“ãƒƒãƒˆæ•´æ•°å‹(ç¬¦å·ãªã—ã¯ã‚ã‚Šã¾ã›ã‚“)
 		retDt = MyDataEntry.deInt16;
 		break;
-	case mOdbc::ParameterType::Int8:		//•„†‚ ‚è8ƒrƒbƒg®”Œ^(•„†‚È‚µ‚Í‚ ‚è‚Ü‚¹‚ñ)
+	case mOdbc::ParameterType::Int8:		//ç¬¦å·ã‚ã‚Š8ãƒ“ãƒƒãƒˆæ•´æ•°å‹(ç¬¦å·ãªã—ã¯ã‚ã‚Šã¾ã›ã‚“)
 		retDt = MyDataEntry.deInt8;
 		break;
-	case mOdbc::ParameterType::Float:		//’P¸“x•‚“®¬”“_
-	case mOdbc::ParameterType::Double:		//”{¸“x•‚“®¬”“_
-	case mOdbc::ParameterType::AString:		//ANSI•¶š—ñ
-	case mOdbc::ParameterType::WString:		//UNICODE•¶š—ñ
-	case mOdbc::ParameterType::Binary:		//ƒoƒCƒiƒŠ
-	case mOdbc::ParameterType::Date:		//“ú•t
-	case mOdbc::ParameterType::Time:		//
-	case mOdbc::ParameterType::Timestamp:	//ƒ^ƒCƒ€ƒXƒ^ƒ“ƒv
-		RaiseError( g_ErrorLogger , 0 , L"w’è‚µ‚½Œ^‚É‚Í•ÏŠ·‚Å‚«‚Ü‚¹‚ñ" , MyParameterType );
+	case mOdbc::ParameterType::Float:		//å˜ç²¾åº¦æµ®å‹•å°æ•°ç‚¹
+	case mOdbc::ParameterType::Double:		//å€ç²¾åº¦æµ®å‹•å°æ•°ç‚¹
+	case mOdbc::ParameterType::AString:		//ANSIæ–‡å­—åˆ—
+	case mOdbc::ParameterType::WString:		//UNICODEæ–‡å­—åˆ—
+	case mOdbc::ParameterType::Binary:		//ãƒã‚¤ãƒŠãƒª
+	case mOdbc::ParameterType::Date:		//æ—¥ä»˜
+	case mOdbc::ParameterType::Time:		//æ™‚åˆ»
+	case mOdbc::ParameterType::Timestamp:	//ã‚¿ã‚¤ãƒ ã‚¹ã‚¿ãƒ³ãƒ—
+		RaiseError( g_ErrorLogger , 0 , L"æŒ‡å®šã—ãŸå‹ã«ã¯å¤‰æ›ã§ãã¾ã›ã‚“" , MyParameterType );
 		retDt = 0;
 		return;
 	default:
-		RaiseAssert( g_ErrorLogger , 0 , L"ƒpƒ‰ƒ[ƒ^‚ª•s³‚Å‚·" , MyParameterType );
+		RaiseAssert( g_ErrorLogger , 0 , L"ãƒ‘ãƒ©ãƒ¡ãƒ¼ã‚¿ãŒä¸æ­£ã§ã™" , MyParameterType );
 		retDt = 0;
 		return;
 	}
@@ -354,29 +354,29 @@ void mOdbcParamsEntry::Get( bool& retresult , int32_t& retDt )const
 
 	switch( MyParameterType )
 	{
-	case mOdbc::ParameterType::Int32:		//•„†‚ ‚è32ƒrƒbƒg®”Œ^(•„†‚È‚µ‚Í‚ ‚è‚Ü‚¹‚ñ)
+	case mOdbc::ParameterType::Int32:		//ç¬¦å·ã‚ã‚Š32ãƒ“ãƒƒãƒˆæ•´æ•°å‹(ç¬¦å·ãªã—ã¯ã‚ã‚Šã¾ã›ã‚“)
 		retDt = MyDataEntry.deInt32;
 		break;
-	case mOdbc::ParameterType::Int16:		//•„†‚ ‚è16ƒrƒbƒg®”Œ^(•„†‚È‚µ‚Í‚ ‚è‚Ü‚¹‚ñ)
+	case mOdbc::ParameterType::Int16:		//ç¬¦å·ã‚ã‚Š16ãƒ“ãƒƒãƒˆæ•´æ•°å‹(ç¬¦å·ãªã—ã¯ã‚ã‚Šã¾ã›ã‚“)
 		retDt = MyDataEntry.deInt16;
 		break;
-	case mOdbc::ParameterType::Int8:		//•„†‚ ‚è8ƒrƒbƒg®”Œ^(•„†‚È‚µ‚Í‚ ‚è‚Ü‚¹‚ñ)
+	case mOdbc::ParameterType::Int8:		//ç¬¦å·ã‚ã‚Š8ãƒ“ãƒƒãƒˆæ•´æ•°å‹(ç¬¦å·ãªã—ã¯ã‚ã‚Šã¾ã›ã‚“)
 		retDt = MyDataEntry.deInt8;
 		break;
-	case mOdbc::ParameterType::Int64:		//•„†‚ ‚è64ƒrƒbƒg®”Œ^(•„†‚È‚µ‚Í‚ ‚è‚Ü‚¹‚ñ)
-	case mOdbc::ParameterType::Float:		//’P¸“x•‚“®¬”“_
-	case mOdbc::ParameterType::Double:		//”{¸“x•‚“®¬”“_
-	case mOdbc::ParameterType::AString:		//ANSI•¶š—ñ
-	case mOdbc::ParameterType::WString:		//UNICODE•¶š—ñ
-	case mOdbc::ParameterType::Binary:		//ƒoƒCƒiƒŠ
-	case mOdbc::ParameterType::Date:		//“ú•t
-	case mOdbc::ParameterType::Time:		//
-	case mOdbc::ParameterType::Timestamp:	//ƒ^ƒCƒ€ƒXƒ^ƒ“ƒv
-		RaiseError( g_ErrorLogger , 0 , L"w’è‚µ‚½Œ^‚É‚Í•ÏŠ·‚Å‚«‚Ü‚¹‚ñ" , MyParameterType );
+	case mOdbc::ParameterType::Int64:		//ç¬¦å·ã‚ã‚Š64ãƒ“ãƒƒãƒˆæ•´æ•°å‹(ç¬¦å·ãªã—ã¯ã‚ã‚Šã¾ã›ã‚“)
+	case mOdbc::ParameterType::Float:		//å˜ç²¾åº¦æµ®å‹•å°æ•°ç‚¹
+	case mOdbc::ParameterType::Double:		//å€ç²¾åº¦æµ®å‹•å°æ•°ç‚¹
+	case mOdbc::ParameterType::AString:		//ANSIæ–‡å­—åˆ—
+	case mOdbc::ParameterType::WString:		//UNICODEæ–‡å­—åˆ—
+	case mOdbc::ParameterType::Binary:		//ãƒã‚¤ãƒŠãƒª
+	case mOdbc::ParameterType::Date:		//æ—¥ä»˜
+	case mOdbc::ParameterType::Time:		//æ™‚åˆ»
+	case mOdbc::ParameterType::Timestamp:	//ã‚¿ã‚¤ãƒ ã‚¹ã‚¿ãƒ³ãƒ—
+		RaiseError( g_ErrorLogger , 0 , L"æŒ‡å®šã—ãŸå‹ã«ã¯å¤‰æ›ã§ãã¾ã›ã‚“" , MyParameterType );
 		retDt = 0;
 		return;
 	default:
-		RaiseAssert( g_ErrorLogger , 0 , L"ƒpƒ‰ƒ[ƒ^‚ª•s³‚Å‚·" , MyParameterType );
+		RaiseAssert( g_ErrorLogger , 0 , L"ãƒ‘ãƒ©ãƒ¡ãƒ¼ã‚¿ãŒä¸æ­£ã§ã™" , MyParameterType );
 		retDt = 0;
 		return;
 	}
@@ -395,27 +395,27 @@ void mOdbcParamsEntry::Get( bool& retresult , int16_t& retDt )const
 
 	switch( MyParameterType )
 	{
-	case mOdbc::ParameterType::Int16:		//•„†‚ ‚è16ƒrƒbƒg®”Œ^(•„†‚È‚µ‚Í‚ ‚è‚Ü‚¹‚ñ)
+	case mOdbc::ParameterType::Int16:		//ç¬¦å·ã‚ã‚Š16ãƒ“ãƒƒãƒˆæ•´æ•°å‹(ç¬¦å·ãªã—ã¯ã‚ã‚Šã¾ã›ã‚“)
 		retDt = MyDataEntry.deInt16;
 		break;
-	case mOdbc::ParameterType::Int8:		//•„†‚ ‚è8ƒrƒbƒg®”Œ^(•„†‚È‚µ‚Í‚ ‚è‚Ü‚¹‚ñ)
+	case mOdbc::ParameterType::Int8:		//ç¬¦å·ã‚ã‚Š8ãƒ“ãƒƒãƒˆæ•´æ•°å‹(ç¬¦å·ãªã—ã¯ã‚ã‚Šã¾ã›ã‚“)
 		retDt = MyDataEntry.deInt8;
 		break;
-	case mOdbc::ParameterType::Int64:		//•„†‚ ‚è64ƒrƒbƒg®”Œ^(•„†‚È‚µ‚Í‚ ‚è‚Ü‚¹‚ñ)
-	case mOdbc::ParameterType::Int32:		//•„†‚ ‚è32ƒrƒbƒg®”Œ^(•„†‚È‚µ‚Í‚ ‚è‚Ü‚¹‚ñ)
-	case mOdbc::ParameterType::Float:		//’P¸“x•‚“®¬”“_
-	case mOdbc::ParameterType::Double:		//”{¸“x•‚“®¬”“_
-	case mOdbc::ParameterType::AString:		//ANSI•¶š—ñ
-	case mOdbc::ParameterType::WString:		//UNICODE•¶š—ñ
-	case mOdbc::ParameterType::Binary:		//ƒoƒCƒiƒŠ
-	case mOdbc::ParameterType::Date:		//“ú•t
-	case mOdbc::ParameterType::Time:		//
-	case mOdbc::ParameterType::Timestamp:	//ƒ^ƒCƒ€ƒXƒ^ƒ“ƒv
-		RaiseError( g_ErrorLogger , 0 , L"w’è‚µ‚½Œ^‚É‚Í•ÏŠ·‚Å‚«‚Ü‚¹‚ñ" , MyParameterType );
+	case mOdbc::ParameterType::Int64:		//ç¬¦å·ã‚ã‚Š64ãƒ“ãƒƒãƒˆæ•´æ•°å‹(ç¬¦å·ãªã—ã¯ã‚ã‚Šã¾ã›ã‚“)
+	case mOdbc::ParameterType::Int32:		//ç¬¦å·ã‚ã‚Š32ãƒ“ãƒƒãƒˆæ•´æ•°å‹(ç¬¦å·ãªã—ã¯ã‚ã‚Šã¾ã›ã‚“)
+	case mOdbc::ParameterType::Float:		//å˜ç²¾åº¦æµ®å‹•å°æ•°ç‚¹
+	case mOdbc::ParameterType::Double:		//å€ç²¾åº¦æµ®å‹•å°æ•°ç‚¹
+	case mOdbc::ParameterType::AString:		//ANSIæ–‡å­—åˆ—
+	case mOdbc::ParameterType::WString:		//UNICODEæ–‡å­—åˆ—
+	case mOdbc::ParameterType::Binary:		//ãƒã‚¤ãƒŠãƒª
+	case mOdbc::ParameterType::Date:		//æ—¥ä»˜
+	case mOdbc::ParameterType::Time:		//æ™‚åˆ»
+	case mOdbc::ParameterType::Timestamp:	//ã‚¿ã‚¤ãƒ ã‚¹ã‚¿ãƒ³ãƒ—
+		RaiseError( g_ErrorLogger , 0 , L"æŒ‡å®šã—ãŸå‹ã«ã¯å¤‰æ›ã§ãã¾ã›ã‚“" , MyParameterType );
 		retDt = 0;
 		return;
 	default:
-		RaiseAssert( g_ErrorLogger , 0 , L"ƒpƒ‰ƒ[ƒ^‚ª•s³‚Å‚·" , MyParameterType );
+		RaiseAssert( g_ErrorLogger , 0 , L"ãƒ‘ãƒ©ãƒ¡ãƒ¼ã‚¿ãŒä¸æ­£ã§ã™" , MyParameterType );
 		retDt = 0;
 		return;
 	}
@@ -434,25 +434,25 @@ void mOdbcParamsEntry::Get( bool& retresult , int8_t& retDt )const
 
 	switch( MyParameterType )
 	{
-	case mOdbc::ParameterType::Int8:		//•„†‚ ‚è8ƒrƒbƒg®”Œ^(•„†‚È‚µ‚Í‚ ‚è‚Ü‚¹‚ñ)
+	case mOdbc::ParameterType::Int8:		//ç¬¦å·ã‚ã‚Š8ãƒ“ãƒƒãƒˆæ•´æ•°å‹(ç¬¦å·ãªã—ã¯ã‚ã‚Šã¾ã›ã‚“)
 		retDt = MyDataEntry.deInt8;
 		break;
-	case mOdbc::ParameterType::Int64:		//•„†‚ ‚è64ƒrƒbƒg®”Œ^(•„†‚È‚µ‚Í‚ ‚è‚Ü‚¹‚ñ)
-	case mOdbc::ParameterType::Int32:		//•„†‚ ‚è32ƒrƒbƒg®”Œ^(•„†‚È‚µ‚Í‚ ‚è‚Ü‚¹‚ñ)
-	case mOdbc::ParameterType::Int16:		//•„†‚ ‚è16ƒrƒbƒg®”Œ^(•„†‚È‚µ‚Í‚ ‚è‚Ü‚¹‚ñ)
-	case mOdbc::ParameterType::Float:		//’P¸“x•‚“®¬”“_
-	case mOdbc::ParameterType::Double:		//”{¸“x•‚“®¬”“_
-	case mOdbc::ParameterType::AString:		//ANSI•¶š—ñ
-	case mOdbc::ParameterType::WString:		//UNICODE•¶š—ñ
-	case mOdbc::ParameterType::Binary:		//ƒoƒCƒiƒŠ
-	case mOdbc::ParameterType::Date:		//“ú•t
-	case mOdbc::ParameterType::Time:		//
-	case mOdbc::ParameterType::Timestamp:	//ƒ^ƒCƒ€ƒXƒ^ƒ“ƒv
-		RaiseError( g_ErrorLogger , 0 , L"w’è‚µ‚½Œ^‚É‚Í•ÏŠ·‚Å‚«‚Ü‚¹‚ñ" , MyParameterType );
+	case mOdbc::ParameterType::Int64:		//ç¬¦å·ã‚ã‚Š64ãƒ“ãƒƒãƒˆæ•´æ•°å‹(ç¬¦å·ãªã—ã¯ã‚ã‚Šã¾ã›ã‚“)
+	case mOdbc::ParameterType::Int32:		//ç¬¦å·ã‚ã‚Š32ãƒ“ãƒƒãƒˆæ•´æ•°å‹(ç¬¦å·ãªã—ã¯ã‚ã‚Šã¾ã›ã‚“)
+	case mOdbc::ParameterType::Int16:		//ç¬¦å·ã‚ã‚Š16ãƒ“ãƒƒãƒˆæ•´æ•°å‹(ç¬¦å·ãªã—ã¯ã‚ã‚Šã¾ã›ã‚“)
+	case mOdbc::ParameterType::Float:		//å˜ç²¾åº¦æµ®å‹•å°æ•°ç‚¹
+	case mOdbc::ParameterType::Double:		//å€ç²¾åº¦æµ®å‹•å°æ•°ç‚¹
+	case mOdbc::ParameterType::AString:		//ANSIæ–‡å­—åˆ—
+	case mOdbc::ParameterType::WString:		//UNICODEæ–‡å­—åˆ—
+	case mOdbc::ParameterType::Binary:		//ãƒã‚¤ãƒŠãƒª
+	case mOdbc::ParameterType::Date:		//æ—¥ä»˜
+	case mOdbc::ParameterType::Time:		//æ™‚åˆ»
+	case mOdbc::ParameterType::Timestamp:	//ã‚¿ã‚¤ãƒ ã‚¹ã‚¿ãƒ³ãƒ—
+		RaiseError( g_ErrorLogger , 0 , L"æŒ‡å®šã—ãŸå‹ã«ã¯å¤‰æ›ã§ãã¾ã›ã‚“" , MyParameterType );
 		retDt = 0;
 		return;
 	default:
-		RaiseAssert( g_ErrorLogger , 0 , L"ƒpƒ‰ƒ[ƒ^‚ª•s³‚Å‚·" , MyParameterType );
+		RaiseAssert( g_ErrorLogger , 0 , L"ãƒ‘ãƒ©ãƒ¡ãƒ¼ã‚¿ãŒä¸æ­£ã§ã™" , MyParameterType );
 		retDt = 0;
 		return;
 	}
@@ -507,25 +507,25 @@ void mOdbcParamsEntry::Get( bool& retresult , float& retDt )const
 
 	switch( MyParameterType )
 	{
-	case mOdbc::ParameterType::Float:		//’P¸“x•‚“®¬”“_
+	case mOdbc::ParameterType::Float:		//å˜ç²¾åº¦æµ®å‹•å°æ•°ç‚¹
 		retDt = MyDataEntry.deFloat;
 		break;
-	case mOdbc::ParameterType::Int64:		//•„†‚ ‚è64ƒrƒbƒg®”Œ^(•„†‚È‚µ‚Í‚ ‚è‚Ü‚¹‚ñ)
-	case mOdbc::ParameterType::Int32:		//•„†‚ ‚è32ƒrƒbƒg®”Œ^(•„†‚È‚µ‚Í‚ ‚è‚Ü‚¹‚ñ)
-	case mOdbc::ParameterType::Int16:		//•„†‚ ‚è16ƒrƒbƒg®”Œ^(•„†‚È‚µ‚Í‚ ‚è‚Ü‚¹‚ñ)
-	case mOdbc::ParameterType::Int8:		//•„†‚ ‚è8ƒrƒbƒg®”Œ^(•„†‚È‚µ‚Í‚ ‚è‚Ü‚¹‚ñ)
-	case mOdbc::ParameterType::Double:		//”{¸“x•‚“®¬”“_
-	case mOdbc::ParameterType::AString:		//ANSI•¶š—ñ
-	case mOdbc::ParameterType::WString:		//UNICODE•¶š—ñ
-	case mOdbc::ParameterType::Binary:		//ƒoƒCƒiƒŠ
-	case mOdbc::ParameterType::Date:		//“ú•t
-	case mOdbc::ParameterType::Time:		//
-	case mOdbc::ParameterType::Timestamp:	//ƒ^ƒCƒ€ƒXƒ^ƒ“ƒv
-		RaiseError( g_ErrorLogger , 0 , L"w’è‚µ‚½Œ^‚É‚Í•ÏŠ·‚Å‚«‚Ü‚¹‚ñ" , MyParameterType );
+	case mOdbc::ParameterType::Int64:		//ç¬¦å·ã‚ã‚Š64ãƒ“ãƒƒãƒˆæ•´æ•°å‹(ç¬¦å·ãªã—ã¯ã‚ã‚Šã¾ã›ã‚“)
+	case mOdbc::ParameterType::Int32:		//ç¬¦å·ã‚ã‚Š32ãƒ“ãƒƒãƒˆæ•´æ•°å‹(ç¬¦å·ãªã—ã¯ã‚ã‚Šã¾ã›ã‚“)
+	case mOdbc::ParameterType::Int16:		//ç¬¦å·ã‚ã‚Š16ãƒ“ãƒƒãƒˆæ•´æ•°å‹(ç¬¦å·ãªã—ã¯ã‚ã‚Šã¾ã›ã‚“)
+	case mOdbc::ParameterType::Int8:		//ç¬¦å·ã‚ã‚Š8ãƒ“ãƒƒãƒˆæ•´æ•°å‹(ç¬¦å·ãªã—ã¯ã‚ã‚Šã¾ã›ã‚“)
+	case mOdbc::ParameterType::Double:		//å€ç²¾åº¦æµ®å‹•å°æ•°ç‚¹
+	case mOdbc::ParameterType::AString:		//ANSIæ–‡å­—åˆ—
+	case mOdbc::ParameterType::WString:		//UNICODEæ–‡å­—åˆ—
+	case mOdbc::ParameterType::Binary:		//ãƒã‚¤ãƒŠãƒª
+	case mOdbc::ParameterType::Date:		//æ—¥ä»˜
+	case mOdbc::ParameterType::Time:		//æ™‚åˆ»
+	case mOdbc::ParameterType::Timestamp:	//ã‚¿ã‚¤ãƒ ã‚¹ã‚¿ãƒ³ãƒ—
+		RaiseError( g_ErrorLogger , 0 , L"æŒ‡å®šã—ãŸå‹ã«ã¯å¤‰æ›ã§ãã¾ã›ã‚“" , MyParameterType );
 		retDt = 0.0f;
 		return;
 	default:
-		RaiseAssert( g_ErrorLogger , 0 , L"ƒpƒ‰ƒ[ƒ^‚ª•s³‚Å‚·" , MyParameterType );
+		RaiseAssert( g_ErrorLogger , 0 , L"ãƒ‘ãƒ©ãƒ¡ãƒ¼ã‚¿ãŒä¸æ­£ã§ã™" , MyParameterType );
 		retDt = 0.0f;
 		return;
 	}
@@ -544,27 +544,27 @@ void mOdbcParamsEntry::Get( bool& retresult , double& retDt )const
 
 	switch( MyParameterType )
 	{
-	case mOdbc::ParameterType::Float:		//’P¸“x•‚“®¬”“_
+	case mOdbc::ParameterType::Float:		//å˜ç²¾åº¦æµ®å‹•å°æ•°ç‚¹
 		retDt = MyDataEntry.deFloat;
 		break;
-	case mOdbc::ParameterType::Double:		//”{¸“x•‚“®¬”“_
+	case mOdbc::ParameterType::Double:		//å€ç²¾åº¦æµ®å‹•å°æ•°ç‚¹
 		retDt = MyDataEntry.deDouble;
 		break;
-	case mOdbc::ParameterType::Int64:		//•„†‚ ‚è64ƒrƒbƒg®”Œ^(•„†‚È‚µ‚Í‚ ‚è‚Ü‚¹‚ñ)
-	case mOdbc::ParameterType::Int32:		//•„†‚ ‚è32ƒrƒbƒg®”Œ^(•„†‚È‚µ‚Í‚ ‚è‚Ü‚¹‚ñ)
-	case mOdbc::ParameterType::Int16:		//•„†‚ ‚è16ƒrƒbƒg®”Œ^(•„†‚È‚µ‚Í‚ ‚è‚Ü‚¹‚ñ)
-	case mOdbc::ParameterType::Int8:		//•„†‚ ‚è8ƒrƒbƒg®”Œ^(•„†‚È‚µ‚Í‚ ‚è‚Ü‚¹‚ñ)
-	case mOdbc::ParameterType::AString:		//ANSI•¶š—ñ
-	case mOdbc::ParameterType::WString:		//UNICODE•¶š—ñ
-	case mOdbc::ParameterType::Binary:		//ƒoƒCƒiƒŠ
-	case mOdbc::ParameterType::Date:		//“ú•t
-	case mOdbc::ParameterType::Time:		//
-	case mOdbc::ParameterType::Timestamp:	//ƒ^ƒCƒ€ƒXƒ^ƒ“ƒv
-		RaiseError( g_ErrorLogger , 0 , L"w’è‚µ‚½Œ^‚É‚Í•ÏŠ·‚Å‚«‚Ü‚¹‚ñ" , MyParameterType );
+	case mOdbc::ParameterType::Int64:		//ç¬¦å·ã‚ã‚Š64ãƒ“ãƒƒãƒˆæ•´æ•°å‹(ç¬¦å·ãªã—ã¯ã‚ã‚Šã¾ã›ã‚“)
+	case mOdbc::ParameterType::Int32:		//ç¬¦å·ã‚ã‚Š32ãƒ“ãƒƒãƒˆæ•´æ•°å‹(ç¬¦å·ãªã—ã¯ã‚ã‚Šã¾ã›ã‚“)
+	case mOdbc::ParameterType::Int16:		//ç¬¦å·ã‚ã‚Š16ãƒ“ãƒƒãƒˆæ•´æ•°å‹(ç¬¦å·ãªã—ã¯ã‚ã‚Šã¾ã›ã‚“)
+	case mOdbc::ParameterType::Int8:		//ç¬¦å·ã‚ã‚Š8ãƒ“ãƒƒãƒˆæ•´æ•°å‹(ç¬¦å·ãªã—ã¯ã‚ã‚Šã¾ã›ã‚“)
+	case mOdbc::ParameterType::AString:		//ANSIæ–‡å­—åˆ—
+	case mOdbc::ParameterType::WString:		//UNICODEæ–‡å­—åˆ—
+	case mOdbc::ParameterType::Binary:		//ãƒã‚¤ãƒŠãƒª
+	case mOdbc::ParameterType::Date:		//æ—¥ä»˜
+	case mOdbc::ParameterType::Time:		//æ™‚åˆ»
+	case mOdbc::ParameterType::Timestamp:	//ã‚¿ã‚¤ãƒ ã‚¹ã‚¿ãƒ³ãƒ—
+		RaiseError( g_ErrorLogger , 0 , L"æŒ‡å®šã—ãŸå‹ã«ã¯å¤‰æ›ã§ãã¾ã›ã‚“" , MyParameterType );
 		retDt = 0.0l;
 		return;
 	default:
-		RaiseAssert( g_ErrorLogger , 0 , L"ƒpƒ‰ƒ[ƒ^‚ª•s³‚Å‚·" , MyParameterType );
+		RaiseAssert( g_ErrorLogger , 0 , L"ãƒ‘ãƒ©ãƒ¡ãƒ¼ã‚¿ãŒä¸æ­£ã§ã™" , MyParameterType );
 		retDt = 0.0l;
 		return;
 	}
@@ -583,33 +583,33 @@ void mOdbcParamsEntry::Get( bool& retresult , AString& retDt )const
 
 	switch( MyParameterType )
 	{
-	case mOdbc::ParameterType::AString:		//ANSI•¶š—ñ
+	case mOdbc::ParameterType::AString:		//ANSIæ–‡å­—åˆ—
 		retDt = MyDataEntry.deAString;
 		break;
-	case mOdbc::ParameterType::Int64:		//•„†‚ ‚è64ƒrƒbƒg®”Œ^(•„†‚È‚µ‚Í‚ ‚è‚Ü‚¹‚ñ)
-	case mOdbc::ParameterType::Int32:		//•„†‚ ‚è32ƒrƒbƒg®”Œ^(•„†‚È‚µ‚Í‚ ‚è‚Ü‚¹‚ñ)
-	case mOdbc::ParameterType::Int16:		//•„†‚ ‚è16ƒrƒbƒg®”Œ^(•„†‚È‚µ‚Í‚ ‚è‚Ü‚¹‚ñ)
-	case mOdbc::ParameterType::Int8:		//•„†‚ ‚è8ƒrƒbƒg®”Œ^(•„†‚È‚µ‚Í‚ ‚è‚Ü‚¹‚ñ)
-	case mOdbc::ParameterType::Float:		//’P¸“x•‚“®¬”“_
-	case mOdbc::ParameterType::Double:		//”{¸“x•‚“®¬”“_
-	case mOdbc::ParameterType::WString:		//UNICODE•¶š—ñ
-	case mOdbc::ParameterType::Binary:		//ƒoƒCƒiƒŠ
-		RaiseError( g_ErrorLogger , 0 , L"w’è‚µ‚½Œ^‚É‚Í•ÏŠ·‚Å‚«‚Ü‚¹‚ñ" , MyParameterType );
+	case mOdbc::ParameterType::Int64:		//ç¬¦å·ã‚ã‚Š64ãƒ“ãƒƒãƒˆæ•´æ•°å‹(ç¬¦å·ãªã—ã¯ã‚ã‚Šã¾ã›ã‚“)
+	case mOdbc::ParameterType::Int32:		//ç¬¦å·ã‚ã‚Š32ãƒ“ãƒƒãƒˆæ•´æ•°å‹(ç¬¦å·ãªã—ã¯ã‚ã‚Šã¾ã›ã‚“)
+	case mOdbc::ParameterType::Int16:		//ç¬¦å·ã‚ã‚Š16ãƒ“ãƒƒãƒˆæ•´æ•°å‹(ç¬¦å·ãªã—ã¯ã‚ã‚Šã¾ã›ã‚“)
+	case mOdbc::ParameterType::Int8:		//ç¬¦å·ã‚ã‚Š8ãƒ“ãƒƒãƒˆæ•´æ•°å‹(ç¬¦å·ãªã—ã¯ã‚ã‚Šã¾ã›ã‚“)
+	case mOdbc::ParameterType::Float:		//å˜ç²¾åº¦æµ®å‹•å°æ•°ç‚¹
+	case mOdbc::ParameterType::Double:		//å€ç²¾åº¦æµ®å‹•å°æ•°ç‚¹
+	case mOdbc::ParameterType::WString:		//UNICODEæ–‡å­—åˆ—
+	case mOdbc::ParameterType::Binary:		//ãƒã‚¤ãƒŠãƒª
+		RaiseError( g_ErrorLogger , 0 , L"æŒ‡å®šã—ãŸå‹ã«ã¯å¤‰æ›ã§ãã¾ã›ã‚“" , MyParameterType );
 		retDt = "";
 		return;
-	case mOdbc::ParameterType::Date:		//“ú•t
+	case mOdbc::ParameterType::Date:		//æ—¥ä»˜
 		sprintf( retDt , "%04d-%02d-%02d" ,
 			MyDataEntry.deDate.year ,
 			MyDataEntry.deDate.month ,
 			MyDataEntry.deDate.day );
 		break;
-	case mOdbc::ParameterType::Time:		//
+	case mOdbc::ParameterType::Time:		//æ™‚åˆ»
 		sprintf( retDt , "%02d:%02d:%02d" ,
 			MyDataEntry.deTime.hour ,
 			MyDataEntry.deTime.minute ,
 			MyDataEntry.deTime.second );
 		break;
-	case mOdbc::ParameterType::Timestamp:	//ƒ^ƒCƒ€ƒXƒ^ƒ“ƒv
+	case mOdbc::ParameterType::Timestamp:	//ã‚¿ã‚¤ãƒ ã‚¹ã‚¿ãƒ³ãƒ—
 		sprintf( retDt , "%04d-%02d-%02d %02d:%02d:%02d.%d" ,
 			MyDataEntry.deTimestamp.year ,
 			MyDataEntry.deTimestamp.month ,
@@ -620,7 +620,7 @@ void mOdbcParamsEntry::Get( bool& retresult , AString& retDt )const
 			MyDataEntry.deTimestamp.fraction );
 		break;
 	default:
-		RaiseAssert( g_ErrorLogger , 0 , L"ƒpƒ‰ƒ[ƒ^‚ª•s³‚Å‚·" , MyParameterType );
+		RaiseAssert( g_ErrorLogger , 0 , L"ãƒ‘ãƒ©ãƒ¡ãƒ¼ã‚¿ãŒä¸æ­£ã§ã™" , MyParameterType );
 		retDt = "";
 		return;
 	}
@@ -639,33 +639,33 @@ void mOdbcParamsEntry::Get( bool& retresult , WString& retDt )const
 
 	switch( MyParameterType )
 	{
-	case mOdbc::ParameterType::WString:		//UNICODE•¶š—ñ
+	case mOdbc::ParameterType::WString:		//UNICODEæ–‡å­—åˆ—
 		retDt = MyDataEntry.deWString;
 		break;
-	case mOdbc::ParameterType::Int64:		//•„†‚ ‚è64ƒrƒbƒg®”Œ^(•„†‚È‚µ‚Í‚ ‚è‚Ü‚¹‚ñ)
-	case mOdbc::ParameterType::Int32:		//•„†‚ ‚è32ƒrƒbƒg®”Œ^(•„†‚È‚µ‚Í‚ ‚è‚Ü‚¹‚ñ)
-	case mOdbc::ParameterType::Int16:		//•„†‚ ‚è16ƒrƒbƒg®”Œ^(•„†‚È‚µ‚Í‚ ‚è‚Ü‚¹‚ñ)
-	case mOdbc::ParameterType::Int8:		//•„†‚ ‚è8ƒrƒbƒg®”Œ^(•„†‚È‚µ‚Í‚ ‚è‚Ü‚¹‚ñ)
-	case mOdbc::ParameterType::Float:		//’P¸“x•‚“®¬”“_
-	case mOdbc::ParameterType::Double:		//”{¸“x•‚“®¬”“_
-	case mOdbc::ParameterType::AString:		//ANSI•¶š—ñ
-	case mOdbc::ParameterType::Binary:		//ƒoƒCƒiƒŠ
-		RaiseError( g_ErrorLogger , 0 , L"w’è‚µ‚½Œ^‚É‚Í•ÏŠ·‚Å‚«‚Ü‚¹‚ñ" , MyParameterType );
+	case mOdbc::ParameterType::Int64:		//ç¬¦å·ã‚ã‚Š64ãƒ“ãƒƒãƒˆæ•´æ•°å‹(ç¬¦å·ãªã—ã¯ã‚ã‚Šã¾ã›ã‚“)
+	case mOdbc::ParameterType::Int32:		//ç¬¦å·ã‚ã‚Š32ãƒ“ãƒƒãƒˆæ•´æ•°å‹(ç¬¦å·ãªã—ã¯ã‚ã‚Šã¾ã›ã‚“)
+	case mOdbc::ParameterType::Int16:		//ç¬¦å·ã‚ã‚Š16ãƒ“ãƒƒãƒˆæ•´æ•°å‹(ç¬¦å·ãªã—ã¯ã‚ã‚Šã¾ã›ã‚“)
+	case mOdbc::ParameterType::Int8:		//ç¬¦å·ã‚ã‚Š8ãƒ“ãƒƒãƒˆæ•´æ•°å‹(ç¬¦å·ãªã—ã¯ã‚ã‚Šã¾ã›ã‚“)
+	case mOdbc::ParameterType::Float:		//å˜ç²¾åº¦æµ®å‹•å°æ•°ç‚¹
+	case mOdbc::ParameterType::Double:		//å€ç²¾åº¦æµ®å‹•å°æ•°ç‚¹
+	case mOdbc::ParameterType::AString:		//ANSIæ–‡å­—åˆ—
+	case mOdbc::ParameterType::Binary:		//ãƒã‚¤ãƒŠãƒª
+		RaiseError( g_ErrorLogger , 0 , L"æŒ‡å®šã—ãŸå‹ã«ã¯å¤‰æ›ã§ãã¾ã›ã‚“" , MyParameterType );
 		retDt = L"";
 		return;
-	case mOdbc::ParameterType::Date:		//“ú•t
+	case mOdbc::ParameterType::Date:		//æ—¥ä»˜
 		sprintf( retDt , L"%04d-%02d-%02d" ,
 			MyDataEntry.deDate.year ,
 			MyDataEntry.deDate.month ,
 			MyDataEntry.deDate.day );
 		break;
-	case mOdbc::ParameterType::Time:		//
+	case mOdbc::ParameterType::Time:		//æ™‚åˆ»
 		sprintf( retDt , L"%02d:%02d:%02d" ,
 			MyDataEntry.deTime.hour ,
 			MyDataEntry.deTime.minute ,
 			MyDataEntry.deTime.second );
 		break;
-	case mOdbc::ParameterType::Timestamp:	//ƒ^ƒCƒ€ƒXƒ^ƒ“ƒv
+	case mOdbc::ParameterType::Timestamp:	//ã‚¿ã‚¤ãƒ ã‚¹ã‚¿ãƒ³ãƒ—
 		sprintf( retDt , L"%04d-%02d-%02d %02d:%02d:%02d.%d" ,
 			MyDataEntry.deTimestamp.year ,
 			MyDataEntry.deTimestamp.month ,
@@ -676,7 +676,7 @@ void mOdbcParamsEntry::Get( bool& retresult , WString& retDt )const
 			MyDataEntry.deTimestamp.fraction );
 		break;
 	default:
-		RaiseAssert( g_ErrorLogger , 0 , L"ƒpƒ‰ƒ[ƒ^‚ª•s³‚Å‚·" , MyParameterType );
+		RaiseAssert( g_ErrorLogger , 0 , L"ãƒ‘ãƒ©ãƒ¡ãƒ¼ã‚¿ãŒä¸æ­£ã§ã™" , MyParameterType );
 		retDt = L"";
 		return;
 	}
@@ -695,25 +695,25 @@ void mOdbcParamsEntry::Get( bool& retresult , mBinary& retDt )const
 
 	switch( MyParameterType )
 	{
-	case mOdbc::ParameterType::Binary:		//ƒoƒCƒiƒŠ
+	case mOdbc::ParameterType::Binary:		//ãƒã‚¤ãƒŠãƒª
 		retDt = MyDataEntry.deBinary;
 		break;
-	case mOdbc::ParameterType::Int64:		//•„†‚ ‚è64ƒrƒbƒg®”Œ^(•„†‚È‚µ‚Í‚ ‚è‚Ü‚¹‚ñ)
-	case mOdbc::ParameterType::Int32:		//•„†‚ ‚è32ƒrƒbƒg®”Œ^(•„†‚È‚µ‚Í‚ ‚è‚Ü‚¹‚ñ)
-	case mOdbc::ParameterType::Int16:		//•„†‚ ‚è16ƒrƒbƒg®”Œ^(•„†‚È‚µ‚Í‚ ‚è‚Ü‚¹‚ñ)
-	case mOdbc::ParameterType::Int8:		//•„†‚ ‚è8ƒrƒbƒg®”Œ^(•„†‚È‚µ‚Í‚ ‚è‚Ü‚¹‚ñ)
-	case mOdbc::ParameterType::Float:		//’P¸“x•‚“®¬”“_
-	case mOdbc::ParameterType::Double:		//”{¸“x•‚“®¬”“_
-	case mOdbc::ParameterType::AString:		//ANSI•¶š—ñ
-	case mOdbc::ParameterType::WString:		//UNICODE•¶š—ñ
-	case mOdbc::ParameterType::Date:		//“ú•t
-	case mOdbc::ParameterType::Time:		//
-	case mOdbc::ParameterType::Timestamp:	//ƒ^ƒCƒ€ƒXƒ^ƒ“ƒv
-		RaiseError( g_ErrorLogger , 0 , L"w’è‚µ‚½Œ^‚É‚Í•ÏŠ·‚Å‚«‚Ü‚¹‚ñ" , MyParameterType );
+	case mOdbc::ParameterType::Int64:		//ç¬¦å·ã‚ã‚Š64ãƒ“ãƒƒãƒˆæ•´æ•°å‹(ç¬¦å·ãªã—ã¯ã‚ã‚Šã¾ã›ã‚“)
+	case mOdbc::ParameterType::Int32:		//ç¬¦å·ã‚ã‚Š32ãƒ“ãƒƒãƒˆæ•´æ•°å‹(ç¬¦å·ãªã—ã¯ã‚ã‚Šã¾ã›ã‚“)
+	case mOdbc::ParameterType::Int16:		//ç¬¦å·ã‚ã‚Š16ãƒ“ãƒƒãƒˆæ•´æ•°å‹(ç¬¦å·ãªã—ã¯ã‚ã‚Šã¾ã›ã‚“)
+	case mOdbc::ParameterType::Int8:		//ç¬¦å·ã‚ã‚Š8ãƒ“ãƒƒãƒˆæ•´æ•°å‹(ç¬¦å·ãªã—ã¯ã‚ã‚Šã¾ã›ã‚“)
+	case mOdbc::ParameterType::Float:		//å˜ç²¾åº¦æµ®å‹•å°æ•°ç‚¹
+	case mOdbc::ParameterType::Double:		//å€ç²¾åº¦æµ®å‹•å°æ•°ç‚¹
+	case mOdbc::ParameterType::AString:		//ANSIæ–‡å­—åˆ—
+	case mOdbc::ParameterType::WString:		//UNICODEæ–‡å­—åˆ—
+	case mOdbc::ParameterType::Date:		//æ—¥ä»˜
+	case mOdbc::ParameterType::Time:		//æ™‚åˆ»
+	case mOdbc::ParameterType::Timestamp:	//ã‚¿ã‚¤ãƒ ã‚¹ã‚¿ãƒ³ãƒ—
+		RaiseError( g_ErrorLogger , 0 , L"æŒ‡å®šã—ãŸå‹ã«ã¯å¤‰æ›ã§ãã¾ã›ã‚“" , MyParameterType );
 		retDt.clear();
 		return;
 	default:
-		RaiseAssert( g_ErrorLogger , 0 , L"ƒpƒ‰ƒ[ƒ^‚ª•s³‚Å‚·" , MyParameterType );
+		RaiseAssert( g_ErrorLogger , 0 , L"ãƒ‘ãƒ©ãƒ¡ãƒ¼ã‚¿ãŒä¸æ­£ã§ã™" , MyParameterType );
 		retDt.clear();
 		return;
 	}
@@ -732,49 +732,49 @@ void mOdbcParamsEntry::Get( bool& retresult , mDateTime::Date& retDt )const
 
 	switch( MyParameterType )
 	{
-	case mOdbc::ParameterType::WString:		//UNICODE•¶š—ñ
+	case mOdbc::ParameterType::WString:		//UNICODEæ–‡å­—åˆ—
 	{
 		if( wchar_sscanf( MyDataEntry.deWString.c_str() , L"%04d-%02d-%02d" , &retDt.Year , &retDt.Month , &retDt.Day ) != 3 )
 		{
-			RaiseError( g_ErrorLogger , 0 , L"“ú•t‚ÌƒtƒH[ƒ}ƒbƒg‚É•ÏŠ·‚Å‚«‚Ü‚¹‚ñ" , MyDataEntry.deWString );
+			RaiseError( g_ErrorLogger , 0 , L"æ—¥ä»˜ã®ãƒ•ã‚©ãƒ¼ãƒãƒƒãƒˆã«å¤‰æ›ã§ãã¾ã›ã‚“" , MyDataEntry.deWString );
 			retDt.Clear();
 			return;
 		}
 		break;
 	}
-	case mOdbc::ParameterType::AString:		//ANSI•¶š—ñ
+	case mOdbc::ParameterType::AString:		//ANSIæ–‡å­—åˆ—
 	{
 		if( sscanf( MyDataEntry.deAString.c_str() , "%04d-%02d-%02d" , &retDt.Year , &retDt.Month , &retDt.Day ) != 3 )
 		{
-			RaiseError( g_ErrorLogger , 0 , L"“ú•t‚ÌƒtƒH[ƒ}ƒbƒg‚É•ÏŠ·‚Å‚«‚Ü‚¹‚ñ" , MyDataEntry.deWString );
+			RaiseError( g_ErrorLogger , 0 , L"æ—¥ä»˜ã®ãƒ•ã‚©ãƒ¼ãƒãƒƒãƒˆã«å¤‰æ›ã§ãã¾ã›ã‚“" , MyDataEntry.deWString );
 			retDt.Clear();
 			return;
 		}
 		break;
 	}
-	case mOdbc::ParameterType::Int64:		//•„†‚ ‚è64ƒrƒbƒg®”Œ^(•„†‚È‚µ‚Í‚ ‚è‚Ü‚¹‚ñ)
-	case mOdbc::ParameterType::Int32:		//•„†‚ ‚è32ƒrƒbƒg®”Œ^(•„†‚È‚µ‚Í‚ ‚è‚Ü‚¹‚ñ)
-	case mOdbc::ParameterType::Int16:		//•„†‚ ‚è16ƒrƒbƒg®”Œ^(•„†‚È‚µ‚Í‚ ‚è‚Ü‚¹‚ñ)
-	case mOdbc::ParameterType::Int8:		//•„†‚ ‚è8ƒrƒbƒg®”Œ^(•„†‚È‚µ‚Í‚ ‚è‚Ü‚¹‚ñ)
-	case mOdbc::ParameterType::Float:		//’P¸“x•‚“®¬”“_
-	case mOdbc::ParameterType::Double:		//”{¸“x•‚“®¬”“_
-	case mOdbc::ParameterType::Binary:		//ƒoƒCƒiƒŠ
-	case mOdbc::ParameterType::Time:		//
-		RaiseError( g_ErrorLogger , 0 , L"w’è‚µ‚½Œ^‚É‚Í•ÏŠ·‚Å‚«‚Ü‚¹‚ñ" , MyParameterType );
+	case mOdbc::ParameterType::Int64:		//ç¬¦å·ã‚ã‚Š64ãƒ“ãƒƒãƒˆæ•´æ•°å‹(ç¬¦å·ãªã—ã¯ã‚ã‚Šã¾ã›ã‚“)
+	case mOdbc::ParameterType::Int32:		//ç¬¦å·ã‚ã‚Š32ãƒ“ãƒƒãƒˆæ•´æ•°å‹(ç¬¦å·ãªã—ã¯ã‚ã‚Šã¾ã›ã‚“)
+	case mOdbc::ParameterType::Int16:		//ç¬¦å·ã‚ã‚Š16ãƒ“ãƒƒãƒˆæ•´æ•°å‹(ç¬¦å·ãªã—ã¯ã‚ã‚Šã¾ã›ã‚“)
+	case mOdbc::ParameterType::Int8:		//ç¬¦å·ã‚ã‚Š8ãƒ“ãƒƒãƒˆæ•´æ•°å‹(ç¬¦å·ãªã—ã¯ã‚ã‚Šã¾ã›ã‚“)
+	case mOdbc::ParameterType::Float:		//å˜ç²¾åº¦æµ®å‹•å°æ•°ç‚¹
+	case mOdbc::ParameterType::Double:		//å€ç²¾åº¦æµ®å‹•å°æ•°ç‚¹
+	case mOdbc::ParameterType::Binary:		//ãƒã‚¤ãƒŠãƒª
+	case mOdbc::ParameterType::Time:		//æ™‚åˆ»
+		RaiseError( g_ErrorLogger , 0 , L"æŒ‡å®šã—ãŸå‹ã«ã¯å¤‰æ›ã§ãã¾ã›ã‚“" , MyParameterType );
 		retDt.Clear();
 		return;
-	case mOdbc::ParameterType::Date:		//“ú•t
+	case mOdbc::ParameterType::Date:		//æ—¥ä»˜
 		retDt.Year = MyDataEntry.deDate.year;
 		retDt.Month = MyDataEntry.deDate.month;
 		retDt.Day = MyDataEntry.deDate.day;
 		break;
-	case mOdbc::ParameterType::Timestamp:	//ƒ^ƒCƒ€ƒXƒ^ƒ“ƒv
+	case mOdbc::ParameterType::Timestamp:	//ã‚¿ã‚¤ãƒ ã‚¹ã‚¿ãƒ³ãƒ—
 		retDt.Year = MyDataEntry.deTimestamp.year;
 		retDt.Month = MyDataEntry.deTimestamp.month;
 		retDt.Day = MyDataEntry.deTimestamp.day;
 		break;
 	default:
-		RaiseAssert( g_ErrorLogger , 0 , L"ƒpƒ‰ƒ[ƒ^‚ª•s³‚Å‚·" , MyParameterType );
+		RaiseAssert( g_ErrorLogger , 0 , L"ãƒ‘ãƒ©ãƒ¡ãƒ¼ã‚¿ãŒä¸æ­£ã§ã™" , MyParameterType );
 		retDt.Clear();
 		return;
 	}
@@ -793,51 +793,51 @@ void mOdbcParamsEntry::Get( bool& retresult , mDateTime::Time& retDt )const
 
 	switch( MyParameterType )
 	{
-	case mOdbc::ParameterType::WString:		//UNICODE•¶š—ñ
+	case mOdbc::ParameterType::WString:		//UNICODEæ–‡å­—åˆ—
 	{
 		if( wchar_sscanf( MyDataEntry.deWString.c_str() , L"%02d:%02d:%02d.%03d" , &retDt.Hour , &retDt.Minute , &retDt.Second , &retDt.Milliseconds ) != 4 )
 		{
-			RaiseError( g_ErrorLogger , 0 , L"‚ÌƒtƒH[ƒ}ƒbƒg‚É•ÏŠ·‚Å‚«‚Ü‚¹‚ñ" , MyDataEntry.deWString );
+			RaiseError( g_ErrorLogger , 0 , L"æ™‚åˆ»ã®ãƒ•ã‚©ãƒ¼ãƒãƒƒãƒˆã«å¤‰æ›ã§ãã¾ã›ã‚“" , MyDataEntry.deWString );
 			retDt.Clear();
 			return;
 		}
 		break;
 	}
-	case mOdbc::ParameterType::AString:		//ANSI•¶š—ñ
+	case mOdbc::ParameterType::AString:		//ANSIæ–‡å­—åˆ—
 	{
 		if( sscanf( MyDataEntry.deAString.c_str() , "%02d:%02d:%02d.%03d" , &retDt.Hour , &retDt.Minute , &retDt.Second , &retDt.Milliseconds ) != 4 )
 		{
-			RaiseError( g_ErrorLogger , 0 , L"‚ÌƒtƒH[ƒ}ƒbƒg‚É•ÏŠ·‚Å‚«‚Ü‚¹‚ñ" , MyDataEntry.deWString );
+			RaiseError( g_ErrorLogger , 0 , L"æ™‚åˆ»ã®ãƒ•ã‚©ãƒ¼ãƒãƒƒãƒˆã«å¤‰æ›ã§ãã¾ã›ã‚“" , MyDataEntry.deWString );
 			retDt.Clear();
 			return;
 		}
 		break;
 	}
-	case mOdbc::ParameterType::Int64:		//•„†‚ ‚è64ƒrƒbƒg®”Œ^(•„†‚È‚µ‚Í‚ ‚è‚Ü‚¹‚ñ)
-	case mOdbc::ParameterType::Int32:		//•„†‚ ‚è32ƒrƒbƒg®”Œ^(•„†‚È‚µ‚Í‚ ‚è‚Ü‚¹‚ñ)
-	case mOdbc::ParameterType::Int16:		//•„†‚ ‚è16ƒrƒbƒg®”Œ^(•„†‚È‚µ‚Í‚ ‚è‚Ü‚¹‚ñ)
-	case mOdbc::ParameterType::Int8:		//•„†‚ ‚è8ƒrƒbƒg®”Œ^(•„†‚È‚µ‚Í‚ ‚è‚Ü‚¹‚ñ)
-	case mOdbc::ParameterType::Float:		//’P¸“x•‚“®¬”“_
-	case mOdbc::ParameterType::Double:		//”{¸“x•‚“®¬”“_
-	case mOdbc::ParameterType::Binary:		//ƒoƒCƒiƒŠ
-	case mOdbc::ParameterType::Date:		//“ú•t
-		RaiseError( g_ErrorLogger , 0 , L"w’è‚µ‚½Œ^‚É‚Í•ÏŠ·‚Å‚«‚Ü‚¹‚ñ" , MyParameterType );
+	case mOdbc::ParameterType::Int64:		//ç¬¦å·ã‚ã‚Š64ãƒ“ãƒƒãƒˆæ•´æ•°å‹(ç¬¦å·ãªã—ã¯ã‚ã‚Šã¾ã›ã‚“)
+	case mOdbc::ParameterType::Int32:		//ç¬¦å·ã‚ã‚Š32ãƒ“ãƒƒãƒˆæ•´æ•°å‹(ç¬¦å·ãªã—ã¯ã‚ã‚Šã¾ã›ã‚“)
+	case mOdbc::ParameterType::Int16:		//ç¬¦å·ã‚ã‚Š16ãƒ“ãƒƒãƒˆæ•´æ•°å‹(ç¬¦å·ãªã—ã¯ã‚ã‚Šã¾ã›ã‚“)
+	case mOdbc::ParameterType::Int8:		//ç¬¦å·ã‚ã‚Š8ãƒ“ãƒƒãƒˆæ•´æ•°å‹(ç¬¦å·ãªã—ã¯ã‚ã‚Šã¾ã›ã‚“)
+	case mOdbc::ParameterType::Float:		//å˜ç²¾åº¦æµ®å‹•å°æ•°ç‚¹
+	case mOdbc::ParameterType::Double:		//å€ç²¾åº¦æµ®å‹•å°æ•°ç‚¹
+	case mOdbc::ParameterType::Binary:		//ãƒã‚¤ãƒŠãƒª
+	case mOdbc::ParameterType::Date:		//æ—¥ä»˜
+		RaiseError( g_ErrorLogger , 0 , L"æŒ‡å®šã—ãŸå‹ã«ã¯å¤‰æ›ã§ãã¾ã›ã‚“" , MyParameterType );
 		retDt.Clear();
 		return;
-	case mOdbc::ParameterType::Time:		//
+	case mOdbc::ParameterType::Time:		//æ™‚åˆ»
 		retDt.Hour = MyDataEntry.deTime.hour;
 		retDt.Minute = MyDataEntry.deTime.minute;
 		retDt.Second = MyDataEntry.deTime.second;
 		retDt.Milliseconds = 0;
 		break;
-	case mOdbc::ParameterType::Timestamp:	//ƒ^ƒCƒ€ƒXƒ^ƒ“ƒv
+	case mOdbc::ParameterType::Timestamp:	//ã‚¿ã‚¤ãƒ ã‚¹ã‚¿ãƒ³ãƒ—
 		retDt.Hour = MyDataEntry.deTimestamp.hour;
 		retDt.Minute = MyDataEntry.deTimestamp.minute;
 		retDt.Second = MyDataEntry.deTimestamp.second;
 		retDt.Milliseconds = MyDataEntry.deTimestamp.fraction / 1000000;
 	break;
 	default:
-		RaiseAssert( g_ErrorLogger , 0 , L"ƒpƒ‰ƒ[ƒ^‚ª•s³‚Å‚·" , MyParameterType );
+		RaiseAssert( g_ErrorLogger , 0 , L"ãƒ‘ãƒ©ãƒ¡ãƒ¼ã‚¿ãŒä¸æ­£ã§ã™" , MyParameterType );
 		retDt.Clear();
 		return;
 	}
@@ -856,52 +856,52 @@ void mOdbcParamsEntry::Get( bool& retresult , mDateTime::Timestamp& retDt )const
 
 	switch( MyParameterType )
 	{
-	case mOdbc::ParameterType::WString:		//UNICODE•¶š—ñ
+	case mOdbc::ParameterType::WString:		//UNICODEæ–‡å­—åˆ—
 	{
 		if( wchar_sscanf( MyDataEntry.deWString.c_str() , L"%04d-%02d-%02d %02d:%02d:%02d.%03d" ,
 			&retDt.Year , &retDt.Month , &retDt.Day , &retDt.Hour , &retDt.Minute , &retDt.Second , &retDt.Milliseconds ) != 7 )
 		{
-			RaiseError( g_ErrorLogger , 0 , L"ƒ^ƒCƒ€ƒXƒ^ƒ“ƒv‚ÌƒtƒH[ƒ}ƒbƒg‚É•ÏŠ·‚Å‚«‚Ü‚¹‚ñ" , MyDataEntry.deWString );
+			RaiseError( g_ErrorLogger , 0 , L"ã‚¿ã‚¤ãƒ ã‚¹ã‚¿ãƒ³ãƒ—ã®ãƒ•ã‚©ãƒ¼ãƒãƒƒãƒˆã«å¤‰æ›ã§ãã¾ã›ã‚“" , MyDataEntry.deWString );
 			retDt.Clear();
 			return;
 		}
 		break;
 	}
-	case mOdbc::ParameterType::AString:		//ANSI•¶š—ñ
+	case mOdbc::ParameterType::AString:		//ANSIæ–‡å­—åˆ—
 	{
 		if( sscanf( MyDataEntry.deAString.c_str() , "%04d-%02d-%02d %02d:%02d:%02d.%03d" ,
 			&retDt.Year , &retDt.Month , &retDt.Day , &retDt.Hour , &retDt.Minute , &retDt.Second , &retDt.Milliseconds ) != 7 )
 		{
-			RaiseError( g_ErrorLogger , 0 , L"‚ÌƒtƒH[ƒ}ƒbƒg‚É•ÏŠ·‚Å‚«‚Ü‚¹‚ñ" , MyDataEntry.deWString );
+			RaiseError( g_ErrorLogger , 0 , L"æ™‚åˆ»ã®ãƒ•ã‚©ãƒ¼ãƒãƒƒãƒˆã«å¤‰æ›ã§ãã¾ã›ã‚“" , MyDataEntry.deWString );
 			retDt.Clear();
 			return;
 		}
 		break;
 	}
-	case mOdbc::ParameterType::Int64:		//•„†‚ ‚è64ƒrƒbƒg®”Œ^(•„†‚È‚µ‚Í‚ ‚è‚Ü‚¹‚ñ)
-	case mOdbc::ParameterType::Int32:		//•„†‚ ‚è32ƒrƒbƒg®”Œ^(•„†‚È‚µ‚Í‚ ‚è‚Ü‚¹‚ñ)
-	case mOdbc::ParameterType::Int16:		//•„†‚ ‚è16ƒrƒbƒg®”Œ^(•„†‚È‚µ‚Í‚ ‚è‚Ü‚¹‚ñ)
-	case mOdbc::ParameterType::Int8:		//•„†‚ ‚è8ƒrƒbƒg®”Œ^(•„†‚È‚µ‚Í‚ ‚è‚Ü‚¹‚ñ)
-	case mOdbc::ParameterType::Float:		//’P¸“x•‚“®¬”“_
-	case mOdbc::ParameterType::Double:		//”{¸“x•‚“®¬”“_
-	case mOdbc::ParameterType::Binary:		//ƒoƒCƒiƒŠ
-		RaiseError( g_ErrorLogger , 0 , L"w’è‚µ‚½Œ^‚É‚Í•ÏŠ·‚Å‚«‚Ü‚¹‚ñ" , MyParameterType );
+	case mOdbc::ParameterType::Int64:		//ç¬¦å·ã‚ã‚Š64ãƒ“ãƒƒãƒˆæ•´æ•°å‹(ç¬¦å·ãªã—ã¯ã‚ã‚Šã¾ã›ã‚“)
+	case mOdbc::ParameterType::Int32:		//ç¬¦å·ã‚ã‚Š32ãƒ“ãƒƒãƒˆæ•´æ•°å‹(ç¬¦å·ãªã—ã¯ã‚ã‚Šã¾ã›ã‚“)
+	case mOdbc::ParameterType::Int16:		//ç¬¦å·ã‚ã‚Š16ãƒ“ãƒƒãƒˆæ•´æ•°å‹(ç¬¦å·ãªã—ã¯ã‚ã‚Šã¾ã›ã‚“)
+	case mOdbc::ParameterType::Int8:		//ç¬¦å·ã‚ã‚Š8ãƒ“ãƒƒãƒˆæ•´æ•°å‹(ç¬¦å·ãªã—ã¯ã‚ã‚Šã¾ã›ã‚“)
+	case mOdbc::ParameterType::Float:		//å˜ç²¾åº¦æµ®å‹•å°æ•°ç‚¹
+	case mOdbc::ParameterType::Double:		//å€ç²¾åº¦æµ®å‹•å°æ•°ç‚¹
+	case mOdbc::ParameterType::Binary:		//ãƒã‚¤ãƒŠãƒª
+		RaiseError( g_ErrorLogger , 0 , L"æŒ‡å®šã—ãŸå‹ã«ã¯å¤‰æ›ã§ãã¾ã›ã‚“" , MyParameterType );
 		retDt.Clear();
 		return;
-	case mOdbc::ParameterType::Date:		//“ú•t
+	case mOdbc::ParameterType::Date:		//æ—¥ä»˜
 		retDt.Clear();
 		retDt.Year = MyDataEntry.deDate.year;
 		retDt.Month = MyDataEntry.deDate.month;
 		retDt.Day = MyDataEntry.deDate.day;
 		break;
-	case mOdbc::ParameterType::Time:		//
+	case mOdbc::ParameterType::Time:		//æ™‚åˆ»
 		retDt.Clear();
 		retDt.Hour = MyDataEntry.deTime.hour;
 		retDt.Minute = MyDataEntry.deTime.minute;
 		retDt.Second = MyDataEntry.deTime.second;
 		retDt.Milliseconds = 0;
 		break;
-	case mOdbc::ParameterType::Timestamp:	//ƒ^ƒCƒ€ƒXƒ^ƒ“ƒv
+	case mOdbc::ParameterType::Timestamp:	//ã‚¿ã‚¤ãƒ ã‚¹ã‚¿ãƒ³ãƒ—
 		retDt.Year = MyDataEntry.deTimestamp.year;
 		retDt.Month = MyDataEntry.deTimestamp.month;
 		retDt.Day = MyDataEntry.deTimestamp.day;
@@ -911,7 +911,7 @@ void mOdbcParamsEntry::Get( bool& retresult , mDateTime::Timestamp& retDt )const
 		retDt.Milliseconds = MyDataEntry.deTimestamp.fraction / 1000000;
 	break;
 	default:
-		RaiseAssert( g_ErrorLogger , 0 , L"ƒpƒ‰ƒ[ƒ^‚ª•s³‚Å‚·" , MyParameterType );
+		RaiseAssert( g_ErrorLogger , 0 , L"ãƒ‘ãƒ©ãƒ¡ãƒ¼ã‚¿ãŒä¸æ­£ã§ã™" , MyParameterType );
 		retDt.Clear();
 		return;
 	}

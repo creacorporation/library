@@ -1,11 +1,11 @@
-//----------------------------------------------------------------------------
-// Bluetoothƒnƒ“ƒhƒ‰ƒNƒ‰ƒX
+ï»¿//----------------------------------------------------------------------------
+// Bluetoothãƒãƒ³ãƒ‰ãƒ©ã‚¯ãƒ©ã‚¹
 // Copyright (C) 2019- Crea Inc. All rights reserved.
 // This program is released under the MIT License. 
 // see http://opensource.org/licenses/mit-license.php
-// ’˜ìŒ •\¦‚âƒ‰ƒCƒZƒ“ƒX‚Ì‰ü•Ï‚Í‹Ö~‚³‚ê‚Ä‚¢‚Ü‚·B
-// ‚±‚Ìƒ\[ƒXƒR[ƒh‚ÉŠÖ‚µ‚ÄAã‹Lƒ‰ƒCƒZƒ“ƒXˆÈŠO‚ÌŒ_–ñ“™‚ÍˆêØ‘¶İ‚µ‚Ü‚¹‚ñB
-// (‰½‚ç‚©‚ÌŒ_–ñ‚ª‚ ‚éê‡‚Å‚àA–{ƒ\[ƒXƒR[ƒh‚Í‚»‚Ì‘ÎÛŠO‚Æ‚È‚è‚Ü‚·)
+// è‘—ä½œæ¨©è¡¨ç¤ºã‚„ãƒ©ã‚¤ã‚»ãƒ³ã‚¹ã®æ”¹å¤‰ã¯ç¦æ­¢ã•ã‚Œã¦ã„ã¾ã™ã€‚
+// ã“ã®ã‚½ãƒ¼ã‚¹ã‚³ãƒ¼ãƒ‰ã«é–¢ã—ã¦ã€ä¸Šè¨˜ãƒ©ã‚¤ã‚»ãƒ³ã‚¹ä»¥å¤–ã®å¥‘ç´„ç­‰ã¯ä¸€åˆ‡å­˜åœ¨ã—ã¾ã›ã‚“ã€‚
+// (ä½•ã‚‰ã‹ã®å¥‘ç´„ãŒã‚ã‚‹å ´åˆã§ã‚‚ã€æœ¬ã‚½ãƒ¼ã‚¹ã‚³ãƒ¼ãƒ‰ã¯ãã®å¯¾è±¡å¤–ã¨ãªã‚Šã¾ã™)
 //----------------------------------------------------------------------------
 
 #ifndef MBLUETOOTHENUMERAR_H_INCLUDED
@@ -22,32 +22,32 @@ public:
 
 	struct BluetoothCatalogEntryBase
 	{
-		ULONGLONG Address;	//BluetoothƒAƒhƒŒƒX(48bit’l‚Å‚·)
-		WString Name;		//ƒfƒoƒCƒX–¼
+		ULONGLONG Address;	//Bluetoothã‚¢ãƒ‰ãƒ¬ã‚¹(48bitå€¤ã§ã™)
+		WString Name;		//ãƒ‡ãƒã‚¤ã‚¹å
 	};
 
 	typedef BluetoothCatalogEntryBase BluetoothDeviceCatalogEntry;
 	using BluetoothDeviceCatalog = std::deque< BluetoothDeviceCatalogEntry >;
 
-	//w’è‚µ‚½ğŒ‚É‡’v‚·‚éBluetooth‚ÌƒfƒoƒCƒXˆê——‚ğ•Ô‚µ‚Ü‚·
-	//¦ü•Ó‹@Ší‚Ìˆê——‚ª•Ô‚è‚Ü‚·
-	// retCatalog : Œ‹‰Ê‚ÌŠi”[æ
+	//æŒ‡å®šã—ãŸæ¡ä»¶ã«åˆè‡´ã™ã‚‹Bluetoothã®ãƒ‡ãƒã‚¤ã‚¹ä¸€è¦§ã‚’è¿”ã—ã¾ã™
+	//â€»å‘¨è¾ºæ©Ÿå™¨ã®ä¸€è¦§ãŒè¿”ã‚Šã¾ã™
+	// retCatalog : çµæœã®æ ¼ç´å…ˆ
 	// authed : 
 	// remembered :
 	// unknown : 
 	// connected :
 	// issue_inquiry : 
-	// timeout_ms : î•ñæ“¾‚Ìƒ^ƒCƒ€ƒAƒEƒg(ms’PˆÊ)B128ms’PˆÊ‚Ì‚½‚ßA’[”‚ÍØ‚èã‚°‚Ü‚·B‚Ü‚½AÅ‘å6144ms‚Æ‚È‚è‚»‚êˆÈã‚Ì’l‚ÍÅ‘å’l‚É•â³‚³‚ê‚Ü‚·B
-	// ret : ¬Œ÷^
+	// timeout_ms : æƒ…å ±å–å¾—ã®ã‚¿ã‚¤ãƒ ã‚¢ã‚¦ãƒˆ(mså˜ä½)ã€‚128mså˜ä½ã®ãŸã‚ã€ç«¯æ•°ã¯åˆ‡ã‚Šä¸Šã’ã¾ã™ã€‚ã¾ãŸã€æœ€å¤§6144msã¨ãªã‚Šãã‚Œä»¥ä¸Šã®å€¤ã¯æœ€å¤§å€¤ã«è£œæ­£ã•ã‚Œã¾ã™ã€‚
+	// ret : æˆåŠŸæ™‚çœŸ
 	static bool SearchDevice( BluetoothDeviceCatalog& retCatalog , bool authed , bool remembered , bool unknown , bool connected , bool issue_inquiry , DWORD timeout_ms );
 
 	typedef BluetoothCatalogEntryBase BluetoothRadioCatalogEntry;
 	using BluetoothRadioCatalog = std::deque< BluetoothRadioCatalogEntry >;
 
-	//w’è‚µ‚½ğŒ‚É‡’v‚·‚éBluetooth‚ÌƒfƒoƒCƒXˆê——‚ğ•Ô‚µ‚Ü‚·
-	//¦–{‘Ì‚É‘•’…‚³‚ê‚Ä‚¢‚éƒfƒoƒCƒX‚Ìˆê——‚ª•Ô‚è‚Ü‚·
-	// retCatalog : Œ‹‰Ê‚ÌŠi”[æ
-	// ret : ¬Œ÷^
+	//æŒ‡å®šã—ãŸæ¡ä»¶ã«åˆè‡´ã™ã‚‹Bluetoothã®ãƒ‡ãƒã‚¤ã‚¹ä¸€è¦§ã‚’è¿”ã—ã¾ã™
+	//â€»æœ¬ä½“ã«è£…ç€ã•ã‚Œã¦ã„ã‚‹ãƒ‡ãƒã‚¤ã‚¹ã®ä¸€è¦§ãŒè¿”ã‚Šã¾ã™
+	// retCatalog : çµæœã®æ ¼ç´å…ˆ
+	// ret : æˆåŠŸæ™‚çœŸ
 	static bool SearchRadio( BluetoothRadioCatalog& retCatalog );
 
 	//
