@@ -11,6 +11,10 @@
 #include "General/mFileUtility.h"
 #include "General/mErrorLogger.h"
 
+#ifndef LIB_ENABLE_EXCEL
+#pragma message("   *Notice* : Excel handling feature is disabled")
+#else
+
 mExcelHandler::mExcelHandler()
 {
 	MyApplication = nullptr;
@@ -1198,3 +1202,5 @@ RGBQUAD mExcelHandler::GetBackgroundColor( void )
 	}
 	return result;
 }
+
+#endif

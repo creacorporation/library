@@ -15,6 +15,13 @@ if errorlevel 1 goto disable_crtdbg
 echo #define %1_ENABLE_CRTDBG
 :disable_crtdbg
 
+rem EXCEL使うかどうかの判定
+find /I "ENABLE_EXCEL" %2libconfig.conf > nul
+if errorlevel 1 goto disable_excel
+echo #define %1_ENABLE_EXCEL
+:disable_excel
+
+
 :optcheckend
 
 rem ----- SVNリビジョンチェック -----
