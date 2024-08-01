@@ -1,11 +1,11 @@
-//----------------------------------------------------------------------------
-// ƒhƒ‰ƒCƒu—ñ‹“ƒNƒ‰ƒX
+ï»¿//----------------------------------------------------------------------------
+// ãƒ‰ãƒ©ã‚¤ãƒ–åˆ—æŒ™ã‚¯ãƒ©ã‚¹
 // Copyright (C) 2024 Crea Inc. All rights reserved.
 // This program is released under the MIT License. 
 // see http://opensource.org/licenses/mit-license.php
-// ’˜ìŒ •\¦‚âƒ‰ƒCƒZƒ“ƒX‚Ì‰ü•Ï‚Í‹Ö~‚³‚ê‚Ä‚¢‚Ü‚·B
-// ‚±‚Ìƒ\[ƒXƒR[ƒh‚ÉŠÖ‚µ‚ÄAã‹Lƒ‰ƒCƒZƒ“ƒXˆÈŠO‚ÌŒ_–ñ“™‚ÍˆêØ‘¶İ‚µ‚Ü‚¹‚ñB
-// (‰½‚ç‚©‚ÌŒ_–ñ‚ª‚ ‚éê‡‚Å‚àA–{ƒ\[ƒXƒR[ƒh‚Í‚»‚Ì‘ÎÛŠO‚Æ‚È‚è‚Ü‚·)
+// è‘—ä½œæ¨©è¡¨ç¤ºã‚„ãƒ©ã‚¤ã‚»ãƒ³ã‚¹ã®æ”¹å¤‰ã¯ç¦æ­¢ã•ã‚Œã¦ã„ã¾ã™ã€‚
+// ã“ã®ã‚½ãƒ¼ã‚¹ã‚³ãƒ¼ãƒ‰ã«é–¢ã—ã¦ã€ä¸Šè¨˜ãƒ©ã‚¤ã‚»ãƒ³ã‚¹ä»¥å¤–ã®å¥‘ç´„ç­‰ã¯ä¸€åˆ‡å­˜åœ¨ã—ã¾ã›ã‚“ã€‚
+// (ä½•ã‚‰ã‹ã®å¥‘ç´„ãŒã‚ã‚‹å ´åˆã§ã‚‚ã€æœ¬ã‚½ãƒ¼ã‚¹ã‚³ãƒ¼ãƒ‰ã¯ãã®å¯¾è±¡å¤–ã¨ãªã‚Šã¾ã™)
 //----------------------------------------------------------------------------
 
 #include "mDriveEnumerar.h"
@@ -29,20 +29,20 @@ bool mDriveEnumerar::Reload( void )
 
 	if( !CreateCatalog() )
 	{
-		RaiseError( g_ErrorLogger , 0 , L"ƒfƒoƒCƒXˆê——‚ğì¬‚Å‚«‚Ü‚¹‚ñ" );
+		RaiseError( g_ErrorLogger , 0 , L"ãƒ‡ãƒã‚¤ã‚¹ä¸€è¦§ã‚’ä½œæˆã§ãã¾ã›ã‚“" );
 		return false;
 	}
 
 	for( DWORD i = 0 ; i < MyDevInfoData.size() ; i++ )
 	{
-		//Šî–{“I‚Èî•ñ‚ğˆÚs
+		//åŸºæœ¬çš„ãªæƒ…å ±ã‚’ç§»è¡Œ
 		bool result = true;
 		CatalogEntry entry;
 
 		entry.index = DWORD( i );
-		result &= GetProperty( i , SPDRP_FRIENDLYNAME , entry.FriendlyName );	//ƒRƒ“ƒgƒ[ƒ‹ƒpƒlƒ‹‚ÌuƒtƒŒƒ“ƒhƒŠ–¼v‚Æ“¯‚¶
-		result &= GetProperty( i , SPDRP_DEVICEDESC , entry.Description );		//ƒRƒ“ƒgƒ[ƒ‹ƒpƒlƒ‹‚ÌuƒfƒoƒCƒX‚Ìà–¾v‚Æ“¯‚¶
-		result &= GetProperty( i , SPDRP_HARDWAREID , entry.HardwareId );		//ƒRƒ“ƒgƒ[ƒ‹ƒpƒlƒ‹‚Ìuƒn[ƒhƒEƒGƒAIDv‚Æ“¯‚¶
+		result &= GetProperty( i , SPDRP_FRIENDLYNAME , entry.FriendlyName );	//ã‚³ãƒ³ãƒˆãƒ­ãƒ¼ãƒ«ãƒ‘ãƒãƒ«ã®ã€Œãƒ•ãƒ¬ãƒ³ãƒ‰ãƒªåã€ã¨åŒã˜
+		result &= GetProperty( i , SPDRP_DEVICEDESC , entry.Description );		//ã‚³ãƒ³ãƒˆãƒ­ãƒ¼ãƒ«ãƒ‘ãƒãƒ«ã®ã€Œãƒ‡ãƒã‚¤ã‚¹ã®èª¬æ˜ã€ã¨åŒã˜
+		result &= GetProperty( i , SPDRP_HARDWAREID , entry.HardwareId );		//ã‚³ãƒ³ãƒˆãƒ­ãƒ¼ãƒ«ãƒ‘ãƒãƒ«ã®ã€Œãƒãƒ¼ãƒ‰ã‚¦ã‚¨ã‚¢IDã€ã¨åŒã˜
 		entry.DevicePath = ToLower( MyDevInfoData[ i ].DevicePath );
 
 		mFile::Option op;
@@ -56,14 +56,14 @@ bool mDriveEnumerar::Reload( void )
 		mFile fp;
 		if( !fp.Open( op ) )
 		{
-			RaiseError( g_ErrorLogger , 0 , L"ƒfƒoƒCƒXƒpƒX‚ğŠJ‚­‚±‚Æ‚ª‚Å‚«‚Ü‚¹‚ñ" );
+			RaiseError( g_ErrorLogger , 0 , L"ãƒ‡ãƒã‚¤ã‚¹ãƒ‘ã‚¹ã‚’é–‹ãã“ã¨ãŒã§ãã¾ã›ã‚“" );
 			return false;
 		}
 
 		mBinary out_data;
 		if( !fp.ExecIoControl( IOCTL_STORAGE_GET_DEVICE_NUMBER_EX , nullptr , &out_data ) )
 		{
-			//æ“¾‚Å‚«‚È‚¢ê‡
+			//å–å¾—ã§ããªã„å ´åˆ
 			entry.DeviceType = 0;
 			entry.DeviceNumber = (DWORD)-1;
 			entry.PartitionNumber = (DWORD)-1;
@@ -73,7 +73,7 @@ bool mDriveEnumerar::Reload( void )
 		}
 		else
 		{
-			//æ“¾‚Å‚«‚½ê‡
+			//å–å¾—ã§ããŸå ´åˆ
 			const STORAGE_DEVICE_NUMBER_EX* devnum = reinterpret_cast< const STORAGE_DEVICE_NUMBER_EX* >( out_data.data() );
 			entry.DeviceType = devnum->DeviceType;
 			entry.DeviceNumber = devnum->DeviceNumber;
@@ -107,7 +107,7 @@ bool mDriveEnumerar::Reload( void )
 
 			buffsize++;
 		}
-		//ƒAƒŒƒC‚É’Ç‰Á
+		//ã‚¢ãƒ¬ã‚¤ã«è¿½åŠ 
 		MyCatalog.push_back( std::move( entry ) );
 	}
 
@@ -118,7 +118,7 @@ bool mDriveEnumerar::Reload( void )
 	return true;
 }
 
-//ƒhƒ‰ƒCƒuƒŒƒ^[‚ÌƒXƒLƒƒƒ“
+//ãƒ‰ãƒ©ã‚¤ãƒ–ãƒ¬ã‚¿ãƒ¼ã®ã‚¹ã‚­ãƒ£ãƒ³
 bool mDriveEnumerar::ScanDriveLetter( void )
 {
 	DWORD drives = GetLogicalDrives();
@@ -126,7 +126,7 @@ bool mDriveEnumerar::ScanDriveLetter( void )
 	{
 		if( drives & 0x00000001u )
 		{
-			//‚±‚Ìƒhƒ‰ƒCƒu‚Í‘¶İ
+			//ã“ã®ãƒ‰ãƒ©ã‚¤ãƒ–ã¯å­˜åœ¨
 			mFile::Option op;
 			op.Path = makeprintf( LR"(\\.\%c:)" , i );
 			op.AccessRead = false;

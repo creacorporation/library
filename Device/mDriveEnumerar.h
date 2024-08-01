@@ -1,11 +1,11 @@
-//----------------------------------------------------------------------------
-// �h���C�u�񋓃N���X
+﻿//----------------------------------------------------------------------------
+// ドライブ列挙クラス
 // Copyright (C) 2024 Crea Inc. All rights reserved.
 // This program is released under the MIT License. 
 // see http://opensource.org/licenses/mit-license.php
-// ���쌠�\���⃉�C�Z���X�̉��ς͋֎~����Ă��܂��B
-// ���̃\�[�X�R�[�h�Ɋւ��āA��L���C�Z���X�ȊO�̌_�񓙂͈�ؑ��݂��܂���B
-// (���炩�̌_�񂪂���ꍇ�ł��A�{�\�[�X�R�[�h�͂��̑ΏۊO�ƂȂ�܂�)
+// 著作権表示やライセンスの改変は禁止されています。
+// このソースコードに関して、上記ライセンス以外の契約等は一切存在しません。
+// (何らかの契約がある場合でも、本ソースコードはその対象外となります)
 //----------------------------------------------------------------------------
 
 #ifndef MDRIVEENUMERAR_H_INCLUDED
@@ -26,37 +26,37 @@ public:
 
 	struct CatalogEntry
 	{
-		DWORD index;				//�J�^���O�̃C���f�b�N�X
-		WString FriendlyName;		//�R���g���[���p�l���́u�t�����h�����v�Ɠ���
-		WString Description;		//�R���g���[���p�l���́u�f�o�C�X�̐����v�Ɠ���
-		WString HardwareId;			//�R���g���[���p�l���́u�n�[�h�E�G�AID�v�Ɠ���
-		WString DevicePath;			//�f�o�C�X�̃p�X
-		DEVICE_TYPE DeviceType;		//�f�o�C�X�^�C�v(FILE_DEVICE_XXX)
-		DWORD DeviceNumber;			//�f�o�C�X�ԍ�
-		DWORD PartitionNumber;		//�p�[�e�B�V�����ԍ�
-		GUID DeviceGuid;			//�f�o�C�X��ID(�n�[�h�E�G�A���琶�������ŗLID�A�n�[�h�E�G�A���琶���ł��Ȃ��ꍇ�̓����_���l)
-		bool IsDeviceGuidFromHW;	//DeviceGuid���n�[�h�E�G�A���琶������Ă���ΐ^�B�^�̏ꍇ�i���I�B�U�̏ꍇ�͍ċN�����邽��DeviceGuid���ς��B
-		wchar_t Drive;				//�h���C�u�Ƀ}�E���g����Ă���΃h���C�u���^�[�B���Ȃ����0�B
+		DWORD index;				//カタログのインデックス
+		WString FriendlyName;		//コントロールパネルの「フレンドリ名」と同じ
+		WString Description;		//コントロールパネルの「デバイスの説明」と同じ
+		WString HardwareId;			//コントロールパネルの「ハードウエアID」と同じ
+		WString DevicePath;			//デバイスのパス
+		DEVICE_TYPE DeviceType;		//デバイスタイプ(FILE_DEVICE_XXX)
+		DWORD DeviceNumber;			//デバイス番号
+		DWORD PartitionNumber;		//パーティション番号
+		GUID DeviceGuid;			//デバイスのID(ハードウエアから生成される固有ID、ハードウエアから生成できない場合はランダム値)
+		bool IsDeviceGuidFromHW;	//DeviceGuidがハードウエアから生成されていれば真。真の場合永続的。偽の場合は再起動するたびDeviceGuidが変わる。
+		wchar_t Drive;				//ドライブにマウントされていればドライブレター。いなければ0。
 	};
 	using Catalog = std::deque< CatalogEntry >;
 
-	//Catalog���Đ�������
+	//Catalogを再生成する
 	bool Reload( void );
 
-	//�Ώۂ̃N���X�ɑ��݂���f�o�C�X�̈ꗗ���擾����
-	// reload : �^�̎��ēǂݍ��݂���B�U�̎��L���b�V��������΂�����g���B
-	// retInfo : ���ʊi�[��
-	// ret : �������^
+	//対象のクラスに存在するデバイスの一覧を取得する
+	// reload : 真の時再読み込みする。偽の時キャッシュがあればそれを使う。
+	// retInfo : 結果格納先
+	// ret : 成功時真
 	bool GetCatalog( Catalog& retCatalog , bool reload = true );
 
-	//�Ώۂ̃N���X�ɑ��݂���f�o�C�X�̈ꗗ���擾����
-	// reload : �^�̎��ēǂݍ��݂���B�U�̎��L���b�V��������΂�����g���B
-	// ret : ���ʂւ̎Q��
+	//対象のクラスに存在するデバイスの一覧を取得する
+	// reload : 真の時再読み込みする。偽の時キャッシュがあればそれを使う。
+	// ret : 結果への参照
 	const Catalog& GetCatalog( bool reload = true );
 
-	//�w�肵���f�o�C�X�p�X�ɑΉ�����J�^���O�̃G���g����Ԃ��B
-	// devicepath : �擾�������f�o�C�X�p�X
-	// ret : ����ꂽ�J�^���O�ւ̃|�C���^�B�G���[�̏ꍇ�k���B
+	//指定したデバイスパスに対応するカタログのエントリを返す。
+	// devicepath : 取得したいデバイスパス
+	// ret : 得られたカタログへのポインタ。エラーの場合ヌル。
 	const CatalogEntry* GetFromDevicePath( const WString DevicePath )const;
 
 private:
@@ -65,10 +65,10 @@ private:
 	const mDriveEnumerar& operator=( const mDriveEnumerar& src ) = delete;
 
 
-	//�h���C�u���^�[�̃X�L����
+	//ドライブレターのスキャン
 	bool ScanDriveLetter( void );
 
-	//���ʊi�[��
+	//結果格納先
 	Catalog MyCatalog;
 };
 
