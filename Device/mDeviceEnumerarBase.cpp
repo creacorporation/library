@@ -240,7 +240,7 @@ bool mDeviceEnumerarBase::GetProperty( const SP_DEVINFO_DATA& info , DWORD prop_
 		RaiseError( g_ErrorLogger , 0 , L"データを取得できません" , prop_id );
 		return false;
 	}
-	retProp = (wchar_t*)dt.get();
+	retProp = reinterpret_cast<wchar_t*>( dt.get() );
 	return true;
 }
 

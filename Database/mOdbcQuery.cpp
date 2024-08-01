@@ -593,7 +593,7 @@ mOdbcQuery::FetchResult mOdbcQuery::Fetch( mOdbcResultParam& retResult )
 				retResult[ descitr->first ].Set( (CHAR*)buff.ptr.get() );
 				break;
 			case mOdbc::ParameterType::WString:		//UNICODE文字列
-				retResult[ descitr->first ].Set( (WCHAR*)buff.ptr.get() );
+				retResult[ descitr->first ].Set( reinterpret_cast<WCHAR*>( buff.ptr.get() ) );
 				break;
 			case mOdbc::ParameterType::Binary:		//バイナリ
 				break;
