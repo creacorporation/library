@@ -1,4 +1,7 @@
-rem @echo off
+@echo off
+
+echo #ifndef MREVISION_H_INCLUDED
+echo #define MREVISION_H_INCLUDED
 
 rem ----- ライブラリ有効性チェック -----
 if not exist %2libconfig.conf goto optcheckend
@@ -45,6 +48,7 @@ echo #define %1_REVISION_STRING "%SVNREVISIONSTR%"
 echo #define %1_REVISION_STRING_LONG "%SVNREVISIONLONGSTR%"
 echo #define %1_REVISION_MODIFIED 0
 echo #define %1_REVISION_EXPORTED 0
+echo #endif
 set SVNREVISION=
 set SVNREVISIONSTR=
 set SVNREVISIONLONGSTR=
@@ -56,5 +60,6 @@ echo #define %1_REVISION_STRING "EXPORTED"
 echo #define %1_REVISION_STRING_LONG "EXPORTED"
 echo #define %1_REVISION_MODIFIED 0
 echo #define %1_REVISION_EXPORTED 1
+echo #endif
 exit /B 0
 

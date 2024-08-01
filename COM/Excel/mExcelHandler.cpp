@@ -11,7 +11,7 @@
 #include "General/mFileUtility.h"
 #include "General/mErrorLogger.h"
 
-#ifndef LIB_ENABLE_EXCEL
+#ifndef LIBRARY_ENABLE_EXCEL
 #pragma message("   *Notice* : Excel handling feature is disabled")
 #else
 

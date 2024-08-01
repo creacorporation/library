@@ -16,7 +16,8 @@
 #endif
 #endif
 
-#ifdef LIB_ENABLE_EXCEL
+#include "mRevision.h"
+#ifdef LIBRARY_ENABLE_EXCEL
 
 //以下エラー対策のため、インクルード順を、winsock2→import→mStandardの順にしてあります。
 //・winsock2.hを先にインクルードしておかないとエラーになる
