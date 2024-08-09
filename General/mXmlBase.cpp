@@ -16,6 +16,7 @@
 
 mXmlBase::mXmlBase()
 {
+	MyStackStatus = OnReadResultEx::Next;
 }
 
 mXmlBase::~mXmlBase()
@@ -199,63 +200,121 @@ bool mXmlBase::WriteElement( const mXmlObject_Element_Child& obj , IXmlWriter* w
 }
 
 
-mXmlBase::OnReadResultEx mXmlBase::ParseMain( const WString& path , mXmlObject_Element_Child& parent , IXmlReader* reader )
+mXmlBase::OnReadResultEx mXmlBase::ParseMain( IXmlReader* reader )
 {
 	HRESULT hr;
 	XmlNodeType nodetype;
-	OnReadResultEx result = OnReadResultEx::Next;
+//	OnReadResultEx result = OnReadResultEx::Next;
 
-	while( S_OK == ( hr = reader->Read( &nodetype ) ) )
+	ElementStack::reverse_iterator element = MyElementStack.rbegin();
+	switch( element->LastResult )
+	{
+	case OnReadResultEx::PendingElementSkip:
+		hr = reader->Read( &nodetype );
+		result = OnReadResultEx::Skip;
+		break;
+	case OnReadResultEx::PendingText:
+		nodetype = XmlNodeType_Text;
+		hr = S_OK;
+		break;
+	case OnReadResultEx::PendingCDATA:
+		nodetype = XmlNodeType_CDATA;
+		hr = S_OK;
+		break;
+	case OnReadResultEx::PendingProcessingInstruction:
+		nodetype = XmlNodeType_ProcessingInstruction;
+		hr = S_OK;
+		break;
+	case OnReadResultEx::PendingComment:
+		nodetype = XmlNodeType_Comment;
+		hr = S_OK;
+		break;
+	case OnReadResultEx::PendingDeclAttributeTag:
+	case OnReadResultEx::PendingDeclAttributeData:
+		nodetype = XmlNodeType_XmlDeclaration;
+		hr = S_OK;
+		break;
+	case OnReadResultEx::PendingElementAttributeTag:
+	case OnReadResultEx::PendingElementAttributeData:
+		nodetype = XmlNodeType_Element;
+		hr = S_OK;
+		break;
+	default:
+		hr = reader->Read( &nodetype );
+		break;
+	}
+
+	while( hr == S_OK )
 	{
 		if( nodetype == XmlNodeType_EndElement )
 		{
 			return OnReadResultEx::Next;
 		}
-		if( result == OnReadResult::Skip )
+		if( result != OnReadResult::Skip )
 		{
-			continue;
+			switch( nodetype )
+			{
+			case XmlNodeType_XmlDeclaration:
+				ParseXmlDeclaration( *element , reader );
+				break;
+			case XmlNodeType_Element:
+				result = ParseElement( *element , reader );
+				break;
+			case XmlNodeType_Text:
+				result = ParseText( element->Path , *element->Ptr , reader );
+				break;
+			case XmlNodeType_Whitespace:
+				break;
+			case XmlNodeType_CDATA:
+				result = ParseCDATA( element->Path , *element->Ptr , reader );
+				break;
+			case XmlNodeType_ProcessingInstruction:
+				result = ParseProcessingInstruction( element->Path , *element->Ptr , reader );
+				break;
+			case XmlNodeType_Comment:
+				result = ParseComment( element->Path , *element->Ptr , reader );
+				break;
+			case XmlNodeType_DocumentType:
+				result = ParseDocumentType( element->Path , *element->Ptr , reader );
+				break;
+			case XmlNodeType_Attribute:
+			case XmlNodeType_None:
+			default:
+				return OnReadResultEx::Fail;
+			}
+
+			switch( result )
+			{
+			case OnReadResultEx::Next:
+			case OnReadResultEx::Skip:
+				break;
+			case OnReadResultEx::Finish:
+			case OnReadResultEx::Fail:
+				return result;
+			case OnReadResultEx::PendingElementNext:
+			case OnReadResultEx::PendingElementSkip:
+			case OnReadResultEx::PendingText:
+			case OnReadResultEx::PendingCDATA:
+			case OnReadResultEx::PendingProcessingInstruction:
+			case OnReadResultEx::PendingComment:
+			case OnReadResultEx::PendingElementAttributeTag:
+			case OnReadResultEx::PendingElementAttributeData:
+			case OnReadResultEx::PendingDeclAttributeTag:
+			case OnReadResultEx::PendingDeclAttributeData:
+				element->LastResult = result;
+				return result;
+			default:
+				return OnReadResultEx::Fail;
+			}
 		}
-		switch( nodetype )
-		{
-		case XmlNodeType_XmlDeclaration:
-			result = ParseXmlDeclaration( path , parent , reader );
-			break;
-		case XmlNodeType_Element:
-			result = ParseElement( path , parent , reader );
-			break;
-		case XmlNodeType_Text:
-			result = ParseText( path , parent , reader );
-			break;
-		case XmlNodeType_Whitespace:
-			break;
-		case XmlNodeType_CDATA:
-			result = ParseCDATA( path , parent , reader );
-			break;
-		case XmlNodeType_ProcessingInstruction:
-			result = ParseProcessingInstruction( path , parent , reader );
-			break;
-		case XmlNodeType_Comment:
-			result = ParseComment( path , parent , reader );
-			break;
-		case XmlNodeType_DocumentType:
-			result = ParseDocumentType( path , parent , reader );
-			break;
-		case XmlNodeType_Attribute:
-		case XmlNodeType_None:
-		default:
-			return OnReadResultEx::Fail;
-		}
-		switch( result )
-		{
-		case OnReadResultEx::Next:
-		case OnReadResultEx::Skip:
-			break;
-		case OnReadResultEx::Finish:
-		case OnReadResultEx::Fail:
-			return result;
-		default:
-			return OnReadResultEx::Fail;
-		}
+	}
+	if( hr == E_PENDING )
+	{
+		return OnReadResultEx::PendingElementNext;
+	}
+	if( FAILED( hr ) )
+	{
+		return OnReadResultEx::Fail;
 	}
 	return OnReadResultEx::Next;
 }
@@ -305,35 +364,63 @@ static bool ReadNamespaceUri( c& ioObject , IXmlReader* reader )
 	return true;
 }
 
-mXmlBase::OnReadResultEx mXmlBase::ParseElement( const WString& path , mXmlObject_Element_Child& parent , IXmlReader* reader )
+void mXmlBase::ParseElement( ElementStackEntry& entry , IXmlReader* reader )
 {
-	std::unique_ptr< mXmlObject_Element_Child > elm( mNew mXmlObject_Element_Child() );
+	if( !entry.Ptr )
+	{
+		entry.Ptr.reset( mNew mXmlObject_Element_Child() );
+		entry.IsEmpty = reader->IsEmptyElement();
+	}
 
-	bool isempty = reader->IsEmptyElement();
+	//アトリビュート
+	ParseAttributeResult parse_result;
+	switch( entry.LastResult )
+	{
+	case OnReadResultEx::PendingElementAttributeTag:
+		parse_result = ParseAttributeResult::PendingAttributeTag;
+		break;
+	case OnReadResultEx::PendingElementAttributeData:
+		parse_result = ParseAttributeResult::PendingAttributeData;
+		break;
+	default:
+		parse_result = ParseAttributeResult::Next;
+	}
+	switch( ParseAttribute( parse_result , *entry.Ptr , reader ) )
+	{
+	case ParseAttributeResult::PendingAttributeTag:
+		entry.LastResult = OnReadResultEx::PendingElementAttributeTag;
+		return;
+	case ParseAttributeResult::PendingAttributeData:
+		entry.LastResult = OnReadResultEx::PendingElementAttributeData;
+		return;
+	case ParseAttributeResult::Next:
+		break;
+	default:
+		entry.LastResult = OnReadResultEx::Fail;
+		return;
+	}
 
 	//プレフィクス
-	if( !ReadPrefix< mXmlObject_Element_Child >( *elm , reader ) )
+	if( !ReadPrefix< mXmlObject_Element_Child >( *entry.Ptr , reader ) )
 	{
-		return OnReadResultEx::Fail;
+		entry.LastResult = OnReadResultEx::Fail;
+		return;
 	}
 	//名前
-	if( !ReadName< mXmlObject_Element_Child >( *elm , reader ) )
+	if( !ReadName< mXmlObject_Element_Child >( *entry.Ptr , reader ) )
 	{
-		return OnReadResultEx::Fail;
-	}
-	//アトリビュート
-	if( !ParseAttribute( *elm , reader ) )
-	{
-		return OnReadResultEx::Fail;
+		entry.LastResult = OnReadResultEx::Fail;
+		return;
 	}
 	//URI
-	if( !ReadNamespaceUri< mXmlObject_Element_Child >( *elm , reader ) )
+	if( !ReadNamespaceUri< mXmlObject_Element_Child >( *entry.Ptr , reader ) )
 	{
-		return OnReadResultEx::Fail;
+		entry.LastResult = OnReadResultEx::Fail;
+		return;
 	}
 
 	//子ノード
-	if( !isempty )
+	if( !entry.IsEmpty )
 	{
 		WString childpath = path + elm->Name + L"\\" ;
 		OnReadResultEx result = ParseMain( childpath , *elm , reader );
@@ -346,147 +433,228 @@ mXmlBase::OnReadResultEx mXmlBase::ParseElement( const WString& path , mXmlObjec
 	return (OnReadResultEx)OnReadElement( path , parent , std::move( elm ) );
 }
 
-bool mXmlBase::ParseAttribute( mXmlObject_WithChildObject& parent , IXmlReader* reader )
+mXmlBase::ParseAttributeResult mXmlBase::ParseAttribute( ParseAttributeResult prevresult , mXmlObject_WithChildObject& parent , IXmlReader* reader )
 {
 	LPCWSTR ptr;
-	HRESULT hr = reader->MoveToFirstAttribute();
+	HRESULT hr;
 
-	if( hr == S_FALSE )
+	switch( prevresult )
 	{
-		//アトリビュートなし
-		return true;
-	}
-	else if ( hr == S_OK )
-	{
-		do
+	case ParseAttributeResult::PendingAttributeTag:
+		if( parent.GetAttrCount() == 0 )
 		{
-			if( !reader->IsDefault() )
-			{
-				std::unique_ptr< mXmlObject_Attribute > attr( mNew mXmlObject_Attribute() );
-				//プレフィクス
-				if( !ReadPrefix< mXmlObject_Attribute >( *attr , reader ) )
-				{
-					return false;
-				}
-				//名前
-				if( !ReadName< mXmlObject_Attribute >( *attr , reader ) )
-				{
-					return false;
-				}
-				//URI
-				if( !ReadNamespaceUri< mXmlObject_Attribute >( *attr , reader ) )
-				{
-					return OnReadResult::Fail;
-				}
-				//値
-				hr = reader->GetValue( &ptr, nullptr );
-				if( FAILED( hr ) )
-				{
-					return false;
-				}
-				attr->Value = ptr;
-				parent.Child.push_back( std::move( attr ) );
-			}
-
+			hr = reader->MoveToFirstAttribute();
+		}
+		else
+		{
 			hr = reader->MoveToNextAttribute();
 		}
-		while( hr == S_OK );
+		break;
+	case ParseAttributeResult::PendingAttributeData:
+		break;
+	default:
+		hr = reader->MoveToFirstAttribute();
+		break;
 	}
-	return true;
+
+	while( hr == S_OK )
+	{
+		if( !reader->IsDefault() )
+		{
+			//値
+			hr = reader->GetValue( &ptr, nullptr );
+			if( hr == E_PENDING )
+			{
+				return ParseAttributeResult::PendingAttributeData;
+			}
+			if( FAILED( hr ) )
+			{
+				return ParseAttributeResult::Fail;
+			}
+
+			std::unique_ptr< mXmlObject_Attribute > attr( mNew mXmlObject_Attribute() );
+			attr->Value = ptr;
+
+			//プレフィクス
+			if( !ReadPrefix< mXmlObject_Attribute >( *attr , reader ) )
+			{
+				return ParseAttributeResult::Fail;
+			}
+			//名前
+			if( !ReadName< mXmlObject_Attribute >( *attr , reader ) )
+			{
+				return ParseAttributeResult::Fail;
+			}
+			//URI
+			if( !ReadNamespaceUri< mXmlObject_Attribute >( *attr , reader ) )
+			{
+				return ParseAttributeResult::Fail;
+			}
+			parent.Child.push_back( std::move( attr ) );
+		}
+
+		hr = reader->MoveToNextAttribute();
+	}
+
+	if( hr == E_PENDING )
+	{
+		return ParseAttributeResult::PendingAttributeTag;
+	}
+	if( FAILED( hr ) )
+	{
+		return ParseAttributeResult::Fail;
+	}
+	return ParseAttributeResult::Next;
 }
 
-mXmlBase::OnReadResultEx mXmlBase::ParseText( const WString& path , mXmlObject_Element_Child& parent , IXmlReader* reader )
+void mXmlBase::ParseText( ElementStackEntry& entry , IXmlReader* reader )
 {
 	LPCWSTR ptr;
 	HRESULT hr;
+
+	//値
+	hr = reader->GetValue( &ptr, nullptr );
+	if( hr == E_PENDING )
+	{
+		entry.LastResult = OnReadResultEx::PendingText;
+		return;
+	}
+	if( FAILED( hr ) )
+	{
+		entry.LastResult = OnReadResultEx::Fail;
+		return;
+	}
+
 	std::unique_ptr< mXmlObject_Text > txt( mNew mXmlObject_Text() );
-
-	//値
-	hr = reader->GetValue( &ptr, nullptr );
-	if( FAILED( hr ) )
-	{
-		return OnReadResultEx::Fail;
-	}
 	txt->Text = ptr;
-
-	return (OnReadResultEx)OnReadText( path , parent , std::move( txt ) );
+	entry.LastResult = (OnReadResultEx)OnReadText( entry.Path , *entry.Ptr , std::move( txt ) );
+	return;
 }
 
-mXmlBase::OnReadResultEx mXmlBase::ParseCDATA( const WString& path , mXmlObject_Element_Child& parent , IXmlReader* reader )
+void mXmlBase::ParseCDATA( ElementStackEntry& entry , IXmlReader* reader )
 {
 	LPCWSTR ptr;
 	HRESULT hr;
+
+	//値
+	hr = reader->GetValue( &ptr, nullptr );
+	if( hr == E_PENDING )
+	{
+		entry.LastResult = OnReadResultEx::PendingCDATA;
+		return;
+	}
+	if( FAILED( hr ) )
+	{
+		entry.LastResult = OnReadResultEx::Fail;
+		return;
+	}
+
 	std::unique_ptr< mXmlObject_CDATA > txt( mNew mXmlObject_CDATA() );
-
-	//値
-	hr = reader->GetValue( &ptr, nullptr );
-	if( FAILED( hr ) )
-	{
-		return OnReadResultEx::Fail;
-	}
 	txt->Text = ptr;
-
-	return (OnReadResultEx)OnReadCDATA( path , parent , std::move( txt ) );
+	entry.LastResult = (OnReadResultEx)OnReadCDATA( entry.Path , *entry.Ptr , std::move( txt ) );
+	return;
 }
 
-mXmlBase::OnReadResultEx mXmlBase::ParseProcessingInstruction( const WString& path , mXmlObject_Element_Child& parent , IXmlReader* reader )
+void mXmlBase::ParseProcessingInstruction( ElementStackEntry& entry , IXmlReader* reader )
 {
 	LPCWSTR ptr;
 	HRESULT hr;
+	//値
+	hr = reader->GetValue( &ptr, nullptr );
+	if( hr == E_PENDING )
+	{
+		entry.LastResult = OnReadResultEx::PendingProcessingInstruction;
+		return;
+	}
+	if( FAILED( hr ) )
+	{
+		entry.LastResult = OnReadResultEx::Fail;
+		return;
+	}
+
 	std::unique_ptr< mXmlObject_ProcessingInstruction > procinst( mNew mXmlObject_ProcessingInstruction() );
+	procinst->Value = ptr;
 
 	//名前
 	if( !ReadName< mXmlObject_ProcessingInstruction >( *procinst , reader ) )
 	{
-		return OnReadResultEx::Fail;
+		entry.LastResult = OnReadResultEx::Fail;
+		return;
 	}
-	//値
-	hr = reader->GetValue( &ptr, nullptr );
-	if( FAILED( hr ) )
-	{
-		return OnReadResultEx::Fail;
-	}
-	procinst->Value = ptr;
 
-	return (OnReadResultEx)OnReadProcessingInstruction( path , parent , std::move( procinst ) );
+	entry.LastResult = (OnReadResultEx)OnReadProcessingInstruction( entry.Path , *entry.Ptr , std::move( procinst ) );
+	return;
 }
 
-mXmlBase::OnReadResultEx mXmlBase::ParseComment( const WString& path , mXmlObject_Element_Child& parent , IXmlReader* reader )
+void mXmlBase::ParseComment( ElementStackEntry& entry , IXmlReader* reader )
 {
 	LPCWSTR ptr;
 	HRESULT hr;
-	std::unique_ptr< mXmlObject_Comment > comment( mNew mXmlObject_Comment() );
 
 	//値
 	hr = reader->GetValue( &ptr, nullptr );
+	if( hr == E_PENDING )
+	{
+		entry.LastResult = OnReadResultEx::PendingComment;
+		return;
+	}
 	if( FAILED( hr ) )
 	{
-		return OnReadResultEx::Fail;
+		entry.LastResult = OnReadResultEx::Fail;
+		return;
 	}
 
-	return (OnReadResultEx)OnReadComment( path , parent , std::move( comment ) );
+	std::unique_ptr< mXmlObject_Comment > comment( mNew mXmlObject_Comment() );
+	comment->Text = ptr;
+	entry.LastResult = (OnReadResultEx)OnReadComment( entry.Path , *entry.Ptr , std::move( comment ) );
+	return;
 }
 
-mXmlBase::OnReadResultEx mXmlBase::ParseDocumentType( const WString& path , mXmlObject_Element_Child& parent , IXmlReader* reader )
+void mXmlBase::ParseDocumentType( ElementStackEntry& entry , IXmlReader* reader )
 {
 	std::unique_ptr< mXmlObject_DocumentType > elm( mNew mXmlObject_DocumentType() );
 
 	//TODO
 
-	return (OnReadResultEx)OnReadDocumentType( path , parent , std::move( elm ) );
+	entry.LastResult = (OnReadResultEx)OnReadDocumentType( entry.Path , *entry.Ptr , std::move( elm ) );
+	return;
 }
 
-mXmlBase::OnReadResultEx mXmlBase::ParseXmlDeclaration( const WString& path , mXmlObject_Element_Child& parent , IXmlReader* reader )
+void mXmlBase::ParseXmlDeclaration( ElementStackEntry& entry , IXmlReader* reader )
 {
 	std::unique_ptr< mXmlObject_XmlDeclaration_Child > elm( mNew mXmlObject_XmlDeclaration_Child() );
 
 	//アトリビュート
-	if( !ParseAttribute( *elm , reader ) )
+	ParseAttributeResult parse_result;
+	switch( entry.LastResult )
 	{
-		return OnReadResultEx::Fail;
+	case OnReadResultEx::PendingDeclAttributeTag:
+		parse_result = ParseAttributeResult::PendingAttributeTag;
+		break;
+	case OnReadResultEx::PendingDeclAttributeData:
+		parse_result = ParseAttributeResult::PendingAttributeData;
+		break;
+	default:
+		parse_result = ParseAttributeResult::Next;
 	}
 
-	return (OnReadResultEx)OnReadXmlDeclaration( path , parent , std::move( elm ) );
+	switch( ParseAttribute( parse_result , *elm , reader ) )
+	{
+	case ParseAttributeResult::PendingAttributeTag:
+		entry.LastResult = OnReadResultEx::PendingDeclAttributeTag;
+		return;
+	case ParseAttributeResult::PendingAttributeData:
+		entry.LastResult = OnReadResultEx::PendingDeclAttributeData;
+		return;
+	case ParseAttributeResult::Next:
+		break;
+	default:
+		entry.LastResult = OnReadResultEx::Fail;
+		return;
+	}
+
+	entry.LastResult = (OnReadResultEx)OnReadXmlDeclaration( entry.Path , *entry.Ptr , std::move( elm ) );
+	return;
 }
 
 bool mXmlBase::OnReadRoot( std::unique_ptr<mXmlObject_Element_Child>&& obj )
@@ -558,6 +726,19 @@ mXmlBase::mXmlObject_WithChildObject::AttrMap mXmlBase::mXmlObject_WithChildObje
 	return std::move( attrmap );
 }
 
+DWORD mXmlBase::mXmlObject_WithChildObject::GetAttrCount( void )const
+{
+	DWORD result = 0;
+	for( ChildObjectArray::const_iterator itr = Child.begin() ; itr != Child.end() ; itr++ )
+	{
+		if( itr->get()->Type == mXmlObjectType::XmlObjectType_Attribute )
+		{
+			result++;
+		}
+	}
+	return result;
+}
+
 WString mXmlBase::mXmlObject_WithChildObject::GetText( void )const
 {
 	for( ChildObjectArray::const_iterator itr = Child.begin() ; itr != Child.end() ; itr++ )
@@ -581,5 +762,12 @@ WString mXmlBase::mXmlObject_WithChildObject::GetText( void )const
 		}
 	}
 	return WString();
+}
+
+void mXmlBase::ResetStack( void )
+{
+	//スタックの全データを消去
+	MyElementStack.clear();
+	MyStackStatus = OnReadResultEx::Next;
 }
 
