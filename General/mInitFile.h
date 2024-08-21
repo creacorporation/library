@@ -71,6 +71,11 @@ public:
 	//      該当するセクションがない場合はヌルポインタ。
 	mInitFileSection* GetSectionForModification( const WString& section )noexcept;
 
+	//セクションの一覧を取得します
+	//section : 取得した結果
+	//ret : 成功時真
+	bool SectionList( WStringDeque& section )const noexcept;
+
 	//セクションが存在するかを判定します
 	//section : 存在を判定したいセクションの名前
 	//ret : セクションが存在すればtrue。存在しなければfalse。

@@ -364,6 +364,16 @@ bool mInitFile::DeleteSection( const WString& section )noexcept
 	return true;
 }
 
+bool mInitFile::SectionList( WStringDeque& section )const noexcept
+{
+	section.clear();
+	for( SectionDataMap::const_iterator itr = MySectionDataMap.begin() ; itr != MySectionDataMap.end() ; itr++ )
+	{
+		section.push_back( itr->first );
+	}
+	return true;
+}
+
 //セクションが存在するかを判定します
 bool mInitFile::IsExistSection( const WString& section )const noexcept
 {
