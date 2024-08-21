@@ -20,6 +20,7 @@ EXCEPTIONマクロを使用して投げるのがおすすめです。
 #include "mStandard.h"
 #include "mTCHAR.h"
 #pragma warning( disable : 4290 )
+#include <stdexcept>
 
 class mExceptionBase
 {
