@@ -215,7 +215,6 @@ protected:
 
 		using AttrMap = std::map< WString , WString >;
 		AttrMap GetAttrMap( const WString& prefix = L"" )const;
-		DWORD GetAttrCount( void )const;
 		WString GetText( void )const;
 	};
 
@@ -289,9 +288,6 @@ protected:
 
 	virtual const mXmlObject_Element_Child* OnWriteRoot( void )const;
 
-	//内部スタックをリセットする
-	void ResetStack( void );
-
 private:
 	enum OnReadResultEx
 	{
@@ -299,51 +295,19 @@ private:
 		Next   = OnReadResult::Next,	// 読み取りＯＫの場合（処理続行）
 		Skip   = OnReadResult::Skip,	// 当該エレメントについて以降全て無視する場合（次のエレメントから続行）
 		Finish = OnReadResult::Finish,	// 読み取り終了の場合
-		PendingElementNext,
-		PendingElementSkip,
-		PendingText,
-		PendingCDATA,
-		PendingProcessingInstruction,
-		PendingComment,
-		PendingElementAttributeTag,
-		PendingElementAttributeData,
-		PendingDeclAttributeTag,
-		PendingDeclAttributeData,
 	};
-
-	struct ElementStackEntry
-	{
-		WString Path;
-		std::unique_ptr< mXmlObject_Element_Child > Ptr;
-		OnReadResultEx LastResult;
-		bool IsEmpty;
-	};
-	using ElementStack = std::deque< ElementStackEntry >;
-	ElementStack MyElementStack;
-
-	OnReadResultEx MyStackStatus;
 
 	//要素の読み取り
-	OnReadResultEx ParseMain( IXmlReader* reader );
-	void ParseElement( ElementStackEntry& entry , IXmlReader* reader );
-
-	void ParseText( ElementStackEntry& entry , IXmlReader* reader );
-	void ParseCDATA( ElementStackEntry& entry , IXmlReader* reader );
-	void ParseProcessingInstruction( ElementStackEntry& entry , IXmlReader* reader );
-	void ParseComment( ElementStackEntry& entry , IXmlReader* reader );
-	void ParseDocumentType( ElementStackEntry& entry , IXmlReader* reader );
-	void ParseXmlDeclaration( ElementStackEntry& entry , IXmlReader* reader );
-
+	OnReadResultEx ParseMain( const WString& path , mXmlObject_Element_Child& parent , IXmlReader* reader );
+	OnReadResultEx ParseElement( const WString& path , mXmlObject_Element_Child& parent , IXmlReader* reader );
+	OnReadResultEx ParseText( const WString& path , mXmlObject_Element_Child& parent , IXmlReader* reader );
+	OnReadResultEx ParseCDATA( const WString& path , mXmlObject_Element_Child& parent , IXmlReader* reader );
+	OnReadResultEx ParseProcessingInstruction( const WString& path , mXmlObject_Element_Child& parent , IXmlReader* reader );
+	OnReadResultEx ParseComment( const WString& path , mXmlObject_Element_Child& parent , IXmlReader* reader );
+	OnReadResultEx ParseDocumentType( const WString& path , mXmlObject_Element_Child& parent , IXmlReader* reader );
+	OnReadResultEx ParseXmlDeclaration( const WString& path , mXmlObject_Element_Child& parent , IXmlReader* reader );
 	//アトリビュートの読み取り
-	enum ParseAttributeResult
-	{
-		Fail   = OnReadResult::Fail,	// 読み取り失敗の場合（エラー終了）
-		Next   = OnReadResult::Next,	// 読み取りＯＫの場合（処理続行）
-		PendingAttributeTag,
-		PendingAttributeData,
-	};
-
-	ParseAttributeResult ParseAttribute( ParseAttributeResult prevresult , mXmlObject_WithChildObject& parent , IXmlReader* reader );
+	bool ParseAttribute( mXmlObject_WithChildObject& parent , IXmlReader* reader );
 
 	//要素の出力
 	bool WriteMain( const mXmlObject_WithChildObject& obj , IXmlWriter* writer )const;
