@@ -198,6 +198,11 @@ bool mCsvFile::ReadCsvFile( const WString& filename , WTable& retTable , const W
 	return ReadCsvFile( fp , retTable , empty_str );
 }
 
+bool mCsvFile::ReadCsvFile( const WString& filename , WTable& retTable , const WString& empty_str )
+{
+	return ReadCsvFile( filename , retTable , &empty_str );
+}
+
 bool mCsvFile::ReadCsvFile( const WString& filename , ATable& retTable , const AString* empty_str )
 {
 	//ファイルを開く（テンプレートと関係ない制御は外に追い出す）
@@ -208,6 +213,11 @@ bool mCsvFile::ReadCsvFile( const WString& filename , ATable& retTable , const A
 	}
 	//読み取り
 	return ReadCsvFile( fp , retTable , empty_str );
+}
+
+bool mCsvFile::ReadCsvFile( const WString& filename , ATable& retTable , const AString& empty_str )
+{
+	return ReadCsvFile( filename , retTable , &empty_str );
 }
 
 //CSVファイルを読み取って配列に格納する
@@ -228,6 +238,11 @@ bool mCsvFile::ReadCsvFile( mFileReadStreamBase& stream , WTable& retTable , con
 	return true;
 }
 
+bool mCsvFile::ReadCsvFile( mFileReadStreamBase& stream , WTable& retTable , const WString& empty_str )
+{
+	return ReadCsvFile( stream , retTable , &empty_str );
+}
+
 //CSVファイルを読み取って配列に格納する
 //・読み取るときの文字コードは、retTableに指定した型に合わせる
 //stream : 読み取るストリーム
@@ -244,5 +259,10 @@ bool mCsvFile::ReadCsvFile( mFileReadStreamBase& stream , ATable& retTable , con
 	}
 	FillEmptyCell( retTable , empty_str );
 	return true;
+}
+
+bool mCsvFile::ReadCsvFile( mFileReadStreamBase& stream , ATable& retTable , const AString& empty_str )
+{
+	return ReadCsvFile( stream , retTable , &empty_str );
 }
 
