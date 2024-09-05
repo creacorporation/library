@@ -102,11 +102,12 @@ bool mXmlBase::Write( mComStream& stream )const
 		return false;
 	}
 
-	if( !WriteMain( *elm , writer ) )
+	if( !WriteElement( *elm , writer ) )
 	{
 		RaiseError( g_ErrorLogger , 0 , L"出力が失敗しました" );
 		return false;
 	}
+	writer->Flush();
 	return true;
 }
 
@@ -126,6 +127,7 @@ bool mXmlBase::WriteMain( const mXmlObject_WithChildObject& obj , IXmlWriter* wr
 				return false;
 			}
 			hr = S_OK;
+			break;
 		}
 		case mXmlObjectType::XmlObjectType_Attribute:
 		{
@@ -187,13 +189,23 @@ bool mXmlBase::WriteElement( const mXmlObject_Element_Child& obj , IXmlWriter* w
 	{
 		return false;
 	}
-	if( !WriteMain( obj , writer ) )
+	if( obj.Child.size() )
 	{
-		return false;
+		if( !WriteMain( obj , writer ) )
+		{
+			return false;
+		}
+		if( FAILED( writer->WriteEndElement() ) )
+		{
+			return false;
+		}
 	}
-	if( FAILED( writer->WriteFullEndElement() ) )
+	else
 	{
-		return false;
+		if( FAILED( writer->WriteFullEndElement() ) )
+		{
+			return false;
+		}
 	}
 	return true;
 }

@@ -206,10 +206,11 @@ private:
 
 protected:
 
+	using ChildObject = std::unique_ptr<mXmlObject>;
+
 	class mXmlObject_WithChildObject
 	{
 	public:
-		using ChildObject = std::unique_ptr<mXmlObject>;
 		using ChildObjectArray = std::deque< ChildObject >;
 		ChildObjectArray Child;
 
