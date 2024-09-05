@@ -89,6 +89,7 @@ INT mComMemStream::Read( void )
 			MyReadCacheCurrent = 0;
 			if( MyReadCacheRemain == 0 )
 			{
+				MyIsEOF = true;
 				return EOF;
 			}
 		}
@@ -96,6 +97,7 @@ INT mComMemStream::Read( void )
 		{
 			MyReadCacheCurrent = 0;
 			MyReadCacheRemain = 0;
+			MyIsEOF = true;
 			return EOF;
 		}
 	}
@@ -108,7 +110,7 @@ INT mComMemStream::Read( void )
 
 bool mComMemStream::IsEOF( void )const
 {
-	return false;
+	return MyIsEOF;
 }
 
 bool mComMemStream::FlushCache( void )
@@ -174,7 +176,10 @@ bool mComMemStream::SetPointer( ULONGLONG pos )
 	LARGE_INTEGER v;
 	v.QuadPart = pos;
 
+	FlushCache();
 	HRESULT hr = MyStream->Seek( v , STREAM_SEEK_SET , nullptr );
+	MyIsEOF = false;
+
 	return SUCCEEDED( hr );
 }
 
@@ -188,7 +193,10 @@ bool mComMemStream::MovePointer( LONGLONG distance )
 	LARGE_INTEGER v;
 	v.QuadPart = distance;
 
+	FlushCache();
 	HRESULT hr = MyStream->Seek( v , STREAM_SEEK_CUR , nullptr );
+	MyIsEOF = false;
+
 	return SUCCEEDED( hr );
 }
 
@@ -202,7 +210,10 @@ bool mComMemStream::SetPointerToEnd( void )
 	LARGE_INTEGER v;
 	v.QuadPart = 0;
 
+	FlushCache();
 	HRESULT hr = MyStream->Seek( v , STREAM_SEEK_END , nullptr );
+	MyIsEOF = false;
+
 	return SUCCEEDED( hr );
 }
 
