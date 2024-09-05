@@ -11,6 +11,7 @@
 #include <stdarg.h>
 #include <algorithm>
 #include <inttypes.h>
+#include <cinttypes>
 
 TCHAR* WCHAR2TCHAR( const WCHAR* str )
 {
@@ -1512,6 +1513,68 @@ bool ToDouble( const WString& src , double& retvalue , double defvalue )
 		return false;
 	}
 	return true;
+}
+
+AString ToAString( uint32_t v )
+{
+	AString s;
+	sprintf( s , "%u" , v );
+	return s;
+}
+AString ToAString( uint64_t v )
+{
+	AString s;
+	sprintf( s , "%lu" , v );
+	return s;
+}
+AString ToAString( int32_t v )
+{
+	AString s;
+	sprintf( s , "%d" , v );
+	return s;
+}
+AString ToAString( int64_t v )
+{
+	AString s;
+	sprintf( s , "%ld" , v );
+	return s;
+}
+AString ToAString( double v )
+{
+	AString s;
+	sprintf( s , "%lf" , v );
+	return s;
+}
+
+WString ToWString( uint32_t v )
+{
+	WString s;
+	sprintf( s , "%u" , v );
+	return s;
+}
+WString ToWString( uint64_t v )
+{
+	WString s;
+	sprintf( s , L"%lu" , v );
+	return s;
+}
+WString ToWString( int32_t v )
+{
+	WString s;
+	sprintf( s , L"%d" , v );
+	return s;
+}
+WString ToWString( int64_t v )
+{
+	WString s;
+	sprintf( s , L"%ld" , v );
+	return s;
+}
+WString ToWString( double v )
+{
+	WString s;
+	sprintf( s , L"%lf" , v );
+	return s;
 }
 
 int StrCmp( const wchar_t* s1 , const wchar_t* s2 )

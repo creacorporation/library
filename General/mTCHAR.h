@@ -602,6 +602,28 @@ inline double ToDouble( const WString& src )
 	return result;
 }
 
+//数値を文字列に変換する
+AString ToAString( uint32_t v );
+//数値を文字列に変換する
+AString ToAString( uint64_t v );
+//数値を文字列に変換する
+AString ToAString( int32_t v );
+//数値を文字列に変換する
+AString ToAString( int64_t v );
+//数値を文字列に変換する
+AString ToAString( double v );
+
+//数値を文字列に変換する
+WString ToWString( uint32_t v );
+//数値を文字列に変換する
+WString ToWString( uint64_t v );
+//数値を文字列に変換する
+WString ToWString( int32_t v );
+//数値を文字列に変換する
+WString ToWString( int64_t v );
+//数値を文字列に変換する
+WString ToWString( double v );
+
 //文字列を特定の文字でパースする
 void ParseString( const AString& str , CHAR delimiter , AStringVector& retParsed , bool noempty = false );
 //文字列を特定の文字でパースする
