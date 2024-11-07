@@ -199,7 +199,7 @@ const WString mGUID::ToWString( void )const
 	RPC_WSTR str;
 	if( UuidToStringW( &MyGUID , &str ) != RPC_S_OK )
 	{
-		return false;
+		return L"";
 	}
 	WString result = reinterpret_cast<wchar_t*>( str );
 	RpcStringFreeW( &str );
