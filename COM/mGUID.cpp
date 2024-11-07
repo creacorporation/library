@@ -179,7 +179,7 @@ const AString mGUID::ToAString( void )const
 	RPC_CSTR str;
 	if( UuidToStringA( &MyGUID , &str ) != RPC_S_OK )
 	{
-		return false;
+		return "";
 	}
 	AString result = reinterpret_cast<char*>( str );
 	RpcStringFreeA( &str );
@@ -199,7 +199,7 @@ const WString mGUID::ToWString( void )const
 	RPC_WSTR str;
 	if( UuidToStringW( &MyGUID , &str ) != RPC_S_OK )
 	{
-		return false;
+		return L"";
 	}
 	WString result = reinterpret_cast<wchar_t*>( str );
 	RpcStringFreeW( &str );
