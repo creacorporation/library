@@ -345,6 +345,10 @@ bool mTaskQueue::TaskRoutine( mWorkerThreadPool& pool , DWORD Param1 , DWORD_PTR
 			//一時中断したのだから、プライオリティに関係なく一番後ろにくっつける
 			mCriticalSectionTicket critical( queue->MyCriticalSection );
 
+			queue->MyIsCritical = false;
+			queue->MyActiveTask--;
+			queue->MyTaskInformationMap[ task->GetTaskId() ].Executing--;
+
 			if( queue->MyWorkerThreadPool.AddTask( TaskRoutine , false , (DWORD_PTR)queue ) )
 			{
 				//ステータスを実行待ちに
@@ -357,10 +361,6 @@ bool mTaskQueue::TaskRoutine( mWorkerThreadPool& pool , DWORD Param1 , DWORD_PTR
 				addtask_result = false;
 				task->MyTaskStatus = mTaskBase::TaskStatus::STATUS_ABORTED;
 			}
-
-			queue->MyIsCritical = false;
-			queue->MyActiveTask--;
-			queue->MyTaskInformationMap[ task->GetTaskId() ].Executing--;
 		}
 
 		if( !addtask_result )

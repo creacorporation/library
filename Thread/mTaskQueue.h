@@ -70,7 +70,7 @@ private:
 
 	mTaskQueue();
 	mTaskQueue( const mTaskQueue& src );
-	const mTaskQueue& operator=( const mTaskQueue& src );
+	const mTaskQueue& operator=( const mTaskQueue& src ) = delete;
 
 protected:
 

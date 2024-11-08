@@ -89,7 +89,7 @@ public:
 
 private:
 	mWorkerThreadPool( const mWorkerThreadPool& src );
-	const mWorkerThreadPool& operator=( const mWorkerThreadPool& src );
+	const mWorkerThreadPool& operator=( const mWorkerThreadPool& src ) = delete;
 
 private:
 

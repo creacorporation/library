@@ -416,15 +416,18 @@ bool mWorkerThreadPool::AddTask( CallbackFunction callback , DWORD Param1, DWORD
 		entry.TaskFunction = callback;
 
 		TaskArray::iterator itr;
+		bool inserted = false;
 		for( itr = MyTaskArray.begin() ; itr != MyTaskArray.end() ; itr++ )
 		{
 			if( itr->LoadbalanceKey == LoadbalanceKey )
 			{
 				itr->Task.push_back( std::move( entry ) );
 				itr->IsActive = true;
+				inserted = true;
+				break;
 			}
 		}
-		if( itr == MyTaskArray.end() )
+		if( !inserted )
 		{
 			TaskArrayEntry arr_entry;
 			arr_entry.ActiveCount = 0;
