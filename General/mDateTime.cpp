@@ -905,3 +905,16 @@ INT mDateTime::Timestamp::GetBusinessYear( INT StartMonth )const
 {
 	return ( Month < StartMonth ) ? ( Year - 1 ) : ( Year );
 }
+
+//ミリ秒単位のUNIX時間に変換します
+uint64_t mDateTime::Timestamp::ToUnixtimeMillisecond( void )const
+{
+	return ( ToModJulian() - 40587 ) * 86'400'000ULL + 0.5;
+}
+
+//ミリ秒単位のUNIX時間から設定します
+void mDateTime::Timestamp::FromUnixtimeMillisecond( uint64_t v )
+{
+	FromModJulian( ( v / 86'400'000.0 ) + 40587 );
+}
+

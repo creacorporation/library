@@ -599,7 +599,7 @@ namespace mDateTime
 	{
 		INT Year;			//年(グレゴリオ暦)
 		INT Month;			//月
-		INT Day;				//日
+		INT Day;			//日
 		INT Hour;			//時(0-23)
 		INT Minute;			//分(0-59)
 		INT Second;			//秒(0-59)
@@ -677,6 +677,12 @@ namespace mDateTime
 		//・時刻はいかなる値が入ってても問題ありません。
 		//・日付は実在しない日が入っていると不正になります。
 		void Normalize( void )noexcept;
+
+		//ミリ秒単位のUNIX時間に変換します
+		uint64_t ToUnixtimeMillisecond( void )const;
+
+		//ミリ秒単位のUNIX時間から設定します
+		void FromUnixtimeMillisecond( uint64_t );
 
 		bool operator<=( const Timestamp& src ) const
 		{
