@@ -11,7 +11,10 @@
 #define MGUID_CPP_COMPILING
 #include "mGUID.h"
 #include <General/mTCHAR.h>
+#include <General/mDateTime.h>
 #include <rpcdce.h>
+
+#pragma comment(lib,"Rpcrt4.lib")
 
 mGUID::mGUID()
 {
@@ -37,6 +40,21 @@ mGUID::mGUID( const mGUID& src )
 {
 	Set( src );
 }
+
+mGUID::mGUID( mGUID::INIT_WITH ini )
+{
+	switch( ini )
+	{
+	case INIT_WITH::V7:
+		CreateV7();
+		break;
+	case INIT_WITH::Normal:
+	default:
+		Create();
+		break;
+	}
+}
+
 
 mGUID::mGUID( uint32_t dt1 , uint16_t dt2 , uint16_t dt3 , uint64_t dt4 )
 {
@@ -153,6 +171,52 @@ bool mGUID::Create( void )
 		break;
 	}
 	return false;
+}
+
+//v7形式で新しいGUIDを生成する
+bool mGUID::CreateV7( void )
+{
+	if( !Create() )
+	{
+		return false;
+	}
+	if( Version() != 4 )
+	{
+		return false;
+	}
+
+	MyGUID.Data3 &= 0x0FFFu;
+	MyGUID.Data3 |= 0x7000u;
+	MyGUID.Data4[ 0 ] &= 0x3Fu;
+	MyGUID.Data4[ 0 ] |= 0x80u;
+
+	mDateTime::Timestamp tm( mDateTime::INIT_WITH::CURRENT_SYSTEMTIME );
+	uint64_t v = tm.ToUnixtimeMillisecond();
+
+	MyGUID.Data1 = ( v >> 16 ) & 0xFFFF'FFFFull;
+	MyGUID.Data2 = ( v >>  0 ) & 0x0000'FFFFull;
+	return true;
+}
+
+int mGUID::Version( void )const
+{
+	return ( MyGUID.Data3 >> 12 ) & 0x0Fu;
+}
+
+//v7形式のGUIDから時刻を読み取る
+mDateTime::Timestamp mGUID::ReadTimestamp( void )const
+{
+	mDateTime::Timestamp result;
+	ReadTimestamp( result );
+	return result;
+}
+
+//v7形式のGUIDから時刻を読み取る
+bool mGUID::ReadTimestamp( mDateTime::Timestamp& retTimestamp )const
+{
+	uint64_t v = ( MyGUID.Data1 << 16 ) + MyGUID.Data2;
+	retTimestamp.FromUnixtimeMillisecond( v );
+	return true;
 }
 
 //GUIDを取得

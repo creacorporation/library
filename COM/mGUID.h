@@ -12,17 +12,25 @@
 #define MGUID_H_INCLUDED
 
 #include "mStandard.h"
-#include "General/mTCHAR.h"
+#include <General/mTCHAR.h>
+#include <General/mDateTime.h>
 
 class mGUID
 {
 public:
+
+	enum class INIT_WITH
+	{
+		Normal,
+		V7
+	};
 
 	mGUID();
 	mGUID( const WString& src );
 	mGUID( const AString& src );
 	mGUID( const GUID& src );
 	mGUID( const mGUID& source );
+	mGUID( INIT_WITH ini );
 	mGUID( uint32_t dt1 , uint16_t dt2 , uint16_t dt3 , uint64_t dt4 );
 
 	const mGUID& operator=( const WString& src );
@@ -46,8 +54,17 @@ public:
 	//値を設定する
 	bool Set( uint32_t dt1 , uint16_t dt2 , uint16_t dt3 , uint64_t dt4 );
 
-	//新しいGUIDを生成する
+	//新しいGUIDを生成する(WinAPIに任せる)
 	bool Create( void );
+	//v7形式で新しいGUIDを生成する
+	bool CreateV7( void );
+
+	//GUIDのバージョンを得る
+	int Version( void )const;
+	//v7形式のGUIDから時刻を読み取る
+	mDateTime::Timestamp ReadTimestamp( void )const;
+	//v7形式のGUIDから時刻を読み取る
+	bool ReadTimestamp( mDateTime::Timestamp& retTimestamp )const;
 
 	//GUIDを取得
 	operator const GUID&( void )const;
