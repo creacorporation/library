@@ -446,6 +446,49 @@ void mDateTime::Time::Normalize( void )noexcept
 	FromValue( ToValue() );
 }
 
+AString mDateTime::Time::ToAString( const char* format )const
+{
+	const wchar_t* format_ptr;
+	WString format_wstring;
+	if( format )
+	{
+		format_wstring = AString2WString( format );
+		format_ptr = format_wstring.c_str();
+	}
+	else
+	{
+		format_ptr = nullptr;
+	}
+
+	WString result = ToWString( format_ptr );
+	return WString2AString( result );
+}
+
+WString mDateTime::Time::ToWString( const wchar_t* format )const
+{
+	SYSTEMTIME tm;
+	tm.wYear = 0;
+	tm.wMonth = 0;
+	tm.wDay = 0;
+	tm.wHour = Hour;
+	tm.wMinute = Minute;
+	tm.wSecond = Second;
+	tm.wMilliseconds = 0;
+
+	int reqsize = GetTimeFormatEx( LOCALE_NAME_USER_DEFAULT , 0 , &tm , format , nullptr , 0 );
+	if( reqsize <= 0 )
+	{
+		return L"";
+	}
+
+	wchar_t* result_ptr = mNew wchar_t[ reqsize ];
+	GetTimeFormatEx( LOCALE_NAME_USER_DEFAULT , 0 , &tm , format , result_ptr , reqsize );
+	WString result = result_ptr;
+	mDelete[] result_ptr;
+
+	return result;
+}
+
 const mDateTime::Time mDateTime::Time::operator+( const Time& v )const
 {
 	mDateTime::Time t( *this );
@@ -909,7 +952,7 @@ INT mDateTime::Timestamp::GetBusinessYear( INT StartMonth )const
 //ミリ秒単位のUNIX時間に変換します
 uint64_t mDateTime::Timestamp::ToUnixtimeMillisecond( void )const
 {
-	return ( ToModJulian() - 40587 ) * 86'400'000ULL + 0.5;
+	return uint64_t( ( ToModJulian() - 40587 ) * 86'400'000ULL + 0.5 );
 }
 
 //ミリ秒単位のUNIX時間から設定します

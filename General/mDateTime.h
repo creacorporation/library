@@ -543,6 +543,32 @@ namespace mDateTime
 		// 1:00:80 → 1:01:20のように補正します
 		void Normalize( void )noexcept;
 
+		//文字列化して返します
+		// format : フォーマット文字列。ヌルにすると現在のユーザーの規定。
+		//  中身はGetTimeFormatExのため、そのフォーマットに従う
+		//  ミリ秒の処理はされない
+		// 【カンペ】
+		//  h/hh = 12時間制の時(先頭0なし/0あり) 
+		//  H/HH = 24時間制の時(先頭0なし/0あり) 
+		//  m/mm = 分(先頭0なし/0あり) 
+		//  s/ss = 秒(先頭0なし/0あり) 
+		//  t    = A or P
+		//  tt   = AM or PM
+		AString ToAString( const char* format = nullptr )const;
+
+		//文字列化して返します
+		// format : フォーマット文字列。ヌルにすると現在のユーザーの規定。
+		//  中身はGetTimeFormatExのため、そのフォーマットに従う
+		//  ミリ秒の処理はされない
+		// 【カンペ】
+		//  h/hh = 12時間制の時(先頭0なし/0あり) 
+		//  H/HH = 24時間制の時(先頭0なし/0あり) 
+		//  m/mm = 分(先頭0なし/0あり) 
+		//  s/ss = 秒(先頭0なし/0あり) 
+		//  t    = A or P
+		//  tt   = AM or PM
+		WString ToWString( const wchar_t* format = nullptr )const;
+
 		bool operator<=( const Time& src ) const
 		{
 			return !( this->operator>( src ) );
