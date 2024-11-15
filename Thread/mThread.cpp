@@ -175,6 +175,18 @@ bool mThread::End( void )
 	return true;
 }
 
+bool mThread::WaitForFinish( DWORD max_wait )
+{
+	DWORD wait_result = WaitForSingleObject( (HANDLE)MyHandle , max_wait );
+
+	if( wait_result == WAIT_OBJECT_0 )
+	{
+		//シグナル状態になった場合、正常終了
+		return true;
+	}
+	return false;
+}
+
 bool mThread::FinishRequest( void )
 {
 	if( MyHandle == INVALID_HANDLE_VALUE )

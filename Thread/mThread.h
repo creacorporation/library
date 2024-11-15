@@ -76,6 +76,10 @@ public:
 	//ret : 成功時真
 	bool Terminate( void );
 
+	//スレッドが終了するまで待つ
+	// max_wait 最大待ち時間、ミリ秒単位
+	threadsafe bool WaitForFinish( DWORD max_wait = INFINITE );
+
 	//スレッドが実行中か否かを調べる
 	threadsafe bool IsValid( void )const;
 
