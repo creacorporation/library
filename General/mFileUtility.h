@@ -246,6 +246,18 @@ namespace mFileUtility
 
 	//指定したパスが存在するかしないかを返します
 	bool IsPathValid( const WString& path );
+
+	//unixのtouchコマンド相当の処理をします（最終更新時刻の更新）
+	// path : touchするファイル
+	// create : true  もしファイルがなかったらそのファイルを作る（本来のtouchの挙動）
+	//          false もしファイルがなかったらエラーにする
+	bool Touch( const AString& path , bool create = true );
+
+	//unixのtouchコマンド相当の処理をします（最終更新時刻の更新）
+	// path : touchするファイル
+	// create : true  もしファイルがなかったらそのファイルを作る（本来のtouchの挙動）
+	//          false もしファイルがなかったらエラーにする
+	bool Touch( const WString& path , bool create = true );
 };
 
 #endif

@@ -14,6 +14,7 @@
 #include <memory>
 #include <shlwapi.h>
 #include <Shlobj.h>
+#include "mFile.h"
 
 #pragma comment(lib, "shell32.lib")
 #pragma comment(lib, "shlwapi.lib")
@@ -560,5 +561,43 @@ bool mFileUtility::IsPathValid( const AString& path )
 bool mFileUtility::IsPathValid( const WString& path )
 {
 	return PathFileExistsW( path.c_str() );
+}
+
+//unixのtouchコマンド相当の処理をします
+bool mFileUtility::Touch( const AString& path , bool create )
+{
+	mFile::Option fileopt;
+	fileopt.AccessRead = true;
+	fileopt.AccessWrite = false;
+	fileopt.Mode = ( create ) ? ( mFile::CreateMode::OpenAlways ) : ( mFile::CreateMode::OpenExisting );
+	fileopt.ShareRead = true;
+	fileopt.ShareWrite = false;
+	fileopt.Path = AString2WString( path );
+
+	mFile fp;
+	if( fp.Open( fileopt ) )
+	{
+		return true;
+	}
+	return false;
+}
+
+//unixのtouchコマンド相当の処理をします
+bool mFileUtility::Touch( const WString& path , bool create )
+{
+	mFile::Option fileopt;
+	fileopt.AccessRead = true;
+	fileopt.AccessWrite = false;
+	fileopt.Mode = ( create ) ? ( mFile::CreateMode::OpenAlways ) : ( mFile::CreateMode::OpenExisting );
+	fileopt.ShareRead = true;
+	fileopt.ShareWrite = false;
+	fileopt.Path = path;
+
+	mFile fp;
+	if( fp.Open( fileopt ) )
+	{
+		return true;
+	}
+	return false;
 }
 
