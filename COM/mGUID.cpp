@@ -190,7 +190,7 @@ bool mGUID::Create( void )
 }
 
 //v7形式で新しいGUIDを生成する
-bool mGUID::CreateV7( void )
+bool mGUID::CreateV7( const mDateTime::Timestamp* ts )
 {
 	if( !Create() )
 	{
@@ -206,9 +206,16 @@ bool mGUID::CreateV7( void )
 	MyGUID.Data4[ 0 ] &= 0x3Fu;
 	MyGUID.Data4[ 0 ] |= 0x80u;
 
-	mDateTime::Timestamp tm( mDateTime::INIT_WITH::CURRENT_SYSTEMTIME );
-	uint64_t v = tm.ToUnixtimeMillisecond();
-
+	uint64_t v;
+	if( ts == nullptr )
+	{
+		mDateTime::Timestamp tm( mDateTime::INIT_WITH::CURRENT_SYSTEMTIME );
+		v = tm.ToUnixtimeMillisecond();
+	}
+	else
+	{
+		v = ts->ToUnixtimeMillisecond();
+	}
 	MyGUID.Data1 = ( v >> 16 ) & 0xFFFF'FFFFull;
 	MyGUID.Data2 = ( v >>  0 ) & 0x0000'FFFFull;
 	return true;

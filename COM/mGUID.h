@@ -57,7 +57,8 @@ public:
 	//新しいGUIDを生成する(WinAPIに任せる)
 	bool Create( void );
 	//v7形式で新しいGUIDを生成する
-	bool CreateV7( void );
+	// ts : GUIDに含めるタイムスタンプ。nullptrの場合現在時刻。
+	bool CreateV7( const mDateTime::Timestamp* ts = nullptr );
 
 	//GUIDのバージョンを得る
 	int Version( void )const;
@@ -96,7 +97,7 @@ namespace std
 	public:
 		size_t operator() ( const mGUID &src ) const
 		{
-			return src.ToGUID().Data1;
+			return *(size_t*)( src.ToGUID().Data4 );
 		}
 	};
 }
