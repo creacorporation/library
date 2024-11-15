@@ -241,6 +241,11 @@ namespace mFileUtility
 	// ret : 成功時真
 	bool CreateMiddleDirectory( const WString& path )noexcept;
 
+	//指定したパスが存在するかしないかを返します
+	bool IsPathValid( const AString& path );
+
+	//指定したパスが存在するかしないかを返します
+	bool IsPathValid( const WString& path );
 };
 
 #endif

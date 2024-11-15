@@ -549,3 +549,16 @@ bool mFileUtility::CreateMiddleDirectory( const WString& path )noexcept
 	RaiseError( g_ErrorLogger , 0 , L"ディレクトリを作成できませんでした" );
 	return false;
 }
+
+//指定したパスが存在するかしないかを返します
+bool mFileUtility::IsPathValid( const AString& path )
+{
+	return PathFileExistsA( path.c_str() );
+}
+
+//指定したパスが存在するかしないかを返します
+bool mFileUtility::IsPathValid( const WString& path )
+{
+	return PathFileExistsW( path.c_str() );
+}
+
