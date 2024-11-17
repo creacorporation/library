@@ -641,6 +641,18 @@ void mDateTime::Timestamp::Set( const Date& date , const Time& time )
 	return;
 }
 
+void mDateTime::Timestamp::Set( const SYSTEMTIME& src )
+{
+	Year = src.wYear;
+	Month = src.wMonth;
+	Day = src.wDay;
+	Hour = src.wHour;
+	Minute = src.wMinute;
+	Second = src.wSecond;
+	Milliseconds = src.wMilliseconds;
+	return;
+}
+
 //指定年月の初日に設定します
 void mDateTime::Timestamp::SetFirstDay( INT year , INT month )noexcept
 {
@@ -748,6 +760,11 @@ mDateTime::Timestamp::Timestamp( const InitWithLastDayOf& init_with )
 	SetLastDay( init_with.year , init_with.month );
 }
 
+mDateTime::Timestamp::Timestamp( const SYSTEMTIME& src )
+{
+	Set( src );
+}
+
 mDateTime::Date::Date( const AString& src )
 {
 	if( !Set( src ) )
@@ -762,6 +779,11 @@ mDateTime::Date::Date( const WString& src )
 	{
 		Clear();
 	}
+}
+
+mDateTime::Date::Date( const SYSTEMTIME& src )
+{
+	Set( src );
 }
 
 mDateTime::Time::Time( const AString& src )
@@ -783,6 +805,11 @@ mDateTime::Time::Time( const WString& src )
 mDateTime::Time::Time( double src )
 {
 	FromValue( src );
+}
+
+mDateTime::Time::Time( const SYSTEMTIME& src )
+{
+	Set( src );
 }
 
 bool mDateTime::Date::Set( const AString& src )
@@ -811,6 +838,14 @@ bool mDateTime::Date::Set( const WString& src )
 	return false;
 }
 
+bool mDateTime::Date::Set( const SYSTEMTIME& src )
+{
+	Year = src.wYear;
+	Month = src.wMonth;
+	Day = src.wDay;
+	return true;
+}
+
 bool mDateTime::Time::Set( const AString& src )
 {
 	Clear();
@@ -831,6 +866,14 @@ bool mDateTime::Time::Set( const WString& src )
 	return false;
 }
 
+bool mDateTime::Time::Set( const SYSTEMTIME& src )
+{
+	Hour = src.wHour;
+	Minute = src.wMinute;
+	Second = src.wSecond;
+	Milliseconds = src.wMilliseconds;
+	return true;
+}
 
 void mDateTime::YearMonth::SetCurrentLocal( void )
 {
@@ -959,5 +1002,37 @@ uint64_t mDateTime::Timestamp::ToUnixtimeMillisecond( void )const
 void mDateTime::Timestamp::FromUnixtimeMillisecond( uint64_t v )
 {
 	FromModJulian( ( v / 86'400'000.0 ) + 40587 );
+}
+
+//SYSTEMTIME構造体として取り出します
+SYSTEMTIME mDateTime::Timestamp::ToSystemtime( void )const
+{
+	SYSTEMTIME res;
+	res.wYear = Year;
+	res.wMonth = Month;
+	res.wDay = Day;
+	res.wHour = Hour;
+	res.wMinute = Minute;
+	res.wSecond = Second;
+	res.wMilliseconds = Milliseconds;
+	return res;
+}
+
+//現在格納している時間をシステム時間として、ローカル時間に変換した結果をます
+mDateTime::Timestamp mDateTime::Timestamp::ToLocalTime( void )const
+{
+	SYSTEMTIME sys = ToSystemtime();
+	SYSTEMTIME local;
+	SystemTimeToTzSpecificLocalTime( nullptr , &sys , &local );
+	return Timestamp( local );
+}
+
+//現在格納している時間をローカル時間として、システム時間に変換した結果をます
+mDateTime::Timestamp mDateTime::Timestamp::ToSystemTime( void )const
+{
+	SYSTEMTIME local = ToSystemtime();
+	SYSTEMTIME sys;
+	TzSpecificLocalTimeToSystemTime( nullptr , &local , &sys );
+	return Timestamp( sys );
 }
 

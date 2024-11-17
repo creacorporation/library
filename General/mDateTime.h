@@ -247,6 +247,7 @@ namespace mDateTime
 		Date( const InitWithLastDayOf& init_with );
 		Date( const AString& src );
 		Date( const WString& src );
+		Date( const SYSTEMTIME& src );
 
 		template< class ExceptionIfFailed >
 		Date( const AString& src )
@@ -322,6 +323,11 @@ namespace mDateTime
 		//src : 読み取る文字列
 		//ret : 成功時真
 		bool Set( const WString& src );
+
+		//SYSTEMTIME構造体を読み取って日付をセットします。
+		//src : 読み取る文字列
+		//ret : 成功時真
+		bool Set( const SYSTEMTIME& src );
 
 		//格納している日付が有効であるか否かを返します
 		//ここで言う有効とは、実在する日付かどうかです
@@ -443,6 +449,7 @@ namespace mDateTime
 		Time( INIT_WITH INIT_WITH );
 		Time( const AString& src );
 		Time( const WString& src );
+		Time( const SYSTEMTIME& src );
 
 		template< class ExceptionIfFailed >
 		Time( const AString& src )
@@ -486,6 +493,11 @@ namespace mDateTime
 		//src : 読み取る文字列
 		//ret : 成功時真
 		bool Set( const WString& src );
+
+		//SYSTEMTIMEを読み取って時刻をセットします。
+		//src : 読み取るSYSTEMTIME
+		//ret : 成功時真
+		bool Set( const SYSTEMTIME& src );
 
 		//文字列を読み取って時刻をセットします。
 		//文字列を日付として読み取れない場合は、テンプレートで指定した型の例外を投げます。この型はmExceptionの派生型でなければなりません。
@@ -649,6 +661,7 @@ namespace mDateTime
 		Timestamp( INIT_WITH INIT_WITH );
 		Timestamp( const InitWithFirstDayOf& init_with );
 		Timestamp( const InitWithLastDayOf& init_with );
+		Timestamp( const SYSTEMTIME& src );
 
 		void SetCurrentLocal( void );
 		void SetCurrentSystem( void );
@@ -672,6 +685,9 @@ namespace mDateTime
 		//時刻を取り出します
 		Time GetTime( void )const;
 
+		//SYSTEMTIME構造体として取り出します
+		SYSTEMTIME ToSystemtime( void )const;
+
 		//日付をセットします。時刻は変化しません。
 		void Set( const Date& date );
 
@@ -686,6 +702,9 @@ namespace mDateTime
 
 		//日付と時刻をセットします
 		void Set( const Date& date , const Time& time );
+
+		//日付と時刻をセットします
+		void Set( const SYSTEMTIME& src );
 
 		//曜日を求めます
 		//・日付のみに対する曜日になります。水曜日の25時に対しては水曜日を返します。
@@ -709,6 +728,12 @@ namespace mDateTime
 
 		//ミリ秒単位のUNIX時間から設定します
 		void FromUnixtimeMillisecond( uint64_t );
+
+		//現在格納している時間をシステム時間として、ローカル時間に変換した結果をます
+		Timestamp ToLocalTime( void )const;
+
+		//現在格納している時間をローカル時間として、システム時間に変換した結果をます
+		Timestamp ToSystemTime( void )const;
 
 		bool operator<=( const Timestamp& src ) const
 		{
