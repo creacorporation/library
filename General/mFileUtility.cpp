@@ -563,8 +563,8 @@ bool mFileUtility::IsPathValid( const WString& path )
 	return PathFileExistsW( path.c_str() );
 }
 
-//unixのtouchコマンド相当の処理をします
-bool mFileUtility::Touch( const AString& path , bool create )
+template< class c = AString >
+static bool TouchInternal( const c& path , bool create )
 {
 	mFile::Option fileopt;
 	fileopt.AccessRead = true;
@@ -572,7 +572,7 @@ bool mFileUtility::Touch( const AString& path , bool create )
 	fileopt.Mode = ( create ) ? ( mFile::CreateMode::OpenAlways ) : ( mFile::CreateMode::OpenExisting );
 	fileopt.ShareRead = true;
 	fileopt.ShareWrite = false;
-	fileopt.Path = AString2WString( path );
+	fileopt.Path = ToWString( path );
 
 	mFile fp;
 	if( fp.Open( fileopt ) )
@@ -580,18 +580,35 @@ bool mFileUtility::Touch( const AString& path , bool create )
 		return true;
 	}
 	return false;
+}
+
+//unixのtouchコマンド相当の処理をします
+bool mFileUtility::Touch( const AString& path , bool create )
+{
+	return TouchInternal( path , create );
 }
 
 //unixのtouchコマンド相当の処理をします
 bool mFileUtility::Touch( const WString& path , bool create )
 {
+	return TouchInternal( path , create );
+}
+
+template< class c = AString >
+static bool GetFileTimeInternal(
+	const c& path,
+	mDateTime::Timestamp* retCreationTime,
+	mDateTime::Timestamp* retLastAccessTime,
+	mDateTime::Timestamp* retLastWriteTime
+)
+{
 	mFile::Option fileopt;
 	fileopt.AccessRead = true;
 	fileopt.AccessWrite = false;
-	fileopt.Mode = ( create ) ? ( mFile::CreateMode::OpenAlways ) : ( mFile::CreateMode::OpenExisting );
+	fileopt.Mode = mFile::CreateMode::OpenExisting;
 	fileopt.ShareRead = true;
-	fileopt.ShareWrite = false;
-	fileopt.Path = path;
+	fileopt.ShareWrite = true;
+	fileopt.Path = ToWString( path );
 
 	mFile fp;
 	if( fp.Open( fileopt ) )
@@ -601,3 +618,24 @@ bool mFileUtility::Touch( const WString& path , bool create )
 	return false;
 }
 
+//ファイルの更新時刻を得ます
+bool mFileUtility::GetFileTime(
+	const AString& path,
+	mDateTime::Timestamp* retCreationTime,
+	mDateTime::Timestamp* retLastAccessTime,
+	mDateTime::Timestamp* retLastWriteTime
+)
+{
+	return GetFileTimeInternal( path , retCreationTime , retLastAccessTime , retLastWriteTime );
+}
+
+//ファイルの更新時刻を得ます
+bool mFileUtility::GetFileTime(
+	const WString& path,
+	mDateTime::Timestamp* retCreationTime,
+	mDateTime::Timestamp* retLastAccessTime,
+	mDateTime::Timestamp* retLastWriteTime
+)
+{
+	return GetFileTimeInternal( path , retCreationTime , retLastAccessTime , retLastWriteTime );
+}

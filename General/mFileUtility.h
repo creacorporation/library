@@ -13,6 +13,7 @@
 
 #include "mStandard.h"
 #include "mTCHAR.h"
+#include "mDateTime.h"
 
 namespace mFileUtility
 {
@@ -258,6 +259,22 @@ namespace mFileUtility
 	// create : true  もしファイルがなかったらそのファイルを作る（本来のtouchの挙動）
 	//          false もしファイルがなかったらエラーにする
 	bool Touch( const WString& path , bool create = true );
+
+	//ファイルの更新時刻を得ます
+	bool GetFileTime(
+		const AString& path,
+		mDateTime::Timestamp* retCreationTime,
+		mDateTime::Timestamp* retLastAccessTime,
+		mDateTime::Timestamp* retLastWriteTime
+	);
+
+	//ファイルの更新時刻を得ます
+	bool GetFileTime(
+		const WString& path,
+		mDateTime::Timestamp* retCreationTime,
+		mDateTime::Timestamp* retLastAccessTime,
+		mDateTime::Timestamp* retLastWriteTime
+	);
 };
 
 #endif

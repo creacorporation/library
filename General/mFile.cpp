@@ -451,6 +451,40 @@ bool mFile::ExecIoControl( DWORD code , const mBinary* in , mBinary* retResult )
 	return true;
 }
 
+bool mFile::GetFileTime(
+	mDateTime::Timestamp* retCreationTime,
+	mDateTime::Timestamp* retLastAccessTime,
+	mDateTime::Timestamp* retLastWriteTime
+)const
+{
+	FILETIME CreationTime;
+	FILETIME LastAccessTime;
+	FILETIME LastWriteTime;
 
+	auto TimeConvert = []( mDateTime::Timestamp* ret_result , const FILETIME& src )->bool
+	{
+		if( !ret_result )
+		{
+			return true;
+		}
+		SYSTEMTIME systime;
+		return FileTimeToSystemTime( &src , &systime );
+	};
+
+	if( !::GetFileTime( MyHandle , 
+		( retCreationTime ? &CreationTime : nullptr ) ,
+		( retCreationTime ? &LastAccessTime : nullptr ) ,
+		( retCreationTime ? &LastWriteTime : nullptr )
+	) )
+	{
+		return false;
+	}
+
+	bool result = true;
+	result &= TimeConvert( retCreationTime , CreationTime );
+	result &= TimeConvert( retLastAccessTime , LastAccessTime );
+	result &= TimeConvert( retLastWriteTime , LastWriteTime );
+	return result;
+}
 
 

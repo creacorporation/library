@@ -36,6 +36,7 @@ void TestFunction( void )
 #include <mStandard.h>
 #include <General/mTCHAR.h>
 #include <General/mBinary.h>
+#include <General/mDateTime.h>
 
 class mFile
 {
@@ -161,6 +162,16 @@ public:
 	// in : 入力データ。何も渡さないならnullptr
 	// in : 出力データ。何も受け取らないならnullptr
 	bool ExecIoControl( DWORD code , const mBinary* in , mBinary* retResult );
+
+	//ファイル時刻を取得します
+	// retCreationTime : 作成時刻
+	// retLastAccessTime : 最終アクセス時刻
+	// retLastWriteTime : 最終書き込み時刻
+	bool GetFileTime(
+		mDateTime::Timestamp* retCreationTime,
+		mDateTime::Timestamp* retLastAccessTime,
+		mDateTime::Timestamp* retLastWriteTime
+	)const;
 
 private:
 
