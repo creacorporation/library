@@ -613,7 +613,7 @@ static bool GetFileTimeInternal(
 	mFile fp;
 	if( fp.Open( fileopt ) )
 	{
-		return true;
+		return fp.GetFileTime( retCreationTime , retLastAccessTime , retLastWriteTime );
 	}
 	return false;
 }
