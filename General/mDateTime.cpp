@@ -653,6 +653,14 @@ void mDateTime::Timestamp::Set( const SYSTEMTIME& src )
 	return;
 }
 
+void mDateTime::Timestamp::Set( const FILETIME& src )
+{
+	SYSTEMTIME systime;
+	FileTimeToSystemTime( &src , &systime );
+	Set( systime );
+	return;
+}
+
 //指定年月の初日に設定します
 void mDateTime::Timestamp::SetFirstDay( INT year , INT month )noexcept
 {
@@ -761,6 +769,11 @@ mDateTime::Timestamp::Timestamp( const InitWithLastDayOf& init_with )
 }
 
 mDateTime::Timestamp::Timestamp( const SYSTEMTIME& src )
+{
+	Set( src );
+}
+
+mDateTime::Timestamp::Timestamp( const FILETIME& src )
 {
 	Set( src );
 }
@@ -1016,6 +1029,19 @@ SYSTEMTIME mDateTime::Timestamp::ToSystemtime( void )const
 	res.wSecond = Second;
 	res.wMilliseconds = Milliseconds;
 	return res;
+}
+
+//FILETIME構造体として取り出します
+FILETIME mDateTime::Timestamp::ToFileTime( void )const
+{
+	SYSTEMTIME tm = ToSystemtime();
+	FILETIME ft;
+	if( !SystemTimeToFileTime( &tm , &ft ) )
+	{
+		ft.dwLowDateTime = 0;
+		ft.dwHighDateTime = 0;
+	}
+	return ft;
 }
 
 //現在格納している時間をシステム時間として、ローカル時間に変換した結果をます

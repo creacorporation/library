@@ -662,6 +662,7 @@ namespace mDateTime
 		Timestamp( const InitWithFirstDayOf& init_with );
 		Timestamp( const InitWithLastDayOf& init_with );
 		Timestamp( const SYSTEMTIME& src );
+		Timestamp( const FILETIME& src );
 
 		void SetCurrentLocal( void );
 		void SetCurrentSystem( void );
@@ -688,6 +689,9 @@ namespace mDateTime
 		//SYSTEMTIME構造体として取り出します
 		SYSTEMTIME ToSystemtime( void )const;
 
+		//FILETIME構造体として取り出します
+		FILETIME ToFileTime( void )const;
+
 		//日付をセットします。時刻は変化しません。
 		void Set( const Date& date );
 
@@ -705,6 +709,9 @@ namespace mDateTime
 
 		//日付と時刻をセットします
 		void Set( const SYSTEMTIME& src );
+
+		//日付と時刻をセットします
+		void Set( const FILETIME& src );
 
 		//曜日を求めます
 		//・日付のみに対する曜日になります。水曜日の25時に対しては水曜日を返します。
