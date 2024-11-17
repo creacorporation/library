@@ -166,6 +166,15 @@ AString WStringToUtf8( const WString& src );
 AString Utf8ToAString( const AString& src );
 WString Utf8ToWString( const AString& src );
 
+AString ToAString( const AString& src );
+AString ToAString( const WString& src );
+
+WString ToWString( const AString& src );
+WString ToWString( const WString& src );
+
+TString ToTString( const AString& src );
+TString ToTString( const WString& src );
+
 //AStringにUTF16(LE)の文字列が格納されているとき、WStringに変換して取り出します
 WString CastToWString( const AString& src );
 

@@ -266,6 +266,34 @@ AString WString2AString( const WString& src )
 	return result;
 }
 
+AString ToAString( const AString& src )
+{
+	return src;
+}
+AString ToAString( const WString& src )
+{
+	return WString2AString( src );
+}
+
+WString ToWString( const AString& src )
+{
+	return AString2WString( src );
+}
+WString ToWString( const WString& src )
+{
+	return src;
+}
+
+TString ToTString( const AString& src )
+{
+	return AString2TString( src );
+}
+TString ToTString( const WString& src )
+{
+	return WString2TString( src );
+}
+
+
 INT sprintf_va( AString& ret_dest , const CHAR* format , va_list args )
 {
 	//必要文字数をカウントしてバッファを確保
