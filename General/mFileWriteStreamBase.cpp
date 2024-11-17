@@ -81,7 +81,7 @@ bool mFileWriteStreamBase::WriteString( const wchar_t* line )	//UNICODE文字列
 }
 
 //指定サイズを書込みます
-bool mFileWriteStreamBase::WriteBinary( const BYTE* buffer , size_t size )
+bool mFileWriteStreamBase::WriteBinary( _In_bytecount_(size) const BYTE* buffer , size_t size )
 {
 	for( size_t i = 0 ; i < size ; i++ )
 	{

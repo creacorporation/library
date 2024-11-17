@@ -103,7 +103,7 @@ public:
 
 	//指定サイズを書込みます
 	//ret : 成功時true
-	bool WriteBinary( const BYTE* buffer , size_t size );
+	bool WriteBinary( _In_bytecount_(size) const BYTE* buffer , size_t size );
 
 	//指定ストリームから読み取ってそのまま書き込みます
 	//※指定バイト書き込むか、読み込み元ストリームがEOFになるまで書き込みます
