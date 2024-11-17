@@ -149,11 +149,11 @@ bool mServiceControlManager::StartExistingService( const WString& ServiceName , 
 	opt.argc = 0;
 	opt.argv = mNew LPCWSTR[ args.size() ];
 
-	for( WStringDeque::const_iterator itr = args.begin() ; itr != args.end() ; itr++ )
+	for( int i = 0 ; i < args.size() ; i++ )
 	{
-		if( itr->size() && itr->at( 0 ) != '\0' )
+		if( args[ i ].size() && args[ i ][ 0 ] != '\0' )
 		{
-			opt.argv[ opt.argc ] = itr->data();
+			opt.argv[ opt.argc ] = args[ i ].data();
 			opt.argc++;
 		}
 	}
