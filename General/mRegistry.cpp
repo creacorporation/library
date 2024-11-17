@@ -224,7 +224,11 @@ WString mRegistry::GetString( const WString& entry , const WString& def_value )
 		RaiseError( g_ErrorLogger , 0 , L"レジストリの型が違います" , entry );
 		return def_value;
 	}
-
+	//最後の文字がヌル文字であったら消す
+	while( result_string.back() == L'\0' )
+	{
+		result_string.pop_back();
+	}
 	return result_string;
 }
 
