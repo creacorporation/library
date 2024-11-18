@@ -572,9 +572,9 @@ void mErrorLogger::OutputLogToFileSimple( const LogEntry& entry )
 	}
 
 	#ifdef _WIN64
-	sprintf( str , L"%02d/%02d/%02d %02d:%02d:%02d [%c]%04llx,%08x,%04d %s[%s] %s\r\n" , 
+	sprintf( str , L"%02d/%02d/%02d %02d:%02d:%02d [%c]%04llx,0x%08x,%04d %s[%s] %s\r\n" , 
 	#else
-	sprintf( str , L"%02d/%02d/%02d %02d:%02d:%02d [%c]%04x,%08x,%04d %s[%s] %s\r\n" , 
+	sprintf( str , L"%02d/%02d/%02d %02d:%02d:%02d [%c]%04x,0x%08x,%04d %s[%s] %s\r\n" , 
 	#endif
 		entry.LocalTime.wYear,
 		entry.LocalTime.wMonth,
