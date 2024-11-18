@@ -70,6 +70,7 @@ bool mRegistry::Close( void )
 	if( MyKey != INVALID_HANDLE_VALUE )
 	{
 		RegCloseKey( MyKey );
+		MyKey = (HKEY)INVALID_HANDLE_VALUE;
 	}
 	return true;
 }
