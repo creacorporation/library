@@ -45,12 +45,13 @@ public:
 	//ログをコンソールに出力するか
 	enum LogOutputMode
 	{
-		LOG_OUTPUT_CONSOLE,		//コマンドライン(stderr)に出力する
-		LOG_OUTPUT_DEBUGGER,	//デバッガに出力する
-		LOG_OUTPUT_FILE,		//指定ファイルに出力する
-		LOG_OUTPUT_EVENTLOG,	//Windowsのイベントログに出力する(未実装)
-		LOG_OUTPUT_CALLBACK,	//コールバック関数を呼ぶ
-		LOG_OUTPUT_NONE,		//何もしない
+		LOG_OUTPUT_CONSOLE,			//コマンドライン(stderr)に出力する
+		LOG_OUTPUT_DEBUGGER,		//デバッガに出力する
+		LOG_OUTPUT_FILE,			//指定ファイルに出力する
+		LOG_OUTPUT_FILE_SIMPLE,		//指定ファイルに出力する
+		LOG_OUTPUT_EVENTLOG,		//Windowsのイベントログに出力する(未実装)
+		LOG_OUTPUT_CALLBACK,		//コールバック関数を呼ぶ
+		LOG_OUTPUT_NONE,			//何もしない
 	};
 
 	//エラーのレベル
@@ -73,16 +74,17 @@ public:
 	//エラーログのエントリ
 	struct LogEntry
 	{
-		DWORD Id;			//ログの連番
-		ErrorLevel Level;	//エラーレベル
-		WString File;		//エラーが発生したファイル名
-		DWORD Line;			//エラーが発生した行
-		DWORD Code1;		//エラーコード(GetLastErrorで取得した物)
-		ULONG_PTR Code2;	//エラーコード(ユーザー定義)
-		WString Message1;	//ユーザー定義のメッセージ
-		WString Message2;	//ユーザー定義のメッセージ
-		DWORD Time;			//発生時刻
-		DWORD ThreadId;		//ログを記録したスレッドのID
+		DWORD Id;				//ログの連番
+		ErrorLevel Level;		//エラーレベル
+		WString File;			//エラーが発生したファイル名
+		DWORD Line;				//エラーが発生した行
+		DWORD Code1;			//エラーコード(GetLastErrorで取得した物)
+		ULONG_PTR Code2;		//エラーコード(ユーザー定義)
+		WString Message1;		//ユーザー定義のメッセージ
+		WString Message2;		//ユーザー定義のメッセージ
+		DWORD Time;				//発生時刻（Tick）
+		SYSTEMTIME LocalTime;	//発生時刻（ローカル時刻）
+		DWORD ThreadId;			//ログを記録したスレッドのID
 	};
 	typedef std::deque<LogEntry> Log;
 
@@ -129,6 +131,16 @@ public:
 		WString FileName;	//ファイル名
 		bool IsAppend;		//true=既存のファイルに追記する false=既存のファイルの中身は消す
 		LogOutputModeOpt_File() : LogOutputModeOpt( LogOutputMode::LOG_OUTPUT_FILE )
+		{
+			IsAppend = true;
+		}
+	};
+	//ログをファイルに出力する場合の設定オブジェクト
+	struct LogOutputModeOpt_FileSimple : public LogOutputModeOpt
+	{
+		WString FileName;	//ファイル名
+		bool IsAppend;		//true=既存のファイルに追記する false=既存のファイルの中身は消す
+		LogOutputModeOpt_FileSimple() : LogOutputModeOpt( LogOutputMode::LOG_OUTPUT_FILE_SIMPLE )
 		{
 			IsAppend = true;
 		}
@@ -274,6 +286,10 @@ protected:
 	//ファイルにログを出力する
 	// entry : 出力するログ
 	void OutputLogToFile( const LogEntry& entry );
+
+	//ファイルにログを出力する（シンプル）
+	// entry : 出力するログ
+	void OutputLogToFileSimple( const LogEntry& entry );
 
 	//エラーを発生します
 	//publicのAddEntryに、初回インスタンスのポインタを付与した物になります。Proxyがぐるぐる回らないようにするためのものです。

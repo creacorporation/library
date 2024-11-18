@@ -211,6 +211,7 @@ VOID CALLBACK mTimer::TimerRoutine( PVOID param , BOOLEAN istimer )
 		{
 			SetEvent( op->OnTimer );
 		}
+		break;
 	}
 	default:
 		RaiseAssert( g_ErrorLogger , 0 , L"非同期操作の完了通知方法が不正です" , parent->MyOption->Method );

@@ -91,6 +91,7 @@ threadsafe DWORD mErrorLogger::AddEntry( ErrorLevel level , const WString& file 
 	entry.Message1 = mes1;
 	entry.Message2 = mes2;
 	entry.Time = timeGetTime();
+	GetLocalTime( &entry.LocalTime );
 	entry.ThreadId = GetCurrentThreadId();
 
 	//ログにつっこんで、サイズを確認して最大値超えてたら最後のを消す
@@ -132,6 +133,9 @@ threadsafe DWORD mErrorLogger::AddEntry( ErrorLevel level , const WString& file 
 		break;
 	case LOG_OUTPUT_FILE:		//ファイルに出力する
 		OutputLogToFile( entry );
+		break;
+	case LOG_OUTPUT_FILE_SIMPLE:		//ファイルに出力する
+		OutputLogToFileSimple( entry );
 		break;
 	case LOG_OUTPUT_CALLBACK:	//コールバック関数を呼ぶ
 		if( MyCallback )
@@ -537,6 +541,61 @@ void mErrorLogger::OutputLogToFile( const LogEntry& entry )
 	Output( str );
 }
 
+void mErrorLogger::OutputLogToFileSimple( const LogEntry& entry )
+{
+	mCriticalSectionTicket Ticket( MyCritical );
+	WString str;
+
+	wchar_t mark = L'U';
+	WString filename = L"";
+
+	switch( entry.Level )
+	{
+	case LEVEL_ASSERT:			//アサートが発生したとき(通常操作で発生しない想定のエラー用)
+		mark = L'A';
+		filename = L"\"" + entry.File + L"\"";
+		break;
+	case LEVEL_ERROR:			//一般的エラーが発生したとき(ファイルが無かった等)
+		mark = L'E';
+		filename = L"\"" + entry.File + L"\"";
+		break;
+	case LEVEL_LOGGING:			//正常終了でも記録しておきたい事柄が発生したとき(接続完了などのイベント)
+		mark = L'L';
+		break;
+	case LEVEL_EXCEPTION:		//例外がスローされたとき(mExceptionが使用します)
+		mark = L'E';
+		filename = L"\"" + entry.File + L"\"";
+		break;
+	default:
+		mark = L'U';
+		break;
+	}
+
+	#ifdef _WIN64
+	sprintf( str , L"%02d/%02d/%02d %02d:%02d:%02d [%c]%04llx,%08x,%04d %s[%s] %s\r\n" , 
+	#else
+	sprintf( str , L"%02d/%02d/%02d %02d:%02d:%02d [%c]%04x,%08x,%04d %s[%s] %s\r\n" , 
+	#endif
+		entry.LocalTime.wYear,
+		entry.LocalTime.wMonth,
+		entry.LocalTime.wDay,
+		entry.LocalTime.wHour,
+		entry.LocalTime.wMinute,
+		entry.LocalTime.wSecond,
+		mark,
+		entry.Code2,
+		entry.Code1,
+		entry.Line,
+		filename.c_str(),
+		entry.Message1.c_str(),
+		entry.Message2.c_str()
+	);
+
+	DWORD writesize = (DWORD)( str.length() * sizeof( wchar_t ) );
+	DWORD written = 0;
+	WriteFile( MyHandle , str.c_str() , writesize , &written , nullptr );
+}
+
 //ログ出力のモードを変更する
 bool mErrorLogger::ChangeLogOutputMode( const LogOutputModeOpt& setting )
 {
@@ -565,7 +624,9 @@ bool mErrorLogger::ChangeLogOutputMode( const LogOutputModeOpt& setting )
 	{
 		;	//no additional operation required
 	}
-	else if( setting.Mode == LogOutputMode::LOG_OUTPUT_FILE )
+	else if(
+		( setting.Mode == LogOutputMode::LOG_OUTPUT_FILE ) ||
+		( setting.Mode == LogOutputMode::LOG_OUTPUT_FILE_SIMPLE ) )
 	{
 		const LogOutputModeOpt_File* setting_file = ( const LogOutputModeOpt_File*)&setting;
 
