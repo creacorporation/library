@@ -275,6 +275,10 @@ namespace mFileUtility
 		mDateTime::Timestamp* retLastAccessTime,
 		mDateTime::Timestamp* retLastWriteTime
 	);
+
+	//現在実行中の実行ファイルのフルパスを取得
+	WString GetExecutableFullPath( void );
+
 };
 
 #endif

@@ -639,3 +639,27 @@ bool mFileUtility::GetFileTime(
 {
 	return GetFileTimeInternal( path , retCreationTime , retLastAccessTime , retLastWriteTime );
 }
+
+WString mFileUtility::GetExecutableFullPath( void )
+{
+	WString tmp;
+	tmp.resize( tmp.capacity() );
+
+	while( 1 )
+	{
+		DWORD sz = GetModuleFileNameW( nullptr , const_cast<wchar_t*>( tmp.data() ) , tmp.size() );
+		if( sz == 0 )
+		{
+			return L"";
+		}
+		if( GetLastError() == ERROR_INSUFFICIENT_BUFFER )
+		{
+			tmp.resize( tmp.size() * 2 );
+		}
+		else
+		{
+			tmp.resize( sz );
+			return tmp;
+		}
+	}
+}
