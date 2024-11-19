@@ -114,6 +114,8 @@ threadsafe DWORD mErrorLogger::AddEntry( ErrorLevel level , const WString& file 
 	//回数カウント
 	switch( level )
 	{
+	case ErrorLevel::LEVEL_DEBUG:
+	case ErrorLevel::LEVEL_WARNING:
 	case ErrorLevel::LEVEL_ASSERT:
 	case ErrorLevel::LEVEL_ERROR:
 	case ErrorLevel::LEVEL_EXCEPTION:
@@ -191,6 +193,31 @@ DWORD mErrorLogger::AddEntry( const Log& toAppend )
 		return MyCurrentId - 1;
 	}
 }
+
+DWORD mErrorLogger::AddEntry( LogEntry&& toAppend )
+{
+	//有効かどうか確認する
+	if( !MyIsEnabled )
+	{
+		return MyCurrentId;
+	}
+	else
+	{
+		mCriticalSectionTicket Ticket( MyCritical );
+
+		//検索対象
+		MyLogError.push_front( toAppend );
+		MyLogError.front().Id = MyCurrentId;
+		MyCurrentId++;
+
+		if( MyMaxErrorSize < MyLogError.size() )
+		{
+			MyLogError.pop_back();
+		}
+		return MyCurrentId - 1;
+	}
+}
+
 
 DWORD mErrorLogger::GetCurrentId( void )const
 {
@@ -303,10 +330,7 @@ void mErrorLogger::Clear( void )
 {
 	mCriticalSectionTicket Ticket( MyCritical );
 	MyLogError.clear();
-	MyErrorCount[ ErrorLevel::LEVEL_ASSERT ] = 0;
-	MyErrorCount[ ErrorLevel::LEVEL_ERROR ] = 0;
-	MyErrorCount[ ErrorLevel::LEVEL_EXCEPTION ] = 0;
-	MyErrorCount[ ErrorLevel::LEVEL_LOGGING ] = 0;
+	ZeroMemory( MyErrorCount , sizeof( MyErrorCount ) );
 }
 
 
@@ -346,6 +370,20 @@ void mErrorLogger::OutputLogToConsole( const LogEntry& entry )
 			wchar_fprintf( stderr , L"*EXCEPTION 0x%08llX\n" , entry.Code2 );
 			#else
 			wchar_fprintf( stderr , L"*EXCEPTION 0x%08X\n" , entry.Code2 );
+			break;
+			#endif
+		case LEVEL_DEBUG:			//デバッグ情報
+			#ifdef _WIN64
+			wchar_fprintf( stderr , L"*DEBUG 0x%08llX\n" , entry.Code2 );
+			#else
+			wchar_fprintf( stderr , L"*DEBUG 0x%08X\n" , entry.Code2 );
+			break;
+			#endif
+		case LEVEL_WARNING:			//ワーニング
+			#ifdef _WIN64
+			wchar_fprintf( stderr , L"*WARNING 0x%08llX\n" , entry.Code2 );
+			#else
+			wchar_fprintf( stderr , L"*WARNING 0x%08X\n" , entry.Code2 );
 			break;
 			#endif
 		default:
@@ -394,6 +432,20 @@ void mErrorLogger::OutputLogToConsole( const LogEntry& entry )
 			fprintf( stderr , "*EXCEPTION 0x%08llX\n" , entry.Code2 );
 			#else
 			fprintf( stderr , "*EXCEPTION 0x%08X\n" , entry.Code2 );
+			break;
+			#endif
+		case LEVEL_DEBUG:			//デバッグ情報
+			#ifdef _WIN64
+			fprintf( stderr , "*DEBUG 0x%08llX\n" , entry.Code2 );
+			#else
+			fprintf( stderr , "*DEBUG 0x%08X\n" , entry.Code2 );
+			break;
+			#endif
+		case LEVEL_WARNING:			//ワーニング
+			#ifdef _WIN64
+			fprintf( stderr , "*WARNING 0x%08llX\n" , entry.Code2 );
+			#else
+			fprintf( stderr , "*WARNING 0x%08X\n" , entry.Code2 );
 			break;
 			#endif
 		default:
@@ -450,6 +502,20 @@ void mErrorLogger::OutputLogToDebugger( const LogEntry& entry )
 		sprintf( str , L"*EXCEPTION 0x%08X\n" , entry.Code2 );
 		#endif
 		break;
+	case LEVEL_DEBUG:			//デバッグ情報
+		#ifdef _WIN64
+		sprintf( str , L"*DEBUG 0x%08llX\n" , entry.Code2 );
+		#else
+		sprintf( str , L"*DEBUG 0x%08X\n" , entry.Code2 );
+		break;
+		#endif
+	case LEVEL_WARNING:			//ワーニング
+		#ifdef _WIN64
+		sprintf( str , L"*WARNING 0x%08llX\n" , entry.Code2 );
+		#else
+		sprintf( str , L"*WARNING 0x%08X\n" , entry.Code2 );
+		break;
+		#endif
 	default:
 		#ifdef _WIN64
 		sprintf( str , L"*UNKNOWN 0x%08llX\n" , entry.Code2 );
@@ -517,6 +583,20 @@ void mErrorLogger::OutputLogToFile( const LogEntry& entry )
 		sprintf( str , L"*EXCEPTION 0x%08X\r\n" , entry.Code2 );
 		#endif
 		break;
+	case LEVEL_DEBUG:			//デバッグ情報
+		#ifdef _WIN64
+		sprintf( str , L"*DEBUG 0x%08llX\n" , entry.Code2 );
+		#else
+		sprintf( str , L"*DEBUG 0x%08X\n" , entry.Code2 );
+		break;
+		#endif
+	case LEVEL_WARNING:			//ワーニング
+		#ifdef _WIN64
+		sprintf( str , L"*WARNING 0x%08llX\n" , entry.Code2 );
+		#else
+		sprintf( str , L"*WARNING 0x%08X\n" , entry.Code2 );
+		break;
+		#endif
 	default:
 		#ifdef _WIN64
 		sprintf( str , L"*UNKNOWN 0x%08llX\r\n" , entry.Code2 );
@@ -565,6 +645,12 @@ void mErrorLogger::OutputLogToFileSimple( const LogEntry& entry )
 	case LEVEL_EXCEPTION:		//例外がスローされたとき(mExceptionが使用します)
 		mark = L'E';
 		filename = L"\"" + entry.File + L"\"";
+		break;
+	case LEVEL_DEBUG:			//デバッグ情報
+		mark = L'D';
+		break;
+	case LEVEL_WARNING:			//ワーニング
+		mark = L'W';
 		break;
 	default:
 		mark = L'U';

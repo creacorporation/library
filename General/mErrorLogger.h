@@ -57,18 +57,24 @@ public:
 	//エラーのレベル
 	enum ErrorLevel
 	{
-		//アサートが発生したとき(通常操作で発生しない想定のエラー用)
-		//Windowsログに記録した場合は、「エラーイベント」となります。
-		LEVEL_ASSERT = 0,
 		//一般的エラーが発生したとき(ファイルが無かった等)
+		//Windowsログに記録した場合は、「エラーイベント」となります。
+		LEVEL_ERROR = 0,
+		//アサートが発生したとき(プログラム的に想定していなかった場合)
+		//Windowsログに記録した場合は、「エラーイベント」となります。
+		LEVEL_ASSERT = 1,
+		//続行は可能だが問題がある場合
 		//Windowsログに記録した場合は、「警告イベント」となります。
-		LEVEL_ERROR = 1,
+		LEVEL_WARNING = 2,
+		//例外がスローされたとき(mExceptionが使用します)
+		//Windowsログに記録した場合は、「警告イベント」となります。
+		LEVEL_EXCEPTION = 3,
 		//正常終了でも記録しておきたい事柄が発生したとき(接続完了などのイベント)
 		//Windowsログに記録した場合は、「情報イベント」となります。
-		LEVEL_LOGGING = 2,
-		//例外がスローされたとき(mExceptionが使用します)
-		//Windowsログに記録した場合は、「エラーイベント」となります。
-		LEVEL_EXCEPTION = 3,
+		LEVEL_LOGGING = 4,
+		//デバッグ用に記録しておきたい事柄が発生したとき
+		//Windowsログに記録されません。
+		LEVEL_DEBUG = 5,
 	};
 
 	//エラーログのエントリ
@@ -196,32 +202,19 @@ public:
 	//　　　Proxyを設定している場合の注意点：返されるログ連番は、このインスタンスに対する番号となります。Proxy先の番号ではありません。
 	threadsafe DWORD AddEntry( ErrorLevel level , const WString& file , DWORD line , DWORD ec1 , ULONG_PTR ec2 , const WString& mes1 , const WString& mes2 );
 
-	//エラーを発生します
-	//file : エラーが発生したファイル名
-	//line : エラーが発生した行
-	//ec1 : エラーコード(GetLastErrorで取得した物)
-	//ec2 : エラーコード(ユーザー定義)
-	//mes : ユーザー定義のメッセージ
-	//ret : 追加したエラーのログ連番(失敗はありません)
-	//　　　Proxyを設定している場合の注意点：返されるログ連番は、このインスタンスに対する番号となります。Proxy先の番号ではありません。
-	threadsafe DWORD AddEntry( ErrorLevel level , const WString& file , DWORD line , DWORD ec1 , ULONG_PTR ec2 , const WString& mes1 , const WStringDeque& mes2 );
-
-	//エラーを発生します
-	//file : エラーが発生したファイル名
-	//line : エラーが発生した行
-	//ec1 : エラーコード(GetLastErrorで取得した物)
-	//ec2 : エラーコード(ユーザー定義)
-	//mes : ユーザー定義のメッセージ
-	//ret : 追加したエラーのログ連番(失敗はありません)
-	//　　　Proxyを設定している場合の注意点：返されるログ連番は、このインスタンスに対する番号となります。Proxy先の番号ではありません。
-	threadsafe DWORD AddEntry( ErrorLevel level , const WString& file , DWORD line , DWORD ec1 , ULONG_PTR ec2 , const WString& mes1 , const WStringVector& mes2 );
-
 	//エラーログを追加します
 	//toAppend : 追記したいログ
 	//ret : 追加したエラーのログ連番(失敗はありません)
 	//・この方法でログを追加した場合、コンソール等への出力はありません。
 	//・この方法でログを追加した場合、Proxyを設定していても転送されません。
 	threadsafe DWORD AddEntry( const Log& toAppend );
+
+	//エラーログを追加します
+	//toAppend : 追記したいログ
+	//ret : 追加したエラーのログ連番(失敗はありません)
+	//・この方法でログを追加した場合、コンソール等への出力はありません。
+	//・この方法でログを追加した場合、Proxyを設定していても転送されません。
+	threadsafe DWORD AddEntry( LogEntry&& toAppend );
 
 	//現在のログ連番の値を調べる　
 	//※次にログの追加があった場合に使用される連番の値
@@ -299,25 +292,9 @@ protected:
 	//      originがnullptrではない場合、0
 	threadsafe DWORD AddEntry( ErrorLevel level , const WString& file , DWORD line , DWORD ec1 , ULONG_PTR ec2 , const WString& mes1 , const WString& mes2 , const mErrorLogger* origin );
 
-	//エラーを発生します
-	//publicのAddEntryに、初回インスタンスのポインタを付与した物になります。Proxyがぐるぐる回らないようにするためのものです。
-	//origin : Proxyからの呼び出しではない場合(一番最初の呼び出しの場合)は、nullptr
-	//         Proxyからの呼び出しである場合は、一番最初に呼び出したオブジェクトのポインタ
-	//ret : originがnullptrの場合、追加したエラーのログ連番
-	//      originがnullptrではない場合、0
-	threadsafe DWORD AddEntry( ErrorLevel level , const WString& file , DWORD line , DWORD ec1 , ULONG_PTR ec2 , const WString& mes1 , const WStringDeque& mes2 , const mErrorLogger* origin );
-
-	//エラーを発生します
-	//publicのAddEntryに、初回インスタンスのポインタを付与した物になります。Proxyがぐるぐる回らないようにするためのものです。
-	//origin : Proxyからの呼び出しではない場合(一番最初の呼び出しの場合)は、nullptr
-	//         Proxyからの呼び出しである場合は、一番最初に呼び出したオブジェクトのポインタ
-	//ret : originがnullptrの場合、追加したエラーのログ連番
-	//      originがnullptrではない場合、0
-	threadsafe DWORD AddEntry( ErrorLevel level , const WString& file , DWORD line , DWORD ec1 , ULONG_PTR ec2 , const WString& mes1 , const WStringVector& mes2 , const mErrorLogger* origin );
-
 protected:
 
-	DWORD MyErrorCount[ 4 ];	//エラー発生回数
+	DWORD MyErrorCount[ 6 ];	//エラー発生回数
 
 	Log MyLogError;		//エラーログ
 
@@ -434,6 +411,47 @@ DWORD RaiseErrorInternalF( mErrorLogger& obj , mErrorLogger::ErrorLevel level , 
 //obj : エラー情報の登録先
 //error_code : エラーコード(ユーザー定義)
 //mes : ユーザー定義のメッセージ
+//・デバッグ用の記録に使用
+#define CreateDebugEntry(obj,error_code,...)		\
+{													\
+	DWORD tmp_error_code = GetLastError();			\
+	RaiseErrorInternal(								\
+		obj,										\
+		mErrorLogger::ErrorLevel::LEVEL_DEBUG,		\
+		ERROR_LOGGER_CURRENT_FILE ,					\
+		__LINE__ ,									\
+		tmp_error_code ,							\
+		error_code ,								\
+		__VA_ARGS__ );								\
+}													\
+/*CreateLogEntry*/
+
+//動作ログ
+//obj : エラー情報の登録先
+//error_code : エラーコード(ユーザー定義)
+// ...(可変長引数)は以下の通りです
+//  1要素目 メッセージ(書式指定文字使用不可)
+//  2要素目 書式指定文字列
+//  3要素目以降 書式指定文字列に埋め込む値
+//・デバッグ用の記録に使用
+#define CreateDebugEntryF(obj,error_code,...)		\
+{													\
+	DWORD tmp_error_code = GetLastError();			\
+	RaiseErrorInternalF(							\
+		obj,										\
+		mErrorLogger::ErrorLevel::LEVEL_DEBUG,		\
+		ERROR_LOGGER_CURRENT_FILE ,					\
+		__LINE__ ,									\
+		tmp_error_code ,							\
+		error_code ,								\
+		__VA_ARGS__ );								\
+}													\
+/*CreateLogEntryF*/
+
+//動作ログ
+//obj : エラー情報の登録先
+//error_code : エラーコード(ユーザー定義)
+//mes : ユーザー定義のメッセージ
 //・ロギングは正常動作でも記録しておきたいイベント（接続完了とか）に対して生成します
 #define CreateLogEntry(obj,error_code,...)			\
 {													\
@@ -470,6 +488,47 @@ DWORD RaiseErrorInternalF( mErrorLogger& obj , mErrorLogger::ErrorLevel level , 
 		__VA_ARGS__ );								\
 }													\
 /*CreateLogEntryF*/
+
+//警告発生
+//obj : 警告情報の登録先
+//error_code : エラーコード(ユーザー定義)
+//mes : ユーザー定義のメッセージ
+//・続行は可能だが問題がある場合
+#define RaiseWarning(obj,error_code,...)			\
+{													\
+	DWORD tmp_error_code = GetLastError();			\
+	RaiseErrorInternal(								\
+		obj,										\
+		mErrorLogger::ErrorLevel::LEVEL_WARNING,	\
+		ERROR_LOGGER_CURRENT_FILE ,					\
+		__LINE__ ,									\
+		tmp_error_code ,							\
+		error_code ,								\
+		__VA_ARGS__ );								\
+}													\
+/*RaiseError*/
+
+//警告発生
+//obj : 警告情報の登録先
+//error_code : エラーコード(ユーザー定義)
+// ...(可変長引数)は以下の通りです
+//  1要素目 メッセージ(書式指定文字使用不可)
+//  2要素目 書式指定文字列
+//  3要素目以降 書式指定文字列に埋め込む値
+//・続行は可能だが問題がある場合
+#define RaiseWarningF(obj,error_code,...)			\
+{													\
+	DWORD tmp_error_code = GetLastError();			\
+	RaiseErrorInternalF(							\
+		obj,										\
+		mErrorLogger::ErrorLevel::LEVEL_WARNING,	\
+		ERROR_LOGGER_CURRENT_FILE ,					\
+		__LINE__ ,									\
+		tmp_error_code ,							\
+		error_code ,								\
+		__VA_ARGS__ );								\
+}													\
+/*RaiseErrorF*/
 
 //エラー発生
 //obj : エラー情報の登録先
@@ -517,7 +576,7 @@ DWORD RaiseErrorInternalF( mErrorLogger& obj , mErrorLogger::ErrorLevel level , 
 //obj : アサート情報の登録先
 //error_code : エラーコード(ユーザー定義)
 //mes : ユーザー定義のメッセージ
-//・アサートは通常操作では起こりえないはずのエラー（バグ濃厚のもの）に対して生成します。
+//・アサートが発生したとき(プログラム的に想定していなかった場合)に対して生成します。
 #define RaiseAssert(obj,error_code,...)				\
 {													\
 	DWORD tmp_error_code = GetLastError();			\
@@ -540,7 +599,7 @@ DWORD RaiseErrorInternalF( mErrorLogger& obj , mErrorLogger::ErrorLevel level , 
 //  1要素目 メッセージ(書式指定文字使用不可)
 //  2要素目 書式指定文字列
 //  3要素目以降 書式指定文字列に埋め込む値
-//・アサートは通常操作では起こりえないはずのエラー（バグ濃厚のもの）に対して生成します。
+//・アサートが発生したとき(プログラム的に想定していなかった場合)に対して生成します。
 #define RaiseAssertF(obj,error_code,...)			\
 {													\
 	DWORD tmp_error_code = GetLastError();			\
