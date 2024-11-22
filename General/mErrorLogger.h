@@ -94,11 +94,32 @@ public:
 	};
 	typedef std::deque<LogEntry> Log;
 
+	//フィルタ関数の戻り値
+	using FILTER = uint32_t;
+	static const FILTER FILTER_NORMAL  = 0x0000'000Fu;	//すべての処理を行う
+	static const FILTER FILTER_MEMORY  = 0x0000'0001u;	//オブジェクト内部に記憶する
+	static const FILTER FILTER_PROXY   = 0x0000'0002u;	//転送先のオブジェクトに転送する
+	static const FILTER FILTER_OUTPUT  = 0x0000'0004u;	//ログを出力する
+	static const FILTER FILTER_COUNT   = 0x0000'0008u;	//エラーレベルごとの発生回数をカウントする
+	static const FILTER FILTER_DISCARD = 0x0000'0000u;	//何もしない
+
+	//フィルタ関数
+	// 戻り値の各ビットをオフにすると、そのログについて該当の制御をしない
+	using LogFilterFunction = FILTER(*)( const LogEntry& entry , DWORD_PTR payload );
+
 	//オプション構造体
 	struct LogOutputModeOpt
 	{
 	public:
 		const LogOutputMode Mode;
+
+		//ログフィルター関数
+		// nullptr にするとすべてFILTER_NORMALを指定したとみなす
+		// 戻り値の各ビットをオフにすると、そのログについて該当の制御をしない
+		LogFilterFunction Filter;
+
+		//ログフィルター関数に与える任意のポインタ
+		DWORD_PTR Payload;
 
 		//自オブジェクトにログを記録した後、指定したオブジェクトもログの内容を転送する
 		//転送不要であればnullptr
@@ -113,8 +134,10 @@ public:
 		LogOutputModeOpt() = delete;
 		LogOutputModeOpt( LogOutputMode mode ) : Mode( mode )
 		{
+			Filter = nullptr;
 			Proxy = nullptr;
 			NoTrace = false;
+			Payload = 0;
 		}
 	};
 	//ログをコンソールに出力する場合の設定オブジェクト
@@ -306,6 +329,12 @@ protected:
 
 	//プロクシ先
 	mErrorLogger* MyProxy;
+
+	//フィルター関数
+	LogFilterFunction MyLogFilterFunction;
+
+	//ペイロード
+	DWORD_PTR MyPayload;
 
 	//ログの記録を行うか
 	bool MyIsEnabled;

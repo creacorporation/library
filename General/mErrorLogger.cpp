@@ -25,6 +25,8 @@ mErrorLogger::mErrorLogger( DWORD max_error )
 	MyProxy = nullptr;
 	MyCallback = nullptr;
 	MyIsEnabled = true;
+	MyLogFilterFunction = nullptr;
+	MyPayload = 0;
 	Clear();
 }
 
@@ -94,7 +96,19 @@ threadsafe DWORD mErrorLogger::AddEntry( ErrorLevel level , const WString& file 
 	GetLocalTime( &entry.LocalTime );
 	entry.ThreadId = GetCurrentThreadId();
 
+	//フィルターの呼び出し
+	FILTER filter; 
+	if( MyLogFilterFunction )
+	{
+		filter = MyLogFilterFunction( entry , MyPayload );
+	}
+	else
+	{
+		filter = FILTER_NORMAL;
+	}
+
 	//ログにつっこんで、サイズを確認して最大値超えてたら最後のを消す
+	if( filter & FILTER_MEMORY )
 	{
 		mCriticalSectionTicket Ticket( MyCritical );
 
@@ -111,55 +125,67 @@ threadsafe DWORD mErrorLogger::AddEntry( ErrorLevel level , const WString& file 
 			}
 		}
 	}
+
 	//回数カウント
-	switch( level )
+	if( filter & FILTER_COUNT )
 	{
-	case ErrorLevel::LEVEL_DEBUG:
-	case ErrorLevel::LEVEL_WARNING:
-	case ErrorLevel::LEVEL_ASSERT:
-	case ErrorLevel::LEVEL_ERROR:
-	case ErrorLevel::LEVEL_EXCEPTION:
-	case ErrorLevel::LEVEL_LOGGING:
-		MyErrorCount[ level ]++;
-	default:
-		break;
-	}
-	//コンソール出力
-	switch( MyLogOutputMode )
-	{
-	case LOG_OUTPUT_CONSOLE:	//コマンドラインに出力する
-		OutputLogToConsole( entry );
-		break;
-	case LOG_OUTPUT_DEBUGGER:	//デバッガに出力する
-		OutputLogToDebugger( entry );
-		break;
-	case LOG_OUTPUT_FILE:		//ファイルに出力する
-		OutputLogToFile( entry );
-		break;
-	case LOG_OUTPUT_FILE_SIMPLE:		//ファイルに出力する
-		OutputLogToFileSimple( entry );
-		break;
-	case LOG_OUTPUT_CALLBACK:	//コールバック関数を呼ぶ
-		if( MyCallback )
+		switch( level )
 		{
-			MyCallback( entry );
+		case ErrorLevel::LEVEL_DEBUG:
+		case ErrorLevel::LEVEL_WARNING:
+		case ErrorLevel::LEVEL_ASSERT:
+		case ErrorLevel::LEVEL_ERROR:
+		case ErrorLevel::LEVEL_EXCEPTION:
+		case ErrorLevel::LEVEL_LOGGING:
+			MyErrorCount[ level ]++;
+		default:
+			break;
 		}
-		break;
-	case LOG_OUTPUT_NONE:		//何もしない
-	default:
-		break;
 	}
 
-	if( MyProxy )
+	//コンソール出力
+	if( filter & FILTER_OUTPUT )
 	{
-		if( origin == nullptr )
+		switch( MyLogOutputMode )
 		{
-			MyProxy->AddEntry( level , file , line , ec1 , ec2 , mes1 , mes2 , this );
-			return retval;
+		case LOG_OUTPUT_CONSOLE:			//コマンドラインに出力する
+			OutputLogToConsole( entry );
+			break;
+		case LOG_OUTPUT_DEBUGGER:			//デバッガに出力する
+			OutputLogToDebugger( entry );
+			break;
+		case LOG_OUTPUT_FILE:				//ファイルに出力する
+			OutputLogToFile( entry );
+			break;
+		case LOG_OUTPUT_FILE_SIMPLE:		//ファイルに出力する
+			OutputLogToFileSimple( entry );
+			break;
+		case LOG_OUTPUT_CALLBACK:			//コールバック関数を呼ぶ
+			if( MyCallback )
+			{
+				MyCallback( entry );
+			}
+			break;
+		case LOG_OUTPUT_NONE:				//何もしない
+		default:
+			break;
 		}
-		else
+	}
+
+	//転送
+	if( filter & FILTER_PROXY )
+	{
+		if( MyProxy )
 		{
-			MyProxy->AddEntry( level , file , line , ec1 , ec2 , mes1 , mes2 , origin );
+			if( origin == nullptr )
+			{
+				MyProxy->AddEntry( level , file , line , ec1 , ec2 , mes1 , mes2 , this );
+				return retval;
+			}
+			else
+			{
+				MyProxy->AddEntry( level , file , line , ec1 , ec2 , mes1 , mes2 , origin );
+			}
 		}
 	}
 	return 0;
@@ -691,6 +717,8 @@ bool mErrorLogger::ChangeLogOutputMode( const LogOutputModeOpt& setting )
 	MyLogOutputMode = setting.Mode;
 	MyProxy = setting.Proxy;
 	MyIsNoTrace = setting.NoTrace;
+	MyLogFilterFunction = setting.Filter;
+	MyPayload = setting.Payload;
 
 	//出力先がファイルで、ファイルが開いているならば閉じる
 	if( MyHandle != INVALID_HANDLE_VALUE )
