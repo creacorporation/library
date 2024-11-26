@@ -46,7 +46,7 @@ ALG_ID mHash::HashAlgorithm2AlgId( HashAlgorithm alg )const
 	case HashAlgorithm::SHA512:
 		return CALG_SHA_512;
 	default:
-		RaiseAssert( g_ErrorLogger , 0 , L"ハッシュアルゴリズムの指定が不正です" , alg );
+		RaiseAssert( g_ErrorLogger , 0 , L"ハッシュアルゴリズムの指定が不正です" , (uint32_t)alg );
 	}
 	return 0;
 }

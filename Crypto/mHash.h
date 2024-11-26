@@ -33,7 +33,7 @@ public:
 	virtual ~mHash();
 
 	//対応するハッシュアルゴリズム
-	enum HashAlgorithm
+	enum class HashAlgorithm
 	{
 		MD5,		//MD5   128bit
 		SHA1,		//SHA1   160bit
