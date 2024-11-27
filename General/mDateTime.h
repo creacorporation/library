@@ -343,6 +343,30 @@ namespace mDateTime
 		//julian : 修正ユリウス通日
 		void FromModJulian( double julian );
 
+		//文字列化して返します
+		// format : フォーマット文字列。ヌルにすると現在のユーザーの規定。
+		//  中身はGetDateFormatExのため、そのフォーマットに従う
+		// 【カンペ】
+		//  d/dd      = 日(先頭0なし/0あり) 
+		//  M/MM      = 月(先頭0なし/0あり) 
+		//  y/yy/yyyy = 年(先頭0なし/2桁0あり/和暦) 
+		//  ddd  = Mon,Tue,Wed...
+		//  MMM  = Jan,Feb,Mar...
+		//  g,gg = 昭和,平成,令和...
+		AString ToAString( const char* format = nullptr )const;
+
+		//文字列化して返します
+		// format : フォーマット文字列。ヌルにすると現在のユーザーの規定。
+		//  中身はGetDateFormatExのため、そのフォーマットに従う
+		// 【カンペ】
+		//  d/dd      = 日(先頭0なし/0あり) 
+		//  M/MM      = 月(先頭0なし/0あり) 
+		//  y/yy/yyyy = 年(先頭0なし/2桁0あり/和暦) 
+		//  ddd  = Mon,Tue,Wed...
+		//  MMM  = Jan,Feb,Mar...
+		//  g,gg = 昭和,平成,令和...
+		WString ToWString( const wchar_t* format = nullptr )const;
+
 		//日付に対する和暦を求めます
 		bool GetJapaneseEra( JapaneseEra& retEra )const noexcept;
 

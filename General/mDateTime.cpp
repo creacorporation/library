@@ -179,6 +179,52 @@ void mDateTime::Date::FromModJulian( double julian )
 	return;
 }
 
+//文字列化して返します
+AString mDateTime::Date::ToAString( const char* format )const
+{
+	const wchar_t* format_ptr;
+	WString format_wstring;
+	if( format )
+	{
+		format_wstring = AString2WString( format );
+		format_ptr = format_wstring.c_str();
+	}
+	else
+	{
+		format_ptr = nullptr;
+	}
+
+	WString result = ToWString( format_ptr );
+	return WString2AString( result );
+}
+
+//文字列化して返します
+WString mDateTime::Date::ToWString( const wchar_t* format )const
+{
+	SYSTEMTIME tm;
+	tm.wYear = Year;
+	tm.wMonth = Month;
+	tm.wDay = Day;
+	tm.wHour = 0;
+	tm.wMinute = 0;
+	tm.wSecond = 0;
+	tm.wMilliseconds = 0;
+
+	int reqsize = GetDateFormatEx( LOCALE_NAME_USER_DEFAULT , 0 , &tm , format , nullptr , 0 , nullptr );
+	if( reqsize <= 0 )
+	{
+		return L"";
+	}
+
+	wchar_t* result_ptr = mNew wchar_t[ reqsize ];
+	GetDateFormatEx( LOCALE_NAME_USER_DEFAULT , 0 , &tm , format , result_ptr , reqsize , nullptr );
+	WString result = result_ptr;
+	mDelete[] result_ptr;
+
+	return result;
+}
+
+
 mDateTime::DAYOFWEEK mDateTime::Date::DayOfWeek( void ) const noexcept
 {
 	int year  = ( Month < 3 ) ? ( Year  -  1 ) : ( Year  );
