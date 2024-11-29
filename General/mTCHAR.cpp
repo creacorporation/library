@@ -294,7 +294,7 @@ TString ToTString( const WString& src )
 }
 
 
-INT sprintf_va( AString& ret_dest , const CHAR* format , va_list args )
+INT sprintf_va( AString& ret_dest , _Printf_format_string_ const CHAR* format , va_list args )
 {
 	//必要文字数をカウントしてバッファを確保
 	INT bufflen = _vscprintf( format , args ) + 1;
@@ -314,7 +314,7 @@ INT sprintf_va( AString& ret_dest , const CHAR* format , va_list args )
 	return result;
 }
 
-INT sprintf_va( AString& ret_dest , const WCHAR* format , va_list args )
+INT sprintf_va( AString& ret_dest , _Printf_format_string_ const WCHAR* format , va_list args )
 {
 
 	//出力がCHAR型なので、formatを一旦CHAR型に変換する
@@ -344,7 +344,7 @@ INT sprintf_va( AString& ret_dest , const WCHAR* format , va_list args )
 	return result;
 }
 
-INT sprintf_va( WString& ret_dest , const CHAR* format , va_list args )
+INT sprintf_va( WString& ret_dest , _Printf_format_string_ const CHAR* format , va_list args )
 {
 	ret_dest = L"";
 	if( !format )
@@ -379,7 +379,7 @@ INT sprintf_va( WString& ret_dest , const CHAR* format , va_list args )
 	return result;
 }
 
-INT sprintf_va( WString& ret_dest , const WCHAR* format , va_list args )
+INT sprintf_va( WString& ret_dest , _Printf_format_string_ const WCHAR* format , va_list args )
 {
 	ret_dest = L"";
 	if( !format )
@@ -406,7 +406,7 @@ INT sprintf_va( WString& ret_dest , const WCHAR* format , va_list args )
 
 }
 
-INT sprintf_va( AString* ret_dest , const CHAR* format , va_list args )
+INT sprintf_va( AString* ret_dest , _Printf_format_string_ const CHAR* format , va_list args )
 {
 	if( ret_dest == nullptr )
 	{
@@ -437,7 +437,7 @@ INT sprintf_va( AString* ret_dest , const CHAR* format , va_list args )
 	return result;
 }
 
-INT sprintf_va( AString* ret_dest , const WCHAR* format , va_list args )
+INT sprintf_va( AString* ret_dest , _Printf_format_string_ const WCHAR* format , va_list args )
 {
 	if( ret_dest == nullptr )
 	{
@@ -477,7 +477,7 @@ INT sprintf_va( AString* ret_dest , const WCHAR* format , va_list args )
 	return result;
 }
 
-INT sprintf_va( WString* ret_dest , const CHAR* format , va_list args )
+INT sprintf_va( WString* ret_dest , _Printf_format_string_ const CHAR* format , va_list args )
 {
 	if( ret_dest == nullptr )
 	{
@@ -517,7 +517,7 @@ INT sprintf_va( WString* ret_dest , const CHAR* format , va_list args )
 	return result;
 }
 
-INT sprintf_va( WString* ret_dest , const WCHAR* format , va_list args )
+INT sprintf_va( WString* ret_dest , _Printf_format_string_ const WCHAR* format , va_list args )
 {
 	if( ret_dest == nullptr )
 	{

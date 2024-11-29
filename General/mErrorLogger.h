@@ -403,8 +403,12 @@ inline DWORD RaiseErrorInternal( mErrorLogger* obj , mErrorLogger::ErrorLevel le
 	return RaiseErrorInternal( obj , level , file , line , ec1 , ec2 , AString2WString( mes1 ) , AString2WString( mes2 ) );
 }
 
+[[deprecated("Please use pointer version.")]]
 DWORD RaiseErrorInternalF( mErrorLogger* obj , mErrorLogger::ErrorLevel level , const WString& file , DWORD line , DWORD ec1 , ULONG_PTR ec2 , const AString& mes1 , const AString mes2 , ... );
+[[deprecated("Please use pointer version.")]]
 DWORD RaiseErrorInternalF( mErrorLogger* obj , mErrorLogger::ErrorLevel level , const WString& file , DWORD line , DWORD ec1 , ULONG_PTR ec2 , const WString& mes1 , const WString mes2 , ... );
+DWORD RaiseErrorInternalF( mErrorLogger* obj , mErrorLogger::ErrorLevel level , const WString& file , DWORD line , DWORD ec1 , ULONG_PTR ec2 , const char*    mes1 , _Printf_format_string_ const char*    mes2 , ... );
+DWORD RaiseErrorInternalF( mErrorLogger* obj , mErrorLogger::ErrorLevel level , const WString& file , DWORD line , DWORD ec1 , ULONG_PTR ec2 , const wchar_t* mes1 , _Printf_format_string_ const wchar_t* mes2 , ... );
 
 //RaiseErrorにmErrorLoggerがポインタで渡されても参照で渡されても良いようにするためのプロクシ（参照Ver）
 inline DWORD RaiseErrorInternal( mErrorLogger& obj , mErrorLogger::ErrorLevel level , const WString& file , DWORD line , DWORD ec1 , ULONG_PTR ec2 , const WString& mes1 , DWORD_PTR val )
@@ -433,8 +437,12 @@ inline DWORD RaiseErrorInternal( mErrorLogger& obj , mErrorLogger::ErrorLevel le
 	return obj.AddEntry( level , file , line , ec1 , ec2 , AString2WString( mes1 ) , AString2WString( mes2 ) );
 }
 
+[[deprecated("Please use pointer version.")]]
 DWORD RaiseErrorInternalF( mErrorLogger& obj , mErrorLogger::ErrorLevel level , const WString& file , DWORD line , DWORD ec1 , ULONG_PTR ec2 , const AString& mes1 , const AString mes2 , ... );
+[[deprecated("Please use pointer version.")]]
 DWORD RaiseErrorInternalF( mErrorLogger& obj , mErrorLogger::ErrorLevel level , const WString& file , DWORD line , DWORD ec1 , ULONG_PTR ec2 , const WString& mes1 , const WString mes2 , ... );
+DWORD RaiseErrorInternalF( mErrorLogger& obj , mErrorLogger::ErrorLevel level , const WString& file , DWORD line , DWORD ec1 , ULONG_PTR ec2 , const char*    mes1 , _Printf_format_string_ const char*    mes2 , ... );
+DWORD RaiseErrorInternalF( mErrorLogger& obj , mErrorLogger::ErrorLevel level , const WString& file , DWORD line , DWORD ec1 , ULONG_PTR ec2 , const wchar_t* mes1 , _Printf_format_string_ const wchar_t* mes2 , ... );
 
 //動作ログ
 //obj : エラー情報の登録先

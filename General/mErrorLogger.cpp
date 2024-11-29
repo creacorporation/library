@@ -838,6 +838,50 @@ DWORD RaiseErrorInternalF( mErrorLogger* obj , mErrorLogger::ErrorLevel level , 
 	return obj->AddEntry( level , file , line , ec1 , ec2 , mes1 , str );
 }
 
+DWORD RaiseErrorInternalF( mErrorLogger* obj , mErrorLogger::ErrorLevel level , const WString& file , DWORD line , DWORD ec1 , ULONG_PTR ec2 , const char* mes1 , _Printf_format_string_ const char* mes2 , ... )
+{
+	if( obj == nullptr )
+	{
+		g_ErrorLogger.AddEntry( mErrorLogger::ErrorLevel::LEVEL_ASSERT , file , line , 0 , 0 , L"エラー登録先オブジェクトがNULLです" , L"" );
+		obj = &g_ErrorLogger;
+	}
+
+	//可変長リスト
+	va_list args;
+	va_start( args , mes2 );
+
+	AString str;
+	INT result = sprintf_va( str , mes2 , args );
+
+	//可変長引数リセット
+	va_end( args );
+
+	return obj->AddEntry( level , file , line , ec1 , ec2 , AString2WString( mes1 ) , AString2WString( str ) );
+
+}
+
+DWORD RaiseErrorInternalF( mErrorLogger* obj , mErrorLogger::ErrorLevel level , const WString& file , DWORD line , DWORD ec1 , ULONG_PTR ec2 , const wchar_t* mes1 , _Printf_format_string_ const wchar_t* mes2 , ... )
+{
+	if( obj == nullptr )
+	{
+		g_ErrorLogger.AddEntry( mErrorLogger::ErrorLevel::LEVEL_ASSERT , file , line , 0 , 0 , L"エラー登録先オブジェクトがNULLです" , L"" );
+		obj = &g_ErrorLogger;
+	}
+
+	//可変長リスト
+	va_list args;
+	va_start( args , mes2 );
+
+	WString str;
+	INT result = sprintf_va( str , mes2 , args );
+
+	//可変長引数リセット
+	va_end( args );
+
+	return obj->AddEntry( level , file , line , ec1 , ec2 , mes1 , str );
+}
+
+
 DWORD RaiseErrorInternalF( mErrorLogger& obj , mErrorLogger::ErrorLevel level , const WString& file , DWORD line , DWORD ec1 , ULONG_PTR ec2 , const AString& mes1 , const AString mes2 , ... )
 {
 	//可変長リスト
@@ -862,6 +906,38 @@ DWORD RaiseErrorInternalF( mErrorLogger& obj , mErrorLogger::ErrorLevel level , 
 
 	WString str;
 	INT result = sprintf_va( str , mes2.c_str() , args );
+
+	//可変長引数リセット
+	va_end( args );
+
+	return obj.AddEntry( level , file , line , ec1 , ec2 , mes1 , str );
+
+}
+
+DWORD RaiseErrorInternalF( mErrorLogger& obj , mErrorLogger::ErrorLevel level , const WString& file , DWORD line , DWORD ec1 , ULONG_PTR ec2 , const char* mes1 , _Printf_format_string_ const char* mes2 , ... )
+{
+	//可変長リスト
+	va_list args;
+	va_start( args , mes2 );
+
+	AString str;
+	INT result = sprintf_va( str , mes2 , args );
+
+	//可変長引数リセット
+	va_end( args );
+
+	return obj.AddEntry( level , file , line , ec1 , ec2 , AString2WString( mes1 ) , AString2WString( str ) );
+
+}
+
+DWORD RaiseErrorInternalF( mErrorLogger& obj , mErrorLogger::ErrorLevel level , const WString& file , DWORD line , DWORD ec1 , ULONG_PTR ec2 , const wchar_t* mes1 , _Printf_format_string_ const wchar_t* mes2 , ... )
+{
+	//可変長リスト
+	va_list args;
+	va_start( args , mes2 );
+
+	WString str;
+	INT result = sprintf_va( str , mes2 , args );
 
 	//可変長引数リセット
 	va_end( args );

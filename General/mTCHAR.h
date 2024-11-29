@@ -181,15 +181,15 @@ WString CastToWString( const AString& src );
 //WStringのエンディアンを変換します(UTF16LE <-->UTF16BE)
 WString SwitchEndian( const WString& src );
 
-INT sprintf_va( AString& ret_dest , const CHAR* format , va_list va );
-INT sprintf_va( AString& ret_dest , const WCHAR* format , va_list va );
-INT sprintf_va( WString& ret_dest , const CHAR* format , va_list va );
-INT sprintf_va( WString& ret_dest , const WCHAR* format , va_list va );
+INT sprintf_va( AString& ret_dest , _Printf_format_string_ const CHAR* format , va_list va );
+INT sprintf_va( AString& ret_dest , _Printf_format_string_ const WCHAR* format , va_list va );
+INT sprintf_va( WString& ret_dest , _Printf_format_string_ const CHAR* format , va_list va );
+INT sprintf_va( WString& ret_dest , _Printf_format_string_ const WCHAR* format , va_list va );
 
-INT sprintf_va( AString* ret_dest , const CHAR* format , va_list va );
-INT sprintf_va( AString* ret_dest , const WCHAR* format , va_list va );
-INT sprintf_va( WString* ret_dest , const CHAR* format , va_list va );
-INT sprintf_va( WString* ret_dest , const WCHAR* format , va_list va );
+INT sprintf_va( AString* ret_dest , _Printf_format_string_ const CHAR* format , va_list va );
+INT sprintf_va( AString* ret_dest , _Printf_format_string_ const WCHAR* format , va_list va );
+INT sprintf_va( WString* ret_dest , _Printf_format_string_ const CHAR* format , va_list va );
+INT sprintf_va( WString* ret_dest , _Printf_format_string_ const WCHAR* format , va_list va );
 
 //注意！
 //パラメータに文字列を使用するとき、%sがCHAR*型かWCHAR型かは、
@@ -198,7 +198,7 @@ INT sprintf_va( WString* ret_dest , const WCHAR* format , va_list va );
 //ret_destがWString型　→	%sはconst WCHAR*型
 //となる。間違えると爆発するので注意すること。
 
-template< class t , class u > INT sprintf( t& ret_dest , const u* format , ... )
+template< class t , class u > INT sprintf( t& ret_dest , _Printf_format_string_ const u* format , ... )
 {
 	ret_dest.clear();
 	if( !format )
@@ -218,7 +218,7 @@ template< class t , class u > INT sprintf( t& ret_dest , const u* format , ... )
 	return result;
 }
 
-template< class t , class u > INT sprintf( t* ret_dest , const u* format , ... )
+template< class t , class u > INT sprintf( t* ret_dest , _Printf_format_string_ const u* format , ... )
 {
 	if( !ret_dest )
 	{
@@ -243,7 +243,7 @@ template< class t , class u > INT sprintf( t* ret_dest , const u* format , ... )
 }
 
 //後ろに文字列を連結するsprintf
-template< class t , class u > INT appendf( t& ret_dest , const u* format , ... )
+template< class t , class u > INT appendf( t& ret_dest , _Printf_format_string_ const u* format , ... )
 {
 	if( !format )
 	{
@@ -268,7 +268,7 @@ template< class t , class u > INT appendf( t& ret_dest , const u* format , ... )
 }
 
 //後ろに文字列を連結するsprintf
-template< class t , class u > INT appendf( t* ret_dest , const u* format , ... )
+template< class t , class u > INT appendf( t* ret_dest , _Printf_format_string_ const u* format , ... )
 {
 	if( !ret_dest )
 	{
@@ -298,7 +298,7 @@ template< class t , class u > INT appendf( t* ret_dest , const u* format , ... )
 }
 
 //文字列オブジェクトを返すsprintf
-template< class t > std::basic_string<t> makeprintf( const t* format , ... )
+template< class t > std::basic_string<t> makeprintf( _Printf_format_string_ const t* format , ... )
 {
 	//可変長リスト
 	va_list args;
