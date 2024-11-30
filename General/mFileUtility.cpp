@@ -563,6 +563,26 @@ bool mFileUtility::IsPathValid( const WString& path )
 	return PathFileExistsW( path.c_str() );
 }
 
+//指定したパスがディレクトリ名か(\または/で終わっているか)を得ます
+bool mFileUtility::IsPathDirectory( const AString& path )
+{
+	if( path.empty() )
+	{
+		return false;
+	}
+	return path.back() == '\\' || path.back() == '/';
+}
+
+//指定したパスがディレクトリ名か(\または/で終わっているか)を得ます
+bool mFileUtility::IsPathDirectory( const WString& path )
+{
+	if( path.empty() )
+	{
+		return false;
+	}
+	return path.back() == L'\\' || path.back() == L'/';
+}
+
 template< class c = AString >
 static bool TouchInternal( const c& path , bool create )
 {
