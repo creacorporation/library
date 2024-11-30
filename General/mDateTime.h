@@ -353,6 +353,8 @@ namespace mDateTime
 		//  ddd  = Mon,Tue,Wed...
 		//  MMM  = Jan,Feb,Mar...
 		//  g,gg = 昭和,平成,令和...
+		//  そのまま表示したい文字は '月' のようにシングルクォートでくくる。'そのものは''で表記する。
+		//    例:  "yy'年'M'月'"
 		AString ToAString( const char* format = nullptr )const;
 
 		//文字列化して返します
@@ -365,6 +367,8 @@ namespace mDateTime
 		//  ddd  = Mon,Tue,Wed...
 		//  MMM  = Jan,Feb,Mar...
 		//  g,gg = 昭和,平成,令和...
+		//  そのまま表示したい文字は '月' のようにシングルクォートでくくる。'そのものは''で表記する。
+		//    例:  "yy'年'M'月'"
 		WString ToWString( const wchar_t* format = nullptr )const;
 
 		//日付に対する和暦を求めます
@@ -590,6 +594,8 @@ namespace mDateTime
 		//  s/ss = 秒(先頭0なし/0あり) 
 		//  t    = A or P
 		//  tt   = AM or PM
+		//  そのまま表示したい文字は '分' のようにシングルクォートでくくる。'そのものは''で表記する。
+		//    例:  "HH'時'mm'分'"　→　15時07分
 		AString ToAString( const char* format = nullptr )const;
 
 		//文字列化して返します
@@ -603,6 +609,8 @@ namespace mDateTime
 		//  s/ss = 秒(先頭0なし/0あり) 
 		//  t    = A or P
 		//  tt   = AM or PM
+		//  そのまま表示したい文字は '分' のようにシングルクォートでくくる。'そのものは''で表記する。
+		//    例:  "HH'時'mm'分'"　→　15時07分
 		WString ToWString( const wchar_t* format = nullptr )const;
 
 		bool operator<=( const Time& src ) const
