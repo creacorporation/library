@@ -434,7 +434,7 @@ bool mDateTime::Time::IsValid( void )const
 //格納している時刻に対して、1日を1.0とした比率を求めます
 double mDateTime::Time::ToValue( void )const
 {
-	return ( ( 3600000 * Hour ) + ( 60000 * Minute ) + ( Second * 1000 ) + ( Milliseconds ) ) / 86400000.5;
+	return ( ( 3600000 * Hour ) + ( 60000 * Minute ) + ( Second * 1000 ) + ( Milliseconds ) ) / 86400000.0;
 }
 
 double mDateTime::Time::ToHour( void )const
@@ -1108,3 +1108,163 @@ mDateTime::Timestamp mDateTime::Timestamp::ToSystemTime( void )const
 	return Timestamp( sys );
 }
 
+bool mDateTime::Timestamp::Set( const AString& src , mDateTime::TimeBias* retbias )
+{
+	int bias_hour = 0;
+	int bias_minute = 0;
+	char marker;
+	int count = sscanf( src.c_str() , "%04d-%02d-%02dT%02d:%02d:%02d%c%02d:%02d" , &Year , &Month , &Day , &Hour , &Minute , &Second , &marker , &bias_hour , &bias_minute );
+
+	switch( count )
+	{
+	case 3:	//年月日のみ
+		Hour = 0;
+		Minute = 0;
+		Second = 0;
+		break;
+	case 6:	//時分秒まで(UTCとみなす)
+		break;
+	case 7:	//マーカーがある場合
+	case 9:
+		if( marker == '-' )
+		{
+			bias_hour = -bias_hour;
+		}
+		break;
+	default:
+		return false;
+	}
+	if( retbias )
+	{
+		retbias->Set( bias_hour , bias_minute );
+	}
+	return true;
+}
+
+bool mDateTime::Timestamp::Set( const WString& src , mDateTime::TimeBias* retbias )
+{
+	int bias_hour = 0;
+	int bias_minute = 0;
+	char marker;
+	int count = wchar_scanf( src.c_str() , L"%04d-%02d-%02dT%02d:%02d:%02d%c%02d:%02d" , &Year , &Month , &Day , &Hour , &Minute , &Second , &marker , &bias_hour , &bias_minute );
+
+	switch( count )
+	{
+	case 3:	//年月日のみ
+		Hour = 0;
+		Minute = 0;
+		Second = 0;
+		break;
+	case 6:	//時分秒まで(UTCとみなす)
+		break;
+	case 7:	//マーカーがある場合
+	case 9:
+		if( marker == '-' )
+		{
+			bias_hour = -bias_hour;
+		}
+		break;
+	default:
+		return false;
+	}
+	if( retbias )
+	{
+		retbias->Set( bias_hour , bias_minute );
+	}
+	return true;
+}
+
+
+//文字列化して返します
+AString mDateTime::Timestamp::ToAString( const mDateTime::TimeBias* bias )const
+{
+	AString str;
+	sprintf( str , "%04d-%02d-%02dT%02d:%02d:%02d" , Year , Month , Day , Hour , Minute , Second );
+	if( bias == nullptr )
+	{
+		appendf( str , "Z" );
+	}
+	else
+	{
+		appendf( str , "%+02d:%02d" , bias->Hour , bias->Minute );
+	}
+	return str;
+}
+
+
+//文字列化して返します
+WString mDateTime::Timestamp::ToWString( const mDateTime::TimeBias* bias )const
+{
+	WString str;
+	sprintf( str , L"%04d-%02d-%02dT%02d:%02d:%02d" , Year , Month , Day , Hour , Minute , Second );
+	if( bias == nullptr )
+	{
+		appendf( str , L"Z" );
+	}
+	else
+	{
+		appendf( str , L"%+02d:%02d" , bias->Hour , bias->Minute );
+	}
+	return str;	
+}
+
+const mDateTime::Timestamp mDateTime::Timestamp::operator+( const TimeBias& v )const
+{
+	Timestamp tmp = *this;
+	tmp.Hour += v.Hour;
+	if( v.Hour < 0 )
+	{
+		tmp.Minute -= v.Minute;
+	}
+	else
+	{
+		tmp.Minute += v.Minute;
+	}
+	tmp.Normalize();
+	return tmp;
+}
+
+void mDateTime::Timestamp::operator+=( const TimeBias& v )
+{
+	Hour += v.Hour;
+	if( v.Hour < 0 )
+	{
+		Minute -= v.Minute;
+	}
+	else
+	{
+		Minute += v.Minute;
+	}
+	Normalize();
+}
+
+const mDateTime::Timestamp mDateTime::Timestamp::operator-( const TimeBias& v )const
+{
+	Timestamp tmp = *this;
+	tmp.Hour -= v.Hour;
+	if( v.Hour < 0 )
+	{
+		tmp.Minute += v.Minute;
+	}
+	else
+	{
+		tmp.Minute -= v.Minute;
+	}
+	tmp.Normalize();
+	return tmp;
+}
+
+void mDateTime::Timestamp::operator-=( const TimeBias& v )
+{
+	Hour -= v.Hour;
+	if( v.Hour < 0 )
+	{
+		Minute += v.Minute;
+	}
+	else
+	{
+		Minute -= v.Minute;
+	}
+	Normalize();
+
+}

@@ -454,6 +454,27 @@ namespace mDateTime
 
 	};
 
+	//時差格納用時刻構造体
+	struct TimeBias
+	{
+		INT Hour;			//時
+		UINT Minute;		//分(0-59)
+		TimeBias()
+		{
+			Clear();
+		}
+		void Clear()
+		{
+			Hour = 0;
+			Minute = 0;
+		}
+		void Set( INT hour = 0 , INT minute = 0 )
+		{
+			Hour = hour;
+			Minute = minute;
+		}
+	};
+
 	//時刻を格納します
 	struct Time
 	{
@@ -696,6 +717,52 @@ namespace mDateTime
 		Timestamp( const SYSTEMTIME& src );
 		Timestamp( const FILETIME& src );
 
+		//文字列を読み取って時刻をセットします。
+		//文字列はRFC3339形式です(DateやTimeと形式が違うので注意)
+		//src : 読み取る文字列
+		//retBias : 時差部分(不要ならnull可)
+		//ret : 成功時真
+		bool Set( const AString& src , TimeBias* retBias = nullptr );
+
+		//文字列を読み取って時刻をセットします。
+		//文字列はRFC3339形式です(DateやTimeと形式が違うので注意)
+		//src : 読み取る文字列
+		//retBias : 時差部分(不要ならnull可)
+		//ret : 成功時真
+		bool Set( const WString& src , TimeBias* retBias = nullptr );
+
+		//文字列を読み取って時刻をセットします。
+		//文字列はRFC3339形式です(DateやTimeと形式が違うので注意)
+		//文字列を日付として読み取れない場合は、テンプレートで指定した型の例外を投げます。この型はmExceptionの派生型でなければなりません。
+		// ※参考→ using err = class ErrorClass : mException{};
+		//src : 読み取る文字列
+		//retBias : 時差部分(不要ならnull可)
+		template< class ExceptionIfFailed >
+		void Set( const AString& src , TimeBias* retBias = nullptr )
+		{
+			static_assert( std::is_base_of<mExceptionBase,ExceptionIfFailed>::value == true , "Exception class is not derived from mException" );
+			if( !Set( src , retBias ) )
+			{
+				throw ExceptionIfFailed();
+			}
+		}
+
+		//文字列を読み取って時刻をセットします。
+		//文字列はRFC3339形式です(DateやTimeと形式が違うので注意)
+		//文字列を日付として読み取れない場合は、テンプレートで指定した型の例外を投げます。この型はmExceptionの派生型でなければなりません。
+		// ※参考→ using err = class ErrorClass : mException{};
+		//src : 読み取る文字列
+		//retBias : 時差部分(不要ならnull可)
+		template< class ExceptionIfFailed >
+		void Set( const WString& src , TimeBias* retBias = nullptr )
+		{
+			static_assert( std::is_base_of<mExceptionBase,ExceptionIfFailed>::value == true , "Exception class is not derived from mException" );
+			if( !Set( src , retBias ) )
+			{
+				throw ExceptionIfFailed();
+			}
+		}
+
 		void SetCurrentLocal( void );
 		void SetCurrentSystem( void );
 
@@ -707,6 +774,16 @@ namespace mDateTime
 		//※有効な日付を格納していない場合は不正な結果になります
 		//ret : 格納している日付の修正ユリウス通日
 		double ToModJulian( void )const;
+
+		//文字列化して返します
+		//文字列はRFC3339形式です(DateやTimeと違い、フォーマット指定ではない)
+		// bias : UTCとの時差。日本時間なら+9:00。秒以下は無視される。ヌルにするとUTCになる。
+		AString ToAString( const mDateTime::TimeBias* bias = nullptr )const;
+
+		//文字列化して返します
+		//文字列はRFC3339形式です(DateやTimeと違い、フォーマット指定ではない)
+		// bias : UTCとの時差。日本時間なら+9:00。秒以下は無視される。ヌルにするとUTCになる。
+		WString ToWString( const mDateTime::TimeBias* bias = nullptr )const;
 
 		//修正ユリウス通日から日付を取得して格納します
 		//julian : 修正ユリウス通日
@@ -817,6 +894,11 @@ namespace mDateTime
 		{
 			return !( this->operator==( src ) );
 		}
+
+		const Timestamp operator+( const TimeBias& v )const;
+		void operator+=( const TimeBias& v );
+		const Timestamp operator-( const TimeBias& v )const;
+		void operator-=( const TimeBias& v );
 	};
 };
 
