@@ -777,12 +777,12 @@ namespace mDateTime
 
 		//文字列化して返します
 		//文字列はRFC3339形式です(DateやTimeと違い、フォーマット指定ではない)
-		// bias : UTCとの時差。日本時間なら+9:00。秒以下は無視される。ヌルにするとUTCになる。
+		// bias : UTCとの時差。日本時間なら+9:00。ヌルにするとUTC(末尾がZ)になる。
 		AString ToAString( const mDateTime::TimeBias* bias = nullptr )const;
 
 		//文字列化して返します
 		//文字列はRFC3339形式です(DateやTimeと違い、フォーマット指定ではない)
-		// bias : UTCとの時差。日本時間なら+9:00。秒以下は無視される。ヌルにするとUTCになる。
+		// bias : UTCとの時差。日本時間なら+9:00。ヌルにするとUTCになる。
 		WString ToWString( const mDateTime::TimeBias* bias = nullptr )const;
 
 		//修正ユリウス通日から日付を取得して格納します

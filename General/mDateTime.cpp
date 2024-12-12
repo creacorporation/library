@@ -1112,8 +1112,10 @@ bool mDateTime::Timestamp::Set( const AString& src , mDateTime::TimeBias* retbia
 {
 	int bias_hour = 0;
 	int bias_minute = 0;
-	char marker;
-	int count = sscanf( src.c_str() , "%04d-%02d-%02dT%02d:%02d:%02d%c%02d:%02d" , &Year , &Month , &Day , &Hour , &Minute , &Second , &marker , &bias_hour , &bias_minute );
+	char time_marker;
+	char bias_marker;
+	double second;
+	int count = sscanf( src.c_str() , "%04d-%02d-%02d%c%02d:%02d:%lf%c%02d:%02d" , &Year , &Month , &Day , &time_marker , &Hour , &Minute , &second , &bias_marker , &bias_hour , &bias_minute );
 
 	switch( count )
 	{
@@ -1121,12 +1123,13 @@ bool mDateTime::Timestamp::Set( const AString& src , mDateTime::TimeBias* retbia
 		Hour = 0;
 		Minute = 0;
 		Second = 0;
+		Milliseconds = 0;
 		break;
-	case 6:	//時分秒まで(UTCとみなす)
+	case 7:	//時分秒まで(UTCとみなす)
 		break;
-	case 7:	//マーカーがある場合
-	case 9:
-		if( marker == '-' )
+	case 8:	//マーカーがある場合
+	case 10:
+		if( bias_marker == '-' )
 		{
 			bias_hour = -bias_hour;
 		}
@@ -1134,6 +1137,8 @@ bool mDateTime::Timestamp::Set( const AString& src , mDateTime::TimeBias* retbia
 	default:
 		return false;
 	}
+	Second = (INT)second;
+	Milliseconds = INT( ( ( second - Second ) * 1000 ) + 0.5 );
 	if( retbias )
 	{
 		retbias->Set( bias_hour , bias_minute );
@@ -1145,21 +1150,23 @@ bool mDateTime::Timestamp::Set( const WString& src , mDateTime::TimeBias* retbia
 {
 	int bias_hour = 0;
 	int bias_minute = 0;
-	char marker;
-	int count = wchar_scanf( src.c_str() , L"%04d-%02d-%02dT%02d:%02d:%02d%c%02d:%02d" , &Year , &Month , &Day , &Hour , &Minute , &Second , &marker , &bias_hour , &bias_minute );
+	wchar_t time_marker;
+	wchar_t bias_marker;
+	double second;
+	int count = wchar_scanf( src.c_str() , L"%04d-%02d-%02d%C%02d:%02d:%lf%C%02d:%02d" , &Year , &Month , &Day , &time_marker , &Hour , &Minute , &second , &bias_marker , &bias_hour , &bias_minute );
 
 	switch( count )
 	{
 	case 3:	//年月日のみ
 		Hour = 0;
 		Minute = 0;
-		Second = 0;
+		second = 0;
 		break;
-	case 6:	//時分秒まで(UTCとみなす)
+	case 7:	//時分秒まで(UTCとみなす)
 		break;
-	case 7:	//マーカーがある場合
-	case 9:
-		if( marker == '-' )
+	case 8:	//マーカーがある場合
+	case 10:
+		if( bias_marker == L'-' )
 		{
 			bias_hour = -bias_hour;
 		}
@@ -1167,6 +1174,8 @@ bool mDateTime::Timestamp::Set( const WString& src , mDateTime::TimeBias* retbia
 	default:
 		return false;
 	}
+	Second = (INT)second;
+	Milliseconds = INT( ( ( second - Second ) * 1000 ) + 0.5 );
 	if( retbias )
 	{
 		retbias->Set( bias_hour , bias_minute );
@@ -1180,13 +1189,21 @@ AString mDateTime::Timestamp::ToAString( const mDateTime::TimeBias* bias )const
 {
 	AString str;
 	sprintf( str , "%04d-%02d-%02dT%02d:%02d:%02d" , Year , Month , Day , Hour , Minute , Second );
-	if( bias == nullptr )
+	if( Milliseconds )
+	{
+		appendf( str , ".%d" , Milliseconds );
+	}
+	if( bias == nullptr || ( bias->Hour == 0 && bias->Minute == 0 ) )
 	{
 		appendf( str , "Z" );
 	}
+	else if( 0 < bias->Hour )
+	{
+		appendf( str , "+%02d:%02d" , bias->Hour , bias->Minute );
+	}
 	else
 	{
-		appendf( str , "%+02d:%02d" , bias->Hour , bias->Minute );
+		appendf( str , "-%02d:%02d" , -bias->Hour , bias->Minute );
 	}
 	return str;
 }
@@ -1197,13 +1214,21 @@ WString mDateTime::Timestamp::ToWString( const mDateTime::TimeBias* bias )const
 {
 	WString str;
 	sprintf( str , L"%04d-%02d-%02dT%02d:%02d:%02d" , Year , Month , Day , Hour , Minute , Second );
-	if( bias == nullptr )
+	if( Milliseconds )
+	{
+		appendf( str , L".%d" , Milliseconds );
+	}
+	if( bias == nullptr || ( bias->Hour == 0 && bias->Minute == 0 ) )
 	{
 		appendf( str , L"Z" );
 	}
+	else if( 0 < bias->Hour )
+	{
+		appendf( str , L"+%02d:%02d" , bias->Hour , bias->Minute );
+	}
 	else
 	{
-		appendf( str , L"%+02d:%02d" , bias->Hour , bias->Minute );
+		appendf( str , L"-%02d:%02d" , -bias->Hour , bias->Minute );
 	}
 	return str;	
 }
