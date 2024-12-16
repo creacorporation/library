@@ -74,11 +74,11 @@ public:
 	//GUIDを取得
 	operator AString( void )const;
 	//GUIDを取得
-	const AString ToAString( void )const;
+	const AString ToAString( bool with_brace = false )const;
 	//GUIDを取得
 	operator WString( void )const;
 	//GUIDを取得
-	const WString ToWString( void )const;
+	const WString ToWString( bool with_brace = false )const;
 
 	bool operator ==( const mGUID& src )const;
 	bool operator !=( const mGUID& src )const;

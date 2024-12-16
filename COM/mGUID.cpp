@@ -98,36 +98,56 @@ void mGUID::Clear( void )
 //値を設定する
 bool mGUID::Set( const WString& src )
 {
-	if( UuidFromStringW( (RPC_WSTR)src.c_str() , &MyGUID ) == RPC_S_OK )
+	auto Check = [this]( const WString& src )->bool
 	{
-		return true;
-	}
-	if( src.size() == 32 )
-	{
-		WString tmp = src.substr( 0 , 8 ) + L"-" + src.substr( 8 , 4 ) + L"-" + src.substr( 12 , 4 ) + L"-" + src.substr( 16 , 4 ) + L"-" + src.substr( 20 );
-		if( UuidFromStringW( (RPC_WSTR)tmp.c_str() , &MyGUID ) == RPC_S_OK )
+		if( UuidFromStringW( (RPC_WSTR)src.c_str() , &MyGUID ) == RPC_S_OK )
 		{
 			return true;
 		}
+		if( src.size() == 32 )
+		{
+			WString tmp = src.substr( 0 , 8 ) + L"-" + src.substr( 8 , 4 ) + L"-" + src.substr( 12 , 4 ) + L"-" + src.substr( 16 , 4 ) + L"-" + src.substr( 20 );
+			if( UuidFromStringW( (RPC_WSTR)tmp.c_str() , &MyGUID ) == RPC_S_OK )
+			{
+				return true;
+			}
+		}
+		return false;
+	};
+
+	if( 34 <= src.size() && src.front() == L'{' && src.back() == L'}' )
+	{
+		WString inner_str = src.substr( 1 , src.size() - 2 );
+		return Check( inner_str );
 	}
-	return false;
+	return Check( src );
 }
 //値を設定する
 bool mGUID::Set( const AString& src )
 {
-	if( UuidFromStringA( (RPC_CSTR)src.c_str() , &MyGUID ) == RPC_S_OK )
+	auto Check = [this]( const AString& src )->bool
 	{
-		return true;
-	}
-	if( src.size() == 32 )
-	{
-		AString tmp = src.substr( 0 , 8 ) + "-" + src.substr( 8 , 4 ) + "-" + src.substr( 12 , 4 ) + "-" + src.substr( 16 , 4 ) + "-" + src.substr( 20 );
-		if( UuidFromStringA( (RPC_CSTR)tmp.c_str() , &MyGUID ) == RPC_S_OK )
+		if( UuidFromStringA( (RPC_CSTR)src.c_str() , &MyGUID ) == RPC_S_OK )
 		{
 			return true;
 		}
+		if( src.size() == 32 )
+		{
+			AString tmp = src.substr( 0 , 8 ) + "-" + src.substr( 8 , 4 ) + "-" + src.substr( 12 , 4 ) + "-" + src.substr( 16 , 4 ) + "-" + src.substr( 20 );
+			if( UuidFromStringA( (RPC_CSTR)tmp.c_str() , &MyGUID ) == RPC_S_OK )
+			{
+				return true;
+			}
+		}
+		return false;
+	};
+
+	if( 34 <= src.size() && src.front() == '{' && src.back() == '}' )
+	{
+		AString inner_str = src.substr( 1 , src.size() - 2 );
+		return Check( inner_str );
 	}
-	return false;
+	return Check( src );
 }
 //値を設定する
 bool mGUID::Set( const GUID& src )
@@ -261,14 +281,22 @@ mGUID::operator AString( void )const
 }
 
 //GUIDを取得
-const AString mGUID::ToAString( void )const
+const AString mGUID::ToAString( bool with_brace )const
 {
 	RPC_CSTR str;
 	if( UuidToStringA( &MyGUID , &str ) != RPC_S_OK )
 	{
 		return "";
 	}
-	AString result = reinterpret_cast<char*>( str );
+	AString result;
+	if( with_brace )
+	{
+		sprintf( result , "{%s}" , reinterpret_cast<char*>( str ) );
+	}
+	else
+	{
+		result = reinterpret_cast<char*>( str );
+	}
 	RpcStringFreeA( &str );
 
 	return std::move( result );
@@ -281,7 +309,7 @@ mGUID::operator WString( void )const
 }
 
 //GUIDを取得
-const WString mGUID::ToWString( void )const
+const WString mGUID::ToWString( bool with_brace )const
 {
 	RPC_WSTR str;
 	if( UuidToStringW( &MyGUID , &str ) != RPC_S_OK )
@@ -289,6 +317,14 @@ const WString mGUID::ToWString( void )const
 		return L"";
 	}
 	WString result = reinterpret_cast<wchar_t*>( str );
+	if( with_brace )
+	{
+		sprintf( result , L"{%s}" , reinterpret_cast<wchar_t*>( str ) );
+	}
+	else
+	{
+		result = reinterpret_cast<wchar_t*>( str );
+	}
 	RpcStringFreeW( &str );
 
 	return std::move( result );
