@@ -16,6 +16,11 @@ mGdiDC::mGdiDC()
 	MyHdc = nullptr;
 }
 
+mGdiDC::mGdiDC( HDC hdc )
+{
+	MyHdc = hdc;
+}
+
 mGdiDC::~mGdiDC()
 {
 	//MyHdcのハンドルを解放する責任は派生クラス側にあります
