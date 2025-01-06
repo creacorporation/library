@@ -1552,7 +1552,7 @@ AString ToAString( uint32_t v )
 AString ToAString( uint64_t v )
 {
 	AString s;
-	sprintf( s , "%lu" , v );
+	sprintf( s , "%llu" , v );
 	return s;
 }
 AString ToAString( int32_t v )
@@ -1564,7 +1564,7 @@ AString ToAString( int32_t v )
 AString ToAString( int64_t v )
 {
 	AString s;
-	sprintf( s , "%ld" , v );
+	sprintf( s , "%lld" , v );
 	return s;
 }
 AString ToAString( double v )
@@ -1583,7 +1583,7 @@ WString ToWString( uint32_t v )
 WString ToWString( uint64_t v )
 {
 	WString s;
-	sprintf( s , L"%lu" , v );
+	sprintf( s , L"%llu" , v );
 	return s;
 }
 WString ToWString( int32_t v )
@@ -1595,7 +1595,7 @@ WString ToWString( int32_t v )
 WString ToWString( int64_t v )
 {
 	WString s;
-	sprintf( s , L"%ld" , v );
+	sprintf( s , L"%lld" , v );
 	return s;
 }
 WString ToWString( double v )
