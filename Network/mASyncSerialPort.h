@@ -125,6 +125,24 @@ namespace Definitions_ASyncSerialPort
 		ERROR_ON_READ,		//読み込み中のエラー
 		ERROR_ON_WRITE,		//書き込み中のエラー
 	};
+
+	//フローコントロール(DTR-DSR)
+	enum class DTRFlowControlMode
+	{
+		ALWAYS_OFF,					//自分のDTRから常にオフを送信する
+		ALWAYS_ON,					//自分のDTRから常にオンを送信する
+		HANDSHAKE					//DTR-DSRのハンドシェイクを行う
+	};
+
+	//フローコントロール(RTS-CTS)
+	enum class RTSFlowControlMode
+	{
+		ALWAYS_OFF,					//自分のRTSから常にオフを送信する
+		ALWAYS_ON,					//自分のRTSから常にオンを送信する
+		HANDSHAKE,					//RTS-CTSのハンドシェイクを行う(送信バッファにデータが50%たまるとオン/25%以下でオフ)
+		TOGGLE,						//RTS-CTSのハンドシェイクを行う(送信バッファに1バイトでもデータがあればオン/空でオフ)
+	};
+
 };
 
 class mSerialReadStream : public mFileReadStreamBase
@@ -185,6 +203,12 @@ public:
 	//ファイルを開くときのモード
 	using CreateMode = mFile::CreateMode;
 
+	//フローコントロール
+	using DTRFlowControlMode = Definitions_ASyncSerialPort::DTRFlowControlMode;
+
+	//フローコントロール
+	using RTSFlowControlMode = Definitions_ASyncSerialPort::RTSFlowControlMode;
+
 	//オプション構造体
 	struct Option
 	{
@@ -203,9 +227,17 @@ public:
 		DWORD ReadPacketSize;			//読み込みパケットのサイズ
 		DWORD ReadPacketCount;			//読み込みパケットを確保する数
 		DWORD WritePacketSize;			//書き込みパケットのサイズ
-		DWORD WritePacketNotifyCount;	//書き込み待ちパケットがこの子で指定した数を下回った場合に通知する
+		DWORD WritePacketNotifyCount;	//書き込み待ちパケットがここで指定した数を下回った場合に通知する
 		DWORD WritePacketLimit;			//書き込み待ちパケットの数の上限（超えると書き込みエラー）
 		DWORD ReadBufferTimeout;		//任意のバイトの受信間隔(ミリ秒)がこの値を上回ったら受信通知を生成する
+
+		//-----------
+		//フローコントロール
+		//-----------
+		DTRFlowControlMode DTRFlowControl;	//DTR信号を制御するか
+		bool MonitorDSR;					//相手から送られてくるDSRを利用するか(true=利用する/false=無視する)
+		RTSFlowControlMode RTSFlowControl;	//RTS信号を制御するか
+		bool MonitorCTS;					//相手から送られてくるCTSを利用するか(true=利用する/false=無視する)
 
 		//-----------
 		//初期値
@@ -222,6 +254,10 @@ public:
 			WritePacketNotifyCount = 0;
 			WritePacketLimit = 256;
 			ReadBufferTimeout = 100;
+			DTRFlowControl = DTRFlowControlMode::ALWAYS_ON;
+			MonitorDSR = false;
+			RTSFlowControl = RTSFlowControlMode::ALWAYS_ON;
+			MonitorCTS = false;
 		}
 	};
 

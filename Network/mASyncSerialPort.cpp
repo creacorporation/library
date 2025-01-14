@@ -714,6 +714,49 @@ static bool ComPortSetting( HANDLE handle , const mASyncSerialPort::Option& sett
 	}
 	dcb.ByteSize = (BYTE)setting.ByteSize;
 
+	//フローコントロール(DTR)
+	switch( setting.DTRFlowControl )
+	{
+	case mASyncSerialPort::DTRFlowControlMode::ALWAYS_OFF:
+		dcb.fDtrControl = DTR_CONTROL_DISABLE;
+		break;
+	case mASyncSerialPort::DTRFlowControlMode::ALWAYS_ON:
+		dcb.fDtrControl = DTR_CONTROL_ENABLE;
+		break;
+	case mASyncSerialPort::DTRFlowControlMode::HANDSHAKE:
+		dcb.fDtrControl = DTR_CONTROL_HANDSHAKE;
+		break;
+	default:
+		RaiseAssert( g_ErrorLogger , 0 , L"DTR設定が不正です" , (int)setting.DTRFlowControl );
+		return false;
+	}
+
+	//フローコントロール(DSR)
+	dcb.fOutxDsrFlow = setting.MonitorDSR;
+
+	//フローコントロール(RTS)
+	switch( setting.RTSFlowControl )
+	{
+	case mASyncSerialPort::RTSFlowControlMode::ALWAYS_OFF:
+		dcb.fRtsControl = DTR_CONTROL_DISABLE;
+		break;
+	case mASyncSerialPort::RTSFlowControlMode::ALWAYS_ON:
+		dcb.fRtsControl = DTR_CONTROL_ENABLE;
+		break;
+	case mASyncSerialPort::RTSFlowControlMode::HANDSHAKE:
+		dcb.fRtsControl = DTR_CONTROL_HANDSHAKE;
+		break;
+	case mASyncSerialPort::RTSFlowControlMode::TOGGLE:
+		dcb.fRtsControl = RTS_CONTROL_TOGGLE;
+		break;
+	default:
+		RaiseAssert( g_ErrorLogger , 0 , L"RTS設定が不正です" , (int)setting.RTSFlowControl );
+		return false;
+	}
+
+	//フローコントロール(CTS)
+	dcb.fOutxCtsFlow = setting.MonitorCTS;
+
 	//設定の適用
 	if( !SetCommState( handle , &dcb ) )
 	{
