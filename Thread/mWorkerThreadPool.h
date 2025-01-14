@@ -44,7 +44,7 @@ public:
 	// ret : 成功時真
 	//・min_threadsとmax_threadsをともに指定する場合、大小関係がおかしいとエラーになる
 	//・threadに0以下の値を指定して、自動設定したスレッド数が0以下になった場合、min_threadが無指定だったら1に補正する
-	bool Begin( int threads , int min_threads = 0 , int max_threads = 0 );
+	bool Begin( int threads = THREAD_LOGICAL_CORE_MINUS1 , int min_threads = 0 , int max_threads = 0 );
 
 	//ワーカースレッドの終了
 	//正しい順番で終了しないと、残りのタスクが処理されないため、
