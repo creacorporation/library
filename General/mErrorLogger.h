@@ -447,7 +447,9 @@ DWORD RaiseErrorInternalF( mErrorLogger& obj , mErrorLogger::ErrorLevel level , 
 //動作ログ
 //obj : エラー情報の登録先
 //error_code : エラーコード(ユーザー定義)
-//mes : ユーザー定義のメッセージ
+// ...(可変長引数)は以下の通りです
+//  1要素目 メッセージ１
+//  2要素目 メッセージ２
 //・デバッグ用の記録に使用
 #define CreateDebugEntry(obj,error_code,...)		\
 {													\
@@ -488,7 +490,9 @@ DWORD RaiseErrorInternalF( mErrorLogger& obj , mErrorLogger::ErrorLevel level , 
 //動作ログ
 //obj : エラー情報の登録先
 //error_code : エラーコード(ユーザー定義)
-//mes : ユーザー定義のメッセージ
+// ...(可変長引数)は以下の通りです
+//  1要素目 メッセージ１
+//  2要素目 メッセージ２
 //・ロギングは正常動作でも記録しておきたいイベント（接続完了とか）に対して生成します
 #define CreateLogEntry(obj,error_code,...)			\
 {													\
@@ -529,7 +533,9 @@ DWORD RaiseErrorInternalF( mErrorLogger& obj , mErrorLogger::ErrorLevel level , 
 //警告発生
 //obj : 警告情報の登録先
 //error_code : エラーコード(ユーザー定義)
-//mes : ユーザー定義のメッセージ
+// ...(可変長引数)は以下の通りです
+//  1要素目 メッセージ１
+//  2要素目 メッセージ２
 //・続行は可能だが問題がある場合
 #define RaiseWarning(obj,error_code,...)			\
 {													\
@@ -570,7 +576,9 @@ DWORD RaiseErrorInternalF( mErrorLogger& obj , mErrorLogger::ErrorLevel level , 
 //エラー発生
 //obj : エラー情報の登録先
 //error_code : エラーコード(ユーザー定義)
-//mes : ユーザー定義のメッセージ
+// ...(可変長引数)は以下の通りです
+//  1要素目 メッセージ１
+//  2要素目 メッセージ２
 //・エラーは通常操作で起こりうるエラー（ファイルがなかったとか）に対して生成します。
 #define RaiseError(obj,error_code,...)				\
 {													\
@@ -612,7 +620,9 @@ DWORD RaiseErrorInternalF( mErrorLogger& obj , mErrorLogger::ErrorLevel level , 
 //アサート発生
 //obj : アサート情報の登録先
 //error_code : エラーコード(ユーザー定義)
-//mes : ユーザー定義のメッセージ
+// ...(可変長引数)は以下の通りです
+//  1要素目 メッセージ１
+//  2要素目 メッセージ２
 //・アサートが発生したとき(プログラム的に想定していなかった場合)に対して生成します。
 #define RaiseAssert(obj,error_code,...)				\
 {													\
