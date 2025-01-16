@@ -36,7 +36,7 @@ int BitCount( const void* p , size_t sz )
 	int result = 0;
 	for( size_t i = 0 ; i < sz ; i++ )
 	{
-		result += bit[ ((const BYTE*)&p)[ i ] ];
+		result += bit[ ((const BYTE*)p)[ i ] ];
 	}
 	return result;
 
