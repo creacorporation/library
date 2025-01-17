@@ -13,7 +13,7 @@
 #include <inttypes.h>
 #include <cinttypes>
 
-TCHAR* WCHAR2TCHAR( const WCHAR* str )
+TCHAR* mTCHAR::WCHAR2TCHAR( const WCHAR* str )
 {
 	TCHAR* result = nullptr;
 
@@ -43,7 +43,7 @@ TCHAR* WCHAR2TCHAR( const WCHAR* str )
 
 }
 
-TCHAR* CHAR2TCHAR( const CHAR* str )
+TCHAR* mTCHAR::CHAR2TCHAR( const CHAR* str )
 {
 	TCHAR* result = nullptr;
 
@@ -73,7 +73,7 @@ TCHAR* CHAR2TCHAR( const CHAR* str )
 
 }
 
-WCHAR* TCHAR2WCHAR( const TCHAR* str )
+WCHAR* mTCHAR::TCHAR2WCHAR( const TCHAR* str )
 {
 	WCHAR* result = nullptr;
 
@@ -102,7 +102,7 @@ WCHAR* TCHAR2WCHAR( const TCHAR* str )
 	return result;
 }
 
-CHAR* TCHAR2CHAR( const TCHAR* str )
+CHAR* mTCHAR::TCHAR2CHAR( const TCHAR* str )
 {
 	CHAR* result = nullptr;
 
@@ -131,7 +131,7 @@ CHAR* TCHAR2CHAR( const TCHAR* str )
 	return result;
 }
 
-WCHAR* CHAR2WCHAR( const CHAR* str )
+WCHAR* mTCHAR::CHAR2WCHAR( const CHAR* str )
 {
 #ifdef UNICODE
 	//TCHAR=WCHAR
@@ -142,7 +142,7 @@ WCHAR* CHAR2WCHAR( const CHAR* str )
 #endif
 }
 
-CHAR* WCHAR2CHAR( const WCHAR* str )
+CHAR* mTCHAR::WCHAR2CHAR( const WCHAR* str )
 {
 #ifdef UNICODE
 	//TCHAR=WCHAR
@@ -154,7 +154,7 @@ CHAR* WCHAR2CHAR( const WCHAR* str )
 }
 
 
-CHAR* NewAndCopyString( const CHAR* src )
+CHAR* mTCHAR::NewAndCopyString( const CHAR* src )
 {
 	if( !src )
 	{
@@ -167,7 +167,7 @@ CHAR* NewAndCopyString( const CHAR* src )
 	return strcpy( ptr , src );
 }
 
-WCHAR* NewAndCopyString( const WCHAR* src )
+WCHAR* mTCHAR::NewAndCopyString( const WCHAR* src )
 {
 	if( !src )
 	{
@@ -180,7 +180,7 @@ WCHAR* NewAndCopyString( const WCHAR* src )
 	return wcscpy( ptr , src );
 }
 
-TString AString2TString( const AString& src )
+TString mTCHAR::AString2TString( const AString& src )
 {
 #ifdef UNICODE
 	TCHAR* tmp = CHAR2TCHAR( src.c_str() );
@@ -193,7 +193,7 @@ TString AString2TString( const AString& src )
 #endif
 }
 
-TString WString2TString( const WString& src )
+TString mTCHAR::WString2TString( const WString& src )
 {
 #ifdef UNICODE
 	return TString( src );
@@ -206,7 +206,7 @@ TString WString2TString( const WString& src )
 #endif
 }
 
-AString TString2AString( const TString& src )
+AString mTCHAR::TString2AString( const TString& src )
 {
 #ifdef UNICODE
 	CHAR* tmp = TCHAR2CHAR( src.c_str() );
@@ -223,7 +223,7 @@ AString TString2AString( const TString& src )
 #endif
 }
 
-WString TString2WString( const TString& src )
+WString mTCHAR::TString2WString( const TString& src )
 {
 #ifdef UNICODE
 	return WString( src );
@@ -240,7 +240,7 @@ WString TString2WString( const TString& src )
 #endif
 }
 
-WString AString2WString( const AString& src )
+WString mTCHAR::AString2WString( const AString& src )
 {
 	WCHAR* tmp = CHAR2WCHAR( src.c_str() );
 	if( tmp == nullptr )
@@ -253,7 +253,7 @@ WString AString2WString( const AString& src )
 	return result;
 }
 
-AString WString2AString( const WString& src )
+AString mTCHAR::WString2AString( const WString& src )
 {
 	CHAR* tmp = WCHAR2CHAR( src.c_str() );
 	if( tmp == nullptr )
@@ -266,35 +266,135 @@ AString WString2AString( const WString& src )
 	return result;
 }
 
-AString ToAString( const AString& src )
+AString mTCHAR::ToAString( const AString& src )
 {
 	return src;
 }
-AString ToAString( const WString& src )
+AString mTCHAR::ToAString( const WString& src )
 {
 	return WString2AString( src );
 }
 
-WString ToWString( const AString& src )
+WString mTCHAR::ToWString( const AString& src )
 {
 	return AString2WString( src );
 }
-WString ToWString( const WString& src )
+WString mTCHAR::ToWString( const WString& src )
 {
 	return src;
 }
 
-TString ToTString( const AString& src )
+TString mTCHAR::ToTString( const AString& src )
 {
 	return AString2TString( src );
 }
-TString ToTString( const WString& src )
+TString mTCHAR::ToTString( const WString& src )
 {
 	return WString2TString( src );
 }
 
+AString mTCHAR::MakeAString( _Printf_format_string_ const char* format    , ... )
+{
+	//可変長リスト
+	va_list args;
+	va_start( args , format );
 
-INT sprintf_va( AString& ret_dest , _Printf_format_string_ const CHAR* format , va_list args )
+	AString str;
+	sprintf_va( str , format , args );
+
+	//可変長引数リセット
+	va_end( args );
+
+	return str;
+}
+
+AString mTCHAR::MakeAString( _Printf_format_string_ const wchar_t* format , ... )
+{
+	//可変長リスト
+	va_list args;
+	va_start( args , format );
+
+	AString str;
+	AString format_string = ToAString( format );
+	sprintf_va( str , format_string.c_str() , args );
+
+	//可変長引数リセット
+	va_end( args );
+
+	return str;
+}
+
+WString mTCHAR::MakeWString( _Printf_format_string_ const char* format    , ... )
+{
+	//可変長リスト
+	va_list args;
+	va_start( args , format );
+
+	WString str;
+	WString format_string = ToWString( format );
+	sprintf_va( str , format_string.c_str() , args );
+
+	//可変長引数リセット
+	va_end( args );
+
+	return str;
+}
+
+WString mTCHAR::MakeWString( _Printf_format_string_ const wchar_t* format , ... )
+{
+	//可変長リスト
+	va_list args;
+	va_start( args , format );
+
+	WString str;
+	sprintf_va( str , format , args );
+
+	//可変長引数リセット
+	va_end( args );
+
+	return str;
+}
+
+
+TString mTCHAR::MakeTString( _Printf_format_string_ const char* format    , ... )
+{
+	//可変長リスト
+	va_list args;
+	va_start( args , format );
+	TString str;
+
+	#ifdef UNICODE
+	WString format_string = ToWString( format );
+	sprintf_va( str , format_string.c_str() , args );
+	#else
+	sprintf_va( str , format , args );
+	#endif
+
+	//可変長引数リセット
+	va_end( args );
+	return str;
+}
+
+TString mTCHAR::MakeTString( _Printf_format_string_ const wchar_t* format , ... )
+{
+	//可変長リスト
+	va_list args;
+	va_start( args , format );
+	TString str;
+
+	#ifdef UNICODE
+	sprintf_va( str , format , args );
+	#else
+	AString format_string = ToAString( format );
+	sprintf_va( str , format_string.c_str() , args );
+	#endif
+
+	//可変長引数リセット
+	va_end( args );
+	return str;
+}
+
+INT mTCHAR::sprintf_va( AString& ret_dest , _Printf_format_string_ const CHAR* format , va_list args )
 {
 	//必要文字数をカウントしてバッファを確保
 	INT bufflen = _vscprintf( format , args ) + 1;
@@ -314,7 +414,7 @@ INT sprintf_va( AString& ret_dest , _Printf_format_string_ const CHAR* format , 
 	return result;
 }
 
-INT sprintf_va( AString& ret_dest , _Printf_format_string_ const WCHAR* format , va_list args )
+INT mTCHAR::sprintf_va( AString& ret_dest , _Printf_format_string_ const WCHAR* format , va_list args )
 {
 
 	//出力がCHAR型なので、formatを一旦CHAR型に変換する
@@ -344,7 +444,7 @@ INT sprintf_va( AString& ret_dest , _Printf_format_string_ const WCHAR* format ,
 	return result;
 }
 
-INT sprintf_va( WString& ret_dest , _Printf_format_string_ const CHAR* format , va_list args )
+INT mTCHAR::sprintf_va( WString& ret_dest , _Printf_format_string_ const CHAR* format , va_list args )
 {
 	ret_dest = L"";
 	if( !format )
@@ -379,7 +479,7 @@ INT sprintf_va( WString& ret_dest , _Printf_format_string_ const CHAR* format , 
 	return result;
 }
 
-INT sprintf_va( WString& ret_dest , _Printf_format_string_ const WCHAR* format , va_list args )
+INT mTCHAR::sprintf_va( WString& ret_dest , _Printf_format_string_ const WCHAR* format , va_list args )
 {
 	ret_dest = L"";
 	if( !format )
@@ -406,7 +506,7 @@ INT sprintf_va( WString& ret_dest , _Printf_format_string_ const WCHAR* format ,
 
 }
 
-INT sprintf_va( AString* ret_dest , _Printf_format_string_ const CHAR* format , va_list args )
+INT mTCHAR::sprintf_va( AString* ret_dest , _Printf_format_string_ const CHAR* format , va_list args )
 {
 	if( ret_dest == nullptr )
 	{
@@ -437,7 +537,7 @@ INT sprintf_va( AString* ret_dest , _Printf_format_string_ const CHAR* format , 
 	return result;
 }
 
-INT sprintf_va( AString* ret_dest , _Printf_format_string_ const WCHAR* format , va_list args )
+INT mTCHAR::sprintf_va( AString* ret_dest , _Printf_format_string_ const WCHAR* format , va_list args )
 {
 	if( ret_dest == nullptr )
 	{
@@ -477,7 +577,7 @@ INT sprintf_va( AString* ret_dest , _Printf_format_string_ const WCHAR* format ,
 	return result;
 }
 
-INT sprintf_va( WString* ret_dest , _Printf_format_string_ const CHAR* format , va_list args )
+INT mTCHAR::sprintf_va( WString* ret_dest , _Printf_format_string_ const CHAR* format , va_list args )
 {
 	if( ret_dest == nullptr )
 	{
@@ -517,7 +617,7 @@ INT sprintf_va( WString* ret_dest , _Printf_format_string_ const CHAR* format , 
 	return result;
 }
 
-INT sprintf_va( WString* ret_dest , _Printf_format_string_ const WCHAR* format , va_list args )
+INT mTCHAR::sprintf_va( WString* ret_dest , _Printf_format_string_ const WCHAR* format , va_list args )
 {
 	if( ret_dest == nullptr )
 	{
@@ -548,7 +648,7 @@ INT sprintf_va( WString* ret_dest , _Printf_format_string_ const WCHAR* format ,
 	return result;
 }
 
-bool Binary2String( WString& ret_dest , const BYTE* dat , DWORD len )
+bool mTCHAR::Binary2String( WString& ret_dest , const BYTE* dat , DWORD len )
 {
 	const WCHAR HexCharTable[ 16 ] =
 	{
@@ -571,7 +671,7 @@ bool Binary2String( WString& ret_dest , const BYTE* dat , DWORD len )
 	return true;
 }
 
-bool Binary2String( AString& ret_dest , const BYTE* dat , DWORD len )
+bool mTCHAR::Binary2String( AString& ret_dest , const BYTE* dat , DWORD len )
 {
 	const CHAR HexCharTable[ 16 ] =
 	{
@@ -597,7 +697,7 @@ bool Binary2String( AString& ret_dest , const BYTE* dat , DWORD len )
 
 
 //文字列を大文字に変換する
-AString ToUpper( const AString& src )
+AString mTCHAR::ToUpper( const AString& src )
 {
 	AString dst;
 	dst.resize( src.size() );
@@ -607,7 +707,7 @@ AString ToUpper( const AString& src )
 }
 
 //文字列を大文字に変換する
-WString ToUpper( const WString& src )
+WString mTCHAR::ToUpper( const WString& src )
 {
 	WString dst;
 	dst.resize( src.size() );
@@ -617,7 +717,7 @@ WString ToUpper( const WString& src )
 }
 
 //文字列を小文字に変換する
-AString ToLower( const AString& src )
+AString mTCHAR::ToLower( const AString& src )
 {
 	AString dst;
 	dst.resize( src.size() );
@@ -627,7 +727,7 @@ AString ToLower( const AString& src )
 }
 
 //文字列を小文字に変換する
-WString ToLower( const WString& src )
+WString mTCHAR::ToLower( const WString& src )
 {
 	WString dst;
 	dst.resize( src.size() );
@@ -672,22 +772,22 @@ static void ParseStringTemplate( const std::basic_string<c>& str , c delimiter ,
 	}
 }
 
-void ParseString( const AString& str , CHAR delimiter , AStringVector& retParsed , bool noempty )
+void mTCHAR::ParseString( const AString& str , CHAR delimiter , AStringVector& retParsed , bool noempty )
 {
 	return ParseStringTemplate<CHAR,AStringVector>( str , delimiter , retParsed , noempty );
 }
 
-void ParseString( const AString& str , CHAR delimiter , AStringDeque& retParsed , bool noempty )
+void mTCHAR::ParseString( const AString& str , CHAR delimiter , AStringDeque& retParsed , bool noempty )
 {
 	return ParseStringTemplate<CHAR,AStringDeque>( str , delimiter , retParsed , noempty );
 }
 
-void ParseString( const WString& str , WCHAR delimiter , WStringVector& retParsed , bool noempty )
+void mTCHAR::ParseString( const WString& str , WCHAR delimiter , WStringVector& retParsed , bool noempty )
 {
 	return ParseStringTemplate<WCHAR,WStringVector>( str , delimiter , retParsed , noempty );
 }
 
-void ParseString( const WString& str , WCHAR delimiter , WStringDeque& retParsed , bool noempty )
+void mTCHAR::ParseString( const WString& str , WCHAR delimiter , WStringDeque& retParsed , bool noempty )
 {
 	return ParseStringTemplate<WCHAR,WStringDeque>( str , delimiter , retParsed , noempty );
 }
@@ -736,12 +836,12 @@ static void ParseStringReturnTemplate( const AString& str , c& retResult , bool 
 	return;
 }
 
-void ParseString( const AString& str , AStringVector& retParsed , bool noemptyline )
+void mTCHAR::ParseString( const AString& str , AStringVector& retParsed , bool noemptyline )
 {
 	ParseStringReturnTemplate( str , retParsed , noemptyline );
 }
 
-void ParseString( const AString& str , AStringDeque& retParsed , bool noemptyline )
+void mTCHAR::ParseString( const AString& str , AStringDeque& retParsed , bool noemptyline )
 {
 	ParseStringReturnTemplate( str , retParsed , noemptyline );
 }
@@ -790,33 +890,33 @@ static void ParseStringReturnTemplate( const WString& str , c& retResult , bool 
 	return;
 }
 
-void ParseString( const WString& str , WStringVector& retParsed , bool noemptyline )
+void mTCHAR::ParseString( const WString& str , WStringVector& retParsed , bool noemptyline )
 {
 	ParseStringReturnTemplate( str , retParsed , noemptyline );
 }
 
-void ParseString( const WString& str , WStringDeque& retParsed , bool noemptyline )
+void mTCHAR::ParseString( const WString& str , WStringDeque& retParsed , bool noemptyline )
 {
 	ParseStringReturnTemplate( str , retParsed , noemptyline );
 }
 
 //文字列を改行でパースする
-void ParseStringNewLine( const AString& str , AStringVector& retParsed , bool noemptyline )
+void mTCHAR::ParseStringNewLine( const AString& str , AStringVector& retParsed , bool noemptyline )
 {
 	ParseString( str , retParsed , noemptyline );
 }
 
-void ParseStringNewLine( const AString& str , AStringDeque& retParsed , bool noemptyline )
+void mTCHAR::ParseStringNewLine( const AString& str , AStringDeque& retParsed , bool noemptyline )
 {
 	ParseString( str , retParsed , noemptyline );
 }
 
-void ParseStringNewLine( const WString& str , WStringVector& retParsed , bool noemptyline )
+void mTCHAR::ParseStringNewLine( const WString& str , WStringVector& retParsed , bool noemptyline )
 {
 	ParseString( str , retParsed , noemptyline );
 }
 
-void ParseStringNewLine( const WString& str , WStringDeque& retParsed , bool noemptyline )
+void mTCHAR::ParseStringNewLine( const WString& str , WStringDeque& retParsed , bool noemptyline )
 {
 	ParseString( str , retParsed , noemptyline );
 }
@@ -860,22 +960,22 @@ static void ParseStringSpaceTemplate( const std::basic_string<c>& str , d& retRe
 	return;
 }
 
-void ParseStringSpace( const AString& str , AStringVector& retParsed , bool noemptyline )
+void mTCHAR::ParseStringSpace( const AString& str , AStringVector& retParsed , bool noemptyline )
 {
 	ParseStringSpaceTemplate( str , retParsed , noemptyline );
 }
 
-void ParseStringSpace( const AString& str , AStringDeque& retParsed , bool noemptyline )
+void mTCHAR::ParseStringSpace( const AString& str , AStringDeque& retParsed , bool noemptyline )
 {
 	ParseStringSpaceTemplate( str , retParsed , noemptyline );
 }
 
-void ParseStringSpace( const WString& str , WStringVector& retParsed , bool noemptyline )
+void mTCHAR::ParseStringSpace( const WString& str , WStringVector& retParsed , bool noemptyline )
 {
 	ParseStringSpaceTemplate( str , retParsed , noemptyline );
 }
 
-void ParseStringSpace( const WString& str , WStringDeque& retParsed , bool noemptyline )
+void mTCHAR::ParseStringSpace( const WString& str , WStringDeque& retParsed , bool noemptyline )
 {
 	ParseStringSpaceTemplate( str , retParsed , noemptyline );
 }
@@ -909,19 +1009,19 @@ static void ParseStringSpaceTemplate( const std::basic_string<c>& str , c delimi
 }
 
 
-void ParseStringSpace( const AString& str , CHAR delimiter , AStringVector& retParsed , bool noemptyline )
+void mTCHAR::ParseStringSpace( const AString& str , CHAR delimiter , AStringVector& retParsed , bool noemptyline )
 {
 	ParseStringSpaceTemplate( str , delimiter , retParsed , noemptyline );
 }
-void ParseStringSpace( const AString& str , CHAR delimiter , AStringDeque& retParsed , bool noemptyline )
+void mTCHAR::ParseStringSpace( const AString& str , CHAR delimiter , AStringDeque& retParsed , bool noemptyline )
 {
 	ParseStringSpaceTemplate( str , delimiter , retParsed , noemptyline );
 }
-void ParseStringSpace( const WString& str , WCHAR delimiter , WStringVector& retParsed , bool noemptyline )
+void mTCHAR::ParseStringSpace( const WString& str , WCHAR delimiter , WStringVector& retParsed , bool noemptyline )
 {
 	ParseStringSpaceTemplate( str , delimiter , retParsed , noemptyline );
 }
-void ParseStringSpace( const WString& str , WCHAR delimiter , WStringDeque& retParsed , bool noemptyline )
+void mTCHAR::ParseStringSpace( const WString& str , WCHAR delimiter , WStringDeque& retParsed , bool noemptyline )
 {
 	ParseStringSpaceTemplate( str , delimiter , retParsed , noemptyline );
 }
@@ -960,22 +1060,22 @@ static void ParseStringTemplate( const std::basic_string<c>& str , const std::ba
 	}
 }
 
-void ParseString( const AString& str , const AString& delimiter , AStringVector& retParsed , bool noempty )
+void mTCHAR::ParseString( const AString& str , const AString& delimiter , AStringVector& retParsed , bool noempty )
 {
 	return ParseStringTemplate<CHAR,AStringVector>( str , delimiter , retParsed , noempty );
 }
 
-void ParseString( const AString& str , const AString& delimiter , AStringDeque& retParsed , bool noempty )
+void mTCHAR::ParseString( const AString& str , const AString& delimiter , AStringDeque& retParsed , bool noempty )
 {
 	return ParseStringTemplate<CHAR,AStringDeque>( str , delimiter , retParsed , noempty );
 }
 
-void ParseString( const WString& str , const WString& delimiter , WStringVector& retParsed , bool noempty )
+void mTCHAR::ParseString( const WString& str , const WString& delimiter , WStringVector& retParsed , bool noempty )
 {
 	return ParseStringTemplate<WCHAR,WStringVector>( str , delimiter , retParsed , noempty );
 }
 
-void ParseString( const WString& str , const WString& delimiter , WStringDeque& retParsed , bool noempty )
+void mTCHAR::ParseString( const WString& str , const WString& delimiter , WStringDeque& retParsed , bool noempty )
 {
 	return ParseStringTemplate<WCHAR,WStringDeque>( str , delimiter , retParsed , noempty );
 }
@@ -995,7 +1095,7 @@ static char* NewAndConvertString( const char* str , DWORD MapFlag , LCID locale 
 	return result;
 }
 
-AString ConvertString( const AString& src , DWORD MapFlag , LCID locale )
+AString mTCHAR::ConvertString( const AString& src , DWORD MapFlag , LCID locale )
 {
 	char* str = NewAndConvertString( src.c_str() , MapFlag , locale );
 	AString r( str );
@@ -1004,32 +1104,32 @@ AString ConvertString( const AString& src , DWORD MapFlag , LCID locale )
 	return r;
 }
 
-AString ConvertHankaku2Zenkaku( const AString& src )
+AString mTCHAR::ConvertHankaku2Zenkaku( const AString& src )
 {
 	return ConvertString( src, LCMAP_FULLWIDTH );
 }
 
-AString ConvertZenkaku2Hankaku( const AString& src )
+AString mTCHAR::ConvertZenkaku2Hankaku( const AString& src )
 {
 	return ConvertString( src, LCMAP_HALFWIDTH );
 }
 
-AString ConvertKatakana2Hiragana( const AString& src )
+AString mTCHAR::ConvertKatakana2Hiragana( const AString& src )
 {
 	return ConvertString( src, LCMAP_HIRAGANA );
 }
 
-AString ConvertHiragana2Katakana( const AString& src )
+AString mTCHAR::ConvertHiragana2Katakana( const AString& src )
 {
 	return ConvertString( src, LCMAP_KATAKANA );
 }
 
-AString ConvertLower2Upper( const AString& src )
+AString mTCHAR::ConvertLower2Upper( const AString& src )
 {
 	return ConvertString( src, LCMAP_UPPERCASE );
 }
 
-AString ConvertUpper2Lower( const AString& src )
+AString mTCHAR::ConvertUpper2Lower( const AString& src )
 {
 	return ConvertString( src, LCMAP_LOWERCASE );
 }
@@ -1049,7 +1149,7 @@ static wchar_t* NewAndConvertString( const wchar_t* str , DWORD MapFlag , LCID l
 	return result;
 }
 
-WString ConvertString( const WString& src , DWORD MapFlag , LCID locale )
+WString mTCHAR::ConvertString( const WString& src , DWORD MapFlag , LCID locale )
 {
 	wchar_t* str = NewAndConvertString( src.c_str() , MapFlag , locale );
 	WString r( str );
@@ -1058,32 +1158,32 @@ WString ConvertString( const WString& src , DWORD MapFlag , LCID locale )
 	return r;
 }
 
-WString ConvertHankaku2Zenkaku( const WString& src )
+WString mTCHAR::ConvertHankaku2Zenkaku( const WString& src )
 {
 	return ConvertString( src, LCMAP_FULLWIDTH );
 }
 
-WString ConvertZenkaku2Hankaku( const WString& src )
+WString mTCHAR::ConvertZenkaku2Hankaku( const WString& src )
 {
 	return ConvertString( src, LCMAP_HALFWIDTH );
 }
 
-WString ConvertKatakana2Hiragana( const WString& src )
+WString mTCHAR::ConvertKatakana2Hiragana( const WString& src )
 {
 	return ConvertString( src, LCMAP_HIRAGANA );
 }
 
-WString ConvertHiragana2Katakana( const WString& src )
+WString mTCHAR::ConvertHiragana2Katakana( const WString& src )
 {
 	return ConvertString( src, LCMAP_KATAKANA );
 }
 
-WString ConvertLower2Upper( const WString& src )
+WString mTCHAR::ConvertLower2Upper( const WString& src )
 {
 	return ConvertString( src, LCMAP_UPPERCASE );
 }
 
-WString ConvertUpper2Lower( const WString& src )
+WString mTCHAR::ConvertUpper2Lower( const WString& src )
 {
 	return ConvertString( src, LCMAP_LOWERCASE );
 }
@@ -1109,13 +1209,13 @@ static T ReplaceStringTemplate( const T& src , const T& findat , const T replace
 }
 
 //文字列中の特定文字列を置換する
-AString ReplaceString( const AString& src , const AString& findat , const AString& replaceto , DWORD* ret_count )
+AString mTCHAR::ReplaceString( const AString& src , const AString& findat , const AString& replaceto , DWORD* ret_count )
 {
 	return ReplaceStringTemplate( src , findat , replaceto , ret_count );
 }
 
 //文字列中の特定文字列を置換する
-WString ReplaceString( const WString& src , const WString& findat , const WString& replaceto , DWORD* ret_count )
+WString mTCHAR::ReplaceString( const WString& src , const WString& findat , const WString& replaceto , DWORD* ret_count )
 {
 	return ReplaceStringTemplate( src , findat , replaceto , ret_count );
 }
@@ -1140,101 +1240,101 @@ static T ReplaceStringRecursiveTemplate( const T& src , const T& findat , const 
 }
 
 //文字列中の特定文字列を置換する
-AString ReplaceStringRecursive( const AString& src , const AString& findat , const AString& replaceto , DWORD* ret_count )
+AString mTCHAR::ReplaceStringRecursive( const AString& src , const AString& findat , const AString& replaceto , DWORD* ret_count )
 {
 	return ReplaceStringRecursiveTemplate( src , findat , replaceto , ret_count );
 }
 
 //文字列中の特定文字列を置換する
-WString ReplaceStringRecursive( const WString& src , const WString& findat , const WString& replaceto , DWORD* ret_count )
+WString mTCHAR::ReplaceStringRecursive( const WString& src , const WString& findat , const WString& replaceto , DWORD* ret_count )
 {
 	return ReplaceStringRecursiveTemplate( src , findat , replaceto , ret_count );
 }
 
-int ToInt( const AString& src , int defvalue )
+int mTCHAR::ToInt( const AString& src , int defvalue )
 {
 	int result;
 	ToInt( src , result , defvalue );
 	return result;
 }
 
-int ToInt( const WString& src , int defvalue )
+int mTCHAR::ToInt( const WString& src , int defvalue )
 {
 	int result;
 	ToInt( src , result , defvalue );
 	return result;
 }
 
-double ToDouble( const AString& src , double defvalue )
+double mTCHAR::ToDouble( const AString& src , double defvalue )
 {
 	double result;
 	ToDouble( src , result , defvalue );
 	return result;
 }
 
-double ToDouble( const WString& src , double defvalue )
+double mTCHAR::ToDouble( const WString& src , double defvalue )
 {
 	double result;
 	ToDouble( src , result , defvalue );
 	return result;
 }
 
-unsigned int ToUInt( const AString& src , unsigned int defvalue )
+unsigned int mTCHAR::ToUInt( const AString& src , unsigned int defvalue )
 {
 	unsigned int result;
 	ToUInt( src , result , defvalue );
 	return result;
 }
 
-unsigned int ToUInt( const WString& src , unsigned int defvalue )
+unsigned int mTCHAR::ToUInt( const WString& src , unsigned int defvalue )
 {
 	unsigned int result;
 	ToUInt( src , result , defvalue );
 	return result;
 }
 
-unsigned int ToULong( const AString& src , unsigned long defvalue )
+unsigned int mTCHAR::ToULong( const AString& src , unsigned long defvalue )
 {
 	unsigned long result;
 	ToULong( src , result , defvalue );
 	return result;
 }
 
-unsigned int ToULong( const WString& src , unsigned long defvalue )
+unsigned int mTCHAR::ToULong( const WString& src , unsigned long defvalue )
 {
 	unsigned long result;
 	ToULong( src , result , defvalue );
 	return result;
 }
 
-unsigned int HexToUInt( const AString& src , unsigned int defvalue )
+unsigned int mTCHAR::HexToUInt( const AString& src , unsigned int defvalue )
 {
 	unsigned int result;
 	HexToUInt( src , result , defvalue );
 	return result;
 }
 
-unsigned int HexToUInt( const WString& src , unsigned int defvalue )
+unsigned int mTCHAR::HexToUInt( const WString& src , unsigned int defvalue )
 {
 	unsigned int result;
 	HexToUInt( src , result , defvalue );
 	return result;
 }
 
-unsigned int HexToULong( const AString& src , unsigned long defvalue )
+unsigned int mTCHAR::HexToULong( const AString& src , unsigned long defvalue )
 {
 	unsigned long result;
 	HexToULong( src , result , defvalue );
 	return result;}
 
-unsigned int HexToULong( const WString& src , unsigned long defvalue )
+unsigned int mTCHAR::HexToULong( const WString& src , unsigned long defvalue )
 {
 	unsigned long result;
 	HexToULong( src , result , defvalue );
 	return result;
 }
 
-int64_t ToInt64( const AString& src , int64_t defvalue )
+int64_t mTCHAR::ToInt64( const AString& src , int64_t defvalue )
 {
 	int64_t result;
 	ToInt64( src , result , defvalue );
@@ -1242,21 +1342,21 @@ int64_t ToInt64( const AString& src , int64_t defvalue )
 }
 
 
-int64_t ToInt64( const WString& src , int64_t defvalue )
+int64_t mTCHAR::ToInt64( const WString& src , int64_t defvalue )
 {
 	int64_t result;
 	ToInt64( src , result , defvalue );
 	return result;
 }
 
-uint64_t ToUInt64( const AString& src , uint64_t defvalue )
+uint64_t mTCHAR::ToUInt64( const AString& src , uint64_t defvalue )
 {
 	uint64_t result;
 	ToUInt64( src , result , defvalue );
 	return result;
 }
 
-uint64_t ToUInt64( const WString& src , uint64_t defvalue )
+uint64_t mTCHAR::ToUInt64( const WString& src , uint64_t defvalue )
 {
 	uint64_t result;
 	ToUInt64( src , result , defvalue );
@@ -1303,7 +1403,7 @@ static const wchar_t* SkipWhiteSpace( const WString& src )
 	return p;
 }
 
-bool ToInt( const AString& src , int& retvalue , int defvalue )
+bool mTCHAR::ToInt( const AString& src , int& retvalue , int defvalue )
 {
 	const char* p = SkipWhiteSpace( src );
 
@@ -1315,7 +1415,7 @@ bool ToInt( const AString& src , int& retvalue , int defvalue )
 	return true;
 }
 
-bool ToInt( const WString& src , int& retvalue , int defvalue )
+bool mTCHAR::ToInt( const WString& src , int& retvalue , int defvalue )
 {
 	const wchar_t* p = SkipWhiteSpace( src );
 
@@ -1327,7 +1427,7 @@ bool ToInt( const WString& src , int& retvalue , int defvalue )
 	return true;
 }
 
-bool ToUInt( const AString& src , unsigned int& retvalue , unsigned int defvalue )
+bool mTCHAR::ToUInt( const AString& src , unsigned int& retvalue , unsigned int defvalue )
 {
 	const char* p = SkipWhiteSpace( src );
 
@@ -1339,7 +1439,7 @@ bool ToUInt( const AString& src , unsigned int& retvalue , unsigned int defvalue
 	return true;
 }
 
-bool ToUInt( const WString& src , unsigned int& retvalue , unsigned int defvalue )
+bool mTCHAR::ToUInt( const WString& src , unsigned int& retvalue , unsigned int defvalue )
 {
 	const wchar_t* p = SkipWhiteSpace( src );
 
@@ -1351,7 +1451,7 @@ bool ToUInt( const WString& src , unsigned int& retvalue , unsigned int defvalue
 	return true;
 }
 
-bool ToULong( const AString& src , unsigned long& retvalue , unsigned long defvalue )
+bool mTCHAR::ToULong( const AString& src , unsigned long& retvalue , unsigned long defvalue )
 {
 	const char* p = SkipWhiteSpace( src );
 
@@ -1363,7 +1463,7 @@ bool ToULong( const AString& src , unsigned long& retvalue , unsigned long defva
 	return true;
 }
 
-bool ToULong( const WString& src , unsigned long& retvalue , unsigned long defvalue )
+bool mTCHAR::ToULong( const WString& src , unsigned long& retvalue , unsigned long defvalue )
 {
 	const wchar_t* p = SkipWhiteSpace( src );
 
@@ -1375,7 +1475,7 @@ bool ToULong( const WString& src , unsigned long& retvalue , unsigned long defva
 	return true;
 }
 
-bool HexToUInt( const AString& src , unsigned int& retvalue , unsigned int defvalue )
+bool mTCHAR::HexToUInt( const AString& src , unsigned int& retvalue , unsigned int defvalue )
 {
 	const AString t = SkipWhiteSpace( src );
 
@@ -1398,7 +1498,7 @@ bool HexToUInt( const AString& src , unsigned int& retvalue , unsigned int defva
 	return true;
 }
 
-bool HexToUInt( const WString& src , unsigned int& retvalue , unsigned int defvalue )
+bool mTCHAR::HexToUInt( const WString& src , unsigned int& retvalue , unsigned int defvalue )
 {
 	const WString t = SkipWhiteSpace( src );
 
@@ -1421,7 +1521,7 @@ bool HexToUInt( const WString& src , unsigned int& retvalue , unsigned int defva
 	return true;
 }
 
-bool HexToULong( const AString& src , unsigned long& retvalue , unsigned long defvalue )
+bool mTCHAR::HexToULong( const AString& src , unsigned long& retvalue , unsigned long defvalue )
 {
 	const AString t = SkipWhiteSpace( src );
 
@@ -1444,7 +1544,7 @@ bool HexToULong( const AString& src , unsigned long& retvalue , unsigned long de
 	return true;
 }
 
-bool HexToULong( const WString& src , unsigned long& retvalue , unsigned long defvalue )
+bool mTCHAR::HexToULong( const WString& src , unsigned long& retvalue , unsigned long defvalue )
 {
 	const WString t = SkipWhiteSpace( src );
 
@@ -1471,7 +1571,7 @@ bool HexToULong( const WString& src , unsigned long& retvalue , unsigned long de
 #define __U(x) L ## x
 #define _U(x) __U(x)
 
-bool ToInt64( const AString& src , int64_t& retvalue , int64_t defvalue )
+bool mTCHAR::ToInt64( const AString& src , int64_t& retvalue , int64_t defvalue )
 {
 	const char* p = SkipWhiteSpace( src );
 
@@ -1483,7 +1583,7 @@ bool ToInt64( const AString& src , int64_t& retvalue , int64_t defvalue )
 	return true;
 }
 
-bool ToInt64( const WString& src , int64_t& retvalue , int64_t defvalue )
+bool mTCHAR::ToInt64( const WString& src , int64_t& retvalue , int64_t defvalue )
 {
 	const wchar_t* p = SkipWhiteSpace( src );
 
@@ -1495,7 +1595,7 @@ bool ToInt64( const WString& src , int64_t& retvalue , int64_t defvalue )
 	return true;
 }
 
-bool ToUInt64( const AString& src , uint64_t& retvalue , uint64_t defvalue )
+bool mTCHAR::ToUInt64( const AString& src , uint64_t& retvalue , uint64_t defvalue )
 {
 	const char* p = SkipWhiteSpace( src );
 
@@ -1507,7 +1607,7 @@ bool ToUInt64( const AString& src , uint64_t& retvalue , uint64_t defvalue )
 	return true;
 }
 
-bool ToUInt64( const WString& src , uint64_t& retvalue , uint64_t defvalue )
+bool mTCHAR::ToUInt64( const WString& src , uint64_t& retvalue , uint64_t defvalue )
 {
 	const wchar_t* p = SkipWhiteSpace( src );
 
@@ -1519,7 +1619,7 @@ bool ToUInt64( const WString& src , uint64_t& retvalue , uint64_t defvalue )
 	return true;
 }
 
-bool ToDouble( const AString& src , double& retvalue , double defvalue )
+bool mTCHAR::ToDouble( const AString& src , double& retvalue , double defvalue )
 {
 	const char* p = SkipWhiteSpace( src );
 
@@ -1531,7 +1631,7 @@ bool ToDouble( const AString& src , double& retvalue , double defvalue )
 	return true;
 }
 
-bool ToDouble( const WString& src , double& retvalue , double defvalue )
+bool mTCHAR::ToDouble( const WString& src , double& retvalue , double defvalue )
 {
 	const wchar_t* p = SkipWhiteSpace( src );
 
@@ -1543,69 +1643,69 @@ bool ToDouble( const WString& src , double& retvalue , double defvalue )
 	return true;
 }
 
-AString ToAString( uint32_t v )
+AString mTCHAR::ToAString( uint32_t v )
 {
 	AString s;
 	sprintf( s , "%u" , v );
 	return s;
 }
-AString ToAString( uint64_t v )
+AString mTCHAR::ToAString( uint64_t v )
 {
 	AString s;
 	sprintf( s , "%llu" , v );
 	return s;
 }
-AString ToAString( int32_t v )
+AString mTCHAR::ToAString( int32_t v )
 {
 	AString s;
 	sprintf( s , "%d" , v );
 	return s;
 }
-AString ToAString( int64_t v )
+AString mTCHAR::ToAString( int64_t v )
 {
 	AString s;
 	sprintf( s , "%lld" , v );
 	return s;
 }
-AString ToAString( double v )
+AString mTCHAR::ToAString( double v )
 {
 	AString s;
 	sprintf( s , "%lf" , v );
 	return s;
 }
 
-WString ToWString( uint32_t v )
+WString mTCHAR::ToWString( uint32_t v )
 {
 	WString s;
 	sprintf( s , "%u" , v );
 	return s;
 }
-WString ToWString( uint64_t v )
+WString mTCHAR::ToWString( uint64_t v )
 {
 	WString s;
 	sprintf( s , L"%llu" , v );
 	return s;
 }
-WString ToWString( int32_t v )
+WString mTCHAR::ToWString( int32_t v )
 {
 	WString s;
 	sprintf( s , L"%d" , v );
 	return s;
 }
-WString ToWString( int64_t v )
+WString mTCHAR::ToWString( int64_t v )
 {
 	WString s;
 	sprintf( s , L"%lld" , v );
 	return s;
 }
-WString ToWString( double v )
+WString mTCHAR::ToWString( double v )
 {
 	WString s;
 	sprintf( s , L"%lf" , v );
 	return s;
 }
 
-int StrCmp( const wchar_t* s1 , const wchar_t* s2 )
+int mTCHAR::StrCmp( const wchar_t* s1 , const wchar_t* s2 )
 {
 	if( s1 == nullptr )
 	{
@@ -1618,7 +1718,7 @@ int StrCmp( const wchar_t* s1 , const wchar_t* s2 )
 	return wchar_strcmp( s1 , s2 );
 }
 
-int StrCmp( const char* s1 , const char* s2 )
+int mTCHAR::StrCmp( const char* s1 , const char* s2 )
 {
 	if( s1 == nullptr )
 	{
@@ -1668,22 +1768,22 @@ static void ReadDoubleNullStringTemplate( const T* str , U& arr )
 }
 
 
-void ReadDoubleNullString( const WCHAR* str , WStringVector& retArray )
+void mTCHAR::ReadDoubleNullString( const WCHAR* str , WStringVector& retArray )
 {
 	ReadDoubleNullStringTemplate( str , retArray );
 }
 
-void ReadDoubleNullString( const WCHAR* str , WStringDeque& retArray )
+void mTCHAR::ReadDoubleNullString( const WCHAR* str , WStringDeque& retArray )
 {
 	ReadDoubleNullStringTemplate( str , retArray );
 }
 
-void ReadDoubleNullString( const CHAR* str , AStringVector& retArray )
+void mTCHAR::ReadDoubleNullString( const CHAR* str , AStringVector& retArray )
 {
 	ReadDoubleNullStringTemplate( str , retArray );
 }
 
-void ReadDoubleNullString( const CHAR* str , AStringDeque& retArray )
+void mTCHAR::ReadDoubleNullString( const CHAR* str , AStringDeque& retArray )
 {
 	ReadDoubleNullStringTemplate( str , retArray );
 }
@@ -1703,22 +1803,22 @@ static void ReadDoubleNullStringTemplate( const std::basic_string< c_char >& str
 	}
 }
 
-void ReadDoubleNullString( const WString& str , WStringVector& retArray )
+void mTCHAR::ReadDoubleNullString( const WString& str , WStringVector& retArray )
 {
 	ReadDoubleNullStringTemplate( str , retArray );
 }
 
-void ReadDoubleNullString( const WString& str , WStringDeque& retArray )
+void mTCHAR::ReadDoubleNullString( const WString& str , WStringDeque& retArray )
 {
 	ReadDoubleNullStringTemplate( str , retArray );
 }
 
-void ReadDoubleNullString( const AString& str , AStringVector& retArray )
+void mTCHAR::ReadDoubleNullString( const AString& str , AStringVector& retArray )
 {
 	ReadDoubleNullStringTemplate( str , retArray );
 }
 
-void ReadDoubleNullString( const AString& str , AStringDeque& retArray )
+void mTCHAR::ReadDoubleNullString( const AString& str , AStringDeque& retArray )
 {
 	ReadDoubleNullStringTemplate( str , retArray );
 }
@@ -1737,33 +1837,33 @@ static void MakeDoubleNullStringTemplate( const c_array& arr , std::basic_string
 	str += (c_char)0;
 }
 
-void MakeDoubleNullString( const WStringVector& arr , WString& retStr )
+void mTCHAR::MakeDoubleNullString( const WStringVector& arr , WString& retStr )
 {
 	MakeDoubleNullStringTemplate( arr , retStr );
 }
 
-void MakeDoubleNullString( const WStringDeque& arr , WString& retStr )
+void mTCHAR::MakeDoubleNullString( const WStringDeque& arr , WString& retStr )
 {
 	MakeDoubleNullStringTemplate( arr , retStr );
 }
 
-void MakeDoubleNullString( const AStringVector& arr , AString& retStr )
+void mTCHAR::MakeDoubleNullString( const AStringVector& arr , AString& retStr )
 {
 	MakeDoubleNullStringTemplate( arr , retStr );
 }
 
-void MakeDoubleNullString( const AStringDeque& arr , AString& retStr )
+void mTCHAR::MakeDoubleNullString( const AStringDeque& arr , AString& retStr )
 {
 	MakeDoubleNullStringTemplate( arr , retStr );
 }
 
-AString AStringToUtf8( const AString& src )
+AString mTCHAR::AStringToUtf8( const AString& src )
 {
 	WString t = AString2WString( src );
 	return WStringToUtf8( t );
 }
 
-AString WStringToUtf8( const WString& src )
+AString mTCHAR::WStringToUtf8( const WString& src )
 {
 	int sz = WideCharToMultiByte( CP_UTF8 , 0 , src.c_str() , -1 , nullptr , 0 , nullptr , nullptr );
 	if( sz <= 1 )
@@ -1778,13 +1878,13 @@ AString WStringToUtf8( const WString& src )
 	return std::move( result );
 }
 
-AString Utf8ToAString( const AString& src )
+AString mTCHAR::Utf8ToAString( const AString& src )
 {
 	WString t = Utf8ToWString( src );
 	return WString2AString( t );
 }
 
-WString Utf8ToWString( const AString& src )
+WString mTCHAR::Utf8ToWString( const AString& src )
 {
 	int sz = MultiByteToWideChar( CP_UTF8 , 0 , src.c_str() , -1 , nullptr , 0 );
 	if( sz <= 1 )
@@ -1799,7 +1899,7 @@ WString Utf8ToWString( const AString& src )
 	return std::move( result );
 }
 
-WString CastToWString( const AString& src )
+WString mTCHAR::CastToWString( const AString& src )
 {
 	WString result;
 	size_t sz = src.size() / sizeof( wchar_t );
@@ -1809,7 +1909,7 @@ WString CastToWString( const AString& src )
 	return result;
 }
 
-WString SwitchEndian( const WString& src )
+WString mTCHAR::SwitchEndian( const WString& src )
 {
 	WString result;
 	result.reserve( src.size() );
@@ -1821,7 +1921,7 @@ WString SwitchEndian( const WString& src )
 }
 
 //文字列の両端にある空白をすべて削除する
-AString TrimString( const AString& str )
+AString mTCHAR::TrimString( const AString& str )
 {
 	DWORD begin = 0;
 	DWORD end = (DWORD)str.size();
@@ -1849,7 +1949,7 @@ AString TrimString( const AString& str )
 }
 
 //文字列の両端にある空白をすべて削除する
-WString TrimString( const WString& str )
+WString mTCHAR::TrimString( const WString& str )
 {
 	DWORD begin = 0;
 	DWORD end = (DWORD)str.size();
@@ -1877,7 +1977,7 @@ WString TrimString( const WString& str )
 }
 
 //文字列の空白をすべて削除する
-AString RemoveSpace( const AString& str )
+AString mTCHAR::RemoveSpace( const AString& str )
 {
 	AString ret;
 	for( AString::const_iterator itr = str.begin() ; itr != str.end() ; itr++ )
@@ -1891,7 +1991,7 @@ AString RemoveSpace( const AString& str )
 }
 
 //文字列の空白をすべて削除する
-WString RemoveSpace( const WString& str )
+WString mTCHAR::RemoveSpace( const WString& str )
 {
 	WString ret;
 	for( WString::const_iterator itr = str.begin() ; itr != str.end() ; itr++ )

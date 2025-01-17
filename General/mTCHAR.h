@@ -89,6 +89,16 @@ typedef std::vector<WString> WStringVector;
 #define tchar_tolower		_totlower
 #define tchar_isascii		_istascii
 
+#ifdef UNICODE
+#define tchar_atoi			_wtoi
+#define tchar_atof			_wtof
+#define tchar_atol			_wtol
+#else
+#define tchar_atoi			atoi
+#define tchar_atof			atof
+#define tchar_atol			atol
+#endif
+
 #define	wchar_strcpy		wcscpy
 #define	wchar_strcpy_s		wcscpy_s
 #define	wchar_strncpy		wcsncpy
@@ -129,6 +139,13 @@ typedef std::vector<WString> WStringVector;
 #define wchar_toupper		towupper
 #define wchar_tolower		towlower
 #define wchar_isascii		iswascii
+
+#define wchar_atoi			_wtoi
+#define wchar_atof			_wtof
+#define wchar_atol			_wtol
+
+namespace mTCHAR
+{
 
 inline bool IsUnicode( void )
 {
@@ -174,6 +191,15 @@ WString ToWString( const WString& src );
 
 TString ToTString( const AString& src );
 TString ToTString( const WString& src );
+
+AString MakeAString( _Printf_format_string_ const char* format    , ... );
+AString MakeAString( _Printf_format_string_ const wchar_t* format , ... );
+
+WString MakeWString( _Printf_format_string_ const char* format    , ... );
+WString MakeWString( _Printf_format_string_ const wchar_t* format , ... );
+
+TString MakeTString( _Printf_format_string_ const char* format    , ... );
+TString MakeTString( _Printf_format_string_ const wchar_t* format , ... );
 
 //AStringにUTF16(LE)の文字列が格納されているとき、WStringに変換して取り出します
 WString CastToWString( const AString& src );
@@ -792,6 +818,12 @@ AString RemoveSpace( const AString& str );
 
 //文字列の空白をすべて削除する
 WString RemoveSpace( const WString& str );
+
+};
+
+#ifndef ESCAPE_MTCHAR_USING
+using namespace mTCHAR;
+#endif
 
 #endif
 
