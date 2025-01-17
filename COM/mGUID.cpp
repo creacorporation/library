@@ -358,9 +358,9 @@ bool mGUID::operator <( const mGUID& src )const
 	}
 	for( int i = 0 ; i < sizeof( MyGUID.Data4 ) ; i++ )
 	{
-		if( MyGUID.Data4 != src.MyGUID.Data4 )
+		if( MyGUID.Data4[ i ] != src.MyGUID.Data4[ i ] )
 		{
-			return MyGUID.Data4 < src.MyGUID.Data4;
+			return MyGUID.Data4[ i ] < src.MyGUID.Data4[ i ];
 		}
 	}
 	return false;
