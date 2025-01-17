@@ -10,7 +10,7 @@
 #include "General/mErrorLogger.h"
 #include "mGdiMemDC.h"
 
-mGdiBitmap::mGdiBitmap( const Option* opt )throw( mException )
+mGdiBitmap::mGdiBitmap( const Option* opt )noexcept( false )
 {
 	MyHandle = nullptr;
 

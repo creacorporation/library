@@ -9,7 +9,7 @@
 #include "mGdiIcon.h"
 #include "General/mErrorLogger.h"
 
-mGdiIcon::mGdiIcon( const Option* opt )throw( mException )
+mGdiIcon::mGdiIcon( const Option* opt )noexcept( false )
 {
 	MyHandle = nullptr;
 

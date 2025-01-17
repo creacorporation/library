@@ -10,7 +10,7 @@
 #include "mGdiCursor.h"
 #include "General/mErrorLogger.h"
 
-mGdiCursor::mGdiCursor( const Option* opt )throw( mException )
+mGdiCursor::mGdiCursor( const Option* opt )noexcept( false )
 {
 	MyHandle = nullptr;
 

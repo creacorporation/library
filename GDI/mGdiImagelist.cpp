@@ -9,7 +9,7 @@
 #include "mGdiImagelist.h"
 #include "General/mErrorLogger.h"
 
-mGdiImagelist::mGdiImagelist( const Option* option )throw( mException )
+mGdiImagelist::mGdiImagelist( const Option* option )noexcept( false )
 {
 	MyHandle = nullptr;
 

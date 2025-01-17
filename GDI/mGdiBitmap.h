@@ -132,7 +132,7 @@ public:
 	//コンストラクタ
 	//このコンストラクタは、MyHandleに格納するビットマップの生成失敗時に例外を投げます。
 	//・optは必ず指定して下さい。nullptrを渡すと例外を投げます。
-	mGdiBitmap( const Option* opt )throw( mException );
+	mGdiBitmap( const Option* opt )noexcept( false );
 
 	//デストラクタ
 	virtual ~mGdiBitmap();

@@ -158,7 +158,7 @@ public:
 
 	//コンストラクタ
 	//このコンストラクタは、MyHandleに格納するブラシの生成失敗時に例外を投げます。
-	mGdiFont( const Option* opt )throw( mException );
+	mGdiFont( const Option* opt )noexcept( false );
 
 	//デストラクタ
 	virtual ~mGdiFont();

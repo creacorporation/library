@@ -9,7 +9,7 @@
 #include "mGdiDualImagelist.h"
 #include "General/mErrorLogger.h"
 
-mGdiDualImagelist::mGdiDualImagelist( const Option* opt )throw( mException )
+mGdiDualImagelist::mGdiDualImagelist( const Option* opt )noexcept( false )
 {
 	MyHandle = mNew mGdiImagelist( opt );
 	MyHandle2 = ImageList_Duplicate( (HIMAGELIST)MyHandle->GetHandle() );

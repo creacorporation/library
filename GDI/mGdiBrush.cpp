@@ -10,7 +10,7 @@
 #include "mGdiUtil.h"
 #include "General/mErrorLogger.h"
 
-mGdiBrush::mGdiBrush( const Option* opt )throw( mException )
+mGdiBrush::mGdiBrush( const Option* opt )noexcept( false )
 {
 	//オプションがヌルポインタだった場合、白のソリッドブラシになります。
 	if( opt == nullptr )

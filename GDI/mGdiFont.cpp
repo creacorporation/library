@@ -26,7 +26,7 @@ BYTE  lfPitchAndFamily;          // ピッチとファミリ
 TCHAR lfFaceName[LF_FACESIZE];   // フォント名  
 */
 
-mGdiFont::mGdiFont( const Option* opt )throw( mException )
+mGdiFont::mGdiFont( const Option* opt )noexcept( false )
 {
 	MyHandle = nullptr;
 	if( opt != nullptr )
