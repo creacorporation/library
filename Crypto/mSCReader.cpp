@@ -274,20 +274,6 @@ private:
 		{
 			::PostMessageW( info.Notifier.Message.Hwnd , info.Notifier.Message.Message , (WPARAM)&view , info.Parameter );
 		}
-		else if( info.Mode == mSCReader::NotifyOption::NotifyMode::NOTIFY_CALLBACK )
-		{
-			if( info.Notifier.CallbackFunction )
-			{
-				while( mSCReader::NotifyOption::EnterNotifyEvent( info ) )
-				{
-					info.Notifier.CallbackFunction( view , info.Parameter , opt );
-					if( !mSCReader::NotifyOption::LeaveNotifyEvent( info ) )
-					{
-						break;
-					}
-				}
-			}
-		}
 		else if( info.Mode == mSCReader::NotifyOption::NotifyMode::NOTIFY_CALLBACK_PARALLEL )
 		{
 			info.Notifier.CallbackFunction( view , info.Parameter , opt );
@@ -301,7 +287,7 @@ private:
 		}
 		else
 		{
-			RaiseAssert( g_ErrorLogger , 0 , L"非同期操作の完了通知方法が不正です" , info.Mode );
+			RaiseAssert( g_ErrorLogger , 0 , L"非同期操作の完了通知方法が不正です" , (int)info.Mode );
 		}
 		return;
 	}

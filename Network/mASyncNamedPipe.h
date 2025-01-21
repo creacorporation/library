@@ -252,7 +252,7 @@ public:
 
 	//通知設定
 	using NotifyFunction = void(*)( mASyncNamedPipe& pipe , DWORD_PTR parameter , const NotifyFunctionOpt& opt );
-	class NotifyOption : public mNotifyOption< NotifyFunction >
+	class NotifyOption : public mNotifyOption< NotifyFunction , Definitions_NotifyOption::IONotifyMode >
 	{
 	public:
 		NotifierInfo OnConnect;

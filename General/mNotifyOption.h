@@ -15,36 +15,54 @@
 namespace Definitions_NotifyOption
 {
 	//通知モード
-	enum NotifyMode
+	//※IOCPで処理されているIO用
+	enum class IONotifyMode
 	{
 		//通知しません
-		NOTIFY_NONE ,
+		NOTIFY_NONE = 0,
 
 		//ウインドメッセージを送信します
-		NOTIFY_WINDOWMESSAGE ,
+		NOTIFY_WINDOWMESSAGE = 1,
 
 		//イベントオブジェクトをシグナル状態にします
-		NOTIFY_SIGNAL ,
+		NOTIFY_SIGNAL = 2,
 
 		//コールバック関数を呼びます
 		//・IOに関連付いている場合で、複数のIOが同時期に完了した場合、前回のコールバック以降に新着データがあった場合のみ呼び出します。
 		//・複数スレッドでコールバック関数が同時に呼ばれることはありません。
-		//・mTaskBaseを継承したタスクオブジェクトの場合は、NOTIFY_CALLBACK_PARALLELと同じ。
-		//  (IO以外ではNOTIFY_CALLBACK_PARALLELを使ってください)
-		NOTIFY_CALLBACK ,
+		NOTIFY_CALLBACK = 3,
 
 		//コールバック関数を呼びます
 		//・常に1つのイベントにつき1回の呼び出しが行われます。
 		//・複数のスレッドでコールバック関数が同時に呼ばれることがあります。
-		NOTIFY_CALLBACK_PARALLEL ,
+		NOTIFY_CALLBACK_PARALLEL = 4,
+	};
+
+	//通知モード
+	//※一般のタスク用
+	enum class TaskNotifyMode
+	{
+		//通知しません
+		NOTIFY_NONE = 0,
+
+		//ウインドメッセージを送信します
+		NOTIFY_WINDOWMESSAGE = 1,
+
+		//イベントオブジェクトをシグナル状態にします
+		NOTIFY_SIGNAL = 2,
+
+		//コールバック関数を呼びます
+		//・常に1つのイベントにつき1回の呼び出しが行われます。
+		//・複数のスレッドでコールバック関数が同時に呼ばれることがあります。
+		NOTIFY_CALLBACK_PARALLEL = 4,
 	};
 };
 
 
-template< typename fn > class mNotifyOption
+template< typename fn , typename mode = Definitions_NotifyOption::TaskNotifyMode > class mNotifyOption
 {
 public:
-	using NotifyMode = Definitions_NotifyOption::NotifyMode;
+	using NotifyMode = mode;
 
 	//ウインドウメッセージで通知する場合のパラメータ
 	struct NotifyMessage
@@ -82,8 +100,8 @@ public:
 		};
 
 	private:
-		friend static bool mNotifyOption<fn>::EnterNotifyEvent( const NotifierInfo& info );
-		friend static bool mNotifyOption<fn>::LeaveNotifyEvent( const NotifierInfo& info );
+		friend static bool mNotifyOption<fn,mode>::EnterNotifyEvent( const NotifierInfo& info );
+		friend static bool mNotifyOption<fn,mode>::LeaveNotifyEvent( const NotifierInfo& info );
 
 		mutable volatile LONG MyNotifyEventCounter;
 

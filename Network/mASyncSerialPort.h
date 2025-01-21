@@ -286,7 +286,7 @@ public:
 	using NotifyFunction = void(*)( mASyncSerialPort& port , DWORD_PTR parameter , const NotifyFunctionOpt& opt );
 
 	//通知設定
-	class NotifyOption : public mNotifyOption< NotifyFunction >
+	class NotifyOption : public mNotifyOption< NotifyFunction , Definitions_NotifyOption::IONotifyMode >
 	{
 	public:
 		NotifierInfo OnRead;

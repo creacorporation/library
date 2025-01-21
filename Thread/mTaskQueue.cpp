@@ -153,20 +153,6 @@ static void AsyncEvent( const mTaskBase::NotifyOption::NotifierInfo& info , clas
 	{
 		::PostMessageW( info.Notifier.Message.Hwnd , info.Notifier.Message.Message , (WPARAM)&queue , info.Parameter );
 	}
-	else if( info.Mode == mTaskBase::NotifyOption::NotifyMode::NOTIFY_CALLBACK )
-	{
-		if( info.Notifier.CallbackFunction )
-		{
-			while( mTaskBase::NotifyOption::EnterNotifyEvent( info ) )
-			{
-				info.Notifier.CallbackFunction( queue , ticket , info.Parameter , result );
-				if( !mTaskBase::NotifyOption::LeaveNotifyEvent( info ) )
-				{
-					break;
-				}
-			}
-		}
-	}
 	else if( info.Mode == mTaskBase::NotifyOption::NotifyMode::NOTIFY_CALLBACK_PARALLEL )
 	{
 		info.Notifier.CallbackFunction( queue , ticket , info.Parameter , result );
@@ -180,7 +166,7 @@ static void AsyncEvent( const mTaskBase::NotifyOption::NotifierInfo& info , clas
 	}
 	else
 	{
-		RaiseAssert( g_ErrorLogger , 0 , L"非同期操作の完了通知方法が不正です" , info.Mode );
+		RaiseAssert( g_ErrorLogger , 0 , L"非同期操作の完了通知方法が不正です" , (int)info.Mode );
 	}
 }
 

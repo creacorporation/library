@@ -220,7 +220,7 @@ void AsyncEvent( mASyncNamedPipe& pipe , const mASyncNamedPipe::NotifyOption::No
 	}
 	else
 	{
-		RaiseAssert( g_ErrorLogger , 0 , L"非同期操作の完了通知方法が不正です" , info.Mode );
+		RaiseAssert( g_ErrorLogger , 0 , L"非同期操作の完了通知方法が不正です" , (int)info.Mode );
 	}
 }
 

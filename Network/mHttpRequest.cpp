@@ -202,20 +202,6 @@ static void AsyncEvent( mHttpRequest& req , const mHttpRequest::NotifyOption::No
 	{
 		::PostMessageW( info.Notifier.Message.Hwnd , info.Notifier.Message.Message , (WPARAM)&req , info.Parameter );
 	}
-	else if( info.Mode == mHttpRequest::NotifyOption::NotifyMode::NOTIFY_CALLBACK )
-	{
-		if( info.Notifier.CallbackFunction )
-		{
-			while( mHttpRequest::NotifyOption::EnterNotifyEvent( info ) )
-			{
-				info.Notifier.CallbackFunction( req , info.Parameter , addval );
-				if( !mHttpRequest::NotifyOption::LeaveNotifyEvent( info ) )
-				{
-					break;
-				}
-			}
-		}
-	}
 	else if( info.Mode == mHttpRequest::NotifyOption::NotifyMode::NOTIFY_CALLBACK_PARALLEL )
 	{
 		info.Notifier.CallbackFunction( req , info.Parameter , addval );
@@ -229,7 +215,7 @@ static void AsyncEvent( mHttpRequest& req , const mHttpRequest::NotifyOption::No
 	}
 	else
 	{
-		RaiseAssert( g_ErrorLogger , 0 , L"非同期操作の完了通知方法が不正です" , info.Mode );
+		RaiseAssert( g_ErrorLogger , 0 , L"非同期操作の完了通知方法が不正です" , (int)info.Mode );
 	}
 }
 
