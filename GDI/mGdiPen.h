@@ -96,7 +96,7 @@ public:
 
 	//コンストラクタ
 	//このコンストラクタは、MyHandleに格納するブラシの生成失敗時に例外を投げます。
-	mGdiPen( const Option* option )throw( mException );
+	mGdiPen( const Option* option )noexcept( false );
 
 	//デストラクタ
 	virtual ~mGdiPen();

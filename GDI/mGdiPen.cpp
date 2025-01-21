@@ -10,7 +10,7 @@
 #include "mGdiUtil.h"
 #include "General/mErrorLogger.h"
 
-mGdiPen::mGdiPen( const Option* option )throw( mException )
+mGdiPen::mGdiPen( const Option* option )noexcept( false )
 {
 	//オプションがヌルポインタだった場合、黒ペンになります。
 	if( option == nullptr )

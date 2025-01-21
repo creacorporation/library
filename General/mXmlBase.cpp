@@ -550,7 +550,7 @@ mXmlBase::OnReadResult mXmlBase::OnReadXmlDeclaration( const WString& path ,  mX
 
 const mXmlBase::mXmlObject_Element_Child* mXmlBase::OnWriteRoot( void )const
 {
-	return false;
+	return nullptr;
 }
 
 mXmlBase::mXmlObject_WithChildObject::AttrMap mXmlBase::mXmlObject_WithChildObject::GetAttrMap( const WString& prefix )const
