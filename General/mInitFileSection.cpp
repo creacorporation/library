@@ -825,8 +825,7 @@ mInitFileSection::SectionType mInitFileSection::GetSectionType( void )const
 	case SECTIONTYPE_ROWBASE:
 		break;
 	default:
-		RaiseAssert( g_ErrorLogger , 0 , L"セクション形式が不正であったので強制的に補正されました" );
-		const_cast<SectionType>( MySectionType ) = SECTIONTYPE_NORMAL;
+		RaiseAssert( g_ErrorLogger , 0 , L"セクション形式が不正です" );
 		break;
 	}
 

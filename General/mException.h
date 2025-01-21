@@ -18,9 +18,6 @@ EXCEPTIONマクロを使用して投げるのがおすすめです。
 #define MEXCEPTION_H_INCLUDED
 
 #include "mStandard.h"
-#include "mTCHAR.h"
-#pragma warning( disable : 4290 )
-#include <stdexcept>
 
 class mExceptionBase
 {
@@ -35,6 +32,10 @@ protected:
 	//例外エラー発生時のエラーコード(GetLastErrorの値)
 	DWORD MyLastError;
 };
+
+#include "mTCHAR.h"
+#pragma warning( disable : 4290 )
+#include <stdexcept>
 
 class mException : public mExceptionBase
 {

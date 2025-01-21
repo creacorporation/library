@@ -172,7 +172,7 @@ static void FillEmptyCell( Table< base_type >& retTable , const std::basic_strin
 	}
 
 	size_t size_max = 0 ;
-	for( Table< base_type >::const_iterator itr = retTable.begin() ; itr != retTable.end() ; itr++ )
+	for( typename Table< base_type >::const_iterator itr = retTable.begin() ; itr != retTable.end() ; itr++ )
 	{
 		if( size_max < itr->size() )
 		{
@@ -180,7 +180,7 @@ static void FillEmptyCell( Table< base_type >& retTable , const std::basic_strin
 		}
 	}
 
-	for( Table< base_type >::iterator itr = retTable.begin() ; itr != retTable.end() ; itr++ )
+	for( typename Table< base_type >::iterator itr = retTable.begin() ; itr != retTable.end() ; itr++ )
 	{
 		itr->resize( size_max , *empty_str );
 	}

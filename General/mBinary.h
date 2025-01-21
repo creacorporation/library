@@ -49,7 +49,7 @@ public:
 	template< class U >
 	void append( const mBinaryTemplate<U>& dt )
 	{
-		insert( __super::end() , dt.begin() , dt.end() );
+		__super::insert( __super::end() , dt.begin() , dt.end() );
 	}
 
 	static const size_t npos = -1;

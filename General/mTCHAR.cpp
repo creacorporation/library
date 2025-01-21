@@ -1192,7 +1192,7 @@ template< class T >
 static T ReplaceStringTemplate( const T& src , const T& findat , const T replaceto , DWORD* ret_count )
 {
 	T result = src;
-	T::size_type pos = result.find( findat );
+	typename T::size_type pos = result.find( findat );
 
 	while( pos != T::npos )
 	{
@@ -1224,7 +1224,7 @@ template< class T >
 static T ReplaceStringRecursiveTemplate( const T& src , const T& findat , const T replaceto , DWORD* ret_count )
 {
 	T result = src;
-	T::size_type pos = result.find( findat );
+	typename T::size_type pos = result.find( findat );
 
 	while( pos != T::npos )
 	{
@@ -1829,7 +1829,7 @@ static void MakeDoubleNullStringTemplate( const c_array& arr , std::basic_string
 {
 	str.clear();
 
-	for( c_array::const_iterator itr = arr.begin() ; itr != arr.end() ; itr++ )
+	for( typename c_array::const_iterator itr = arr.begin() ; itr != arr.end() ; itr++ )
 	{
 		str += *itr;
 		str += (c_char)0;

@@ -13,6 +13,7 @@
 #define MUNIQUEVALUE_H_INCLUDED
 
 #include "mStandard.h"
+#include "General/mTCHAR.h"
 #include "General/mException.h"
 #include <unordered_set>
 

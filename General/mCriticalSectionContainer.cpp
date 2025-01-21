@@ -9,14 +9,14 @@
 #include "mCriticalSectionContainer.h"
 
 
-mCriticalSectionContainer::mCriticalSectionContainer()
+mCriticalSectionContainer::mCriticalSectionContainer()noexcept
 {
 
 	InitializeCriticalSection( &MyCriticalSection );
 
 }
 
-mCriticalSectionContainer::~mCriticalSectionContainer()
+mCriticalSectionContainer::~mCriticalSectionContainer()noexcept
 {
 
 	DeleteCriticalSection( &MyCriticalSection );
@@ -52,14 +52,14 @@ bool mCriticalSectionContainer::TryEnter( void )
 }
 
 
-mCriticalSectionTicket::mCriticalSectionTicket(mCriticalSectionContainer &critical_section)
+mCriticalSectionTicket::mCriticalSectionTicket(mCriticalSectionContainer &critical_section)noexcept
 	: MySection( critical_section )
 {
 	MySection.Enter();
 	return;
 }
 
-mCriticalSectionTicket::~mCriticalSectionTicket()
+mCriticalSectionTicket::~mCriticalSectionTicket()noexcept
 {
 	MySection.Leave();
 	return;

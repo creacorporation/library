@@ -98,7 +98,7 @@ static void ParseTemplate( const std::basic_string<T>& src , S& retData )
 
 	XString token;
 	int slash_count = 0;
-	for( XString::const_iterator itr = src.begin() ; itr != src.end() ; itr++ )
+	for( typename XString::const_iterator itr = src.begin() ; itr != src.end() ; itr++ )
 	{
 		if( ( token_index == 0 ) && !template_isgraph( *itr ) )
 		{

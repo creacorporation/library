@@ -75,8 +75,8 @@ void HowToUse2( void )
 class mCriticalSectionContainer
 {
 public:
-	mCriticalSectionContainer()throw();
-	virtual ~mCriticalSectionContainer()throw();
+	mCriticalSectionContainer()noexcept;
+	virtual ~mCriticalSectionContainer()noexcept;
 
 	//クリティカルセクションのスピンカウントを設定します
 	//Count : スピンカウントの値
@@ -113,11 +113,11 @@ class mCriticalSectionTicket
 public:
 	//コンストラクタ
 	//コンストラクタ実行時にクリティカルセクションが確保されます。
-	mCriticalSectionTicket( mCriticalSectionContainer& critical_section )throw();
+	mCriticalSectionTicket( mCriticalSectionContainer& critical_section )noexcept;
 
 	//デストラクタ
 	//デストラクタ実行時にクリティカルセクションが解放されます。
-	virtual ~mCriticalSectionTicket()throw();
+	virtual ~mCriticalSectionTicket()noexcept;
 
 private:
 
