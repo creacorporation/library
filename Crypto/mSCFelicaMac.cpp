@@ -560,10 +560,12 @@ bool mSCFelicaMac::CalcDiversifiedKey( const mSecureBinary& master , const mBina
 	}
 
 	//(2)Lの導出
-	uint64_t ivector = 0;
-	uint64_t plain = 0;
+	uint64_t ivector;
+	uint64_t plain;
 	uint64_t value_L;
 	ULONG resultsize;
+	ivector = 0;
+	plain = 0;
 	stat = BCryptEncrypt( keyhandle , (PUCHAR)&plain , sizeof( plain ) , nullptr , (PUCHAR)&ivector , sizeof( ivector ) , (PUCHAR)&value_L , sizeof( value_L ) , &resultsize , 0 );
 	if( !NT_SUCCESS( stat ) )
 	{
@@ -572,7 +574,8 @@ bool mSCFelicaMac::CalcDiversifiedKey( const mSecureBinary& master , const mBina
 	}
 
 	//(3)ビットシフト
-	uint64_t value_K1 = ByteSwap( value_L );	//ここからK1＝リトルエンディアンの並び
+	uint64_t value_K1;
+	value_K1 = ByteSwap( value_L );				//ここからK1＝リトルエンディアンの並び
 	value_K1 <<= 1;
 	if( value_L & 0x0000'0000'0000'0080u )		//←ビッグエンディアンの最上位ビットの位置
 	{
@@ -581,8 +584,10 @@ bool mSCFelicaMac::CalcDiversifiedKey( const mSecureBinary& master , const mBina
 	value_K1 = ByteSwap( value_K1 );			//ここまでK1＝リトルエンディアンの並び
 
 	//(4)Mの分割、(5)M2の導出
-	uint64_t value_M1 = ( *(const uint64_t*)( &id[ 0 ] ) ) ^ ( 0        );
-	uint64_t value_M2 = ( *(const uint64_t*)( &id[ 8 ] ) ) ^ ( value_K1 );
+	uint64_t value_M1;
+	uint64_t value_M2;
+	value_M1 = ( *(const uint64_t*)( &id[ 0 ] ) ) ^ ( 0        );
+	value_M2 = ( *(const uint64_t*)( &id[ 8 ] ) ) ^ ( value_K1 );
 
 	//(6)C1の導出
 	ivector = 0;

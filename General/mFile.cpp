@@ -428,7 +428,7 @@ bool mFile::ExecIoControl( DWORD code , const mBinary* in , mBinary* retResult )
 
 	//必要サイズの調査
 	DWORD response_size = 0;
-	while( !DeviceIoControl( MyHandle , code , in_ptr->data() , in_ptr->size() , out_ptr->data() , out_ptr->size() , &response_size , nullptr ) )
+	while( !DeviceIoControl( MyHandle , code , in_ptr->data() , (DWORD)in_ptr->size() , out_ptr->data() , (DWORD)out_ptr->size() , &response_size , nullptr ) )
 	{
 		DWORD errcode = GetLastError();
 		if( ( errcode == ERROR_INSUFFICIENT_BUFFER ) ||

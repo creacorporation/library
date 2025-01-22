@@ -173,7 +173,8 @@ bool mAES::Init( HCRYPTHASH hash )
 	}
 
 	//パディングモードの設定(PKCS5)
-	DWORD padding = PKCS5_PADDING;
+	DWORD padding;
+	padding = PKCS5_PADDING;
 	if( !CryptSetKeyParam( MyCryptKey , KP_PADDING , (BYTE*)&padding , 0 ) )
 	{
 		RaiseAssert( g_ErrorLogger , 0 , L"パディングの設定に失敗しました" );
@@ -182,7 +183,8 @@ bool mAES::Init( HCRYPTHASH hash )
 	}
 
 	//初期化ベクタの設定(初期化ベクタは0なので、SetIVで自分でセットすること)
-	BYTE init_vector[16]={ 0 };
+	BYTE init_vector[16];
+	ZeroMemory( init_vector , sizeof( init_vector ) );
 	if( !SetIV( init_vector ) )
 	{
 		RaiseAssert( g_ErrorLogger , 0 , L"IVの設定に失敗しました" );
@@ -191,7 +193,8 @@ bool mAES::Init( HCRYPTHASH hash )
 	}
 
 	//CBCモードに設定
-	DWORD block_mode = CRYPT_MODE_CBC;
+	DWORD block_mode;
+	block_mode = CRYPT_MODE_CBC;
 	if( !CryptSetKeyParam ( MyCryptKey , KP_MODE , (BYTE*)&block_mode , 0 ) )
 	{
 		RaiseAssert( g_ErrorLogger , 0 , L"暗号化モードの設定に失敗しました" );

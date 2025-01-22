@@ -667,7 +667,7 @@ WString mFileUtility::GetExecutableFullPath( void )
 
 	while( 1 )
 	{
-		DWORD sz = GetModuleFileNameW( nullptr , const_cast<wchar_t*>( tmp.data() ) , tmp.size() );
+		DWORD sz = GetModuleFileNameW( nullptr , const_cast<wchar_t*>( tmp.data() ) , (DWORD)tmp.size() );
 		if( sz == 0 )
 		{
 			return L"";
