@@ -16,8 +16,8 @@ on:
     branches: [ "dev_static_analysis" ]
   pull_request:
     branches: [ "dev_static_analysis" ]
-  schedule:
-    - cron: '31 11 * * 3'
+#  schedule:
+#    - cron: '31 11 * * 3'
 
 jobs:
   analyze:
