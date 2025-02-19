@@ -412,6 +412,9 @@
     <ClInclude Include="COM\mGUID.h">
       <Filter>COM</Filter>
     </ClInclude>
+    <ClInclude Include="General\mMemoryStream.h">
+      <Filter>General</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="General\mOptionParser.cpp">
@@ -776,6 +779,9 @@
     </ClCompile>
     <ClCompile Include="COM\mGUID.cpp">
       <Filter>COM</Filter>
+    </ClCompile>
+    <ClCompile Include="General\mMemoryStream.cpp">
+      <Filter>General</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

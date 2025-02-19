@@ -19,6 +19,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="General\mMemoryStream.h" />
     <ClInclude Include="COM\mComFileStream.h" />
     <ClInclude Include="COM\mComStream.h" />
     <ClInclude Include="COM\mComMemStream.h" />
@@ -145,6 +146,7 @@
     <ClInclude Include="mStandard.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="General\mMemoryStream.cpp" />
     <ClCompile Include="COM\mComFileStream.cpp" />
     <ClCompile Include="COM\mComStream.cpp" />
     <ClCompile Include="COM\mComMemStream.cpp" />
