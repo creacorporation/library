@@ -42,6 +42,9 @@
     <Filter Include="Service">
       <UniqueIdentifier>{03faf0fb-32c2-45a9-a6e5-14948ab63403}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Type">
+      <UniqueIdentifier>{95b08ca5-4f05-4794-ac4d-f3d85654fa47}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="General\mOptionParser.h">
@@ -414,6 +417,9 @@
     </ClInclude>
     <ClInclude Include="General\mMemoryStream.h">
       <Filter>General</Filter>
+    </ClInclude>
+    <ClInclude Include="Type\mProperty.h">
+      <Filter>Type</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
