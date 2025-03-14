@@ -147,7 +147,7 @@ typedef std::vector<WString> WStringVector;
 namespace mTCHAR
 {
 
-inline bool IsUnicode( void )
+constexpr bool IsUnicode( void )
 {
 #ifdef UNICODE
 	return TRUE;
