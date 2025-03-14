@@ -37,8 +37,9 @@ bool mComboBox::CreateWindowCallback( CreateWindowSetting& retSetting , const vo
 	if( ( (const Option*)( opt ) )->method == Option::CreateMethod::USEOPTION )
 	{
 		const mComboBox::Option_UseOption* op = ( const mComboBox::Option_UseOption* )opt;
+
 		//有効・無効の切り替え
-		retSetting.Style |= ( op->Enable ) ? ( WS_DISABLED ) : ( 0 );
+		retSetting.Style |= ( !op->Enable ) ? ( WS_DISABLED ) : ( 0 );
 		//スタイルの適用(設定対象外)
 		switch( op->Style )
 		{
@@ -52,7 +53,7 @@ bool mComboBox::CreateWindowCallback( CreateWindowSetting& retSetting , const vo
 			retSetting.Style |= CBS_DROPDOWNLIST;
 			break;
 		default:	//その他。イレギュラーなのでエラーにする。
-			RaiseAssert( g_ErrorLogger , 0 , L"想定外のスタイルが指定されました" , op->Style );
+			RaiseAssert( g_ErrorLogger , 0 , L"想定外のスタイルが指定されました" , (int)op->Style );
 			retSetting.Style |= CBS_DROPDOWNLIST;
 			break;
 		}

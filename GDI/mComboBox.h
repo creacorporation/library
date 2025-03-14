@@ -28,13 +28,13 @@ public:
 	struct Option
 	{
 	//コンボボックス生成の方法
-		enum CreateMethod
+		enum class CreateMethod
 		{
 			USEOPTION,		//通常の方法
 		};
 
 		//スタイル
-		enum ControlStyle
+		enum class ControlStyle
 		{
 			SIMPLE,			//【シンプル】エディットコントロール＋常に表示されているリスト
 			DROPDOWN,		//【ドロップダウン】エディットコントロール＋ドロップダウンするリスト
