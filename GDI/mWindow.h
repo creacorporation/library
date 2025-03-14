@@ -172,10 +172,10 @@ public:
 	virtual void MoveWindowPosition( const RECT& pos );
 
 	//
-	LRESULT MessageSend( UINT msg , WPARAM wparam , LPARAM lparam );
+	LRESULT MessageSend( UINT msg , WPARAM wparam , LPARAM lparam )const;
 
 	//
-	LRESULT MessagePost( UINT msg , WPARAM wparam , LPARAM lparam );
+	LRESULT MessagePost( UINT msg , WPARAM wparam , LPARAM lparam )const;
 
 protected:
 
