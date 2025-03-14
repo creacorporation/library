@@ -14,6 +14,7 @@
 #define _CRTDBG_MAP_ALLOC
 #endif //_DEBUG
 
+#define NOMINMAX
 #include <winsock2.h>
 #include <windows.h>
 #include <cstddef>
