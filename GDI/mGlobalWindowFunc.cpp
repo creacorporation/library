@@ -25,12 +25,12 @@ LRESULT __stdcall mGlobalWindowFunc::MessageProcedure( HWND hwnd , UINT msg , WP
 	}
 	else
 	{
-		//該当オブジェクトあり
-		return itr->second->WindowProcedure( msg , wparam , lparam );
+		//該当オブジェクトのデフォルト
+		return itr->second.Window->WindowProcedure( msg , wparam , lparam );
 	}
 }
 
-bool mGlobalWindowFunc::Attach( const mGlobalWindowFunc::AttachAccessPermission& , HWND hwnd , mWindow* win )
+bool mGlobalWindowFunc::Attach( const mGlobalWindowFunc::AttachAccessPermission& , HWND hwnd , mWindow* win , const WString& id )
 {
 	//すでに登録済み？
 	if( MyHandleObjMap.count( hwnd ) )
@@ -39,7 +39,11 @@ bool mGlobalWindowFunc::Attach( const mGlobalWindowFunc::AttachAccessPermission&
 		return false;
 	}
 	//登録
-	MyHandleObjMap.insert( HandleObjMap::value_type( hwnd , win ) );
+	HandleObjMapEntry entry;
+	entry.Window = win;
+	entry.Id = id;
+
+	MyHandleObjMap.insert( HandleObjMap::value_type( hwnd , std::move( entry ) ) );
 	return true;
 }
 
@@ -54,9 +58,25 @@ mWindow* mGlobalWindowFunc::Query( const mGlobalWindowFunc::AttachAccessPermissi
 	else
 	{
 		//該当オブジェクトあり
-		return itr->second;
+		return itr->second.Window;
 	}
 }
+
+WString mGlobalWindowFunc::QueryId( const AttachAccessPermission& perm , HWND hwnd )
+{
+	HandleObjMap::iterator itr = MyHandleObjMap.find( hwnd );
+	if( itr == MyHandleObjMap.end() )
+	{
+		//不明なオブジェクト
+		return L"";
+	}
+	else
+	{
+		//該当オブジェクトあり
+		return itr->second.Id;
+	}
+}
+
 
 bool mGlobalWindowFunc::Detach( const mGlobalWindowFunc::DetachAccessPermission& , HWND hwnd , mWindow* win )
 {
@@ -68,7 +88,7 @@ bool mGlobalWindowFunc::Detach( const mGlobalWindowFunc::DetachAccessPermission&
 		RaiseAssert( g_ErrorLogger , (ULONG_PTR)hwnd , L"Object not found" );
 		return false;
 	}
-	if( ( itr->first != hwnd ) || ( itr->second != win ) )
+	if( ( itr->first != hwnd ) || ( itr->second.Window != win ) )
 	{
 		//登録されているものと、削除されるものが異なる場合。
 		//この場合でも、この関数を返すとwinが指しているアドレスが解放される可能性が大なので、

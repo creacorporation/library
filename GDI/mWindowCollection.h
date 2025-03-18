@@ -34,12 +34,23 @@ public:
 	//     IDは任意の文字列ですが、以下の制限があります。
 	//     (1)空文字列はダメ
 	//     (2)同じmWindowCollectionインスタンス内で重複するものはダメ
+	//        ＝hwndからIDを検索することはできるが、IDからhwndを検索することはできない
 	//opt : 生成したインスタンスに引き渡すオプション（ユーザ定義）
 	//ret : 生成に成功した場合生成したコントロール。失敗した場合nullptr
 	template< class T > T* AddControl( const WString& id , const struct T::Option* opt )
 	{
 		return (T*)mWindowCollection::AddControlInternal( T::Factory , id , opt );
 	}
+
+	//コントロールをコレクションに追加する
+	//factory : mWindow*型のインスタンスを生成して返すファクトリメソッド
+	//          mNewでインスタンスを生成して返すものであること。
+	//id : 追加するコントロールを識別するID
+	//     IDは任意の文字列ですが、以下の制限があります。
+	//     (1)空文字列はダメ
+	//     (2)同じmWindowCollectionインスタンス内で重複するものはダメ
+	//        ＝hwndからIDを検索することはできるが、IDからhwndを検索することはできない
+	//ret : 生成に成功した場合生成したコントロール。失敗した場合nullptr
 	template< class T > T* AddControl( const WString& id )
 	{
 		return (T*)mWindowCollection::AddControlInternal( T::Factory , id , nullptr );
@@ -92,17 +103,11 @@ protected:
 	//親オブジェクト
 	mWindow* const MyParent;
 
-	//オブジェクトのマッピング１
+	//オブジェクトのマッピング
 	//左：オブジェクトのID
 	//右：オブジェクトへのポインタ
 	typedef std::unordered_map<WString,mWindow*> IdMap;
 	IdMap MyIdMap;
-
-	//オブジェクトのマッピング２
-	//左：ウインドウハンドル
-	//右：オブジェクトへのポインタ
-	typedef std::unordered_map<HWND,WString> HwndMap;
-	HwndMap MyHwndMap;
 
 	//mWindow::WindowPosition構造体で定義から、実際の座標を求める
 	//srcpos : 変換する座標

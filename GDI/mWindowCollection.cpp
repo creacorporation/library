@@ -158,7 +158,7 @@ mWindow* mWindowCollection::AddControlInternal( mWindowFactory factory , const W
 		}
 
 		//マップに登録(1)　〜グローバルウインドウ関数〜
-		if( !mGlobalWindowFunc::Attach( mGlobalWindowFunc::AttachAccessPermission() , hwnd , win ) )
+		if( !mGlobalWindowFunc::Attach( mGlobalWindowFunc::AttachAccessPermission() , hwnd , win , id ) )
 		{
 			//登録できない
 			RaiseAssert( g_ErrorLogger , (ULONG_PTR)factory , L"グローバルウインドウ関数に登録できませんでした" + wndsetting.WindowName );
@@ -168,7 +168,6 @@ mWindow* mWindowCollection::AddControlInternal( mWindowFactory factory , const W
 
 		//マップに登録(2)　〜IDマップ〜
 		MyIdMap.insert( IdMap::value_type( id , win ) );
-		MyHwndMap.insert( HwndMap::value_type( hwnd , id ) );
 	}
 	else
 	{
@@ -210,25 +209,12 @@ bool mWindowCollection::RemoveControl( const WString& id )
 	mDelete itr->second;
 	MyIdMap.erase( id );
 
-	if( MyHwndMap.count( del_hwnd ) == 0 )
-	{
-		//無いんですけど？
-		RaiseError( g_ErrorLogger , 0 , L"Associated hwnd is not found : " + id );
-		return false;
-	}
-	MyHwndMap.erase( del_hwnd );
-
 	return true;
 }
 
 WString mWindowCollection::QueryId( HWND hwnd )const
 {
-	HwndMap::const_iterator itr = MyHwndMap.find( hwnd );
-	if( itr == MyHwndMap.end() )
-	{
-		return L"";
-	}
-	return itr->second;
+	return mGlobalWindowFunc::QueryId( mGlobalWindowFunc::AttachAccessPermission() , hwnd );
 }
 
 mWindow* mWindowCollection::Query( const WString& id )const

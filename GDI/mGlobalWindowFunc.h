@@ -75,13 +75,19 @@ public:
 	//hwnd : 登録するウインドウハンドル
 	//win : hwndに関連づけるオブジェクト
 	//ret : 正常に登録できた場合true
-	static bool Attach( const AttachAccessPermission& perm , HWND hwnd , mWindow* win );
+	static bool Attach( const AttachAccessPermission& perm , HWND hwnd , mWindow* win , const WString& id );
 
 	//指定するウインドウハンドルに関連づけられているオブジェクトを取得します。
 	//この関数は、mWindowCollectionからのみアクセスを許可します。
 	//hwnd : 検索するウインドウハンドル
 	//ret : 関連づけられているオブジェクト。存在しない場合はnullptr
 	static mWindow* Query( const AttachAccessPermission& perm , HWND hwnd );
+
+	//指定するウインドウハンドルに関連づけられているIDを取得します。
+	//この関数は、mWindowCollectionからのみアクセスを許可します。
+	//hwnd : 検索するウインドウハンドル
+	//ret : 関連づけられているオブジェクトのID
+	static WString QueryId( const AttachAccessPermission& perm , HWND hwnd );
 
 	//アクセス権設定用オブジェクト
 	//このクラスのコンストラクタを呼び出せる者にのみアクセス許可を与える。
@@ -104,8 +110,14 @@ public:
 
 private:
 
+	struct HandleObjMapEntry
+	{
+		mWindow* Window;
+		WString Id;
+	};
+
 	//HWND-mWindowのマップ
-	typedef std::unordered_map<HWND,mWindow*> HandleObjMap;
+	typedef std::unordered_map<HWND,HandleObjMapEntry> HandleObjMap;
 	static HandleObjMap MyHandleObjMap;
 
 };
