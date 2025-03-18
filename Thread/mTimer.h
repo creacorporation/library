@@ -27,7 +27,7 @@ public:
 	{
 	public:
 		//通知方法
-		enum NotificationMethod
+		enum class NotificationMethod
 		{
 			METHOD_NONE,				//何もしない
 			METHOD_WINDOW_MESSAGE,		//ウインドウメッセージ

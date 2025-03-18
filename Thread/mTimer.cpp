@@ -52,20 +52,20 @@ bool mTimer::Setup( const NotificationOption& opt )
 
 	switch( opt.Method )
 	{
-	case NotificationOption::METHOD_NONE:
+	case NotificationOption::NotificationMethod::METHOD_NONE:
 		MyOption.reset( mNew Option_None( *(Option_None*)&opt ) );
 		break;
-	case NotificationOption::METHOD_WINDOW_MESSAGE:
+	case NotificationOption::NotificationMethod::METHOD_WINDOW_MESSAGE:
 		MyOption.reset( mNew Option_WindowMessage( *(Option_WindowMessage*)&opt ) );
 		break;
-	case NotificationOption::METHOD_SIGNAL_OBJECT:
+	case NotificationOption::NotificationMethod::METHOD_SIGNAL_OBJECT:
 		MyOption.reset( mNew Option_SignalObject( *(Option_SignalObject*)&opt ) );
 		break;
-	case NotificationOption::METHOD_CALLBACK_FUNCTION:
+	case NotificationOption::NotificationMethod::METHOD_CALLBACK_FUNCTION:
 		MyOption.reset( mNew Option_CallbackFunction( *(Option_CallbackFunction*)&opt ) );
 		break;
 	default:
-		RaiseAssert( g_ErrorLogger , 0 , L"イベント通知方法の指定が誤っています" , opt.Method );
+		RaiseAssert( g_ErrorLogger , 0 , L"イベント通知方法の指定が誤っています" , (int)opt.Method );
 		MyOption.reset( mNew Option_None( *(Option_None*)&opt ) );
 		break;
 	}
@@ -182,9 +182,9 @@ VOID CALLBACK mTimer::TimerRoutine( PVOID param , BOOLEAN istimer )
 	//キューの先頭の場合は完了イベントをコール
 	switch( parent->MyOption->Method )
 	{
-	case NotificationOption::METHOD_NONE:
+	case NotificationOption::NotificationMethod::METHOD_NONE:
 		break;
-	case NotificationOption::METHOD_WINDOW_MESSAGE:
+	case NotificationOption::NotificationMethod::METHOD_WINDOW_MESSAGE:
 	{
 		//ウインドウメッセージの場合
 		// wparam : 呼出し元mASyncNamedPipeへのポインタ
@@ -193,7 +193,7 @@ VOID CALLBACK mTimer::TimerRoutine( PVOID param , BOOLEAN istimer )
 		PostMessageW( op->Sendto , op->OnTimer , (WPARAM)parent , op->Parameter );
 		break;
 	}
-	case NotificationOption::METHOD_CALLBACK_FUNCTION:
+	case NotificationOption::NotificationMethod::METHOD_CALLBACK_FUNCTION:
 	{
 		//コールバック関数の場合
 		Option_CallbackFunction* op = (Option_CallbackFunction*)( parent->MyOption.get() );
@@ -203,7 +203,7 @@ VOID CALLBACK mTimer::TimerRoutine( PVOID param , BOOLEAN istimer )
 		}
 		break;
 	}
-	case NotificationOption::METHOD_SIGNAL_OBJECT:
+	case NotificationOption::NotificationMethod::METHOD_SIGNAL_OBJECT:
 	{
 		//シグナルオブジェクトの場合
 		Option_SignalObject* op = (Option_SignalObject*)( parent->MyOption.get() );
@@ -214,7 +214,7 @@ VOID CALLBACK mTimer::TimerRoutine( PVOID param , BOOLEAN istimer )
 		break;
 	}
 	default:
-		RaiseAssert( g_ErrorLogger , 0 , L"非同期操作の完了通知方法が不正です" , parent->MyOption->Method );
+		RaiseAssert( g_ErrorLogger , 0 , L"非同期操作の完了通知方法が不正です" , (int)parent->MyOption->Method );
 		break;
 	}
 
