@@ -58,8 +58,22 @@ bool mButton::CreateWindowCallback( CreateWindowSetting& retSetting , const void
 
 bool mButton::IsChecked( void )const
 {
-	LRESULT state = MessageSend( BM_GETSTATE , 0 , 0 );
+	LRESULT state = MessageSend( BM_GETCHECK , 0 , 0 );
 	return state & BST_CHECKED;
 }
 
+
+//オルタネイトのボタン(ボタンを押した後に離してもその状態を保持するボタン)のチェック状態を設定する
+bool mButton::SetCheck( bool check )const
+{
+	if( check )
+	{
+		MessageSend( BM_SETCHECK , BST_CHECKED , 0 );
+	}
+	else
+	{
+		MessageSend( BM_SETCHECK , BST_UNCHECKED , 0 );
+	}
+	return true;
+}
 
