@@ -25,7 +25,7 @@ public:
 	//リストボックス生成時のオプション
 	//実際に作成するときは、Option構造体を直接使わずに、シチュエーションに合わせて以下を使って下さい。
 	//・Option_UseOption … メンバ変数を埋めてオプションを設定したいとき
-	struct Option
+	struct Option : public mWindow::Option
 	{
 		//リストボックス生成の方法
 		enum CreateMethod
@@ -92,6 +92,12 @@ public:
 
 	//指定インデックスに関連づけられているデータを取得する
 	virtual bool GetItemData( INT index , ItemDataEntry& retdata )const override;
+
+	//指定インデックスに関連づけられているデータを取得する
+	virtual const ItemDataEntry& GetItemData( INT index )const override;
+
+	//現在選択されている項目に関連づけられているデータを取得する
+	virtual const ItemDataEntry& GetItemData( void )const override;
 
 	//いくつアイテムがあるかをカウントする
 	virtual INT GetItemCount( void )const override;

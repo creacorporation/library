@@ -234,7 +234,7 @@ WString mComboBox::GetItemCaption( INT index )const
 	}
 
 	//格納用のバッファを作成
-	WCHAR* str_buffer = mNew WCHAR[ (size_t)result ];
+	WCHAR* str_buffer = mNew WCHAR[ result + 1 ];
 
 	//バッファに文字列を取得する
 	result = ::SendMessageW( GetMyHwnd() , CB_GETLBTEXT , index , (LPARAM)str_buffer );
@@ -266,6 +266,37 @@ bool mComboBox::GetItemData( INT index , ItemDataEntry& retdata )const
 	}
 	retdata = itr->second;
 	return true;
+}
+
+//指定インデックスに関連づけられているデータを取得する
+const mListboxFamily::ItemDataEntry& mComboBox::GetItemData( INT index )const
+{
+	static const mListboxFamily::ItemDataEntry dummy;
+	
+	//指定されたインデックスのキャプションを取得
+	WString caption = GetItemCaption( index );
+
+	//取得したキャプションからデータを取得
+	ItemData::const_iterator itr = MyItemData.find( caption );
+	if( itr == MyItemData.end() )
+	{
+		//指定キャプションに関連づけられているデータはない
+		return dummy;
+	}
+	return itr->second;
+}
+
+//現在選択されている項目に関連づけられているデータを取得する
+const mListboxFamily::ItemDataEntry& mComboBox::GetItemData( void )const
+{
+	static const mListboxFamily::ItemDataEntry dummy;
+
+	mComboBox::SelectedItems selected = GetSelected();
+	if( selected.empty() )
+	{
+		return dummy;
+	}
+	return GetItemData( *selected.begin() );
 }
 
 //いくつアイテムがあるかをカウントする

@@ -24,6 +24,15 @@ public:
 	//リストボックスの項目に関連づけられているデータ
 	struct ItemDataEntry
 	{
+		ItemDataEntry()
+		{
+			data = 0;
+		}
+		ItemDataEntry( ULONG_PTR d , const WString& s )
+		{
+			data = d;
+			str = s;
+		}
 		ULONG_PTR data;		//ユーザ定義の値
 		WString str;		//ユーザ定義の文字列(リストボックスには表示されない)
 	};
@@ -76,6 +85,16 @@ public:
 	//ret : 成功時真、失敗時偽。
 	//※指定インデックスに関連付いているデータが存在しない場合、偽が返る
 	virtual bool GetItemData( INT index , ItemDataEntry& retdata )const = 0;
+
+	//指定インデックスに関連づけられているデータを取得する
+	//index : 取得したい位置
+	//ret : 失敗時は空データ(0と空文字列)。成功時はデータへの参照。
+	virtual const ItemDataEntry& GetItemData( INT index )const = 0;
+
+	//現在選択されている項目に関連づけられているデータを取得する
+	//リストボックスで複数選択されている場合は、その一番上の項目
+	//ret : 失敗時は空データ(0と空文字列)。成功時はデータへの参照。
+	virtual const ItemDataEntry& GetItemData( void )const = 0;
 
 	//いくつアイテムがあるかをカウントする
 	//ret : 存在するアイテムの数

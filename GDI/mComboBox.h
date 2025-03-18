@@ -25,7 +25,7 @@ public:
 	//コンボボックス生成時のオプション
 	//実際に作成するときは、Option構造体を直接使わずに、シチュエーションに合わせて以下を使って下さい。
 	//・Option_UseOption … メンバ変数を埋めてオプションを設定したいとき
-	struct Option
+	struct Option : public mWindow::Option
 	{
 	//コンボボックス生成の方法
 		enum class CreateMethod
@@ -53,7 +53,7 @@ public:
 	struct Option_UseOption : public Option
 	{
 		ControlStyle Style;		//スタイル
-		WindowPosition Pos;		//表示位置
+		WindowPosition Pos;		//表示位置（リストを展開したときのサイズであることに注意）
 		bool Enable;			//有効/無効
 		bool AutoSort;			//自動ソート有効
 		Option_UseOption() : Option( CreateMethod::USEOPTION )
@@ -96,6 +96,12 @@ public:
 
 	//指定インデックスに関連づけられているデータを取得する
 	virtual bool GetItemData( INT index , ItemDataEntry& retdata )const override;
+
+	//指定インデックスに関連づけられているデータを取得する
+	virtual const ItemDataEntry& GetItemData( INT index )const override;
+
+	//現在選択されている項目に関連づけられているデータを取得する
+	virtual const ItemDataEntry& GetItemData( void )const override;
 
 	//いくつアイテムがあるかをカウントする
 	virtual INT GetItemCount( void )const override;
