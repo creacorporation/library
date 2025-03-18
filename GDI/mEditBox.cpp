@@ -177,7 +177,7 @@ bool mEditBox::GetLine( DWORD Line , WString& retText )const
 {
 	//指定した行の最初の文字のインデックス
 	DWORD pos = static_cast<DWORD>( MessageSend( EM_LINEINDEX , Line , 0 ) );
-	DWORD len = static_cast<DWORD>( MessageSend( EM_LINELENGTH , Line , 0 ) );
+	DWORD len = static_cast<DWORD>( MessageSend( EM_LINELENGTH , pos , 0 ) );
 	
 	if( std::numeric_limits<wchar_t>::max() < len )
 	{
