@@ -68,3 +68,9 @@ bool mLabel::CreateWindowCallback( CreateWindowSetting& retSetting , const void*
 	return true;
 }
 
+bool mLabel::SetCaption( const WString& str )const
+{
+	MessageSend( WM_SETTEXT , 0 , (LPARAM)str.c_str() );
+	return true;
+}
+

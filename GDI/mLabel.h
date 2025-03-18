@@ -77,6 +77,9 @@ public:
 		return mNew mLabel;
 	}
 
+	//テキストを変更する
+	bool SetCaption( const WString& str )const;
+
 protected:
 	mLabel();
 	virtual ~mLabel();
