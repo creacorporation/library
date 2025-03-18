@@ -23,7 +23,7 @@ public:
 	//ボタン生成時のオプション
 	//実際に作成するときは、Option構造体を直接使わずに、シチュエーションに合わせて以下を使って下さい。
 	//・Option_UseOption … メンバ変数を埋めてオプションを設定したいとき
-	struct Option
+	struct Option : public mWindow::Option
 	{
 		//ボタン生成の方法
 		enum CreateMethod
@@ -45,10 +45,12 @@ public:
 		WString Caption;		//ボタンに書いてある文字列
 		WindowPosition Pos;		//表示位置
 		bool Enable;			//有効(true)/無効(false)
+		bool Alternate;			//オルタネイトにする(ボタンを押した後に離してもその状態を保持するボタン)
 		Option_UseOption() : Option( CreateMethod::USEOPTION )
 		{
 			Caption = L"";
 			Enable = true;
+			Alternate = false;
 		}
 	};
 
@@ -57,6 +59,10 @@ public:
 	{
 		return mNew mButton;
 	}
+
+	//オルタネイトにする(ボタンを押した後に離してもその状態を保持するボタン)が、現在押されているかどうかを確認する
+	// ret : 押されていれば真
+	bool IsChecked( void )const;
 
 protected:
 	mButton();

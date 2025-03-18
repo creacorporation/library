@@ -59,7 +59,7 @@ bool mLabel::CreateWindowCallback( CreateWindowSetting& retSetting , const void*
 			retSetting.Style |= SS_LEFTNOWORDWRAP;
 			break;
 		default:
-			RaiseAssert( g_ErrorLogger , op->Justify , L"" );
+			RaiseAssertF( g_ErrorLogger , 0 , L"LABEL" , L"配置の指定が不正 %d" , (int)op->Justify );
 			break;
 		}
 		//配置

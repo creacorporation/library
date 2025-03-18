@@ -120,7 +120,7 @@ public:
 	//コントロール生成時のオプション
 	//実際に作成するときは、Option構造体を直接使わずに、シチュエーションに合わせて以下を使って下さい。
 	//・Option_UseOption … メンバ変数を埋めてオプションを設定したいとき
-	struct Option
+	struct Option : public mWindow::Option
 	{
 	public:
 		//生成の方法

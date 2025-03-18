@@ -106,6 +106,13 @@ public:
 	}
 	*/
 
+	struct Option
+	{
+		Option()
+		{
+		}
+	};
+
 	//相対的に座標を決定するための情報
 	typedef mWindowPosition::POSITION POSITION;
 
@@ -171,10 +178,10 @@ public:
 	//ウインドウを移動する
 	virtual void MoveWindowPosition( const RECT& pos );
 
-	//
+	//ウインドウメッセージを送信する
 	LRESULT MessageSend( UINT msg , WPARAM wparam , LPARAM lparam )const;
 
-	//
+	//ウインドウメッセージを送信する
 	LRESULT MessagePost( UINT msg , WPARAM wparam , LPARAM lparam )const;
 
 protected:
@@ -272,6 +279,19 @@ protected:
 
 	//ウインドウが破棄されようとしているときコールされる
 	virtual void OnDestroy( void );
+
+
+	//ファイルのドラッグアンドドロップを受け入れるよう設定する
+	//※有効にすると、以降WM_DROPFILESが送信されます
+	bool AcceptDragDropFile( bool Accept = true );
+
+	//WM_DROPFILEメッセージを受け取った時、ドロップされたファイルの一覧を取得する
+	//wparam : ウインドウメッセージのwparam
+	//retFiles : ファイル名の一覧。不要ならヌルでいい。
+	//retPoint : ドロップされた座標(クライアント座標)。不要ならnullptrでいい。
+	//           スクリーン座標への変換はWINAPIのClientToScreen()を使用する。
+	//ret : 成功時真
+	bool GetDroppedFiles( WPARAM wparam , WStringDeque* retFiles , POINT* retPoint )const;
 
 private:
 

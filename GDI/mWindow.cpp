@@ -217,3 +217,48 @@ LRESULT mWindow::MessagePost( UINT msg , WPARAM wparam , LPARAM lparam )const
 {
 	return PostMessageW( GetMyHwnd() , msg , wparam , lparam );		 
 }
+
+
+bool mWindow::AcceptDragDropFile( bool Accept )
+{
+	DragAcceptFiles( GetMyHwnd() , Accept );
+	return true;
+}
+
+bool mWindow::GetDroppedFiles( WPARAM wparam , WStringDeque* retFiles , POINT* retPoint )const
+{
+	HDROP hdrop = (HDROP)wparam;
+	BOOL result = false;
+
+	if( retFiles )
+	{
+		retFiles->clear();
+
+		//ドロップされたファイルの数
+		UINT filecount = DragQueryFileW( hdrop , 0xFFFFFFFFu , NULL , 0 );
+
+		//ファイル名を取得
+		for( UINT i = 0 ; i < filecount ; i++ )
+		{
+			UINT filename_len = DragQueryFileW( hdrop , i , NULL , 0 );
+			wchar_t* filename = mNew wchar_t[ filename_len + 1 ];
+
+			DragQueryFileW( hdrop , i , filename , filename_len + 1 );
+			retFiles->push_back( filename );
+			mDelete[] filename;
+		}
+	}
+	if( retPoint )
+	{
+		//ドロップされた位置を得る
+		if( !DragQueryPoint( hdrop , retPoint ) )
+		{
+			goto end;
+		}
+	}
+
+	result = true;
+end:
+	DragFinish( hdrop );
+	return result;
+}

@@ -39,6 +39,12 @@ bool mButton::CreateWindowCallback( CreateWindowSetting& retSetting , const void
 
 		//ウインドウのキャプション
 		retSetting.WindowName = op->Caption;
+		
+		//オルタネイト
+		if( op->Alternate )
+		{
+			retSetting.Style |= BS_PUSHLIKE | BS_AUTOCHECKBOX;
+		}
 		//有効・無効
 		if( !op->Enable )
 		{
@@ -49,4 +55,11 @@ bool mButton::CreateWindowCallback( CreateWindowSetting& retSetting , const void
 	}
 	return true;
 }
+
+bool mButton::IsChecked( void )const
+{
+	LRESULT state = MessageSend( BM_GETSTATE , 0 , 0 );
+	return state & BST_CHECKED;
+}
+
 
