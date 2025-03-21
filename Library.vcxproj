@@ -198,7 +198,10 @@
     <ClCompile Include="COM\mVariant.cpp" />
     <ClCompile Include="General\mDateTime.cpp" />
     <ClCompile Include="COM\Excel\mExcelCellRef.cpp" />
-    <ClCompile Include="COM\Excel\mExcelHandler.cpp" />
+    <ClCompile Include="COM\Excel\mExcelHandler.cpp">
+      <MultiProcessorCompilation Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</MultiProcessorCompilation>
+      <MultiProcessorCompilation Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</MultiProcessorCompilation>
+    </ClCompile>
     <ClCompile Include="COM\mComObject.cpp" />
     <ClCompile Include="Crypto\mAES.cpp" />
     <ClCompile Include="Crypto\mAESDecrypter.cpp" />
