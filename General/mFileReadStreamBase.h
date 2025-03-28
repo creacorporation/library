@@ -124,6 +124,33 @@ public:
 	//開いている場合は真が返ります
 	virtual bool IsOpen( void )const = 0;
 
+	//1行読み取ってその文字列を特定の文字でパースする
+	bool ParseLine( CHAR delimiter , AStringVector& retParsed , bool noempty = false , OnLineReadError onerr = OnLineReadError::LINEREADERR_TRUNCATE );
+	//1行読み取ってその文字列を特定の文字でパースする
+	bool ParseLine( CHAR delimiter , AStringDeque& retParsed , bool noempty = false , OnLineReadError onerr = OnLineReadError::LINEREADERR_TRUNCATE );
+	//1行読み取ってその文字列を特定の文字でパースする
+	bool ParseLine( WCHAR delimiter , WStringVector& retParsed , bool noempty = false , OnLineReadError onerr = OnLineReadError::LINEREADERR_TRUNCATE );
+	//1行読み取ってその文字列を特定の文字でパースする
+	bool ParseLine( WCHAR delimiter , WStringDeque& retParsed , bool noempty = false , OnLineReadError onerr = OnLineReadError::LINEREADERR_TRUNCATE );
+
+	//1行読み取ってその文字列を空白文字でパースする
+	bool ParseLineSpace( AStringVector& retParsed , bool noempty = false , OnLineReadError onerr = OnLineReadError::LINEREADERR_TRUNCATE );
+	//1行読み取ってその文字列を空白文字でパースする
+	bool ParseLineSpace( AStringDeque& retParsed , bool noempty = false , OnLineReadError onerr = OnLineReadError::LINEREADERR_TRUNCATE );
+	//1行読み取ってその文字列を空白文字でパースする
+	bool ParseLineSpace( WStringVector& retParsed , bool noempty = false , OnLineReadError onerr = OnLineReadError::LINEREADERR_TRUNCATE );
+	//1行読み取ってその文字列を空白文字でパースする
+	bool ParseLineSpace( WStringDeque& retParsed , bool noempty = false , OnLineReadError onerr = OnLineReadError::LINEREADERR_TRUNCATE );
+
+	//1行読み取ってその文字列を空白文字または特定の文字でパースする
+	bool ParseLineSpace( CHAR delimiter , AStringVector& retParsed , bool noempty = false , OnLineReadError onerr = OnLineReadError::LINEREADERR_TRUNCATE );
+	//1行読み取ってその文字列を空白文字または特定の文字でパースする
+	bool ParseLineSpace( CHAR delimiter , AStringDeque& retParsed , bool noempty = false , OnLineReadError onerr = OnLineReadError::LINEREADERR_TRUNCATE );
+	//1行読み取ってその文字列を空白文字または特定の文字でパースする
+	bool ParseLineSpace( WCHAR delimiter , WStringVector& retParsed , bool noempty = false , OnLineReadError onerr = OnLineReadError::LINEREADERR_TRUNCATE );
+	//1行読み取ってその文字列を空白文字または特定の文字でパースする
+	bool ParseLineSpace( WCHAR delimiter , WStringDeque& retParsed , bool noempty = false , OnLineReadError onerr = OnLineReadError::LINEREADERR_TRUNCATE );
+
 protected:
 
 	mFileReadStreamBase( const mFileReadStreamBase& source ) = delete;

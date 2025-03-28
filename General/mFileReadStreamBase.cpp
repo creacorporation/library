@@ -322,6 +322,114 @@ bool mFileReadStreamBase::SetEncode( Encode encode )
 	return false;
 }
 
+template<class T = AStringVector, class C = CHAR>
+static bool ParseLineBase( mFileReadStreamBase& base , C delimiter , T& retParsed , bool noempty , mFileReadStreamBase::OnLineReadError onerr )
+{
+	T::value_type line;
+	if( !base.ReadLine( line , onerr ) )
+	{
+		return false;
+	}
+	ParseString( line , delimiter , retParsed , noempty );
+	return true;
+}
+
+//1行読み取ってその文字列を特定の文字でパースする
+bool mFileReadStreamBase::ParseLine( CHAR delimiter , AStringVector& retParsed , bool noempty , OnLineReadError onerr )
+{
+	return ParseLineBase( *this , delimiter , retParsed , noempty , onerr );
+}
+
+//1行読み取ってその文字列を特定の文字でパースする
+bool mFileReadStreamBase::ParseLine( CHAR delimiter , AStringDeque& retParsed , bool noempty , OnLineReadError onerr )
+{
+	return ParseLineBase( *this , delimiter , retParsed , noempty , onerr );
+}
+
+//1行読み取ってその文字列を特定の文字でパースする
+bool mFileReadStreamBase::ParseLine( WCHAR delimiter , WStringVector& retParsed , bool noempty , OnLineReadError onerr )
+{
+	return ParseLineBase( *this , delimiter , retParsed , noempty , onerr );
+}
+
+//1行読み取ってその文字列を特定の文字でパースする
+bool mFileReadStreamBase::ParseLine( WCHAR delimiter , WStringDeque& retParsed , bool noempty , OnLineReadError onerr )
+{
+	return ParseLineBase( *this , delimiter , retParsed , noempty , onerr );
+}
+
+template<class T = AStringVector>
+static bool ParseLineSpaceBase( mFileReadStreamBase& base , T& retParsed , bool noempty , mFileReadStreamBase::OnLineReadError onerr )
+{
+	T::value_type line;
+	if( !base.ReadLine( line , onerr ) )
+	{
+		return false;
+	}
+	ParseStringSpace( line , retParsed , noempty );
+	return true;
+}
+
+//1行読み取ってその文字列を空白文字でパースする
+bool mFileReadStreamBase::ParseLineSpace( AStringVector& retParsed , bool noempty , OnLineReadError onerr )
+{
+	return ParseLineSpaceBase( *this , retParsed , noempty , onerr );
+}
+
+//1行読み取ってその文字列を空白文字でパースする
+bool mFileReadStreamBase::ParseLineSpace( AStringDeque& retParsed , bool noempty , OnLineReadError onerr )
+{
+	return ParseLineSpaceBase( *this , retParsed , noempty , onerr );
+}
+
+//1行読み取ってその文字列を空白文字でパースする
+bool mFileReadStreamBase::ParseLineSpace( WStringVector& retParsed , bool noempty , OnLineReadError onerr )
+{
+	return ParseLineSpaceBase( *this , retParsed , noempty , onerr );
+}
+
+//1行読み取ってその文字列を空白文字でパースする
+bool mFileReadStreamBase::ParseLineSpace( WStringDeque& retParsed , bool noempty , OnLineReadError onerr )
+{
+	return ParseLineSpaceBase( *this , retParsed , noempty , onerr );
+}
+
+template<class T = AStringVector, class C = CHAR>
+static bool ParseLineSpaceBase( mFileReadStreamBase& base , C delimiter , T& retParsed , bool noempty , mFileReadStreamBase::OnLineReadError onerr )
+{
+	T::value_type line;
+	if( !base.ReadLine( line , onerr ) )
+	{
+		return false;
+	}
+	ParseStringSpace( line , retParsed , noempty );
+	return true;
+}
+
+//1行読み取ってその文字列を空白文字または特定の文字でパースする
+bool mFileReadStreamBase::ParseLineSpace( CHAR delimiter , AStringVector& retParsed , bool noempty , OnLineReadError onerr )
+{
+	return ParseLineSpaceBase( *this , delimiter , retParsed , noempty , onerr );
+}
+
+//1行読み取ってその文字列を空白文字または特定の文字でパースする
+bool mFileReadStreamBase::ParseLineSpace( CHAR delimiter , AStringDeque& retParsed , bool noempty , OnLineReadError onerr )
+{
+	return ParseLineSpaceBase( *this , delimiter , retParsed , noempty , onerr );
+}
+
+//1行読み取ってその文字列を空白文字または特定の文字でパースする
+bool mFileReadStreamBase::ParseLineSpace( WCHAR delimiter , WStringVector& retParsed , bool noempty , OnLineReadError onerr )
+{
+	return ParseLineSpaceBase( *this , delimiter , retParsed , noempty , onerr );
+}
+
+//1行読み取ってその文字列を空白文字または特定の文字でパースする
+bool mFileReadStreamBase::ParseLineSpace( WCHAR delimiter , WStringDeque& retParsed , bool noempty , OnLineReadError onerr )
+{
+	return ParseLineSpaceBase( *this , delimiter , retParsed , noempty , onerr );
+}
+
 //----------------------------------------------------
 // ここから子クラス
 //----------------------------------------------------
