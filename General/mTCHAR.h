@@ -647,6 +647,17 @@ AString ToAString( int32_t v );
 AString ToAString( int64_t v );
 //数値を文字列に変換する
 AString ToAString( double v );
+//文字列を生成する
+template <typename... args> AString ToAString( _Printf_format_string_ const char* format , const args... va )
+{
+	AString str;
+	if( format == nullptr )
+	{
+		return "";
+	}
+	sprintf( str , format , va... );
+	return str;
+}
 
 //数値を文字列に変換する
 WString ToWString( uint32_t v );
@@ -658,6 +669,17 @@ WString ToWString( int32_t v );
 WString ToWString( int64_t v );
 //数値を文字列に変換する
 WString ToWString( double v );
+//文字列を生成する
+template <typename... args> WString ToWString( _Printf_format_string_ const wchar_t* format , const args... va )
+{
+	WString str;
+	if( format == nullptr )
+	{
+		return false;
+	}
+	sprintf( str , format , va... );
+	return str;
+}
 
 //文字列を特定の文字でパースする
 void ParseString( const AString& str , CHAR delimiter , AStringVector& retParsed , bool noempty = false );
