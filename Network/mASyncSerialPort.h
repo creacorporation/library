@@ -335,6 +335,9 @@ public:
 	// count : 内部バッファが指定した数未満であれば、その数になるように内部バッファを新たに作成します
 	bool PrepareReadBuffer( DWORD count );
 
+	//現在読み取り可能なバイト数を返します
+	uint32_t GetReadableSize( void )const;
+
 private:
 
 	mASyncSerialPort( const mASyncSerialPort& src ) = delete;

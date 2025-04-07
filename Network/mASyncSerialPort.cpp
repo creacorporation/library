@@ -778,3 +778,25 @@ static bool ComPortSetting( HANDLE handle , const mASyncSerialPort::Option& sett
 
 	return true;
 }
+
+uint32_t mASyncSerialPort::GetReadableSize( void )const
+{
+	uint32_t result = 0;
+
+	result += (uint32_t)MyUnReadBuffer.size();
+	result += MyReadCacheRemain;
+	{
+		mCriticalSectionTicket ticket( MyCritical );
+		for( BufferQueue::const_iterator itr = MyReadQueue.begin() ; itr != MyReadQueue.end() ; itr++ )
+		{
+			if( !(*itr)->Completed )
+			{
+				break;
+			}
+			result += (*itr)->BytesTransfered;
+		}
+	}
+	return result;
+}
+
+
