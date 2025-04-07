@@ -442,19 +442,19 @@ INT mFileReadStreamBase::UnReadBuffer::Read( void )
 	{
 		return EOF;
 	}
-	INT result = MyBuffer.front();
-	MyBuffer.pop_front();
+	INT result = front();
+	pop_front();
 	return result;
 }
 
 //バッファは空か？
 bool mFileReadStreamBase::UnReadBuffer::IsEmpty( void )const
 {
-	return MyBuffer.empty();
+	return empty();
 }
 
 //バッファをクリア
 void mFileReadStreamBase::UnReadBuffer::Clear( void )
 {
-	MyBuffer.clear();
+	clear();
 }

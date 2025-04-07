@@ -162,12 +162,9 @@ protected:
 
 	//読み込んだのをやっぱ止めたとバッファに押し戻した場合に、
 	//次に読むときまで取っておくためのバッファ
-	class UnReadBuffer
+	class UnReadBuffer : public std::deque<BYTE>
 	{
 	public:
-		UnReadBuffer() = default;
-		virtual ~UnReadBuffer() = default;
-
 		//型の分だけキャッシュに押し返します
 		//val : 押し返すデータ
 		//・リトルエンディアンと見なします
@@ -176,7 +173,7 @@ protected:
 			for( size_t i = 0 ; i < sizeof( T ) ; i++ )
 			{
 				size_t offset = ( sizeof( T ) - 1 - i ) * 8;
-				MyBuffer.push_front( ( val >> offset ) & 0xFF );
+				push_front( ( val >> offset ) & 0xFF );
 			}
 		}
 
@@ -191,14 +188,6 @@ protected:
 
 		//バッファをクリア
 		void Clear( void );
-
-	private:
-		UnReadBuffer( const UnReadBuffer& source ) = delete;
-		void operator=( const UnReadBuffer& source ) = delete;
-
-		//一度読み取ったものの、キャッシュに押し返されたデータを格納
-		typedef std::deque<BYTE> Buffer;
-		Buffer MyBuffer;
 	};
 
 	UnReadBuffer MyUnReadBuffer;
