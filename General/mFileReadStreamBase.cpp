@@ -21,6 +21,7 @@ mFileReadStreamBase::mFileReadStreamBase()
 	MyReadCacheCurrent = 0;
 	MyReadCacheRemain = 0;
 	MyEncode = Encode::ENCODE_ASIS;
+	MyLFIgnoreState = LFIgnoreState::None;
 }
 
 mFileReadStreamBase::~mFileReadStreamBase()
@@ -94,20 +95,7 @@ bool mFileReadStreamBase::ReadLine( AString& retResult , OnLineReadError onerr )
 		switch( readdata )
 		{
 		case '\r':
-			//\rの場合、次の文字が\nだったらCRLF改行
-			//そうでなければCR改行
-			//さらにその次がEOFかどうかを判定して返す
-			readdata = Read();
-			if( readdata == '\n' || readdata == EOF )
-			{
-				//CRLF改行 or CR改行+EOF
-				;
-			}
-			else
-			{
-				//CR改行
-				MyUnReadBuffer.Unread<CHAR>( readdata );
-			}
+			MyLFIgnoreState = LFIgnoreState::AsciiLF;
 			return true;
 
 		case '\n':
@@ -226,22 +214,7 @@ bool mFileReadStreamBase::ReadLine( WString& retResult , OnLineReadError onerr )
 		switch( readdata )
 		{
 		case L'\r':
-			//\rの場合、次の文字が\nだったらCRLF改行
-			//そうでなければCR改行
-			//さらにその次がEOFかどうかを判定して返す
-			if( !WcharRead( readdata ) )
-			{
-				if( readdata == L'\n' || readdata == EOF )
-				{
-					//CRLF改行 or CR改行+EOF
-					;
-				}
-				else
-				{
-					//CR改行
-					MyUnReadBuffer.Unread<WCHAR>( readdata );
-				}
-			}
+			MyLFIgnoreState = LFIgnoreState::UnicodeLF1;
 			return true;
 
 		case L'\n':
@@ -255,6 +228,42 @@ bool mFileReadStreamBase::ReadLine( WString& retResult , OnLineReadError onerr )
 		}
 	}
 }
+
+bool mFileReadStreamBase::ProcLFIgnore( INT c )
+{
+	switch( MyLFIgnoreState )
+	{
+	case LFIgnoreState::None:
+		break;
+	case LFIgnoreState::AsciiLF:
+		MyLFIgnoreState = LFIgnoreState::None;
+		if( c == '\n' )
+		{
+			return true;
+		}
+		break;
+	case LFIgnoreState::UnicodeLF1:
+		if( c == '\n' )
+		{
+			MyLFIgnoreState = LFIgnoreState::UnicodeLF2;
+			return true;
+		}
+		MyLFIgnoreState = LFIgnoreState::None;
+		break;
+	case LFIgnoreState::UnicodeLF2:
+		MyLFIgnoreState = LFIgnoreState::None;
+		if( c == '\0' )
+		{
+			return true;
+		}
+		break;
+	default:
+		MyLFIgnoreState = LFIgnoreState::None;
+		break;
+	}
+	return false;
+}
+
 
 bool mFileReadStreamBase::ReadBinary( BYTE* retResult , size_t ReadSize , size_t* retReadSize , OnLineReadError onerr )
 {

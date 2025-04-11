@@ -74,7 +74,7 @@ void mFileReadStream::InvalidateCache( void )
 	return;
 }
 
-INT mFileReadStream::Read()
+INT mFileReadStream::Read( void )
 {
 	//UnReadされた文字がある場合はソレを返す
 	if( !MyUnReadBuffer.IsEmpty() )
@@ -88,20 +88,25 @@ INT mFileReadStream::Read()
 		return EOF;
 	}
 
-	//キャッシュの残量が０なら、次を読む
-	if( MyReadCacheRemain == 0 )
+	INT result;
+	do
 	{
-		if( !ReadNextBlock() )
+		//キャッシュの残量が０なら、次を読む
+		if( MyReadCacheRemain == 0 )
 		{
-			MyIsEOF = true;
-			return EOF;
+			if( !ReadNextBlock() )
+			{
+				MyIsEOF = true;
+				return EOF;
+			}
 		}
-	}
 
-	//キャッシュの残量があるので、キャッシュから１文字返す
-	INT result = MyReadCacheHead[ MyReadCacheCurrent ];
-	MyReadCacheCurrent++;
-	MyReadCacheRemain--;
+		//キャッシュの残量があるので、キャッシュから１文字返す
+		result = MyReadCacheHead[ MyReadCacheCurrent ];
+		MyReadCacheCurrent++;
+		MyReadCacheRemain--;
+
+	}while( ProcLFIgnore( result ) );
 
 	return result;
 }

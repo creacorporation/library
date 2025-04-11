@@ -23,11 +23,15 @@ INT mStdInStream::Read( void )
 		return MyUnReadBuffer.Read();
 	}
 
-	INT result = fgetc( stdin );
-	if( result == EOF )
+	INT result;
+	while( 1 )
 	{
-		MyIsEOF = true;
-	}
+		result = fgetc( stdin );
+		if( result == EOF )
+		{
+			MyIsEOF = true;
+		}
+	}while( ProcLFIgnore( result ) );
 	return result;
 }
 

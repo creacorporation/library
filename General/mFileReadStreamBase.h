@@ -199,6 +199,24 @@ protected:
 	//EOFとなったか？
 	bool MyIsEOF;
 
+	//CRLF無視フラグを参照して、このバイトを無視するべきか判断する
+	// true : このバイトは無視して次のバイトを読み込む必要がある
+	bool ProcLFIgnore( INT c );
+
+private:
+
+	//CRLF無視フラグ
+	// 非同期ストリームでReadLineでCR→EOF→LFの順に読み込んだ場合、ReadLineはEOFの時点で行区切りにするが、
+	// その後にLFを受信した場合に無視するためのフラグ
+	enum class LFIgnoreState
+	{
+		None,
+		AsciiLF,		//ASCIIのLF
+		UnicodeLF1,		//UnicodeのLF(1バイト目)
+		UnicodeLF2,		//UnicodeのLF(2バイト目)
+	};
+	LFIgnoreState MyLFIgnoreState;
+
 };
 
 #endif //MFILEREADSTREAMBASE_H_INCLUDED

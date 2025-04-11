@@ -560,37 +560,42 @@ INT mHttpRequest::Read( void )
 		return MyUnReadBuffer.Read();
 	}
 
-	//キャッシュの残量があればキャッシュを読み込む
-	//キャッシュの残量がないならキューから取得する
-	if( MyReadCacheRemain == 0 )
+	INT result;
+	do
 	{
-		//このブロックはクリティカルセクション
-		mCriticalSectionTicket critical( MyCritical );
-		do
+		//キャッシュの残量があればキャッシュを読み込む
+		//キャッシュの残量がないならキューから取得する
+		if( MyReadCacheRemain == 0 )
 		{
-			//読み込みキューがない場合はEOF
-			if( MyReadQueue.empty() )
+			//このブロックはクリティカルセクション
+			mCriticalSectionTicket critical( MyCritical );
+			do
 			{
-				//読み取りバッファを補充
-				PrepareReadBuffer( MyOption.RecievePacketMaxActive );
-				return EOF;
-			}
+				//読み込みキューがない場合はEOF
+				if( MyReadQueue.empty() )
+				{
+					//読み取りバッファを補充
+					PrepareReadBuffer( MyOption.RecievePacketMaxActive );
+					return EOF;
+				}
 
-			//読み込みキューの先頭を取り出す
-			BufferQueueEntry entry = MyReadQueue.front();
-			MyReadQueue.pop_front();
+				//読み込みキューの先頭を取り出す
+				BufferQueueEntry entry = MyReadQueue.front();
+				MyReadQueue.pop_front();
 
-			//読み取りキャッシュにセット
-			MyReadCacheHead.reset( entry.Buffer );
-			MyReadCacheCurrent = 0;
-			MyReadCacheRemain = entry.BytesTransfered;
+				//読み取りキャッシュにセット
+				MyReadCacheHead.reset( entry.Buffer );
+				MyReadCacheCurrent = 0;
+				MyReadCacheRemain = entry.BytesTransfered;
 
-		} while( MyReadCacheRemain == 0 );
-	}
+			} while( MyReadCacheRemain == 0 );
+		}
 
-	INT result = MyReadCacheHead[ MyReadCacheCurrent ];
-	MyReadCacheCurrent++;
-	MyReadCacheRemain--;
+		result = MyReadCacheHead[ MyReadCacheCurrent ];
+		MyReadCacheCurrent++;
+		MyReadCacheRemain--;
+
+	}while( ProcLFIgnore( result ) );
 	return result;
 }
 

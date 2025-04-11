@@ -64,43 +64,47 @@ INT mMemoryStream::Read( void )
 		return MyUnReadBuffer.Read();
 	}
 
-	//キャッシュの残量があればキャッシュを読み込む
-	//キャッシュの残量がないならキューから取得する
-	if( MyReadCacheRemain == 0 )
+	INT result;
+	do
 	{
-		//読み取りキャッシュにセット
-		if( !MyBufferArray.empty() )
+		//キャッシュの残量があればキャッシュを読み込む
+		//キャッシュの残量がないならキューから取得する
+		if( MyReadCacheRemain == 0 )
 		{
-			//空じゃない場合はそこの先頭を取り出す
-			MyReadCacheHead = std::move( MyBufferArray.front() );
-			MyBufferArray.pop_front();
+			//読み取りキャッシュにセット
+			if( !MyBufferArray.empty() )
+			{
+				//空じゃない場合はそこの先頭を取り出す
+				MyReadCacheHead = std::move( MyBufferArray.front() );
+				MyBufferArray.pop_front();
 
-			MyReadCacheCurrent = 0;
-			MyReadCacheRemain = MAX_BUFFER_SIZE;
+				MyReadCacheCurrent = 0;
+				MyReadCacheRemain = MAX_BUFFER_SIZE;
+			}
+			else if( MyWriteCacheWritten )
+			{
+				//空の場合で、書込みキャッシュがある場合はそれを取る
+				MyReadCacheHead = std::move( MyWriteCacheHead );
+				MyWriteCacheHead.reset();
+
+				MyReadCacheCurrent = 0;
+				MyReadCacheRemain = MyWriteCacheRemain;
+
+				MyWriteCacheWritten = 0;
+				MyWriteCacheRemain = 0;
+			}
+			else
+			{
+				//どちらもない場合はEOF
+				MyIsEOF = true;
+				return EOF;
+			}
 		}
-		else if( MyWriteCacheWritten )
-		{
-			//空の場合で、書込みキャッシュがある場合はそれを取る
-			MyReadCacheHead = std::move( MyWriteCacheHead );
-			MyWriteCacheHead.reset();
 
-			MyReadCacheCurrent = 0;
-			MyReadCacheRemain = MyWriteCacheRemain;
-
-			MyWriteCacheWritten = 0;
-			MyWriteCacheRemain = 0;
-		}
-		else
-		{
-			//どちらもない場合はEOF
-			MyIsEOF = true;
-			return EOF;
-		}
-	}
-
-	INT result = MyReadCacheHead[ MyReadCacheCurrent ];
-	MyReadCacheCurrent++;
-	MyReadCacheRemain--;
+		result = MyReadCacheHead[ MyReadCacheCurrent ];
+		MyReadCacheCurrent++;
+		MyReadCacheRemain--;
+	}while( ProcLFIgnore( result ) );
 	return result;
 }
 

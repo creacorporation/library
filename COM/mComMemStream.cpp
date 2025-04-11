@@ -73,38 +73,43 @@ INT mComMemStream::Read( void )
 		return MyUnReadBuffer.Read();
 	}
 
-	//キャッシュの残量があればキャッシュを読み込む
-	//キャッシュの残量がないならキューから取得する
-	if( MyReadCacheRemain == 0 )
+	INT result;
+	do
 	{
-		//読み取りキャッシュにセット
-		if( MyReadCacheHead.get() == nullptr )
+		//キャッシュの残量があればキャッシュを読み込む
+		//キャッシュの残量がないならキューから取得する
+		if( MyReadCacheRemain == 0 )
 		{
-			MyReadCacheHead.reset( mNew BYTE[ MAX_BUFFER_SIZE ] );
-		}
-
-		HRESULT hr = MyStream->Read( MyReadCacheHead.get() , MAX_BUFFER_SIZE , &MyReadCacheRemain );
-		if( SUCCEEDED( hr ) )
-		{
-			MyReadCacheCurrent = 0;
-			if( MyReadCacheRemain == 0 )
+			//読み取りキャッシュにセット
+			if( MyReadCacheHead.get() == nullptr )
 			{
+				MyReadCacheHead.reset( mNew BYTE[ MAX_BUFFER_SIZE ] );
+			}
+
+			HRESULT hr = MyStream->Read( MyReadCacheHead.get() , MAX_BUFFER_SIZE , &MyReadCacheRemain );
+			if( SUCCEEDED( hr ) )
+			{
+				MyReadCacheCurrent = 0;
+				if( MyReadCacheRemain == 0 )
+				{
+					MyIsEOF = true;
+					return EOF;
+				}
+			}
+			else
+			{
+				MyReadCacheCurrent = 0;
+				MyReadCacheRemain = 0;
 				MyIsEOF = true;
 				return EOF;
 			}
 		}
-		else
-		{
-			MyReadCacheCurrent = 0;
-			MyReadCacheRemain = 0;
-			MyIsEOF = true;
-			return EOF;
-		}
-	}
 
-	INT result = MyReadCacheHead[ MyReadCacheCurrent ];
-	MyReadCacheCurrent++;
-	MyReadCacheRemain--;
+		result = MyReadCacheHead[ MyReadCacheCurrent ];
+		MyReadCacheCurrent++;
+		MyReadCacheRemain--;
+
+	}while( ProcLFIgnore( result ) );
 	return result;
 }
 
