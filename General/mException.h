@@ -22,20 +22,39 @@ EXCEPTIONマクロを使用して投げるのがおすすめです。
 class mExceptionBase
 {
 public:
-	mExceptionBase()noexcept;
-	virtual ~mExceptionBase()noexcept;
-	mExceptionBase( const mExceptionBase& source )noexcept;
-	mExceptionBase& operator=( const mExceptionBase& source )noexcept;
-
-	DWORD GetErrorCode( void )const noexcept;
-protected:
-	//例外エラー発生時のエラーコード(GetLastErrorの値)
-	DWORD MyLastError;
+	mExceptionBase()
+		: MyLastError( GetLastError() )
+	{
+	}
+	virtual ~mExceptionBase()
+	{
+	}
+	DWORD GetErrorCode( void )const noexcept
+	{
+		return MyLastError;
+	}
+	const DWORD MyLastError;
 };
 
 #include "mTCHAR.h"
 #pragma warning( disable : 4290 )
 #include <stdexcept>
+
+template< class T = void >
+class mSimpleException : public mExceptionBase
+{
+public:
+	const AString MyMessage;
+
+	mSimpleException()
+		: MyMessage( "" )
+	{
+	}
+	mSimpleException( const AString& str )
+		: MyMessage( str )
+	{
+	}
+};
 
 class mException : public mExceptionBase
 {
@@ -47,7 +66,7 @@ public:
 	//code : 例外発生時のエラーコード
 	//explain : 例外に対する説明
 	//※自動的に例外の発生をログに記録します
-	mException( const WString& path , DWORD line , ULONG_PTR code , const WString& explain1 , const WString& explain2 = L"" )noexcept;
+	mException( const WString& path , DWORD line , ULONG_PTR code , const WString& explain1 , const WString& explain2 = L"" );
 
 	//例外オブジェクトを生成します
 	//path : 例外を発生したファイル名
@@ -55,37 +74,37 @@ public:
 	//code : 例外発生時のエラーコード
 	//explain : 例外に対する説明
 	//※自動的に例外の発生をログに記録します
-	mException( const WString& path , DWORD line , ULONG_PTR code , const WString& explain1 , DWORD_PTR val )noexcept;
+	mException( const WString& path , DWORD line , ULONG_PTR code , const WString& explain1 , DWORD_PTR val );
 
 	//空の例外オブジェクトを生成します
 	//※自動的に例外の発生をログに記録しません
-	mException() noexcept;
+	mException();
 
-	virtual ~mException()noexcept;
-	mException( const mException& source )noexcept;
-	mException& operator=( const mException& source )noexcept;
+	virtual ~mException();
+	mException( const mException& source );
+	mException& operator=( const mException& source );
 
 public:
 
 	//例外を発生したファイル名を取得します
 	//ret : 例外発生時のファイル名
-	WString GetPath( void )const noexcept;
+	WString GetPath( void )const;
 
 	//例外を発生したコード行を得ます
 	//ret : 例外発生時のコード行
-	DWORD GetLine( void )const noexcept;
+	DWORD GetLine( void )const;
 
 	//例外を発生したエラーコードを得ます
 	//ret : 例外発生時のエラーコード
-	ULONG_PTR GetCode( void )const noexcept;
+	ULONG_PTR GetCode( void )const;
 
 	//例外に対する説明を得ます
 	//ret : 例外発生時の説明文
-	WString GetExplain( void )const noexcept;
+	WString GetExplain( void )const;
 
 	//例外に対する拡張説明を得ます
 	//ret : 例外発生時の説明文
-	WString GetExplainOption( void )const noexcept;
+	WString GetExplainOption( void )const;
 
 protected:
 
@@ -116,5 +135,7 @@ inline void Check( bool v )
 	static_assert( std::is_base_of<mExceptionBase,ExceptionIfFailed>::value == true , "Exception class is not derived from mException" );
 	if( !v ) throw ExceptionIfFailed();
 }
+
+
 
 #endif //MEXCEPTION_H_INCLUDED 
