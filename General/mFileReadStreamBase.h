@@ -18,6 +18,7 @@
 #include "mTCHAR.h"
 #include <deque>
 #include <memory>
+#include <General/mBinary.h>
 
 class mFileReadStreamBase
 {
@@ -73,6 +74,14 @@ public:
 		// 関数の戻り値→失敗
 		LINEREADERR_UNREAD,
 
+		//先読みしたことにする(途中まで読んだデータを破棄しないこと以外はLINEREADERR_UNREADと同じ)
+		// 結果→
+		// ・ReadLine:エラー発生までに読んでいたデータが返る
+		// ・ReadBinary:エラー発生までに読んでいたデータが返る
+		// エラー発生までに読んでいたデータ→未読状態に戻る
+		// 関数の戻り値→失敗
+		LINEREADERR_PEEK,
+
 		//読めた位置までを結果とする
 		// 結果→
 		// ・ReadLine:エラー発生までに読んでいたデータが返る
@@ -111,6 +120,13 @@ public:
 	//ret : 指定サイズ読み取り成功時true、失敗時false
 	//・指定サイズを読み取る前にEOFになると失敗します
 	bool ReadBinary( BYTE* retResult , size_t ReadSize , size_t* retReadSize = nullptr , OnLineReadError onerr = OnLineReadError::LINEREADERR_TRUNCATE );
+
+	//指定サイズを読み取ります
+	//retReadSize : 正常終了するか、エラーが発生するまでに読み取ったバイト数。不要ならnullptrで可。
+	//ret : 指定サイズ読み取り成功時true、失敗時false
+	//・指定サイズを読み取る前にEOFになると失敗します
+	bool ReadBinary( mBinary& retResult , size_t ReadSize , OnLineReadError onerr = OnLineReadError::LINEREADERR_TRUNCATE );
+
 
 	//EOFに達しているかを調べます
 	//※trueの場合、このリードストリームが同期アクセスのものかどうかで意味が違います

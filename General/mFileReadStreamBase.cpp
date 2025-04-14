@@ -79,6 +79,13 @@ bool mFileReadStreamBase::ReadLine( AString& retResult , OnLineReadError onerr )
 				}
 				retResult.clear();
 				return false;
+			case OnLineReadError::LINEREADERR_PEEK:
+				//読んだところまでをバッファに押し戻す
+				for( AString::const_reverse_iterator itr = retResult.rbegin() ; itr != retResult.rend() ; itr++ )
+				{
+					MyUnReadBuffer.Unread< char >( *itr );
+				}
+				return false;
 			case OnLineReadError::LINEREADERR_TRUNCATE:
 				//読めたところまでで成功
 				if( retResult == "" )
@@ -170,7 +177,7 @@ bool mFileReadStreamBase::ReadLine( WString& retResult , OnLineReadError onerr )
 		}
 		else if( lo != EOF && hi == EOF )
 		{
-			if( onerr == OnLineReadError::LINEREADERR_UNREAD )
+			if( onerr == OnLineReadError::LINEREADERR_UNREAD || onerr == OnLineReadError::LINEREADERR_PEEK )
 			{
 				MyUnReadBuffer.Unread( (char)lo );
 			}
@@ -200,6 +207,13 @@ bool mFileReadStreamBase::ReadLine( WString& retResult , OnLineReadError onerr )
 					MyUnReadBuffer.Unread< wchar_t >( *itr );
 				}
 				retResult.clear();
+				return false;
+			case OnLineReadError::LINEREADERR_PEEK:
+				//読んだところまでをバッファに押し戻す
+				for( WString::const_reverse_iterator itr = retResult.rbegin() ; itr != retResult.rend() ; itr++ )
+				{
+					MyUnReadBuffer.Unread< wchar_t >( *itr );
+				}
 				return false;
 			case OnLineReadError::LINEREADERR_TRUNCATE:
 				//読めたところまでで成功
@@ -285,6 +299,7 @@ bool mFileReadStreamBase::ReadBinary( BYTE* retResult , size_t ReadSize , size_t
 			case OnLineReadError::LINEREADERR_DISCARD:
 				return false;
 			case OnLineReadError::LINEREADERR_UNREAD:
+			case OnLineReadError::LINEREADERR_PEEK:
 				//読んだところまでをバッファに押し戻す
 				for( size_t j = 0 ; j < i ; j++ )
 				{
@@ -310,6 +325,52 @@ bool mFileReadStreamBase::ReadBinary( BYTE* retResult , size_t ReadSize , size_t
 	if( retReadSize )
 	{
 		*retReadSize = i;
+	}
+	return true;
+}
+
+bool mFileReadStreamBase::ReadBinary( mBinary& retResult , size_t ReadSize , OnLineReadError onerr )
+{
+	retResult.clear();
+
+	size_t i;
+	for( i = 0 ; i < ReadSize ; i++ )
+	{
+		INT readdata = Read();
+
+		if( readdata == EOF )
+		{
+			switch( onerr )
+			{
+			case OnLineReadError::LINEREADERR_DISCARD:
+				return false;
+			case OnLineReadError::LINEREADERR_UNREAD:
+				//読んだところまでをバッファに押し戻す
+				for( mBinary::const_reverse_iterator itr = retResult.rbegin() ; itr != retResult.rend() ; itr++ )
+				{
+					MyUnReadBuffer.Unread< mBinary::value_type >( *itr );
+				}
+				retResult.clear();
+				return false;
+			case OnLineReadError::LINEREADERR_PEEK:
+				//読んだところまでをバッファに押し戻す
+				for( mBinary::const_reverse_iterator itr = retResult.rbegin() ; itr != retResult.rend() ; itr++ )
+				{
+					MyUnReadBuffer.Unread< mBinary::value_type >( *itr );
+				}
+				return false;
+			case OnLineReadError::LINEREADERR_TRUNCATE:
+				//読めたところまでで成功
+				return true;
+			default:
+				RaiseAssert( g_ErrorLogger , 0 , L"OnLineReadErrorの指定が不正です" , onerr );
+				return false;
+			}
+		}
+		else
+		{
+			retResult.push_back( readdata );
+		}
 	}
 	return true;
 }
