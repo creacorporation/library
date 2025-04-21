@@ -167,6 +167,7 @@ public:
 	//1行読み取ってその文字列を空白文字または特定の文字でパースする
 	bool ParseLineSpace( WCHAR delimiter , WStringDeque& retParsed , bool noempty = false , OnLineReadError onerr = OnLineReadError::LINEREADERR_TRUNCATE );
 
+
 protected:
 
 	mFileReadStreamBase( const mFileReadStreamBase& source ) = delete;
@@ -218,6 +219,9 @@ protected:
 	//CRLF無視フラグを参照して、このバイトを無視するべきか判断する
 	// true : このバイトは無視して次のバイトを読み込む必要がある
 	bool ProcLFIgnore( INT c );
+
+	//現在受信済みのデータを破棄します
+	void ClearBuffer( void );
 
 private:
 

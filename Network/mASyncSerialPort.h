@@ -338,6 +338,9 @@ public:
 	//現在読み取り可能なバイト数を返します
 	uint32_t GetReadableSize( void )const;
 
+	//現在受信済みのデータを破棄します
+	void ClearReadBuffer( void );
+
 private:
 
 	mASyncSerialPort( const mASyncSerialPort& src ) = delete;

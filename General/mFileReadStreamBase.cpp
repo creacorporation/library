@@ -500,6 +500,15 @@ bool mFileReadStreamBase::ParseLineSpace( WCHAR delimiter , WStringDeque& retPar
 	return ParseLineSpaceBase( *this , delimiter , retParsed , noempty , onerr );
 }
 
+void mFileReadStreamBase::ClearBuffer( void )
+{
+	MyReadCacheHead.reset();
+	MyReadCacheCurrent = 0;
+	MyReadCacheRemain = 0;
+	MyUnReadBuffer.clear();
+	ProcLFIgnore( '\0' );
+}
+
 //----------------------------------------------------
 // ここから子クラス
 //----------------------------------------------------

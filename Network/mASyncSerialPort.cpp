@@ -596,6 +596,13 @@ bool mASyncSerialPort::Cancel( void )
 	return true;
 }
 
+void mASyncSerialPort::ClearReadBuffer( void )
+{
+	mCriticalSectionTicket critical( MyCritical );
+	MyReadQueue.clear();
+	mFileReadStreamBase::ClearBuffer();
+}
+
 //現在未完了の通信(送受信とも)を全て破棄し、接続を閉じます
 bool mASyncSerialPort::Abort( void )
 {
