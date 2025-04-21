@@ -257,9 +257,13 @@ VOID CALLBACK mASyncSerialPort::ReadCompleteRoutine( DWORD ec , DWORD len , LPOV
 		}
 
 		//キューの先頭ではない場合はコールバックを呼ばない
-		if( entry->Parent->MyReadQueue.empty() || entry->Parent->MyReadQueue.front() != entry )
+		//※NOTIFY_CALLBACK_PARALLELのときは、先頭か否かに関係なくコールバックを呼ぶ
+		if( entry->Parent->MyNotifyOption.OnRead.Mode != NotifyOption::NotifyMode::NOTIFY_CALLBACK_PARALLEL )
 		{
-			complete_callback = false;
+			if( entry->Parent->MyReadQueue.empty() || entry->Parent->MyReadQueue.front() != entry )
+			{
+				complete_callback = false;
+			}
 		}
 	}
 
@@ -285,7 +289,7 @@ VOID CALLBACK mASyncSerialPort::ReadCompleteRoutine( DWORD ec , DWORD len , LPOV
 	{
 		if( complete_callback )
 		{
-			//キューの先頭の場合は完了イベントをコール
+			//完了イベントをコール
 			NotifyFunctionOpt opt;
 			AsyncEvent( *entry->Parent , entry->Parent->MyNotifyOption.OnRead , opt );
 		}
