@@ -333,7 +333,8 @@ public:
 	//読み込み用の内部バッファを確保します
 	//臨時にバッファが必要になるときに使用します
 	// count : 内部バッファが指定した数未満であれば、その数になるように内部バッファを新たに作成します
-	bool PrepareReadBuffer( DWORD count );
+	//         0であればインスタンス生成時のオプションの値にします
+	bool PrepareReadBuffer( DWORD count = 0 );
 
 	//現在読み取り可能なバイト数を返します
 	uint32_t GetReadableSize( void )const;

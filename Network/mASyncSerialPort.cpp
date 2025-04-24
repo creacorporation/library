@@ -128,6 +128,12 @@ bool mASyncSerialPort::PrepareReadBuffer( DWORD count )
 		return true;
 	}
 
+	//０だったらデフォルトにする
+	if( count == 0 )
+	{
+		count = MyOption.ReadPacketCount;
+	}
+
 	while( MyReadQueue.size() < count )
 	{
 		BufferQueueEntry* entry = mNew BufferQueueEntry;
