@@ -18,8 +18,6 @@ mTaskQueue::mTaskQueue( mWorkerThreadPool& wtp ) :
 	MyWorkerThreadPool( wtp )
 {
 	MyIsSealed = false;
-	MyActiveTask = 0;
-	MyIsCritical = false;
 	return;
 }
 
@@ -57,6 +55,12 @@ bool mTaskQueue::AddTask( bool high , mTaskBase::Ticket& task , bool isFinal )
 		RaiseError( g_ErrorLogger , 0 , L"タスクのポインタがヌルです" );
 		return false;
 	}
+	//タスクは未使用か？
+	if( task->MyTaskStatus != mTaskBase::TaskStatus::STATUS_NOTSTARTED )
+	{
+		RaiseError( g_ErrorLogger , 0 , L"タスクが再利用されています" );
+		return false;
+	}
 
 	{ /*CRITICALSECTION*/
 		mCriticalSectionTicket critical( MyCriticalSection );
@@ -78,20 +82,19 @@ bool mTaskQueue::AddTask( bool high , mTaskBase::Ticket& task , bool isFinal )
 		if( high )
 		{
 			//優先なら先頭に追加
-			MyWaiting.push_front( task );
+			MyTicketQueue.push_front( task );
 		}
 		else
 		{
 			//そうでなければ末尾に追加
-			MyWaiting.push_back( task );
+			MyTicketQueue.push_back( task );
 		}
 
 		//状態を更新
 		task->MyTaskStatus = mTaskBase::TaskStatus::STATUS_QUEUED;
-		TaskInformationIncrement( task->GetTaskId() );
 	}
 
-	if( !MyWorkerThreadPool.AddTask( TaskRoutine , 0 , (DWORD_PTR)this , (DWORD_PTR)this ) )
+	if( !AddTask() )
 	{
 		RaiseError( g_ErrorLogger , 0 , L"完了ポートへのタスク登録が失敗しました" );
 		task->MyTaskStatus = mTaskBase::TaskStatus::STATUS_ABORTED;
@@ -101,19 +104,32 @@ bool mTaskQueue::AddTask( bool high , mTaskBase::Ticket& task , bool isFinal )
 	return true;
 }
 
-bool mTaskQueue::AddTaskBlocking( bool high , mTaskBase::Ticket& task )
+threadsafe bool mTaskQueue::AddTask( void )
 {
+	return MyWorkerThreadPool.AddTask( TaskRoutine , 0 , (DWORD_PTR)this , (DWORD_PTR)this );
+}
+
+bool mTaskQueue::AddTaskBlocking( bool high , mTaskBase::Ticket& task , uint32_t timeout )
+{
+	bool result = false;
+
 	//ポインタチェック
 	if( task == nullptr )
 	{
 		RaiseError( g_ErrorLogger , 0 , L"タスクのポインタがヌルです" );
-		return false;
+		goto finish;
+	}
+	//タスクは未使用か？
+	if( task->MyTaskStatus != mTaskBase::TaskStatus::STATUS_NOTSTARTED )
+	{
+		RaiseError( g_ErrorLogger , 0 , L"タスクが再利用されています" );
+		goto finish;
 	}
 	//メンバースレッドのチェック
 	if( MyWorkerThreadPool.IsPoolMember() )
 	{
 		RaiseError( g_ErrorLogger , 0 , L"スレッドプールのメンバースレッドからブロッキングタスクは追加できません" );
-		return false;
+		goto finish;
 	}
 	//完了オブジェクトの確認
 	if( task->MyCompleteObject == 0 )
@@ -122,25 +138,43 @@ bool mTaskQueue::AddTaskBlocking( bool high , mTaskBase::Ticket& task )
 		if( task->MyCompleteObject == 0 )
 		{
 			RaiseError( g_ErrorLogger , 0 , L"完了オブジェクトの生成が失敗" );
-			return false;
+			goto finish;
 		}
 	}
 	else
 	{
-		ResetEvent( task->MyCompleteObject );
+		RaiseError( g_ErrorLogger , 0 , L"完了オブジェクトがすでに登録されている" );
+		goto finish;
 	}
 	//タスクの登録
 	if( !AddTask( high , task , false ) )
 	{
-		return false;
+		RaiseError( g_ErrorLogger , 0 , L"タスクの登録が失敗" );
+		goto finish;
 	}
 	//完了の待機
-	if( WaitForSingleObject( task->MyCompleteObject , INFINITE ) != WAIT_OBJECT_0 )
+	switch( WaitForSingleObject( task->MyCompleteObject , timeout ) )
 	{
+	case WAIT_OBJECT_0:
+		break;
+	case WAIT_TIMEOUT:
+		CreateLogEntry( g_ErrorLogger , 0 , L"タスクの待機がタイムアウトしました" );
+		SetLastError( ADDTASKBLOCKING_TIMEOUT );
+		goto finish;
+	default:
 		RaiseError( g_ErrorLogger , 0 , L"タスクの完了待機が失敗" );
-		return false;
+		goto finish;
 	}
-	return true;
+	result = true;
+
+finish:
+	//完了オブジェクト破棄
+	if( task->MyCompleteObject )
+	{
+		CloseHandle( task->MyCompleteObject );
+		task->MyCompleteObject = 0;
+	}
+	return result;
 }
 
 static void AsyncEvent( const mTaskBase::NotifyOption::NotifierInfo& info , class mTaskQueue& queue , mTaskBase::Ticket& ticket , bool result )
@@ -170,7 +204,7 @@ static void AsyncEvent( const mTaskBase::NotifyOption::NotifierInfo& info , clas
 	}
 }
 
-DWORD mTaskQueue::GetTaskIdCount( const AString& id )const
+DWORD mTaskQueue::GetActiveTaskIdCount( const AString& id )const
 {
 	mCriticalSectionTicket critical( MyCriticalSection );
 	TaskInformationMap::const_iterator itr = MyTaskInformationMap.find( id );
@@ -178,16 +212,43 @@ DWORD mTaskQueue::GetTaskIdCount( const AString& id )const
 	{
 		return 0;
 	}
-	return itr->second.Count;
+	return itr->second;
+}
+
+DWORD mTaskQueue::GetTaskIdCount( const AString& id )const
+{
+	DWORD result = 0;
+	mCriticalSectionTicket critical( MyCriticalSection );
+	for( TicketQueue::const_iterator itr = MyTicketQueue.begin() ; itr != MyTicketQueue.end() ; itr++ )
+	{
+		if( (*itr)->MyTaskId == id )
+		{
+			result++;
+		}
+	}
+	return result;
 }
 
 DWORD mTaskQueue::CancelTask( void )
 {
 	TicketQueue todelete;
-
-	{ /*CRITICALSECTION*/
+	{
+		/*CRITICALSECTION*/
 		mCriticalSectionTicket critical( MyCriticalSection );
-		todelete.swap( MyWaiting );
+		for( TicketQueue::iterator itr = MyTicketQueue.begin() ; itr != MyTicketQueue.end() ; )
+		{
+			switch( (*itr)->MyTaskStatus )
+			{
+			case mTaskBase::TaskStatus::STATUS_QUEUED:
+			case mTaskBase::TaskStatus::STATUS_SUSPENDED:
+				todelete.push_back( std::move( *itr ) );
+				itr = MyTicketQueue.erase( itr );
+				continue;
+			default:
+				itr++;
+				break;
+			}
+		}
 	}
 
 	for( TicketQueue::iterator itr = todelete.begin() ; itr != todelete.end() ; itr++ )
@@ -195,22 +256,21 @@ DWORD mTaskQueue::CancelTask( void )
 		(*itr)->MyTaskStatus = mTaskBase::TaskStatus::STATUS_CANCELED;
 		(*itr)->CancelFunction( *itr );
 		AsyncEvent( (*itr)->Notifier.OnCancel , *this , (*itr) , true );
-	}
 
-	{ /*CRITICALSECTION*/
-		mCriticalSectionTicket critical( MyCriticalSection );
-		for( TicketQueue::iterator itr = todelete.begin() ; itr != todelete.end() ; itr++ )
+		//完了オブジェクトが存在していればシグナル状態に
+		if( (*itr)->MyCompleteObject )
 		{
-			TaskInformationDecrement( (*itr)->GetTaskId() );
+			SetEvent( (*itr)->MyCompleteObject );
 		}
 	}
+
 	return DWORD( todelete.size() );
 }
 
 void mTaskQueue::TaskInformationIncrement( const AString& id )
 {
 	mCriticalSectionTicket critical( MyCriticalSection );
-	MyTaskInformationMap[ id ].Count++;
+	MyTaskInformationMap[ id ]++;
 }
 
 void mTaskQueue::TaskInformationDecrement( const AString& id )
@@ -224,23 +284,17 @@ void mTaskQueue::TaskInformationDecrement( const AString& id )
 		return;
 	}
 
-	if( itr->second.Count == 0 )
+	if( itr->second == 0 )
 	{
 		RaiseAssert( g_ErrorLogger , 0 , "タスクの参照カウントがマイナスになりました" , id );
 	}
 	else
 	{
-		itr->second.Count--;
-	}
-
-	//参照カウントがゼロになった場合の処理
-	if( itr->second.Count == 0 )
-	{
-		if( itr->second.Executing != 0 )
+		itr->second--;
+		if( itr->second == 0 )
 		{
-			RaiseAssert( g_ErrorLogger , 0 , "実行中のタスク参照カウントがゼロではありません" , id );
+			MyTaskInformationMap.erase( itr );
 		}
-		MyTaskInformationMap.erase( itr );
 	}
 	return;
 }
@@ -248,11 +302,7 @@ void mTaskQueue::TaskInformationDecrement( const AString& id )
 bool mTaskQueue::IsIdle( void )const
 {
 	mCriticalSectionTicket critical( MyCriticalSection );
-	if( MyWaiting.size() == 0 && MyActiveTask == 0 )
-	{
-		return true;
-	}
-	return false;
+	return MyTicketQueue.empty();
 }
 
 bool mTaskQueue::TaskRoutine( mWorkerThreadPool& pool , DWORD Param1 , DWORD_PTR Param2 )
@@ -264,37 +314,31 @@ bool mTaskQueue::TaskRoutine( mWorkerThreadPool& pool , DWORD Param1 , DWORD_PTR
 	{ /*CRITICALSECTION*/
 		mCriticalSectionTicket critical( queue->MyCriticalSection );
 
-		if( queue->MyWaiting.empty() )
+		if( queue->MyTicketQueue.empty() )
 		{
 			return true;
 		}
-		if( queue->MyIsCritical )
-		{
-			return false;
-		}
-		for( TicketQueue::iterator itr = queue->MyWaiting.begin() ; itr != queue->MyWaiting.end() ; itr++ )
+
+		for( TicketQueue::iterator itr = queue->MyTicketQueue.begin() ; itr != queue->MyTicketQueue.end() ; itr++ )
 		{
 			switch( (*itr)->MyScheduleType )
 			{
 			case mTaskBase::ScheduleType::Normal:
 				break;
 			case mTaskBase::ScheduleType::Critical:
-				if( queue->MyActiveTask != 0 )
+				if( !queue->MyTaskInformationMap.empty() )
 				{
 					return false;
 				}
-				queue->MyIsCritical = true;
 				break;
 			case mTaskBase::ScheduleType::IdLock:
-				if( ( queue->MyTaskInformationMap.count( (*itr)->MyTaskId ) ) &&
-					( queue->MyTaskInformationMap[ (*itr)->MyTaskId ].Executing ) )
+				if( queue->MyTaskInformationMap.count( (*itr)->MyTaskId ) )
 				{
 					return false;
 				}
 				break;
 			case mTaskBase::ScheduleType::IdPostpone:
-				if( ( queue->MyTaskInformationMap.count( (*itr)->MyTaskId ) ) &&
-					( queue->MyTaskInformationMap[ (*itr)->MyTaskId ].Executing ) )
+				if( queue->MyTaskInformationMap.count( (*itr)->MyTaskId ) ) 
 				{
 					continue;
 				}
@@ -302,11 +346,12 @@ bool mTaskQueue::TaskRoutine( mWorkerThreadPool& pool , DWORD Param1 , DWORD_PTR
 			default:
 				break;
 			}
-			queue->MyActiveTask++;
-			queue->MyTaskInformationMap[ (*itr)->MyTaskId ].Executing++;
+			if( (*itr)->MyTaskStatus != mTaskBase::TaskStatus::STATUS_QUEUED )
+			{
+				continue;
+			}
 
-			task = std::move( *itr );
-			queue->MyWaiting.erase( itr );
+			task = *itr;
 			break;
 		}
 		if( task == nullptr )
@@ -314,74 +359,86 @@ bool mTaskQueue::TaskRoutine( mWorkerThreadPool& pool , DWORD Param1 , DWORD_PTR
 			return false;
 		}
 		//ステータスを実行中に
+		queue->TaskInformationIncrement( task->MyTaskId );
 		task->MyTaskStatus = mTaskBase::TaskStatus::STATUS_INPROGRESS;
+		task->MyParent = queue;
 	}
 
 	//タスクの実行
 	mTaskBase::TaskFunctionResult result = task->TaskFunction( task );
 
-	if( result == mTaskBase::TaskFunctionResult::RESULT_INPROGRESS )
-	{
-		//タスクは一時中断したので再スケジュールする
-		AsyncEvent( task->Notifier.OnSuspend , *queue , task , true );
+	//タスクの完了
+	{ 
+		/*CRITICALSECTION*/
+		mCriticalSectionTicket critical( queue->MyCriticalSection );
 
-		bool addtask_result;
+		queue->TaskInformationDecrement( task->MyTaskId );
+
+		if( result == mTaskBase::TaskFunctionResult::RESULT_INPROGRESS )
 		{
-			//再登録
-			//一時中断したのだから、プライオリティに関係なく一番後ろにくっつける
-			mCriticalSectionTicket critical( queue->MyCriticalSection );
-
-			queue->MyIsCritical = false;
-			queue->MyActiveTask--;
-			queue->MyTaskInformationMap[ task->GetTaskId() ].Executing--;
-
-			if( queue->MyWorkerThreadPool.AddTask( TaskRoutine , false , (DWORD_PTR)queue ) )
+			//※タスクは一時中断した
+			AsyncEvent( task->Notifier.OnSuspend , *queue , task , true );
+			switch( task->MyTaskStatus )
 			{
-				//ステータスを実行待ちに
-				addtask_result = true;
+			case mTaskBase::TaskStatus::STATUS_INPROGRESS:
+				task->MyTaskStatus = mTaskBase::TaskStatus::STATUS_SUSPENDED;
+				break;
+			case mTaskBase::TaskStatus::STATUS_WAKINGUP:
 				task->MyTaskStatus = mTaskBase::TaskStatus::STATUS_QUEUED;
-				queue->MyWaiting.push_back( std::move( task ) );
+				break;
+			default:
+				RaiseAssert( g_ErrorLogger , 0 , "タスクの状態が不正 %d" , (int)task->MyTaskStatus );
+				task->MyTaskStatus = mTaskBase::TaskStatus::STATUS_QUEUED;
+				break;
 			}
-			else
-			{
-				addtask_result = false;
-				task->MyTaskStatus = mTaskBase::TaskStatus::STATUS_ABORTED;
-			}
-		}
-
-		if( !addtask_result )
-		{
-			RaiseError( g_ErrorLogger , 0 , L"完了ポートへのタスク登録が失敗しました" );
-			AsyncEvent( task->Notifier.OnAbort , *queue , task , true );
-		}
-	}
-	else
-	{
-		//タスクが完了した
-		if( result == mTaskBase::TaskFunctionResult::RESULT_FINISH_SUCCEED )
-		{
-			task->MyTaskStatus = mTaskBase::TaskStatus::STATUS_FINISH_SUCCEED;
-			AsyncEvent( task->Notifier.OnComplete , *queue , task , true );
 		}
 		else
 		{
-			task->MyTaskStatus = mTaskBase::TaskStatus::STATUS_FINISH_FAILED;
-			AsyncEvent( task->Notifier.OnComplete , *queue , task , false );
-		}
-		{
-			//アクティブなタスクの数を減算
-			mCriticalSectionTicket critical( queue->MyCriticalSection );
-			queue->MyIsCritical = false;
-			queue->MyActiveTask--;
-			queue->MyTaskInformationMap[ task->GetTaskId() ].Executing--;
-			queue->TaskInformationDecrement( task->GetTaskId() );
-		}
-		if( task->MyCompleteObject )
-		{
+			//※タスクが完了した
+			if( result == mTaskBase::TaskFunctionResult::RESULT_FINISH_SUCCEED )
+			{
+				task->MyTaskStatus = mTaskBase::TaskStatus::STATUS_FINISH_SUCCEED;
+				AsyncEvent( task->Notifier.OnComplete , *queue , task , true );
+			}
+			else
+			{
+				task->MyTaskStatus = mTaskBase::TaskStatus::STATUS_FINISH_FAILED;
+				AsyncEvent( task->Notifier.OnComplete , *queue , task , false );
+			}
+			//親の情報を消す
+			task->MyParent = nullptr;
+			//キューから削除する
+			for( TicketQueue::iterator itr = queue->MyTicketQueue.begin() ; itr != queue->MyTicketQueue.end() ; itr++ )
+			{
+				if( itr->get() == task.get() )
+				{
+					queue->MyTicketQueue.erase( itr );
+					break;
+				}
+			}
 			//完了オブジェクトが存在していればシグナル状態に
-			SetEvent( task->MyCompleteObject );
+			if( task->MyCompleteObject )
+			{
+				SetEvent( task->MyCompleteObject );
+			}
 		}
 	}
 	return true;
+}
+
+threadsafe bool mTaskQueue::Wakeup( mTaskBase& p )
+{
+	{
+		mCriticalSectionTicket crit( MyCriticalSection );
+		if( p.MyTaskStatus == mTaskBase::TaskStatus::STATUS_INPROGRESS )
+		{
+			p.MyTaskStatus = mTaskBase::TaskStatus::STATUS_WAKINGUP;
+		}
+		else
+		{
+			p.MyTaskStatus = mTaskBase::TaskStatus::STATUS_QUEUED;
+		}
+	}
+	return AddTask();
 }
 

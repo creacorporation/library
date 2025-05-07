@@ -20,6 +20,8 @@
 
 class mTaskQueue
 {
+	friend class mTaskBase;
+
 public:
 
 	mTaskQueue( mWorkerThreadPool& wtp );
@@ -30,13 +32,18 @@ public:
 	// task : 処理するタスク(mTaskBaseを継承したクラス)
 	threadsafe bool AddTask( bool high , mTaskBase::Ticket& task );
 
+	static const uint32_t ADDTASKBLOCKING_TIMEOUT = 0x20000000ul;
+
 	//タスクの追加（ブロッキング）
 	//追加したタスクが完了するまで戻らない
-	//ワーカースレッドのメンバースレッドから呼び出すことはできない
-	//※パフォーマンスを下げるので、乱用しないこと
+	//・ワーカースレッドのメンバースレッドから呼び出すことはできない
+	//・パフォーマンスを下げるので、乱用しないこと
+	//・タイムアウトしたとき、偽を返しGetLastErrorがADDTASKBLOCKING_TIMEOUTになります。
+	//・タイムアウトした時点でタスクが開始していた場合、そのタスクは引続き実行されます。
 	// high : 他のタスクに優先して処理する
 	// task : 処理するタスク(mTaskBaseを継承したクラス)
-	threadsafe bool AddTaskBlocking( bool high , mTaskBase::Ticket& task );
+	// timeout : タイムアウト(ms)
+	threadsafe bool AddTaskBlocking( bool high , mTaskBase::Ticket& task , uint32_t timeout = INFINITE );
 
 	//最終タスクの追加
 	// high : 他のタスクに優先して処理する
@@ -49,7 +56,8 @@ public:
 	threadsafe bool Seal( void );
 
 	//実行待ちキューにあるタスクを全て取り消す
-	//すでに実行が開始されたタスクは、取り消されない。
+	//・実行中のタスクは取り消されない。
+	//・サスペンドしているタスクは取り消される。
 	//取り消されたタスクの数が返る
 	threadsafe DWORD CancelTask( void );
 
@@ -59,9 +67,16 @@ public:
 	threadsafe bool IsIdle( void )const;
 
 	//指定したタスクIDをもつタスクがいくつあるかを返す
+	//・存在しているもの全てを数える
 	// id : 数えたいタスクID
 	// ret : 指定したタスクIDの数
 	threadsafe DWORD GetTaskIdCount( const AString& id )const;
+
+	//指定したタスクIDをもつタスクがいくつ実行中であるかを返す
+	//・実行中のもののみを数える。キューにあるが未実行のものは数えない。
+	// id : 数えたいタスクID
+	// ret : 指定したタスクIDの数
+	threadsafe DWORD GetActiveTaskIdCount( const AString& id )const;
 
 	//ワーカースレッドプールのハンドルを返す
 	threadsafe mWorkerThreadPool& GetThreadPool( void )const;
@@ -71,6 +86,12 @@ private:
 	mTaskQueue();
 	mTaskQueue( const mTaskQueue& src );
 	const mTaskQueue& operator=( const mTaskQueue& src ) = delete;
+
+	//ワーカースレッドプールに呼び出しを依頼
+	threadsafe bool AddTask( void );
+
+	//指定したタスクが寝ていたら起こす
+	threadsafe bool Wakeup( mTaskBase& p );
 
 protected:
 
@@ -84,17 +105,7 @@ protected:
 	bool MyIsSealed;
 
 	//タスクIDごとの情報
-	struct TaskInformation
-	{
-		DWORD Count;		//現在このタスクIDに属しているタスクの数(参照カウント)
-		DWORD Executing;	//現在このタスクIDで実行中のタスクの数
-		TaskInformation()
-		{
-			Count = 0;
-			Executing = 0;
-		}
-	};
-	using TaskInformationMap = std::unordered_map< AString , TaskInformation >;
+	using TaskInformationMap = std::unordered_map< AString , uint32_t >;
 	TaskInformationMap MyTaskInformationMap;
 
 	//タスクIDの参照カウントをインクリメントする
@@ -103,15 +114,9 @@ protected:
 	//タスクIDの参照カウントをデクリメントする
 	threadsafe void TaskInformationDecrement( const AString& id );
 
-	//クリティカル指定のタスクを実行しているかどうか
-	bool MyIsCritical;
-
 	//タスクキューのエントリ
 	using TicketQueue = std::deque< mTaskBase::Ticket >;
-	TicketQueue MyWaiting;		//実行待ちキュー
-
-	//実行中のタスクの数
-	DWORD MyActiveTask;
+	TicketQueue MyTicketQueue;		//実行キュー
 
 	//タスクの追加
 	//このクラスのインスタンスのデストラクタが実行開始以後は、このコールは実行されず失敗する。

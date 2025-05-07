@@ -9,6 +9,8 @@
 //----------------------------------------------------------------------------
 
 #include "mTaskBase.h"
+#include <General/mCriticalSectionContainer.h>
+#include "mTaskQueue.h"
 
 mTaskBase::mTaskBase() : 
 	MyTaskId( "" ) ,
@@ -16,6 +18,7 @@ mTaskBase::mTaskBase() :
 {
 	MyTaskStatus = TaskStatus::STATUS_NOTSTARTED;
 	MyCompleteObject = 0;
+	MyParent = nullptr;
 	return;
 }
 
@@ -24,16 +27,18 @@ mTaskBase::mTaskBase( const AString& TaskId , ScheduleType ScType ) :
 	MyScheduleType( ScType )
 {
 	MyTaskStatus = TaskStatus::STATUS_NOTSTARTED;
-	if( MyCompleteObject != 0 )
-	{
-		CloseHandle( MyCompleteObject );
-		MyCompleteObject = 0;
-	}
+	MyCompleteObject = 0;
+	MyParent = nullptr;
 	return;
 }
 
 mTaskBase::~mTaskBase()
 {
+	if( MyCompleteObject != 0 )
+	{
+		CloseHandle( MyCompleteObject );
+		MyCompleteObject = 0;
+	}
 	return;
 }
 
@@ -46,3 +51,14 @@ void mTaskBase::CancelFunction( const Ticket& task )
 {
 	return;
 }
+
+bool mTaskBase::Wakeup( void )
+{
+	if( !MyParent )
+	{
+		return false;
+	}
+	return MyParent->Wakeup( *this );
+}
+
+

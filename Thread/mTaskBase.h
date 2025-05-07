@@ -49,6 +49,10 @@ namespace Definitions_TaskBase
 		STATUS_QUEUED ,
 		//【未完了】タスクの実行中である
 		STATUS_INPROGRESS ,
+		//【未完了】タスクの休眠中である
+		STATUS_SUSPENDED,
+		//【未完了】タスクの休眠中だったが目覚めようとしている
+		STATUS_WAKINGUP,
 		//【完了】タスクはキャンセルされた
 		STATUS_CANCELED,
 		//【完了】タスクは内部エラーにより実行できない状態になっている
@@ -57,10 +61,10 @@ namespace Definitions_TaskBase
 	};
 };
 
+
 class mTaskBase
 {
 	friend class mTaskQueue;
-
 public:
 	virtual ~mTaskBase();
 
@@ -79,6 +83,7 @@ public:
 		//キュー内で同一IDのタスクが実行中であれば、タスクを開始しない（後続のタスクは実行されない）
 		IdLock,
 		//キュー内で同一IDのタスクが実行中であれば、後続の開始可能なタスクを実行する
+		//このタスクの実行は後回しになる
 		IdPostpone
 	};
 
@@ -125,6 +130,9 @@ private:
 	//・ブロッキングするタスクで使う
 	HANDLE MyCompleteObject;
 
+	//親オブジェクト
+	mTaskQueue* MyParent;
+
 protected:
 
 	mTaskBase();
@@ -148,6 +156,8 @@ protected:
 	//タスクがキャンセルされるとき呼び出します
 	virtual void CancelFunction( const Ticket& task );
 
+	//タスクが寝ている場合に起こす
+	bool Wakeup( void );
 };
 
 
