@@ -71,10 +71,14 @@ public:
 	using Ticket = std::shared_ptr< mTaskBase >;
 
 	//タスク完了時に呼び出すコールバック関数の宣言
+	// queue タスクが登録されていたキュー
+	// ticket 完了したタスク
+	// parameter 登録時に設定したユーザ定義のパラメータ
+	// result タスクが成功したかどうか(TaskFunctionがRESULT_FINISH_SUCCEED=trueを返したか、RESULT_FINISH_FAILED=falseを返したか)
 	using CallbackFunction = void(*)( class mTaskQueue& queue , Ticket& ticket , DWORD_PTR parameter , bool result );
 
 	//タスク実行の順位指定
-	enum ScheduleType
+	enum class ScheduleType
 	{
 		//特に指定なし
 		Normal,
