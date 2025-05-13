@@ -103,18 +103,19 @@ bool mFileWriteStreamBase::WriteBinary( _In_bytecount_(size) const BYTE* buffer 
 //ret : 成功時true
 bool mFileWriteStreamBase::WriteStream( mFileReadStreamBase& fp , size_t sz , size_t* retWritten )
 {
-	BYTE buffer[ 65536 ];
+	std::unique_ptr<BYTE[]> buffer( mNew BYTE[ 65536 ] );
+
 	while( !fp.IsEOF() && sz )
 	{
 		size_t readsize = ( sz < sizeof( buffer ) ) ? ( sz ) : ( sizeof( buffer ) );
-		if( !fp.ReadBinary( buffer , readsize , &readsize ) )
+		if( !fp.ReadBinary( buffer.get() , readsize , &readsize ) )
 		{
 			if( readsize == 0 )
 			{
 				continue;
 			}
 		}
-		if( !WriteBinary( buffer , readsize ) )
+		if( !WriteBinary( buffer.get() , readsize ) )
 		{
 			return false;
 		}
@@ -134,18 +135,19 @@ bool mFileWriteStreamBase::WriteStream( mFileReadStreamBase& fp , size_t sz , si
 //ret : 成功時true
 bool mFileWriteStreamBase::WriteStream( mFileReadStreamBase& fp , size_t* retWritten )
 {
-	BYTE buffer[ 65536 ];
+	std::unique_ptr<BYTE[]> buffer( mNew BYTE[ 65536 ] );
+
 	while( !fp.IsEOF() )
 	{
 		size_t readsize;
-		if( !fp.ReadBinary( buffer , sizeof( buffer ) , &readsize ) )
+		if( !fp.ReadBinary( buffer.get() , sizeof( buffer ) , &readsize ) )
 		{
 			if( readsize == 0 )
 			{
 				continue;
 			}
 		}
-		if( !WriteBinary( buffer , readsize ) )
+		if( !WriteBinary( buffer.get() , readsize ) )
 		{
 			return false;
 		}
