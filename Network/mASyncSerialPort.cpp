@@ -9,7 +9,8 @@
 //----------------------------------------------------------------------------
 
 #include "mASyncSerialPort.h"
-#include "../General/mErrorLogger.h"
+#include <General/mErrorLogger.h>
+#include <General/mFileUtility.h>
 
 static bool ComPortSetting( HANDLE handle , const mASyncSerialPort::Option& setting );
 
@@ -821,4 +822,12 @@ uint32_t mASyncSerialPort::GetReadableSize( void )const
 	return result;
 }
 
-
+WString mASyncSerialPort::GetPortName( void )const
+{
+	WString result;
+	if( !mFileUtility::SplitPath( MyOption.Fileinfo.Path , nullptr , nullptr , &result , nullptr ) )
+	{
+		return L"";
+	}
+	return result;
+}

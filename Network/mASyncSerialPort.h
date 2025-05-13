@@ -342,6 +342,9 @@ public:
 	//現在受信済みのデータを破棄します
 	void ClearReadBuffer( void );
 
+	//通信対象のポートの名前を得ます
+	WString GetPortName( void )const;
+
 private:
 
 	mASyncSerialPort( const mASyncSerialPort& src ) = delete;
