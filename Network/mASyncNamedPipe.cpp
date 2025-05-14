@@ -17,7 +17,7 @@ mASyncNamedPipe::mASyncNamedPipe()
 	MyHandle = INVALID_HANDLE_VALUE;
 	MyIsConnected = false;
 	MyConnectData = nullptr;
-	MyNotifyEventToken.reset( mNew int( 0 ) );
+	MyWTP = nullptr;
 }
 
 mASyncNamedPipe::~mASyncNamedPipe()
@@ -40,17 +40,20 @@ mASyncNamedPipe::~mASyncNamedPipe()
 		}
 	}
 
-	//ハンドル削除
-	if( MyHandle != INVALID_HANDLE_VALUE )
-	{
-		CloseHandle( MyHandle );
-	}
+	Abort();
 	return;
 }
 
 
 bool mASyncNamedPipe::Create( mWorkerThreadPool& wtp , const CreateOption& createopt , const ConnectionOption& opt , const NotifyOption& notifier , const WString& servername , const WString& pipename )
 {
+	//二重に開こうとしている？
+	if( MyHandle != INVALID_HANDLE_VALUE )
+	{
+		RaiseError( g_ErrorLogger , 0 , L"パイプを二重に開こうとしています" , pipename );
+		return false;
+	}
+	
 	//接続数チェック
 	DWORD max_conn = createopt.MaxConn;
 	if( max_conn == 0 )
@@ -84,12 +87,11 @@ bool mASyncNamedPipe::Create( mWorkerThreadPool& wtp , const CreateOption& creat
 	//IO完了ポートに登録する
 	if( !Attach( wtp , opt , notifier ) )
 	{
-		return false;
+		goto errorend;
 	}
 
 	//接続受付開始
-
-	MyConnectData = mNew BufferQueueEntry;
+	MyConnectData.reset( mNew BufferQueueEntry );
 	MyConnectData->Parent = this;
 	MyConnectData->Type = QueueType::CONNECT_QUEUE_ENTRY;
 	MyConnectData->Buffer = nullptr;
@@ -113,22 +115,33 @@ bool mASyncNamedPipe::Create( mWorkerThreadPool& wtp , const CreateOption& creat
 		else if( ec != ERROR_IO_PENDING )
 		{
 			RaiseError( g_ErrorLogger , 0 , L"パイプへの待ち受けキューをセットできません" );
-			return false;
+			goto errorend;
 		}
 	}
 	return true;
+
+errorend:
+	if( MyHandle != INVALID_HANDLE_VALUE )
+	{
+		CloseHandle( MyHandle );
+		MyHandle = INVALID_HANDLE_VALUE;
+	}
+	return false;
 }
 
 //ポートを開く
 bool mASyncNamedPipe::Attach( mWorkerThreadPool& wtp , const ConnectionOption& opt , const NotifyOption& notifier )
 {
-
 	//ワーカースレッドプールに登録する
 	if( !wtp.Attach( MyHandle , CompleteRoutine ) )
 	{
 		RaiseError( g_ErrorLogger , 0 , L"ワーカースレッドプールに登録できませんでした" );
 		return false;
 	}
+	MyWTP = &wtp;
+
+	//コールバック用のトークンを初期化
+	MyNotifyEventToken.reset( mNew int( 0 ) );
 
 	//ファイルを開けたので、通知方法をストック
 	MyOption = opt;
@@ -139,6 +152,12 @@ bool mASyncNamedPipe::Attach( mWorkerThreadPool& wtp , const ConnectionOption& o
 
 bool mASyncNamedPipe::PrepareReadBuffer( DWORD count )
 {
+	//ハンドルが開いているか確認
+	if( MyHandle == INVALID_HANDLE_VALUE )
+	{
+		return false;
+	}
+
 	//クリティカルセクション
 	mCriticalSectionTicket critical( MyCritical );
 
@@ -165,7 +184,11 @@ bool mASyncNamedPipe::PrepareReadBuffer( DWORD count )
 		MyReadQueue.push_back( entry );
 
 		DWORD readsize = 0;
-		ReadFile( MyHandle , entry->Buffer , MyOption.ReadPacketSize , &readsize , &entry->Ov );
+		if( ReadFile( MyHandle , entry->Buffer , MyOption.ReadPacketSize , &readsize , &entry->Ov ) )
+		{
+			return true;
+		}
+
 		switch( GetLastError() )
 		{
 		case ERROR_IO_PENDING:
@@ -234,7 +257,8 @@ VOID CALLBACK mASyncNamedPipe::CompleteRoutine( DWORD ec , DWORD len , LPOVERLAP
 		return;
 	}
 
-	if( !entry->Parent )
+	mASyncNamedPipe* me = entry->Parent;
+	if( !me )
 	{
 		//親が消滅している場合はそっと削除しておく
 		SetLastError( ec );
@@ -245,18 +269,29 @@ VOID CALLBACK mASyncNamedPipe::CompleteRoutine( DWORD ec , DWORD len , LPOVERLAP
 		return;
 	}
 
-	NotifyEventToken token( entry->Parent->MyNotifyEventToken );
+	//キューを完了状態にする
+	if( !entry->Completed )
+	{
+		entry->Completed = true;
+	}
+
+	std::weak_ptr<NotifyEventToken::element_type> token_ptr = me->MyNotifyEventToken;
+	NotifyEventToken token = token_ptr.lock();
+	if( !token || me->MyIsEOF )
+	{
+		return;
+	}
 
 	switch( entry->Type )
 	{
 	case QueueType::CONNECT_QUEUE_ENTRY:
-		ConnectCompleteRoutine( ec , len , ov );
+		me->ConnectCompleteRoutine( ec , len , ov );
 		break;
 	case QueueType::READ_QUEUE_ENTRY:
-		ReadCompleteRoutine( ec , len , ov );
+		me->ReadCompleteRoutine( ec , len , ov );
 		break;
 	case QueueType::WRITE_QUEUE_ENTRY:
-		WriteCompleteRoutine( ec , len , ov );
+		me->WriteCompleteRoutine( ec , len , ov );
 		break;
 	default:
 		break;
@@ -264,13 +299,13 @@ VOID CALLBACK mASyncNamedPipe::CompleteRoutine( DWORD ec , DWORD len , LPOVERLAP
 	return;
 }
 
+
 //接続完了時の完了ルーチン
-VOID CALLBACK mASyncNamedPipe::ConnectCompleteRoutine( DWORD ec , DWORD len , LPOVERLAPPED ov )
+void mASyncNamedPipe::ConnectCompleteRoutine( DWORD ec , DWORD len , LPOVERLAPPED ov )
 {
 	BufferQueueEntry* entry = CONTAINING_RECORD( ov ,  BufferQueueEntry , Ov );
 
 	//キューを完了状態にする
-	entry->Completed = true;
 	entry->ErrorCode = ec;
 	entry->Parent->MyIsConnected = true;
 
@@ -306,12 +341,12 @@ VOID CALLBACK mASyncNamedPipe::ConnectCompleteRoutine( DWORD ec , DWORD len , LP
 		}
 	}
 
-	entry->Parent->MyConnectData = nullptr;
+	entry->Parent->MyConnectData.reset();
 	mDelete entry;
 }
 
 //読み取り時の完了ルーチン
-VOID CALLBACK mASyncNamedPipe::ReadCompleteRoutine( DWORD ec , DWORD len , LPOVERLAPPED ov )
+void mASyncNamedPipe::ReadCompleteRoutine( DWORD ec , DWORD len , LPOVERLAPPED ov )
 {
 	bool complete_callback = true;
 
@@ -323,7 +358,6 @@ VOID CALLBACK mASyncNamedPipe::ReadCompleteRoutine( DWORD ec , DWORD len , LPOVE
 		//キューを完了状態にする
 		if( !entry->Completed )
 		{
-			entry->Completed = true;
 			entry->ErrorCode = ec;
 			entry->BytesTransfered = len;
 		}
@@ -369,7 +403,7 @@ VOID CALLBACK mASyncNamedPipe::ReadCompleteRoutine( DWORD ec , DWORD len , LPOVE
 	return;
 }
 
-VOID CALLBACK mASyncNamedPipe::WriteCompleteRoutine( DWORD ec , DWORD len , LPOVERLAPPED ov )
+void mASyncNamedPipe::WriteCompleteRoutine( DWORD ec , DWORD len , LPOVERLAPPED ov )
 {
 	BufferQueueEntry* entry = CONTAINING_RECORD( ov ,  BufferQueueEntry , Ov );
 
@@ -382,7 +416,6 @@ VOID CALLBACK mASyncNamedPipe::WriteCompleteRoutine( DWORD ec , DWORD len , LPOV
 		//キューを完了状態にする
 		if( !entry->Completed )
 		{
-			entry->Completed = true;
 			entry->ErrorCode = ec;
 			entry->BytesTransfered = len;
 		}
@@ -492,23 +525,10 @@ INT mASyncNamedPipe::Read( void )
 	return result;
 }
 
-//EOFに達しているかを調べます
+//EOFをセットしているか調べる
 bool mASyncNamedPipe::IsEOF( void )const
 {
-	if( !MyIsEOF )
-	{
-		return false;
-	}
-	else if( MyReadCacheRemain )
-	{
-		return false;
-	}
-	else
-	{
-		//ここだけクリティカルセクション
-		mCriticalSectionTicket critical( MyCritical );
-		return MyReadQueue.empty() && ( MyNotifyEventToken.use_count() == 1 );
-	}
+	return MyIsEOF;
 }
 
 //書き込み側の経路を閉じます
@@ -533,7 +553,6 @@ bool mASyncNamedPipe::SetEOF( void )
 			CancelIoEx( MyHandle , &(*itr)->Ov );
 		}
 	}
-
 	return true;
 }
 
@@ -580,6 +599,11 @@ bool mASyncNamedPipe::Write( INT data )
 //これを呼ばないと実際の送信は発生しません
 bool mASyncNamedPipe::FlushCache( void )
 {
+	if( MyHandle == INVALID_HANDLE_VALUE )
+	{
+		return false;
+	}
+	
 	BufferQueueEntry* entry = nullptr;
 	{
 		//クリティカルセクション
@@ -670,11 +694,15 @@ bool mASyncNamedPipe::Cancel( void )
 	MyWriteCacheWritten = 0;
 	MyWriteCacheRemain = 0;
 
-	for( BufferQueue::iterator itr = MyWriteQueue.begin() ; itr != MyWriteQueue.end() ; itr++ )
+	//ハンドルが有効であればIOキャンセル
+	if( MyHandle != INVALID_HANDLE_VALUE )
 	{
-		if( !(*itr)->Completed )
+		for( BufferQueue::iterator itr = MyWriteQueue.begin() ; itr != MyWriteQueue.end() ; itr++ )
 		{
-			CancelIoEx( MyHandle , &(*itr)->Ov );
+			if( !(*itr)->Completed )
+			{
+				CancelIoEx( MyHandle , &(*itr)->Ov );
+			}
 		}
 	}
 	return true;
@@ -694,49 +722,59 @@ bool mASyncNamedPipe::Abort( void )
 	//読み込み終了してキューをキャンセル
 	SetEOF();
 
+	//新たにtokenを作れないようにする
+	NotifyEventToken token = MyNotifyEventToken;
+	MyNotifyEventToken.reset();
+
+	//スレッドプール内からの呼び出しかどうかで目標スレッド数を決める
+	long check_thread_count = ( MyWTP->IsPoolMember() ) ? ( 2 ) : ( 1 );
+
 	//未処理のキュー破棄
 	DWORD wait_time = 0;
 	while( 1 )
 	{
 		bool empty = true;
 
-		if( MyNotifyEventToken.use_count() == 1 )
+		if( token.use_count() <= check_thread_count )
 		{
 			mCriticalSectionTicket critical( MyCritical );
-			for( BufferQueue::iterator itr = MyWriteQueue.begin() ; itr != MyWriteQueue.end() ; )
+			auto QueueClear = []( BufferQueue& queue )->void
 			{
-				if( (*itr)->Completed )
+				for( BufferQueue::iterator itr = queue.begin() ; itr != queue.end() ; )
 				{
-					mDelete (*itr)->Buffer;
-					mDelete (*itr);
-					itr = MyWriteQueue.erase( itr );
-					continue;
+					if( (*itr)->Completed )
+					{
+						mDelete (*itr)->Buffer;
+						mDelete (*itr);
+						itr = queue.erase( itr );
+						continue;
+					}
+					itr++;
 				}
-				itr++;
-			}
-			for( BufferQueue::iterator itr = MyReadQueue.begin() ; itr != MyReadQueue.end() ; )
+			};
+			QueueClear( MyWriteQueue );
+			QueueClear( MyReadQueue );
+
+			if( MyConnectData )
 			{
-				if( (*itr)->Completed )
+				if( MyConnectData->Completed )
 				{
-					mDelete (*itr)->Buffer;
-					mDelete (*itr);
-					itr = MyReadQueue.erase( itr );
-					continue;
+					MyConnectData.reset();
 				}
-				itr++;
 			}
+
 			MyReadCacheRemain = 0;
 			MyReadCacheCurrent = 0;
 			MyReadCacheHead.reset();
 
-			empty = MyWriteQueue.empty() && MyReadQueue.empty();
+			empty = MyWriteQueue.empty() && MyReadQueue.empty() && !MyConnectData;
 		}
 		else
 		{
 			empty = false;
 		}
 
-		if( empty && ( MyNotifyEventToken.use_count() == 1 ) )
+		if( empty && ( token.use_count() <= check_thread_count ) )
 		{
 			break;
 		}
@@ -749,6 +787,10 @@ bool mASyncNamedPipe::Abort( void )
 			}
 		}
 	}
+
+	//ハンドル廃棄
+	CloseHandle( MyHandle );
+	MyHandle = INVALID_HANDLE_VALUE;
 	return true;
 }
 
@@ -783,14 +825,23 @@ bool mASyncNamedPipe::Connect( mWorkerThreadPool& wtp , const ConnectionOption& 
 	if( !Attach( wtp , opt , notifier ) )
 	{
 		RaiseAssert( g_ErrorLogger , 0 , L"ワーカースレッドプールに登録できませんでした" );
-		return false;
+		goto errorend;
 	}
 
 	//読み取りバッファを補充
 	if( !PrepareReadBuffer( MyOption.ReadPacketCount ) )
 	{
+		//バッファを積めてないだけでポートは開けているのでエラーにはするが、ハンドルの破棄はしない
 		RaiseAssert( g_ErrorLogger , 0 , L"読み込み用のバッファを準備できませんでした" );
 	}
 	return true;
+
+errorend:
+	if( MyHandle != INVALID_HANDLE_VALUE )
+	{
+		CloseHandle( MyHandle );
+		MyHandle = INVALID_HANDLE_VALUE;
+	}
+	return false;
 
 }

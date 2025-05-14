@@ -119,6 +119,7 @@ errorend:
 	if( MyHandle != INVALID_HANDLE_VALUE )
 	{
 		CloseHandle( MyHandle );
+		MyHandle = INVALID_HANDLE_VALUE;
 	}
 	return false;
 }
