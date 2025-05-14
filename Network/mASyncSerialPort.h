@@ -303,8 +303,8 @@ public:
 	//（時間が経てば再度読み取れるかもしれない）
 	virtual INT Read( void );
 
-	//EOFに達しているかを調べます
-	//・SetEOF()をコール後、その時点までに受信済みのデータを全て読み出すとtrueになります
+	//EOFをセットしているかを調べます
+	//・SetEOF()をコールするとtrueになります
 	virtual bool IsEOF( void )const;
 
 	//１文字書き込み
@@ -324,6 +324,8 @@ public:
 	bool Abort( void );
 
 	//読み込み側の経路を閉じます
+	//・以降、新たな受信は行いません。
+	//・その時点までに受信していたデータは通常通り読み取れます。
 	virtual bool SetEOF( void );
 
 	//送信未完了のデータがあるかを返します
@@ -363,6 +365,9 @@ protected:
 
 	//クリティカルセクション
 	mutable mCriticalSectionContainer MyCritical;
+
+	//関連付けられているワーカースレッドプールへのポインタ
+	mWorkerThreadPool* MyWTP;
 
 	//Notify呼び出し中のイベント数
 	using NotifyEventToken = std::shared_ptr<int>;
@@ -416,10 +421,10 @@ protected:
 	static VOID CALLBACK CompleteRoutine( DWORD ec , DWORD len , LPOVERLAPPED ov );
 
 	//受信完了時の完了ルーチン
-	static VOID CALLBACK ReadCompleteRoutine( DWORD ec , DWORD len , LPOVERLAPPED ov );
+	void ReadCompleteRoutine( DWORD ec , DWORD len , LPOVERLAPPED ov );
 
 	//送信完了時の完了ルーチン
-	static VOID CALLBACK WriteCompleteRoutine( DWORD ec , DWORD len , LPOVERLAPPED ov );
+	void WriteCompleteRoutine( DWORD ec , DWORD len , LPOVERLAPPED ov );
 
 };
 

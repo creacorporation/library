@@ -17,7 +17,7 @@ static bool ComPortSetting( HANDLE handle , const mASyncSerialPort::Option& sett
 mASyncSerialPort::mASyncSerialPort()
 {
 	MyHandle = INVALID_HANDLE_VALUE;
-	MyNotifyEventToken.reset( mNew int( 0 ) );
+	MyWTP = nullptr;
 }
 
 mASyncSerialPort::~mASyncSerialPort()
@@ -36,13 +36,7 @@ mASyncSerialPort::~mASyncSerialPort()
 		}
 	}
 
-	//ハンドル廃棄
-	if( MyHandle != INVALID_HANDLE_VALUE )
-	{
-		CloseHandle( MyHandle );
-		MyHandle = INVALID_HANDLE_VALUE;
-	}
-
+	Abort();
 	return;
 }
 
@@ -88,22 +82,26 @@ bool mASyncSerialPort::Open( mWorkerThreadPool& wtp , const Option& opt , const 
 	{
 		//開けなかった
 		RaiseError( g_ErrorLogger , 0 , L"ポートを開くことができませんでした" , opt.Fileinfo.Path );
-		return false;
+		goto errorend;
 	}
 
 	//COMポートの設定を行う
 	if( !ComPortSetting( MyHandle , opt ) )
 	{
 		RaiseError( g_ErrorLogger , 0 , L"ポートの初期設定が失敗しました" , opt.Fileinfo.Path );
-		return false;
+		goto errorend;
 	}
 
 	//ワーカースレッドプールに登録する
 	if( !wtp.Attach( MyHandle , CompleteRoutine ) )
 	{
 		RaiseError( g_ErrorLogger , 0 , L"ワーカースレッドプールに登録できませんでした" );
-		return false;
+		goto errorend;
 	}
+	MyWTP = &wtp;
+
+	//コールバック用のトークンを初期化
+	MyNotifyEventToken.reset( mNew int( 0 ) );
 
 	//ファイルを開けたので、通知方法をストック
 	MyOption = opt;
@@ -113,13 +111,26 @@ bool mASyncSerialPort::Open( mWorkerThreadPool& wtp , const Option& opt , const 
 	if( !PrepareReadBuffer( MyOption.ReadPacketCount ) )
 	{
 		RaiseAssert( g_ErrorLogger , 0 , L"読み込み用のバッファを準備できませんでした" );
-		return false;
+		return false;	//バッファを積めてないだけでポートは開けているのでエラーにはするが、ハンドルの破棄はしない
 	}
 	return true;
+
+errorend:
+	if( MyHandle != INVALID_HANDLE_VALUE )
+	{
+		CloseHandle( MyHandle );
+	}
+	return false;
 }
 
 bool mASyncSerialPort::PrepareReadBuffer( DWORD count )
 {
+	//ハンドルが開いているか確認
+	if( MyHandle == INVALID_HANDLE_VALUE )
+	{
+		return false;
+	}
+
 	//クリティカルセクション
 	mCriticalSectionTicket critical( MyCritical );
 
@@ -152,7 +163,10 @@ bool mASyncSerialPort::PrepareReadBuffer( DWORD count )
 		MyReadQueue.push_back( entry );
 
 		DWORD readsize = 0;
-		ReadFile( MyHandle , entry->Buffer , MyOption.ReadPacketSize , &readsize , &entry->Ov );
+		if( ReadFile( MyHandle , entry->Buffer , MyOption.ReadPacketSize , &readsize , &entry->Ov ) )
+		{
+			return true;
+		}
 		switch( GetLastError() )
 		{
 		case ERROR_IO_PENDING:
@@ -218,7 +232,8 @@ VOID CALLBACK mASyncSerialPort::CompleteRoutine( DWORD ec , DWORD len , LPOVERLA
 		return;
 	}
 
-	if( !entry->Parent )
+	mASyncSerialPort* me = entry->Parent;
+	if( !me )
 	{
 		//親が消滅している場合はそっと削除しておく
 		SetLastError( ec );
@@ -229,15 +244,28 @@ VOID CALLBACK mASyncSerialPort::CompleteRoutine( DWORD ec , DWORD len , LPOVERLA
 		return;
 	}
 
-	NotifyEventToken token( entry->Parent->MyNotifyEventToken );
+	//キューを完了状態にする
+	if( !entry->Completed )
+	{
+		entry->Completed = true;
+		entry->ErrorCode = ec;
+		entry->BytesTransfered = len;
+	}
+
+	std::weak_ptr<NotifyEventToken::element_type> token_ptr = me->MyNotifyEventToken;
+	NotifyEventToken token = token_ptr.lock();
+	if( !token || me->MyIsEOF )
+	{
+		return;
+	}
 
 	switch( entry->Type )
 	{
 	case QueueType::READ_QUEUE_ENTRY:
-		ReadCompleteRoutine( ec , len , ov );
+		me->ReadCompleteRoutine( ec , len , ov );
 		break;
 	case QueueType::WRITE_QUEUE_ENTRY:
-		WriteCompleteRoutine( ec , len , ov );
+		me->WriteCompleteRoutine( ec , len , ov );
 		break;
 	default:
 		break;
@@ -246,28 +274,20 @@ VOID CALLBACK mASyncSerialPort::CompleteRoutine( DWORD ec , DWORD len , LPOVERLA
 }
 
 //読み取り時の完了ルーチン
-VOID CALLBACK mASyncSerialPort::ReadCompleteRoutine( DWORD ec , DWORD len , LPOVERLAPPED ov )
+void mASyncSerialPort::ReadCompleteRoutine( DWORD ec , DWORD len , LPOVERLAPPED ov )
 {
 	bool complete_callback = true;
 	BufferQueueEntry* entry = CONTAINING_RECORD( ov ,  BufferQueueEntry , Ov );
 
 	{
 		//このブロックはクリティカルセクション
-		mCriticalSectionTicket critical( entry->Parent->MyCritical );
-
-		//キューを完了状態にする
-		if( !entry->Completed )
-		{
-			entry->Completed = true;
-			entry->ErrorCode = ec;
-			entry->BytesTransfered = len;
-		}
+		mCriticalSectionTicket critical( MyCritical );
 
 		//キューの先頭ではない場合はコールバックを呼ばない
 		//※NOTIFY_CALLBACK_PARALLELのときは、先頭か否かに関係なくコールバックを呼ぶ
-		if( entry->Parent->MyNotifyOption.OnRead.Mode != NotifyOption::NotifyMode::NOTIFY_CALLBACK_PARALLEL )
+		if( MyNotifyOption.OnRead.Mode != NotifyOption::NotifyMode::NOTIFY_CALLBACK_PARALLEL )
 		{
-			if( entry->Parent->MyReadQueue.empty() || entry->Parent->MyReadQueue.front() != entry )
+			if( MyReadQueue.empty() || MyReadQueue.front() != entry )
 			{
 				complete_callback = false;
 			}
@@ -288,7 +308,7 @@ VOID CALLBACK mASyncSerialPort::ReadCompleteRoutine( DWORD ec , DWORD len , LPOV
 				NotifyFunctionOpt opt;
 				opt.OnError.Action = NotifyFunctionOpt::OnErrorOpt::ErrorAction::ERROR_ON_READ;
 				opt.OnError.ErrorCode = ec;
-				AsyncEvent( *entry->Parent , entry->Parent->MyNotifyOption.OnError , opt );
+				AsyncEvent( *this , MyNotifyOption.OnError , opt );
 			}
 		}
 	}
@@ -298,14 +318,14 @@ VOID CALLBACK mASyncSerialPort::ReadCompleteRoutine( DWORD ec , DWORD len , LPOV
 		{
 			//完了イベントをコール
 			NotifyFunctionOpt opt;
-			AsyncEvent( *entry->Parent , entry->Parent->MyNotifyOption.OnRead , opt );
+			AsyncEvent( *this , MyNotifyOption.OnRead , opt );
 		}
 	}
 	return;
 }
 
 
-VOID CALLBACK mASyncSerialPort::WriteCompleteRoutine( DWORD ec , DWORD len , LPOVERLAPPED ov )
+void mASyncSerialPort::WriteCompleteRoutine( DWORD ec , DWORD len , LPOVERLAPPED ov )
 {
 	BufferQueueEntry* entry = CONTAINING_RECORD( ov ,  BufferQueueEntry , Ov );
 
@@ -313,30 +333,22 @@ VOID CALLBACK mASyncSerialPort::WriteCompleteRoutine( DWORD ec , DWORD len , LPO
 	size_t queue_size = 0;		//削除後のキューサイズ
 	{
 		//このブロックはクリティカルセクション
-		mCriticalSectionTicket critical( entry->Parent->MyCritical );
-
-		//キューを完了状態にする
-		if( !entry->Completed )
-		{
-			entry->Completed = true;
-			entry->ErrorCode = ec;
-			entry->BytesTransfered = len;
-		}
+		mCriticalSectionTicket critical( MyCritical );
 
 		//キューの先頭からスキャンし、完了済みのパケットを順次削除
-		while( !entry->Parent->MyWriteQueue.empty() )
+		while( !MyWriteQueue.empty() )
 		{
-			if( entry->Parent->MyWriteQueue.front()->Completed )
+			if( MyWriteQueue.front()->Completed )
 			{
-				remove_queue.push_back( std::move( entry->Parent->MyWriteQueue.front() ) );
-				entry->Parent->MyWriteQueue.pop_front();
+				remove_queue.push_back( std::move( MyWriteQueue.front() ) );
+				MyWriteQueue.pop_front();
 			}
 			else
 			{
 				break;
 			}
 		}
-		queue_size = entry->Parent->MyWriteQueue.size();
+		queue_size = MyWriteQueue.size();
 	}
 
 	//イベント呼び出し
@@ -349,13 +361,13 @@ VOID CALLBACK mASyncSerialPort::WriteCompleteRoutine( DWORD ec , DWORD len , LPO
 		NotifyFunctionOpt opt;
 		opt.OnError.Action = NotifyFunctionOpt::OnErrorOpt::ErrorAction::ERROR_ON_WRITE;
 		opt.OnError.ErrorCode = ec;
-		AsyncEvent( *entry->Parent , entry->Parent->MyNotifyOption.OnError , opt );
+		AsyncEvent( *this , MyNotifyOption.OnError , opt );
 	}
-	else if( queue_size < entry->Parent->MyOption.WritePacketNotifyCount )
+	else if( queue_size < MyOption.WritePacketNotifyCount )
 	{
 		//キューのエントリ数が減ったからイベントをコール
 		NotifyFunctionOpt opt;
-		AsyncEvent( *entry->Parent , entry->Parent->MyNotifyOption.OnWrite , opt );
+		AsyncEvent( *this , MyNotifyOption.OnWrite , opt );
 	}
 
 	//ポインタの削除を行う
@@ -428,23 +440,10 @@ INT mASyncSerialPort::Read( void )
 	return result;
 }
 
-//EOFに達しているかを調べます
+//EOFをセットしているか調べる
 bool mASyncSerialPort::IsEOF( void )const
 {
-	if( !MyIsEOF )
-	{
-		return false;
-	}
-	else if( MyReadCacheRemain )
-	{
-		return false;
-	}
-	else
-	{
-		//ここだけクリティカルセクション
-		mCriticalSectionTicket critical( MyCritical );
-		return MyReadQueue.empty() && ( MyNotifyEventToken.use_count() == 1 );
-	}
+	return MyIsEOF;
 }
 
 //書き込み側の経路を閉じます
@@ -469,7 +468,6 @@ bool mASyncSerialPort::SetEOF( void )
 			CancelIoEx( MyHandle , &(*itr)->Ov );
 		}
 	}
-
 	return true;
 }
 
@@ -516,6 +514,11 @@ bool mASyncSerialPort::Write( INT data )
 //これを呼ばないと実際の送信は発生しません
 bool mASyncSerialPort::FlushCache( void )
 {
+	if( MyHandle == INVALID_HANDLE_VALUE )
+	{
+		return false;
+	}
+
 	BufferQueueEntry* entry = nullptr;
 	{
 		//クリティカルセクション
@@ -593,11 +596,15 @@ bool mASyncSerialPort::Cancel( void )
 	MyWriteCacheWritten = 0;
 	MyWriteCacheRemain = 0;
 
-	for( BufferQueue::iterator itr = MyWriteQueue.begin() ; itr != MyWriteQueue.end() ; itr++ )
+	//ハンドルが有効であればIOキャンセル
+	if( MyHandle != INVALID_HANDLE_VALUE )
 	{
-		if( !(*itr)->Completed )
+		for( BufferQueue::iterator itr = MyWriteQueue.begin() ; itr != MyWriteQueue.end() ; itr++ )
 		{
-			CancelIoEx( MyHandle , &(*itr)->Ov );
+			if( !(*itr)->Completed )
+			{
+				CancelIoEx( MyHandle , &(*itr)->Ov );
+			}
 		}
 	}
 	return true;
@@ -619,37 +626,40 @@ bool mASyncSerialPort::Abort( void )
 	//読み込み終了してキューをキャンセル
 	SetEOF();
 
+	//新たにtokenを作れないようにする
+	NotifyEventToken token = MyNotifyEventToken;
+	MyNotifyEventToken.reset();
+
+	//スレッドプール内からの呼び出しかどうかで目標スレッド数を決める
+	long check_thread_count = ( MyWTP->IsPoolMember() ) ? ( 2 ) : ( 1 );
+
 	//未処理のキュー破棄
 	DWORD wait_time = 0;
 	while( 1 )
 	{
 		bool empty = true;
 
-		if( MyNotifyEventToken.use_count() == 1 )
+		if( token.use_count() <= check_thread_count )
 		{
 			mCriticalSectionTicket critical( MyCritical );
-			for( BufferQueue::iterator itr = MyWriteQueue.begin() ; itr != MyWriteQueue.end() ; )
+
+			auto QueueClear = []( BufferQueue& queue )->void
 			{
-				if( (*itr)->Completed )
+				for( BufferQueue::iterator itr = queue.begin() ; itr != queue.end() ; )
 				{
-					mDelete (*itr)->Buffer;
-					mDelete (*itr);
-					itr = MyWriteQueue.erase( itr );
-					continue;
+					if( (*itr)->Completed )
+					{
+						mDelete (*itr)->Buffer;
+						mDelete (*itr);
+						itr = queue.erase( itr );
+						continue;
+					}
+					itr++;
 				}
-				itr++;
-			}
-			for( BufferQueue::iterator itr = MyReadQueue.begin() ; itr != MyReadQueue.end() ; )
-			{
-				if( (*itr)->Completed )
-				{
-					mDelete (*itr)->Buffer;
-					mDelete (*itr);
-					itr = MyReadQueue.erase( itr );
-					continue;
-				}
-				itr++;
-			}
+			};
+			QueueClear( MyWriteQueue );
+			QueueClear( MyReadQueue );
+
 			MyReadCacheRemain = 0;
 			MyReadCacheCurrent = 0;
 			MyReadCacheHead.reset();
@@ -661,7 +671,7 @@ bool mASyncSerialPort::Abort( void )
 			empty = false;
 		}
 
-		if( empty && ( MyNotifyEventToken.use_count() == 1 ) )
+		if( empty && ( token.use_count() <= check_thread_count ) )
 		{
 			break;
 		}
@@ -674,6 +684,10 @@ bool mASyncSerialPort::Abort( void )
 			}
 		}
 	}
+
+	//ハンドル廃棄
+	CloseHandle( MyHandle );
+	MyHandle = INVALID_HANDLE_VALUE;
 	return true;
 
 }
