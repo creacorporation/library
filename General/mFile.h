@@ -46,7 +46,7 @@ public:
 	virtual ~mFile();
 
 	//ファイルを開くときのモード
-	enum CreateMode
+	enum class CreateMode
 	{
 		CreateNew ,				//新しくファイルを作成。すでにある場合はエラー
 		CreateAlways ,			//新しくファイルを作成。すでにある場合は上書き（中身を捨てる）
