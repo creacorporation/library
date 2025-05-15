@@ -369,32 +369,49 @@ bool mTaskQueue::TaskRoutine( mWorkerThreadPool& pool , DWORD Param1 , DWORD_PTR
 
 	//タスクの完了
 	{ 
-		/*CRITICALSECTION*/
-		mCriticalSectionTicket critical( queue->MyCriticalSection );
-
-		queue->TaskInformationDecrement( task->MyTaskId );
-
 		if( result == mTaskBase::TaskFunctionResult::RESULT_INPROGRESS )
 		{
 			//※タスクは一時中断した
-			AsyncEvent( task->Notifier.OnSuspend , *queue , task , true );
-			switch( task->MyTaskStatus )
+			/*CRITICALSECTION*/
 			{
-			case mTaskBase::TaskStatus::STATUS_INPROGRESS:
-				task->MyTaskStatus = mTaskBase::TaskStatus::STATUS_SUSPENDED;
-				break;
-			case mTaskBase::TaskStatus::STATUS_WAKINGUP:
-				task->MyTaskStatus = mTaskBase::TaskStatus::STATUS_QUEUED;
-				break;
-			default:
-				RaiseAssert( g_ErrorLogger , 0 , "タスクの状態が不正 %d" , (int)task->MyTaskStatus );
-				task->MyTaskStatus = mTaskBase::TaskStatus::STATUS_QUEUED;
-				break;
+				mCriticalSectionTicket critical( queue->MyCriticalSection );
+				queue->TaskInformationDecrement( task->MyTaskId );
+
+				switch( task->MyTaskStatus )
+				{
+				case mTaskBase::TaskStatus::STATUS_INPROGRESS:
+					task->MyTaskStatus = mTaskBase::TaskStatus::STATUS_SUSPENDED;
+					break;
+				case mTaskBase::TaskStatus::STATUS_WAKINGUP:
+					task->MyTaskStatus = mTaskBase::TaskStatus::STATUS_QUEUED;
+					break;
+				default:
+					RaiseAssert( g_ErrorLogger , 0 , "タスクの状態が不正 %d" , (int)task->MyTaskStatus );
+					task->MyTaskStatus = mTaskBase::TaskStatus::STATUS_QUEUED;
+					break;
+				}
 			}
+			AsyncEvent( task->Notifier.OnSuspend , *queue , task , true );
 		}
 		else
 		{
 			//※タスクが完了した
+			/*CRITICALSECTION*/
+			{
+				mCriticalSectionTicket critical( queue->MyCriticalSection );
+				queue->TaskInformationDecrement( task->MyTaskId );
+				//親の情報を消す
+				task->MyParent = nullptr;
+				//キューから削除する
+				for( TicketQueue::iterator itr = queue->MyTicketQueue.begin() ; itr != queue->MyTicketQueue.end() ; itr++ )
+				{
+					if( itr->get() == task.get() )
+					{
+						queue->MyTicketQueue.erase( itr );
+						break;
+					}
+				}
+			}
 			if( result == mTaskBase::TaskFunctionResult::RESULT_FINISH_SUCCEED )
 			{
 				task->MyTaskStatus = mTaskBase::TaskStatus::STATUS_FINISH_SUCCEED;
@@ -404,17 +421,6 @@ bool mTaskQueue::TaskRoutine( mWorkerThreadPool& pool , DWORD Param1 , DWORD_PTR
 			{
 				task->MyTaskStatus = mTaskBase::TaskStatus::STATUS_FINISH_FAILED;
 				AsyncEvent( task->Notifier.OnComplete , *queue , task , false );
-			}
-			//親の情報を消す
-			task->MyParent = nullptr;
-			//キューから削除する
-			for( TicketQueue::iterator itr = queue->MyTicketQueue.begin() ; itr != queue->MyTicketQueue.end() ; itr++ )
-			{
-				if( itr->get() == task.get() )
-				{
-					queue->MyTicketQueue.erase( itr );
-					break;
-				}
 			}
 			//完了オブジェクトが存在していればシグナル状態に
 			if( task->MyCompleteObject )
