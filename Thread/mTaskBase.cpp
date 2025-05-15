@@ -14,7 +14,8 @@
 
 mTaskBase::mTaskBase() : 
 	MyTaskId( "" ) ,
-	MyScheduleType( ScheduleType::Normal )
+	MyScheduleType( ScheduleType::Normal ),
+	MyCreateTime( timeGetTime() )
 {
 	MyTaskStatus = TaskStatus::STATUS_NOTSTARTED;
 	MyCompleteObject = 0;
@@ -24,7 +25,8 @@ mTaskBase::mTaskBase() :
 
 mTaskBase::mTaskBase( const AString& TaskId , ScheduleType ScType ) : 
 	MyTaskId( TaskId ) ,
-	MyScheduleType( ScType )
+	MyScheduleType( ScType ),
+	MyCreateTime( timeGetTime() )
 {
 	MyTaskStatus = TaskStatus::STATUS_NOTSTARTED;
 	MyCompleteObject = 0;

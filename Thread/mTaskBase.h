@@ -137,6 +137,9 @@ private:
 	//親オブジェクト
 	mTaskQueue* MyParent;
 
+	//生成時刻(タイムアウト判定用)
+	const DWORD MyCreateTime;
+
 protected:
 
 	mTaskBase();
