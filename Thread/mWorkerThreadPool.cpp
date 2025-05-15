@@ -361,6 +361,10 @@ VOID CALLBACK mWorkerThreadPool::CompleteRoutine( DWORD ec , DWORD len , LPOVERL
 						{
 							itr = ptr->MyTaskArray.erase( itr );
 						}
+						else
+						{
+							itr++;
+						}
 					}
 					else
 					{
