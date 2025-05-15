@@ -382,6 +382,10 @@
     <PreBuildEvent>
       <Command>$(ProjectDir)svncheck.bat LIBRARY "$(SolutionDir)"&gt; $(ProjectDir)mRevision.h</Command>
     </PreBuildEvent>
+    <Lib>
+      <AdditionalOptions>
+      </AdditionalOptions>
+    </Lib>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>

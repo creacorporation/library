@@ -207,12 +207,15 @@ static void AsyncEvent( const mTaskBase::NotifyOption::NotifierInfo& info , clas
 DWORD mTaskQueue::GetActiveTaskIdCount( const AString& id )const
 {
 	mCriticalSectionTicket critical( MyCriticalSection );
-	TaskInformationMap::const_iterator itr = MyTaskInformationMap.find( id );
-	if( itr == MyTaskInformationMap.end() )
+	DWORD result = 0;
+	for( TaskInformationMap::const_iterator itr = MyTaskInformationMap.begin() ; itr != MyTaskInformationMap.end() ; itr++ )
 	{
-		return 0;
+		if( itr->first.find( id ) == 0 )
+		{
+			result += itr->second;
+		}
 	}
-	return itr->second;
+	return result;
 }
 
 DWORD mTaskQueue::GetTaskIdCount( const AString& id )const
@@ -221,7 +224,7 @@ DWORD mTaskQueue::GetTaskIdCount( const AString& id )const
 	mCriticalSectionTicket critical( MyCriticalSection );
 	for( TicketQueue::const_iterator itr = MyTicketQueue.begin() ; itr != MyTicketQueue.end() ; itr++ )
 	{
-		if( (*itr)->MyTaskId == id )
+		if( (*itr)->MyTaskId.find( id ) == 0 )
 		{
 			result++;
 		}

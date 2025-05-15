@@ -68,12 +68,14 @@ public:
 
 	//指定したタスクIDをもつタスクがいくつあるかを返す
 	//・存在しているもの全てを数える
+	//・前方一致です。"TEST"で検索すると、"TEST"も"TEST3"もカウントされます。
 	// id : 数えたいタスクID
 	// ret : 指定したタスクIDの数
 	threadsafe DWORD GetTaskIdCount( const AString& id )const;
 
 	//指定したタスクIDをもつタスクがいくつ実行中であるかを返す
 	//・実行中のもののみを数える。キューにあるが未実行のものは数えない。
+	//・前方一致です。"TEST"で検索すると、"TEST"も"TEST3"もカウントされます。
 	// id : 数えたいタスクID
 	// ret : 指定したタスクIDの数
 	threadsafe DWORD GetActiveTaskIdCount( const AString& id )const;
