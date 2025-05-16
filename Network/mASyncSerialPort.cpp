@@ -277,22 +277,31 @@ VOID CALLBACK mASyncSerialPort::CompleteRoutine( DWORD ec , DWORD len , LPOVERLA
 //読み取り時の完了ルーチン
 void mASyncSerialPort::ReadCompleteRoutine( DWORD ec , DWORD len , LPOVERLAPPED ov )
 {
-	bool complete_callback = true;
 	BufferQueueEntry* entry = CONTAINING_RECORD( ov ,  BufferQueueEntry , Ov );
 
+	//キューの先頭ではない場合はコールバックを呼ばない
+	//※NOTIFY_CALLBACK_PARALLELのときは、先頭か否かに関係なくコールバックを呼ぶ
+	bool complete_callback;
+	if( MyNotifyOption.OnRead.Mode != NotifyOption::NotifyMode::NOTIFY_CALLBACK_PARALLEL )
 	{
 		//このブロックはクリティカルセクション
 		mCriticalSectionTicket critical( MyCritical );
-
-		//キューの先頭ではない場合はコールバックを呼ばない
-		//※NOTIFY_CALLBACK_PARALLELのときは、先頭か否かに関係なくコールバックを呼ぶ
-		if( MyNotifyOption.OnRead.Mode != NotifyOption::NotifyMode::NOTIFY_CALLBACK_PARALLEL )
+		if( MyReadQueue.empty() )
 		{
-			if( MyReadQueue.empty() || MyReadQueue.front() != entry )
-			{
-				complete_callback = false;
-			}
+			complete_callback = false;
 		}
+		else if( 2 < MyNotifyEventToken.use_count() )
+		{
+			complete_callback = ( MyReadQueue.front() == entry );
+		}
+		else
+		{
+			complete_callback = true;
+		}
+	}
+	else
+	{
+		complete_callback = true;
 	}
 
 	if( ec != ERROR_SUCCESS )

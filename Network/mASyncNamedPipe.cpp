@@ -348,7 +348,7 @@ void mASyncNamedPipe::ConnectCompleteRoutine( DWORD ec , DWORD len , LPOVERLAPPE
 //読み取り時の完了ルーチン
 void mASyncNamedPipe::ReadCompleteRoutine( DWORD ec , DWORD len , LPOVERLAPPED ov )
 {
-	bool complete_callback = true;
+	bool complete_callback;
 
 	BufferQueueEntry* entry = CONTAINING_RECORD( ov ,  BufferQueueEntry , Ov );
 	{
@@ -364,12 +364,24 @@ void mASyncNamedPipe::ReadCompleteRoutine( DWORD ec , DWORD len , LPOVERLAPPED o
 
 		//キューの先頭ではない場合はコールバックを呼ばない
 		//※NOTIFY_CALLBACK_PARALLELのときは、先頭か否かに関係なくコールバックを呼ぶ
-		if( entry->Parent->MyNotifyOption.OnRead.Mode != NotifyOption::NotifyMode::NOTIFY_CALLBACK_PARALLEL )
+		if( MyNotifyOption.OnRead.Mode != NotifyOption::NotifyMode::NOTIFY_CALLBACK_PARALLEL )
 		{
-			if( entry->Parent->MyReadQueue.empty() || entry->Parent->MyReadQueue.front() != entry )
+			if( MyReadQueue.empty() )
 			{
 				complete_callback = false;
 			}
+			else if( 2 < MyNotifyEventToken.use_count() )
+			{
+				complete_callback = ( MyReadQueue.front() == entry );
+			}
+			else
+			{
+				complete_callback = true;
+			}
+		}
+		else
+		{
+			complete_callback = true;
 		}
 	}
 
