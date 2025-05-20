@@ -120,7 +120,6 @@ public:
 	//ret : 成功時true
 	bool WriteStream( mFileReadStreamBase& fp , size_t* retWritten = nullptr );
 
-
 	//ファイルが開いているかを判定します
 	//開いている場合は真が返ります
 	virtual bool IsOpen( void )const = 0;

@@ -421,6 +421,12 @@
     <ClInclude Include="Type\mProperty.h">
       <Filter>Type</Filter>
     </ClInclude>
+    <ClInclude Include="Network\mSerialPortBase.h">
+      <Filter>Network</Filter>
+    </ClInclude>
+    <ClInclude Include="Network\mSerialPort.h">
+      <Filter>Network</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="General\mOptionParser.cpp">
@@ -788,6 +794,12 @@
     </ClCompile>
     <ClCompile Include="General\mMemoryStream.cpp">
       <Filter>General</Filter>
+    </ClCompile>
+    <ClCompile Include="Network\mSerialPortBase.cpp">
+      <Filter>Network</Filter>
+    </ClCompile>
+    <ClCompile Include="Network\mSerialPort.cpp">
+      <Filter>Network</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

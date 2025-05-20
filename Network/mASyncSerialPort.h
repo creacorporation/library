@@ -12,12 +12,10 @@
 #define MASYNCSERIALPORT_H_INCLUDED
 
 #include "mStandard.h"
-#include "../General/mFileReadStreamBase.h"
-#include "../General/mFileWriteStreamBase.h"
-#include "../General/mCriticalSectionContainer.h"
-#include "../General/mNotifyOption.h"
-#include "../Thread/mWorkerThreadPool.h"
-
+#include <General/mCriticalSectionContainer.h>
+#include <General/mNotifyOption.h>
+#include <Thread/mWorkerThreadPool.h>
+#include "mSerialPortBase.h"
 #include <memory>
 
 /*
@@ -102,85 +100,8 @@ int main( int argc , char** argv )
 
 */
 
-namespace Definitions_ASyncSerialPort
-{
-	enum ParityType
-	{
-		PARITYTYPE_NOPARITY ,	//パリティなし
-		PARITYTYPE_EVEN ,		//偶数パリティ
-		PARITYTYPE_ODD ,		//奇数パリティ
-	};
-
-	enum StopBitType
-	{
-		STOPBIT_ONE ,			//1ビット
-		STOPBIT_ONEFIVE ,		//1.5ビット
-		STOPBIT_TWO ,			//2ビット
-	};
-
-	//エラーが発生したタイミング
-	enum ErrorAction
-	{
-		ERROR_ON_CONNECT,	//接続処理中のエラー
-		ERROR_ON_READ,		//読み込み中のエラー
-		ERROR_ON_WRITE,		//書き込み中のエラー
-	};
-
-	//フローコントロール(DTR-DSR)
-	enum class DTRFlowControlMode
-	{
-		ALWAYS_OFF,					//自分のDTRから常にオフを送信する
-		ALWAYS_ON,					//自分のDTRから常にオンを送信する
-		HANDSHAKE					//DTR-DSRのハンドシェイクを行う
-	};
-
-	//フローコントロール(RTS-CTS)
-	enum class RTSFlowControlMode
-	{
-		ALWAYS_OFF,					//自分のRTSから常にオフを送信する
-		ALWAYS_ON,					//自分のRTSから常にオンを送信する
-		HANDSHAKE,					//RTS-CTSのハンドシェイクを行う(送信バッファにデータが50%たまるとオン/25%以下でオフ)
-		TOGGLE,						//RTS-CTSのハンドシェイクを行う(送信バッファに1バイトでもデータがあればオン/空でオフ)
-	};
-
-};
-
-class mSerialReadStream : public mFileReadStreamBase
-{
-public:
-	//読み取り側の経路が開いているかを判定します
-	//開いている場合は真が返ります
-	virtual bool IsOpen( void )const
-	{
-		return !IsEOF();
-	}
-};
-
-class mSerialWriteStream : public mFileWriteStreamBase
-{
-public:
-	mSerialWriteStream()
-	{
-		MyIsClosed = false;
-	}
-
-	//書き込み側の経路が開いているかを判定します
-	//開いている場合は真が返ります
-	virtual bool IsOpen( void )const
-	{
-		return !MyIsClosed;
-	}
-
-private:
-	mSerialWriteStream( const mSerialWriteStream& src ) = delete;
-	const mSerialWriteStream& operator=( const mSerialWriteStream& src ) = delete;
-
-protected:
-	bool MyIsClosed;
-};
-
 //COMポートハンドルのラッパー
-class mASyncSerialPort : public mSerialReadStream , public mSerialWriteStream
+class mASyncSerialPort : public mSerialPortBase , public mSerialReadStream , public mSerialWriteStream
 {
 public:
 	mASyncSerialPort();
@@ -191,73 +112,16 @@ public:
 	{
 	};
 
-	//パリティの設定
-	using ParityType = Definitions_ASyncSerialPort::ParityType;
-
-	//ストップビット長
-	using StopBitType = Definitions_ASyncSerialPort::StopBitType;
-
-	//ファイル設定
-	using FileOption = mFile::Option;
-
-	//ファイルを開くときのモード
-	using CreateMode = mFile::CreateMode;
-
-	//フローコントロール
-	using DTRFlowControlMode = Definitions_ASyncSerialPort::DTRFlowControlMode;
-
-	//フローコントロール
-	using RTSFlowControlMode = Definitions_ASyncSerialPort::RTSFlowControlMode;
-
-	//オプション構造体
-	struct Option
+	struct Option : public mSerialPortBase::Option
 	{
-		//-----------
-		//送受信設定
-		//-----------
-		FileOption Fileinfo;
-		DWORD BaudRate;			//ボーレート
-		ParityType Parity;		//パリティ
-		StopBitType StopBit;	//ストップビット
-		DWORD ByteSize;			//1バイトが何ビットか。普通は8。
-
-		//-----------
-		//バッファリング設定
-		//-----------
-		DWORD ReadPacketSize;			//読み込みパケットのサイズ
 		DWORD ReadPacketCount;			//読み込みパケットを確保する数
-		DWORD WritePacketSize;			//書き込みパケットのサイズ
 		DWORD WritePacketNotifyCount;	//書き込み待ちパケットがここで指定した数を下回った場合に通知する
 		DWORD WritePacketLimit;			//書き込み待ちパケットの数の上限（超えると書き込みエラー）
-		DWORD ReadBufferTimeout;		//任意のバイトの受信間隔(ミリ秒)がこの値を上回ったら受信通知を生成する
-
-		//-----------
-		//フローコントロール
-		//-----------
-		DTRFlowControlMode DTRFlowControl;	//DTR信号を制御するか
-		bool MonitorDSR;					//相手から送られてくるDSRを利用するか(true=利用する/false=無視する)
-		RTSFlowControlMode RTSFlowControl;	//RTS信号を制御するか
-		bool MonitorCTS;					//相手から送られてくるCTSを利用するか(true=利用する/false=無視する)
-
-		//-----------
-		//初期値
-		//-----------
 		Option()
 		{
-			BaudRate = 9600;
-			Parity = mASyncSerialPort::ParityType::PARITYTYPE_NOPARITY;
-			StopBit = mASyncSerialPort::StopBitType::STOPBIT_ONE;
-			ByteSize = 8;
-			ReadPacketSize = 128;
 			ReadPacketCount = 2;
-			WritePacketSize = 128;
 			WritePacketNotifyCount = 0;
 			WritePacketLimit = 256;
-			ReadBufferTimeout = 100;
-			DTRFlowControl = DTRFlowControlMode::ALWAYS_ON;
-			MonitorDSR = false;
-			RTSFlowControl = RTSFlowControlMode::ALWAYS_ON;
-			MonitorCTS = false;
 		}
 	};
 
@@ -273,7 +137,7 @@ public:
 
 		struct OnErrorOpt
 		{
-			using ErrorAction = Definitions_ASyncSerialPort::ErrorAction;
+			using ErrorAction = Definitions_SerialPortBase::ErrorAction;
 			ErrorAction Action;
 			DWORD ErrorCode;
 		}OnError;
@@ -301,21 +165,21 @@ public:
 	//ret : 読み取った文字
 	//EOFは現在読み取れるデータがないことを示します
 	//（時間が経てば再度読み取れるかもしれない）
-	virtual INT Read( void );
+	virtual INT Read( void )override;
 
 	//EOFをセットしているかを調べます
 	//・SetEOF()をコールするとtrueになります
-	virtual bool IsEOF( void )const;
+	virtual bool IsEOF( void )const override;
 
 	//１文字書き込み
-	virtual bool Write( INT data );
+	virtual bool Write( INT data )override;
 
 	//キャッシュを書き込み
 	//これを呼ばないと実際の送信は発生しません
-	virtual bool FlushCache( void );
+	virtual bool FlushCache( void )override;
 
 	//書き込み側の経路を閉じます
-	virtual bool Close( void );
+	virtual bool Close( void )override;
 
 	//送信未完了のデータを破棄します
 	bool Cancel( void );
@@ -345,7 +209,7 @@ public:
 	void ClearReadBuffer( void );
 
 	//通信対象のポートの名前を得ます
-	WString GetPortName( void )const;
+	virtual WString GetPortName( void )const override;
 
 private:
 
@@ -354,9 +218,6 @@ private:
 
 protected:
 	
-	//COMポートのハンドル
-	HANDLE MyHandle;
-
 	//設定値
 	Option MyOption;
 

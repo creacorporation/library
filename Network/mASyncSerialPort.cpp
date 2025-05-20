@@ -12,11 +12,8 @@
 #include <General/mErrorLogger.h>
 #include <General/mFileUtility.h>
 
-static bool ComPortSetting( HANDLE handle , const mASyncSerialPort::Option& setting );
-
 mASyncSerialPort::mASyncSerialPort()
 {
-	MyHandle = INVALID_HANDLE_VALUE;
 	MyWTP = nullptr;
 }
 
@@ -700,130 +697,6 @@ bool mASyncSerialPort::Abort( void )
 	MyHandle = INVALID_HANDLE_VALUE;
 	return true;
 
-}
-
-static bool ComPortSetting( HANDLE handle , const mASyncSerialPort::Option& setting )
-{
-	DCB dcb;
-
-	//現在の設定を取得
-	if( !GetCommState( handle , &dcb ) )
-	{
-		RaiseError( g_ErrorLogger , 0 , L"COMポートの現在の設定を取得できませんでした" );
-		return false;
-	}
-
-	//設定の更新
-
-	//パリティ
-	switch( setting.Parity )
-	{
-	case mASyncSerialPort::ParityType::PARITYTYPE_NOPARITY:
-		dcb.Parity = NOPARITY;
-		dcb.fParity = false;
-		break;
-	case mASyncSerialPort::ParityType::PARITYTYPE_EVEN:
-		dcb.Parity = EVENPARITY;
-		dcb.fParity = true;
-		break;
-	case mASyncSerialPort::ParityType::PARITYTYPE_ODD:
-		dcb.Parity = ODDPARITY;
-		dcb.fParity = true;
-		break;
-	default:
-		RaiseAssert( g_ErrorLogger , 0 , L"パリティ設定が不正です" , setting.Parity );
-		return false;
-	}
-	//ストップビット
-	switch( setting.StopBit )
-	{
-	case mASyncSerialPort::StopBitType::STOPBIT_ONE:
-		dcb.StopBits = ONESTOPBIT;
-		break;
-	case mASyncSerialPort::StopBitType::STOPBIT_ONEFIVE:
-		dcb.StopBits = ONE5STOPBITS;
-		break;
-	case mASyncSerialPort::StopBitType::STOPBIT_TWO:
-		dcb.StopBits = TWOSTOPBITS;
-		break;
-	default:
-		RaiseAssert( g_ErrorLogger , 0 , L"ストップビット設定が不正です" , setting.StopBit );
-		return false;
-	}
-	//ボーレート
-	dcb.BaudRate = setting.BaudRate;
-
-	//バイトサイズ
-	if( 0xffu < setting.ByteSize )
-	{
-		RaiseAssert( g_ErrorLogger , 0 , L"バイトサイズ設定が不正です" , setting.ByteSize );
-		return false;
-	}
-	dcb.ByteSize = (BYTE)setting.ByteSize;
-
-	//フローコントロール(DTR)
-	switch( setting.DTRFlowControl )
-	{
-	case mASyncSerialPort::DTRFlowControlMode::ALWAYS_OFF:
-		dcb.fDtrControl = DTR_CONTROL_DISABLE;
-		break;
-	case mASyncSerialPort::DTRFlowControlMode::ALWAYS_ON:
-		dcb.fDtrControl = DTR_CONTROL_ENABLE;
-		break;
-	case mASyncSerialPort::DTRFlowControlMode::HANDSHAKE:
-		dcb.fDtrControl = DTR_CONTROL_HANDSHAKE;
-		break;
-	default:
-		RaiseAssert( g_ErrorLogger , 0 , L"DTR設定が不正です" , (int)setting.DTRFlowControl );
-		return false;
-	}
-
-	//フローコントロール(DSR)
-	dcb.fOutxDsrFlow = setting.MonitorDSR;
-
-	//フローコントロール(RTS)
-	switch( setting.RTSFlowControl )
-	{
-	case mASyncSerialPort::RTSFlowControlMode::ALWAYS_OFF:
-		dcb.fRtsControl = DTR_CONTROL_DISABLE;
-		break;
-	case mASyncSerialPort::RTSFlowControlMode::ALWAYS_ON:
-		dcb.fRtsControl = DTR_CONTROL_ENABLE;
-		break;
-	case mASyncSerialPort::RTSFlowControlMode::HANDSHAKE:
-		dcb.fRtsControl = DTR_CONTROL_HANDSHAKE;
-		break;
-	case mASyncSerialPort::RTSFlowControlMode::TOGGLE:
-		dcb.fRtsControl = RTS_CONTROL_TOGGLE;
-		break;
-	default:
-		RaiseAssert( g_ErrorLogger , 0 , L"RTS設定が不正です" , (int)setting.RTSFlowControl );
-		return false;
-	}
-
-	//フローコントロール(CTS)
-	dcb.fOutxCtsFlow = setting.MonitorCTS;
-
-	//設定の適用
-	if( !SetCommState( handle , &dcb ) )
-	{
-		RaiseError( g_ErrorLogger , 0 , L"COMポートの設定を更新できませんでした" );
-	}
-
-
-	COMMTIMEOUTS timeout;
-	GetCommTimeouts( handle , &timeout );
-	timeout.ReadIntervalTimeout = setting.ReadBufferTimeout;
-	timeout.ReadTotalTimeoutConstant = 0;
-	timeout.ReadTotalTimeoutMultiplier = 0;
-	timeout.WriteTotalTimeoutConstant = 0;
-	timeout.WriteTotalTimeoutMultiplier = 0;
-	if( !SetCommTimeouts( handle , &timeout ) )
-	{
-		RaiseError( g_ErrorLogger , 0 , L"COMポートのタイムアウト設定を更新できませんでした" );
-	}
-
-	return true;
 }
 
 uint32_t mASyncSerialPort::GetReadableSize( void )const
