@@ -114,11 +114,13 @@ public:
 
 	struct Option : public mSerialPortBase::Option
 	{
+		DWORD ReadPacketSize;			//読み込みパケットのサイズ
 		DWORD ReadPacketCount;			//読み込みパケットを確保する数
 		DWORD WritePacketNotifyCount;	//書き込み待ちパケットがここで指定した数を下回った場合に通知する
 		DWORD WritePacketLimit;			//書き込み待ちパケットの数の上限（超えると書き込みエラー）
 		Option()
 		{
+			ReadPacketSize = 128;
 			ReadPacketCount = 2;
 			WritePacketNotifyCount = 0;
 			WritePacketLimit = 256;

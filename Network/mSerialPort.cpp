@@ -75,7 +75,6 @@ bool mSerialPort::Open( const Option& opt )
 	}
 
 	//キャッシュを設定する
-	MyReadCacheHead.reset( mNew BYTE[ opt.ReadPacketSize ] );
 	MyWriteCacheHead.reset( mNew BYTE[ opt.WritePacketSize ] );
 
 	//ファイルを開けたので、設定をストック
@@ -93,39 +92,16 @@ errorend:
 
 INT mSerialPort::Read( void )
 {
-	//UnReadされた文字がある場合はソレを返す
-	if( !MyUnReadBuffer.IsEmpty() )
+	BYTE result;
+	DWORD readsize = 0;
+	if( !WriteFile( MyHandle , &result , 1 , &readsize , nullptr ) )
 	{
-		return MyUnReadBuffer.Read();
+		return EOF;
 	}
-
-	INT result;
-	do
+	if( readsize == 0 )
 	{
-		//キャッシュの残量があればキャッシュを読み込む
-		//キャッシュの残量がないならキューから取得する
-		if( MyReadCacheRemain == 0 )
-		{
-			//読み取りキャッシュにセット
-			DWORD written = 0;
-			if( !WriteFile( MyHandle , MyReadCacheHead.get() , MyOption.ReadPacketSize , &written , nullptr ) )
-			{
-				return EOF;
-			}
-			if( written == 0 )
-			{
-				return EOF;
-			}
-			MyReadCacheCurrent = 0;
-			MyReadCacheRemain = written;
-		}
-
-		result = MyReadCacheHead[ MyReadCacheCurrent ];
-		MyReadCacheCurrent++;
-		MyReadCacheRemain--;
-
-	}while( ProcLFIgnore( result ) );
-
+		return EOF;
+	}
 	return result;
 }
 

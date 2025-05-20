@@ -19,7 +19,7 @@
 #include <memory>
 
 //COMポートハンドルのラッパー
-class mSerialPort : public mSerialPortBase , public mSerialReadStream , public mSerialWriteStream
+class mSerialPort : public mSerialPortBase , public mSerialWriteStream
 {
 public:
 	mSerialPort();
@@ -50,7 +50,7 @@ public:
 	//ret : 読み取った文字
 	//EOFは現在読み取れるデータがないことを示します
 	//（時間が経てば再度読み取れるかもしれない）
-	virtual INT Read( void )override;
+	INT Read( void );
 
 	//１文字書き込み
 	virtual bool Write( INT data )override;

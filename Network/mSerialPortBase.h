@@ -132,7 +132,6 @@ public:
 		//-----------
 		//バッファリング設定
 		//-----------
-		DWORD ReadPacketSize;			//読み込みパケットのサイズ
 		DWORD ReadBufferTimeout;		//任意のバイトの受信間隔(ミリ秒)がこの値を上回ったら受信通知を生成する
 		DWORD WritePacketSize;			//書き込みパケットのサイズ
 
@@ -153,7 +152,6 @@ public:
 			Parity = ParityType::PARITYTYPE_NOPARITY;
 			StopBit = StopBitType::STOPBIT_ONE;
 			ByteSize = 8;
-			ReadPacketSize = 128;
 			ReadBufferTimeout = 100;
 			WritePacketSize = 128;
 			DTRFlowControl = DTRFlowControlMode::ALWAYS_ON;
