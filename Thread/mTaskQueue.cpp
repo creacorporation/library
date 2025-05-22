@@ -96,7 +96,6 @@ bool mTaskQueue::AddTask( bool high , mTaskBase::Ticket& task , bool isFinal )
 
 	if( !AddTask() )
 	{
-		RaiseError( g_ErrorLogger , 0 , L"完了ポートへのタスク登録が失敗しました" );
 		task->MyTaskStatus = mTaskBase::TaskStatus::STATUS_ABORTED;
 		AsyncEvent( task->Notifier.OnAbort , *this , task , true );
 		return false;
@@ -106,7 +105,12 @@ bool mTaskQueue::AddTask( bool high , mTaskBase::Ticket& task , bool isFinal )
 
 threadsafe bool mTaskQueue::AddTask( void )
 {
-	return MyWorkerThreadPool.AddTask( TaskRoutine , 0 , (DWORD_PTR)this , (DWORD_PTR)this );
+	if( !MyWorkerThreadPool.AddTask( TaskRoutine , 0 , (DWORD_PTR)this , (DWORD_PTR)this ) )
+	{
+		RaiseError( g_ErrorLogger , 0 , L"完了ポートへのタスク登録が失敗しました" );
+		return false;
+	}
+	return true;
 }
 
 bool mTaskQueue::AddTaskBlocking( bool high , mTaskBase::Ticket& task , uint32_t timeout )
@@ -319,7 +323,7 @@ bool mTaskQueue::TaskRoutine( mWorkerThreadPool& pool , DWORD Param1 , DWORD_PTR
 
 		if( queue->MyTicketQueue.empty() )
 		{
-			return true;
+			return false;
 		}
 
 		for( TicketQueue::iterator itr = queue->MyTicketQueue.begin() ; itr != queue->MyTicketQueue.end() ; itr++ )
@@ -366,6 +370,9 @@ bool mTaskQueue::TaskRoutine( mWorkerThreadPool& pool , DWORD Param1 , DWORD_PTR
 		task->MyTaskStatus = mTaskBase::TaskStatus::STATUS_INPROGRESS;
 		task->MyParent = queue;
 	}
+
+	//自分の他にもう1スレッド同時実行されるようにタスクを追加
+	queue->AddTask();
 
 	//タスクの実行
 	mTaskBase::TaskFunctionResult result = task->TaskFunction( task );

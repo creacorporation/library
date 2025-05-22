@@ -67,7 +67,8 @@ public:
 	// pool : コールバック関数を呼び出したワーカースレッドプール
 	// Param1 : AddTask時に渡したパラメータ
 	// Param2 : AddTask時に渡したパラメータ
-	// ret : タスクを完了した場合真。タスクを行わなかった（後でもう一度呼び出す）場合偽。
+	// ret : 真：タスクは引続き実行中とされ、後ほど再度コールバックが呼び出されます
+	//       偽：タスクが完了したものとされ、削除されます
 	using CallbackFunction = bool(*)( mWorkerThreadPool& pool , DWORD Param1 , DWORD_PTR Param2 );
 
 	//タスクの追加
@@ -75,6 +76,14 @@ public:
 	// Param1 : コールバック関数に渡される値（任意の値でOK）
 	// Param2 : コールバック関数に渡される値（任意の値でOK）
 	// LoadbalanceKey : なるべく異なるキーを持つタスクが同時実行されるようにする
+	//  ・1つのワーカースレッドプールに複数のmTaskQueueが同居するとき、特定のmTaskQueueにスレッドが偏らないようにするためのもの
+	//  ・LoadbalanceKeyが 同じ タスク間は、先入れ先出しでタスクが取り出される
+	//    LoadbalanceKeyが異なるタスク間は、LoadbalanceKeyの値ごとにラウンドロビンでタスクが取り出される
+	//  ・mTaskQueue由来   の   タスクを追加する場合→mTaskQueueのポインタを与えるのを推奨
+	//    mTaskQueue由来ではないタスクを追加する場合→適当な値でよい
+	//      ※ただし、LoadbalanceKeyが同じだと先入れ先出し、異なるとラウンドロビンなので、後から追加したタスクが先に取り出される場合がある
+	//         例 [A]Key=1追加 → [B]Key=1追加 → [C]Key=2追加 → [D]Key=2追加 → [E]Key=3追加
+	//             A→C→E→B→Dの順にタスクが取り出される
 	threadsafe bool AddTask( CallbackFunction callback , DWORD Param1, DWORD_PTR Param2 , DWORD_PTR LoadbalanceKey = 0 );
 
 	//現在保持している未完了タスクの数を取得する
@@ -124,12 +133,14 @@ private:
 	{
 		DWORD_PTR LoadbalanceKey;
 		TaskInfo Task;
-		DWORD ActiveCount;
-		bool IsActive;
 	};
 	using TaskArray = std::list<TaskArrayEntry>;
-
 	TaskArray MyTaskArray;
+
+	//タスク情報の登録
+	void RegisterTaskEntry( DWORD_PTR LoadbalanceKey , TaskInfoEntry&& entry );
+
+	DWORD MyActiveTaskNum = 0;
 
 protected:
 	friend class mWorkerThread;		//アクセス許可するクラス

@@ -260,50 +260,27 @@ HANDLE mWorkerThreadPool::GetHandle( void )const
 //完了ルーチン
 VOID CALLBACK mWorkerThreadPool::CompleteRoutine( DWORD ec , DWORD len , LPOVERLAPPED ov )
 {
-	auto GetNextTask = []( mWorkerThreadPool* ptr , TaskInfoEntry& retEntry , DWORD_PTR& retLoadbalanceKey )->DWORD
+	auto GetNextTask = []( mWorkerThreadPool* ptr , TaskInfoEntry& retEntry , DWORD_PTR& retLoadbalanceKey )->bool
 	{
-		TaskArray::iterator next = ptr->MyTaskArray.end();
 		TaskArray::iterator itr = ptr->MyTaskArray.begin();
-		DWORD active_threads = 0;
-		for( ; itr != ptr->MyTaskArray.end() ; itr++ )
+		if( itr == ptr->MyTaskArray.end() )
 		{
-			active_threads += itr->ActiveCount;
-			if( !itr->Task.empty() && itr->IsActive )
-			{
-				next = itr;
-				break;
-			}
+			return false;
 		}
-		if( next == ptr->MyTaskArray.end() )
+		retEntry = std::move( itr->Task.front() );
+		itr->Task.pop_front();
+
+		if( itr->Task.empty() )
 		{
-			return 0;
+			//タスクが空になったので消去
+			ptr->MyTaskArray.erase( itr );
 		}
 		else
 		{
-			itr = next;
-			itr++;
+			//ラウンドロビンになるように後ろにくっつける
+			ptr->MyTaskArray.splice( ptr->MyTaskArray.end() , ptr->MyTaskArray , itr );
 		}
-		for(  ; itr != ptr->MyTaskArray.end() ; itr++ )
-		{
-			active_threads += itr->ActiveCount;
-			if( !itr->Task.empty() && itr->IsActive )
-			{
-				if( itr->ActiveCount < next->ActiveCount )
-				{
-					next = itr;
-				}
-			}
-		}
-
-		retLoadbalanceKey = next->LoadbalanceKey;
-		retEntry = next->Task.front();
-		next->Task.pop_front();
-		next->ActiveCount++;
-
-		//ラウンドロビンになるように後ろにくっつける
-		ptr->MyTaskArray.splice( ptr->MyTaskArray.end() , ptr->MyTaskArray , next );
-
-		return active_threads + 1;
+		return true;
 	};
 
 	//次のタスクを決定
@@ -312,95 +289,69 @@ VOID CALLBACK mWorkerThreadPool::CompleteRoutine( DWORD ec , DWORD len , LPOVERL
 		return;
 	}
 	mWorkerThreadPool* ptr = reinterpret_cast<mWorkerThreadPool*>( ov );
-	DWORD_PTR loadbalance_key;
-	TaskInfoEntry entry;
+
+	while( 1 )
 	{
-		mCriticalSectionTicket critical( ptr->MyCriticalSection );
-		DWORD active_threads = GetNextTask( ptr , entry , loadbalance_key );
-		if( active_threads == 0 )
+		DWORD_PTR loadbalance_key;
+		TaskInfoEntry entry;
 		{
-			//何もすることなし
-			return;
+			mCriticalSectionTicket critical( ptr->MyCriticalSection );
+			if( !GetNextTask( ptr , entry , loadbalance_key ) )
+			{
+				//何もすることなし
+				break;
+			}
+			//同時実行するスレッドを増やす
+			ptr->MyActiveTaskNum++;
+			if( ptr->MyActiveTaskNum < ptr->MyThreadPool.size() )
+			{
+				PostQueuedCompletionStatus( ptr->MyIoPort , 0 , (ULONG_PTR)CompleteRoutine , (LPOVERLAPPED)ptr );
+			}
 		}
-		if( active_threads < ptr->MyThreadPool.size() )
-		{
-			PostQueuedCompletionStatus( ptr->MyIoPort , 0 , (ULONG_PTR)CompleteRoutine , (LPOVERLAPPED)ptr );
-		}
-	}
 
-
-
-	bool is_active;
-	do
-	{
 		//タスク実行
+		bool is_active;
 		if( entry.TaskFunction )
 		{
 			is_active = entry.TaskFunction( *ptr , entry.Param1 , entry.Param2 );
 		}
 		else
 		{
-			is_active = true;
+			RaiseAssert( g_ErrorLogger , 0 , L"実行するタスクがヌルです" );
+			is_active = false;
 		}
 
 		//タスクのデータを破棄
 		{
 			mCriticalSectionTicket critical( ptr->MyCriticalSection );
+			ptr->MyActiveTaskNum--;
+
 			//アレイごとのタスク更新
 			if( is_active )
 			{
-				DWORD active_threads = 0;
-				for( TaskArray::iterator itr = ptr->MyTaskArray.begin() ; itr != ptr->MyTaskArray.end() ; )
-				{
-					if( itr->LoadbalanceKey == loadbalance_key )
-					{
-						itr->ActiveCount--;
-						itr->IsActive = true;
-						active_threads += itr->ActiveCount;
-						if( ( itr->ActiveCount == 0 ) && ( itr->Task.empty() ) )
-						{
-							itr = ptr->MyTaskArray.erase( itr );
-						}
-						else
-						{
-							itr++;
-						}
-					}
-					else
-					{
-						active_threads += itr->ActiveCount;
-						itr++;
-					}
-				}
-				if( active_threads < ( ptr->MyThreadPool.size() - 1 ) )
-				{
-					PostQueuedCompletionStatus( ptr->MyIoPort , 0 , (ULONG_PTR)CompleteRoutine , (LPOVERLAPPED)ptr );
-				}
-			}
-			else
-			{
-				//次のタスクを決定
-				for( TaskArray::iterator itr = ptr->MyTaskArray.begin() ; itr != ptr->MyTaskArray.end() ; itr++ )
-				{
-					if( itr->LoadbalanceKey == loadbalance_key )
-					{
-						itr->ActiveCount--;
-						itr->IsActive = false;
-						itr->Task.push_back( std::move( entry ) );
-						break;
-					}
-				}
-				if( !GetNextTask( ptr , entry , loadbalance_key ) )
-				{
-					//何もすることなし
-					return;
-				}
+				//引続き実行中
+				ptr->RegisterTaskEntry( loadbalance_key , std::move( entry ) );
 			}
 		}
-	}while( !is_active );
-
-
+	}
 	return;
+}
+
+void mWorkerThreadPool::RegisterTaskEntry( DWORD_PTR LoadbalanceKey , TaskInfoEntry&& entry )
+{
+	for( TaskArray::iterator itr = MyTaskArray.begin() ; itr != MyTaskArray.end() ; itr++ )
+	{
+		if( itr->LoadbalanceKey == LoadbalanceKey )
+		{
+			itr->Task.push_back( std::move( entry ) );
+			return;
+		}
+	}
+
+	TaskArrayEntry arr_entry;
+	arr_entry.LoadbalanceKey = LoadbalanceKey;
+	arr_entry.Task.push_back( std::move( entry ) );
+	MyTaskArray.push_back( std::move( arr_entry ) );
 }
 
 //タスクの追加
@@ -418,28 +369,7 @@ bool mWorkerThreadPool::AddTask( CallbackFunction callback , DWORD Param1, DWORD
 		entry.Param1 = Param1;
 		entry.Param2 = Param2;
 		entry.TaskFunction = callback;
-
-		TaskArray::iterator itr;
-		bool inserted = false;
-		for( itr = MyTaskArray.begin() ; itr != MyTaskArray.end() ; itr++ )
-		{
-			if( itr->LoadbalanceKey == LoadbalanceKey )
-			{
-				itr->Task.push_back( std::move( entry ) );
-				itr->IsActive = true;
-				inserted = true;
-				break;
-			}
-		}
-		if( !inserted )
-		{
-			TaskArrayEntry arr_entry;
-			arr_entry.ActiveCount = 0;
-			arr_entry.LoadbalanceKey = LoadbalanceKey;
-			arr_entry.Task.push_back( std::move( entry ) );
-			arr_entry.IsActive = true;
-			MyTaskArray.push_back( std::move( arr_entry ) );
-		}
+		RegisterTaskEntry( LoadbalanceKey , std::move( entry ) );
 	}
 	if( !PostQueuedCompletionStatus( MyIoPort , 0 , (ULONG_PTR)CompleteRoutine , (LPOVERLAPPED)this ) )
 	{
@@ -456,7 +386,7 @@ DWORD mWorkerThreadPool::GetTaskCount( void )const
 	mCriticalSectionTicket critical( MyCriticalSection );
 	for( TaskArray::const_iterator itr = MyTaskArray.begin() ; itr != MyTaskArray.end() ; itr++ )
 	{
-		count += itr->ActiveCount;
+		count += MyActiveTaskNum;
 		count += (DWORD)( itr->Task.size() );
 	}
 	return count;
