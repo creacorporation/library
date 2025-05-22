@@ -145,13 +145,16 @@ protected:
 	mTaskBase();
 
 	// TaskId : タスクの名称
-	mTaskBase( const AString& TaskId , ScheduleType ScheduleType = ScheduleType::Normal );
+	mTaskBase( const AString& TaskId , ScheduleType ScheduleType = ScheduleType::Normal , bool Dedicate = false );
 
 	//タスクID
 	const AString MyTaskId;
 
 	//タスク実行順制御
 	const ScheduleType MyScheduleType;
+
+	//専用スレッドにするかどうか
+	const bool MyDedicated;
 
 	//タスクの実行結果
 	using TaskFunctionResult = Definitions_TaskBase::TaskFunctionResult;

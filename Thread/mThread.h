@@ -14,6 +14,7 @@
 #include "mStandard.h"
 #include <process.h>
 #include <memory>
+#include "../General/mNotifyOption.h"
 
 //スレッドのベースクラス
 
@@ -33,6 +34,14 @@ private:
 public:
 	mThread();
 	virtual ~mThread();
+
+	//通知設定
+	using NotifyFunction = void(*)( mThread& thread , DWORD_PTR parameter , unsigned int returncode );
+	class NotifyOption : public mNotifyOption< NotifyFunction , Definitions_NotifyOption::TaskNotifyMode >
+	{
+	public:
+		NotifierInfo OnFinish;
+	};
 
 	//スレッドを開始する
 	//arg : スレッドに渡す引数
@@ -72,12 +81,18 @@ public:
 	//ret : 成功時真
 	threadsafe bool FinishRequest( void );
 
+	//スレッドが終了するように指示を受けているかどうか
+	//ret : 指示を受けていれば真
+	threadsafe bool IsFinishRequested( void )const;
+
 	//スレッドを(強引に)終了する
 	//ret : 成功時真
 	bool Terminate( void );
 
 	//スレッドが終了するまで待つ
 	// max_wait 最大待ち時間、ミリ秒単位
+	//          0にすると現在終了済みかどうかが分かる
+	// ret : 終了している場合真
 	threadsafe bool WaitForFinish( DWORD max_wait = INFINITE );
 
 	//スレッドが実行中か否かを調べる
@@ -96,6 +111,9 @@ private:
 
 	//変数初期化
 	bool Clear( void );
+
+	//通知設定値
+	NotifyOption MyNotifyOption;
 
 protected:
 

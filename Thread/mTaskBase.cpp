@@ -15,7 +15,8 @@
 mTaskBase::mTaskBase() : 
 	MyTaskId( "" ) ,
 	MyScheduleType( ScheduleType::Normal ),
-	MyCreateTime( timeGetTime() )
+	MyCreateTime( timeGetTime() ),
+	MyDedicated( false )
 {
 	MyTaskStatus = TaskStatus::STATUS_NOTSTARTED;
 	MyCompleteObject = 0;
@@ -23,10 +24,11 @@ mTaskBase::mTaskBase() :
 	return;
 }
 
-mTaskBase::mTaskBase( const AString& TaskId , ScheduleType ScType ) : 
+mTaskBase::mTaskBase( const AString& TaskId , ScheduleType ScType , bool Dedicate ) : 
 	MyTaskId( TaskId ) ,
 	MyScheduleType( ScType ),
-	MyCreateTime( timeGetTime() )
+	MyCreateTime( timeGetTime() ),
+	MyDedicated( Dedicate )
 {
 	MyTaskStatus = TaskStatus::STATUS_NOTSTARTED;
 	MyCompleteObject = 0;

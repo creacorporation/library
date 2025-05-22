@@ -26,6 +26,8 @@ unsigned int mWorkerThread::TaskFunction( void )
 {
 	HANDLE handle = MyParent.GetHandle();
 
+	TlsSetValue( MyParent.MyTlsIndex , 0 );
+
 	while( 1 )
 	{
 		DWORD bytes = 0;	//読み取ったバイト数
@@ -52,6 +54,10 @@ unsigned int mWorkerThread::TaskFunction( void )
 			RaiseAssert( g_ErrorLogger , 0 , L"IO完了キーが指定されていません" , (ULONG_PTR)handle );
 		}
 
+		if( reinterpret_cast<DWORD_PTR>( TlsGetValue( MyParent.MyTlsIndex ) ) & 0x0000'0001u  )
+		{
+			return 3;
+		}
 
 		DWORD signaled = WaitForSingleObject( MyTerminateSignal , 0 );
 		switch( signaled )

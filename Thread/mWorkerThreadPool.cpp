@@ -13,6 +13,8 @@
 #include "General/mErrorLogger.h"
 #include <vector>
 
+DWORD mWorkerThreadPool::MyTlsIndex = TLS_OUT_OF_INDEXES;
+
 mWorkerThreadPool::mWorkerThreadPool()
 {
 	//IO完了ポートを作成する
@@ -151,6 +153,20 @@ bool mWorkerThreadPool::Begin( int threads , int min_threads , int max_threads )
 		return false;
 	}
 
+	//TLS確保
+	{
+		mCriticalSectionTicket crit( g_CriticalSection );
+		if( MyTlsIndex == TLS_OUT_OF_INDEXES )
+		{
+			MyTlsIndex = TlsAlloc();
+		}
+		if( MyTlsIndex == TLS_OUT_OF_INDEXES )
+		{
+			RaiseError( g_ErrorLogger , 0 , L"TLSの確保ができません" );
+			return false;
+		}
+	}
+
 	//作成するスレッドの数を求める
 	int req_threads = GetCreateThreadCount( threads );
 
@@ -178,19 +194,21 @@ bool mWorkerThreadPool::Begin( int threads , int min_threads , int max_threads )
 	//スレッド作成
 	for( int i = 0 ; i < req_threads ; i++ )
 	{
-		MyThreadPool.emplace_back( *this );
-		if( !MyThreadPool[ i ].Begin( 0 ) )
+		if( !MyThreadPool.emplace_back( *this ).Begin( 0 ) )
 		{
 			RaiseError( g_ErrorLogger , 0 , L"ワーカースレッドの開始が失敗しました" , i );
 		}
 	}
 	
 	//スレッド起動
-	for( int i = 0 ; i < req_threads ; i++ )
 	{
-		if( !MyThreadPool[ i ].Resume() )
+		mCriticalSectionTicket crit( MyCriticalSection );
+		for( ThreadPool::iterator itr = MyThreadPool.begin() ; itr != MyThreadPool.end() ; itr++ )
 		{
-			RaiseError( g_ErrorLogger , 0 , L"ワーカースレッドのレジュームが失敗しました" , i );
+			if( !itr->Resume() )
+			{
+				RaiseError( g_ErrorLogger , 0 , L"ワーカースレッドのレジュームが失敗しました" );
+			}
 		}
 	}
 	return true;
@@ -288,45 +306,34 @@ VOID CALLBACK mWorkerThreadPool::CompleteRoutine( DWORD ec , DWORD len , LPOVERL
 	{
 		return;
 	}
+
 	mWorkerThreadPool* ptr = reinterpret_cast<mWorkerThreadPool*>( ov );
+	DWORD_PTR loadbalance_key;
+	TaskInfoEntry entry;
 
-	while( 1 )
 	{
-		DWORD_PTR loadbalance_key;
-		TaskInfoEntry entry;
+		mCriticalSectionTicket critical( ptr->MyCriticalSection );
+		if( !GetNextTask( ptr , entry , loadbalance_key ) )
 		{
-			mCriticalSectionTicket critical( ptr->MyCriticalSection );
-			if( !GetNextTask( ptr , entry , loadbalance_key ) )
-			{
-				//何もすることなし
-				break;
-			}
-			//同時実行するスレッドを増やす
-			ptr->MyActiveTaskNum++;
-			if( ptr->MyActiveTaskNum < ptr->MyThreadPool.size() )
-			{
-				PostQueuedCompletionStatus( ptr->MyIoPort , 0 , (ULONG_PTR)CompleteRoutine , (LPOVERLAPPED)ptr );
-			}
+			//何もすることなし
+			return;
 		}
+		//同時実行するスレッドを増やす
+		ptr->MyActiveTaskNum++;
+		if( ptr->MyActiveTaskNum < ptr->MyThreadPool.size() )
+		{
+			PostQueuedCompletionStatus( ptr->MyIoPort , 0 , (ULONG_PTR)CompleteRoutine , (LPOVERLAPPED)ptr );
+		}
+	}
 
-		//タスク実行
-		bool is_active;
-		if( entry.TaskFunction )
-		{
-			is_active = entry.TaskFunction( *ptr , entry.Param1 , entry.Param2 );
-		}
-		else
-		{
-			RaiseAssert( g_ErrorLogger , 0 , L"実行するタスクがヌルです" );
-			is_active = false;
-		}
-
+	//タスク実行
+	if( entry.TaskFunction )
+	{
 		//タスクのデータを破棄
+		bool is_active = entry.TaskFunction( *ptr , entry.Param1 , entry.Param2 );
 		{
 			mCriticalSectionTicket critical( ptr->MyCriticalSection );
 			ptr->MyActiveTaskNum--;
-
-			//アレイごとのタスク更新
 			if( is_active )
 			{
 				//引続き実行中
@@ -334,6 +341,13 @@ VOID CALLBACK mWorkerThreadPool::CompleteRoutine( DWORD ec , DWORD len , LPOVERL
 			}
 		}
 	}
+	else
+	{
+		RaiseAssert( g_ErrorLogger , 0 , L"実行するタスクがヌルです" );
+	}
+
+	//1つタスクを処理したらいったん終了する（ファイルアクセス等々がたまっているかもしれないので）
+	PostQueuedCompletionStatus( ptr->MyIoPort , 0 , (ULONG_PTR)CompleteRoutine , (LPOVERLAPPED)ptr );
 	return;
 }
 
@@ -382,11 +396,11 @@ bool mWorkerThreadPool::AddTask( CallbackFunction callback , DWORD Param1, DWORD
 //現在保持している未完了タスクの数を取得する
 DWORD mWorkerThreadPool::GetTaskCount( void )const
 {
-	DWORD count = 0;
 	mCriticalSectionTicket critical( MyCriticalSection );
+
+	DWORD count = MyActiveTaskNum;
 	for( TaskArray::const_iterator itr = MyTaskArray.begin() ; itr != MyTaskArray.end() ; itr++ )
 	{
-		count += MyActiveTaskNum;
 		count += (DWORD)( itr->Task.size() );
 	}
 	return count;
@@ -400,7 +414,9 @@ DWORD mWorkerThreadPool::GetThreadCount( void )const
 
 bool mWorkerThreadPool::IsPoolMember( void )const
 {
+	mCriticalSectionTicket crit( MyCriticalSection );
 	DWORD currentid = GetCurrentThreadId();
+
 	for( ThreadPool::const_iterator itr = MyThreadPool.begin() ; itr != MyThreadPool.end() ; itr++ )
 	{
 		if( currentid == itr->GetThreadId() )
@@ -411,4 +427,38 @@ bool mWorkerThreadPool::IsPoolMember( void )const
 	return false;
 }
 
+bool mWorkerThreadPool::DedicateThread( void )
+{
+	mWorkerThread* thread = nullptr;
+	if( !IsPoolMember() )
+	{
+		return false;
+	}
+	else
+	{
+		mCriticalSectionTicket crit( MyCriticalSection );
+		for( ThreadPool::iterator itr = MyThreadPool.begin() ; itr != MyThreadPool.end() ; itr++ )
+		{
+			if( itr->IsValid() )
+			{
+				thread = &(*itr);
+				break;
+			}
+		}
+		if( !thread )
+		{
+			thread = &MyThreadPool.emplace_back( *this );
+		}
+		if( !thread->Begin( 0 ) )
+		{
+			RaiseError( g_ErrorLogger , 0 , L"ワーカースレッドの開始が失敗しました" );
+		}
+	}
+
+	if( !thread->Resume() )
+	{
+		RaiseError( g_ErrorLogger , 0 , L"ワーカースレッドのレジュームが失敗しました" );
+	}
+	return TlsSetValue( MyTlsIndex , (LPVOID)1 );
+}
 

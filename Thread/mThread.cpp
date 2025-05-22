@@ -12,12 +12,40 @@
 #include "mThread.h"
 #include "General/mErrorLogger.h"
 
+static void AsyncEvent( mThread& thread , const mThread::NotifyOption::NotifierInfo& info , unsigned int returncode )
+{
+	if( info.Mode == mThread::NotifyOption::NotifyMode::NOTIFY_NONE )
+	{
+		//do nothing
+	}
+	else if( info.Mode == mThread::NotifyOption::NotifyMode::NOTIFY_WINDOWMESSAGE )
+	{
+		::PostMessageW( info.Notifier.Message.Hwnd , info.Notifier.Message.Message , (WPARAM)&thread , info.Parameter );
+	}
+	else if( info.Mode == mThread::NotifyOption::NotifyMode::NOTIFY_CALLBACK_PARALLEL )
+	{
+		info.Notifier.CallbackFunction( thread , info.Parameter , returncode );
+	}
+	else if( info.Mode == mThread::NotifyOption::NotifyMode::NOTIFY_SIGNAL )
+	{
+		if( info.Notifier.Handle != INVALID_HANDLE_VALUE )
+		{
+			SetEvent( info.Notifier.Handle );
+		}
+	}
+	else
+	{
+		RaiseAssert( g_ErrorLogger , 0 , L"非同期操作の完了通知方法が不正です" , (int)info.Mode );
+	}
+}
+
+
 unsigned int __stdcall ThreadBaseFunc( void* arg )
 {
 	//スレッドの開始エントリポイント
 	mThread* thread_ptr = (mThread*)arg;
-	unsigned result = thread_ptr->TaskFunction();
-
+	unsigned int result = thread_ptr->TaskFunction();
+	AsyncEvent( *thread_ptr , thread_ptr->MyNotifyOption.OnFinish , result );
 	_endthreadex( result );
 	return result;
 }
@@ -117,16 +145,16 @@ bool mThread::Clear()
 
 bool mThread::End( void )
 {
-	//終了シグナルをセットする
-	if( !FinishRequest() )
-	{
-		return false;
-	}
-
 	//自分自身を終了しようとしていないかチェックする
 	if( GetCurrentThreadId() == MyThreadId )
 	{
 		RaiseError( g_ErrorLogger , 0 , L"スレッドが自分自身の終了を待機しようとしました" , MyThreadId );
+		return false;
+	}
+
+	//終了シグナルをセットする
+	if( !FinishRequest() )
+	{
 		return false;
 	}
 
@@ -202,6 +230,18 @@ bool mThread::FinishRequest( void )
 		return false;
 	}
 	return true;
+}
+
+threadsafe bool mThread::IsFinishRequested( void )const
+{
+	DWORD wait_result = WaitForSingleObject( (HANDLE)MyTerminateSignal , 0 );
+
+	if( wait_result == WAIT_OBJECT_0 )
+	{
+		//シグナル状態になった場合、終了要求を受けている
+		return true;
+	}
+	return false;
 }
 
 

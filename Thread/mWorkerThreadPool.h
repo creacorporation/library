@@ -96,6 +96,13 @@ public:
 	//この関数を呼び出したスレッドがスレッドプールのメンバーか判定する
 	bool IsPoolMember( void )const;
 
+	//このメソッドをワーカースレッドプールに所属するスレッドから呼び出すと、どのスレッドは現在実行中のタスク専用になる
+	//・ワーカースレッドプールは、専用化されるスレッドを補うために、新たに１つスレッドを起動する
+	//・専用化されたスレッドがCallbackFunctionから制御を返すと、そのスレッドは終了される
+	//　このとき、CallbackFunctionで真を返してもスレッドは終了し、後で呼び出されるときは別のスレッドからとなる
+	//・非常に時間がかかるタスクを実行するときに呼び出してください
+	bool DedicateThread( void );
+
 private:
 	mWorkerThreadPool( const mWorkerThreadPool& src );
 	const mWorkerThreadPool& operator=( const mWorkerThreadPool& src ) = delete;
@@ -103,7 +110,7 @@ private:
 private:
 
 	//スレッド本体
-	using ThreadPool = std::deque<mWorkerThread>;
+	using ThreadPool = std::list<mWorkerThread>;
 	ThreadPool MyThreadPool;
 
 	//クリティカルセクション
@@ -111,6 +118,9 @@ private:
 
 	//IO完了ポート
 	HANDLE MyIoPort;
+
+	//TLSのインデックス
+	static DWORD MyTlsIndex;
 
 	//タスク情報
 	struct TaskInfoEntry

@@ -374,6 +374,12 @@ bool mTaskQueue::TaskRoutine( mWorkerThreadPool& pool , DWORD Param1 , DWORD_PTR
 	//自分の他にもう1スレッド同時実行されるようにタスクを追加
 	queue->AddTask();
 
+	//スレッドの専用化
+	if( task->MyDedicated )
+	{
+		queue->MyWorkerThreadPool.DedicateThread();
+	}
+
 	//タスクの実行
 	mTaskBase::TaskFunctionResult result = task->TaskFunction( task );
 
