@@ -92,9 +92,9 @@ errorend:
 
 INT mSerialPort::Read( void )
 {
-	BYTE result;
+	BYTE result = 0;
 	DWORD readsize = 0;
-	if( !WriteFile( MyHandle , &result , 1 , &readsize , nullptr ) )
+	if( !ReadFile( MyHandle , &result , 1 , &readsize , nullptr ) )
 	{
 		return EOF;
 	}

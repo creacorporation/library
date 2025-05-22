@@ -18,6 +18,10 @@
 #include "mSerialPortBase.h"
 #include <memory>
 
+// mSerialPortは書込みに関してmFileWriteStreamBaseから継承するメソッドが使えますが、
+// 読み込みに関してはmFileReadStreamBaseを継承しません。
+// これは、mSerialPortは同期処理なので、改行が来ないといつまでも戻らなくなるためです。
+
 //COMポートハンドルのラッパー
 class mSerialPort : public mSerialPortBase , public mSerialWriteStream
 {
