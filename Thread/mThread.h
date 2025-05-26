@@ -47,12 +47,12 @@ public:
 	//arg : スレッドに渡す引数
 	//スレッドはサスペンド状態で開始します。
 	//ret : 成功時真
-	bool Begin( std::shared_ptr<void> arg );
+	bool Begin( std::shared_ptr<void> arg , const NotifyOption* notifier = nullptr );
 
 	//スレッドを開始する
 	//スレッドはサスペンド状態で開始します。
 	//ret : 成功時真
-	bool Begin( void );
+	bool Begin( const NotifyOption* notifier = nullptr );
 
 	//スレッドに対するプロセッサコアの親和性をセットする
 	// mask : アフィニティマスク

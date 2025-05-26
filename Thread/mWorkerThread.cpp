@@ -54,11 +54,6 @@ unsigned int mWorkerThread::TaskFunction( void )
 			RaiseAssert( g_ErrorLogger , 0 , L"IO完了キーが指定されていません" , (ULONG_PTR)handle );
 		}
 
-		if( reinterpret_cast<DWORD_PTR>( TlsGetValue( MyParent.MyTlsIndex ) ) & 0x0000'0001u  )
-		{
-			return 3;
-		}
-
 		DWORD signaled = WaitForSingleObject( MyTerminateSignal , 0 );
 		switch( signaled )
 		{
@@ -70,6 +65,13 @@ unsigned int mWorkerThread::TaskFunction( void )
 		default:
 			RaiseAssert( g_ErrorLogger , 0 , L"ワーカースレッドの終了シグナルが異常です" );
 			return 1;
+		}
+
+		//専用スレッドであれば現タスクの完了を持って終了
+		if( reinterpret_cast<DWORD_PTR>( TlsGetValue( MyParent.MyTlsIndex ) ) & 0x0000'0001u  )
+		{
+			MyParent.ScheduleWorkerThreadPurge();
+			return 3;
 		}
 	}
 }

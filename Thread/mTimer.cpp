@@ -48,8 +48,6 @@ mTimer::~mTimer()
 
 bool mTimer::Setup( const NotificationOption& opt )
 {
-	SetCount( opt.Count );
-
 	switch( opt.Method )
 	{
 	case NotificationOption::NotificationMethod::METHOD_NONE:
@@ -74,7 +72,7 @@ bool mTimer::Setup( const NotificationOption& opt )
 	{
 		return Start();
 	}
-	return true;
+	return SetCount( opt.Count );
 }
 
 bool mTimer::Restart( void )

@@ -44,8 +44,14 @@ unsigned int __stdcall ThreadBaseFunc( void* arg )
 {
 	//スレッドの開始エントリポイント
 	mThread* thread_ptr = (mThread*)arg;
+
+	//タスクの実行
 	unsigned int result = thread_ptr->TaskFunction();
+
+	//タスク終了のイベントコール
 	AsyncEvent( *thread_ptr , thread_ptr->MyNotifyOption.OnFinish , result );
+
+	//スレッド終了
 	_endthreadex( result );
 	return result;
 }
@@ -63,7 +69,7 @@ mThread::~mThread()
 	Clear();
 }
 
-bool mThread::Begin( std::shared_ptr<void> arg )
+bool mThread::Begin( std::shared_ptr<void> arg , const NotifyOption* notifier )
 {
 	if( MyHandle != INVALID_HANDLE_VALUE )
 	{
@@ -75,6 +81,12 @@ bool mThread::Begin( std::shared_ptr<void> arg )
 	MyTerminateSignal = CreateEvent( 0 , true , false , 0 );
 	MyArg = arg;
 
+	//終了コールバック
+	if( notifier )
+	{
+		MyNotifyOption = *notifier;
+	}
+
 	//スレッド開始
 	MyHandle = (HANDLE)_beginthreadex( 0 , 0 , ThreadBaseFunc , this , CREATE_SUSPENDED , &MyThreadId );
 	if( MyHandle == (HANDLE)-1 )
@@ -85,10 +97,10 @@ bool mThread::Begin( std::shared_ptr<void> arg )
 	return true;
 }
 
-bool mThread::Begin( void )
+bool mThread::Begin( const NotifyOption* notifier )
 {
 	std::shared_ptr<void> arg;
-	return Begin( arg );
+	return Begin( arg , notifier );
 }
 
 bool mThread::SetAffinityMask( DWORD_PTR mask )
@@ -253,11 +265,14 @@ bool mThread::Terminate( void )
 		return false;
 	}
 
+	#pragma warning( push )
+	#pragma warning( disable : 6258 )
 	if( !TerminateThread( MyHandle , 0 ) )
 	{
 		RaiseAssert( g_ErrorLogger , 0 , L"スレッドの強制終了が失敗しました" );
 		return false;
 	}
+	#pragma warning( pop )
 
 	Clear();
 	return true;

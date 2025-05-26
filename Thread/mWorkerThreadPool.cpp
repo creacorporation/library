@@ -25,6 +25,14 @@ mWorkerThreadPool::mWorkerThreadPool()
 		RaiseError( g_ErrorLogger , 0 , L"IO完了ポートを作成できませんでした" );
 	}
 
+	//タイマーオブジェクトを作成する
+	mTimer::Option_CallbackFunction opt;
+	opt.Count = 1;
+	opt.Interval = 200;
+	opt.OnTimer = WorkerThreadPurgeCallback;
+	opt.Parameter = reinterpret_cast<DWORD_PTR>( this );
+	opt.StartImmediate = false;
+	MyTimer.Setup( opt );
 	return;
 }
 
@@ -203,13 +211,29 @@ bool mWorkerThreadPool::Begin( int threads , int min_threads , int max_threads )
 	//スレッド起動
 	{
 		mCriticalSectionTicket crit( MyCriticalSection );
-		for( ThreadPool::iterator itr = MyThreadPool.begin() ; itr != MyThreadPool.end() ; itr++ )
+		for( int i = 0 ; i < req_threads ; i++ )
 		{
-			if( !itr->Resume() )
+			if( !AddWorkerThread() )
 			{
-				RaiseError( g_ErrorLogger , 0 , L"ワーカースレッドのレジュームが失敗しました" );
+				RaiseError( g_ErrorLogger , 0 , L"ワーカースレッドの開始が失敗しました" , i );
 			}
 		}
+	}
+	return true;
+}
+
+bool mWorkerThreadPool::AddWorkerThread( void )
+{
+	mCriticalSectionTicket crit( MyCriticalSection );
+
+	mWorkerThread& thread = MyThreadPool.emplace_back( *this );
+	if( !thread.Begin( 0 , nullptr ) )
+	{
+		RaiseError( g_ErrorLogger , 0 , L"ワーカースレッドの開始が失敗しました" );
+	}
+	if( !thread.Resume() )
+	{
+		RaiseError( g_ErrorLogger , 0 , L"ワーカースレッドのレジュームが失敗しました" );
 	}
 	return true;
 }
@@ -432,33 +456,49 @@ bool mWorkerThreadPool::DedicateThread( void )
 	mWorkerThread* thread = nullptr;
 	if( !IsPoolMember() )
 	{
+		RaiseError( g_ErrorLogger , 0 , L"ワーカースレッドではありません" );
 		return false;
 	}
 	else
 	{
-		mCriticalSectionTicket crit( MyCriticalSection );
-		for( ThreadPool::iterator itr = MyThreadPool.begin() ; itr != MyThreadPool.end() ; itr++ )
+		if( !AddWorkerThread() )
 		{
-			if( itr->IsValid() )
-			{
-				thread = &(*itr);
-				break;
-			}
+			RaiseError( g_ErrorLogger , 0 , L"ワーカースレッドの追加が失敗しました" );
 		}
-		if( !thread )
-		{
-			thread = &MyThreadPool.emplace_back( *this );
-		}
-		if( !thread->Begin( 0 ) )
-		{
-			RaiseError( g_ErrorLogger , 0 , L"ワーカースレッドの開始が失敗しました" );
-		}
-	}
-
-	if( !thread->Resume() )
-	{
-		RaiseError( g_ErrorLogger , 0 , L"ワーカースレッドのレジュームが失敗しました" );
 	}
 	return TlsSetValue( MyTlsIndex , (LPVOID)1 );
+}
+
+//スレッドをパージする予約を行う
+bool mWorkerThreadPool::ScheduleWorkerThreadPurge( void )
+{
+	return MyTimer.Start();
+}
+
+//スレッドをパージするコールバック
+void mWorkerThreadPool::WorkerThreadPurgeCallback( mTimer& timer , DWORD_PTR parameter , int count )
+{
+	if( parameter == 0 )
+	{
+		RaiseError( g_ErrorLogger , 0 , L"パラメータがヌルです" );
+		return;
+	}
+	mWorkerThreadPool& me = *reinterpret_cast<mWorkerThreadPool*>( parameter );
+	{
+		mCriticalSectionTicket critical( me.MyCriticalSection );
+		for( ThreadPool::iterator itr = me.MyThreadPool.begin() ; itr != me.MyThreadPool.end() ; /**/ )
+		{
+			if( itr->WaitForFinish( 0 ) )
+			{
+				itr = me.MyThreadPool.erase( itr );
+				continue;
+			}
+			else
+			{
+				itr++;
+			}
+		}
+	}
+	return;
 }
 

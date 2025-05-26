@@ -15,6 +15,7 @@
 
 #include "General/mCriticalSectionContainer.h"
 #include "mWorkerThread.h"
+#include "mTimer.h"
 #include <deque>
 #include <list>
 
@@ -116,6 +117,9 @@ private:
 	//クリティカルセクション
 	mutable mCriticalSectionContainer MyCriticalSection;
 
+	//終わったスレッドをパージするためのタイマー
+	mTimer MyTimer;
+
 	//IO完了ポート
 	HANDLE MyIoPort;
 
@@ -150,7 +154,17 @@ private:
 	//タスク情報の登録
 	void RegisterTaskEntry( DWORD_PTR LoadbalanceKey , TaskInfoEntry&& entry );
 
+	//現在動作中のタスクの数
 	DWORD MyActiveTaskNum = 0;
+
+	//スレッドを一つ起動する
+	bool AddWorkerThread( void );
+
+	//スレッドをパージする予約を行う
+	bool ScheduleWorkerThreadPurge( void );
+
+	//スレッドをパージするコールバック
+	static void WorkerThreadPurgeCallback( mTimer& timer , DWORD_PTR parameter , int count );
 
 protected:
 	friend class mWorkerThread;		//アクセス許可するクラス
