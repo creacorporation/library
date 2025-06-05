@@ -199,15 +199,6 @@ bool mWorkerThreadPool::Begin( int threads , int min_threads , int max_threads )
 		req_threads = max_threads;
 	}
 
-	//スレッド作成
-	for( int i = 0 ; i < req_threads ; i++ )
-	{
-		if( !MyThreadPool.emplace_back( *this ).Begin( 0 ) )
-		{
-			RaiseError( g_ErrorLogger , 0 , L"ワーカースレッドの開始が失敗しました" , i );
-		}
-	}
-	
 	//スレッド起動
 	{
 		mCriticalSectionTicket crit( MyCriticalSection );
@@ -453,7 +444,6 @@ bool mWorkerThreadPool::IsPoolMember( void )const
 
 bool mWorkerThreadPool::DedicateThread( void )
 {
-	mWorkerThread* thread = nullptr;
 	if( !IsPoolMember() )
 	{
 		RaiseError( g_ErrorLogger , 0 , L"ワーカースレッドではありません" );
