@@ -74,6 +74,9 @@ private:
 	mSerialPort( const mSerialPort& src ) = delete;
 	const mSerialPort& operator=( const mSerialPort& src ) = delete;
 
+	//‘‚«‚İ‘¤‚ÌŒo˜H‚ğ•Â‚¶‚Ü‚·
+	virtual bool Close( void )override;
+
 protected:
 
 	//İ’è’l

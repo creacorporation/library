@@ -183,3 +183,9 @@ WString mSerialPort::GetPortName( void )const
 	}
 	return result;
 }
+
+bool mSerialPort::Close( void )
+{
+	MyIsClosed = true;
+	return true;
+}
