@@ -24,7 +24,7 @@ INT mStdInStream::Read( void )
 	}
 
 	INT result;
-	while( 1 )
+	do
 	{
 		result = fgetc( stdin );
 		if( result == EOF )
