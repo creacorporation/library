@@ -137,7 +137,7 @@ bool mSerialPortBase::ComPortSetting( HANDLE handle , const Option& setting )
 	COMMTIMEOUTS timeout;
 	GetCommTimeouts( handle , &timeout );
 	timeout.ReadIntervalTimeout = setting.ReadBufferTimeout;
-	timeout.ReadTotalTimeoutConstant = 0;
+	timeout.ReadTotalTimeoutConstant = setting.ReadBufferTimeout;
 	timeout.ReadTotalTimeoutMultiplier = 0;
 	timeout.WriteTotalTimeoutConstant = 0;
 	timeout.WriteTotalTimeoutMultiplier = 0;
