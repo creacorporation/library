@@ -88,7 +88,7 @@ INT mMemoryStream::Read( void )
 				MyWriteCacheHead.reset();
 
 				MyReadCacheCurrent = 0;
-				MyReadCacheRemain = MyWriteCacheRemain;
+				MyReadCacheRemain = MyWriteCacheWritten;
 
 				MyWriteCacheWritten = 0;
 				MyWriteCacheRemain = 0;
@@ -110,6 +110,10 @@ INT mMemoryStream::Read( void )
 
 bool mMemoryStream::IsEOF( void )const
 {
+	if( !MyUnReadBuffer.empty() )
+	{
+		return false;
+	}
 	return MyIsEOF;
 }
 
