@@ -59,7 +59,7 @@ bool mSerialPort::Open( const Option& opt )
 	}
 
 	//ファイルを開く
-	MyHandle = CreateFileW( opt.Fileinfo.Path.c_str() , access , share , 0 , create_dispo , FILE_FLAG_OVERLAPPED | FILE_ATTRIBUTE_NORMAL | FILE_FLAG_WRITE_THROUGH , 0 );
+	MyHandle = CreateFileW( opt.Fileinfo.Path.c_str() , access , share , 0 , create_dispo , FILE_ATTRIBUTE_NORMAL | FILE_FLAG_WRITE_THROUGH , 0 );
 	if( MyHandle == INVALID_HANDLE_VALUE )
 	{
 		//開けなかった
