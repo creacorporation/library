@@ -30,6 +30,9 @@ namespace Definitions_SCReader
 		MIFARE_CLASSIC_1K,
 		//Felica(Felica Standard/Light/LightSの判別は接続してみないと分からない)
 		FELICA,
+		//Mifare Ultralight (NTAGもこれ)
+		MIFARE_ULTRALIGHT,
+		NTAG = MIFARE_ULTRALIGHT,
 		//不明・その他
 		UNKNOWN
 	};

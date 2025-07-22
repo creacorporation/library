@@ -101,8 +101,8 @@ public:
 		};
 
 	private:
-		friend static bool mNotifyOption<fn,mode>::EnterNotifyEvent( const NotifierInfo& info );
-		friend static bool mNotifyOption<fn,mode>::LeaveNotifyEvent( const NotifierInfo& info );
+		friend bool mNotifyOption<fn,mode>::EnterNotifyEvent( const NotifierInfo& info );
+		friend bool mNotifyOption<fn,mode>::LeaveNotifyEvent( const NotifierInfo& info );
 
 		mutable volatile LONG MyNotifyEventCounter;
 
