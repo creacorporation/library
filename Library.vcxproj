@@ -19,6 +19,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Crypto\mSCNTAG.h" />
     <ClInclude Include="General\mMemoryStream.h" />
     <ClInclude Include="COM\mComFileStream.h" />
     <ClInclude Include="COM\mComStream.h" />
@@ -149,6 +150,7 @@
     <ClInclude Include="Type\mProperty.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Crypto\mSCNTAG.cpp" />
     <ClCompile Include="General\mMemoryStream.cpp" />
     <ClCompile Include="COM\mComFileStream.cpp" />
     <ClCompile Include="COM\mComStream.cpp" />

@@ -427,6 +427,9 @@
     <ClInclude Include="Network\mSerialPort.h">
       <Filter>Network</Filter>
     </ClInclude>
+    <ClInclude Include="Crypto\mSCNTAG.h">
+      <Filter>Crypto</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="General\mOptionParser.cpp">
@@ -800,6 +803,9 @@
     </ClCompile>
     <ClCompile Include="Network\mSerialPort.cpp">
       <Filter>Network</Filter>
+    </ClCompile>
+    <ClCompile Include="Crypto\mSCNTAG.cpp">
+      <Filter>Crypto</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
