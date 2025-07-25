@@ -368,7 +368,7 @@
       <OutputFile>$(OutDir)$(TargetName)$(TargetExt)</OutputFile>
     </Lib>
     <PreBuildEvent>
-      <Command>$(ProjectDir)svncheck.bat LIBRARY "$(ProjectDir)"&gt; $(ProjectDir)mRevision.h</Command>
+      <Command>$(ProjectDir)svncheck.bat LIBRARY "$(SolutionDir)" "$(ProjectDir)"&gt; $(ProjectDir)mRevision.h</Command>
     </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
@@ -386,7 +386,7 @@
       <SubSystem>Windows</SubSystem>
     </Link>
     <PreBuildEvent>
-      <Command>$(ProjectDir)svncheck.bat LIBRARY "$(ProjectDir)"&gt; $(ProjectDir)mRevision.h</Command>
+      <Command>$(ProjectDir)svncheck.bat LIBRARY "$(SolutionDir)" "$(ProjectDir)"&gt; $(ProjectDir)mRevision.h</Command>
     </PreBuildEvent>
     <Lib>
       <AdditionalOptions>
@@ -413,7 +413,7 @@
       <OutputFile>$(OutDir)$(TargetName)$(TargetExt)</OutputFile>
     </Lib>
     <PreBuildEvent>
-      <Command>$(ProjectDir)svncheck.bat LIBRARY "$(ProjectDir)"&gt; $(ProjectDir)mRevision.h</Command>
+      <Command>$(ProjectDir)svncheck.bat LIBRARY "$(SolutionDir)" "$(ProjectDir)"&gt; $(ProjectDir)mRevision.h</Command>
     </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -433,7 +433,7 @@
       <OptimizeReferences>true</OptimizeReferences>
     </Link>
     <PreBuildEvent>
-      <Command>$(ProjectDir)svncheck.bat LIBRARY "$(ProjectDir)"&gt; $(ProjectDir)mRevision.h</Command>
+      <Command>$(ProjectDir)svncheck.bat LIBRARY "$(SolutionDir)" "$(ProjectDir)"&gt; $(ProjectDir)mRevision.h</Command>
     </PreBuildEvent>
   </ItemDefinitionGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

@@ -30,7 +30,7 @@ echo #define %1_ENABLE_EXCEL
 rem ----- SVNリビジョンチェック -----
 git help > nul
 if errorlevel 9009 goto errend
-if not exist %2.git\index goto errend
+if not exist %3.git\index goto errend
 
 git show --format='%%h' --no-patch > tmp_svnversion.txt
 for /F "DELIMS=" %%t in ( tmp_svnversion.txt ) do set SVNREVISION=%%t
