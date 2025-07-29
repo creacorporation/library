@@ -15,6 +15,7 @@
 #include "General/mNotifyOption.h"
 #include "General/mTCHAR.h"
 #include <memory>
+#include <unordered_map>
 
 //スレッドプールで処理させるタスクの基底クラス
 
@@ -27,6 +28,16 @@
 //3.タスクの処理順が来ると、TaskFunction()が呼び出されます
 namespace Definitions_TaskBase
 {
+	enum class TaskStartCheckResult
+	{
+		//このタスクをスタートする。
+		Start,
+		//このタスクをスタートしない。後続のタスクもスタートさせない。
+		Lock,
+		//このタスクをスタートしない。後続のタスクにスタートできるものがあればスタートさせる。
+		Postpone,
+	};
+
 	enum TaskFunctionResult
 	{
 		//タスクの実行は完了し、結果は成功であった
@@ -65,6 +76,7 @@ namespace Definitions_TaskBase
 class mTaskBase
 {
 	friend class mTaskQueue;
+
 public:
 	virtual ~mTaskBase();
 
@@ -88,7 +100,9 @@ public:
 		IdLock,
 		//キュー内で同一IDのタスクが実行中であれば、後続の開始可能なタスクを実行する
 		//このタスクの実行は後回しになる
-		IdPostpone
+		IdPostpone,
+		//コールバック関数(mTaskBase::TaskStartCheck)を呼び出して決める
+		Callback
 	};
 
 	//タスク完了時の通知オプション
@@ -155,6 +169,17 @@ protected:
 
 	//専用スレッドにするかどうか
 	const bool MyDedicated;
+
+	//タスクIDごとの情報
+	// 左：タスクID
+	// 右：現在実行中のタスクのうち、そのタスクIDの数
+	using TaskInformationMap = std::unordered_map< AString , uint32_t >;
+
+	//タスクの開始チェック結果
+	using TaskStartCheckResult = Definitions_TaskBase::TaskStartCheckResult;
+
+	//タスクの開始チェック
+	virtual TaskStartCheckResult TaskStartCheck( const TaskInformationMap& taskmap )const;
 
 	//タスクの実行結果
 	using TaskFunctionResult = Definitions_TaskBase::TaskFunctionResult;

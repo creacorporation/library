@@ -51,6 +51,18 @@ public:
 	//この関数でタスクを追加すると、以降のAddTask(),Seal()は全て失敗します。
 	threadsafe bool Seal( bool high , mTaskBase::Ticket& task );
 
+	//最終タスクの追加（ブロッキング）
+	//追加したタスクが完了するまで戻らない
+	//この関数でタスクを追加すると、以降のAddTask(),Seal()は全て失敗します。
+	//・ワーカースレッドのメンバースレッドから呼び出すことはできない
+	//・パフォーマンスを下げるので、乱用しないこと
+	//・タイムアウトしたとき、偽を返しGetLastErrorがADDTASKBLOCKING_TIMEOUTになります。
+	//・タイムアウトした時点でタスクが開始していた場合、そのタスクは引続き実行されます。
+	// high : 他のタスクに優先して処理する
+	// task : 処理するタスク(mTaskBaseを継承したクラス)
+	// timeout : タイムアウト(ms)
+	threadsafe bool SealBlocking( bool high , mTaskBase::Ticket& task , uint32_t timeout = INFINITE );
+
 	//タスク終了
 	//この関数を呼ぶと、以降のAddTask(),Seal()は全て失敗します。
 	threadsafe bool Seal( void );
@@ -107,8 +119,7 @@ protected:
 	bool MyIsSealed;
 
 	//タスクIDごとの情報
-	using TaskInformationMap = std::unordered_map< AString , uint32_t >;
-	TaskInformationMap MyTaskInformationMap;
+	mTaskBase::TaskInformationMap MyTaskInformationMap;
 
 	//タスクIDの参照カウントをインクリメントする
 	threadsafe void TaskInformationIncrement( const AString& id );
@@ -123,6 +134,10 @@ protected:
 	//タスクの追加
 	//このクラスのインスタンスのデストラクタが実行開始以後は、このコールは実行されず失敗する。
 	threadsafe bool AddTask( bool high , mTaskBase::Ticket& task , bool isFinal );
+
+	//タスクの追加
+	threadsafe bool AddTaskBlocking( bool high , mTaskBase::Ticket& task , uint32_t timeout , bool isFinal );
+
 
 	//タスクの処理ルーチン
 	static bool TaskRoutine( mWorkerThreadPool& pool , DWORD Param1 , DWORD_PTR Param2 );

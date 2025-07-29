@@ -65,4 +65,9 @@ bool mTaskBase::Wakeup( void )
 	return MyParent->Wakeup( *this );
 }
 
+mTaskBase::TaskStartCheckResult mTaskBase::TaskStartCheck( const TaskInformationMap& taskmap )const
+{
+	return TaskStartCheckResult::Start;
+}
+
 

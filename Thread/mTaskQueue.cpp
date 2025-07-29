@@ -113,7 +113,17 @@ threadsafe bool mTaskQueue::AddTask( void )
 	return true;
 }
 
+bool mTaskQueue::SealBlocking( bool high , mTaskBase::Ticket& task , uint32_t timeout )
+{
+	return AddTaskBlocking( high , task , timeout , true );
+}
+
 bool mTaskQueue::AddTaskBlocking( bool high , mTaskBase::Ticket& task , uint32_t timeout )
+{
+	return AddTaskBlocking( high , task , timeout , false );
+}
+
+bool mTaskQueue::AddTaskBlocking( bool high , mTaskBase::Ticket& task , uint32_t timeout , bool isfinal )
 {
 	bool result = false;
 
@@ -151,7 +161,7 @@ bool mTaskQueue::AddTaskBlocking( bool high , mTaskBase::Ticket& task , uint32_t
 		goto finish;
 	}
 	//タスクの登録
-	if( !AddTask( high , task , false ) )
+	if( !AddTask( high , task , isfinal ) )
 	{
 		RaiseError( g_ErrorLogger , 0 , L"タスクの登録が失敗" );
 		goto finish;
@@ -212,7 +222,7 @@ DWORD mTaskQueue::GetActiveTaskIdCount( const AString& id )const
 {
 	mCriticalSectionTicket critical( MyCriticalSection );
 	DWORD result = 0;
-	for( TaskInformationMap::const_iterator itr = MyTaskInformationMap.begin() ; itr != MyTaskInformationMap.end() ; itr++ )
+	for( mTaskBase::TaskInformationMap::const_iterator itr = MyTaskInformationMap.begin() ; itr != MyTaskInformationMap.end() ; itr++ )
 	{
 		if( itr->first.find( id ) == 0 )
 		{
@@ -283,7 +293,7 @@ void mTaskQueue::TaskInformationIncrement( const AString& id )
 void mTaskQueue::TaskInformationDecrement( const AString& id )
 {
 	mCriticalSectionTicket critical( MyCriticalSection );
-	TaskInformationMap::iterator itr = MyTaskInformationMap.find( id );
+	mTaskBase::TaskInformationMap::iterator itr = MyTaskInformationMap.find( id );
 
 	if( itr == MyTaskInformationMap.end() )
 	{
@@ -328,30 +338,47 @@ bool mTaskQueue::TaskRoutine( mWorkerThreadPool& pool , DWORD Param1 , DWORD_PTR
 
 		for( TicketQueue::iterator itr = queue->MyTicketQueue.begin() ; itr != queue->MyTicketQueue.end() ; itr++ )
 		{
-			switch( (*itr)->MyScheduleType )
+			if( (*itr)->MyScheduleType == mTaskBase::ScheduleType::Callback )
 			{
-			case mTaskBase::ScheduleType::Normal:
-				break;
-			case mTaskBase::ScheduleType::Critical:
-				if( !queue->MyTaskInformationMap.empty() )
+				mTaskBase::TaskStartCheckResult res = (*itr)->TaskStartCheck( queue->MyTaskInformationMap );
+				switch( res )
 				{
+				case mTaskBase::TaskStartCheckResult::Lock:
 					return false;
-				}
-				break;
-			case mTaskBase::ScheduleType::IdLock:
-				if( queue->MyTaskInformationMap.count( (*itr)->MyTaskId ) )
-				{
-					return false;
-				}
-				break;
-			case mTaskBase::ScheduleType::IdPostpone:
-				if( queue->MyTaskInformationMap.count( (*itr)->MyTaskId ) ) 
-				{
+				case mTaskBase::TaskStartCheckResult::Postpone:
 					continue;
+				case mTaskBase::TaskStartCheckResult::Start:
+				default:
+					break;
 				}
-				break;
-			default:
-				break;
+			}
+			else
+			{
+				switch( (*itr)->MyScheduleType )
+				{
+				case mTaskBase::ScheduleType::Normal:
+					break;
+				case mTaskBase::ScheduleType::Critical:
+					if( !queue->MyTaskInformationMap.empty() )
+					{
+						return false;
+					}
+					break;
+				case mTaskBase::ScheduleType::IdLock:
+					if( queue->MyTaskInformationMap.count( (*itr)->MyTaskId ) )
+					{
+						return false;
+					}
+					break;
+				case mTaskBase::ScheduleType::IdPostpone:
+					if( queue->MyTaskInformationMap.count( (*itr)->MyTaskId ) ) 
+					{
+						continue;
+					}
+					break;
+				default:
+					break;
+				}
 			}
 			if( (*itr)->MyTaskStatus != mTaskBase::TaskStatus::STATUS_QUEUED )
 			{
