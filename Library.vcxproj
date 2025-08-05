@@ -59,6 +59,7 @@
     <ClInclude Include="General\mBinary.h" />
     <ClInclude Include="mRevision.h" />
     <ClInclude Include="Service\mServiceHandler.h" />
+    <ClInclude Include="Thread\mTicketShelf.h" />
     <ClInclude Include="Thread\mTimer.h" />
     <ClInclude Include="General\mPrivateAlloc.h" />
     <ClInclude Include="Network\mASyncNamedPipe.h" />
@@ -189,6 +190,7 @@
     <ClCompile Include="GDI\mGdiPrinterDC.cpp" />
     <ClCompile Include="General\mBinary.cpp" />
     <ClCompile Include="Service\mServiceHandler.cpp" />
+    <ClCompile Include="Thread\mTicketShelf.cpp" />
     <ClCompile Include="Thread\mTimer.cpp" />
     <ClCompile Include="General\mPrivateAlloc.cpp" />
     <ClCompile Include="Network\mASyncNamedPipe.cpp" />
