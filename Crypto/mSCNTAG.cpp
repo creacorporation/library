@@ -98,6 +98,117 @@ bool mSCNTAG::WriteInternal( uint8_t page , const mBinary& data , TransparentSes
 	return true;
 }
 
+int32_t mSCNTAG::GetReadCount( void )const
+{
+	TransparentSession session( *this );
+
+	mBinary in;
+	in.push_back( 0x39u );		//ReadCount
+	in.push_back( 0x02u );
+
+	mBinary out;
+	if( !session.Communicate( in , out ) )
+	{
+		RaiseError( g_ErrorLogger , 0 , L"スマートカードとの通信が失敗しました" );
+		return -1;
+	}
+	if( out.size() != 3 )
+	{
+		RaiseError( g_ErrorLogger , 0 , L"カウント値のサイズが不正" );
+		return -1;
+	}
+	return ( out[ 2 ] << 16 ) + ( out[ 1 ] << 8 ) + ( out[ 0 ] );
+
+}
+
+bool mSCNTAG::Auth( uint32_t password )const
+{
+	TransparentSession session( *this );
+
+	uint16_t pack = GetPACK( session );
+
+	mBinary cmd;
+	cmd.push_back( 0x1Bu );		//Password Authentication
+	cmd.push_back( ( password >> 24 ) & 0xFFu );
+	cmd.push_back( ( password >> 16 ) & 0xFFu );
+	cmd.push_back( ( password >>  8 ) & 0xFFu );
+	cmd.push_back( ( password >>  0 ) & 0xFFu );
+
+	mBinary rsp;
+	if( !session.Communicate( cmd , rsp ) )
+	{
+		RaiseError( g_ErrorLogger , 0 , L"スマートカードとの通信が失敗しました" );
+		return false;
+	}
+	if( rsp.size() != 2 )
+	{
+		RaiseError( g_ErrorLogger , 0 , L"認証が失敗しました" );
+		return false;
+	}
+	if( ( ( rsp[ 0 ] << 8 ) + ( rsp[ 0 ] ) ) != pack )
+	{
+		RaiseError( g_ErrorLogger , 0 , L"PACKの値が不正です" );
+		return false;
+	}
+	return true;
+}
+
+//PACKの値を取得する
+uint16_t mSCNTAG::GetPACK( TransparentSession& session )const
+{
+	uint32_t cc = GetCC( session );
+	if( ( cc & 0xFF000000u ) != 0xE1000000u )
+	{
+		RaiseError( g_ErrorLogger , 0 , L"CCのマジックナンバーが正しくない" );
+	}
+
+	uint8_t packaddr;
+	switch( ( cc >> 8 ) & 0xFFu )
+	{
+	case 0x12u:	//NTAG213
+		packaddr = 0x2Cu;
+		break;
+	case 0x3Eu:	//NTAG215
+		packaddr = 0x86u;
+		break;
+	case 0x6Du:	//NTAG216
+		packaddr = 0xE6u;
+		break;
+	default:
+		RaiseError( g_ErrorLogger , 0 , L"PACKのアドレスを判断できない" );
+		return 0;
+	}
+
+	mBinary pack;
+	if( !ReadInternal( packaddr , packaddr , pack , session ) )
+	{
+		return 0;
+	}
+	if( pack.size() != 4 )
+	{
+		RaiseError( g_ErrorLogger , 0 , L"PACKのサイズが不正" );
+	}
+	return ( pack[ 0 ] << 8 ) + ( pack[ 1 ] << 0 );
+}
+
+//CCの値を取得する
+uint32_t mSCNTAG::GetCC( TransparentSession& session )const
+{
+	mBinary cc;
+	if( !ReadInternal( 3 , 3 , cc , session ) )
+	{
+		return 0;
+	}
+	if( cc.size() != 4 )
+	{
+		RaiseError( g_ErrorLogger , 0 , L"CCのサイズが不正" );
+		return 0;
+	}
+
+	return ( cc[ 0 ] << 24 ) + ( cc[ 1 ] << 16 ) + ( cc[ 2 ] << 8 ) + ( cc[ 3 ] << 0 );
+}
+
+
 bool mSCNTAG::OnConnectCallback( void )
 {
 	return true;

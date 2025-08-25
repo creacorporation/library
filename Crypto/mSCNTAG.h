@@ -23,7 +23,9 @@ public:
 
 	bool Read( uint8_t start_page , uint8_t end_page , mBinary& retData )const;
 	bool Write( uint8_t page , const mBinary& data )const;
+	int32_t GetReadCount( void )const;
 
+	bool Auth( uint32_t password )const;
 protected:
 
 	//接続時のカード個別の処理
@@ -32,6 +34,13 @@ protected:
 
 	//CRC計算
 	uint16_t CalcCrc( const mBinary& data )const;
+
+	//PACKの値を取得する
+	uint16_t GetPACK( TransparentSession& session )const;
+
+	//CCの値を取得する
+	uint32_t GetCC( TransparentSession& session )const;
+
 
 private:
 	mSCNTAG( const mSCNTAG& source );

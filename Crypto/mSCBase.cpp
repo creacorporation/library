@@ -576,14 +576,10 @@ bool mSCBase::TransparentSession::Communicate( const mBinary& in , mBinary& reto
 }
 
 
-
 /*
 //【カードリーダーの機種依存】
 //もし可能ならスマートカードリーダーからブザーを鳴らします
-// activate_time : ブザーを鳴らす時間(1ms単位)
-//  ※時間は適宜丸めることがあります
-// ret : 鳴らすことができたら真
-bool mSCBase::Beep( DWORD activate_time )
+bool mSCBase::Beep( void )const
 {
 	mBinary dt;
 	dt.push_back( 0xE0u );
@@ -591,20 +587,9 @@ bool mSCBase::Beep( DWORD activate_time )
 	dt.push_back( 0x00u );
 	dt.push_back( 0x28u );
 	dt.push_back( 0x01u );
-	if( activate_time != 0 )
-	{
-		activate_time /= 10;
-		if( activate_time == 0 )
-		{
-			activate_time = 1;
-		}
-		else if( 255 < activate_time )
-		{
-			activate_time = 255;
-		}
-	}
-	dt.push_back( (BYTE)activate_time );
-	return Control( 3500 , dt );
+	dt.push_back( 0x0au );
+	Control( 3500 , dt );
+	return true;
 }
 */
 
