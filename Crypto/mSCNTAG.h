@@ -22,6 +22,7 @@ public:
 	virtual ~mSCNTAG();
 
 	bool Read( uint8_t start_page , uint8_t end_page , mBinary& retData )const;
+	bool Write( uint8_t page , const mBinary& data )const;
 
 protected:
 
@@ -36,6 +37,8 @@ private:
 	mSCNTAG( const mSCNTAG& source );
 	const mSCNTAG& operator=( const mSCNTAG& source ) = delete;
 
+	bool ReadInternal( uint8_t start_page , uint8_t end_page , mBinary& retData , TransparentSession& session )const;
+	bool WriteInternal( uint8_t page , const mBinary& data , TransparentSession& session )const;
 };
 
 

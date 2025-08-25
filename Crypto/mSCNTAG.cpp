@@ -23,11 +23,13 @@ mSCNTAG::~mSCNTAG()
 bool mSCNTAG::Read( uint8_t start_page , uint8_t end_page , mBinary& retData )const
 {
 	TransparentSession session( *this );
+	return ReadInternal( start_page , end_page , retData , session );
+}
 
+bool mSCNTAG::ReadInternal( uint8_t start_page , uint8_t end_page , mBinary& retData , TransparentSession& session )const
+{
 	mBinary in;
-	in.push_back( 0x95u );
-	in.push_back( 3 );
-	in.push_back( 0x3Au );
+	in.push_back( 0x3Au );		//FastRead
 	in.push_back( start_page );
 	in.push_back( end_page );
 
@@ -35,6 +37,63 @@ bool mSCNTAG::Read( uint8_t start_page , uint8_t end_page , mBinary& retData )co
 	{
 		RaiseError( g_ErrorLogger , 0 , L"スマートカードとの通信が失敗しました" );
 		return false;
+	}
+	return true;
+}
+
+bool mSCNTAG::Write( uint8_t page , const mBinary& data )const
+{
+	TransparentSession session( *this );
+	return WriteInternal( page , data , session );
+}
+
+bool mSCNTAG::WriteInternal( uint8_t page , const mBinary& data , TransparentSession& session )const
+{
+
+	mBinary in;
+	mBinary dummy;
+
+	in.reserve( 6 );
+	in.push_back( 0xA2u );	//Write
+	in.push_back( 0 );		//page
+	in.push_back( 0 );		//data[0]
+	in.push_back( 0 );		//data[1]
+	in.push_back( 0 );		//data[2]
+	in.push_back( 0 );		//data[3]
+
+	uint32_t writesize = (uint32_t)data.size();
+	for( uint32_t i = 0 ; i < writesize ; i += 4 )
+	{
+		in[ 1 ] = page;
+		if( writesize - i < 4 )
+		{
+			//残り4バイト未満の場合、端数部分は読み取って上書き
+			mBinary tmp;
+			if( !ReadInternal( page , page , tmp , session ) )
+			{
+				RaiseError( g_ErrorLogger , 0 , L"最終ページを読み込みできません" );
+				return false;
+			}
+			for( uint32_t j = 0 ; j < 4 ; j++ )
+			{
+				in[ 2 + j ] = ( j < writesize - i ) ? ( data[ i + j ] ) : ( tmp[ j ] );
+			}
+		}
+		else
+		{
+			//残り4バイト以上ある場合
+			in[ 2 ] = data[ i + 0 ];
+			in[ 3 ] = data[ i + 1 ];
+			in[ 4 ] = data[ i + 2 ];
+			in[ 5 ] = data[ i + 3 ];
+		}
+
+		if( !session.Communicate( in , dummy ) )
+		{
+			RaiseError( g_ErrorLogger , 0 , L"スマートカードとの通信が失敗しました" );
+			return false;
+		}
+		page++;
 	}
 	return true;
 }

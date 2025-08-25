@@ -231,6 +231,7 @@ protected:
 		const TransparentSession& operator=( const TransparentSession& source ) = delete;
 		const mSCBase& MyCard;
 		bool MyIsValid = false;
+
 	protected:
 
 	};

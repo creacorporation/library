@@ -405,7 +405,9 @@ bool mSCBase::TransparentSession::Communicate( const mBinary& in , mBinary& reto
 	dt.ins = 0xC2u;
 	dt.p1 = 0;
 	dt.p2 = 1;
-	dt.data = in;   //Card native command & data
+	dt.data.push_back( 0x95u );	//Transceive Data Object
+	dt.data.push_back( (uint8_t)in.size() );
+	dt.data.append( in );       //Card native command & data
 
 	ResponseData rsp;
 	bool result = MyCard.Communicate( dt , rsp );
