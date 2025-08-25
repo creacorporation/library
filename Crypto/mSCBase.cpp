@@ -345,26 +345,235 @@ void mSCBase::SetDirectCommand( TransmitData& retPacket ) const
 	}
 }
 
-//スマートカードリーダーの種類に対応した直接通信コマンドを設定する
-void mSCBase::SetDirectCommand( TransmitDataLen& retPacket ) const
+mSCBase::TransparentSession::TransparentSession( const mSCBase& base ) :
+	MyCard( base )
 {
-	switch( QueryMaker() )
+	TransmitData dt;
+	dt.cla = 0xFFu;
+	dt.ins = 0xC2u;
+	dt.p1 = 0;
+	dt.p2 = 0;
+	dt.data.clear();
+	dt.data.push_back( 0x81u );
+	dt.data.push_back( 0x00u );
+
+	ResponseData rsp;
+	if( !MyCard.Communicate( dt , rsp ) )
 	{
-	case ReaderMaker::READER_MAKER_SONY:
-		retPacket.cla = 0xFFu;
-		retPacket.ins = 0xFEu;
-		retPacket.p1  = 0x01u;
-		retPacket.p2  = 0x00u;
-		break;
-	case ReaderMaker::READER_MAKER_ACS:
-	default:
-		retPacket.cla = 0xFFu;
-		retPacket.ins = 0x00u;
-		retPacket.p1  = 0x00u;
-		retPacket.p2  = 0x00u;
-		break;
+		RaiseError( g_ErrorLogger , 0 , L"スマートカードとの通信が失敗しました" );
 	}
+
+	MyIsValid = true;
+	return;
 }
+
+mSCBase::TransparentSession::~TransparentSession()
+{
+	if( !MyIsValid )
+	{
+		return;
+	}
+
+	TransmitData dt;
+	dt.cla = 0xFFu;
+	dt.ins = 0xC2u;
+	dt.p1 = 0;
+	dt.p2 = 0;
+	dt.data.clear();
+	dt.data.push_back( 0x82u );
+	dt.data.push_back( 0x00u );
+
+	ResponseData rsp;
+	if( !MyCard.Communicate( dt , rsp ) )
+	{
+		RaiseError( g_ErrorLogger , 0 , L"スマートカードとの通信が失敗しました" );
+	}
+	return;
+}
+
+bool mSCBase::TransparentSession::Communicate( const mBinary& in , mBinary& retout , TransarentResponse* retresponse )const
+{
+	if( !MyIsValid )
+	{
+		RaiseError( g_ErrorLogger , 0 , L"透過セッションが有効ではありません" );
+		return false;
+	}
+	retout.clear();
+
+	TransmitData dt;
+	dt.cla = 0xFFu;	//Transparent Exchange(FF-C2-00-01)
+	dt.ins = 0xC2u;
+	dt.p1 = 0;
+	dt.p2 = 1;
+	dt.data = in;   //Card native command & data
+
+	ResponseData rsp;
+	bool result = MyCard.Communicate( dt , rsp );
+	if( !result )
+	{
+		RaiseError( g_ErrorLogger , 0 , L"スマートカードとの通信が失敗しました" );
+	}
+
+	auto ParseErrorStatus = []( const mBinary& data , mBinary::const_iterator& itr , TransarentResponse* r )->bool
+	{
+		++itr;
+		if( itr == data.end() ){ return false; }
+		if( *itr != 0x03 ){ return false; }
+
+		++itr;
+		if( itr == data.end() ){ return false; }
+		uint8_t code = *itr;
+
+		++itr;
+		if( itr == data.end() ){ return false; }
+		uint8_t sw1 = *itr;
+
+		++itr;
+		if( itr == data.end() ){ return false; }
+		uint8_t sw2 = *itr;
+		if( r )
+		{
+			r->ErrorCode = ( code << 16 ) + ( sw1 << 8 ) + sw2;
+			switch( ( sw1 << 8 ) + sw2 )
+			{
+			case 0x9000u:
+				r->ErrorDescription = TransarentResponse::ErrorDescriptionCode::NoError;
+				break;
+			case 0x6282u:
+				r->ErrorDescription = TransarentResponse::ErrorDescriptionCode::InformationNotAvailable;
+				break;
+			case 0x6300u:
+				r->ErrorDescription = TransarentResponse::ErrorDescriptionCode::NoInformation;
+				break;
+			case 0x6301u:
+				r->ErrorDescription = TransarentResponse::ErrorDescriptionCode::ExcecutionStopped;
+				break;
+			case 0x6A81u:
+				r->ErrorDescription = TransarentResponse::ErrorDescriptionCode::NotSupported;
+				break;
+			case 0x6700u:
+				r->ErrorDescription = TransarentResponse::ErrorDescriptionCode::UnexpectedLength;
+				break;
+			case 0x6A80u:
+				r->ErrorDescription = TransarentResponse::ErrorDescriptionCode::UnexpectedValue;
+				break;
+			case 0x6400u:
+				r->ErrorDescription = TransarentResponse::ErrorDescriptionCode::IFDNoResponse;
+				break;
+			case 0x6401u:
+				r->ErrorDescription = TransarentResponse::ErrorDescriptionCode::ICCNoResponse;
+				break;
+			case 0x6F00u:
+				r->ErrorDescription = TransarentResponse::ErrorDescriptionCode::NoPreciseDiagnosis;
+				break;
+			default:
+				r->ErrorDescription = TransarentResponse::ErrorDescriptionCode::Unknown;
+				break;
+			}
+		}
+		return true;
+	};
+
+	auto ParseFraming = []( const mBinary& data , mBinary::const_iterator& itr , TransarentResponse* r )->bool
+	{
+		++itr;
+		if( itr == data.end() ){ return false; }
+		if( *itr != 0x01 ){ return false; }
+
+		++itr;
+		if( itr == data.end() ){ return false; }
+		if( r )
+		{
+			r->ResponseBitFraming = *itr;
+		}
+		return true;
+	};
+
+	auto ParseStatus = []( const mBinary& data , mBinary::const_iterator& itr , TransarentResponse* r )->bool
+	{
+		++itr;
+		if( itr == data.end() ){ return false; }
+		if( *itr != 0x02 ){ return false; }
+
+		++itr;
+		if( itr == data.end() ){ return false; }
+		uint8_t v1 = *itr;
+
+		++itr;
+		if( itr == data.end() ){ return false; }
+		uint8_t v2 = *itr;
+
+		if( r )
+		{
+			r->IsCrcOK = ( ( v1 & 0x01u ) == 0 );
+			r->IsCollisionOK = ( ( v1 & 0x02u ) == 0 );
+			r->IsParityOK = ( ( v1 & 0x04u ) == 0 );
+			r->IsFramingOK = ( ( v1 & 0x08u ) == 0 );
+			r->CollisionPos = v2;
+		}
+		return true;
+	};
+
+	auto ParseData = []( const mBinary& data , mBinary::const_iterator& itr , mBinary& out )->bool
+	{
+		++itr;
+		if( itr == data.end() ){ return false; }
+		uint8_t size = *itr;
+
+		for( uint16_t i = 0 ; i < size ; i++ )
+		{
+			++itr;
+			if( itr == data.end() )
+			{
+				return false;
+			}
+			out.push_back( *itr );
+		}
+		return true;
+	};
+
+	auto ParseResult = []( const mBinary& data , mBinary::const_iterator& itr )->bool
+	{
+		++itr;
+		if( itr == data.end() ){ return false; }
+		if( *itr != 0x00 ){ return false; }
+
+		return true;
+	};
+
+	for( mBinary::const_iterator itr = rsp.data.begin() ; itr != rsp.data.end() ; itr++ )
+	{
+		bool lambdarsp = false;
+		switch( *itr )
+		{
+		case 0xC0u:
+			lambdarsp = ParseErrorStatus( rsp.data , itr , retresponse );
+			break;
+		case 0x92u:
+			lambdarsp = ParseFraming( rsp.data , itr , retresponse );
+			break;
+		case 0x96u:
+			lambdarsp = ParseStatus( rsp.data , itr , retresponse );
+			break;
+		case 0x97u:
+			lambdarsp = ParseData( rsp.data , itr , retout );
+			break;
+		case 0x90u:
+			lambdarsp = ParseResult( rsp.data , itr );
+			break;
+		default:
+			lambdarsp = false;
+		}
+		if( !lambdarsp )
+		{
+			RaiseError( g_ErrorLogger , 0 , L"スマートカードの応答が読み取れません" );
+			return false;
+		}
+	}
+	return true;
+}
+
+
 
 /*
 //【カードリーダーの機種依存】

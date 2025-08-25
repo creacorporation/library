@@ -119,11 +119,11 @@ protected:
 
 	struct TransmitDataLen
 	{
-		uint8_t cla;	//インストラクションクラス
-		uint8_t ins;	//インストラクションコード
-		uint8_t p1;		//パラメータ１
-		uint8_t p2;		//パラメータ２
-		uint8_t len;	//データ長
+		uint8_t cla;		//インストラクションクラス
+		uint8_t ins;		//インストラクションコード
+		uint8_t p1;			//パラメータ１
+		uint8_t p2;			//パラメータ２
+		uint8_t len;		//データ長
 		TransmitDataLen()
 		{
 			cla = 0xFFu;
@@ -172,10 +172,68 @@ protected:
 	// retPacket : コマンドの設定先
 	void SetDirectCommand( TransmitData& retPacket ) const;
 
-	//スマートカードリーダーの種類に対応した直接通信コマンドを設定する
-	// retPacket : コマンドの設定先
-	void SetDirectCommand( TransmitDataLen& retPacket ) const;
+	//カード側と直接通信をするためのオブジェクト(Transparent Exchange)
+	class TransparentSession
+	{
+	public:
+		TransparentSession( const mSCBase& base );
+		~TransparentSession();
 
+		struct TransarentResponse
+		{
+			//エラーコード
+			//形式：0x00AABBCC(AA=エラー位置,BB=SW1,CC=SW2)
+			//・C0タグの内容がそのまま入る。
+			//・エラーなしは0x00009000。
+			uint32_t ErrorCode;
+
+			//エラー内容(エラーコードをenum化したもの)
+			enum class ErrorDescriptionCode
+			{
+				NoError,
+				InformationNotAvailable,
+				NoInformation,
+				ExcecutionStopped,
+				NotSupported,
+				UnexpectedLength,
+				UnexpectedValue,
+				IFDNoResponse,
+				ICCNoResponse,
+				NoPreciseDiagnosis,
+				Unknown,
+			};
+			ErrorDescriptionCode ErrorDescription;
+
+			//CRCが正常なら真
+			bool IsCrcOK = false;
+
+			//コリジョンが発生しなかったら真
+			bool IsCollisionOK = false;
+
+			//パリティが正常なら真
+			bool IsParityOK = false;
+
+			//フレーミングエラーがなければ真
+			bool IsFramingOK = false;
+
+			//最終バイトの何ビット目まで有効か（０は全ビット有効）
+			uint8_t ResponseBitFraming = (uint8_t)0;
+
+			//コリジョンが発生している場合のコリジョン位置
+			uint8_t CollisionPos = 0;
+
+		};
+
+		bool Communicate( const mBinary& in , mBinary& retout , TransarentResponse* retresponse = nullptr )const;
+
+	private:
+		TransparentSession( const TransparentSession& source ) = delete;
+		const TransparentSession& operator=( const TransparentSession& source ) = delete;
+		const mSCBase& MyCard;
+		bool MyIsValid = false;
+	protected:
+
+	};
 };
 
 
