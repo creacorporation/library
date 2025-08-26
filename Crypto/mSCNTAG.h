@@ -184,6 +184,12 @@ public:
 	//・ページ10～15のいずれかを読み書きモードにする場合、ページ10～15でアンロック状態のページは全て読み書きモードになる。リードオンリーのページは現状維持。
 	bool SetStaticLock( const StaticLock& setting )const;
 
+	//動的ロックの設定
+	//0xAABBCCDD byte0=AA,byte1=BB,byte2=CC,byte3=DDのように書き込む
+	//チップの品種によってビットの意味が違うので注意
+	//Auth0など別の手段使った方が簡単
+	bool SetDynamicLock( uint32_t setting )const;
+
 protected:
 
 	//接続時のカード個別の処理

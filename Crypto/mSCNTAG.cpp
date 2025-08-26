@@ -462,9 +462,9 @@ bool mSCNTAG::SetAccessSetting( const AccessSetting& setting )const
 mSCNTAG::StaticLock::StaticLock()
 {
 	CC = StaticLockStatus::Unlocked;
-	for( auto p : Page )
+	for( int i = 0 ; i < (int)StaticLock::PageIndex::PageIndexMax ; i++ )
 	{
-		p = StaticLockStatus::Unlocked;
+		Page[ i ] = StaticLockStatus::Unlocked;
 	}
 }
 
@@ -514,6 +514,43 @@ bool mSCNTAG::SetStaticLock( const StaticLock& setting )const
 	}
 	return true;
 }
+
+bool mSCNTAG::SetDynamicLock( uint32_t setting )const
+{
+	TransparentSession session( *this );
+
+	uint8_t addr;
+	switch( GetPartNum( session ) )
+	{
+	case PartNum::NTAG213:
+		addr = 0x28u;
+		break;
+	case PartNum::NTAG215:
+		addr = 0x82u;
+		break;
+	case PartNum::NTAG216:
+		addr = 0xE2u;
+		break;
+	default:
+		RaiseError( g_ErrorLogger , 0 , L"DynamicLockByteのアドレスを判断できない" );
+		return 0;
+	}
+
+	mBinary data;
+	data.push_back( ( setting >> 24 ) & 0xFFu );
+	data.push_back( ( setting >> 16 ) & 0xFFu );
+	data.push_back( ( setting >>  8 ) & 0xFFu );
+	data.push_back( ( setting >>  0 ) & 0xFFu );
+
+	if( !Write( addr , data ) )
+	{
+		RaiseError( g_ErrorLogger , 0 , L"DynamicLockByteの書込みが失敗しました" );
+		return false;
+	}
+	return true;
+
+}
+
 
 bool mSCNTAG::OnConnectCallback( void )
 {
