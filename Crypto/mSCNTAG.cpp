@@ -49,13 +49,12 @@ bool mSCNTAG::Write( uint8_t page , const mBinary& data )const
 
 bool mSCNTAG::WriteInternal( uint8_t page , const mBinary& data , TransparentSession& session )const
 {
-
 	mBinary in;
 	mBinary dummy;
 
 	in.reserve( 6 );
 	in.push_back( 0xA2u );	//Write
-	in.push_back( 0 );		//page
+	in.push_back( 0 );		//access_page
 	in.push_back( 0 );		//data[0]
 	in.push_back( 0 );		//data[1]
 	in.push_back( 0 );		//data[2]
@@ -96,6 +95,90 @@ bool mSCNTAG::WriteInternal( uint8_t page , const mBinary& data , TransparentSes
 		page++;
 	}
 	return true;
+}
+
+bool mSCNTAG::GetUid( int64_t& retId )const
+{
+	retId = 0;
+
+	mBinary data;
+	if( !Read( 0 , 2 , data ) )
+	{
+		RaiseError( g_ErrorLogger , 0 , L"UIDの読み取りが失敗しました" );
+		return false;
+	}
+	if( data.size() != 12 )
+	{
+		RaiseError( g_ErrorLogger , 0 , L"UIDの読み取りサイズが正しくない" );
+		return false;
+	}
+	if( ( ( 0x88u     ^ data[ 0 ] ^ data[ 1 ] ^ data[ 2 ] ) != data[ 3 ] ) ||
+		( ( data[ 4 ] ^ data[ 5 ] ^ data[ 6 ] ^ data[ 7 ] ) != data[ 8 ] ) )
+	{
+		RaiseError( g_ErrorLogger , 0 , L"UIDのチェックバイトが不正" );
+		return false;
+	}
+	retId =
+		( (int64_t)data[ 0 ] << 48 ) +
+		( (int64_t)data[ 1 ] << 40 ) +
+		( (int64_t)data[ 2 ] << 32 ) +
+		( (int64_t)data[ 4 ] << 24 ) +
+		( (int64_t)data[ 5 ] << 16 ) +
+		( (int64_t)data[ 6 ] <<  8 ) +
+		( (int64_t)data[ 7 ] <<  0 );
+	return true;
+}
+
+bool mSCNTAG::GetUid( AString& retId )const
+{
+	int64_t uid;
+	if( !GetUid( uid ) )
+	{
+		return false;
+	}
+	sprintf( retId , "%llx" , (uint64_t)uid );
+	return true;
+}
+
+bool mSCNTAG::GetUid( WString& retId )const
+{
+	int64_t uid;
+	if( !GetUid( uid ) )
+	{
+		return false;
+	}
+	sprintf( retId , L"%llx" , (uint64_t)uid );
+	return true;
+}
+
+int64_t mSCNTAG::GetUidValue( void )const
+{
+	int64_t uid = 0;
+	if( !GetUid( uid ) )
+	{
+		return -1;
+	}
+	return uid;
+}
+
+AString mSCNTAG::GetUidAString( void )const
+{
+	AString str;
+	if( !GetUid( str ) )
+	{
+		return "";
+	}
+	return str;
+}
+
+WString mSCNTAG::GetUidWString( void )const
+{
+	WString str;
+	if( !GetUid( str ) )
+	{
+		return L"";
+	}
+	return str;
 }
 
 int32_t mSCNTAG::GetReadCount( void )const
@@ -153,25 +236,48 @@ bool mSCNTAG::Auth( uint32_t password )const
 	return true;
 }
 
-//PACKの値を取得する
-uint16_t mSCNTAG::GetPACK( TransparentSession& session )const
+mSCNTAG::PartNum mSCNTAG::GetPartNum( void )const
+{
+	TransparentSession session( *this );
+	return GetPartNum( session );
+}
+
+mSCNTAG::PartNum mSCNTAG::GetPartNum( TransparentSession& session )const
 {
 	uint32_t cc = GetCC( session );
 	if( ( cc & 0xFF000000u ) != 0xE1000000u )
 	{
 		RaiseError( g_ErrorLogger , 0 , L"CCのマジックナンバーが正しくない" );
+		return PartNum::Unknown;
 	}
 
-	uint8_t packaddr;
 	switch( ( cc >> 8 ) & 0xFFu )
 	{
-	case 0x12u:	//NTAG213
+	case 0x12u:
+		return PartNum::NTAG213;
+	case 0x3Eu:
+		return PartNum::NTAG215;
+	case 0x6Du:
+		return PartNum::NTAG216;
+	default:
+		break;
+	}
+	return PartNum::Unknown;
+}
+
+//PACKの値を取得する
+uint16_t mSCNTAG::GetPACK( TransparentSession& session )const
+{
+	uint8_t packaddr;
+	switch( GetPartNum( session ) )
+	{
+	case PartNum::NTAG213:
 		packaddr = 0x2Cu;
 		break;
-	case 0x3Eu:	//NTAG215
+	case PartNum::NTAG215:
 		packaddr = 0x86u;
 		break;
-	case 0x6Du:	//NTAG216
+	case PartNum::NTAG216:
 		packaddr = 0xE6u;
 		break;
 	default:
@@ -208,6 +314,206 @@ uint32_t mSCNTAG::GetCC( TransparentSession& session )const
 	return ( cc[ 0 ] << 24 ) + ( cc[ 1 ] << 16 ) + ( cc[ 2 ] << 8 ) + ( cc[ 3 ] << 0 );
 }
 
+bool mSCNTAG::ReadSig( mBinary& retdata )const
+{
+	TransparentSession session( *this );
+
+	mBinary in;
+	in.push_back( 0x3Cu );		//ReadSig
+	in.push_back( 0x00u );
+
+	if( !session.Communicate( in , retdata ) )
+	{
+		RaiseError( g_ErrorLogger , 0 , L"スマートカードとの通信が失敗しました" );
+		return false;
+	}
+	if( retdata.size() != 32 )
+	{
+		RaiseError( g_ErrorLogger , 0 , L"カウント値のサイズが不正" );
+		return false;
+	}
+	return true;
+}
+
+bool mSCNTAG::GetVersion( mBinary& retdata )const
+{
+	TransparentSession session( *this );
+
+	mBinary in;
+	in.push_back( 0x60u );		//GetVersion
+
+	if( !session.Communicate( in , retdata ) )
+	{
+		RaiseError( g_ErrorLogger , 0 , L"スマートカードとの通信が失敗しました" );
+		return false;
+	}
+	if( retdata.size() != 8 )
+	{
+		RaiseError( g_ErrorLogger , 0 , L"カウント値のサイズが不正" );
+		return false;
+	}
+	return true;
+}
+
+bool mSCNTAG::SetAccessSetting( const AccessSetting& setting )const
+{
+	TransparentSession session( *this );
+
+	//ACCESSのページ番号取得
+	uint8_t access_page;
+	uint8_t auth0_page;
+	switch( GetPartNum( session ) )
+	{
+	case PartNum::NTAG213:
+		auth0_page = 0x29u;
+		access_page = 0x2Au;
+		break;
+	case PartNum::NTAG215:
+		auth0_page = 0x83u;
+		access_page = 0x84u;
+		break;
+	case PartNum::NTAG216:
+		auth0_page = 0xE3u;
+		access_page = 0xE4u;
+		break;
+	default:
+		RaiseError( g_ErrorLogger , 0 , L"チップの種類が不明" );
+		return false;
+	}
+	
+	mBinary data;
+	data.resize( 4 );
+
+	//ACCESS
+	data[ 0 ] = 
+		( ( setting.ReadProtect ) ? ( 0x80u ) : ( 0 ) ) |
+		( ( setting.ConfigLock ) ? ( 0x40u ) : ( 0 ) ) |
+		( ( setting.EnableCounter ) ? ( 0x10u ) : ( 0 ) ) |
+		( ( setting.CounterProtect ) ? ( 0x08u ) : ( 0 ) ) |
+		( ( 7 < setting.AuthLimit ) ? ( 7 ) : ( setting.AuthLimit ) );
+	data[ 1 ] = 0;
+	data[ 2 ] = 0;
+	data[ 3 ] = 0;
+	if( !Write( access_page , data ) )
+	{
+		RaiseError( g_ErrorLogger , 0 , L"ACCESSの書込みが失敗しました" );
+		return false;
+	}
+
+	//PWD
+	data[ 0 ] = ( setting.Password >> 24 ) & 0xFFu;
+	data[ 1 ] = ( setting.Password >> 16 ) & 0xFFu;
+	data[ 2 ] = ( setting.Password >>  8 ) & 0xFFu;
+	data[ 3 ] = ( setting.Password >>  0 ) & 0xFFu;
+	if( !Write( access_page + 1 , data ) )
+	{
+		RaiseError( g_ErrorLogger , 0 , L"PWDの書込みが失敗しました" );
+		return false;
+	}
+
+	//PACK
+	data[ 0 ] = ( setting.Pack << 8 ) & 0xFFu;;
+	data[ 1 ] = ( setting.Pack << 0 ) & 0xFFu;;
+	data[ 2 ] = 0;
+	data[ 3 ] = 0;
+	if( !Write( access_page + 2 , data ) )
+	{
+		RaiseError( g_ErrorLogger , 0 , L"PACKの書込みが失敗しました" );
+		return false;
+	}
+
+	//Auth0
+	if( !Read( auth0_page , auth0_page , data ) || ( data.size() != 4 ) )
+	{
+		RaiseError( g_ErrorLogger , 0 , L"Auth0の読み込みが失敗しました" );
+		return false;
+	}
+	if( ( setting.ConfigLock ) && ( access_page < setting.Auth0 ) )
+	{
+		data[ 3 ] = access_page + 1;
+	}
+	else
+	{
+		data[ 3 ] = setting.Auth0;
+	}
+	if( !Write( auth0_page , data ) )
+	{
+		RaiseError( g_ErrorLogger , 0 , L"Auth0の書込みが失敗しました" );
+		return false;
+	}
+
+	//Capability Container
+	if( setting.NoWriteAccess )
+	{
+		data.resize( 4 );
+		data[ 0 ] = 0;
+		data[ 1 ] = 0;
+		data[ 2 ] = 0;
+		data[ 3 ] = 0x0Fu;
+		if( !Write( 3 , data ) )
+		{
+			RaiseError( g_ErrorLogger , 0 , L"CCの書込みが失敗しました" );
+			return false;
+		}
+	}
+	return true;
+}
+
+mSCNTAG::StaticLock::StaticLock()
+{
+	CC = StaticLockStatus::Unlocked;
+	for( auto p : Page )
+	{
+		p = StaticLockStatus::Unlocked;
+	}
+}
+
+
+bool mSCNTAG::SetStaticLock( const StaticLock& setting )const
+{
+	uint16_t pagelock = 0;
+	uint16_t settinglock = 0;
+
+	auto UpdatePageLock = [&pagelock,&settinglock]( StaticLockStatus status , uint16_t mask )->void
+	{
+		pagelock >>= 1;
+		switch( status )
+		{
+		case StaticLockStatus::Unlocked:
+			break;
+		case StaticLockStatus::ReadOnly:
+			pagelock |= 0x8000u;
+			break;
+		case StaticLockStatus::ReadWrite:
+			settinglock |= mask;
+			break;
+		}
+		return;
+	};
+
+	UpdatePageLock( setting.CC , 0x0001u );
+	for( int i = (int)StaticLock::PageIndex::Page4 ; i <= (int)StaticLock::PageIndex::Page9 ; i++ )
+	{
+		UpdatePageLock( setting.Page[ i ] , 0x0002u );
+	}
+	for( int i = (int)StaticLock::PageIndex::Page10 ; i <= (int)StaticLock::PageIndex::Page15 ; i++ )
+	{
+		UpdatePageLock( setting.Page[ i ] , 0x0004u );
+	}
+
+	mBinary data;
+	data.push_back( 0 );
+	data.push_back( 0 );
+	data.push_back( ( pagelock | settinglock ) & 0xFFu );
+	data.push_back( ( pagelock >> 8          ) & 0xFFu );
+
+	if( !Write( 2 , data ) )
+	{
+		RaiseError( g_ErrorLogger , 0 , L"StaticLockByteの書込みが失敗しました" );
+		return false;
+	}
+	return true;
+}
 
 bool mSCNTAG::OnConnectCallback( void )
 {

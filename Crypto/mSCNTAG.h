@@ -21,11 +21,169 @@ public:
 	mSCNTAG();
 	virtual ~mSCNTAG();
 
+	enum class PartNum
+	{
+		NTAG213,	//NXP NTAG213(又は互換品) ユーザメモリ144バイト(ページ04H～27H)
+		NTAG215,	//NXP NTAG215(又は互換品) ユーザメモリ504バイト(ページ04H～81H)
+		NTAG216,	//NXP NTAG216(又は互換品) ユーザメモリ888バイト(ページ04H～E1H)
+		Unknown,
+	};
+
 	bool Read( uint8_t start_page , uint8_t end_page , mBinary& retData )const;
 	bool Write( uint8_t page , const mBinary& data )const;
+
+	//64ビット値でUIDを返します
+	//[例]  +0 +1 +2 +3
+	//page0	11 22 33 88
+	//page1	44 55 66 77
+	//→ 返す値は0x0011223344556677u (※88はチェックサムなので無視)
+	bool GetUid( int64_t& retId )const;
+
+	//文字列でUIDを返します
+	//[例]  +0 +1 +2 +3
+	//page0	11 22 33 88
+	//page1	44 55 66 77
+	//→ 返す値は"11223344556677" (※88はチェックサムなので無視)
+	bool GetUid( AString& retId )const;
+
+	//文字列でUIDを返します
+	//[例]  +0 +1 +2 +3
+	//page0	11 22 33 88
+	//page1	44 55 66 77
+	//→ 返す値はL"11223344556677" (※88はチェックサムなので無視)
+	bool GetUid( WString& retId )const;
+
+	//64ビット値でUIDを返します
+	//[例]  +0 +1 +2 +3
+	//page0	11 22 33 88
+	//page1	44 55 66 77
+	//→ 返す値は0x0011223344556677u (※88はチェックサムなので無視)
+	//エラーの場合負の値
+	int64_t GetUidValue( void )const;
+
+	//文字列でUIDを返します
+	//[例]  +0 +1 +2 +3
+	//page0	11 22 33 88
+	//page1	44 55 66 77
+	//→ 返す値は"11223344556677" (※88はチェックサムなので無視)
+	//エラーの場合空文字列
+	AString GetUidAString( void )const;
+
+	//文字列でUIDを返します
+	//[例]  +0 +1 +2 +3
+	//page0	11 22 33 88
+	//page1	44 55 66 77
+	//→ 返す値はL"11223344556677" (※88はチェックサムなので無視)
+	//エラーの場合空文字列
+	WString GetUidWString( void )const;
+
+	//品番を取得する
+	//※CCの値から推定
+	PartNum GetPartNum( void )const;
+
+	//読み取り回数カウンタの読み取りをする
+	//エラーの場合は負の値が返る
 	int32_t GetReadCount( void )const;
 
+	//パスワード認証する
+	//成功時真
 	bool Auth( uint32_t password )const;
+
+	//署名を取得する
+	//互換タグだと失敗したり、成功しても全部ゼロ埋めだったりする
+	bool ReadSig( mBinary& retdata )const;
+
+	//バージョン番号を取得する
+	//互換タグだと失敗したり、成功しても全部ゼロ埋めだったりする
+	bool GetVersion( mBinary& retdata )const;
+
+	//アクセス設定
+	struct AccessSetting
+	{
+		//真：読み書きにAUTHが必要、偽：書込みにAUTHが必要
+		//※パスワードが無効(0xFFFFFFFFu)のときは、読み書きともAUTH不要
+		bool ReadProtect = false;
+
+		//真：コンフィグ領域(ACCESS等)変更禁止、偽：変更可
+		//※一度禁止すると二度と戻せない
+		bool ConfigLock = false;
+
+		//読み取りカウンタを有効にするか
+		//※読み取りを行った回数をカウントしている24ビットのカウンタ
+		//真で有効
+		bool EnableCounter = false;
+
+		//読み取りカウンタの読み取り(READ_CNT)にパスワードを必要とするか
+		//真で必要
+		bool CounterProtect = false;
+
+		//いかなる書込みアクセスも受け付けず、完全に読み取りのみとする
+		//真：書込禁止
+		//※最強の書込みプロテクト
+		//※一度禁止すると二度と戻せない
+		//※CC(Capability Container)の機能をつかった書込禁止です
+		bool NoWriteAccess = false;
+
+		//パスワードがない場合に書込み禁止とする最初のページ番号
+		//※ConfigLockを真にしたとき、Auth0がPWD,PACKのアドレスを含んでいない場合は、
+		//  PWD,PACKのアドレスが含まれるように調整されます。
+		//  (ConfigLockが真であっても、PWDとPACKは書き換え可能であるため)
+		uint8_t Auth0 = 0xFFu;
+
+		//パスワードの連続失敗許容回数
+		//0＝無制限、1～7＝最大回数（8以上は7と見なします）
+		uint8_t AuthLimit = 0;
+
+		//認証成功時のACKの値
+		uint16_t Pack = 0;
+
+		//パスワード
+		//※パスワードが無効(0xFFFFFFFFu)のときは、読み書きともAUTH不要
+		uint32_t Password = 0xFFFFFFFFu;
+	};
+
+	//アクセス設定を行う
+	bool SetAccessSetting( const AccessSetting& setting )const;
+
+	//静的ロックのモード
+	enum class StaticLockStatus
+	{
+		Unlocked,	//アンロック（データの読み書き可能、将来リードオンリー／読み書きモードへの変更可能）
+		ReadOnly,	//リードオンリー（データの書込み不可、モードの変更不可）
+		ReadWrite,	//読み書きモード（データの読み書き可能、モードの変更不可）
+	};
+
+	//静的ロックのモード
+	struct StaticLock
+	{
+		enum class PageIndex
+		{
+			Page4 = 0,
+			Page5,
+			Page6,
+			Page7,
+			Page8,
+			Page9,
+			Page10,
+			Page11,
+			Page12,
+			Page13,
+			Page14,
+			Page15,
+			PageIndexMax
+		};
+		StaticLockStatus CC;
+		StaticLockStatus Page[ (uint32_t)PageIndex::PageIndexMax ];
+
+		StaticLock();
+	};
+
+	//静的ロックの設定
+	//・一度リードオンリーにすると変更できない
+	//・ページ 4～ 9のいずれかを読み書きモードにする場合、ページ 4～ 9でアンロック状態のページは全て読み書きモードになる。リードオンリーのページは現状維持。
+	//・ページ10～15のいずれかを読み書きモードにする場合、ページ10～15でアンロック状態のページは全て読み書きモードになる。リードオンリーのページは現状維持。
+	bool SetStaticLock( const StaticLock& setting )const;
+
 protected:
 
 	//接続時のカード個別の処理
@@ -35,6 +193,9 @@ protected:
 	//CRC計算
 	uint16_t CalcCrc( const mBinary& data )const;
 
+	//品番を取得する
+	PartNum GetPartNum( TransparentSession& session )const;
+	
 	//PACKの値を取得する
 	uint16_t GetPACK( TransparentSession& session )const;
 
