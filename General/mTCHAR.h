@@ -47,6 +47,7 @@ typedef std::vector<TString> TStringVector;
 typedef std::vector<WString> WStringVector;
 
 #include "mException.h"
+#include "mBinary.h"
 
 #define tchar_strcpy		_tcscpy
 #define tchar_strcpy_s		_tcscpy_s
@@ -216,6 +217,9 @@ INT sprintf_va( AString* ret_dest , _Printf_format_string_ const CHAR* format , 
 INT sprintf_va( AString* ret_dest , _Printf_format_string_ const WCHAR* format , va_list va );
 INT sprintf_va( WString* ret_dest , _Printf_format_string_ const CHAR* format , va_list va );
 INT sprintf_va( WString* ret_dest , _Printf_format_string_ const WCHAR* format , va_list va );
+
+INT sprintf_va( mBinary& ret_dest , _Printf_format_string_ const CHAR* format , va_list va );
+INT sprintf_va( mBinary* ret_dest , _Printf_format_string_ const CHAR* format , va_list va );
 
 //注意！
 //パラメータに文字列を使用するとき、%sがCHAR*型かWCHAR型かは、
@@ -752,6 +756,11 @@ WString ConvertKatakana2Hiragana( const WString& src );	//カタカナ→ひら�
 WString ConvertHiragana2Katakana( const WString& src );	//ひらがな→カタカナ
 WString ConvertLower2Upper( const WString& src );		//小文字→大文字
 WString ConvertUpper2Lower( const WString& src );		//大文字→小文字
+
+//URLエンコード
+AString ConvertToUrl( const AString& src );
+//URLエンコード
+AString ConvertToUrl( const WString& src );
 
 //文字列中の特定文字列を置換する
 // src : 元の文字列

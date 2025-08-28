@@ -15,6 +15,9 @@
 #include <array>
 #include <General/mBinary.h>
 
+// PCSC 2.0 パート3 に対応しているリーダーなら動くはず
+// 古いカードリーダーなどこの規格に対応しないものもあるので注意
+
 class mSCNTAG : public mSCBase
 {
 public:
@@ -31,6 +34,7 @@ public:
 
 	bool Read( uint8_t start_page , uint8_t end_page , mBinary& retData )const;
 	bool Write( uint8_t page , const mBinary& data )const;
+	bool Verify( uint8_t page , const mBinary& data )const;
 
 	//64ビット値でUIDを返します
 	//[例]  +0 +1 +2 +3
@@ -179,7 +183,8 @@ public:
 	};
 
 	//静的ロックの設定
-	//・一度リードオンリーにすると変更できない
+	//＜制約事項＞
+	//・一度リードオンリー／読み書きモードに設定すると、もう変更できない
 	//・ページ 4～ 9のいずれかを読み書きモードにする場合、ページ 4～ 9でアンロック状態のページは全て読み書きモードになる。リードオンリーのページは現状維持。
 	//・ページ10～15のいずれかを読み書きモードにする場合、ページ10～15でアンロック状態のページは全て読み書きモードになる。リードオンリーのページは現状維持。
 	bool SetStaticLock( const StaticLock& setting )const;
@@ -215,6 +220,7 @@ private:
 
 	bool ReadInternal( uint8_t start_page , uint8_t end_page , mBinary& retData , TransparentSession& session )const;
 	bool WriteInternal( uint8_t page , const mBinary& data , TransparentSession& session )const;
+	bool VerifyInternal( uint8_t page , const mBinary& data , TransparentSession& session )const;
 };
 
 

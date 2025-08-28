@@ -433,6 +433,9 @@
     <ClInclude Include="Thread\mTicketShelf.h">
       <Filter>Thread</Filter>
     </ClInclude>
+    <ClInclude Include="Crypto\mSCNDEF.h">
+      <Filter>Crypto</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="General\mOptionParser.cpp">
@@ -812,6 +815,9 @@
     </ClCompile>
     <ClCompile Include="Thread\mTicketShelf.cpp">
       <Filter>Thread</Filter>
+    </ClCompile>
+    <ClCompile Include="Crypto\mSCNDEF.cpp">
+      <Filter>Crypto</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

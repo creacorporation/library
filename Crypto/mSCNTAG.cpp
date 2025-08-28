@@ -33,6 +33,7 @@ bool mSCNTAG::ReadInternal( uint8_t start_page , uint8_t end_page , mBinary& ret
 	in.push_back( start_page );
 	in.push_back( end_page );
 
+	Sleep( 10 );
 	if( !session.Communicate( in , retData ) )
 	{
 		RaiseError( g_ErrorLogger , 0 , L"スマートカードとの通信が失敗しました" );
@@ -41,10 +42,45 @@ bool mSCNTAG::ReadInternal( uint8_t start_page , uint8_t end_page , mBinary& ret
 	return true;
 }
 
+bool mSCNTAG::VerifyInternal( uint8_t page , const mBinary& data , TransparentSession& session )const
+{
+	if( data.size() == 0 )
+	{
+		return true;
+	}
+	uint8_t end_page = page + ( ( data.size() + 3 ) / 4 ) - 1;
+
+	mBinary readdata;
+	if( !ReadInternal( page , end_page , readdata , session ) )
+	{
+		return false;
+	}
+	if( readdata.size() < data.size() )
+	{
+		RaiseError( g_ErrorLogger , 0 , L"読み取りサイズが不正" );
+		return false;
+	}
+	for( int i = 0 ; i < data.size() ; i++ )
+	{
+		if( readdata[ i ] != data[ i ] )
+		{
+			RaiseError( g_ErrorLogger , 0 , L"ベリファイ失敗" );
+			return false;
+		}
+	}
+	return true;
+}
+
 bool mSCNTAG::Write( uint8_t page , const mBinary& data )const
 {
 	TransparentSession session( *this );
 	return WriteInternal( page , data , session );
+}
+
+bool mSCNTAG::Verify( uint8_t page , const mBinary& data )const
+{
+	TransparentSession session( *this );
+	return VerifyInternal( page , data , session );
 }
 
 bool mSCNTAG::WriteInternal( uint8_t page , const mBinary& data , TransparentSession& session )const
@@ -61,14 +97,16 @@ bool mSCNTAG::WriteInternal( uint8_t page , const mBinary& data , TransparentSes
 	in.push_back( 0 );		//data[3]
 
 	uint32_t writesize = (uint32_t)data.size();
+	uint8_t current_page = page;
 	for( uint32_t i = 0 ; i < writesize ; i += 4 )
 	{
-		in[ 1 ] = page;
+		in[ 1 ] = current_page;
 		if( writesize - i < 4 )
 		{
 			//残り4バイト未満の場合、端数部分は読み取って上書き
 			mBinary tmp;
-			if( !ReadInternal( page , page , tmp , session ) )
+			Sleep( 10 );
+			if( !ReadInternal( current_page , current_page , tmp , session ) || tmp.size() != 4 )
 			{
 				RaiseError( g_ErrorLogger , 0 , L"最終ページを読み込みできません" );
 				return false;
@@ -87,12 +125,17 @@ bool mSCNTAG::WriteInternal( uint8_t page , const mBinary& data , TransparentSes
 			in[ 5 ] = data[ i + 3 ];
 		}
 
+		Sleep( 10 );
 		if( !session.Communicate( in , dummy ) )
 		{
 			RaiseError( g_ErrorLogger , 0 , L"スマートカードとの通信が失敗しました" );
 			return false;
 		}
-		page++;
+		current_page++;
+	}
+	if( !VerifyInternal( page , data , session ) )
+	{
+		return false;
 	}
 	return true;
 }

@@ -648,6 +648,39 @@ INT mTCHAR::sprintf_va( WString* ret_dest , _Printf_format_string_ const WCHAR* 
 	return result;
 }
 
+INT mTCHAR::sprintf_va( mBinary& ret_dest , _Printf_format_string_ const CHAR* format , va_list args )
+{
+	return sprintf_va( &ret_dest , format , args );
+}
+
+INT mTCHAR::sprintf_va( mBinary* ret_dest , _Printf_format_string_ const CHAR* format , va_list args )
+{
+	if( ret_dest == nullptr )
+	{
+		return -1;
+	}
+
+	ret_dest->clear();
+	if( !format )
+	{
+		return -1;
+	}
+
+	//必要文字数をカウントしてバッファを確保
+	INT bufflen = _vscprintf( format , args ) + 1;
+	if( bufflen == -1 )
+	{
+		return -1;
+	}
+	ret_dest->resize( bufflen );
+
+	//フォーマットした文字列を書き込み
+	INT result = vsprintf( reinterpret_cast< CHAR* >( ret_dest->data() ) , format , args );
+
+	return result;
+}
+
+
 bool mTCHAR::Binary2String( WString& ret_dest , const BYTE* dat , DWORD len )
 {
 	const WCHAR HexCharTable[ 16 ] =
@@ -2004,3 +2037,32 @@ WString mTCHAR::RemoveSpace( const WString& str )
 	return ret;
 }
 
+//URLエンコード
+AString mTCHAR::ConvertToUrl( const AString& src )
+{
+	WString tmp = AString2WString( src );
+	return ConvertToUrl( tmp );
+}
+
+//URLエンコード
+AString mTCHAR::ConvertToUrl( const WString& src )
+{
+	AString result;
+
+	//UTF8に変換
+	AString utf = WStringToUtf8( src );
+
+	//%xxに変換
+	for( uint8_t c : utf )
+	{
+		if( isalnum( c ) || c == '-' || c == '_' )
+		{
+			result.push_back( c );
+		}
+		else
+		{
+			appendf( result , "%02X" , c );
+		}
+	}
+	return result;
+}
