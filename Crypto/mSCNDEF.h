@@ -17,25 +17,6 @@
 #include <General/mBinary.h>
 
 
-/*
-URL
-Wifi設定
-連絡先情報の共有（vCard）
-SMS送信
-	例：sms:+819012345678?body=こんにちは
-電話発信
-	例：tel:+819012345678
-メール送信
-	例：mailto:example@example.com?subject=問い合わせ&body=詳細はこちら
-位置情報の表示（Google Mapsなど）
-	例：geo:3x.xxx,13x.xxx?q=Station
-アプリ起動
-	例：intent://scan/#Intent;scheme=zxing;package=com.google.zxing.client.android;end
-
-参考
-https://nfcpy.readthedocs.io/en/v0.13.6/topics/ndef.html
-*/
-
 class mSCNDEF
 {
 public:
@@ -51,10 +32,12 @@ public:
 		enum class TemplateType
 		{
 			Url,
-			Wifi,
-			Geolocation,
-			vCard,
-			Binary,
+
+			//まだない
+			//Wifi,
+			//Geolocation,
+			//vCard,
+			//Binary,
 		};
 		const TemplateType MyTemplateType;
 		mBinary Id;
@@ -79,7 +62,6 @@ public:
 		//そのまま書き込むので、URLエンコードなどは別途行うこと
 		AString Url;
 	};
-
 
 	//テンプレート追加
 	bool AddTemplate( const Template& t );
