@@ -27,6 +27,12 @@ bool mSCNDEF::AddTemplate( const Template& t )
 	case Template::TemplateType::Url:
 		entry.reset( mNew TemplateUrl( reinterpret_cast< const TemplateUrl& >( t ) ) );
 		break;
+	case Template::TemplateType::Text:
+		entry.reset( mNew TemplateText( reinterpret_cast< const TemplateText& >( t ) ) );
+		break;
+	case Template::TemplateType::MIME:
+		entry.reset( mNew TemplateMIME( reinterpret_cast< const TemplateMIME& >( t ) ) );
+		break;
 	default:
 		return false;
 	}
@@ -73,9 +79,25 @@ bool mSCNDEF::EncodeUrlPayload( const TemplateUrl& t , mBinary& retpayload )cons
 	return true;
 }
 
-bool mSCNDEF::CreateTlvHeaderType3( int index , uint8_t header_tnf , const AString& header_type , size_t payload_size , mBinary& retheader )const
+bool mSCNDEF::EncodeTextPayload( const TemplateText& t , mBinary& retpayload )const
 {
-	const TemplateWellknown& entry = reinterpret_cast< const TemplateWellknown& >( *MyTemplates[ index ].get() );
+	retpayload.clear();
+	for( char c : t.Text )
+	{
+		retpayload.push_back( c );
+	}
+	return true;
+}
+
+bool mSCNDEF::EncodeMIMEPayload( const TemplateMIME& t , mBinary& retpayload )const
+{
+	retpayload = t.Data;
+	return true;
+}
+
+bool mSCNDEF::CreateNdefTlv( int index , uint8_t header_tnf , const AString& header_type , size_t payload_size , mBinary& retheader )const
+{
+	const Template& entry = reinterpret_cast< const Template& >( *MyTemplates[ index ].get() );
 
 	//Header
 	retheader.push_back( 0
@@ -128,95 +150,87 @@ bool mSCNDEF::CreateTlvHeaderType3( int index , uint8_t header_tnf , const AStri
 	return true;
 }
 
+
 bool mSCNDEF::Encode( mBinary& retdata )const
 {
 	retdata.clear();
 	
-	auto WriteTlv = [this,&retdata]( uint8_t tag , const mBinary& data )->bool
-	{
-		//T
-		retdata.push_back( tag );
-		//L
-		if( 65535 < data.size() )
-		{
-			RaiseError( g_ErrorLogger , 0 , L"ペイロードが大きすぎる" );
-			return false;
-		}
-		else if( 255 <= data.size() )
-		{
-			retdata.push_back( 0xFFu );
-			retdata.push_back( ( data.size() >> 8 ) & 0xFFu );
-			retdata.push_back( ( data.size() >> 0 ) & 0xFFu );
-		}
-		else
-		{
-			retdata.push_back( data.size() & 0xFFu );
-		}
-		//V
-		retdata.append( data );
-		return true;
-	};
-
 	mBinary data;
-	uint8_t stocked_tag = 0xffu;
 	for( int i = 0 ; i < MyTemplates.size() ; i++ )
 	{
-		const TemplatesEntry& entry = MyTemplates[ i ];
+		const Template& entry = *MyTemplates[ i ].get();
 
 		//データ取得
-		uint8_t current_tag;
 		mBinary header;
 		mBinary payload;
 
-		switch( entry->MyTemplateType )
+		switch( entry.MyTemplateType )
 		{
 		case Template::TemplateType::Url:
-		{
-			current_tag = 3;	//NDEF Message TLV
-			if( !EncodeUrlPayload( reinterpret_cast< const TemplateUrl& >( *entry.get() ) , payload ) )
+			if( !EncodeUrlPayload( reinterpret_cast< const TemplateUrl& >( entry ) , payload ) )
 			{
 				RaiseError( g_ErrorLogger , 0 , L"URL生成が失敗" );
 				return false;
 			}
-			if( !CreateTlvHeaderType3( i , 1 , "U" , payload.size() , header ) )
+			if( !CreateNdefTlv( i , 1 , "U" , payload.size() , header ) )
 			{
 				RaiseError( g_ErrorLogger , 0 , L"URLのヘッダー生成が失敗" );
 				return false;
 			}
 			break;
-		}
+		case Template::TemplateType::Text:
+			if( !EncodeTextPayload( reinterpret_cast< const TemplateText& >( entry ) , payload ) )
+			{
+				RaiseError( g_ErrorLogger , 0 , L"TEXT生成が失敗" );
+				return false;
+			}
+			if( !CreateNdefTlv( i , 1 , "T" , payload.size() , header ) )
+			{
+				RaiseError( g_ErrorLogger , 0 , L"TEXTのヘッダー生成が失敗" );
+				return false;
+			}
+			break;
+		case Template::TemplateType::MIME:
+			if( !EncodeMIMEPayload( reinterpret_cast< const TemplateMIME& >( entry ) , payload ) )
+			{
+				RaiseError( g_ErrorLogger , 0 , L"MIME生成が失敗" );
+				return false;
+			}
+			if( !CreateNdefTlv( i , 2 , reinterpret_cast< const TemplateMIME& >( entry ).MIME , payload.size() , header ) )
+			{
+				RaiseError( g_ErrorLogger , 0 , L"MIMEのヘッダー生成が失敗" );
+				return false;
+			}
+			break;
 		default:
 			RaiseError( g_ErrorLogger , 0 , L"テンプレートの種類が不正" );
 			return false;
 		}
 
-		//現在保持しているタグと今回のタグが違う場合、ここまでのデータを書き出し
-		if( current_tag != stocked_tag )
-		{
-			if( stocked_tag != 0xFFu && !data.empty() )
-			{
-				if( !WriteTlv( stocked_tag , data ) )
-				{
-					return false;
-				}
-				data.clear();
-			}
-			stocked_tag = current_tag;
-		}
-
-		//今回のタグの内容を書き出し
 		data.append( header );
 		data.append( payload );
 	}
 
-	//最後のタグの書き出し
-	if( !data.empty() )
+	//NDEF Message TLV
+	retdata.push_back( 0x03 );
+	//L
+	if( 65535 < data.size() )
 	{
-		if( !WriteTlv( stocked_tag , data ) )
-		{
-			return false;
-		}
+		RaiseError( g_ErrorLogger , 0 , L"ペイロードが大きすぎる" );
+		return false;
 	}
+	else if( 255 <= data.size() )
+	{
+		retdata.push_back( 0xFFu );
+		retdata.push_back( ( data.size() >> 8 ) & 0xFFu );
+		retdata.push_back( ( data.size() >> 0 ) & 0xFFu );
+	}
+	else
+	{
+		retdata.push_back( data.size() & 0xFFu );
+	}
+	//V
+	retdata.append( data );
 
 	//Terminator TLV
 	retdata.push_back( 0xFEu );

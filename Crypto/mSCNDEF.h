@@ -32,14 +32,11 @@ public:
 		enum class TemplateType
 		{
 			Url,
-
-			//まだない
-			//Wifi,
-			//Geolocation,
-			//vCard,
-			//Binary,
+			Text,
+			MIME,
 		};
 		const TemplateType MyTemplateType;
+		mBinary Id;
 	protected:
 		Template() = delete;
 		Template( TemplateType type ) : MyTemplateType( type )
@@ -50,7 +47,6 @@ public:
 	class TemplateWellknown : public Template
 	{
 	public:
-		mBinary Id;
 	protected:
 		TemplateWellknown() = delete;
 		TemplateWellknown( TemplateType type ) : Template( type )
@@ -68,6 +64,25 @@ public:
 		//そのまま書き込むので、URLエンコードなどは別途行うこと
 		AString Url;
 	};
+	//NDEF設定テンプレート(Text)
+	class TemplateText : public TemplateWellknown
+	{
+	public:
+		TemplateText() : TemplateWellknown( TemplateType::Text )
+		{
+		}
+		AString Text;
+	};
+	//NDEF設定テンプレート(MIME)
+	class TemplateMIME : public Template
+	{
+	public:
+		TemplateMIME() : Template( TemplateType::MIME )
+		{
+		}
+		AString MIME;
+		mBinary Data;
+	};
 
 	//テンプレート追加
 	bool AddTemplate( const Template& t );
@@ -82,9 +97,12 @@ protected:
 	using Templates = std::deque< TemplatesEntry >;
 	Templates MyTemplates;
 
-	bool CreateTlvHeaderType3( int i , uint8_t header_tnf , const AString& header_type , size_t payload_size , mBinary& retheader )const;
+	//NDEF Message TLV
+	bool CreateNdefTlv( int i , uint8_t header_tnf , const AString& header_type , size_t payload_size , mBinary& retheader )const;
 
 	bool EncodeUrlPayload( const TemplateUrl& t , mBinary& retpayload )const;
+	bool EncodeTextPayload( const TemplateText& t , mBinary& retpayload )const;
+	bool EncodeMIMEPayload( const TemplateMIME& t , mBinary& retpayload )const;
 };
 
 
