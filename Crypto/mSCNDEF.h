@@ -40,24 +40,30 @@ public:
 			//Binary,
 		};
 		const TemplateType MyTemplateType;
-		mBinary Id;
 	protected:
 		Template() = delete;
 		Template( TemplateType type ) : MyTemplateType( type )
 		{
 		}
 	};
-	//NDEF設定テンプレート(URL)
-	class TemplateUrl : public Template
+	//NDEF設定テンプレート(Wellknown@T=3)
+	class TemplateWellknown : public Template
 	{
 	public:
-		TemplateUrl() : Template( TemplateType::Url )
+		mBinary Id;
+	protected:
+		TemplateWellknown() = delete;
+		TemplateWellknown( TemplateType type ) : Template( type )
 		{
 		}
-		//TemplateUrl( const TemplateUrl& src ) : Template( TemplateType::Url )
-		//{
-		//	Url = src.Url;
-		//}
+	};
+	//NDEF設定テンプレート(URL)
+	class TemplateUrl : public TemplateWellknown
+	{
+	public:
+		TemplateUrl() : TemplateWellknown( TemplateType::Url )
+		{
+		}
 		//タグに書き込むURL
 		//そのまま書き込むので、URLエンコードなどは別途行うこと
 		AString Url;
@@ -75,6 +81,8 @@ protected:
 	using TemplatesEntry = std::unique_ptr< Template >;
 	using Templates = std::deque< TemplatesEntry >;
 	Templates MyTemplates;
+
+	bool CreateTlvHeaderType3( int i , uint8_t header_tnf , const AString& header_type , size_t payload_size , mBinary& retheader )const;
 
 	bool EncodeUrlPayload( const TemplateUrl& t , mBinary& retpayload )const;
 };

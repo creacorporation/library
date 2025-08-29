@@ -73,107 +73,153 @@ bool mSCNDEF::EncodeUrlPayload( const TemplateUrl& t , mBinary& retpayload )cons
 	return true;
 }
 
+bool mSCNDEF::CreateTlvHeaderType3( int index , uint8_t header_tnf , const AString& header_type , size_t payload_size , mBinary& retheader )const
+{
+	const TemplateWellknown& entry = reinterpret_cast< const TemplateWellknown& >( *MyTemplates[ index ].get() );
+
+	//Header
+	retheader.push_back( 0
+		| ( ( index == 0 )                      ? ( 0x80u ) : ( 0x00u ) )   //MB
+		| ( ( index == MyTemplates.size() - 1 ) ? ( 0x40u ) : ( 0x00u ) )   //ME
+		| ( 0 )	                                                            //CFは対応しない
+		| ( ( payload_size < 256 )              ? ( 0x10u ) : ( 0x00u ) )   //SR
+		| ( ( !entry.Id.empty() )               ? ( 0x04u ) : ( 0x00u ) )   //IL
+		| ( header_tnf )                                                    //TNF
+	);
+	//Type Length
+	if( 255 < header_type.size() )
+	{
+		RaiseError( g_ErrorLogger , 0 , L"Typeが大きすぎる" );
+		return false;
+	}
+	retheader.push_back( header_type.size() & 0xFFu );
+	//Payload Length
+	if( payload_size < 256 )
+	{
+		retheader.push_back( payload_size & 0xFFu );
+	}
+	else
+	{
+		retheader.push_back( ( payload_size >> 24 ) & 0xFFu );
+		retheader.push_back( ( payload_size >> 16 ) & 0xFFu );
+		retheader.push_back( ( payload_size >>  8 ) & 0xFFu );
+		retheader.push_back( ( payload_size >>  0 ) & 0xFFu );
+	}
+	//Id Length
+	if( !entry.Id.empty() )
+	{
+		if( 255 < entry.Id.size() )
+		{
+			RaiseError( g_ErrorLogger , 0 , L"Idが大きすぎる" );
+			return false;
+		}
+		retheader.push_back( entry.Id.size() & 0xFFu );
+	}
+	//Type
+	for( char c : header_type )
+	{
+		retheader.push_back( c );
+	}
+	//Id
+	if( !entry.Id.empty() )
+	{
+		retheader.append( entry.Id );
+	}
+	return true;
+}
+
 bool mSCNDEF::Encode( mBinary& retdata )const
 {
 	retdata.clear();
-	mBinary data;
+	
+	auto WriteTlv = [this,&retdata]( uint8_t tag , const mBinary& data )->bool
+	{
+		//T
+		retdata.push_back( tag );
+		//L
+		if( 65535 < data.size() )
+		{
+			RaiseError( g_ErrorLogger , 0 , L"ペイロードが大きすぎる" );
+			return false;
+		}
+		else if( 255 <= data.size() )
+		{
+			retdata.push_back( 0xFFu );
+			retdata.push_back( ( data.size() >> 8 ) & 0xFFu );
+			retdata.push_back( ( data.size() >> 0 ) & 0xFFu );
+		}
+		else
+		{
+			retdata.push_back( data.size() & 0xFFu );
+		}
+		//V
+		retdata.append( data );
+		return true;
+	};
 
+	mBinary data;
+	uint8_t stocked_tag = 0xffu;
 	for( int i = 0 ; i < MyTemplates.size() ; i++ )
 	{
 		const TemplatesEntry& entry = MyTemplates[ i ];
 
 		//データ取得
-		uint8_t header_tnf;
-		mBinary header_type;
+		uint8_t current_tag;
+		mBinary header;
 		mBinary payload;
+
 		switch( entry->MyTemplateType )
 		{
 		case Template::TemplateType::Url:
-			header_tnf = 1;
-			header_type.push_back( 'U' );
+		{
+			current_tag = 3;	//NDEF Message TLV
 			if( !EncodeUrlPayload( reinterpret_cast< const TemplateUrl& >( *entry.get() ) , payload ) )
 			{
 				RaiseError( g_ErrorLogger , 0 , L"URL生成が失敗" );
 				return false;
 			}
+			if( !CreateTlvHeaderType3( i , 1 , "U" , payload.size() , header ) )
+			{
+				RaiseError( g_ErrorLogger , 0 , L"URLのヘッダー生成が失敗" );
+				return false;
+			}
 			break;
+		}
 		default:
 			RaiseError( g_ErrorLogger , 0 , L"テンプレートの種類が不正" );
 			return false;
 		}
 
-		//Header
-		data.push_back( 0
-			| ( ( i == 0 )                      ? ( 0x80u ) : ( 0x00u ) )   //MB
-			| ( ( i == MyTemplates.size() - 1 ) ? ( 0x40u ) : ( 0x00u ) )   //ME
-			| ( 0 )	                                                        //CFは対応しない
-			| ( ( payload.size() < 256 )        ? ( 0x10u ) : ( 0x00u ) )   //SR
-			| ( ( !entry.get()->Id.empty() )    ? ( 0x04u ) : ( 0x00u ) )   //IL
-			| ( header_tnf )                                                //TNF
-		);
-		//Type Length
-		if( 255 < header_type.size() )
+		//現在保持しているタグと今回のタグが違う場合、ここまでのデータを書き出し
+		if( current_tag != stocked_tag )
 		{
-			RaiseError( g_ErrorLogger , 0 , L"Typeが大きすぎる" );
-			return false;
-		}
-		data.push_back( header_type.size() & 0xFFu );
-		//Payload Length
-		if( payload.size() < 256 )
-		{
-			data.push_back( payload.size() & 0xFFu );
-		}
-		else
-		{
-			data.push_back( ( payload.size() >> 24 ) & 0xFFu );
-			data.push_back( ( payload.size() >> 16 ) & 0xFFu );
-			data.push_back( ( payload.size() >>  8 ) & 0xFFu );
-			data.push_back( ( payload.size() >>  0 ) & 0xFFu );
-		}
-		//Id Length
-		if( !entry.get()->Id.empty() )
-		{
-			if( 255 < entry.get()->Id.size() )
+			if( stocked_tag != 0xFFu && !data.empty() )
 			{
-				RaiseError( g_ErrorLogger , 0 , L"Idが大きすぎる" );
-				return false;
+				if( !WriteTlv( stocked_tag , data ) )
+				{
+					return false;
+				}
+				data.clear();
 			}
-			data.push_back( entry.get()->Id.size() & 0xFFu );
+			stocked_tag = current_tag;
 		}
-		//Type
-		data.append( header_type );
-		//Id
-		if( !entry.get()->Id.empty() )
-		{
-			data.append( entry.get()->Id );
-		}
-		//Payload
+
+		//今回のタグの内容を書き出し
+		data.append( header );
 		data.append( payload );
 	}
 
-	//T
-	retdata.push_back( 0x03u );	//NDEF Message TLV
-	//L
-	if( 65535 < data.size() )
+	//最後のタグの書き出し
+	if( !data.empty() )
 	{
-		RaiseError( g_ErrorLogger , 0 , L"ペイロードが大きすぎる" );
-		return false;
+		if( !WriteTlv( stocked_tag , data ) )
+		{
+			return false;
+		}
 	}
-	else if( 255 <= data.size() )
-	{
-		retdata.push_back( 0xFFu );
-		retdata.push_back( ( data.size() >> 8 ) & 0xFFu );
-		retdata.push_back( ( data.size() >> 0 ) & 0xFFu );
-	}
-	else
-	{
-		retdata.push_back( data.size() & 0xFFu );
-	}
-	//V
-	retdata.append( data );
 
-	//T
-	retdata.push_back( 0xFEu );	//Terminator TLV
+	//Terminator TLV
+	retdata.push_back( 0xFEu );
 	return true;
 }
 
