@@ -213,13 +213,15 @@ public:
 	//Auth0など別の手段使った方が簡単
 	bool SetDynamicLock( uint32_t setting )const;
 
-	//データページの最小
+	//ユーザーエリアの最小
+	//※ユーザーエリアの先頭ページ
 	static const uint8_t MinUserAreaPage = 4;
 
-	//データページの最大
+	//ユーザーエリアの最大
+	//※ユーザーエリアの最後のページ
 	uint8_t GetMaxUserAreaPage( void )const;
 
-	//データエリアのバイト数
+	//ユーザーエリアのバイト数
 	uint32_t GetUserAreaSize( void )const;
 
 
@@ -235,10 +237,10 @@ protected:
 	//品番を取得する
 	PartNum GetPartNum( TransparentSession& session )const;
 	
-	//データページの最大
+	//ユーザーエリアの最大
 	uint8_t GetMaxUserAreaPage( TransparentSession& session )const;
 
-	//データエリアのバイト数
+	//ユーザーエリアのバイト数
 	uint32_t GetUserAreaSize( TransparentSession& session )const;
 
 	//PACKの値を取得する
