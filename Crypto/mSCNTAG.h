@@ -32,8 +32,26 @@ public:
 		Unknown,
 	};
 
+	//指定のページ範囲を読み取ります
+	//start_page 読み取る最初のページ
+	//end_page 読み取る最後のページ
+	//retData 読み取ったデータ
+	//・ユーザーエリア、コンフィグにかかわらずどのページでも読めます
 	bool Read( uint8_t start_page , uint8_t end_page , mBinary& retData )const;
+
+	//指定のページにデータを書き込みます
+	//page 書き込む先頭のページ
+	//data 書き込むデータ
+	//ret 書込み成功時真
+	//・書込み先はユーザーエリアの範囲のみです。ユーザーエリア外に書き込もうとするとエラーになります。
+	//・設定の書込みはそれぞれの専用の関数を呼んでください。
 	bool Write( uint8_t page , const mBinary& data )const;
+
+	//ベリファイを行います
+	//page 先頭のページ
+	//data 正解データ
+	//・書込み時は内部的にベリファイを行っていますので、ユーザーが行う必要はありません。
+	//・書込みを伴わずにデータの確認をしたい場合に使う想定です。
 	bool Verify( uint8_t page , const mBinary& data )const;
 
 	//64ビット値でUIDを返します
@@ -195,6 +213,16 @@ public:
 	//Auth0など別の手段使った方が簡単
 	bool SetDynamicLock( uint32_t setting )const;
 
+	//データページの最小
+	static const uint8_t MinUserAreaPage = 4;
+
+	//データページの最大
+	uint8_t GetMaxUserAreaPage( void )const;
+
+	//データエリアのバイト数
+	uint32_t GetUserAreaSize( void )const;
+
+
 protected:
 
 	//接続時のカード個別の処理
@@ -213,13 +241,15 @@ protected:
 	//CCの値を取得する
 	uint32_t GetCC( TransparentSession& session )const;
 
+	//パーツ番号
+	mutable PartNum MyPartNum = PartNum::Unknown;
 
 private:
 	mSCNTAG( const mSCNTAG& source );
 	const mSCNTAG& operator=( const mSCNTAG& source ) = delete;
 
 	bool ReadInternal( uint8_t start_page , uint8_t end_page , mBinary& retData , TransparentSession& session )const;
-	bool WriteInternal( uint8_t page , const mBinary& data , TransparentSession& session )const;
+	bool WriteInternal( uint8_t page , const mBinary& data , TransparentSession& session , bool isuserarea )const;
 	bool VerifyInternal( uint8_t page , const mBinary& data , TransparentSession& session )const;
 };
 
