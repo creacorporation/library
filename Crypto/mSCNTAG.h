@@ -235,6 +235,12 @@ protected:
 	//品番を取得する
 	PartNum GetPartNum( TransparentSession& session )const;
 	
+	//データページの最大
+	uint8_t GetMaxUserAreaPage( TransparentSession& session )const;
+
+	//データエリアのバイト数
+	uint32_t GetUserAreaSize( TransparentSession& session )const;
+
 	//PACKの値を取得する
 	uint16_t GetPACK( TransparentSession& session )const;
 

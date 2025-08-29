@@ -89,7 +89,7 @@ bool mSCNTAG::WriteInternal( uint8_t page , const mBinary& data , TransparentSes
 		}
 
 		size_t end_page = page + ( ( data.size() + 3 ) / 4 ) - 1;
-		if( GetMaxUserAreaPage() < end_page )
+		if( GetMaxUserAreaPage( session ) < end_page )
 		{
 			RaiseError( g_ErrorLogger , 0 , L"データサイズがタグの容量をオーバーしています" );
 			return false;
@@ -627,16 +627,15 @@ bool mSCNTAG::SetDynamicLock( uint32_t setting )const
 
 }
 
-//データページの最大
-uint8_t mSCNTAG::GetMaxUserAreaPage( void )const
+static uint8_t GetMaxUserAreaPage( mSCNTAG::PartNum part )
 {
-	switch( GetPartNum() )
+	switch( part )
 	{
-	case PartNum::NTAG213:
+	case mSCNTAG::PartNum::NTAG213:
 		return 0x27u;
-	case PartNum::NTAG215:
+	case mSCNTAG::PartNum::NTAG215:
 		return 0x81u;
-	case PartNum::NTAG216:
+	case mSCNTAG::PartNum::NTAG216:
 		return 0xE1u;
 	default:
 		break;
@@ -645,22 +644,41 @@ uint8_t mSCNTAG::GetMaxUserAreaPage( void )const
 	return 0;
 }
 
-//データエリアのバイト数
-uint32_t mSCNTAG::GetUserAreaSize( void )const
+uint8_t mSCNTAG::GetMaxUserAreaPage( void )const
 {
-	switch( GetPartNum() )
+	return ::GetMaxUserAreaPage( GetPartNum() );
+}
+
+uint8_t mSCNTAG::GetMaxUserAreaPage( TransparentSession& session )const
+{
+	return ::GetMaxUserAreaPage( GetPartNum( session ) );
+}
+
+static uint32_t GetUserAreaSize( mSCNTAG::PartNum part )
+{
+	switch( part )
 	{
-	case PartNum::NTAG213:
+	case mSCNTAG::PartNum::NTAG213:
 		return 144;
-	case PartNum::NTAG215:
+	case mSCNTAG::PartNum::NTAG215:
 		return 504;
-	case PartNum::NTAG216:
+	case mSCNTAG::PartNum::NTAG216:
 		return 888;
 	default:
 		break;
 	}
 	RaiseError( g_ErrorLogger , 0 , L"パーツナンバーを判断できない" );
 	return 0;
+}
+
+uint32_t mSCNTAG::GetUserAreaSize( void )const
+{
+	return ::GetUserAreaSize( GetPartNum() );
+}
+
+uint32_t mSCNTAG::GetUserAreaSize( TransparentSession& session )const
+{
+	return ::GetUserAreaSize( GetPartNum( session ) );
 }
 
 bool mSCNTAG::OnConnectCallback( void )
