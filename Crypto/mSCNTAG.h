@@ -109,7 +109,7 @@ public:
 
 	//パスワード認証する
 	//成功時真
-	bool Auth( uint32_t password )const;
+	bool Auth( uint32_t password , uint16_t pack )const;
 
 	//署名を取得する
 	//互換タグだと失敗したり、成功しても全部ゼロ埋めだったりする
@@ -243,9 +243,6 @@ protected:
 	//ユーザーエリアのバイト数
 	uint32_t GetUserAreaSize( TransparentSession& session )const;
 
-	//PACKの値を取得する
-	uint16_t GetPACK( TransparentSession& session )const;
-
 	//CCの値を取得する
 	uint32_t GetCC( TransparentSession& session )const;
 
@@ -256,9 +253,13 @@ private:
 	mSCNTAG( const mSCNTAG& source );
 	const mSCNTAG& operator=( const mSCNTAG& source ) = delete;
 
+protected:
+
 	bool ReadInternal( uint8_t start_page , uint8_t end_page , mBinary& retData , TransparentSession& session )const;
-	bool WriteInternal( uint8_t page , const mBinary& data , TransparentSession& session , bool isuserarea )const;
+	bool WriteInternal( uint8_t page , const mBinary& data , TransparentSession& session , bool isuserarea , bool noverify )const;
 	bool VerifyInternal( uint8_t page , const mBinary& data , TransparentSession& session )const;
+	bool AuthInternal( uint32_t password , uint16_t pack , TransparentSession& session )const;
+
 };
 
 

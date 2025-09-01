@@ -74,10 +74,10 @@ bool mSCNTAG::VerifyInternal( uint8_t page , const mBinary& data , TransparentSe
 bool mSCNTAG::Write( uint8_t page , const mBinary& data )const
 {
 	TransparentSession session( *this );
-	return WriteInternal( page , data , session , true );
+	return WriteInternal( page , data , session , true , false );
 }
 
-bool mSCNTAG::WriteInternal( uint8_t page , const mBinary& data , TransparentSession& session , bool isuserarea )const
+bool mSCNTAG::WriteInternal( uint8_t page , const mBinary& data , TransparentSession& session , bool isuserarea , bool noverify )const
 {
 	//ユーザーエリアへの書込みの場合、容量チェックを行う
 	if( isuserarea )
@@ -145,9 +145,12 @@ bool mSCNTAG::WriteInternal( uint8_t page , const mBinary& data , TransparentSes
 		}
 		current_page++;
 	}
-	if( !VerifyInternal( page , data , session ) )
+	if( !noverify )
 	{
-		return false;
+		if( !VerifyInternal( page , data , session ) )
+		{
+			return false;
+		}
 	}
 	return true;
 }
@@ -266,12 +269,14 @@ int32_t mSCNTAG::GetReadCount( void )const
 
 }
 
-bool mSCNTAG::Auth( uint32_t password )const
+bool mSCNTAG::Auth( uint32_t password , uint16_t pack )const
 {
 	TransparentSession session( *this );
+	return AuthInternal( password , pack , session );
+}
 
-	uint16_t pack = GetPACK( session );
-
+bool mSCNTAG::AuthInternal( uint32_t password , uint16_t pack , TransparentSession& session )const
+{
 	mBinary cmd;
 	cmd.push_back( 0x1Bu );		//Password Authentication
 	cmd.push_back( ( password >> 24 ) & 0xFFu );
@@ -291,7 +296,7 @@ bool mSCNTAG::Auth( uint32_t password )const
 		RaiseError( g_ErrorLogger , 0 , L"認証が失敗しました" );
 		return false;
 	}
-	if( ( ( rsp[ 0 ] << 8 ) + ( rsp[ 0 ] ) ) != pack )
+	if( ( ( rsp[ 0 ] << 8 ) + ( rsp[ 1 ] ) ) != pack )
 	{
 		RaiseError( g_ErrorLogger , 0 , L"PACKの値が不正です" );
 		return false;
@@ -338,53 +343,21 @@ mSCNTAG::PartNum mSCNTAG::GetPartNum( TransparentSession& session )const
 	return MyPartNum;
 }
 
-//PACKの値を取得する
-uint16_t mSCNTAG::GetPACK( TransparentSession& session )const
-{
-	uint8_t packaddr;
-	switch( GetPartNum( session ) )
-	{
-	case PartNum::NTAG213:
-		packaddr = 0x2Cu;
-		break;
-	case PartNum::NTAG215:
-		packaddr = 0x86u;
-		break;
-	case PartNum::NTAG216:
-		packaddr = 0xE6u;
-		break;
-	default:
-		RaiseError( g_ErrorLogger , 0 , L"PACKのアドレスを判断できない" );
-		return 0;
-	}
-
-	mBinary pack;
-	if( !ReadInternal( packaddr , packaddr , pack , session ) )
-	{
-		return 0;
-	}
-	if( pack.size() != 4 )
-	{
-		RaiseError( g_ErrorLogger , 0 , L"PACKのサイズが不正" );
-	}
-	return ( pack[ 0 ] << 8 ) + ( pack[ 1 ] << 0 );
-}
-
 //CCの値を取得する
 uint32_t mSCNTAG::GetCC( TransparentSession& session )const
 {
 	mBinary cc;
-	if( !ReadInternal( 3 , 3 , cc , session ) )
+	for( uint32_t retry_count = 0 ; retry_count < 5 ; retry_count++ )
 	{
-		return 0;
+		if( ReadInternal( 3 , 3 , cc , session ) && cc.size() == 4 )
+		{
+			return ( cc[ 0 ] << 24 ) + ( cc[ 1 ] << 16 ) + ( cc[ 2 ] << 8 ) + ( cc[ 3 ] << 0 );
+		}
+		Sleep( 10 );	//5回までリトライ
 	}
-	if( cc.size() != 4 )
-	{
-		RaiseError( g_ErrorLogger , 0 , L"CCのサイズが不正" );
-		return 0;
-	}
+	RaiseError( g_ErrorLogger , 0 , L"CCを読み取れない" );
+	return 0;
 
-	return ( cc[ 0 ] << 24 ) + ( cc[ 1 ] << 16 ) + ( cc[ 2 ] << 8 ) + ( cc[ 3 ] << 0 );
 }
 
 bool mSCNTAG::ReadSig( mBinary& retdata )const
@@ -469,7 +442,7 @@ bool mSCNTAG::SetAccessSetting( const AccessSetting& setting )const
 	data[ 1 ] = 0;
 	data[ 2 ] = 0;
 	data[ 3 ] = 0;
-	if( !WriteInternal( access_page , data , session , false ) )
+	if( !WriteInternal( access_page , data , session , false , false ) )
 	{
 		RaiseError( g_ErrorLogger , 0 , L"ACCESSの書込みが失敗しました" );
 		return false;
@@ -480,20 +453,27 @@ bool mSCNTAG::SetAccessSetting( const AccessSetting& setting )const
 	data[ 1 ] = ( setting.Password >> 16 ) & 0xFFu;
 	data[ 2 ] = ( setting.Password >>  8 ) & 0xFFu;
 	data[ 3 ] = ( setting.Password >>  0 ) & 0xFFu;
-	if( !WriteInternal( access_page + 1 , data , session , false ) )
+	if( !WriteInternal( access_page + 1 , data , session , false , true ) )
 	{
 		RaiseError( g_ErrorLogger , 0 , L"PWDの書込みが失敗しました" );
 		return false;
 	}
 
 	//PACK
-	data[ 0 ] = ( setting.Pack << 8 ) & 0xFFu;;
-	data[ 1 ] = ( setting.Pack << 0 ) & 0xFFu;;
+	data[ 0 ] = ( setting.Pack >> 8 ) & 0xFFu;
+	data[ 1 ] = ( setting.Pack >> 0 ) & 0xFFu;
 	data[ 2 ] = 0;
 	data[ 3 ] = 0;
-	if( !WriteInternal( access_page + 2 , data , session , false ) )
+	if( !WriteInternal( access_page + 2 , data , session , false , true ) )
 	{
 		RaiseError( g_ErrorLogger , 0 , L"PACKの書込みが失敗しました" );
+		return false;
+	}
+
+	//新しいPWD/PACKでログインできるか？
+	if( !AuthInternal( setting.Password , setting.Pack , session ) )
+	{
+		RaiseError( g_ErrorLogger , 0 , L"PWD/PACKの検証が失敗しました" );
 		return false;
 	}
 
@@ -511,7 +491,7 @@ bool mSCNTAG::SetAccessSetting( const AccessSetting& setting )const
 	{
 		data[ 3 ] = setting.Auth0;
 	}
-	if( !WriteInternal( auth0_page , data , session , false ) )
+	if( !WriteInternal( auth0_page , data , session , false , false ) )
 	{
 		RaiseError( g_ErrorLogger , 0 , L"Auth0の書込みが失敗しました" );
 		return false;
@@ -525,7 +505,7 @@ bool mSCNTAG::SetAccessSetting( const AccessSetting& setting )const
 		data[ 1 ] = 0;
 		data[ 2 ] = 0;
 		data[ 3 ] = 0x0Fu;
-		if( !WriteInternal( 3 , data , session , false ) )
+		if( !WriteInternal( 3 , data , session , false , false ) )
 		{
 			RaiseError( g_ErrorLogger , 0 , L"CCの書込みが失敗しました" );
 			return false;
@@ -583,11 +563,26 @@ bool mSCNTAG::SetStaticLock( const StaticLock& setting )const
 	data.push_back( ( pagelock | settinglock ) & 0xFFu );
 	data.push_back( ( pagelock >> 8          ) & 0xFFu );
 
-	if( !WriteInternal( 2 , data , session , false ) )
+	if( !WriteInternal( 2 , data , session , false , true ) )
 	{
 		RaiseError( g_ErrorLogger , 0 , L"StaticLockByteの書込みが失敗しました" );
 		return false;
 	}
+
+	//ベリファイ
+	mBinary verify;
+	if( !ReadInternal( 2 , 2 , verify , session ) || verify.size() != 4 )
+	{
+		RaiseError( g_ErrorLogger , 0 , L"StaticLockByteの読み込みが失敗しました" );
+		return false;
+	}
+	if( ( ( data[ 2 ] & verify[ 2 ] ) != verify[ 2 ] ) ||
+		( ( data[ 3 ] & verify[ 3 ] ) != verify[ 3 ] ) )
+	{
+		RaiseError( g_ErrorLogger , 0 , L"StaticLockByteのベリファイが失敗しました" );
+		return false;
+	}
+
 	return true;
 }
 
@@ -618,7 +613,7 @@ bool mSCNTAG::SetDynamicLock( uint32_t setting )const
 	data.push_back( ( setting >>  8 ) & 0xFFu );
 	data.push_back( ( setting >>  0 ) & 0xFFu );
 
-	if( !WriteInternal( addr , data , session , false ) )
+	if( !WriteInternal( addr , data , session , false , false ) )
 	{
 		RaiseError( g_ErrorLogger , 0 , L"DynamicLockByteの書込みが失敗しました" );
 		return false;

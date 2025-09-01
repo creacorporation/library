@@ -364,6 +364,7 @@ mSCBase::TransparentSession::TransparentSession( const mSCBase& base ) :
 	}
 
 	MyIsValid = true;
+	CreateLogEntry( g_ErrorLogger , 0 , L"スマートカードとのセッションを開始" );
 	return;
 }
 
@@ -388,6 +389,7 @@ mSCBase::TransparentSession::~TransparentSession()
 	{
 		RaiseError( g_ErrorLogger , 0 , L"スマートカードとの通信が失敗しました" );
 	}
+	CreateLogEntry( g_ErrorLogger , 0 , L"スマートカードとのセッションを終了" );
 	return;
 }
 
