@@ -20,6 +20,11 @@
 #include <winscard.h>
 #pragma comment (lib, "winscard.lib")
 
+//動作確認しているリーダー
+//・ACR1251CL-NTTCom
+//・RC-S380
+//※RC-S380を利用している場合、設定アプリで「FeliCaアプリケーションを優先」のチェックを外さないと動かないかもしれない
+//  公式のドライバをインストールするとコントロールパネルに追加される「NFCポート／パソリ」のアイコンから設定できる
 
 namespace Definitions_SCReader
 {

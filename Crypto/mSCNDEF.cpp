@@ -82,7 +82,22 @@ bool mSCNDEF::EncodeUrlPayload( const TemplateUrl& t , mBinary& retpayload )cons
 bool mSCNDEF::EncodeTextPayload( const TemplateText& t , mBinary& retpayload )const
 {
 	retpayload.clear();
-	for( char c : t.Text )
+	
+	AString utfstr = AStringToUtf8( t.Text );
+	if( 64 <= t.LanguageCode.size() )
+	{
+		RaiseError( g_ErrorLogger , 0 , L"LanguageCode‚ª’·‚·‚¬‚é" );
+		return false;
+	}
+	uint8_t langlen = t.LanguageCode.size() & 0xFFu;
+
+	//                     «UTF-8      «LangCode‚Ì’·‚³
+	retpayload.push_back( ( 0 << 7 ) | ( langlen ) );
+	for( char c : t.LanguageCode )
+	{
+		retpayload.push_back( c );
+	}
+	for( char c : utfstr )
 	{
 		retpayload.push_back( c );
 	}

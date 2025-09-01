@@ -71,6 +71,11 @@ public:
 		TemplateText() : TemplateWellknown( TemplateType::Text )
 		{
 		}
+		//言語コード
+		//en=英語、jp=日本語。
+		AString LanguageCode;
+		//書き込む文字列
+		//※UTF-8に変換して書き込まれます
 		AString Text;
 	};
 	//NDEF設定テンプレート(MIME)
