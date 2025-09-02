@@ -472,15 +472,17 @@ bool mSCNTAG::SetAccessSetting( const AccessSetting& setting )const
 	{
 		//ACCESS
 		mBinary data;
-		data.resize( 4 );
+		if( !ReadInternal( access_page , access_page , data , session ) || ( data.size() != 4 ) )
+		{
+			RaiseError( g_ErrorLogger , 0 , L"ACCESSの読み込みが失敗しました" );
+			return false;
+		}
+
 		data[ 0 ] = 
 			( ( setting.ReadProtect ) ? ( 0x80u ) : ( 0 ) ) |
 			( ( setting.ConfigLock ) ? ( 0x40u ) : ( 0 ) ) |
 			( ( setting.EnableCounter ) ? ( 0x10u ) : ( 0 ) ) |
 			( ( setting.CounterProtect ) ? ( 0x08u ) : ( 0 ) );
-		data[ 1 ] = 0;
-		data[ 2 ] = 0;
-		data[ 3 ] = 0;
 		if( !WriteInternal( access_page , data , session , false , false ) )
 		{
 			RaiseError( g_ErrorLogger , 0 , L"ACCESSの書込みが失敗しました" );
