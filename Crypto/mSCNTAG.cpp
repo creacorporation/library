@@ -491,40 +491,6 @@ bool mSCNTAG::SetAccessSetting( const AccessSetting& setting )const
 		return true;
 	};
 
-	auto WritePWD = [this,&session]( const AccessSetting& setting , uint8_t access_page , uint8_t auth0_page )->bool
-	{
-		//PWD
-		mBinary data;
-		data.resize( 4 );
-		data[ 0 ] = ( setting.Password >> 24 ) & 0xFFu;
-		data[ 1 ] = ( setting.Password >> 16 ) & 0xFFu;
-		data[ 2 ] = ( setting.Password >>  8 ) & 0xFFu;
-		data[ 3 ] = ( setting.Password >>  0 ) & 0xFFu;
-		if( !WriteInternal( access_page + 1 , data , session , false , true ) )
-		{
-			RaiseError( g_ErrorLogger , 0 , L"PWDの書込みが失敗しました" );
-			return false;
-		}
-
-		//PACK
-		data[ 0 ] = ( setting.Pack >> 8 ) & 0xFFu;
-		data[ 1 ] = ( setting.Pack >> 0 ) & 0xFFu;
-		data[ 2 ] = 0;
-		data[ 3 ] = 0;
-		if( !WriteInternal( access_page + 2 , data , session , false , true ) )
-		{
-			RaiseError( g_ErrorLogger , 0 , L"PACKの書込みが失敗しました" );
-			return false;
-		}
-
-		//新しいPWD/PACKでログインできるか？
-		if( !AuthInternal( setting.Password , setting.Pack , session ) )
-		{
-			RaiseError( g_ErrorLogger , 0 , L"PWD/PACKの検証が失敗しました" );
-			return false;
-		}
-		return true;
-	};
 
 	auto WriteAuth0 = [this,&session]( const AccessSetting& setting , uint8_t access_page , uint8_t auth0_page )->bool
 	{
@@ -585,12 +551,71 @@ bool mSCNTAG::SetAccessSetting( const AccessSetting& setting )const
 	};
 
 	bool result = true;
-	result &= WritePWD( setting , access_page , auth0_page );
 	result &= WriteCC( setting , access_page , auth0_page );
 	result &= WriteAccess( setting , access_page , auth0_page );
 	result &= WriteAuth0( setting , access_page , auth0_page );
 	return result;
 }
+
+
+bool mSCNTAG::SetPassword( uint32_t password , uint16_t pack )const
+{
+	TransparentSession session( *this );
+	return SetPasswordInternal( password , pack , session );
+}
+
+bool mSCNTAG::SetPasswordInternal( uint32_t password , uint16_t pack , TransparentSession& session )const
+{
+	uint8_t pwd_page;
+	switch( GetPartNum( session ) )
+	{
+	case PartNum::NTAG213:
+		pwd_page = 0x2Bu;
+		break;
+	case PartNum::NTAG215:
+		pwd_page = 0x85u;
+		break;
+	case PartNum::NTAG216:
+		pwd_page = 0xE5u;
+		break;
+	default:
+		RaiseError( g_ErrorLogger , 0 , L"チップの種類が不明" );
+		return false;
+	}
+
+	//PWD
+	mBinary data;
+	data.resize( 4 );
+	data[ 0 ] = ( password >> 24 ) & 0xFFu;
+	data[ 1 ] = ( password >> 16 ) & 0xFFu;
+	data[ 2 ] = ( password >>  8 ) & 0xFFu;
+	data[ 3 ] = ( password >>  0 ) & 0xFFu;
+	if( !WriteInternal( pwd_page , data , session , false , true ) )
+	{
+		RaiseError( g_ErrorLogger , 0 , L"PWDの書込みが失敗しました" );
+		return false;
+	}
+
+	//PACK
+	data[ 0 ] = ( pack >> 8 ) & 0xFFu;
+	data[ 1 ] = ( pack >> 0 ) & 0xFFu;
+	data[ 2 ] = 0;
+	data[ 3 ] = 0;
+	if( !WriteInternal( pwd_page + 1 , data , session , false , true ) )
+	{
+		RaiseError( g_ErrorLogger , 0 , L"PACKの書込みが失敗しました" );
+		return false;
+	}
+
+	//新しいPWD/PACKでログインできるか？
+	if( !AuthInternal( password , pack , session ) )
+	{
+		RaiseError( g_ErrorLogger , 0 , L"PWD/PACKの検証が失敗しました" );
+		return false;
+	}
+	return true;
+}
+
 
 mSCNTAG::StaticLock::StaticLock()
 {

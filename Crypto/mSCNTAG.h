@@ -151,17 +151,16 @@ public:
 		//  PWD,PACKのアドレスが含まれるように調整されます。
 		//  (ConfigLockが真であっても、PWDとPACKは書き換え可能であるため)
 		uint8_t Auth0 = 0xFFu;
-
-		//認証成功時のACKの値
-		uint16_t Pack = 0;
-
-		//パスワード
-		//※パスワードが無効(0xFFFFFFFFu)のときは、読み書きともAUTH不要
-		uint32_t Password = 0xFFFFFFFFu;
 	};
 
 	//アクセス設定を行う
 	bool SetAccessSetting( const AccessSetting& setting )const;
+
+	//パスワード設定する
+	//password パスワードが無効(0xFFFFFFFFu)のときは、読み書きともAUTH不要
+	//pack 認証成功時のACKの値
+	//成功時真
+	bool SetPassword( uint32_t password , uint16_t pack )const;
 
 	//静的ロックのモード
 	enum class StaticLockStatus
@@ -241,7 +240,7 @@ protected:
 
 	//CCの値を取得する
 	uint32_t GetCC( TransparentSession& session )const;
-
+		
 	//パーツ番号
 	mutable PartNum MyPartNum = PartNum::Unknown;
 
@@ -255,6 +254,7 @@ protected:
 	bool WriteInternal( uint8_t page , const mBinary& data , TransparentSession& session , bool isuserarea , bool noverify )const;
 	bool VerifyInternal( uint8_t page , const mBinary& data , TransparentSession& session )const;
 	bool AuthInternal( uint32_t password , uint16_t pack , TransparentSession& session )const;
+	bool SetPasswordInternal( uint32_t password , uint16_t pack , TransparentSession& session )const;
 
 };
 
