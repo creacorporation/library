@@ -139,11 +139,11 @@ public:
 		//真で必要
 		bool CounterProtect = false;
 
-		//いかなる書込みアクセスも受け付けず、完全に読み取りのみとする
+		//Capacity Containerの書込禁止を設定
 		//真：書込禁止
-		//※最強の書込みプロテクト
 		//※一度禁止すると二度と戻せない
-		//※CC(Capability Container)の機能をつかった書込禁止です
+		//※CC(Capability Container)の機能をつかった書込禁止フラグだが、
+		//　アプリ解釈のため強制力はなく、アプリに無視されればそれまで
 		bool NoWriteAccess = false;
 
 		//パスワードがない場合に書込み禁止とする最初のページ番号
@@ -151,10 +151,6 @@ public:
 		//  PWD,PACKのアドレスが含まれるように調整されます。
 		//  (ConfigLockが真であっても、PWDとPACKは書き換え可能であるため)
 		uint8_t Auth0 = 0xFFu;
-
-		//パスワードの連続失敗許容回数
-		//0＝無制限、1～7＝最大回数（8以上は7と見なします）
-		uint8_t AuthLimit = 0;
 
 		//認証成功時のACKの値
 		uint16_t Pack = 0;

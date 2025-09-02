@@ -33,12 +33,31 @@ bool mSCNTAG::ReadInternal( uint8_t start_page , uint8_t end_page , mBinary& ret
 	in.push_back( start_page );
 	in.push_back( end_page );
 
-	Sleep( 10 );
-	if( !session.Communicate( in , retData ) )
+	TransparentSession::TransarentResponse rsp;
+
+	for( uint32_t retry = 0 ; retry < 5 ; retry++ )
 	{
-		RaiseError( g_ErrorLogger , 0 , L"スマートカードとの通信が失敗しました" );
-		return false;
+		Sleep( 10 );
+		if( !session.Communicate( in , retData , &rsp ) )
+		{
+			RaiseError( g_ErrorLogger , 0 , L"スマートカードとの通信が失敗しました" );
+			return false;
+		}
+
+		switch( rsp.ErrorDescription )
+		{
+		case TransparentSession::TransarentResponse::ErrorDescriptionCode::NoError:
+			return true;
+		case TransparentSession::TransarentResponse::ErrorDescriptionCode::ICCNoResponse:
+		case TransparentSession::TransarentResponse::ErrorDescriptionCode::IFDNoResponse:
+			//応答無しの場合リトライ
+			break;
+		default:
+			RaiseError( g_ErrorLogger , (uint32_t)rsp.ErrorDescription , L"スマートカードとの通信が失敗しました" );
+			return false;
+		}
 	}
+	RaiseError( g_ErrorLogger , 0 , L"スマートカードとの通信がリトライ回数が超過しました" );
 	return true;
 }
 
@@ -48,7 +67,7 @@ bool mSCNTAG::VerifyInternal( uint8_t page , const mBinary& data , TransparentSe
 	{
 		return true;
 	}
-	uint8_t end_page = page + ( ( data.size() + 3 ) / 4 ) - 1;
+	uint8_t end_page = page + ( ( (uint8_t)data.size() + 3 ) / 4 ) - 1;
 
 	mBinary readdata;
 	if( !ReadInternal( page , end_page , readdata , session ) )
@@ -117,7 +136,6 @@ bool mSCNTAG::WriteInternal( uint8_t page , const mBinary& data , TransparentSes
 		{
 			//残り4バイト未満の場合、端数部分は読み取って上書き
 			mBinary tmp;
-			Sleep( 10 );
 			if( !ReadInternal( current_page , current_page , tmp , session ) || tmp.size() != 4 )
 			{
 				RaiseError( g_ErrorLogger , 0 , L"最終ページを読み込みできません" );
@@ -284,19 +302,44 @@ bool mSCNTAG::AuthInternal( uint32_t password , uint16_t pack , TransparentSessi
 	cmd.push_back( ( password >>  8 ) & 0xFFu );
 	cmd.push_back( ( password >>  0 ) & 0xFFu );
 
-	mBinary rsp;
-	Sleep( 10 );
-	if( !session.Communicate( cmd , rsp ) )
+	mBinary data;
+	TransparentSession::TransarentResponse response;
+
+	auto CheckRetryResponse = []( TransparentSession::TransarentResponse::ErrorDescriptionCode code )->bool
 	{
-		RaiseError( g_ErrorLogger , 0 , L"スマートカードとの通信が失敗しました" );
+		switch( code )
+		{
+		case TransparentSession::TransarentResponse::ErrorDescriptionCode::ICCNoResponse:
+		case TransparentSession::TransarentResponse::ErrorDescriptionCode::IFDNoResponse:
+			return true;
+		default:
+			break;
+		}
 		return false;
+	};
+
+
+	for( uint32_t retry = 0 ; retry < 5 ; retry++ )
+	{
+		Sleep( 10 );
+		if( !session.Communicate( cmd , data , &response ) )
+		{
+			RaiseError( g_ErrorLogger , 0 , L"スマートカードとの通信が失敗しました" );
+			return false;
+		}
+
+		if( !CheckRetryResponse( response.ErrorDescription ) )
+		{
+			break;
+		}
 	}
-	if( rsp.size() != 2 )
+
+	if( data.size() != 2 )
 	{
 		RaiseError( g_ErrorLogger , 0 , L"認証が失敗しました" );
 		return false;
 	}
-	if( ( ( rsp[ 0 ] << 8 ) + ( rsp[ 1 ] ) ) != pack )
+	if( ( ( data[ 0 ] << 8 ) + ( data[ 1 ] ) ) != pack )
 	{
 		RaiseError( g_ErrorLogger , 0 , L"PACKの値が不正です" );
 		return false;
@@ -347,13 +390,9 @@ mSCNTAG::PartNum mSCNTAG::GetPartNum( TransparentSession& session )const
 uint32_t mSCNTAG::GetCC( TransparentSession& session )const
 {
 	mBinary cc;
-	for( uint32_t retry_count = 0 ; retry_count < 5 ; retry_count++ )
+	if( ReadInternal( 3 , 3 , cc , session ) && cc.size() == 4 )
 	{
-		if( ReadInternal( 3 , 3 , cc , session ) && cc.size() == 4 )
-		{
-			return ( cc[ 0 ] << 24 ) + ( cc[ 1 ] << 16 ) + ( cc[ 2 ] << 8 ) + ( cc[ 3 ] << 0 );
-		}
-		Sleep( 10 );	//5回までリトライ
+		return ( cc[ 0 ] << 24 ) + ( cc[ 1 ] << 16 ) + ( cc[ 2 ] << 8 ) + ( cc[ 3 ] << 0 );
 	}
 	RaiseError( g_ErrorLogger , 0 , L"CCを読み取れない" );
 	return 0;
@@ -429,89 +468,126 @@ bool mSCNTAG::SetAccessSetting( const AccessSetting& setting )const
 		return false;
 	}
 	
-	mBinary data;
-	data.resize( 4 );
-
-	//ACCESS
-	data[ 0 ] = 
-		( ( setting.ReadProtect ) ? ( 0x80u ) : ( 0 ) ) |
-		( ( setting.ConfigLock ) ? ( 0x40u ) : ( 0 ) ) |
-		( ( setting.EnableCounter ) ? ( 0x10u ) : ( 0 ) ) |
-		( ( setting.CounterProtect ) ? ( 0x08u ) : ( 0 ) ) |
-		( ( 7 < setting.AuthLimit ) ? ( 7 ) : ( setting.AuthLimit ) );
-	data[ 1 ] = 0;
-	data[ 2 ] = 0;
-	data[ 3 ] = 0;
-	if( !WriteInternal( access_page , data , session , false , false ) )
+	auto WriteAccess = [this,&session]( const AccessSetting& setting , uint8_t access_page , uint8_t auth0_page )->bool
 	{
-		RaiseError( g_ErrorLogger , 0 , L"ACCESSの書込みが失敗しました" );
-		return false;
-	}
-
-	//PWD
-	data[ 0 ] = ( setting.Password >> 24 ) & 0xFFu;
-	data[ 1 ] = ( setting.Password >> 16 ) & 0xFFu;
-	data[ 2 ] = ( setting.Password >>  8 ) & 0xFFu;
-	data[ 3 ] = ( setting.Password >>  0 ) & 0xFFu;
-	if( !WriteInternal( access_page + 1 , data , session , false , true ) )
-	{
-		RaiseError( g_ErrorLogger , 0 , L"PWDの書込みが失敗しました" );
-		return false;
-	}
-
-	//PACK
-	data[ 0 ] = ( setting.Pack >> 8 ) & 0xFFu;
-	data[ 1 ] = ( setting.Pack >> 0 ) & 0xFFu;
-	data[ 2 ] = 0;
-	data[ 3 ] = 0;
-	if( !WriteInternal( access_page + 2 , data , session , false , true ) )
-	{
-		RaiseError( g_ErrorLogger , 0 , L"PACKの書込みが失敗しました" );
-		return false;
-	}
-
-	//新しいPWD/PACKでログインできるか？
-	if( !AuthInternal( setting.Password , setting.Pack , session ) )
-	{
-		RaiseError( g_ErrorLogger , 0 , L"PWD/PACKの検証が失敗しました" );
-		return false;
-	}
-
-	//Auth0
-	if( !ReadInternal( auth0_page , auth0_page , data , session ) || ( data.size() != 4 ) )
-	{
-		RaiseError( g_ErrorLogger , 0 , L"Auth0の読み込みが失敗しました" );
-		return false;
-	}
-	if( ( setting.ConfigLock ) && ( access_page < setting.Auth0 ) )
-	{
-		data[ 3 ] = access_page + 1;
-	}
-	else
-	{
-		data[ 3 ] = setting.Auth0;
-	}
-	if( !WriteInternal( auth0_page , data , session , false , false ) )
-	{
-		RaiseError( g_ErrorLogger , 0 , L"Auth0の書込みが失敗しました" );
-		return false;
-	}
-
-	//Capability Container
-	if( setting.NoWriteAccess )
-	{
+		//ACCESS
+		mBinary data;
 		data.resize( 4 );
-		data[ 0 ] = 0;
+		data[ 0 ] = 
+			( ( setting.ReadProtect ) ? ( 0x80u ) : ( 0 ) ) |
+			( ( setting.ConfigLock ) ? ( 0x40u ) : ( 0 ) ) |
+			( ( setting.EnableCounter ) ? ( 0x10u ) : ( 0 ) ) |
+			( ( setting.CounterProtect ) ? ( 0x08u ) : ( 0 ) );
 		data[ 1 ] = 0;
 		data[ 2 ] = 0;
-		data[ 3 ] = 0x0Fu;
-		if( !WriteInternal( 3 , data , session , false , false ) )
+		data[ 3 ] = 0;
+		if( !WriteInternal( access_page , data , session , false , false ) )
 		{
-			RaiseError( g_ErrorLogger , 0 , L"CCの書込みが失敗しました" );
+			RaiseError( g_ErrorLogger , 0 , L"ACCESSの書込みが失敗しました" );
 			return false;
 		}
-	}
-	return true;
+		return true;
+	};
+
+	auto WritePWD = [this,&session]( const AccessSetting& setting , uint8_t access_page , uint8_t auth0_page )->bool
+	{
+		//PWD
+		mBinary data;
+		data.resize( 4 );
+		data[ 0 ] = ( setting.Password >> 24 ) & 0xFFu;
+		data[ 1 ] = ( setting.Password >> 16 ) & 0xFFu;
+		data[ 2 ] = ( setting.Password >>  8 ) & 0xFFu;
+		data[ 3 ] = ( setting.Password >>  0 ) & 0xFFu;
+		if( !WriteInternal( access_page + 1 , data , session , false , true ) )
+		{
+			RaiseError( g_ErrorLogger , 0 , L"PWDの書込みが失敗しました" );
+			return false;
+		}
+
+		//PACK
+		data[ 0 ] = ( setting.Pack >> 8 ) & 0xFFu;
+		data[ 1 ] = ( setting.Pack >> 0 ) & 0xFFu;
+		data[ 2 ] = 0;
+		data[ 3 ] = 0;
+		if( !WriteInternal( access_page + 2 , data , session , false , true ) )
+		{
+			RaiseError( g_ErrorLogger , 0 , L"PACKの書込みが失敗しました" );
+			return false;
+		}
+
+		//新しいPWD/PACKでログインできるか？
+		if( !AuthInternal( setting.Password , setting.Pack , session ) )
+		{
+			RaiseError( g_ErrorLogger , 0 , L"PWD/PACKの検証が失敗しました" );
+			return false;
+		}
+		return true;
+	};
+
+	auto WriteAuth0 = [this,&session]( const AccessSetting& setting , uint8_t access_page , uint8_t auth0_page )->bool
+	{
+		//Auth0
+		mBinary data;
+		if( !ReadInternal( auth0_page , auth0_page , data , session ) || ( data.size() != 4 ) )
+		{
+			RaiseError( g_ErrorLogger , 0 , L"Auth0の読み込みが失敗しました" );
+			return false;
+		}
+		if( ( setting.ConfigLock ) && ( access_page < setting.Auth0 ) )
+		{
+			data[ 3 ] = access_page + 1;
+		}
+		else
+		{
+			data[ 3 ] = setting.Auth0;
+		}
+		if( !WriteInternal( auth0_page , data , session , false , false ) )
+		{
+			RaiseError( g_ErrorLogger , 0 , L"Auth0の書込みが失敗しました" );
+			return false;
+		}
+		return true;
+	};
+
+	auto WriteCC = [this,&session]( const AccessSetting& setting , uint8_t access_page , uint8_t auth0_page )->bool
+	{
+		//Capability Container
+		if( setting.NoWriteAccess )
+		{
+			mBinary data;
+			data.resize( 4 );
+			data[ 0 ] = 0;
+			data[ 1 ] = 0;
+			data[ 2 ] = 0;
+			data[ 3 ] = 0x0Fu;
+			if( !WriteInternal( 3 , data , session , false , true ) )
+			{
+				RaiseError( g_ErrorLogger , 0 , L"CCの書込みが失敗しました" );
+				return false;
+			}
+
+			//ベリファイ
+			mBinary verify;
+			if( !ReadInternal( 3 , 3 , verify , session ) || verify.size() != 4 )
+			{
+				RaiseError( g_ErrorLogger , 0 , L"CCの読み込みが失敗しました" );
+				return false;
+			}
+			if( data[ 3 ] != verify[ 3 ] )
+			{
+				RaiseError( g_ErrorLogger , 0 , L"CCのベリファイが失敗しました" );
+				return false;
+			}
+		}
+		return true;
+	};
+
+	bool result = true;
+	result &= WritePWD( setting , access_page , auth0_page );
+	result &= WriteCC( setting , access_page , auth0_page );
+	result &= WriteAccess( setting , access_page , auth0_page );
+	result &= WriteAuth0( setting , access_page , auth0_page );
+	return result;
 }
 
 mSCNTAG::StaticLock::StaticLock()
