@@ -79,6 +79,7 @@ bool mSerialPort::Open( const Option& opt )
 
 	//ファイルを開けたので、設定をストック
 	MyOption = opt;
+	MyIsClosed = false;
 	return true;
 
 errorend:
@@ -170,6 +171,7 @@ bool mSerialPort::Abort( void )
 	{
 		CloseHandle( MyHandle );
 		MyHandle = INVALID_HANDLE_VALUE;
+		MyIsClosed = true;
 	}
 	return true;
 }
