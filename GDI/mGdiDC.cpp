@@ -24,14 +24,7 @@ mGdiDC::mGdiDC( HDC hdc )
 mGdiDC::~mGdiDC()
 {
 	//MyHdcのハンドルを解放する責任は派生クラス側にあります
-
-	//デバイスコンテキストのハンドルが解放されたのに、デフォルトのオブジェクトが
-	//残留している場合はリソースリークしていそうなのでエラーを記録します。
-	if( MyDefaultObj.size() != 0 )
-	{
-		//ResetSelectedObject()を呼び出し忘れている
-		RaiseAssert( g_ErrorLogger , MyDefaultObj.size() , L"HGDIOBJ is not detached" );
-	}
+	ResetSelectedObject();
 }
 
 //オブジェクト(ペン、ブラシ、フォントなど)を選択する
