@@ -342,7 +342,6 @@ void mASyncNamedPipe::ConnectCompleteRoutine( DWORD ec , DWORD len , LPOVERLAPPE
 	}
 
 	entry->Parent->MyConnectData.reset();
-	mDelete entry;
 }
 
 //読み取り時の完了ルーチン
@@ -356,11 +355,8 @@ void mASyncNamedPipe::ReadCompleteRoutine( DWORD ec , DWORD len , LPOVERLAPPED o
 		mCriticalSectionTicket critical( entry->Parent->MyCritical );
 
 		//キューを完了状態にする
-		if( !entry->Completed )
-		{
-			entry->ErrorCode = ec;
-			entry->BytesTransfered = len;
-		}
+		entry->ErrorCode = ec;
+		entry->BytesTransfered = len;
 
 		//キューの先頭ではない場合はコールバックを呼ばない
 		//※NOTIFY_CALLBACK_PARALLELのときは、先頭か否かに関係なくコールバックを呼ぶ
@@ -426,11 +422,8 @@ void mASyncNamedPipe::WriteCompleteRoutine( DWORD ec , DWORD len , LPOVERLAPPED 
 		mCriticalSectionTicket critical( entry->Parent->MyCritical );
 
 		//キューを完了状態にする
-		if( !entry->Completed )
-		{
-			entry->ErrorCode = ec;
-			entry->BytesTransfered = len;
-		}
+		entry->ErrorCode = ec;
+		entry->BytesTransfered = len;
 
 		//キューの先頭からスキャンし、完了済みのパケットを順次削除
 		while( !entry->Parent->MyWriteQueue.empty() )
