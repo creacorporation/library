@@ -79,6 +79,22 @@ private:
 	struct has_subscript<C , void_t<decltype( std::declval<C&>()[std::declval<std::size_t>()] )>> : std::true_type
 	{};
 
+	//front
+	template <class , class = void>
+	struct has_front : std::false_type
+	{};
+	template <class C>
+	struct has_front<C , void_t<decltype( std::declval<C&>().front() )>> : std::true_type
+	{};
+
+	//back
+	template <class , class = void>
+	struct has_back : std::false_type
+	{};
+	template <class C>
+	struct has_back<C , void_t<decltype( std::declval<C&>().back() )>> : std::true_type
+	{};
+
 	//map系かどうか
 	template <class , class = void>
 	struct is_map_like : std::false_type
@@ -172,6 +188,28 @@ public:
 		c_.pop_front();
 	}
 
+	//front/back
+	template <class C = base_container>
+	typename std::enable_if<has_front<C>::value , decltype( std::declval<C&>().front() )>::type front() noexcept
+	{
+		return c_.front(); 
+	}
+	template <class C = base_container>
+	typename std::enable_if<has_front<const C>::value , decltype( std::declval<const C&>().front() )>::type front() const noexcept
+	{
+		return c_.front(); 
+	}
+	template <class C = base_container>
+	typename std::enable_if<has_back<C>::value , decltype( std::declval<C&>().back() )>::type back() noexcept
+	{
+		return c_.back(); 
+	}
+	template <class C = base_container>
+	typename std::enable_if<has_back<const C>::value , decltype( std::declval<const C&>().back() )>::type back() const noexcept
+	{
+		return c_.back(); 
+	}
+
 	//reserve
 	template <class C = base_container>
 	typename std::enable_if<has_reserve<C>::value , decltype( std::declval<C&>().reserve( std::declval<std::size_t>() ) )>::type reserve( std::size_t sz )
@@ -222,10 +260,25 @@ private:
 	typename std::enable_if<!has_push_front<C>::value , void>::type pop_front( void );
 	//【理由】このメソッドは基底クラスのコンテナにありません
 	template <class C = base_container>
+	typename std::enable_if<!has_front<C>::value , decltype( std::declval<C&>().front() )>::type front() noexcept;
+	//【理由】このメソッドは基底クラスのコンテナにありません
+	template <class C = base_container>
+	typename std::enable_if<!has_front<const C>::value , decltype( std::declval<const C&>().front() )>::type front() const noexcept;
+	//【理由】このメソッドは基底クラスのコンテナにありません
+	template <class C = base_container>
+	typename std::enable_if<!has_back<C>::value , decltype( std::declval<C&>().back() )>::type back() noexcept;
+	//【理由】このメソッドは基底クラスのコンテナにありません
+	template <class C = base_container>
+	typename std::enable_if<!has_back<const C>::value , decltype( std::declval<const C&>().back() )>::type back() const noexcept;
+	//【理由】このメソッドは基底クラスのコンテナにありません
+	template <class C = base_container>
 	typename std::enable_if<!has_reserve<C>::value , decltype( std::declval<C&>().reserve( std::declval<std::size_t>() ) )>::type reserve( std::size_t sz );
 	//【理由】このメソッドは基底クラスのコンテナにありません
 	template <class C = base_container , class T = value_type>
 	typename std::enable_if<!has_insert<C>::value , decltype( std::declval<C&>().insert( std::declval<T>() ) )>::type insert( T&& v );
+
+
+
 };
 
 
