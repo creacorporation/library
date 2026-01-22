@@ -436,6 +436,9 @@
     <ClInclude Include="Crypto\mSCNDEF.h">
       <Filter>Crypto</Filter>
     </ClInclude>
+    <ClInclude Include="General\mContainerExtender.h">
+      <Filter>General</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="General\mOptionParser.cpp">

@@ -44,6 +44,7 @@
     <ClInclude Include="General\mCsvFile.h" />
     <ClInclude Include="General\mNotifyOption.h" />
     <ClInclude Include="General\mSlashFormat.h" />
+    <ClInclude Include="General\mContainerExtender.h" />
     <ClInclude Include="General\mXml.h" />
     <ClInclude Include="General\mXmlBase.h" />
     <ClInclude Include="Network\mHttpAccess.h" />
