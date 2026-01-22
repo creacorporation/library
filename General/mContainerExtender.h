@@ -114,7 +114,7 @@ public:
 	const_iterator end()    const noexcept { return c_.end();    }
 	const_iterator cbegin() const noexcept { return c_.cbegin(); }
 	const_iterator cend()   const noexcept { return c_.cend();   }
-	void           clear()  const noexcept { c_.clear();         }
+	void           clear()        noexcept { c_.clear();         }
 
 	//operator[]
 	template <class C = base_container>
