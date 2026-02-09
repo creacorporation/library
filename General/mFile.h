@@ -72,6 +72,15 @@ public:
 			AccessRead = true;
 			Mode = CreateMode::OpenAlways;
 		}
+		Option( const WString& path , bool access_read , bool access_write , CreateMode mode , bool share_read = true , bool share_write = false )
+		{
+			Path = path;
+			ShareWrite = share_write;
+			ShareRead = share_read;
+			AccessWrite = access_write;
+			AccessRead = access_read;
+			Mode = mode;
+		}
 	};
 
 	//ファイルを開く
