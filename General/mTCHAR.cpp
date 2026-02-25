@@ -2066,3 +2066,114 @@ AString mTCHAR::ConvertToUrl( const WString& src )
 	}
 	return result;
 }
+
+//UTF-8かどうか判別する
+bool mTCHAR::IsUtf8( const AString& str , bool bom )
+{
+	int sz = MultiByteToWideChar( CP_UTF8 , MB_ERR_INVALID_CHARS , str.c_str() , -1 , nullptr , 0 );
+	if( sz <= 1 )
+	{
+		return false;
+	}
+	return true;
+}
+
+//WStringに4バイト文字が存在するかチェックする
+bool mTCHAR::CheckSurrogates( const WString& str )
+{
+	return str.size() != CountCharacter( str );
+}
+
+//4バイト文字が含まれているかもしれないWStringの文字数を数える
+size_t mTCHAR::CountCharacter( const WString& str )
+{
+	size_t surrogate_count = 0;
+	bool ishigh = true;
+	for( WString::value_type c : str )
+	{
+		if( ishigh )
+		{
+			if( 0xD800u <= c && c <= 0xDBFFu )
+			{
+				ishigh = false;
+			}
+		}
+		else
+		{
+			if( 0xDC00u <= c && c <= 0xDFFFu )
+			{
+				surrogate_count++;
+			}
+			ishigh = true;
+		}
+	}
+	return str.size() - surrogate_count;
+}
+
+//ShiftJis文字列の妥当性を検証する
+ShiftJisStat mTCHAR::GetShiftJisStat( const AString& str )
+{
+	ShiftJisStat stat;
+
+	bool second_byte = false;
+	for( AString::value_type c : str )
+	{
+		uint8_t val = (uint8_t)c;
+		if( !second_byte )
+		{
+			if( 0 <= val && val <= 0x7Fu )
+			{
+				//アスキー文字
+				stat.Ascii = true;
+			}
+			else if( ( 0x81u <= val && val <= 0x9Fu ) || ( 0xE0u <= val && val <= 0xFCu ) )
+			{
+				//2バイト文字の1バイト目
+				second_byte = true;
+			}
+			else if( 0xA1u <= val && val <= 0xDFu )
+			{
+				//半角かな
+				stat.HankakuKana = true;
+			}
+			else
+			{
+				//不正
+				stat.IsValid = false;
+				return stat;
+			}
+		}
+		else
+		{
+			if( 0x40u <= val && val <= 0x7Eu )
+			{
+				stat.MultiByte = true;
+				if( !isalpha( val ) )
+				{
+					stat.Damemoji = true;
+					if( val == 0x5Cu )
+					{
+						stat.DamemojiBackslash = true;
+					}
+					else if( val == 0x7Cu )
+					{
+						stat.DamemojiPipe = true;
+					}
+				}
+			}
+			else if( 0x80u <= val && val <= 0xFCu )
+			{
+				stat.MultiByte = true;
+			}
+			else
+			{
+				//不正
+				stat.IsValid = false;
+				return stat;
+			}
+			second_byte = false;
+		}
+	}
+	return stat;
+}
+

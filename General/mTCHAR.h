@@ -850,6 +850,40 @@ AString RemoveSpace( const AString& str );
 //文字列の空白をすべて削除する
 WString RemoveSpace( const WString& str );
 
+//UTF-8かどうか判別する
+// str : チェック対象の文字列
+// bom : 文字列の先頭にUTF-8のBOMがあった場合の扱い。
+//       BOM以降の文字列がUTF-8でない場合はこのパラメータに関係なく偽になる。
+//       ※ファイル内を複数行にわたってチェックするときの1行目用。
+//       真 = BOMがあった場合、真を返す
+//       偽 = BOMがあった場合、偽を返す
+// ret : UTF-8だったら真
+bool IsUtf8( const AString& str , bool bom = false );
+
+//WStringに4バイト文字が存在するかチェックする
+// str : チェック対象の文字列
+// ret : 4バイト文字が含まれて【いる】場合真（1文字=2バイトで表現できないものが混じっていると偽）
+bool CheckSurrogates( const WString& str );
+
+//4バイト文字が含まれているかもしれないWStringの文字数を数える
+size_t CountCharacter( const WString& str );
+
+struct ShiftJisStat
+{
+	bool IsValid = true;				//ShiftJisとして破綻していると偽
+	bool Ascii = false;					//ASCII文字が存在
+	bool MultiByte = false;				//2バイト文字が存在
+	bool HankakuKana = false;			//半角かな文字が存在
+	bool Damemoji = false;				//いわゆるダメ文字（2バイト目がアルファベットでないもの）が存在
+	bool DamemojiBackslash = false;		//ダメ文字のなかで、特に「\」が存在
+	bool DamemojiPipe = false;			//ダメ文字のなかで、特に「|」が存在
+};
+
+//ShiftJis文字列の妥当性を検証する
+// str : チェック対象の文字列
+//文字列がShitfJisとして破綻している場合、IsValidを偽となり、それ以外のメンバーは破綻を検出した時点までの結果を返します
+ShiftJisStat GetShiftJisStat( const AString& str );
+
 };
 
 #ifndef ESCAPE_MTCHAR_USING
