@@ -37,5 +37,7 @@ protected:
 
 };
 
+#include "mWorkerThreadPool.h"
+
 #endif
 
