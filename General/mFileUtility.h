@@ -285,6 +285,12 @@ namespace mFileUtility
 	//現在実行中の実行ファイルのフルパスを取得
 	WString GetExecutableFullPath( void );
 
+	//1つのファイルをリネームする
+	// path : リネームするファイル。ディレクトリを指定すると失敗します。
+	// newname : 新しいファイル名。ファイル名のディレクトリ部分は無視する。
+	// overwrite : 新しいファイル名のファイルがすでに存在した場合、真であれば上書きする
+	bool RenameFile( const WString& path , const WString& newname , bool overwrite = false );
+
 };
 
 #endif

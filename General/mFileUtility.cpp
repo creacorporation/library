@@ -683,3 +683,24 @@ WString mFileUtility::GetExecutableFullPath( void )
 		}
 	}
 }
+
+bool mFileUtility::RenameFile( const WString& path , const WString& newname , bool overwrite )
+{
+	if( PathIsDirectoryW( path.c_str() ) )
+	{
+		return false;
+	}
+
+	WString filename;
+	if( !ReplacePath( path  , newname , filename , false , false , true , true ) )
+	{
+		return false;
+	}
+	if( filename == L"" )
+	{
+		return false;
+	}
+
+	DWORD flag = ( overwrite ) ? ( MOVEFILE_REPLACE_EXISTING ) : ( 0 );
+	return MoveFileExW( path.c_str() , filename.c_str() , flag );
+}
