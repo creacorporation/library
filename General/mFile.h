@@ -56,6 +56,23 @@ public:
 		CreateWithDirectory,	//新しくファイルを作成。ディレクトリがない場合はディレクトリも作成する。すでにある場合は上書き（中身を捨てる）。
 	};
 
+	//読み書きモード
+	enum class RWMode
+	{
+		ReadOnly,
+		WriteOnly,
+		ReadAndWrite,
+	};
+
+	//シェアモード
+	enum class ShareMode
+	{
+		None,                  //シェア無し
+		ReadOnly,			   //読み込みのみ認める
+		WriteOnly,			   //書込みのみ認める
+		ReadAndWrite,		   //読み書きを認める
+	};
+
 	struct Option
 	{
 		WString Path;		//開くファイルのパス
@@ -79,6 +96,40 @@ public:
 			ShareRead = share_read;
 			AccessWrite = access_write;
 			AccessRead = access_read;
+			Mode = mode;
+		}
+		Option( const WString& path , RWMode rwmode , CreateMode mode , ShareMode sharemode = ShareMode::ReadOnly )
+		{
+			Path = path;
+			switch( rwmode )
+			{
+			case RWMode::WriteOnly:
+				AccessWrite = true;  AccessRead = false;
+				break;
+			case RWMode::ReadAndWrite:
+				AccessWrite = true;  AccessRead = true;
+				break;
+			case RWMode::ReadOnly:
+			default:
+				AccessWrite = false; AccessRead = true;
+				break;
+			}
+			switch( sharemode )
+			{
+			case ShareMode::WriteOnly:
+				ShareWrite = true;  ShareRead = false;
+				break;
+			case ShareMode::ReadAndWrite:
+				ShareWrite = true;  ShareRead = true;
+				break;
+			case ShareMode::ReadOnly:
+				ShareWrite = false; ShareRead = true;
+				break;
+			case ShareMode::None:
+			default:
+				ShareWrite = false; ShareRead = false;
+				break;
+			}
 			Mode = mode;
 		}
 	};
