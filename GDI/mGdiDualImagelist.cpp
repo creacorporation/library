@@ -60,12 +60,12 @@ bool mGdiDualImagelist::AddImage( const WString& id ,
 	if( mask2 != nullptr )
 	{
 		//マスクがある場合
-		index = ::ImageList_Add( MyHandle2 , img2 , *mask2 );
+		index = ::ImageList_Add( MyHandle2 , HBITMAP( img2 ) , HBITMAP( *mask2 ) );
 	}
 	else
 	{
 		//マスクがない場合
-		index = ::ImageList_Add( MyHandle2 , img2 , nullptr );
+		index = ::ImageList_Add( MyHandle2 , HBITMAP( img2 ) , nullptr );
 	}
 
 	//２番目の登録は成功だったか？
@@ -141,7 +141,7 @@ bool mGdiDualImagelist::AddImage( const WString& id ,
 
 	//２番目のイメージリストに追加処理を行う
 	int index = -1;
-	index = ::ImageList_AddMasked( MyHandle2 , img2 , mask2 );
+	index = ::ImageList_AddMasked( MyHandle2 , HBITMAP( img2 ) , mask2 );
 
 	//２番目の登録は成功だったか？
 	if( index < 0 )

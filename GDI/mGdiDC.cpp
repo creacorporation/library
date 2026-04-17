@@ -124,6 +124,11 @@ bool mGdiDC::ResetSelectedObject( void )
 	return true;
 }
 
+bool mGdiDC::Move( INT to_x , INT to_y )
+{
+	return ::MoveToEx( MyHdc , to_x , to_y , nullptr );
+}
+
 //線を描画する
 bool mGdiDC::Line( INT to_x , INT to_y )
 {
@@ -146,6 +151,17 @@ bool mGdiDC::LineOffset( INT from_x , INT from_y , INT offset_x , INT offset_y )
 	return Line( from_x , from_y , from_x + offset_x , from_y + offset_y );
 }
 
+//線を描画する
+bool mGdiDC::Line( const PointVector& points )
+{
+	return Line( points.begin() , points.end() );
+}
+
+//線を描画する
+bool mGdiDC::Line( const PointVector::const_iterator& begin , const PointVector::const_iterator& end )
+{
+	return Polyline( MyHdc , &(*begin) , std::distance( begin , end ) );
+}
 
 //矩形を描画する
 bool mGdiDC::Rectangle( INT x1 , INT y1 , INT x2 , INT y2 )

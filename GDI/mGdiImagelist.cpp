@@ -68,11 +68,11 @@ bool mGdiImagelist::AddImage( const WString& id , const mGdiBitmap& img , const 
 	int index = -1;
 	if( mask != nullptr )
 	{
-		index = ::ImageList_Add( MyHandle , img , *mask );
+		index = ::ImageList_Add( MyHandle , HBITMAP( img ) , HBITMAP( *mask ) );
 	}
 	else
 	{
-		index = ::ImageList_Add( MyHandle , img , nullptr );
+		index = ::ImageList_Add( MyHandle , HBITMAP( img ) , nullptr );
 	}
 
 	//エラーだった？
@@ -129,7 +129,7 @@ bool mGdiImagelist::AddImage( const WString& id , const mGdiBitmap& img , COLORR
 
 	//存在しないので、追加処理を行う
 	int index = -1;
-	index = ::ImageList_AddMasked( MyHandle , img , mask );
+	index = ::ImageList_AddMasked( MyHandle , HBITMAP( img ) , mask );
 
 	//エラーだった？
 	if( index < 0 )

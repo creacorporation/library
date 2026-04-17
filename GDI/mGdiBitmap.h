@@ -138,7 +138,7 @@ public:
 	virtual ~mGdiBitmap();
 	
 	//ハンドルの値を取得する(キャスト演算子バージョン)
-	operator HBITMAP()const;
+	explicit operator HBITMAP()const;
 
 	//ハンドルの値を取得する(普通の関数バージョン)
 	virtual HGDIOBJ GetHandle( void )const override;

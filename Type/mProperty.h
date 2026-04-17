@@ -22,12 +22,13 @@ public:
 
 	template< class T2 = std::enable_if_t<!std::is_const_v<T>,T> , class F2 = std::enable_if_t<!std::is_const_v<F>,F> >
 	mProperty()
+		: OnValue( T(0) ) , OffValue( F(0) )
 	{
 		MyOn = true;
 	}
 	template< class T2 = std::enable_if_t<!std::is_const_v<F>,T> >
 	mProperty( T2 t )
-		: OnValue( t )
+		: OnValue( t ) , OffValue( F(0) )
 	{
 		MyOn = true;
 	}

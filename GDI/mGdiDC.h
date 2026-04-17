@@ -93,15 +93,42 @@ public:
 		return Select( *object );
 	}
 
+	//現在位置を移動する
+	//( to_x , to_y )この座標に現在の位置に移動する
+	//ret : 成功時真
+	bool Move( INT to_x , INT to_y );
+
+	//線を描画する
+	//( to_x , to_y )この座標に向けて線を引きます
+	//ret : 成功時真
+	//・現在の位置から線を引きます。
+	//・この関数を実行後は、toに指定した位置が「現在の位置」となります
+	bool Line( INT to_x , INT to_y );
 	//線を描画する
 	//( from_x , from_y )この座標から線を引きます
 	//( to_x , to_y )この座標に向けて線を引きます
 	//ret : 成功時真
-	//・fromを省略した場合は、現在の位置から線を引きます。
 	//・この関数を実行後は、toに指定した位置が「現在の位置」となります
-	bool Line( INT to_x , INT to_y );
 	bool Line( INT from_x , INT from_y , INT to_x , INT to_y );
+	//線を描画する
+	//( from_x , from_y )この座標から線を引きます
+	//( offset_x , offset_y )fromからこの相対座標に向けて線を引きます
+	//ret : 成功時真
+	//・この関数を実行後は、toに指定した位置が「現在の位置」となります
 	bool LineOffset( INT from_x , INT from_y , INT offset_x , INT offset_y );
+
+	using PointVector = std::vector<POINT>;
+
+	//線を描画する
+	// points : コンテナ内の各座標を順に結びます
+	//ret : 成功時真
+	bool Line( const PointVector& points );
+
+	//線を描画する
+	// points : コンテナ内の各座標を順に結びます
+	//ret : 成功時真
+	bool Line( const PointVector::const_iterator& begin , const PointVector::const_iterator& end );
+
 
 	//矩形を描画する
 	//( x1 , y1 )-( x2 , y2 )を対角線上の頂点とする長方形を描画します。
