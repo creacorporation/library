@@ -69,6 +69,11 @@ public:
 	//ret : 成功した場合true
 	bool Select( HGDIOBJ new_object );
 
+	//オブジェクトを選択します(HGDIOBJ直指定ver)
+	//handle : 関連づけたいオブジェクト(nullptrはエラーになります)
+	//ret : 成功した場合true
+	bool Select( mGdiHandle* new_object );
+
 	//オブジェクトを選択します(mGdiResourceから抽出ver その1)
 	//res : 抽出元のリソースプール
 	//id : 取得したいID
@@ -359,6 +364,10 @@ public:
 	//拡大・縮小時の伸縮モードを設定する
 	bool SetStrechMode( StrechMode mode );
 
+	//デバイスコンテキストに関連付けられているオブジェクトを全部元に戻す
+	//ret : 成功時true
+	bool ResetSelectedObject( void );
+
 private:
 
 	mGdiDC( const mGdiDC& src ) = delete;
@@ -382,10 +391,6 @@ protected:
 
 	//デバイスコンテキストのハンドル
 	HDC MyHdc;
-
-	//デバイスコンテキストに関連付けられているオブジェクトを全部元に戻す
-	//ret : 成功時true
-	bool ResetSelectedObject( void );
 
 	//座標変換
 	//・x1とx2、y1とy2の位置関係が反転している場合、小さい方がx1,y1になるように入れ替えます。

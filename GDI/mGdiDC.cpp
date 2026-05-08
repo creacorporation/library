@@ -33,6 +33,17 @@ bool mGdiDC::Select( const mGdiHandle& handle )
 	return Select( handle.GetHandle() );
 }
 
+bool mGdiDC::Select( mGdiHandle* new_object )
+{
+	if( !new_object )
+	{
+		RaiseAssert( g_ErrorLogger , 0 , L"Object null" );
+		return false;
+	}
+	return Select( new_object->GetHandle() );
+}
+
+
 //オブジェクト(ペン、ブラシ、フォントなど)を選択する
 //＜SelectObject後のハンドルの扱い＞
 //・今から関連付けようとしているオブジェクトの素性は？

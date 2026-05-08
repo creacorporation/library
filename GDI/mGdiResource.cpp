@@ -15,10 +15,7 @@ mGdiResource::mGdiResource()
 
 mGdiResource::~mGdiResource()
 {
-	for( IdMap::iterator itr = MyIdMap.begin() ; itr != MyIdMap.end() ; itr++ )
-	{
-		mDelete itr->second;
-	}
+	Reset();
 }
 
 //コントロールをコレクションに追加する
@@ -86,3 +83,13 @@ bool mGdiResource::IsExist( const WString& id )const
 {
 	return MyIdMap.count( id ) != 0;
 }
+
+void mGdiResource::Reset( void )
+{
+	for( IdMap::iterator itr = MyIdMap.begin() ; itr != MyIdMap.end() ; itr++ )
+	{
+		mDelete itr->second;
+	}
+	MyIdMap.clear();
+}
+

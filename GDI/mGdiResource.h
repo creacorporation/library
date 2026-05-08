@@ -103,6 +103,10 @@ public:
 	//ret : 存在すればtrue。存在しなければfalse。
 	bool IsExist( const WString& id )const;
 
+	//アイテムを全部削除する
+	void Reset( void );
+
+
 private:
 	mGdiResource( const mGdiResource& src ) = delete;
 	mGdiResource& operator=( const mGdiResource& src ) = delete;
