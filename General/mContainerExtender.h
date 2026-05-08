@@ -132,7 +132,7 @@ public:
 	const_iterator cend()   const noexcept { return c_.cend();   }
 	void           clear()        noexcept { c_.clear();         }
 
-	//operator[]
+	//operator[] / at
 	template <class C = base_container>
 	typename std::enable_if<has_subscript<C>::value , decltype( std::declval<C&>()[std::declval<std::size_t>()] )>::type operator[]( std::size_t i )
 	{
@@ -142,6 +142,31 @@ public:
 	typename std::enable_if<has_subscript<const C>::value , decltype( std::declval<const C&>()[std::declval<std::size_t>()] )>::type operator[]( std::size_t i ) const
 	{
 		return c_[i];
+	}
+	template <class C = base_container>
+	typename std::enable_if<has_subscript<C>::value , decltype( std::declval<C&>()[std::declval<std::size_t>()] )>::type at( std::size_t i )
+	{
+		return at(i);
+	}
+	template <class C = base_container>
+	typename std::enable_if<has_subscript<const C>::value , decltype( std::declval<const C&>()[std::declval<std::size_t>()] )>::type at( std::size_t i ) const
+	{
+		return at(i);
+	}
+
+	//operator=
+	template <class C = base_container>
+	const mContainerExtender<C>& operator=( const C& src )
+	{
+		c_ = src;
+		return *this;
+	}
+
+	template <class C = base_container>
+	const mContainerExtender<C>& operator=( const mContainerExtender<C>& src )
+	{
+		c_ = src.c_;
+		return *this;
 	}
 
 	//data()/c_str()
@@ -224,7 +249,7 @@ public:
 		return c_.insert( std::forward<T>( v ) );
 	}
 
-private:
+protected:
 	base_container c_;
 
 private:
