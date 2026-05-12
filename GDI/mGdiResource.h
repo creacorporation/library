@@ -72,7 +72,7 @@ public:
 			if( itr == MyIdMap.end() )
 			{
 				//その登録もない場合は該当なしにつきエラー
-				RaiseAssert( g_ErrorLogger , 0 , L"Id not found : " + id );
+				CreateLogEntry( g_ErrorLogger , 0 , L"Id not found : " + id );
 				return nullptr;
 			}
 		}
