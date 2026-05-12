@@ -36,7 +36,8 @@ private:
 	mGdiHandle( const mGdiHandle& src ) = delete;
 	mGdiHandle& operator=( const mGdiHandle& src ) = delete;
 
-	friend class mGdiResource;
+	template< class T >
+	friend class mGdiResourceTemplate;
 
 protected:
 	mGdiHandle();
