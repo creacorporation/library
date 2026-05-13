@@ -368,6 +368,21 @@ public:
 	//ret : 成功時true
 	bool ResetSelectedObject( void );
 
+	//一時的なオブジェクトの選択状態
+	class DCState final
+	{
+	public:
+		DCState( HDC hdc );
+		DCState( const DCState& src ) = delete;
+		DCState( const DCState&& src );
+		void operator=( const DCState& src ) = delete;
+		~DCState();
+	private:
+		HDC MyHdc;
+		int MyIndex;
+	};
+	DCState GetDCState( void )const;
+
 private:
 
 	mGdiDC( const mGdiDC& src ) = delete;
@@ -379,11 +394,6 @@ private:
 	friend class mGdiMemDC;
 	friend class mGdiBitmap;
 
-	//ハンドルプール
-	typedef std::unordered_set<HGDIOBJ> GdiObjectPool;
-	GdiObjectPool MyDefaultObj;		//最初からデバイスコンテキストに関連付けられていたハンドル
-	GdiObjectPool MyAttachedObj;	//現在ユーザーがデバイスコンテキストに関連付けているハンドル
-
 protected:
 
 	//このクラスのデフォルトコンストラクタは隠しておく
@@ -391,6 +401,9 @@ protected:
 
 	//デバイスコンテキストのハンドル
 	HDC MyHdc;
+
+	//オブジェクトの選択状態
+	std::unique_ptr<DCState> MyDCState;
 
 	//座標変換
 	//・x1とx2、y1とy2の位置関係が反転している場合、小さい方がx1,y1になるように入れ替えます。

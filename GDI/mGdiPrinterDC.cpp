@@ -50,6 +50,7 @@ bool mGdiPrinterDC::Open( const Option& opt ) noexcept
 			RaiseError( g_ErrorLogger , 0 , L"プリンタを開くことができません" , op->PrinterName );
 			return false;
 		}
+		MyDCState.reset( mNew DCState( GetDCState() ) );
 
 		//ドキュメントの開始
 		DOCINFO doc = {};

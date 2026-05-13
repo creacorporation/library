@@ -19,12 +19,13 @@ mGdiDC::mGdiDC()
 mGdiDC::mGdiDC( HDC hdc )
 {
 	MyHdc = hdc;
+	MyDCState.reset( mNew DCState( GetDCState() ) );
 }
 
 mGdiDC::~mGdiDC()
 {
 	//MyHdcのハンドルを解放する責任は派生クラス側にあります
-	ResetSelectedObject();
+	MyDCState.reset();
 }
 
 //オブジェクト(ペン、ブラシ、フォントなど)を選択する
@@ -45,15 +46,6 @@ bool mGdiDC::Select( mGdiHandle* new_object )
 
 
 //オブジェクト(ペン、ブラシ、フォントなど)を選択する
-//＜SelectObject後のハンドルの扱い＞
-//・今から関連付けようとしているオブジェクトの素性は？
-// [A]MyAttachedObjに載ってる⇒すでに関連付け済み。別にSelectObject自体が必要ない
-// [B]MyDefaultObjに載ってる⇒デフォルトのオブジェクトに戻るからMyDefaultObjから削除
-// [C]どちらにも載ってない⇒新規のオブジェクトだからMyAttachedObjに登録
-//
-//・SelectObjectで関連付けた結果返ってきたオブジェクトは？
-// [a]MyAttachedObjに載ってる⇒ユーザが前に関連付けたものだからMyAttachedObjから削除
-// [b]そうじゃない⇒デフォルトのオブジェクトだからMyDefaultObjに登録
 bool mGdiDC::Select( HGDIOBJ new_object )
 {
 	//IDが無効だったらエラー
@@ -71,46 +63,6 @@ bool mGdiDC::Select( HGDIOBJ new_object )
 		return false;
 	}
 
-	//変更前と後のハンドルの素性を調べて、MyAttachedObjを更新する
-	if( MyAttachedObj.count( new_object ) )
-	{
-		//すでに選択済みのオブジェクトを再選択している場合。
-		//何も変化してないからそのまま戻る。
-		return true;	//上のコメントの[A]のパターン
-	}
-	else if( MyDefaultObj.count( new_object ) )
-	{
-		MyDefaultObj.erase( new_object );	//上のコメントの[B]のパターン
-	}
-	else
-	{
-		if( MyAttachedObj.count( new_object ) == 0 )
-		{
-			MyAttachedObj.insert( new_object );	//上のコメントの[C]のパターン
-		}
-		else
-		{
-			//ロジック上来ないはず…
-			RaiseAssert( g_ErrorLogger , 0 , L"AttachedObj dupe" );
-		}
-	}
-	//同様にMyDefaultObjを更新する
-	if( MyAttachedObj.count( prev_object ) )
-	{
-		MyAttachedObj.erase( prev_object );	//上のコメントの[a]のパターン
-	}
-	else
-	{
-		if( MyDefaultObj.count( prev_object ) == 0 )
-		{
-			MyDefaultObj.insert( prev_object );	//上のコメントの[b]のパターン
-		}
-		else
-		{
-			//ロジック上来ないはず…
-			RaiseAssert( g_ErrorLogger , 0 , L"DefaultObj dupe" );
-		}
-	}
 	return true;
 }
 
@@ -123,15 +75,8 @@ bool mGdiDC::Select( const mGdiResource& res , const WString& id , const WString
 //デバイスコンテキストに関連付けられているオブジェクトを全部元に戻す
 bool mGdiDC::ResetSelectedObject( void )
 {
-	//全部のオブジェクトをデフォルトに戻す
-	for( GdiObjectPool::iterator itr = MyDefaultObj.begin() ; itr != MyDefaultObj.end() ; itr++ )
-	{
-		::SelectObject( MyHdc , *itr );
-	}
-
-	//全てがデフォルトに戻っているはずだから、プールしているオブジェクトのことは忘れる
-	MyAttachedObj.clear();
-	MyDefaultObj.clear();
+	MyDCState.reset();
+	MyDCState.reset( mNew DCState( GetDCState() ) );
 	return true;
 }
 
@@ -179,7 +124,6 @@ bool mGdiDC::Rectangle( INT x1 , INT y1 , INT x2 , INT y2 )
 {
 	//WindowsAPIのRectangleは右辺と底辺は座標に含まない（1ピクセル内側に右辺と底辺を描画する）
 	//という仕様らしい。なんだかピンとこないので、1ピクセル外側にずらして補正する。
-	//なんつったって、手続きBASIC世代だからな！
 	PositionConvert( x1 , y1 , x2 , y2 );
 
 	//描画系のAPIでエラーを記録すると、すぐログがあふれるので記録しない
@@ -785,4 +729,35 @@ bool mGdiDC::SetStrechMode( StrechMode mode )
 }
 
 
+mGdiDC::DCState mGdiDC::GetDCState( void )const
+{
+	return DCState( MyHdc );
+}
+
+mGdiDC::DCState::DCState( HDC hdc )
+{
+	MyHdc = hdc;
+	if( MyHdc )
+	{
+		MyIndex = SaveDC( MyHdc );
+	}
+	else
+	{
+		MyIndex = 0;
+	}
+}
+
+mGdiDC::DCState::DCState( const DCState&& src )
+{
+	MyHdc = src.MyHdc;
+	MyIndex = src.MyIndex;
+}
+
+mGdiDC::DCState::~DCState()
+{
+	if( MyHdc && ( 0 < MyIndex ) )
+	{
+		RestoreDC( MyHdc , MyIndex );
+	}
+}
 

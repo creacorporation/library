@@ -12,6 +12,8 @@
 mGdiMemDC::mGdiMemDC()
 {
 	MyHdc = ::CreateCompatibleDC( nullptr );
+	MyDCState.reset( mNew DCState( GetDCState() ) );
+
 	if( MyHdc == nullptr )
 	{
 		RaiseAssert( g_ErrorLogger , 0 , L"CreateCompatibleDC failed" );
@@ -21,6 +23,8 @@ mGdiMemDC::mGdiMemDC()
 mGdiMemDC::mGdiMemDC( const mGdiDC& src )
 {
 	MyHdc = ::CreateCompatibleDC( src.MyHdc );
+	MyDCState.reset( mNew DCState( GetDCState() ) );
+
 	if( MyHdc == nullptr )
 	{
 		RaiseAssert( g_ErrorLogger , 0 , L"CreateCompatibleDC failed" );
@@ -36,12 +40,13 @@ mGdiMemDC::mGdiMemDC( const mGdiDC* src )
 	else
 	{
 		MyHdc = ::CreateCompatibleDC( src->MyHdc );
+		if( MyHdc == nullptr )
+		{
+			RaiseAssert( g_ErrorLogger , 0 , L"CreateCompatibleDC failed" );
+		}
+		MyDCState.reset( mNew DCState( GetDCState() ) );
 	}
 
-	if( MyHdc == nullptr )
-	{
-		RaiseAssert( g_ErrorLogger , 0 , L"CreateCompatibleDC failed" );
-	}
 }
 
 

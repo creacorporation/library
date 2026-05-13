@@ -12,6 +12,7 @@
 mGdiWinDC::mGdiWinDC( HWND hwnd )
 {
 	MyHdc = ::GetDC( hwnd );
+	MyDCState.reset( mNew DCState( GetDCState() ) );
 	if( MyHdc != nullptr )
 	{
 		MyHwnd = hwnd;

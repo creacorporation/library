@@ -12,6 +12,7 @@
 mGdiPaintDC::mGdiPaintDC( HWND hwnd )
 {
 	MyHdc = ::BeginPaint( hwnd , &MyPaintStruct );
+	MyDCState.reset( mNew DCState( GetDCState() ) );
 	if( MyHdc != nullptr )
 	{
 		MyHwnd = hwnd;
