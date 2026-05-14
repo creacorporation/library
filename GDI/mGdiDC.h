@@ -79,18 +79,50 @@ public:
 	//id : 取得したいID
 	//subid : idがなかった場合に取得したいID(不要な場合は空文字列でOK)
 	//ret : 成功した場合true
-	bool Select( const mGdiResource& res , const WString& id , const WString& subid = L"" );
+	template< class U >
+	bool Select( const mGdiResourceTemplate<U>& res , const U& id , const U& subid  )
+	{
+		return Select( res.GetItem( id , subid ) );
+	}
 
 	//オブジェクトを選択します(mGdiResourceから抽出ver その2)
 	//res : 抽出元のリソースプール
 	//id : 取得したいID
 	//subid : idがなかった場合に取得したいID(不要な場合は空文字列でOK)
 	//ret : 成功した場合true
+	template< class U >
+	bool Select( const mGdiResourceTemplate<U>& res , const U& id )
+	{
+		return Select( res.GetItem( id ) );
+	}
+
+	//オブジェクトを選択します(mGdiResourceから抽出ver その3)
+	//res : 抽出元のリソースプール
+	//id : 取得したいID
+	//subid : idがなかった場合に取得したいID(不要な場合は空文字列でOK)
+	//ret : 成功した場合true
 	//型なし版とは、mGdiResourceからオブジェクトを抽出したときに型のチェックが入る点が違います。
-	template< class T >
-	bool Select( const mGdiResource& res , const WString& id , const WString& subid = L"" )
+	template< class T , class U >
+	bool Select( const mGdiResourceTemplate<U>& res , const U& id , const U& subid  )
 	{
 		const T* object = res.GetItem<T>( id , subid );
+		if( object == nullptr )
+		{
+			return false;
+		}
+		return Select( *object );
+	}
+
+	//オブジェクトを選択します(mGdiResourceから抽出ver その4)
+	//res : 抽出元のリソースプール
+	//id : 取得したいID
+	//subid : idがなかった場合に取得したいID(不要な場合は空文字列でOK)
+	//ret : 成功した場合true
+	//型なし版とは、mGdiResourceからオブジェクトを抽出したときに型のチェックが入る点が違います。
+	template< class T , class U >
+	bool Select( const mGdiResourceTemplate<U>& res , const U& id )
+	{
+		const T* object = res.GetItem<T>( id );
 		if( object == nullptr )
 		{
 			return false;
@@ -376,6 +408,7 @@ public:
 		DCState( const DCState& src ) = delete;
 		DCState( const DCState&& src );
 		void operator=( const DCState& src ) = delete;
+		void operator=( const DCState&& src ) = delete;
 		~DCState();
 	private:
 		HDC MyHdc;

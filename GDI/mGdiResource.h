@@ -71,7 +71,7 @@ public:
 	T* GetItem( const C& id )const
 	{
 		//アイテムの検索
-		IdMap::const_iterator itr = MyIdMap.find( id );
+		typename IdMap::const_iterator itr = MyIdMap.find( id );
 		if( itr == MyIdMap.end() )
 		{
 			//その登録もない場合は該当なしにつきエラー
@@ -92,7 +92,7 @@ public:
 	T* GetItem( const C& id , const C& subid )const
 	{
 		//アイテムの検索
-		IdMap::const_iterator itr = MyIdMap.find( id );
+		typename IdMap::const_iterator itr = MyIdMap.find( id );
 		if( itr == MyIdMap.end() )
 		{
 			//該当IDの登録がない場合は、subidで検索
@@ -115,7 +115,7 @@ public:
 	//ret : 取得したオブジェクトのハンドル。該当無しの場合nullptr。
 	HGDIOBJ GetItem( const C& id )const
 	{
-		IdMap::const_iterator itr;
+		typename IdMap::const_iterator itr;
 
 		//まずは最初のidで検索
 		itr = MyIdMap.find( id );
@@ -136,7 +136,7 @@ public:
 	//ret : 取得したオブジェクトのハンドル。該当無しの場合nullptr。
 	HGDIOBJ GetItem( const C& id , const C& subid )const
 	{
-		IdMap::const_iterator itr;
+		typename IdMap::const_iterator itr;
 
 		//まずは最初のidで検索
 		itr = MyIdMap.find( id );
@@ -161,7 +161,7 @@ public:
 	bool RemoveItem( const C& id )
 	{
 		//アイテムを削除する
-		IdMap::iterator itr = MyIdMap.find( id );
+		typename IdMap::iterator itr = MyIdMap.find( id );
 		if( itr == MyIdMap.end() )
 		{
 			return false;
@@ -182,7 +182,7 @@ public:
 	//アイテムを全部削除する
 	void Reset( void )
 	{
-		for( IdMap::iterator itr = MyIdMap.begin() ; itr != MyIdMap.end() ; itr++ )
+		for( typename IdMap::iterator itr = MyIdMap.begin() ; itr != MyIdMap.end() ; itr++ )
 		{
 			mDelete itr->second;
 		}
@@ -224,13 +224,12 @@ private:
 		return obj;
 	}
 
-
 protected:
 
 	//オブジェクトのマッピング
 	//左：オブジェクトのID
 	//右：オブジェクトへのポインタ
-	typedef std::unordered_map<C,mGdiHandle*> IdMap;
+	using IdMap = std::unordered_map<C,mGdiHandle*>;
 	IdMap MyIdMap;
 	
 };

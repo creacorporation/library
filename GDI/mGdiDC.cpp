@@ -66,12 +66,6 @@ bool mGdiDC::Select( HGDIOBJ new_object )
 	return true;
 }
 
-//オブジェクト(ペン、ブラシ、フォントなど)を選択する
-bool mGdiDC::Select( const mGdiResource& res , const WString& id , const WString& subid )
-{
-	return Select( res.GetItem( id , subid ) );
-}
-
 //デバイスコンテキストに関連付けられているオブジェクトを全部元に戻す
 bool mGdiDC::ResetSelectedObject( void )
 {
