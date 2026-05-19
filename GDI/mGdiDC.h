@@ -27,6 +27,7 @@ BeginPaint()で取得したデバイスコンテキストのハンドルを扱�
 #include "mStandard.h"
 #include "mGdiHandle.h"
 #include "mGdiResource.h"
+#include "mGdiUtil.h"
 #include <unordered_set>
 namespace mGdiDC_Definitions
 {
@@ -135,18 +136,39 @@ public:
 	//ret : 成功時真
 	bool Move( INT to_x , INT to_y );
 
+	//現在位置を移動する
+	//p:この座標に現在の位置に移動する
+	//ret : 成功時真
+	bool Move( const mGdiUtil::Point& p )const;
+
 	//線を描画する
 	//( to_x , to_y )この座標に向けて線を引きます
 	//ret : 成功時真
 	//・現在の位置から線を引きます。
 	//・この関数を実行後は、toに指定した位置が「現在の位置」となります
 	bool Line( INT to_x , INT to_y );
+
+	//線を描画する
+	//p : この座標に向けて線を引きます
+	//ret : 成功時真
+	//・現在の位置から線を引きます。
+	//・この関数を実行後は、toに指定した位置が「現在の位置」となります
+	bool Line( const mGdiUtil::Point& p )const;
+
 	//線を描画する
 	//( from_x , from_y )この座標から線を引きます
 	//( to_x , to_y )この座標に向けて線を引きます
 	//ret : 成功時真
 	//・この関数を実行後は、toに指定した位置が「現在の位置」となります
 	bool Line( INT from_x , INT from_y , INT to_x , INT to_y );
+
+	//線を描画する
+	//p_origin この座標から線を引きます
+	//p_destこの座標に向けて線を引きます
+	//ret : 成功時真
+	//・この関数を実行後は、p_destに指定した位置が「現在の位置」となります
+	bool Line( const mGdiUtil::Point& p_origin , const mGdiUtil::Point& p_dest )const;
+
 	//線を描画する
 	//( from_x , from_y )この座標から線を引きます
 	//( offset_x , offset_y )fromからこの相対座標に向けて線を引きます
@@ -154,7 +176,14 @@ public:
 	//・この関数を実行後は、toに指定した位置が「現在の位置」となります
 	bool LineOffset( INT from_x , INT from_y , INT offset_x , INT offset_y );
 
-	using PointVector = std::vector<POINT>;
+	//線を描画する
+	//p_origin この座標から線を引きます
+	//( offset_x , offset_y )fromからこの相対座標に向けて線を引きます
+	//ret : 成功時真
+	//・この関数を実行後は、toに指定した位置が「現在の位置」となります
+	bool LineOffset( const mGdiUtil::Point& p_origin , float offset_x , float offset_y )const;
+
+	using PointVector = std::vector<mGdiUtil::Point>;
 
 	//線を描画する
 	// points : コンテナ内の各座標を順に結びます
@@ -164,8 +193,7 @@ public:
 	//線を描画する
 	// points : コンテナ内の各座標を順に結びます
 	//ret : 成功時真
-	bool Line( const PointVector::const_iterator& begin , const PointVector::const_iterator& end );
-
+	bool Line( PointVector::const_iterator begin , PointVector::const_iterator end )const;
 
 	//矩形を描画する
 	//( x1 , y1 )-( x2 , y2 )を対角線上の頂点とする長方形を描画します。
@@ -178,6 +206,16 @@ public:
 	bool Rectangle( INT x1 , INT y1 , INT x2 , INT y2 );
 
 	//矩形を描画する
+	//( x1 , y1 )-( x2 , y2 )を対角線上の頂点とする長方形を描画します。
+	//ret : 成功時真
+	//・外枠が現在のペンで、内側が現在のブラシで塗りつぶされる。
+	//・外枠が要らないならヌルペン(mGdiPen的にはTRANSPARENT_PEN)を使う
+	//・塗りつぶさないならヌルブラシ(mGdiBrush的にはTRANSPARENT_BRUSH)を使う
+	//【重要】WinAPIは右辺、底辺について、指定した座標の1ピクセル内側に描画されますが、
+	//       この関数はそれを補正しています。指定した座標上を右辺＆底辺が通ります。
+	bool Rectangle( const mGdiUtil::Rect& r )const;
+
+	//矩形を描画する
 	//( x1 , y1 )-( x1+x2 , y1+y2 )を対角線上の頂点とする長方形を描画します。
 	//ret : 成功時真
 	//・外枠が現在のペンで、内側が現在のブラシで塗りつぶされる。
@@ -185,7 +223,17 @@ public:
 	//・塗りつぶさないならヌルブラシ(mGdiBrush的にはTRANSPARENT_BRUSH)を使う
 	//【重要】WinAPIは右辺、底辺について、指定した座標の1ピクセル内側に描画されますが、
 	//       この関数はそれを補正しています。指定した座標上を右辺＆底辺が通ります。
-	bool RectangleOffset( INT x1 , INT y1 , INT offset_x , INT offset_ );
+	bool RectangleOffset( INT x1 , INT y1 , INT offset_x , INT offset_y );
+
+	//矩形を描画する
+	//( x1 , y1 )-( x1+x2 , y1+y2 )を対角線上の頂点とする長方形を描画します。
+	//ret : 成功時真
+	//・外枠が現在のペンで、内側が現在のブラシで塗りつぶされる。
+	//・外枠が要らないならヌルペン(mGdiPen的にはTRANSPARENT_PEN)を使う
+	//・塗りつぶさないならヌルブラシ(mGdiBrush的にはTRANSPARENT_BRUSH)を使う
+	//【重要】WinAPIは右辺、底辺について、指定した座標の1ピクセル内側に描画されますが、
+	//       この関数はそれを補正しています。指定した座標上を右辺＆底辺が通ります。
+	bool RectangleOffset( const mGdiUtil::Point& p_origin , float offset_x , float offset_y )const;
 
 	//円を描画する
 	//指定座標を中心とした、指定半径の円を描きます
@@ -201,11 +249,27 @@ public:
 
 	//円を描画する
 	//指定座標を中心とした、指定半径の円を描きます
+	//( x , y )円の中心
+	//radius : 円の半径
+	//・外枠が現在のペンで、内側が現在のブラシで塗りつぶされる。
+	//・外枠が要らないならヌルペン(mGdiPen的にはTRANSPARENT_PEN)を使う
+	//・塗りつぶさないならヌルブラシ(mGdiBrush的にはTRANSPARENT_BRUSH)を使う
+	bool Circle( const mGdiUtil::Point& center , float radius )const;
+
+	//円を描画する
+	//指定座標を中心とした、指定半径の円を描きます
 	//( x1 , y1 )-( x2 , y2 )を対角線上の頂点とする長方形に外接する円を描きます。
 	//・外枠が現在のペンで、内側が現在のブラシで塗りつぶされる。
 	//・外枠が要らないならヌルペン(mGdiPen的にはTRANSPARENT_PEN)を使う
 	//・塗りつぶさないならヌルブラシ(mGdiBrush的にはTRANSPARENT_BRUSH)を使う
 	bool Circle( INT x1 , INT y1 , INT x2 , INT y2 );
+
+	//円を描画する
+	//指定座標に内接する円を描画する
+	//・外枠が現在のペンで、内側が現在のブラシで塗りつぶされる。
+	//・外枠が要らないならヌルペン(mGdiPen的にはTRANSPARENT_PEN)を使う
+	//・塗りつぶさないならヌルブラシ(mGdiBrush的にはTRANSPARENT_BRUSH)を使う
+	bool Circle( const mGdiUtil::Rect& r )const;
 
 	//指定範囲を指定範囲にコピーする(その１)
 	//srcdcで指定したDCの( src_x1 , src_y1 )-( src_x2 , src_y2 )を対角線上の頂点とする長方形を、
@@ -217,6 +281,15 @@ public:
 		INT dst_x1 , INT dst_y1 , INT dst_x2 , INT dst_y2 ,		//コピー先長方形
 		DWORD raster = SRCCOPY );
 
+	//指定範囲を指定範囲にコピーする(その１)
+	//srcdcで指定したDCの( src )を対角線上の頂点とする長方形を、
+	//このオブジェクトの ( dst )を対角線上の頂点とする長方形とする位置に貼り付けます。
+	//ret : 成功時true
+	//・コピー元とコピー先で幅・高さが違うと拡大縮小します
+	bool Copy( const mGdiDC& srcdc ,							//コピー元デバイスコンテキスト
+		const mGdiUtil::Rect& src ,								//コピー元長方形
+		const mGdiUtil::Rect& dst )const;						//コピー先長方形
+
 	//指定範囲を指定範囲にコピーする(その２)
 	//srcdcで指定したDCの( src_x1 , src_y1 )-( src_x2 , src_y2 )を対角線上の頂点とする長方形を、
 	//このオブジェクトの ( dst_x1 , dst_y1 )を左上の頂点とする位置に貼り付けます。
@@ -226,11 +299,25 @@ public:
 		INT dst_x1 , INT dst_y1 ,								//コピー先座標(左上)
 		DWORD raster = SRCCOPY );
 
+	//指定範囲を指定範囲にコピーする(その２)
+	//srcdcで指定したDCの( src )を対角線上の頂点とする長方形を、
+	//このオブジェクトの ( dst )を左上の頂点とする位置に貼り付けます。
+	//ret : 成功時true
+	bool Copy( const mGdiDC& srcdc ,							//コピー元デバイスコンテキスト
+		const mGdiUtil::Rect& src ,								//コピー元長方形
+		const mGdiUtil::Point& dst )const;						//コピー先座標(左上)
+
 	//指定範囲を指定範囲にコピーする(その３)
 	//srcdcで指定したDCの( x1 , y1 )-( x2 , y2 )を対角線上の頂点とする長方形を、
 	//このオブジェクトの同一位置に貼り付けます。
 	//ret : 成功時true
 	bool Copy( const mGdiDC& srcdc , INT x1 , INT y1 , INT x2 , INT y2 , DWORD raster = SRCCOPY );
+
+	//指定範囲を指定範囲にコピーする(その３)
+	//srcdcで指定したDCの( x1 , y1 )-( x2 , y2 )を対角線上の頂点とする長方形を、
+	//このオブジェクトの同一位置に貼り付けます。
+	//ret : 成功時true
+	bool Copy( const mGdiDC& srcdc , const mGdiUtil::Rect& area )const;
 
 	//透明色つきで指定範囲を指定範囲にコピーする(その１)
 	//srcdcで指定したDCの( src_x1 , src_y1 )-( src_x2 , src_y2 )を対角線上の頂点とする長方形を、
@@ -268,6 +355,18 @@ public:
 	// str : 描画する文字列
 	bool Print( const WString& str , INT x , INT y );
 
+	//指定の位置にテキストを描画する
+	//・改行は無視されます
+	//( x , y )描画する位置
+	// str : 描画する文字列
+	bool Print( const WString& str , const mGdiUtil::Point& point );
+
+	//指定の位置にテキストを描画する
+	//・改行は無視されます
+	//( x , y )描画する位置
+	// str : 描画する文字列
+	bool Print( const AString& str , const mGdiUtil::Point& point );
+
 	//描画したときのサイズを得る
 	//・改行は無視されます
 	// str : 描画する文字列
@@ -275,6 +374,22 @@ public:
 	//※フォントに角度が設定されている場合は、正しい結果を返しません。
 	//  （角度ゼロだと仮定して計算するっぽい）
 	bool GetPrintSize( const WString& str , SIZE& retSize );
+
+	//描画したときのサイズを得る
+	//・改行は無視されます
+	// str : 描画する文字列
+	// retSize : 描画したときのサイズ
+	//※フォントに角度が設定されている場合は、正しい結果を返しません。
+	//  （角度ゼロだと仮定して計算するっぽい）
+	bool GetPrintSize( const WString& str , mGdiUtil::Size& retSize );
+
+	//描画したときのサイズを得る
+	//・改行は無視されます
+	// str : 描画する文字列
+	// retSize : 描画したときのサイズ
+	//※フォントに角度が設定されている場合は、正しい結果を返しません。
+	//  （角度ゼロだと仮定して計算するっぽい）
+	bool GetPrintSize( const AString& str , mGdiUtil::Size& retSize );
 
 	//
 	struct PrintOptions
@@ -314,7 +429,31 @@ public:
 	//・垂直位置が中央揃えか下揃えの場合、改行は無視されます
 	//( x , y )描画する位置
 	// str : 描画する文字列
+	bool Print( const WString& str , const mGdiUtil::Point& p , const PrintOptions& opt );
+
+	//指定の位置にテキストを描画する
+	//・垂直位置が中央揃えか下揃えの場合、改行は無視されます
+	//( x , y )描画する位置
+	// str : 描画する文字列
+	bool Print( const AString& str , const mGdiUtil::Point& p , const PrintOptions& opt );
+
+	//指定の位置にテキストを描画する
+	//・垂直位置が中央揃えか下揃えの場合、改行は無視されます
+	//( x , y )描画する位置
+	// str : 描画する文字列
 	bool Print( const WString& str , INT x1 , INT y1 , INT x2 , INT y2 , const PrintOptions& opt );
+
+	//指定の位置にテキストを描画する
+	//・垂直位置が中央揃えか下揃えの場合、改行は無視されます
+	// r 描画する範囲
+	// str : 描画する文字列
+	bool Print( const WString& str , const mGdiUtil::Rect& r , const PrintOptions& opt );
+
+	//指定の位置にテキストを描画する
+	//・垂直位置が中央揃えか下揃えの場合、改行は無視されます
+	// r 描画する範囲
+	// str : 描画する文字列
+	bool Print( const AString& str , const mGdiUtil::Rect& r , const PrintOptions& opt );
 
 	//指定の位置にテキストを描画する
 	//( x , y )描画する位置
@@ -443,6 +582,9 @@ protected:
 	//・右辺、底辺の位置を1ピクセル内側に補正します
 	//x1,y1,x2,y2 : in/out 補正対象の座標
 	void PositionConvert( INT& x1 , INT& y1 , INT& x2 , INT&y2 )const;
+
+	//座標変換
+	mGdiUtil::Rect ToGdiRect( const mGdiUtil::Rect& in )const;
 
 };
 

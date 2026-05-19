@@ -33,6 +33,7 @@ mGdiBitmap bmp( &opt );
 #include "mStandard.h"
 #include "mGdiHandle.h"
 #include "mGdiDC.h"
+#include "mGdiUtil.h"
 #include "General/mException.h"
 #include "General/mInitFileSection.h"
 
@@ -145,6 +146,9 @@ public:
 
 	//ビットマップのサイズを取得する
 	bool GetSize( SIZE& retSize )const noexcept;
+
+	//ビットマップのサイズを取得する
+	bool GetSize( mGdiUtil::Size& retSize )const noexcept;
 
 	//ビットマップの情報を取得する
 	bool GetInfo( BITMAP& retInfo )const noexcept;

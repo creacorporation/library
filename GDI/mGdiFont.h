@@ -137,6 +137,32 @@ public:
 			pitch = PrintPitch::DEFAULT;		//幅はフォント任せで決める
 			orientation = 0;					//回転角度
 		}
+		const Option_UseOption& operator=( const Option_UseOption& src )
+		{
+			name = src.name;
+			height = src.height;
+			width = src.width;
+			isbold = src.isbold;
+			isitalic = src.isitalic;
+			isunderline = src.isunderline;
+			isstrikeout = src.isstrikeout;
+			charset = src.charset;
+			quality = src.quality;
+			pitch = src.pitch;
+			orientation = src.orientation;
+			return *this;
+		}
+		bool operator==( const Option_UseOption& b )const
+		{
+			const Option_UseOption& a = *this;
+			return std::tie( a.name , a.height , a.width , a.isbold , a.isitalic , a.isunderline , a.isstrikeout , a.charset , a.quality , a.pitch , a.orientation )
+				== std::tie( b.name , b.height , b.width , b.isbold , b.isitalic , b.isunderline , b.isstrikeout , b.charset , b.quality , b.pitch , b.orientation );
+		}
+		bool operator!=( const Option_UseOption& src )const
+		{
+			return !( *this == src );
+		}
+
 	};
 
 	//ファクトリメソッド

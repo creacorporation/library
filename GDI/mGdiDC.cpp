@@ -76,29 +76,56 @@ bool mGdiDC::ResetSelectedObject( void )
 
 bool mGdiDC::Move( INT to_x , INT to_y )
 {
-	return ::MoveToEx( MyHdc , to_x , to_y , nullptr );
+	return Move( mGdiUtil::Point( to_x , to_y ) );
+}
+
+bool mGdiDC::Move( const mGdiUtil::Point& p )const
+{
+	return ::MoveToEx( MyHdc , static_cast<int>( p.x ) , static_cast<int>( p.y ) , nullptr );
 }
 
 //線を描画する
 bool mGdiDC::Line( INT to_x , INT to_y )
 {
-	return ::LineTo( MyHdc , to_x , to_y ) != FALSE;
+	return Line( mGdiUtil::Point( to_x , to_y ) );
+}
+
+bool mGdiDC::Line( const mGdiUtil::Point& p )const
+{
+	return ::LineTo( MyHdc , static_cast<int>( p.x ) , static_cast<int>( p.y ) );
 }
 
 //線を描画する
 bool mGdiDC::Line( INT from_x , INT from_y , INT to_x , INT to_y )
 {
-	if( !::MoveToEx( MyHdc , from_x , from_y , nullptr ) )
+	if( !Move( from_x , from_y ) )
 	{
 		return false;
 	}
 	return Line( to_x , to_y );
 }
 
+bool mGdiDC::Line( const mGdiUtil::Point& p_origin , const mGdiUtil::Point& p_dest )const
+{
+	if( !Move( p_origin ) )
+	{
+		return false;
+	}
+	return Line( p_dest );
+}
 
 bool mGdiDC::LineOffset( INT from_x , INT from_y , INT offset_x , INT offset_y )
 {
 	return Line( from_x , from_y , from_x + offset_x , from_y + offset_y );
+}
+
+bool mGdiDC::LineOffset( const mGdiUtil::Point& p_origin , float offset_x , float offset_y )const
+{
+	if( !Move( p_origin ) )
+	{
+		return false;
+	}
+	return Line( mGdiUtil::Point( p_origin.x + offset_x , p_origin.y + offset_y ) );
 }
 
 //線を描画する
@@ -108,25 +135,50 @@ bool mGdiDC::Line( const PointVector& points )
 }
 
 //線を描画する
-bool mGdiDC::Line( const PointVector::const_iterator& begin , const PointVector::const_iterator& end )
+bool mGdiDC::Line( PointVector::const_iterator begin , PointVector::const_iterator end )const
 {
-	return Polyline( MyHdc , &(*begin) , std::distance( begin , end ) );
+	std::vector<POINT> point;
+	point.reserve( std::distance( begin , end ) );
+
+	for( PointVector::const_iterator itr = begin ; itr != end ; itr++ )
+	{
+		point.push_back( POINT( *itr ) );
+	}
+	return Polyline( MyHdc , &(*point.begin()) , static_cast<int>( point.size() ) );
 }
 
 //矩形を描画する
 bool mGdiDC::Rectangle( INT x1 , INT y1 , INT x2 , INT y2 )
 {
-	//WindowsAPIのRectangleは右辺と底辺は座標に含まない（1ピクセル内側に右辺と底辺を描画する）
-	//という仕様らしい。なんだかピンとこないので、1ピクセル外側にずらして補正する。
-	PositionConvert( x1 , y1 , x2 , y2 );
+	return Rectangle( mGdiUtil::Rect( mGdiUtil::Point( x1 , y1 ) , mGdiUtil::Point( x2 , y2 ) ) );
+}
 
-	//描画系のAPIでエラーを記録すると、すぐログがあふれるので記録しない
-	return ::Rectangle( MyHdc , x1 , y1 , x2 , y2 ) != FALSE;
+bool mGdiDC::Rectangle( const mGdiUtil::Rect& r )const
+{
+	mGdiUtil::Rect norm_r = ToGdiRect( r );
+
+	return ::Rectangle( MyHdc , 
+		static_cast<int>( norm_r.left ),
+		static_cast<int>( norm_r.top ),
+		static_cast<int>( norm_r.right ),
+		static_cast<int>( norm_r.bottom )
+	);
 }
 
 bool mGdiDC::RectangleOffset( INT x1 , INT y1 , INT offset_x , INT offset_y )
 {
-	return Rectangle( x1 , y1 , x1 + offset_x , y1 + offset_y );
+	return Rectangle( mGdiUtil::Rect( 
+		mGdiUtil::Point( x1 , y1 ) , 
+		mGdiUtil::Point( x1 + offset_x , y1 + offset_y ) 
+	) );
+}
+
+bool mGdiDC::RectangleOffset( const mGdiUtil::Point& p_origin , float offset_x , float offset_y )const
+{
+	return Rectangle( mGdiUtil::Rect( 
+		p_origin ,
+		mGdiUtil::Point( p_origin.x + offset_x , p_origin.y + offset_y ) 
+	) );
 }
 
 //円を描画する
@@ -135,15 +187,32 @@ bool mGdiDC::Circle( INT x , INT y , INT radius )
 	return Circle( x - radius , y - radius , x + radius , y + radius );
 }
 
+bool mGdiDC::Circle( const mGdiUtil::Point& center , float radius )const
+{
+	return Circle( mGdiUtil::Rect(
+		mGdiUtil::Point( center + mGdiUtil::Point( radius , radius ) ),
+		mGdiUtil::Point( center - mGdiUtil::Point( radius , radius ) ) )
+	);
+}
+
 //円を描画する
 bool mGdiDC::Circle( INT x1 , INT y1 , INT x2 , INT y2 )
 {
-	//Rectangleと同じで、Ellipseも右辺と底辺は含まないので補正する
-	PositionConvert( x1 , y1 , x2 , y2 );
-
-	//描画系のAPIでエラーを記録すると、すぐログがあふれるので記録しない
-	return ::Ellipse( MyHdc , x1 , y1 , x2 , y2 ) != FALSE;
+	return Circle( mGdiUtil::Rect( mGdiUtil::Point( x1 , y1 ) , mGdiUtil::Point( x2 , y2 ) ) );
 }
+
+bool mGdiDC::Circle( const mGdiUtil::Rect& r )const
+{
+	mGdiUtil::Rect norm_r = ToGdiRect( r );
+
+	return ::Ellipse( MyHdc , 
+		static_cast<int>( norm_r.left ),
+		static_cast<int>( norm_r.top ),
+		static_cast<int>( norm_r.right ),
+		static_cast<int>( norm_r.bottom )
+	);
+}
+
 
 //現在の位置にテキストを描画する
 bool mGdiDC::Print( const WString& str )
@@ -159,7 +228,17 @@ bool mGdiDC::Print( const WString& str )
 //指定の位置にテキストを描画する
 bool mGdiDC::Print( const WString& str , INT x , INT y )
 {
-	return TextOutW( MyHdc , x , y , str.c_str() , (int)str.length() );
+	return Print( str , mGdiUtil::Point( x , y ) );
+}
+
+bool mGdiDC::Print( const WString& str , const mGdiUtil::Point& point )
+{
+	return TextOutW( MyHdc , static_cast<int>( point.x ) , static_cast<int>( point.y ) , str.c_str() , (int)str.length() );
+}
+
+bool mGdiDC::Print( const AString& str , const mGdiUtil::Point& point )
+{
+	return TextOutA( MyHdc , static_cast<int>( point.x ) , static_cast<int>( point.y ) , str.c_str() , (int)str.length() );
 }
 
 //座標変換
@@ -198,6 +277,15 @@ void mGdiDC::PositionConvert( INT& x1 , INT& y1 , INT& x2 , INT&y2 )const
 	return;
 }
 
+mGdiUtil::Rect mGdiDC::ToGdiRect( const mGdiUtil::Rect& in )const
+{
+	mGdiUtil::Rect tmp = in.GetNormalized();
+	tmp.bottom++;
+	tmp.right++;
+	return tmp;
+}
+
+
 //指定範囲を指定範囲にコピーする(その１)
 bool mGdiDC::Copy( const mGdiDC& srcdc , 
 	INT src_x1 , INT src_y1 , INT src_x2 , INT src_y2 , 
@@ -226,6 +314,33 @@ bool mGdiDC::Copy( const mGdiDC& srcdc ,
 	}
 }
 
+bool mGdiDC::Copy( const mGdiDC& srcdc , const mGdiUtil::Rect& src , const mGdiUtil::Rect& dst )const
+{
+	mGdiUtil::Rect gdirect_s = ToGdiRect( src );
+	mGdiUtil::Rect gdirect_d = ToGdiRect( dst );
+
+	mGdiUtil::Size size_s( gdirect_s );
+	mGdiUtil::Size size_d( gdirect_d );
+
+	if( size_s.IsAlmostEqual( size_d ) )
+	{
+		//サイズが同じであるからbitblt
+		return ::BitBlt( MyHdc ,
+			static_cast<int>( gdirect_s.left ) , static_cast<int>( gdirect_s.top ) , static_cast<int>( size_s.cx ) , static_cast<int>( size_s.cy ) ,
+			srcdc.MyHdc ,
+			static_cast<int>( gdirect_d.left ) , static_cast<int>( gdirect_d.top ) ,
+			SRCCOPY );
+	}
+	else
+	{
+		//異なるからStretchBlt
+		return ::StretchBlt( MyHdc ,
+			static_cast<int>( gdirect_s.left ) , static_cast<int>( gdirect_s.top ) , static_cast<int>( size_s.cx ) , static_cast<int>( size_s.cy ) ,
+			srcdc.MyHdc ,
+			static_cast<int>( gdirect_d.left ) , static_cast<int>( gdirect_d.top ) , static_cast<int>( size_d.cx ) , static_cast<int>( size_d.cy ) ,
+			SRCCOPY );
+	}
+}
 
 //指定範囲を指定範囲にコピーする(その２)
 bool mGdiDC::Copy( const mGdiDC& srcdc ,
@@ -256,6 +371,18 @@ bool mGdiDC::Copy( const mGdiDC& srcdc ,
 	return Copy( srcdc , src_x1 , src_y1 , src_x2 , src_y2 , dst_x1 , dst_y1 , dst_x1 + width , dst_y1 + height , raster );
 }
 
+bool mGdiDC::Copy( const mGdiDC& srcdc , const mGdiUtil::Rect& src , const mGdiUtil::Point& dst )const
+{
+	mGdiUtil::Rect gdirect_s = ToGdiRect( src );
+	mGdiUtil::Size size_s( gdirect_s );
+
+	return ::BitBlt( MyHdc ,
+		static_cast<int>( gdirect_s.left ) , static_cast<int>( gdirect_s.top ) , static_cast<int>( size_s.cx ) , static_cast<int>( size_s.cy ) ,
+		srcdc.MyHdc ,
+		static_cast<int>( dst.x ) , static_cast<int>( dst.y ) ,
+		SRCCOPY );
+}
+
 //指定範囲を指定範囲にコピーする(その３)
 bool mGdiDC::Copy( const mGdiDC& srcdc , INT x1 , INT y1 , INT x2 , INT y2 , DWORD raster )
 {
@@ -263,12 +390,49 @@ bool mGdiDC::Copy( const mGdiDC& srcdc , INT x1 , INT y1 , INT x2 , INT y2 , DWO
 	return Copy( srcdc , x1 , y1 , x2 , y2 , x1 , y1 , x2 , y2 , raster );
 }
 
+bool mGdiDC::Copy( const mGdiDC& srcdc , const mGdiUtil::Rect& area )const
+{
+	mGdiUtil::Rect gdirect_s = ToGdiRect( area );
+	mGdiUtil::Size size_s( gdirect_s );
+
+	return ::BitBlt( MyHdc ,
+		static_cast<int>( gdirect_s.left ) , static_cast<int>( gdirect_s.top ) , static_cast<int>( size_s.cx ) , static_cast<int>( size_s.cy ) ,
+		srcdc.MyHdc ,
+		static_cast<int>( gdirect_s.left ) , static_cast<int>( gdirect_s.top ) ,
+		SRCCOPY );
+}
+
+
 bool mGdiDC::GetPrintSize( const WString& str , SIZE& retSize )
 {
 	return GetTextExtentPoint32W( MyHdc , str.c_str() , (int)str.length() , &retSize );
 }
 
-static bool MakeDrawTextParameter( const mGdiDC::PrintOptions& opt , UINT& retformat , DRAWTEXTPARAMS& retparams )
+bool mGdiDC::GetPrintSize( const WString& str , mGdiUtil::Size& retSize )
+{
+	SIZE tmp;
+	if( !GetTextExtentPoint32W( MyHdc , str.c_str() , (int)str.length() , &tmp ) )
+	{
+		retSize = mGdiUtil::Size();
+		return false;
+	}
+	retSize = tmp;
+	return true;
+}
+
+bool mGdiDC::GetPrintSize( const AString& str , mGdiUtil::Size& retSize )
+{
+	SIZE tmp;
+	if( !GetTextExtentPoint32A( MyHdc , str.c_str() , (int)str.length() , &tmp ) )
+	{
+		retSize = mGdiUtil::Size();
+		return false;
+	}
+	retSize = tmp;
+	return true;
+}
+
+static bool MakeDrawTextParameter( const mGdiDC::PrintOptions& opt , UINT& retformat , DRAWTEXTPARAMS& retparams , bool clip )
 {
 	bool result = true;
 	retformat = 0;
@@ -322,6 +486,12 @@ static bool MakeDrawTextParameter( const mGdiDC::PrintOptions& opt , UINT& retfo
 		retformat |= DT_EXPANDTABS;		//タブの展開を行う
 		retformat |= DT_TABSTOP;		//タブサイズの設定を行う
 	}
+
+	//クリップ
+	if( clip )
+	{
+		retformat |= DT_NOCLIP;	
+	}
 	return true;
 }
 
@@ -346,8 +516,7 @@ bool mGdiDC::Print( const WString& str , INT x , INT y , const PrintOptions& opt
 	UINT format ;
 	DRAWTEXTPARAMS option;
 
-	MakeDrawTextParameter( opt , format , option );
-	format |= DT_NOCLIP;	//←左上しか指定されていないので、クリップなし
+	MakeDrawTextParameter( opt , format , option , false );
 
 	//座標指定して
 	RECT rect;
@@ -357,7 +526,23 @@ bool mGdiDC::Print( const WString& str , INT x , INT y , const PrintOptions& opt
 	rect.bottom = y;
 
 	//描画
-	return DrawTextEx( MyHdc , const_cast<LPWSTR>( str.c_str() ) , (int)str.length() ,  &rect , format , &option );
+	return DrawTextExW( MyHdc , const_cast<LPWSTR>( str.c_str() ) , (int)str.length() ,  &rect , format , &option );
+}
+
+bool mGdiDC::Print( const WString& str , const mGdiUtil::Point& p , const PrintOptions& opt )
+{
+	UINT format ;
+	DRAWTEXTPARAMS option;
+	MakeDrawTextParameter( opt , format , option , false );
+	return DrawTextExW( MyHdc , const_cast<LPWSTR>( str.c_str() ) , (int)str.length() , &RECT( mGdiUtil::Rect( p , p ) ) , format , &option );
+}
+
+bool mGdiDC::Print( const AString& str , const mGdiUtil::Point& p , const PrintOptions& opt )
+{
+	UINT format ;
+	DRAWTEXTPARAMS option;
+	MakeDrawTextParameter( opt , format , option , false );
+	return DrawTextExA( MyHdc , const_cast<LPSTR>( str.c_str() ) , (int)str.length() , &RECT( mGdiUtil::Rect( p , p ) ) , format , &option );
 }
 
 //指定の位置にテキストを描画する
@@ -367,9 +552,7 @@ bool mGdiDC::Print( const WString& str , INT x1 , INT y1 , INT x2 , INT y2 , con
 	UINT format ;
 	DRAWTEXTPARAMS option;
 
-	MakeDrawTextParameter( opt , format , option );
-	//左上・右下ともに指定されているので、クリップあり。
-	format |= DT_NOCLIP;	
+	MakeDrawTextParameter( opt , format , option , true );
 
 	//座標指定して
 	RECT rect;
@@ -382,6 +565,22 @@ bool mGdiDC::Print( const WString& str , INT x1 , INT y1 , INT x2 , INT y2 , con
 	return DrawTextEx( MyHdc , const_cast<LPWSTR>( str.c_str() ) , (int)str.length() ,  &rect , format , &option );
 }
 
+bool mGdiDC::Print( const WString& str , const mGdiUtil::Rect& r , const PrintOptions& opt )
+{
+	UINT format ;
+	DRAWTEXTPARAMS option;
+	MakeDrawTextParameter( opt , format , option , true );
+	return DrawTextExW( MyHdc , const_cast<LPWSTR>( str.c_str() ) , (int)str.length() , &RECT( r ) , format , &option );
+}
+
+bool mGdiDC::Print( const AString& str , const mGdiUtil::Rect& r , const PrintOptions& opt )
+{
+	UINT format ;
+	DRAWTEXTPARAMS option;
+	MakeDrawTextParameter( opt , format , option , true );
+	return DrawTextExA( MyHdc , const_cast<LPSTR>( str.c_str() ) , (int)str.length() , &RECT( r ) , format , &option );
+}
+
 bool mGdiDC::PrintMultiline( const WString& str , INT x1 , INT y1 , INT x2 , INT y2 , const PrintOptions& opt )
 {
 	//行単位にパース
@@ -390,7 +589,6 @@ bool mGdiDC::PrintMultiline( const WString& str , INT x1 , INT y1 , INT x2 , INT
 
 	return PrintMultiline( lines , x1 , y1 , x2 , y2 , opt );
 }
-
 
 bool mGdiDC::PrintMultiline( const WStringDeque& lines , INT x1 , INT y1 , INT x2 , INT y2 , const PrintOptions& opt )
 {
@@ -463,7 +661,7 @@ bool mGdiDC::PrintMultiline( const WStringDeque& lines , INT x1 , INT y1 , INT x
 	//APIに渡すフォーマット情報を作成
 	UINT format ;
 	DRAWTEXTPARAMS option;
-	MakeDrawTextParameter( opt , format , option );
+	MakeDrawTextParameter( opt , format , option , true );
 
 	//描画する
 	int current_y = print_rect.top;
@@ -494,7 +692,6 @@ bool mGdiDC::PrintMultiline( const WStringDeque& lines , INT x1 , INT y1 , INT x
 	return true;
 }
 
-
 //指定の位置にテキストを描画する
 bool mGdiDC::PrintOffset( const WString& str , INT x1 , INT y1 , INT offset_x , INT offset_y , const PrintOptions& opt )
 {
@@ -511,9 +708,8 @@ bool mGdiDC::GetPrintSize( const WString& str , SIZE& retSize , const PrintOptio
 
 	UINT format ;
 	DRAWTEXTPARAMS option;
-	MakeDrawTextParameter( tmp_opt , format , option );
+	MakeDrawTextParameter( tmp_opt , format , option , false );
 	format |= DT_CALCRECT;
-	format |= DT_NOCLIP;
 
 	RECT rect = { 0 };
 	if( !DrawTextEx( MyHdc , const_cast<LPWSTR>( str.c_str() ) , (int)str.length() ,  &rect , format , &option ) )
@@ -559,9 +755,8 @@ bool mGdiDC::GetPrintSizeMultiline( const WStringDeque& lines , SIZE& retSize , 
 
 	UINT format ;
 	DRAWTEXTPARAMS option;
-	MakeDrawTextParameter( tmp_opt , format , option );
+	MakeDrawTextParameter( tmp_opt , format , option , false );
 	format |= DT_CALCRECT;
-	format |= DT_NOCLIP;
 
 	//描画に必要な矩形を求める
 	for( WStringDeque::const_iterator itr = lines.begin() ; itr != lines.end() ; itr++ )

@@ -129,8 +129,19 @@ bool mGdiBitmap::GetSize( SIZE& retSize )const noexcept
 	retSize.cx = bmp.bmWidth;
 	retSize.cy = bmp.bmHeight;
 	return true;
-
 }
+
+bool mGdiBitmap::GetSize( mGdiUtil::Size& retSize )const noexcept
+{
+	BITMAP bmp;
+	if( !GetInfo( bmp ) )
+	{
+		return false;
+	}
+	retSize = mGdiUtil::Size( bmp.bmWidth , bmp.bmHeight );
+	return true;
+}
+
 
 bool mGdiBitmap::GetInfo( BITMAP& retInfo )const noexcept
 {

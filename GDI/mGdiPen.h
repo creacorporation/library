@@ -68,12 +68,38 @@ public:
 			width = 1;
 			color = RGB( 0 , 0 , 0 );
 		}
+		const Option_UseOption& operator=( const Option_UseOption& src )
+		{
+			kind = src.kind;
+			width = src.width;
+			color = src.color;
+			return *this;
+		}
+		bool operator==( const Option_UseOption& src )const
+		{
+			return ( kind == src.kind ) && ( width == src.width ) &&( color == src.color );
+		}
+		bool operator!=( const Option_UseOption& src )const
+		{
+			return !( *this == src );
+		}
 	};
 
 	struct Option_Transparent : public Option
 	{
 		Option_Transparent() : Option( CreateMethod::TRANSPARENT_PEN )
 		{
+		}
+		const Option_Transparent& operator=( const Option_Transparent& src )
+		{
+		}
+		constexpr bool operator==( const Option_Transparent& src )const
+		{
+			return true;
+		}
+		constexpr bool operator!=( const Option_Transparent& src )const
+		{
+			return !( *this == src );
 		}
 	};
 
