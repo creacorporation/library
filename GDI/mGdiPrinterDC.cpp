@@ -185,8 +185,7 @@ static bool PageSetup_StandardSize( HDC hdc , const mGdiPrinterDC::PageOption_St
 	}
 
 	//設定
-	ResetDCW( hdc , &devmode );
-	return true;
+	return ResetDCW( hdc , &devmode );
 }
 
 static bool PageSetup_Nochange( HDC hdc , const mGdiPrinterDC::PageOption_Nochange& opt )
