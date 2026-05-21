@@ -50,7 +50,6 @@ bool mGdiPrinterDC::Open( const Option& opt ) noexcept
 			RaiseError( g_ErrorLogger , 0 , L"プリンタを開くことができません" , op->PrinterName );
 			return false;
 		}
-		MyDCState.reset( mNew DCState( GetDCState() ) );
 
 		//ドキュメントの開始
 		DOCINFO doc = {};
@@ -229,6 +228,7 @@ bool mGdiPrinterDC::StartPage( const PageOption& opt ) noexcept
 		RaiseError( g_ErrorLogger , 0 , L"ページを開始できませんでした" , MyOption->DocumentName );
 		return false;
 	}
+	MyDCState.reset( mNew DCState( GetDCState() ) );
 	return true;
 }
 
@@ -239,6 +239,8 @@ bool mGdiPrinterDC::EndPage( void ) noexcept
 		RaiseAssert( g_ErrorLogger , 0 , L"プリンタが開かれていません" );
 		return false;
 	}
+
+	MyDCState.reset();
 
 	SetLastError( 0 );
 	if( ::EndPage( MyHdc ) <= 0 )
