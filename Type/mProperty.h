@@ -37,6 +37,11 @@ public:
 	{
 		MyOn = true;
 	}
+	mProperty( bool en , T t , F f )
+		: OnValue( t ) , OffValue( f )
+	{
+		MyOn = en;
+	}
 	mProperty( const mProperty& src )
 		: OnValue( src.OnValue ) , OffValue( src.OffValue )
 	{

@@ -451,18 +451,18 @@ DWORD RaiseErrorInternalF( mErrorLogger& obj , mErrorLogger::ErrorLevel level , 
 //  1要素目 メッセージ１
 //  2要素目 メッセージ２
 //・デバッグ用の記録に使用
-#define CreateDebugEntry(obj,error_code,...)		\
-{													\
-	DWORD tmp_error_code = GetLastError();			\
-	RaiseErrorInternal(								\
-		obj,										\
-		mErrorLogger::ErrorLevel::LEVEL_DEBUG,		\
-		ERROR_LOGGER_CURRENT_FILE ,					\
-		__LINE__ ,									\
-		tmp_error_code ,							\
-		error_code ,								\
-		__VA_ARGS__ );								\
-}													\
+#define CreateDebugEntry(obj,error_code,...)        \
+([&]{                                               \
+    const DWORD ec = GetLastError();                \
+    RaiseErrorInternal(                             \
+        obj,                                        \
+        mErrorLogger::ErrorLevel::LEVEL_DEBUG,      \
+        ERROR_LOGGER_CURRENT_FILE,                  \
+        __LINE__,                                   \
+        ec,                                         \
+        error_code,                                 \
+        __VA_ARGS__);                               \
+}())                                                \
 /*CreateLogEntry*/
 
 //動作ログ
@@ -473,18 +473,18 @@ DWORD RaiseErrorInternalF( mErrorLogger& obj , mErrorLogger::ErrorLevel level , 
 //  2要素目 書式指定文字列
 //  3要素目以降 書式指定文字列に埋め込む値
 //・デバッグ用の記録に使用
-#define CreateDebugEntryF(obj,error_code,...)		\
-{													\
-	DWORD tmp_error_code = GetLastError();			\
-	RaiseErrorInternalF(							\
-		obj,										\
-		mErrorLogger::ErrorLevel::LEVEL_DEBUG,		\
-		ERROR_LOGGER_CURRENT_FILE ,					\
-		__LINE__ ,									\
-		tmp_error_code ,							\
-		error_code ,								\
-		__VA_ARGS__ );								\
-}													\
+#define CreateDebugEntryF(obj,error_code,...)       \
+([&]{                                               \
+    const DWORD ec = GetLastError();                \
+    RaiseErrorInternalF(                            \
+        obj,                                        \
+        mErrorLogger::ErrorLevel::LEVEL_DEBUG,      \
+        ERROR_LOGGER_CURRENT_FILE ,                 \
+        __LINE__ ,                                  \
+        ec ,                                        \
+        error_code ,                                \
+        __VA_ARGS__ );                              \
+}())                                                \
 /*CreateLogEntryF*/
 
 //動作ログ
@@ -495,17 +495,17 @@ DWORD RaiseErrorInternalF( mErrorLogger& obj , mErrorLogger::ErrorLevel level , 
 //  2要素目 メッセージ２
 //・ロギングは正常動作でも記録しておきたいイベント（接続完了とか）に対して生成します
 #define CreateLogEntry(obj,error_code,...)			\
-{													\
-	DWORD tmp_error_code = GetLastError();			\
-	RaiseErrorInternal(								\
-		obj,										\
-		mErrorLogger::ErrorLevel::LEVEL_LOGGING,	\
-		ERROR_LOGGER_CURRENT_FILE ,					\
-		__LINE__ ,									\
-		tmp_error_code ,							\
-		error_code ,								\
-		__VA_ARGS__ );								\
-}													\
+([&]{                                               \
+    const DWORD ec = GetLastError();                \
+    RaiseErrorInternal(                             \
+        obj,                                        \
+        mErrorLogger::ErrorLevel::LEVEL_LOGGING,    \
+        ERROR_LOGGER_CURRENT_FILE,                  \
+        __LINE__,                                   \
+        ec,                                         \
+        error_code,                                 \
+        __VA_ARGS__);                               \
+}())                                                \
 /*CreateLogEntry*/
 
 //動作ログ
@@ -517,17 +517,17 @@ DWORD RaiseErrorInternalF( mErrorLogger& obj , mErrorLogger::ErrorLevel level , 
 //  3要素目以降 書式指定文字列に埋め込む値
 //・ロギングは正常動作でも記録しておきたいイベント（接続完了とか）に対して生成します
 #define CreateLogEntryF(obj,error_code,...)			\
-{													\
-	DWORD tmp_error_code = GetLastError();			\
-	RaiseErrorInternalF(							\
-		obj,										\
-		mErrorLogger::ErrorLevel::LEVEL_LOGGING,	\
-		ERROR_LOGGER_CURRENT_FILE ,					\
-		__LINE__ ,									\
-		tmp_error_code ,							\
-		error_code ,								\
-		__VA_ARGS__ );								\
-}													\
+([&]{                                               \
+    const DWORD ec = GetLastError();                \
+    RaiseErrorInternalF(                            \
+        obj,                                        \
+        mErrorLogger::ErrorLevel::LEVEL_LOGGING,    \
+        ERROR_LOGGER_CURRENT_FILE ,                 \
+        __LINE__ ,                                  \
+        ec ,                                        \
+        error_code ,                                \
+        __VA_ARGS__ );                              \
+}())                                                \
 /*CreateLogEntryF*/
 
 //警告発生
@@ -538,17 +538,17 @@ DWORD RaiseErrorInternalF( mErrorLogger& obj , mErrorLogger::ErrorLevel level , 
 //  2要素目 メッセージ２
 //・続行は可能だが問題がある場合
 #define RaiseWarning(obj,error_code,...)			\
-{													\
-	DWORD tmp_error_code = GetLastError();			\
-	RaiseErrorInternal(								\
-		obj,										\
-		mErrorLogger::ErrorLevel::LEVEL_WARNING,	\
-		ERROR_LOGGER_CURRENT_FILE ,					\
-		__LINE__ ,									\
-		tmp_error_code ,							\
-		error_code ,								\
-		__VA_ARGS__ );								\
-}													\
+([&]{                                               \
+    const DWORD ec = GetLastError();                \
+    RaiseErrorInternal(                             \
+        obj,                                        \
+        mErrorLogger::ErrorLevel::LEVEL_WARNING,    \
+        ERROR_LOGGER_CURRENT_FILE,                  \
+        __LINE__,                                   \
+        ec,                                         \
+        error_code,                                 \
+        __VA_ARGS__);                               \
+}())                                                \
 /*RaiseError*/
 
 //警告発生
@@ -560,17 +560,17 @@ DWORD RaiseErrorInternalF( mErrorLogger& obj , mErrorLogger::ErrorLevel level , 
 //  3要素目以降 書式指定文字列に埋め込む値
 //・続行は可能だが問題がある場合
 #define RaiseWarningF(obj,error_code,...)			\
-{													\
-	DWORD tmp_error_code = GetLastError();			\
-	RaiseErrorInternalF(							\
-		obj,										\
-		mErrorLogger::ErrorLevel::LEVEL_WARNING,	\
-		ERROR_LOGGER_CURRENT_FILE ,					\
-		__LINE__ ,									\
-		tmp_error_code ,							\
-		error_code ,								\
-		__VA_ARGS__ );								\
-}													\
+([&]{                                               \
+    const DWORD ec = GetLastError();                \
+    RaiseErrorInternalF(                            \
+        obj,                                        \
+        mErrorLogger::ErrorLevel::LEVEL_WARNING,    \
+        ERROR_LOGGER_CURRENT_FILE ,                 \
+        __LINE__ ,                                  \
+        ec ,                                        \
+        error_code ,                                \
+        __VA_ARGS__ );                              \
+}())                                                \
 /*RaiseErrorF*/
 
 //エラー発生
@@ -581,17 +581,17 @@ DWORD RaiseErrorInternalF( mErrorLogger& obj , mErrorLogger::ErrorLevel level , 
 //  2要素目 メッセージ２
 //・エラーは通常操作で起こりうるエラー（ファイルがなかったとか）に対して生成します。
 #define RaiseError(obj,error_code,...)				\
-{													\
-	DWORD tmp_error_code = GetLastError();			\
-	RaiseErrorInternal(								\
-		obj,										\
-		mErrorLogger::ErrorLevel::LEVEL_ERROR,		\
-		ERROR_LOGGER_CURRENT_FILE ,					\
-		__LINE__ ,									\
-		tmp_error_code ,							\
-		error_code ,								\
-		__VA_ARGS__ );								\
-}													\
+([&]{                                               \
+    const DWORD ec = GetLastError();                \
+    RaiseErrorInternal(                             \
+        obj,                                        \
+        mErrorLogger::ErrorLevel::LEVEL_ERROR,      \
+        ERROR_LOGGER_CURRENT_FILE,                  \
+        __LINE__,                                   \
+        ec,                                         \
+        error_code,                                 \
+        __VA_ARGS__);                               \
+}())                                                \
 /*RaiseError*/
 
 //エラー発生
@@ -603,17 +603,17 @@ DWORD RaiseErrorInternalF( mErrorLogger& obj , mErrorLogger::ErrorLevel level , 
 //  3要素目以降 書式指定文字列に埋め込む値
 //・エラーは通常操作で起こりうるエラー（ファイルがなかったとか）に対して生成します。
 #define RaiseErrorF(obj,error_code,...)				\
-{													\
-	DWORD tmp_error_code = GetLastError();			\
-	RaiseErrorInternalF(							\
-		obj,										\
-		mErrorLogger::ErrorLevel::LEVEL_ERROR,		\
-		ERROR_LOGGER_CURRENT_FILE ,					\
-		__LINE__ ,									\
-		tmp_error_code ,							\
-		error_code ,								\
-		__VA_ARGS__ );								\
-}													\
+([&]{                                               \
+    const DWORD ec = GetLastError();                \
+    RaiseErrorInternalF(                            \
+        obj,                                        \
+        mErrorLogger::ErrorLevel::LEVEL_ERROR,      \
+        ERROR_LOGGER_CURRENT_FILE ,                 \
+        __LINE__ ,                                  \
+        ec ,                                        \
+        error_code ,                                \
+        __VA_ARGS__ );                              \
+}())                                                \
 /*RaiseErrorF*/
 
 
@@ -625,17 +625,17 @@ DWORD RaiseErrorInternalF( mErrorLogger& obj , mErrorLogger::ErrorLevel level , 
 //  2要素目 メッセージ２
 //・アサートが発生したとき(プログラム的に想定していなかった場合)に対して生成します。
 #define RaiseAssert(obj,error_code,...)				\
-{													\
-	DWORD tmp_error_code = GetLastError();			\
-	RaiseErrorInternal(								\
-		obj,										\
-		mErrorLogger::ErrorLevel::LEVEL_ASSERT,		\
-		ERROR_LOGGER_CURRENT_FILE ,					\
-		__LINE__ ,									\
-		tmp_error_code ,							\
-		error_code ,								\
-		__VA_ARGS__ );								\
-}													\
+([&]{                                               \
+    const DWORD ec = GetLastError();                \
+    RaiseErrorInternal(                             \
+        obj,                                        \
+        mErrorLogger::ErrorLevel::LEVEL_ASSERT,     \
+        ERROR_LOGGER_CURRENT_FILE,                  \
+        __LINE__,                                   \
+        ec,                                         \
+        error_code,                                 \
+        __VA_ARGS__);                               \
+}())                                                \
 /*RaiseAssert*/
 
 
@@ -648,17 +648,17 @@ DWORD RaiseErrorInternalF( mErrorLogger& obj , mErrorLogger::ErrorLevel level , 
 //  3要素目以降 書式指定文字列に埋め込む値
 //・アサートが発生したとき(プログラム的に想定していなかった場合)に対して生成します。
 #define RaiseAssertF(obj,error_code,...)			\
-{													\
-	DWORD tmp_error_code = GetLastError();			\
-	RaiseErrorInternalF(							\
-		obj,										\
-		mErrorLogger::ErrorLevel::LEVEL_ASSERT,		\
-		ERROR_LOGGER_CURRENT_FILE ,					\
-		__LINE__ ,									\
-		tmp_error_code ,							\
-		error_code ,								\
-		__VA_ARGS__ );								\
-}													\
+([&]{                                               \
+    const DWORD ec = GetLastError();                \
+    RaiseErrorInternalF(                            \
+        obj,                                        \
+        mErrorLogger::ErrorLevel::LEVEL_ASSERT,     \
+        ERROR_LOGGER_CURRENT_FILE ,                 \
+        __LINE__ ,                                  \
+        ec ,                                        \
+        error_code ,                                \
+        __VA_ARGS__ );                              \
+}())                                                \
 /*RaiseAssert*/
 
 #endif	//MERRORLOGGER_H_INCLUDED

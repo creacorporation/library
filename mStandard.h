@@ -1,6 +1,7 @@
 ﻿//----------------------------------------------------------------------------
 // 基本ヘッダ
 // Copyright (C) 2016 Fingerling. All rights reserved. 
+// Copyright (C) 2026 Crea Inc. All rights reserved. 
 // This program is released under the MIT License. 
 // see http://opensource.org/licenses/mit-license.php
 // 著作権表示やライセンスの改変は禁止されています。
@@ -57,10 +58,27 @@ template<typename t , size_t s> constexpr size_t array_count_of( const t(&array)
 #define mWCHAR_STRING_INT(quote) L##quote
 #define mWCHAR_STRING(quote) mWCHAR_STRING_INT(quote)
 
+namespace mStandard
+{
+template< size_t s >
+constexpr const wchar_t* ParseFileNameMacro( const wchar_t( &path )[s] )
+{
+	const wchar_t* pos = path;
+	for( size_t i = 0 ; i < s ; ++i )
+	{
+		if( path[ i ] == L'\\' || path[ i ] == L'/' )
+		{
+			pos = path + i + 1;
+		}
+	}
+	return pos;
+}
+}
+
 //現在コンパイル中のファイル名
 //__FILE__からパスを取り除いた物になります。
-#define mCURRENT_FILE ( wcsrchr( mWCHAR_STRING(__FILE__) , L'\\') ? wcsrchr( mWCHAR_STRING(__FILE__)  , L'\\' ) + 1 : mWCHAR_STRING(__FILE__) )
-#define mCURRENT_FUNCTION mWCHAR_STRING(__FUNCTION__)
+#define mCURRENT_FILE (mStandard::ParseFileNameMacro(__FILEW__))
+#define mCURRENT_FUNCTION (__FUNCTIONW__)
 
 //イニシャライズ
 //ライブラリを初期化します。使用する前に初期化して下さい。

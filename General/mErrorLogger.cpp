@@ -389,29 +389,29 @@ void mErrorLogger::OutputLogToConsole( const LogEntry& entry )
 			wchar_fprintf( stderr , L"*LOG 0x%08llX\n" , entry.Code2 );
 			#else
 			wchar_fprintf( stderr , L"*LOG 0x%08X\n" , entry.Code2 );
-			break;
 			#endif
+			break;
 		case LEVEL_EXCEPTION:		//例外がスローされたとき(mExceptionが使用します)
 			#ifdef _WIN64
 			wchar_fprintf( stderr , L"*EXCEPTION 0x%08llX\n" , entry.Code2 );
 			#else
 			wchar_fprintf( stderr , L"*EXCEPTION 0x%08X\n" , entry.Code2 );
-			break;
 			#endif
+			break;
 		case LEVEL_DEBUG:			//デバッグ情報
 			#ifdef _WIN64
 			wchar_fprintf( stderr , L"*DEBUG 0x%08llX\n" , entry.Code2 );
 			#else
 			wchar_fprintf( stderr , L"*DEBUG 0x%08X\n" , entry.Code2 );
-			break;
 			#endif
+			break;
 		case LEVEL_WARNING:			//ワーニング
 			#ifdef _WIN64
 			wchar_fprintf( stderr , L"*WARNING 0x%08llX\n" , entry.Code2 );
 			#else
 			wchar_fprintf( stderr , L"*WARNING 0x%08X\n" , entry.Code2 );
-			break;
 			#endif
+			break;
 		default:
 			#ifdef _WIN64
 			wchar_fprintf( stderr , L"*UNKNOWN 0x%08llX\n" , entry.Code2 );
@@ -451,29 +451,29 @@ void mErrorLogger::OutputLogToConsole( const LogEntry& entry )
 			fprintf( stderr , "*LOG 0x%08llX\n" , entry.Code2 );
 			#else
 			fprintf( stderr , "*LOG 0x%08X\n" , entry.Code2 );
-			break;
 			#endif
+			break;
 		case LEVEL_EXCEPTION:		//例外がスローされたとき(mExceptionが使用します)
 			#ifdef _WIN64
 			fprintf( stderr , "*EXCEPTION 0x%08llX\n" , entry.Code2 );
 			#else
 			fprintf( stderr , "*EXCEPTION 0x%08X\n" , entry.Code2 );
-			break;
 			#endif
+			break;
 		case LEVEL_DEBUG:			//デバッグ情報
 			#ifdef _WIN64
 			fprintf( stderr , "*DEBUG 0x%08llX\n" , entry.Code2 );
 			#else
 			fprintf( stderr , "*DEBUG 0x%08X\n" , entry.Code2 );
-			break;
 			#endif
+			break;
 		case LEVEL_WARNING:			//ワーニング
 			#ifdef _WIN64
 			fprintf( stderr , "*WARNING 0x%08llX\n" , entry.Code2 );
 			#else
 			fprintf( stderr , "*WARNING 0x%08X\n" , entry.Code2 );
-			break;
 			#endif
+			break;
 		default:
 			#ifdef _WIN64
 			fprintf( stderr , "*UNKNOWN 0x%08llX\n" , entry.Code2 );
@@ -533,15 +533,15 @@ void mErrorLogger::OutputLogToDebugger( const LogEntry& entry )
 		sprintf( str , L"*DEBUG 0x%08llX\n" , entry.Code2 );
 		#else
 		sprintf( str , L"*DEBUG 0x%08X\n" , entry.Code2 );
-		break;
 		#endif
+		break;
 	case LEVEL_WARNING:			//ワーニング
 		#ifdef _WIN64
 		sprintf( str , L"*WARNING 0x%08llX\n" , entry.Code2 );
 		#else
 		sprintf( str , L"*WARNING 0x%08X\n" , entry.Code2 );
-		break;
 		#endif
+		break;
 	default:
 		#ifdef _WIN64
 		sprintf( str , L"*UNKNOWN 0x%08llX\n" , entry.Code2 );
@@ -614,15 +614,15 @@ void mErrorLogger::OutputLogToFile( const LogEntry& entry )
 		sprintf( str , L"*DEBUG 0x%08llX\n" , entry.Code2 );
 		#else
 		sprintf( str , L"*DEBUG 0x%08X\n" , entry.Code2 );
-		break;
 		#endif
+		break;
 	case LEVEL_WARNING:			//ワーニング
 		#ifdef _WIN64
 		sprintf( str , L"*WARNING 0x%08llX\n" , entry.Code2 );
 		#else
 		sprintf( str , L"*WARNING 0x%08X\n" , entry.Code2 );
-		break;
 		#endif
+		break;
 	default:
 		#ifdef _WIN64
 		sprintf( str , L"*UNKNOWN 0x%08llX\r\n" , entry.Code2 );
