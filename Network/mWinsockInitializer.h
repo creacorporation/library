@@ -12,13 +12,19 @@
 #define MWINSOCKINITIALIZER_H_INCLUDED
 
 #include <WinSock2.h>
+#include <mswsock.h>
 #include "mStandard.h"
 
 class mWinsockInitializer
 {
 public:
-	mWinsockInitializer();
 	virtual ~mWinsockInitializer();
+
+	static mWinsockInitializer& Get( void )
+	{
+		static mWinsockInitializer s_WinsockInitializer;
+		return s_WinsockInitializer;
+	}
 
 	//Winsockがイニシャライズされているかどうか
 	bool IsInitialized( void )const;
@@ -26,12 +32,48 @@ public:
 	//Winsockがイニシャライズされているかどうか
 	operator bool() const;
 
-private:
+	bool ConnextEx(
+		SOCKET s,
+		const struct sockaddr FAR *name,
+		int namelen,
+		PVOID lpSendBuffer,
+		DWORD dwSendDataLength,
+		LPDWORD lpdwBytesSent,
+		LPOVERLAPPED lpOverlapped
+	)const;
 
+	bool AcceptEx(
+		SOCKET sListenSocket,
+		SOCKET sAcceptSocket,
+		PVOID lpOutputBuffer,
+		DWORD dwReceiveDataLength,
+		DWORD dwLocalAddressLength,
+		DWORD dwRemoteAddressLength,
+		LPDWORD lpdwBytesReceived,
+		LPOVERLAPPED lpOverlapped
+	)const;
+
+	bool TransmitFile(
+		SOCKET hSocket,
+		HANDLE hFile,
+		DWORD nNumberOfBytesToWrite,
+		DWORD nNumberOfBytesPerSend,
+		LPOVERLAPPED lpOverlapped,
+		LPTRANSMIT_FILE_BUFFERS lpTransmitBuffers,
+		DWORD dwReserved
+	)const;
+
+private:
+	mWinsockInitializer();
 	mWinsockInitializer( const mWinsockInitializer& src ) = delete;
 	const mWinsockInitializer& operator=( const mWinsockInitializer& src ) = delete;
 
-	bool MyIsInitialized;
+	bool SetExtendFunctionPointer( void );
+
+	bool MyIsInitialized = false;
+	LPFN_CONNECTEX MyConnextEx = nullptr;
+	LPFN_ACCEPTEX MyAcceptEx = nullptr;
+	LPFN_TRANSMITFILE MyTransmitFile = nullptr;
 };
 
 #endif
