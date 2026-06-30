@@ -389,13 +389,11 @@ bool mASyncTcpListener::TcpSocketInterface::GetNewSocket( SOCKET& retNewSocket ,
 			switch( addr->sa_family )
 			{
 			case AF_INET6:
-				entry.Version = Version::IPv6;
-				entry.Address.v6 = *reinterpret_cast<const sockaddr_in6*>( addr );
+				entry = AddressInfoEntry( *reinterpret_cast<const sockaddr_in6*>( addr ) );
 				break;
 			case AF_INET:
 			default:
-				entry.Version = Version::IPv4;
-				entry.Address.v4 = *reinterpret_cast<const sockaddr_in*>( addr );
+				entry = AddressInfoEntry( *reinterpret_cast<const sockaddr_in*>( addr ) );
 				break;
 			}
 		};
@@ -434,5 +432,66 @@ bool mASyncTcpListener::TcpSocketInterface::GetNewSocket( SOCKET& retNewSocket ,
 mASyncTcpListener::AddressInfoEntry::AddressInfoEntry()
 {
 	Version = Version::IPv4;
+	Port = 0;
 	ZeroMemory( &Address , sizeof( Address ) );
+}
+
+mASyncTcpListener::AddressInfoEntry::AddressInfoEntry( const sockaddr_in& in )
+{
+	Version = Version::IPv4;
+	Address.reserve( sizeof( sockaddr_in::sin_addr.S_un.S_un_b ) );
+	Address.push_back( in.sin_addr.S_un.S_un_b.s_b1 );
+	Address.push_back( in.sin_addr.S_un.S_un_b.s_b2 );
+	Address.push_back( in.sin_addr.S_un.S_un_b.s_b3 );
+	Address.push_back( in.sin_addr.S_un.S_un_b.s_b4 );
+	Port = ntohs( in.sin_port );
+}
+
+mASyncTcpListener::AddressInfoEntry::AddressInfoEntry( const sockaddr_in6& in )
+{
+	Version = Version::IPv6;
+	Address.reserve( sizeof( sockaddr_in6::sin6_addr.u.Byte ) );
+	for( int i = 0 ; i < sizeof( sockaddr_in6::sin6_addr.u.Byte ) ; i++ )
+	{
+		Address.push_back( in.sin6_addr.u.Byte[ i ] );
+	}
+	Port = ntohs( in.sin6_port );
+}
+
+mASyncTcpListener::AddressInfoEntry::operator sockaddr_in() const
+{
+	sockaddr_in addr = {0};
+	addr.sin_family = AF_INET;
+	if( Address.size() != sizeof( sockaddr_in::sin_addr.S_un.S_un_b ) )
+	{
+		RaiseError( g_ErrorLogger , 0 , L"TCP" , L"IPv4アドレスサイズエラー" );
+	}
+	else
+	{
+		addr.sin_addr.S_un.S_un_b.s_b1 = Address[ 0 ];
+		addr.sin_addr.S_un.S_un_b.s_b2 = Address[ 1 ];
+		addr.sin_addr.S_un.S_un_b.s_b3 = Address[ 2 ];
+		addr.sin_addr.S_un.S_un_b.s_b4 = Address[ 3 ];
+	}
+	addr.sin_port = htons( Port );
+	return addr;
+}
+
+mASyncTcpListener::AddressInfoEntry::operator sockaddr_in6() const
+{
+	sockaddr_in6 addr = { 0 };
+	addr.sin6_family = AF_INET6;
+	if( Address.size() != sizeof( sockaddr_in6::sin6_addr.u.Byte ) )
+	{
+		RaiseError( g_ErrorLogger , 0 , L"TCP" , L"IPv6アドレスサイズエラー" );
+	}
+	else
+	{
+		for( int i = 0 ; i < sizeof( sockaddr_in6::sin6_addr.u.Byte ) ; i++ )
+		{
+			addr.sin6_addr.u.Byte[ i ] = Address[ i ];
+		}
+	}
+	addr.sin6_port = htons( Port );
+	return addr;
 }

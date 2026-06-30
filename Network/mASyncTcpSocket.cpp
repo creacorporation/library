@@ -771,23 +771,19 @@ void mASyncTcpSocket::AddressLookupRoutine( DWORD ec , DWORD len , LPOVERLAPPED 
 	AddressInfo addrinfo;
 	while( info )
 	{
-		AddressInfoEntry entry;
+		AddressInfoEntry addrinfo_entry;
 		switch( info->ai_family )
 		{
 		case AF_INET:
-		{
-			entry.Version = Version::IPv4;
-			entry.Address.v4 = *reinterpret_cast<const sockaddr_in *>( info->ai_addr );
-			addrinfo.push_back( std::move( entry ) );
+			addrinfo_entry = AddressInfoEntry( *reinterpret_cast<const sockaddr_in*>( info->ai_addr ) );
+			addrinfo_entry.Port = entry->Port;
+			addrinfo.push_back( addrinfo_entry );
 			break;
-		}
 		case AF_INET6:
-		{
-			entry.Version = Version::IPv6;
-			entry.Address.v6 = *reinterpret_cast<const sockaddr_in6 *>( info->ai_addr );
-			addrinfo.push_back( std::move( entry ) );
+			addrinfo_entry = AddressInfoEntry( *reinterpret_cast<const sockaddr_in6*>( info->ai_addr ) );
+			addrinfo_entry.Port = entry->Port;
+			addrinfo.push_back( addrinfo_entry );
 			break;
-		}
 		default:
 			RaiseErrorF( g_ErrorLogger , 0 , L"TCP" , L"不明なアドレスファミリ%d" , info->ai_family );
 			break;
@@ -887,10 +883,7 @@ void mASyncTcpSocket::AddressLookupRoutine( DWORD ec , DWORD len , LPOVERLAPPED 
 
 		if( addrinfo[ callback_result ].Version == Version::IPv4 )
 		{
-			sockaddr_in addr = { 0 };
-			addr.sin_family = AF_INET;
-			addr.sin_addr = addrinfo[ callback_result ].Address.v4.sin_addr;
-			addr.sin_port = htons( MyConnectData->Port );
+			sockaddr_in addr = sockaddr_in( addrinfo[ callback_result ] );
 			if( !mWinsockInitializer::Get().ConnextEx( MySocket, reinterpret_cast<const sockaddr*>( &addr ) , (int)sizeof( addr ) , nullptr , 0 , nullptr , &MyConnectData->Entry.Ov ) )
 			{
 				if( WSAGetLastError() != ERROR_IO_PENDING )
@@ -903,10 +896,7 @@ void mASyncTcpSocket::AddressLookupRoutine( DWORD ec , DWORD len , LPOVERLAPPED 
 		}
 		if( addrinfo[ callback_result ].Version == Version::IPv6 )
 		{
-			sockaddr_in6 addr = { 0 };
-			addr.sin6_family = AF_INET6;
-			addr.sin6_addr = addrinfo[ callback_result ].Address.v6.sin6_addr;
-			addr.sin6_port = htons( MyConnectData->Port );
+			sockaddr_in6 addr = sockaddr_in6( addrinfo[ callback_result ] );
 			if( !mWinsockInitializer::Get().ConnextEx( MySocket, reinterpret_cast<const sockaddr*>( &addr ) , (int)sizeof( addr ) , nullptr , 0 , nullptr , &MyConnectData->Entry.Ov ) )
 			{
 				if( WSAGetLastError() != ERROR_IO_PENDING )

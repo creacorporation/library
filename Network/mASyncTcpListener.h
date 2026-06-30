@@ -82,13 +82,14 @@ public:
 	struct AddressInfoEntry
 	{
 		AddressInfoEntry();
+		AddressInfoEntry( const sockaddr_in& in );
+		AddressInfoEntry( const sockaddr_in6& in );
+		explicit operator sockaddr_in()const;
+		explicit operator sockaddr_in6()const;
+
 		Version Version;
-		union Address
-		{
-			sockaddr_in v4;
-			sockaddr_in6 v6;
-		};
-		Address Address;
+		std::vector<uint8_t> Address;
+		uint16_t Port;
 	};
 
 	//接続してきたソケットの取得
