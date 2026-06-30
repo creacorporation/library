@@ -19,6 +19,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Network\mASyncTcpListener.h" />
     <ClInclude Include="Network\mASyncTcpSocket.h" />
     <ClInclude Include="Crypto\mSCNDEF.h" />
     <ClInclude Include="Crypto\mSCNTAG.h" />
@@ -154,6 +155,7 @@
     <ClInclude Include="Type\mProperty.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Network\mASyncTcpListener.cpp" />
     <ClCompile Include="Network\mASyncTcpSocket.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</ExcludedFromBuild>

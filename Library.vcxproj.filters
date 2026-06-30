@@ -442,6 +442,9 @@
     <ClInclude Include="Network\mASyncTcpSocket.h">
       <Filter>Network</Filter>
     </ClInclude>
+    <ClInclude Include="Network\mASyncTcpListener.h">
+      <Filter>Network</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="General\mOptionParser.cpp">
@@ -826,6 +829,9 @@
       <Filter>Crypto</Filter>
     </ClCompile>
     <ClCompile Include="Network\mASyncTcpSocket.cpp">
+      <Filter>Network</Filter>
+    </ClCompile>
+    <ClCompile Include="Network\mASyncTcpListener.cpp">
       <Filter>Network</Filter>
     </ClCompile>
   </ItemGroup>

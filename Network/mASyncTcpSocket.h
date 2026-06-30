@@ -17,6 +17,7 @@
 #include "../General/mCriticalSectionContainer.h"
 #include "../General/mNotifyOption.h"
 #include "../Thread/mWorkerThreadPool.h"
+#include "mASyncTcpListener.h"
 #include <memory>
 #include <ws2tcpip.h>
 
@@ -294,7 +295,13 @@ public:
 	// wtp : 登録先のワーカースレッドプール
 	// opt : 通知オプション
 	// pipename : 名前付きパイプの名前
-	bool Connect( mWorkerThreadPool& wtp , const ConnectionOption& opt , const NotifyOption& notifier , Version ver , const WString& address , uint16_t port );
+	bool Connect( mWorkerThreadPool& wtp , const ConnectionOption& opt , const NotifyOption& notifier , const WString& address , uint16_t port );
+
+	//指定のリスナーに着信している相手と接続する
+	// wtp : 登録先のワーカースレッドプール
+	// opt : 通知オプション
+	// pipename : 名前付きパイプの名前
+	//bool Connect( mASyncTcpListener& listener , const ConnectionOption& opt , const NotifyOption& notifier );
 
 	//１文字（１バイト）読み込みます
 	//ret : 読み取った文字
@@ -343,6 +350,8 @@ private:
 
 	mASyncTcpSocket( const mASyncTcpSocket& src ) = delete;
 	const mASyncTcpSocket& operator=( const mASyncTcpSocket& src ) = delete;
+
+	mASyncTcpSocket( mWorkerThreadPool& wtp , const ConnectionOption& opt , const NotifyOption& notifier );
 
 protected:
 	
@@ -419,6 +428,7 @@ protected:
 		BufferQueueEntry Entry;
 		WString Address;
 		uint16_t Port;
+		void ClearEntry( void );
 	};
 	std::unique_ptr<ConnectData> MyConnectData;
 
@@ -439,10 +449,6 @@ protected:
 	//送信完了時の完了ルーチン
 	void WriteCompleteRoutine( DWORD ec , DWORD len , LPOVERLAPPED ov );
 
-	//パイプを登録する
-	// wtp : 登録先のワーカースレッドプール
-	// opt : 通知オプション
-	bool Attach( mWorkerThreadPool& wtp , const ConnectionOption& opt , const NotifyOption& notifier );
 
 
 };

@@ -46,13 +46,13 @@ mASyncTcpSocket::~mASyncTcpSocket()
 }
 
 //ポートを開く
-bool mASyncTcpSocket::Attach( mWorkerThreadPool& wtp , const ConnectionOption& opt , const NotifyOption& notifier )
+mASyncTcpSocket::mASyncTcpSocket( mWorkerThreadPool& wtp , const ConnectionOption& opt , const NotifyOption& notifier )
 {
 	//ワーカースレッドプールに登録する
 	if( !wtp.Attach( MyHandle , CompleteRoutine ) )
 	{
 		RaiseError( g_ErrorLogger , 0 , L"TCP" , L"ワーカースレッドプールに登録できませんでした" );
-		return false;
+		return;
 	}
 	MyWTP = &wtp;
 
@@ -63,7 +63,7 @@ bool mASyncTcpSocket::Attach( mWorkerThreadPool& wtp , const ConnectionOption& o
 	MyOption = opt;
 	MyNotifyOption = notifier;
 
-	return true;
+	return;
 }
 
 bool mASyncTcpSocket::PrepareReadBuffer( DWORD count )
@@ -637,6 +637,7 @@ bool mASyncTcpSocket::Abort( void )
 
 			if( MyConnectData )
 			{
+				MyConnectData->ClearEntry();
 				if( MyConnectData->Entry.Completed )
 				{
 					MyConnectData.reset();
@@ -680,8 +681,16 @@ bool mASyncTcpSocket::Abort( void )
 	return true;
 }
 
+void mASyncTcpSocket::ConnectData::ClearEntry( void )
+{
+	if( Entry.Buffer )
+	{
+		FreeAddrInfoExW( reinterpret_cast<ADDRINFOEXW*>( Entry.Buffer ) );
+		Entry.Buffer = nullptr;
+	}
+}
 
-bool mASyncTcpSocket::Connect( mWorkerThreadPool& wtp , const ConnectionOption& opt , const NotifyOption& notifier , Version ver , const WString& address , uint16_t port )
+bool mASyncTcpSocket::Connect( mWorkerThreadPool& wtp , const ConnectionOption& opt , const NotifyOption& notifier , const WString& address , uint16_t port )
 {
 	//二重に開こうとしている？
 	if( MyWTP )
@@ -718,6 +727,8 @@ bool mASyncTcpSocket::Connect( mWorkerThreadPool& wtp , const ConnectionOption& 
 		MyConnectData->Port = port;
 
 		ADDRINFOEXW addr = {0};
+		addr.ai_family = AF_UNSPEC;
+		/*
 		switch( ver )
 		{
 		case Version::IPv4:
@@ -731,6 +742,7 @@ bool mASyncTcpSocket::Connect( mWorkerThreadPool& wtp , const ConnectionOption& 
 			addr.ai_family = AF_UNSPEC;
 			break;
 		};
+		*/
 
 		INT result = GetAddrInfoExW( address.c_str() , nullptr , NS_DNS , nullptr , &addr , reinterpret_cast<ADDRINFOEXW**>( &MyConnectData->Entry.Buffer ) , &Timeval , &MyConnectData->Entry.Ov , CompleteRoutine , nullptr );
 		if( result != WSA_IO_PENDING )
@@ -758,7 +770,7 @@ void mASyncTcpSocket::AddressLookupRoutine( DWORD ec , DWORD len , LPOVERLAPPED 
 
 	//オーバーラップ構造体の確認
 	ConnectData* entry = CONTAINING_RECORD( ov , ConnectData , Entry.Ov );
-	if( entry != MyConnectData.get() )
+	if( !MyConnectData || entry != MyConnectData.get() )
 	{
 		RaiseAssert( g_ErrorLogger , 0 , L"TCP" , L"オーバーラップ構造体のアドレスが想定と異なります" );
 		CallErrorEvent( entry->Entry , ec );
@@ -893,7 +905,7 @@ void mASyncTcpSocket::AddressLookupRoutine( DWORD ec , DWORD len , LPOVERLAPPED 
 			sockaddr_in addr = { 0 };
 			addr.sin_family = AF_INET;
 			addr.sin_addr = addrinfo[ callback_result ].Address.v4.sin_addr;
-			addr.sin_port = MyConnectData->Port;
+			addr.sin_port = htons( MyConnectData->Port );
 			if( !mWinsockInitializer::Get().ConnextEx( MySocket, reinterpret_cast<const sockaddr*>( &addr ) , (int)sizeof( addr ) , nullptr , 0 , nullptr , &MyConnectData->Entry.Ov ) )
 			{
 				if( WSAGetLastError() != ERROR_IO_PENDING )
@@ -909,7 +921,7 @@ void mASyncTcpSocket::AddressLookupRoutine( DWORD ec , DWORD len , LPOVERLAPPED 
 			sockaddr_in6 addr = { 0 };
 			addr.sin6_family = AF_INET6;
 			addr.sin6_addr = addrinfo[ callback_result ].Address.v6.sin6_addr;
-			addr.sin6_port = MyConnectData->Port;
+			addr.sin6_port = htons( MyConnectData->Port );
 			if( !mWinsockInitializer::Get().ConnextEx( MySocket, reinterpret_cast<const sockaddr*>( &addr ) , (int)sizeof( addr ) , nullptr , 0 , nullptr , &MyConnectData->Entry.Ov ) )
 			{
 				if( WSAGetLastError() != ERROR_IO_PENDING )
@@ -920,6 +932,9 @@ void mASyncTcpSocket::AddressLookupRoutine( DWORD ec , DWORD len , LPOVERLAPPED 
 				}
 			}
 		}
+
+		//接続が始まったらアドレス解決の結果は不要なので廃棄
+		MyConnectData->ClearEntry();
 	}
 	return;
 }
