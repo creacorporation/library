@@ -85,14 +85,6 @@ VOID CALLBACK mASyncTcpListener::CompleteRoutine( DWORD ec , DWORD len , LPOVERL
 		return;
 	}
 
-	//キューを完了状態にする
-	{
-		mCriticalSectionTicket Ticket( me->MyCritical );
-		if( entry->Status == AcceptDataState::Listening )
-		{
-			entry->Status = AcceptDataState::WaitForAccept;
-		}
-	}
 
 	std::weak_ptr<NotifyEventToken::element_type> token_ptr = me->MyNotifyEventToken;
 	NotifyEventToken token = token_ptr.lock();
@@ -265,7 +257,7 @@ bool mASyncTcpListener::PrepareAcceptSocket( void )
 	//未処理
 	{
 		mCriticalSectionTicket Ticket( MyCritical );
-		if( MyAcceptData.Status != AcceptDataState::Empty )
+		if( MyAcceptData.Status == AcceptDataState::Listening )
 		{
 			return true;
 		}
@@ -274,7 +266,7 @@ bool mASyncTcpListener::PrepareAcceptSocket( void )
 	//ソケットの生成
 	MyAcceptData.Parent = this;
 	MyAcceptData.Ov = {0};
-	MyAcceptData.Status = AcceptDataState::Empty;
+	MyAcceptData.Status = AcceptDataState::Listening;
 	MyAcceptData.ErrorCode = 0;
 	MyAcceptData.BytesTransfered = 0;
 	int address_family = GetAddressFamily( MyOption.Ver );
@@ -282,6 +274,7 @@ bool mASyncTcpListener::PrepareAcceptSocket( void )
 	if( MyAcceptData.Socket == INVALID_SOCKET )
 	{
 		RaiseError( g_ErrorLogger , 0 , L"TCP" , L"ソケットの生成が失敗しました" );
+		MyAcceptData.Status = AcceptDataState::Empty;
 		return false;
 	}
 	ZeroMemory( MyAcceptData.Buffer , sizeof( MyAcceptData.Buffer ) );
@@ -290,15 +283,12 @@ bool mASyncTcpListener::PrepareAcceptSocket( void )
 	if( !MyWTP->Attach( reinterpret_cast<HANDLE>( MyAcceptData.Socket ) , CompleteRoutine ) )
 	{
 		RaiseError( g_ErrorLogger , 0 , L"TCP" , L"ワーカースレッドプールに登録できませんでした" );
+		MyAcceptData.Status = AcceptDataState::Empty;
 		return false;
 	}
 
 	//接続
-	if( mWinsockInitializer::Get().AcceptEx( MySocket , MyAcceptData.Socket , MyAcceptData.Buffer , 0 , sizeof( sockaddr_storage ) + 16 , sizeof( sockaddr_storage ) + 16 , &MyAcceptData.BytesTransfered , &MyAcceptData.Ov ) )
-	{
-		//即時完了
-	}
-	else
+	if( !mWinsockInitializer::Get().AcceptEx( MySocket , MyAcceptData.Socket , MyAcceptData.Buffer , ReceiveDataLength , LocalAddressLength , RemoteAddressLength , &MyAcceptData.BytesTransfered , &MyAcceptData.Ov ) )
 	{
 		//即時完了以外
 		int ec = WSAGetLastError();
@@ -306,16 +296,18 @@ bool mASyncTcpListener::PrepareAcceptSocket( void )
 		switch( ec )
 		{
 		case ERROR_IO_PENDING:	//接続中
-			return true;
+			break;
 		case WSAECONNRESET:		//コネクションリセット
 			RaiseError( g_ErrorLogger , 0 , L"TCP" , L"接続がリセットされました" );
-			break;
+			MyAcceptData.Status = AcceptDataState::Empty;
+			return false;
 		default:				//その他
 			RaiseError( g_ErrorLogger , 0 , L"TCP" , L"接続エラー" );
-			break;
+			MyAcceptData.Status = AcceptDataState::Empty;
+			return false;
 		}
 	}
-	return false;
+	return true;
 }
 
 //接続完了時の完了ルーチン
@@ -324,7 +316,18 @@ void mASyncTcpListener::ConnectCompleteRoutine( DWORD ec , DWORD len , LPOVERLAP
 	AcceptData* entry = CONTAINING_RECORD( ov ,  AcceptData , Ov );
 
 	//キューを完了状態にする
-	entry->ErrorCode = ec;
+	{
+		mCriticalSectionTicket Ticket( MyCritical );
+		entry->ErrorCode = ec;
+		if( entry->Status == AcceptDataState::Listening )
+		{
+			entry->Status = AcceptDataState::WaitForAccept;
+		}
+		else
+		{
+			RaiseError( g_ErrorLogger , 0 , L"TCP" , L"接続完了コールバックが想定外のタイミングでコールされました" );
+		}
+	}
 
 	//非同期操作が失敗している場合は記録する
 	if( ec != ERROR_SUCCESS )
@@ -351,4 +354,85 @@ void mASyncTcpListener::ConnectCompleteRoutine( DWORD ec , DWORD len , LPOVERLAP
 		AsyncEvent( *entry->Parent , entry->Parent->MyNotifyOption.OnConnect , opt );
 	}
 	return;
+}
+
+mASyncTcpListener::TcpSocketInterface::TcpSocketInterface( mASyncTcpListener& listener )
+	: Object( listener )
+{
+}
+
+bool mASyncTcpListener::TcpSocketInterface::GetNewSocket( SOCKET& retNewSocket , AddressInfoEntry& retLocal , AddressInfoEntry& retRemote )
+{
+	mASyncTcpListener::AcceptDataState state;
+	{
+		mCriticalSectionTicket Ticket( Object.MyCritical );
+		state = Object.MyAcceptData.Status;
+	}
+
+	if( state == mASyncTcpListener::AcceptDataState::Empty )
+	{
+		//Acceptしてない　→　返すソケット=無効、戻り値=Accept開始した結果
+		retNewSocket = INVALID_SOCKET;
+		return Object.PrepareAcceptSocket();
+	}
+	else if( state == mASyncTcpListener::AcceptDataState::Listening )
+	{
+		//Accept処理中　→　返すソケット=無効、戻り値=真
+		retNewSocket = INVALID_SOCKET;
+		return true;
+	}
+	else if( state == mASyncTcpListener::AcceptDataState::WaitForAccept )
+	{
+		//Accept完了　→　返すソケット=得られたソケット、戻り値=次のAccept開始した結果
+		auto ReadSockAddr = []( const sockaddr* addr , AddressInfoEntry& entry )->void
+		{
+			switch( addr->sa_family )
+			{
+			case AF_INET6:
+				entry.Version = Version::IPv6;
+				entry.Address.v6 = *reinterpret_cast<const sockaddr_in6*>( addr );
+				break;
+			case AF_INET:
+			default:
+				entry.Version = Version::IPv4;
+				entry.Address.v4 = *reinterpret_cast<const sockaddr_in*>( addr );
+				break;
+			}
+		};
+
+		retNewSocket = Object.MyAcceptData.Socket;
+
+		sockaddr* localaddr = nullptr;
+		int localaddr_len = 0;
+		sockaddr* remoteaddr = nullptr;
+		int remoteaddr_len = 0;
+
+		mWinsockInitializer::Get().GetAcceptExSockaddrs( Object.MyAcceptData.Buffer , ReceiveDataLength , LocalAddressLength , RemoteAddressLength , &localaddr , &localaddr_len , &remoteaddr , &remoteaddr_len );
+		if( !localaddr || !remoteaddr )
+		{
+			RaiseError( g_ErrorLogger , 0 , L"TCP" , L"アドレス取得エラー" );
+			retLocal = AddressInfoEntry();
+			retRemote = AddressInfoEntry();
+		}
+		else
+		{
+			ReadSockAddr( localaddr , retLocal );
+			ReadSockAddr( remoteaddr , retRemote );
+		}
+
+		return Object.PrepareAcceptSocket();
+	}
+	else
+	{
+		//それ以外(あり得ない)　→　返すソケット=無効、戻り値=偽
+		RaiseError( g_ErrorLogger , 0 , L"TCP" , L"リスン状態エラー" );
+		retNewSocket = INVALID_SOCKET;
+		return false;
+	}
+}
+
+mASyncTcpListener::AddressInfoEntry::AddressInfoEntry()
+{
+	Version = Version::IPv4;
+	ZeroMemory( &Address , sizeof( Address ) );
 }

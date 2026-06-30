@@ -190,25 +190,9 @@ public:
 	mASyncTcpSocket();
 	virtual ~mASyncTcpSocket();
 
-	//IPアドレスバージョン
-	enum class Version
-	{
-		Unspecified,
-		IPv4,
-		IPv6,
-	};
-
 	//アドレス情報
-	struct AddressInfoEntry
-	{
-		Version Version;
-		union Address
-		{
-			sockaddr_in v4;
-			sockaddr_in6 v6;
-		};
-		Address Address;
-	};
+	using Version = mASyncTcpListener::Version;
+	using AddressInfoEntry = mASyncTcpListener::AddressInfoEntry;
 	using AddressInfo = std::vector<AddressInfoEntry>;
 
 	//通知データ
@@ -221,6 +205,8 @@ public:
 
 		struct OnConnectOpt
 		{
+			const AddressInfoEntry* Local;
+			const AddressInfoEntry* Remote;
 		}OnConnect;
 
 		struct OnReadOpt
@@ -301,7 +287,7 @@ public:
 	// wtp : 登録先のワーカースレッドプール
 	// opt : 通知オプション
 	// pipename : 名前付きパイプの名前
-	//bool Connect( mASyncTcpListener& listener , const ConnectionOption& opt , const NotifyOption& notifier );
+	bool Connect( mASyncTcpListener& listener , const ConnectionOption& opt , const NotifyOption& notifier );
 
 	//１文字（１バイト）読み込みます
 	//ret : 読み取った文字

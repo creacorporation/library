@@ -96,6 +96,8 @@ bool mWinsockInitializer::SetExtendFunctionPointer( void )
 	result &= ( WSAIoctl( socket , SIO_GET_EXTENSION_FUNCTION_POINTER , &guid , sizeof( guid ) , &MyConnextEx , sizeof( MyConnextEx ) , &resultsize , nullptr , nullptr ) == 0 );
 	guid = WSAID_ACCEPTEX;
 	result &= ( WSAIoctl( socket , SIO_GET_EXTENSION_FUNCTION_POINTER , &guid , sizeof( guid ) , &MyAcceptEx , sizeof( MyAcceptEx ) , &resultsize , nullptr , nullptr ) == 0 );
+	guid = WSAID_GETACCEPTEXSOCKADDRS;
+	result &= ( WSAIoctl( socket , SIO_GET_EXTENSION_FUNCTION_POINTER , &guid , sizeof( guid ) , &MyGetAcceptExSockAddrs , sizeof( MyGetAcceptExSockAddrs ) , &resultsize , nullptr , nullptr ) == 0 );
 	guid = WSAID_TRANSMITFILE;
 	result &= ( WSAIoctl( socket , SIO_GET_EXTENSION_FUNCTION_POINTER , &guid , sizeof( guid ) , &MyTransmitFile , sizeof( MyTransmitFile ) , &resultsize , nullptr , nullptr ) == 0 );
 
@@ -138,6 +140,24 @@ bool mWinsockInitializer::AcceptEx(
 		return false;
 	}
 	return MyAcceptEx( sListenSocket , sAcceptSocket , lpOutputBuffer , dwReceiveDataLength , dwLocalAddressLength , dwRemoteAddressLength , lpdwBytesReceived , lpOverlapped );
+}
+
+void mWinsockInitializer::GetAcceptExSockaddrs(
+	PVOID lpOutputBuffer,
+	DWORD dwReceiveDataLength,
+	DWORD dwLocalAddressLength,
+	DWORD dwRemoteAddressLength,
+	struct sockaddr **LocalSockaddr,
+	LPINT LocalSockaddrLength,
+	struct sockaddr **RemoteSockaddr,
+	LPINT RemoteSockaddrLength
+)const
+{
+	if( !MyGetAcceptExSockAddrs )
+	{
+		return;
+	}
+	MyGetAcceptExSockAddrs( lpOutputBuffer , dwReceiveDataLength , dwLocalAddressLength , dwRemoteAddressLength , LocalSockaddr , LocalSockaddrLength , RemoteSockaddr , RemoteSockaddrLength );
 }
 
 bool mWinsockInitializer::TransmitFile(

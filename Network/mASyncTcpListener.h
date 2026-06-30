@@ -15,7 +15,6 @@
 #include "../General/mCriticalSectionContainer.h"
 #include "../General/mNotifyOption.h"
 #include "../Thread/mWorkerThreadPool.h"
-#include "mASyncTcpSocket.h"
 #include <memory>
 #include <set>
 #include <ws2tcpip.h>
@@ -61,27 +60,50 @@ public:
 	struct ConnectionOption
 	{
 	public:
-		//バックログの数
+		//IPバージョン
 		Version Ver = Version::IPv4;
+		//アドレス
 		WString Address;
+		//ポート番号
 		uint16_t Port = 10000;
+		//バックログの数
 		DWORD Backlog = 10;
 	};
 
 	//ポートを開く
 	// wtp : 登録先のワーカースレッドプール
-	// opt : 通知オプション
-	// ver : IPのバージョン
-	// address : ローカルアドレスの名前(空文字列の場合any)
-	// port : ポート番号
+	// notifier : 通知オプション
 	bool Open( mWorkerThreadPool& wtp , const ConnectionOption& opt , const NotifyOption& notifier );
 
 	//現在未完了の通信(送受信とも)を全て破棄し、接続を閉じます
 	bool Close( void );
 
+	//アドレス情報
+	struct AddressInfoEntry
+	{
+		AddressInfoEntry();
+		Version Version;
+		union Address
+		{
+			sockaddr_in v4;
+			sockaddr_in6 v6;
+		};
+		Address Address;
+	};
+
+	//接続してきたソケットの取得
+	class TcpSocketInterface
+	{
+	private:
+		friend class mASyncTcpSocket;
+		TcpSocketInterface( mASyncTcpListener& listener );
+		mASyncTcpListener& Object;
+	protected:
+		bool GetNewSocket( SOCKET& retNewSocket , AddressInfoEntry& retLocal , AddressInfoEntry& retRemote );
+	};
+
 private:
 
-	friend class mASyncTcpSocket;
 	mASyncTcpListener( const mASyncTcpListener& src ) = delete;
 	const mASyncTcpListener& operator=( const mASyncTcpListener& src ) = delete;
 
@@ -116,6 +138,11 @@ protected:
 		WaitForAccept,		//プログラムからソケットを取得されるの待ち
 	};
 
+	//バッファサイズ定義
+	static constexpr uint32_t ReceiveDataLength = 0;
+	static constexpr uint32_t LocalAddressLength = sizeof(sockaddr_storage) + 16;
+	static constexpr uint32_t RemoteAddressLength = sizeof(sockaddr_storage) + 16;
+
 	//接続データ
 	struct AcceptData
 	{
@@ -127,7 +154,7 @@ protected:
 		SOCKET Socket = INVALID_SOCKET;
 
 		//データバッファ
-		BYTE Buffer[ ( sizeof(sockaddr_storage) + 16 ) * 2 ];
+		BYTE Buffer[ ReceiveDataLength + LocalAddressLength + RemoteAddressLength ];
 
 		//非同期用のOVERLAPPED構造体（Windowsに渡す用）
 		OVERLAPPED Ov;
@@ -140,7 +167,6 @@ protected:
 
 		//完了時の処理済みバイト数(IO完了時に設定)
 		DWORD BytesTransfered = 0;
-
 	};
 
 	//接続データ
@@ -154,6 +180,7 @@ protected:
 	//接続完了時の完了ルーチン
 	void ConnectCompleteRoutine( DWORD ec , DWORD len , LPOVERLAPPED ov );
 
+	//バージョンのenum→AF_INETx
 	int GetAddressFamily( Version ver )const;
 
 };

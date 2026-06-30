@@ -728,21 +728,6 @@ bool mASyncTcpSocket::Connect( mWorkerThreadPool& wtp , const ConnectionOption& 
 
 		ADDRINFOEXW addr = {0};
 		addr.ai_family = AF_UNSPEC;
-		/*
-		switch( ver )
-		{
-		case Version::IPv4:
-			addr.ai_family = AF_INET;
-			break;
-		case Version::IPv6:
-			addr.ai_family = AF_INET6;
-			break;
-		case Version::Unspecified:
-		default:
-			addr.ai_family = AF_UNSPEC;
-			break;
-		};
-		*/
 
 		INT result = GetAddrInfoExW( address.c_str() , nullptr , NS_DNS , nullptr , &addr , reinterpret_cast<ADDRINFOEXW**>( &MyConnectData->Entry.Buffer ) , &Timeval , &MyConnectData->Entry.Ov , CompleteRoutine , nullptr );
 		if( result != WSA_IO_PENDING )
@@ -971,6 +956,7 @@ void mASyncTcpSocket::ConnectCompleteRoutine( DWORD ec , DWORD len , LPOVERLAPPE
 	{
 		//完了イベントをコール
 		NotifyFunctionOpt opt;
+
 		AsyncEvent( *entry->Parent , entry->Parent->MyNotifyOption.OnConnect , opt );
 
 		//読み取りバッファを補充
@@ -981,4 +967,13 @@ void mASyncTcpSocket::ConnectCompleteRoutine( DWORD ec , DWORD len , LPOVERLAPPE
 	}
 
 	entry->Parent->MyConnectData.reset();
+}
+
+bool mASyncTcpSocket::Connect( mASyncTcpListener& listener , const ConnectionOption& opt , const NotifyOption& notifier )
+{
+	mASyncTcpListener::TcpSocketInterface ref( listener );
+	AddressInfoEntry local;
+	AddressInfoEntry remote;
+	ref.GetNewSocket( MySocket , local , remote );
+	return true;
 }

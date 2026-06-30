@@ -53,6 +53,17 @@ public:
 		LPOVERLAPPED lpOverlapped
 	)const;
 
+	void GetAcceptExSockaddrs(
+		PVOID lpOutputBuffer,
+		DWORD dwReceiveDataLength,
+		DWORD dwLocalAddressLength,
+		DWORD dwRemoteAddressLength,
+		struct sockaddr **LocalSockaddr,
+		LPINT LocalSockaddrLength,
+		struct sockaddr **RemoteSockaddr,
+		LPINT RemoteSockaddrLength
+	)const;
+
 	bool TransmitFile(
 		SOCKET hSocket,
 		HANDLE hFile,
@@ -73,6 +84,7 @@ private:
 	bool MyIsInitialized = false;
 	LPFN_CONNECTEX MyConnextEx = nullptr;
 	LPFN_ACCEPTEX MyAcceptEx = nullptr;
+	LPFN_GETACCEPTEXSOCKADDRS MyGetAcceptExSockAddrs = nullptr;
 	LPFN_TRANSMITFILE MyTransmitFile = nullptr;
 };
 
