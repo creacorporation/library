@@ -705,6 +705,10 @@ bool mASyncTcpSocket::Connect( mWorkerThreadPool& wtp , const ConnectionOption& 
 			//非同期操作が開始しなかった場合直接コールバックを呼び出す
 			//※成功か失敗かごちゃまぜになるので非同期操作にならなかった場合一律に呼び出す
 			AddressLookupRoutine( result , *MyNameResolveData );
+
+			FreeAddrInfoExW( MyNameResolveData->Info );
+			mDelete MyNameResolveData;
+			MyNameResolveData = nullptr;
 		}
 	}
 	return true;
@@ -879,6 +883,7 @@ void mASyncTcpSocket::AddressLookupRoutine( DWORD ec , NameResolveData& entry )
 		MyConnectData->Ov.InternalHigh = 0;
 		MyConnectData->Ov.Offset = 0;
 		MyConnectData->Ov.OffsetHigh = 0;
+		MyConnectData->Remote = addrinfo[ callback_result ];
 
 		if( addrinfo[ callback_result ].Version == Version::IPv4 )
 		{
@@ -935,8 +940,28 @@ void mASyncTcpSocket::ConnectCompleteRoutine( DWORD ec , ConnectData& entry )
 	else
 	{
 		//完了イベントをコール
+		AddressInfoEntry Local;
+		{
+			sockaddr_storage in;
+			int len = sizeof( in );
+			if( getsockname( MySocket , reinterpret_cast<sockaddr*>( &in ) , &len ) == 0 )
+			{
+				switch( in.ss_family )
+				{
+				case AF_INET:
+					Local = AddressInfoEntry( *reinterpret_cast<const sockaddr_in*>( &in ) );
+					break;
+				case AF_INET6:
+					Local = AddressInfoEntry( *reinterpret_cast<const sockaddr_in6*>( &in ) );
+					break;
+				default:
+					break;
+				}
+			}
+		}
 		NotifyFunctionOpt opt;
-
+		opt.OnConnect.Local = &Local;
+		opt.OnConnect.Remote = &entry.Remote;
 		AsyncEvent( *this , MyNotifyOption.OnConnect , opt );
 
 		//読み取りバッファを補充

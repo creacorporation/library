@@ -151,13 +151,11 @@ public:
 	//指定のアドレスに接続する
 	// wtp : 登録先のワーカースレッドプール
 	// opt : 通知オプション
-	// pipename : 名前付きパイプの名前
 	bool Connect( mWorkerThreadPool& wtp , const ConnectionOption& opt , const NotifyOption& notifier , const WString& address , uint16_t port );
 
 	//指定のリスナーに着信している相手と接続する
-	// wtp : 登録先のワーカースレッドプール
+	// listener : リスンしているソケット
 	// opt : 通知オプション
-	// pipename : 名前付きパイプの名前
 	bool Connect( mASyncTcpListener& listener , const ConnectionOption& opt , const NotifyOption& notifier );
 
 	//１文字（１バイト）読み込みます
@@ -256,6 +254,8 @@ protected:
 	//接続データ
 	class ConnectData : public ASyncDataBase
 	{
+	public:
+		AddressInfoEntry Remote;
 	public:
 		ConnectData() : ASyncDataBase( QueueType::CONNECT_QUEUE_ENTRY ){}
 	};
