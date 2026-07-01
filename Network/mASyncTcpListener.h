@@ -100,6 +100,18 @@ public:
 		TcpSocketInterface( mASyncTcpListener& listener );
 		mASyncTcpListener& Object;
 	protected:
+		//リスナーのワーカースレッドプールを取得する
+		mWorkerThreadPool* GetWTP( void )const;
+
+		//Acceptしたソケットを取得する
+		//・着信したソケットがあればそれを返す
+		//・着信を待機していなければ、新たに着信待機を開始する
+		// retNewSocket　 | 戻り値 | 意味
+		//------------------------------------------------
+		// INVALID_SOCKET | 真　　 | 新たなソケットなし。着信待ち中。
+		// INVALID_SOCKET | 偽　　 | 着信待機は失敗している。
+		// 有効　　　　　 | 真　　 | 新たなソケットあり。
+		// 有効　　　　　 | 偽　　 | 新たなソケットあり。しかし着信待機は失敗した。
 		bool GetNewSocket( SOCKET& retNewSocket , AddressInfoEntry& retLocal , AddressInfoEntry& retRemote );
 	};
 

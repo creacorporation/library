@@ -15,53 +15,28 @@
 
 mASyncTcpSocket::mASyncTcpSocket()
 {
-	MyHandle = INVALID_HANDLE_VALUE;
-	MyIsConnected = false;
-	MyConnectData = nullptr;
-	MyWTP = nullptr;
 }
 
 mASyncTcpSocket::~mASyncTcpSocket()
 {
+	Abort();
 	{
 		//完了関数からこのオブジェクトが呼び出されないようにする
 		mCriticalSectionTicket critical( MyCritical );
 
-		if( MyConnectData )
+		if( MyNameResolveData )
 		{	
-			MyConnectData->Entry.Parent = nullptr;
+			MyNameResolveData->Parent = nullptr;
 		}
-		for( BufferQueue::iterator itr = MyWriteQueue.begin() ; itr != MyWriteQueue.end() ; itr++ )
+		for( WriteQueue::iterator itr = MyWriteQueue.begin() ; itr != MyWriteQueue.end() ; itr++ )
 		{
 			(*itr)->Parent = nullptr;
 		}
-		for( BufferQueue::iterator itr = MyReadQueue.begin() ; itr != MyReadQueue.end() ; itr++ )
+		for( ReadQueue::iterator itr = MyReadQueue.begin() ; itr != MyReadQueue.end() ; itr++ )
 		{
 			(*itr)->Parent = nullptr;
 		}
 	}
-
-	Abort();
-	return;
-}
-
-//ポートを開く
-mASyncTcpSocket::mASyncTcpSocket( mWorkerThreadPool& wtp , const ConnectionOption& opt , const NotifyOption& notifier )
-{
-	//ワーカースレッドプールに登録する
-	if( !wtp.Attach( MyHandle , CompleteRoutine ) )
-	{
-		RaiseError( g_ErrorLogger , 0 , L"TCP" , L"ワーカースレッドプールに登録できませんでした" );
-		return;
-	}
-	MyWTP = &wtp;
-
-	//コールバック用のトークンを初期化
-	MyNotifyEventToken.reset( mNew int( 0 ) );
-
-	//ファイルを開けたので、通知方法をストック
-	MyOption = opt;
-	MyNotifyOption = notifier;
 
 	return;
 }
@@ -69,7 +44,7 @@ mASyncTcpSocket::mASyncTcpSocket( mWorkerThreadPool& wtp , const ConnectionOptio
 bool mASyncTcpSocket::PrepareReadBuffer( DWORD count )
 {
 	//ハンドルが開いているか確認
-	if( MyHandle == INVALID_HANDLE_VALUE )
+	if( MySocket == INVALID_SOCKET )
 	{
 		return false;
 	}
@@ -85,10 +60,11 @@ bool mASyncTcpSocket::PrepareReadBuffer( DWORD count )
 
 	while( MyReadQueue.size() < count )
 	{
-		BufferQueueEntry* entry = mNew BufferQueueEntry;
+		ReadQueueEntry* entry = mNew ReadQueueEntry;
 		entry->Parent = this;
-		entry->Type = QueueType::READ_QUEUE_ENTRY;
-		entry->Buffer = mNew BYTE[ MyOption.ReadPacketSize ];
+		entry->Buffer.buf = mNew CHAR[ MyOption.ReadPacketSize ];
+		entry->Buffer.len = MyOption.ReadPacketSize;
+		entry->Flags = 0;
 		entry->Ov.hEvent = 0;
 		entry->Ov.Internal = 0;
 		entry->Ov.InternalHigh = 0;
@@ -100,20 +76,21 @@ bool mASyncTcpSocket::PrepareReadBuffer( DWORD count )
 		MyReadQueue.push_back( entry );
 
 		DWORD readsize = 0;
-		if( ReadFile( MyHandle , entry->Buffer , MyOption.ReadPacketSize , &readsize , &entry->Ov ) )
+		if( WSARecv( MySocket , &entry->Buffer , 1 , nullptr , &entry->Flags , &entry->Ov , nullptr ) == ERROR_SUCCESS )
 		{
+			//即時成功は０
 			return true;
 		}
 
-		switch( GetLastError() )
+		int ec = WSAGetLastError();
+		switch( ec )
 		{
-		case ERROR_IO_PENDING:
-		case ERROR_SUCCESS:
+		case WSA_IO_PENDING:
 			break;
 		default:
-			RaiseError( g_ErrorLogger , 0 , L"読み込みの非同期操作が開始しませんでした" );
+			RaiseError( g_ErrorLogger , ec , L"読み込みの非同期操作が開始しませんでした" );
 			MyReadQueue.pop_back();
-			mDelete[] entry->Buffer;
+			mDelete[] entry->Buffer.buf;
 			mDelete entry;
 			return false;
 		}
@@ -166,56 +143,115 @@ int AsyncEvent( mASyncTcpSocket& pipe , const mASyncTcpSocket::NotifyOption::Not
 }
 
 
-VOID CALLBACK mASyncTcpSocket::CompleteRoutine( DWORD ec , DWORD len , LPOVERLAPPED ov )
+VOID CALLBACK mASyncTcpSocket::CompleteRoutine( DWORD ec , DWORD len , LPWSAOVERLAPPED ov )
 {
-
-	BufferQueueEntry* entry = CONTAINING_RECORD( ov ,  BufferQueueEntry , Ov );
-	if( ov == nullptr || entry == nullptr )
+	if( ov == nullptr )
 	{
 		return;
 	}
+	ASyncDataBase* baseptr = CONTAINING_RECORD( ov ,  ASyncDataBase , Ov );
+	mASyncTcpSocket* me = baseptr->Parent;
 
+	if( !me )
+	{
+		//親が消滅している場合はそっと削除しておく
+		SetLastError( ec );
+		RaiseErrorF( g_ErrorLogger , 0 , L"TCP" , L"親オブジェクトが消滅しています Type=%d" , (int)baseptr->Type );
+
+		if( baseptr->Type == QueueType::CONNECT_QUEUE_ENTRY )
+		{
+			ConnectData* entry = CONTAINING_RECORD( ov ,  ConnectData , Ov );
+			mDelete entry;
+		}
+		else if( baseptr->Type == QueueType::READ_QUEUE_ENTRY )
+		{
+			ReadQueueEntry* entry = CONTAINING_RECORD( ov ,  ReadQueueEntry , Ov );
+			mDelete[] entry->Buffer.buf;
+			mDelete entry;
+		}
+		else if( baseptr->Type == QueueType::WRITE_QUEUE_ENTRY )
+		{
+			WriteQueueEntry* entry = CONTAINING_RECORD( ov ,  WriteQueueEntry , Ov );
+			mDelete[] entry->Buffer.buf;
+			mDelete entry;
+		}
+		else
+		{
+			;
+		}
+		return;
+	}
+
+	//コールバックの実行権利を取る
+	std::weak_ptr<NotifyEventToken::element_type> token_ptr = me->MyNotifyEventToken;
+	NotifyEventToken token = token_ptr.lock();
+
+	//コールバックの呼び出し
+	if( baseptr->Type == QueueType::CONNECT_QUEUE_ENTRY )
+	{
+		ConnectData* entry = CONTAINING_RECORD( ov ,  ConnectData , Ov );
+		if( token )
+		{
+			me->ConnectCompleteRoutine( ec , *entry );
+		}
+		mDelete entry;
+	}
+	else if( baseptr->Type == QueueType::READ_QUEUE_ENTRY )
+	{
+		ReadQueueEntry* entry = CONTAINING_RECORD( ov ,  ReadQueueEntry , Ov );
+		entry->Completed = true;
+		if( token )
+		{
+			me->ReadCompleteRoutine( ec , len , ov );
+		}
+	}
+	else if( baseptr->Type == QueueType::WRITE_QUEUE_ENTRY )
+	{
+		WriteQueueEntry* entry = CONTAINING_RECORD( ov ,  WriteQueueEntry , Ov );
+		entry->Completed = true;
+		if( token )
+		{
+			me->WriteCompleteRoutine( ec , len , ov );
+		}
+	}
+	else
+	{
+		RaiseErrorF( g_ErrorLogger , 0 , L"TCP" , L"不正なキュータイプです Type=%d" , (int)baseptr->Type );
+	}
+	return;
+}
+
+void mASyncTcpSocket::AddressLookupCompleteRoutine( DWORD ec , DWORD len , LPWSAOVERLAPPED ov )
+{
+	ASyncDataBase* baseptr = CONTAINING_RECORD( ov ,  ASyncDataBase , Ov );
+	if( ov == nullptr || baseptr->Type != QueueType::NAME_RESOLV_QUEUE_ENTRY )
+	{
+		//想定と違う
+		return;
+	}
+
+	NameResolveData* entry = CONTAINING_RECORD( ov ,  NameResolveData , Ov );
 	mASyncTcpSocket* me = entry->Parent;
 	if( !me )
 	{
 		//親が消滅している場合はそっと削除しておく
 		SetLastError( ec );
-		RaiseErrorF( g_ErrorLogger , 0 , L"親オブジェクトが消滅しています" , L"Type=%d" , (int)entry->Type );
-		mDelete[] entry->Buffer;
+		RaiseErrorF( g_ErrorLogger , 0 , L"TCP" , L"親オブジェクトが消滅しています" );
+		FreeAddrInfoExW( entry->Info );
 		mDelete entry;
 		return;
 	}
 
-	//キューを完了状態にする
-	if( !entry->Completed )
-	{
-		entry->Completed = true;
-	}
-
 	std::weak_ptr<NotifyEventToken::element_type> token_ptr = me->MyNotifyEventToken;
 	NotifyEventToken token = token_ptr.lock();
-	if( !token || me->MyIsEOF )
+	if( token )
 	{
-		return;
+		me->AddressLookupRoutine( ec , *entry );
 	}
 
-	switch( entry->Type )
-	{
-	case QueueType::ADDRESS_LOOKUP_ENTRY:
-		me->AddressLookupRoutine( ec , len , ov );
-		break;
-	case QueueType::CONNECT_QUEUE_ENTRY:
-		me->ConnectCompleteRoutine( ec , len , ov );
-		break;
-	case QueueType::READ_QUEUE_ENTRY:
-		me->ReadCompleteRoutine( ec , len , ov );
-		break;
-	case QueueType::WRITE_QUEUE_ENTRY:
-		me->WriteCompleteRoutine( ec , len , ov );
-		break;
-	default:
-		break;
-	}
+	me->MyNameResolveData = nullptr;
+	FreeAddrInfoExW( entry->Info );
+	mDelete entry;
 	return;
 }
 
@@ -224,7 +260,7 @@ void mASyncTcpSocket::ReadCompleteRoutine( DWORD ec , DWORD len , LPOVERLAPPED o
 {
 	bool complete_callback;
 
-	BufferQueueEntry* entry = CONTAINING_RECORD( ov ,  BufferQueueEntry , Ov );
+	ReadQueueEntry* entry = CONTAINING_RECORD( ov ,  ReadQueueEntry , Ov );
 	{
 		//このブロックはクリティカルセクション
 		mCriticalSectionTicket critical( entry->Parent->MyCritical );
@@ -288,9 +324,9 @@ void mASyncTcpSocket::ReadCompleteRoutine( DWORD ec , DWORD len , LPOVERLAPPED o
 
 void mASyncTcpSocket::WriteCompleteRoutine( DWORD ec , DWORD len , LPOVERLAPPED ov )
 {
-	BufferQueueEntry* entry = CONTAINING_RECORD( ov ,  BufferQueueEntry , Ov );
+	WriteQueueEntry* entry = CONTAINING_RECORD( ov ,  WriteQueueEntry , Ov );
 
-	BufferQueue remove_queue;	//削除予定のキュー
+	WriteQueue remove_queue;	//削除予定のキュー
 	size_t queue_size = 0;		//削除後のキューサイズ
 	{
 		//このブロックはクリティカルセクション
@@ -336,9 +372,9 @@ void mASyncTcpSocket::WriteCompleteRoutine( DWORD ec , DWORD len , LPOVERLAPPED 
 	}
 
 	//ポインタの削除を行う
-	for( BufferQueue::iterator itr = remove_queue.begin() ; itr != remove_queue.end() ; itr++ )
+	for( WriteQueue::iterator itr = remove_queue.begin() ; itr != remove_queue.end() ; ++itr )
 	{
-		mDelete (*itr)->Buffer;
+		mDelete[] (*itr)->Buffer.buf;
 		mDelete (*itr);
 	}
 	return;
@@ -383,7 +419,7 @@ INT mASyncTcpSocket::Read( void )
 				MyReadQueue.pop_front();
 
 				//読み取りキャッシュにセット
-				MyReadCacheHead.reset( entry->Buffer );
+				MyReadCacheHead.reset( reinterpret_cast<BYTE*>( entry->Buffer.buf ) );
 				MyReadCacheCurrent = 0;
 				MyReadCacheRemain = entry->BytesTransfered;
 				mDelete entry;
@@ -426,11 +462,11 @@ bool mASyncTcpSocket::SetEOF( void )
 	mCriticalSectionTicket critical( MyCritical );
 	MyIsEOF = true;
 
-	for( BufferQueue::iterator itr = MyReadQueue.begin() ; itr != MyReadQueue.end() ; itr++ )
+	for( ReadQueue::iterator itr = MyReadQueue.begin() ; itr != MyReadQueue.end() ; itr++ )
 	{
 		if( !(*itr)->Completed )
 		{
-			CancelIoEx( MyHandle , &(*itr)->Ov );
+			CancelIoEx( reinterpret_cast<HANDLE>( MySocket ) , &(*itr)->Ov );
 		}
 	}
 	return true;
@@ -479,12 +515,12 @@ bool mASyncTcpSocket::Write( INT data )
 //これを呼ばないと実際の送信は発生しません
 bool mASyncTcpSocket::FlushCache( void )
 {
-	if( MyHandle == INVALID_HANDLE_VALUE )
+	if( MySocket == INVALID_SOCKET )
 	{
 		return false;
 	}
 	
-	BufferQueueEntry* entry = nullptr;
+	WriteQueueEntry* entry = nullptr;
 	{
 		//クリティカルセクション
 		mCriticalSectionTicket critical( MyCritical );
@@ -503,10 +539,11 @@ bool mASyncTcpSocket::FlushCache( void )
 			return false;
 		}
 
-		entry = mNew BufferQueueEntry;
+		entry = mNew WriteQueueEntry;
 		entry->Parent = this;
-		entry->Type = QueueType::WRITE_QUEUE_ENTRY;
-		entry->Buffer = MyWriteCacheHead.release();
+		entry->Buffer.buf = reinterpret_cast<CHAR*>( MyWriteCacheHead.release() );
+		entry->Buffer.len = MyWriteCacheWritten;
+		entry->Flags = 0;
 		entry->Ov.hEvent = 0;
 		entry->Ov.Internal = 0;
 		entry->Ov.InternalHigh = 0;
@@ -516,23 +553,23 @@ bool mASyncTcpSocket::FlushCache( void )
 		entry->ErrorCode = 0;
 		entry->BytesTransfered = 0;
 
-		DWORD bytes_to_write = MyWriteCacheWritten;
 		MyWriteQueue.push_back( entry );
 		MyWriteCacheWritten = 0;
 		MyWriteCacheRemain = 0;
 
 		DWORD written = 0;
-		if( WriteFile( MyHandle , entry->Buffer , bytes_to_write , &written , &entry->Ov ) )
+		if( WSASend( MySocket , &entry->Buffer , 1 , nullptr , entry->Flags , &entry->Ov , nullptr ) == ERROR_SUCCESS )
 		{
 			return true;
 		}
 
-		switch( GetLastError() )
+		int ec = WSAGetLastError();
+		switch( ec )
 		{
-		case ERROR_IO_PENDING:
-		case ERROR_SUCCESS:
+		case WSA_IO_PENDING:
 			return true;
 		default:
+			RaiseError( g_ErrorLogger , ec , L"TCP" , L"送信処理が失敗しました" );
 			MyWriteQueue.pop_back();
 			break;
 		}
@@ -540,65 +577,17 @@ bool mASyncTcpSocket::FlushCache( void )
 
 	//書き込みに失敗しているのでこのキューを削除する
 	//※データは損失している
-	mDelete[] entry->Buffer;
+	mDelete[] entry->Buffer.buf;
 	mDelete entry;
 	RaiseError( g_ErrorLogger , 0 , L"TCP" , L"書き込みの非同期操作が開始しませんでした" );
 	return false;
 }
 
-
-//送信未完了のデータがあるかを返します
-DWORD mASyncTcpSocket::IsWriting( void )const
-{
-	//このブロックはクリティカルセクション
-	mCriticalSectionTicket critical( MyCritical );
-
-	return (DWORD)MyWriteQueue.size();
-}
-
-//接続しているか否かを返します
-bool mASyncTcpSocket::IsConnected( void )const
-{
-	if( this == nullptr )
-	{
-		return false;
-	}
-	return MyIsConnected;
-}
-
-//送信未完了のデータを破棄します
-bool mASyncTcpSocket::Cancel( void )
-{
-	mCriticalSectionTicket critical( MyCritical );
-	MyWriteCacheHead.reset();
-	MyWriteCacheWritten = 0;
-	MyWriteCacheRemain = 0;
-
-	//ハンドルが有効であればIOキャンセル
-	if( MyHandle != INVALID_HANDLE_VALUE )
-	{
-		for( BufferQueue::iterator itr = MyWriteQueue.begin() ; itr != MyWriteQueue.end() ; itr++ )
-		{
-			if( !(*itr)->Completed )
-			{
-				CancelIoEx( MyHandle , &(*itr)->Ov );
-			}
-		}
-	}
-	return true;
-}
-
 //現在未完了の通信(送受信とも)を全て破棄し、接続を閉じます
 bool mASyncTcpSocket::Abort( void )
 {
-	if( !IsConnected() && MyConnectData )
-	{
-		CancelIoEx( MyHandle , &(MyConnectData->Entry.Ov) );
-	}
-
 	//書き込み終了しキューをキャンセル
 	Close();
-	Cancel();
 	//読み込み終了してキューをキャンセル
 	SetEOF();
 
@@ -618,37 +607,34 @@ bool mASyncTcpSocket::Abort( void )
 		if( token.use_count() <= check_thread_count )
 		{
 			mCriticalSectionTicket critical( MyCritical );
-			auto QueueClear = []( BufferQueue& queue )->void
+			for( WriteQueue::iterator itr = MyWriteQueue.begin() ; itr != MyWriteQueue.end() ; )
 			{
-				for( BufferQueue::iterator itr = queue.begin() ; itr != queue.end() ; )
+				if( (*itr)->Completed )
 				{
-					if( (*itr)->Completed )
-					{
-						mDelete (*itr)->Buffer;
-						mDelete (*itr);
-						itr = queue.erase( itr );
-						continue;
-					}
-					itr++;
+					mDelete[] (*itr)->Buffer.buf;
+					mDelete (*itr);
+					itr = MyWriteQueue.erase( itr );
+					continue;
 				}
-			};
-			QueueClear( MyWriteQueue );
-			QueueClear( MyReadQueue );
-
-			if( MyConnectData )
+				itr++;
+			}
+			for( ReadQueue::iterator itr = MyReadQueue.begin() ; itr != MyReadQueue.end() ; )
 			{
-				MyConnectData->ClearEntry();
-				if( MyConnectData->Entry.Completed )
+				if( (*itr)->Completed )
 				{
-					MyConnectData.reset();
+					mDelete[] (*itr)->Buffer.buf;
+					mDelete (*itr);
+					itr = MyReadQueue.erase( itr );
+					continue;
 				}
+				itr++;
 			}
 
 			MyReadCacheRemain = 0;
 			MyReadCacheCurrent = 0;
 			MyReadCacheHead.reset();
 
-			empty = MyWriteQueue.empty() && MyReadQueue.empty() && !MyConnectData;
+			empty = MyWriteQueue.empty() && MyReadQueue.empty() && !MyNameResolveData && !MyConnectData;
 		}
 		else
 		{
@@ -670,24 +656,12 @@ bool mASyncTcpSocket::Abort( void )
 	}
 
 	//ハンドル廃棄
-	CloseHandle( MyHandle );
-	MyHandle = INVALID_HANDLE_VALUE;
-
 	if( MySocket != INVALID_SOCKET )
 	{
 		closesocket( MySocket );
 		MySocket = INVALID_SOCKET;
 	}
 	return true;
-}
-
-void mASyncTcpSocket::ConnectData::ClearEntry( void )
-{
-	if( Entry.Buffer )
-	{
-		FreeAddrInfoExW( reinterpret_cast<ADDRINFOEXW*>( Entry.Buffer ) );
-		Entry.Buffer = nullptr;
-	}
 }
 
 bool mASyncTcpSocket::Connect( mWorkerThreadPool& wtp , const ConnectionOption& opt , const NotifyOption& notifier , const WString& address , uint16_t port )
@@ -711,63 +685,92 @@ bool mASyncTcpSocket::Connect( mWorkerThreadPool& wtp , const ConnectionOption& 
 		timeval Timeval = { long( opt.DnsTimeout / 1000 ) , ( opt.DnsTimeout % 1000 ) * 1000 };
 
 		//接続用オーバーラップ構造体
-		MyConnectData.reset( mNew ConnectData );
-		MyConnectData->Entry.Parent = this;
-		MyConnectData->Entry.Type = QueueType::ADDRESS_LOOKUP_ENTRY;
-		MyConnectData->Entry.Buffer = nullptr;
-		MyConnectData->Entry.Ov.hEvent = 0;
-		MyConnectData->Entry.Ov.Internal = 0;
-		MyConnectData->Entry.Ov.InternalHigh = 0;
-		MyConnectData->Entry.Ov.Offset = 0;
-		MyConnectData->Entry.Ov.OffsetHigh = 0;
-		MyConnectData->Entry.Completed = false;
-		MyConnectData->Entry.ErrorCode = 0;
-		MyConnectData->Entry.BytesTransfered = 0;
-		MyConnectData->Address = address;
-		MyConnectData->Port = port;
+		MyNameResolveData = mNew NameResolveData();
+		MyNameResolveData->Parent = this;
+		MyNameResolveData->Info = nullptr;
+		MyNameResolveData->Ov.hEvent = 0;
+		MyNameResolveData->Ov.Internal = 0;
+		MyNameResolveData->Ov.InternalHigh = 0;
+		MyNameResolveData->Ov.Offset = 0;
+		MyNameResolveData->Ov.OffsetHigh = 0;
+		MyNameResolveData->Address = address;
+		MyNameResolveData->Port = port;
 
 		ADDRINFOEXW addr = {0};
 		addr.ai_family = AF_UNSPEC;
 
-		INT result = GetAddrInfoExW( address.c_str() , nullptr , NS_DNS , nullptr , &addr , reinterpret_cast<ADDRINFOEXW**>( &MyConnectData->Entry.Buffer ) , &Timeval , &MyConnectData->Entry.Ov , CompleteRoutine , nullptr );
+		INT result = GetAddrInfoExW( address.c_str() , nullptr , NS_DNS , nullptr , &addr , &MyNameResolveData->Info , &Timeval , &MyNameResolveData->Ov , AddressLookupCompleteRoutine , nullptr );
 		if( result != WSA_IO_PENDING )
 		{
 			//非同期操作が開始しなかった場合直接コールバックを呼び出す
 			//※成功か失敗かごちゃまぜになるので非同期操作にならなかった場合一律に呼び出す
-			AddressLookupRoutine( result , 0 , &MyConnectData->Entry.Ov );
+			AddressLookupRoutine( result , *MyNameResolveData );
 		}
 	}
 	return true;
 }
 
+bool mASyncTcpSocket::Connect( mASyncTcpListener& listener , const ConnectionOption& opt , const NotifyOption& notifier )
+{
+	//二重に開こうとしている？
+	if( MyWTP )
+	{
+		RaiseErrorF( g_ErrorLogger , 0 , L"TCP" , L"ソケットを二重に開こうとしています" );
+		return false;
+	}
+
+	//リスナーオブジェクトのリファレンス
+	mASyncTcpListener::TcpSocketInterface ref( listener );
+
+	//ソケットを取得
+	AddressInfoEntry local;
+	AddressInfoEntry remote;
+	if( !ref.GetNewSocket( MySocket , local , remote ) )
+	{
+		RaiseErrorF( g_ErrorLogger , 0 , L"TCP" , L"受信待機が失敗しました" );
+	}
+	if( MySocket == INVALID_SOCKET )
+	{
+		return false;
+	}
+
+	//コールバック用のあれこれを初期化
+	MyWTP = ref.GetWTP();
+	if( !MyWTP )
+	{
+		RaiseErrorF( g_ErrorLogger , 0 , L"TCP" , L"リスナーのWTPは無効です" );
+		return false;
+	}
+	MyNotifyEventToken.reset( mNew int( 0 ) );
+	MyOption = opt;
+	MyNotifyOption = notifier;
+
+	//ワーカースレッドプールに登録する
+	if( !MyWTP->Attach( reinterpret_cast<HANDLE>( MySocket ) , CompleteRoutine ) )
+	{
+		RaiseError( g_ErrorLogger , 0 , L"TCP" , L"ワーカースレッドプールに登録できませんでした" );
+		return false;
+	}
+	
+	return PrepareReadBuffer( MyOption.ReadPacketCount );
+}
+
+
 //名前解決時の完了ルーチン
-void mASyncTcpSocket::AddressLookupRoutine( DWORD ec , DWORD len , LPOVERLAPPED ov )
+void mASyncTcpSocket::AddressLookupRoutine( DWORD ec , NameResolveData& entry )
 {
 	//完了イベント(エラー)をコール
-	auto CallErrorEvent = []( BufferQueueEntry& entry , DWORD errorcode )->void
+	auto CallErrorEvent = [this]( DWORD errorcode )->void
 	{
 		NotifyFunctionOpt opt;
 		opt.OnError.Action = NotifyFunctionOpt::OnErrorOpt::ErrorAction::AddressLookup;
 		opt.OnError.ErrorCode = errorcode;
-		AsyncEvent( *entry.Parent , entry.Parent->MyNotifyOption.OnError , opt );
+		AsyncEvent( *this , MyNotifyOption.OnError , opt );
 		return;
 	};
 
-	//オーバーラップ構造体の確認
-	ConnectData* entry = CONTAINING_RECORD( ov , ConnectData , Entry.Ov );
-	if( !MyConnectData || entry != MyConnectData.get() )
-	{
-		RaiseAssert( g_ErrorLogger , 0 , L"TCP" , L"オーバーラップ構造体のアドレスが想定と異なります" );
-		CallErrorEvent( entry->Entry , ec );
-		return;
-	}
-
-	//キューを完了状態にする
-	entry->Entry.ErrorCode = ec;
-	entry->Entry.BytesTransfered = len;
-
 	//結果のパースをする
-	const ADDRINFOEXW* info = reinterpret_cast<const ADDRINFOEXW*>( entry->Entry.Buffer );
+	const ADDRINFOEXW* info = MyNameResolveData->Info;
 	AddressInfo addrinfo;
 	while( info )
 	{
@@ -776,12 +779,12 @@ void mASyncTcpSocket::AddressLookupRoutine( DWORD ec , DWORD len , LPOVERLAPPED 
 		{
 		case AF_INET:
 			addrinfo_entry = AddressInfoEntry( *reinterpret_cast<const sockaddr_in*>( info->ai_addr ) );
-			addrinfo_entry.Port = entry->Port;
+			addrinfo_entry.Port = entry.Port;
 			addrinfo.push_back( addrinfo_entry );
 			break;
 		case AF_INET6:
 			addrinfo_entry = AddressInfoEntry( *reinterpret_cast<const sockaddr_in6*>( info->ai_addr ) );
-			addrinfo_entry.Port = entry->Port;
+			addrinfo_entry.Port = entry.Port;
 			addrinfo.push_back( addrinfo_entry );
 			break;
 		default:
@@ -794,14 +797,14 @@ void mASyncTcpSocket::AddressLookupRoutine( DWORD ec , DWORD len , LPOVERLAPPED 
 	//コールバック
 	NotifyFunctionOpt opt;
 	opt.OnAddressLookup.Info = &addrinfo;
-	int callback_result = AsyncEvent( *entry->Entry.Parent , entry->Entry.Parent->MyNotifyOption.OnAddressLookup , opt );
+	int callback_result = AsyncEvent( *this , MyNotifyOption.OnAddressLookup , opt );
 
 	//コールバックの結果確認
 	if( callback_result < 0 || addrinfo.size() <= callback_result )
 	{
 		//選択範囲外なのでエラーにする
 		RaiseError( g_ErrorLogger , 0 , L"TCP" , L"コールバックが接続先を選択しませんでした" );
-		CallErrorEvent( entry->Entry , ec );
+		CallErrorEvent( ec );
 		return;
 	}
 
@@ -818,7 +821,7 @@ void mASyncTcpSocket::AddressLookupRoutine( DWORD ec , DWORD len , LPOVERLAPPED 
 			break;
 		default:
 			RaiseAssert( g_ErrorLogger , 0 , L"TCP" , L"TCPバージョンが想定と異なります" );
-			CallErrorEvent( entry->Entry , ec );
+			CallErrorEvent( ec );
 			return;
 		}
 		//ソケットの生成
@@ -827,7 +830,7 @@ void mASyncTcpSocket::AddressLookupRoutine( DWORD ec , DWORD len , LPOVERLAPPED 
 		{
 			//選択範囲外なのでエラーにする
 			RaiseError( g_ErrorLogger , 0 , L"TCP" , L"ソケットの生成が失敗しました" );
-			CallErrorEvent( entry->Entry , WSAGetLastError() );
+			CallErrorEvent( WSAGetLastError() );
 			return;
 		}
 
@@ -841,7 +844,7 @@ void mASyncTcpSocket::AddressLookupRoutine( DWORD ec , DWORD len , LPOVERLAPPED 
 			if( bind( MySocket , (sockaddr*)&addr , sizeof( addr ) ) == SOCKET_ERROR )
 			{
 				RaiseError( g_ErrorLogger , 0 , L"TCP" , L"バインドが失敗しました" );
-				CallErrorEvent( entry->Entry , WSAGetLastError() );
+				CallErrorEvent( WSAGetLastError() );
 				return;
 			}
 		}
@@ -854,7 +857,7 @@ void mASyncTcpSocket::AddressLookupRoutine( DWORD ec , DWORD len , LPOVERLAPPED 
 			if( bind( MySocket , (sockaddr*)&addr , sizeof( addr ) ) == SOCKET_ERROR )
 			{
 				RaiseError( g_ErrorLogger , 0 , L"TCP" , L"バインドが失敗しました" );
-				CallErrorEvent( entry->Entry , WSAGetLastError() );
+				CallErrorEvent( WSAGetLastError() );
 				return;
 			}
 		}
@@ -863,33 +866,29 @@ void mASyncTcpSocket::AddressLookupRoutine( DWORD ec , DWORD len , LPOVERLAPPED 
 		if( !MyWTP->Attach( reinterpret_cast<HANDLE>( MySocket ) , CompleteRoutine ) )
 		{
 			RaiseError( g_ErrorLogger , 0 , L"TCP" , L"ワーカースレッドプールに登録できませんでした" );
-			CallErrorEvent( entry->Entry , WSAGetLastError() );
+			CallErrorEvent( WSAGetLastError() );
 			return;
 		}
 	}
 	{
 		//接続
-		MyConnectData->Entry.Parent = this;
-		MyConnectData->Entry.Type = QueueType::CONNECT_QUEUE_ENTRY;
-		MyConnectData->Entry.Buffer = nullptr;
-		MyConnectData->Entry.Ov.hEvent = 0;
-		MyConnectData->Entry.Ov.Internal = 0;
-		MyConnectData->Entry.Ov.InternalHigh = 0;
-		MyConnectData->Entry.Ov.Offset = 0;
-		MyConnectData->Entry.Ov.OffsetHigh = 0;
-		MyConnectData->Entry.Completed = false;
-		MyConnectData->Entry.ErrorCode = 0;
-		MyConnectData->Entry.BytesTransfered = 0;
+		MyConnectData = mNew ConnectData();
+		MyConnectData->Parent = this;
+		MyConnectData->Ov.hEvent = 0;
+		MyConnectData->Ov.Internal = 0;
+		MyConnectData->Ov.InternalHigh = 0;
+		MyConnectData->Ov.Offset = 0;
+		MyConnectData->Ov.OffsetHigh = 0;
 
 		if( addrinfo[ callback_result ].Version == Version::IPv4 )
 		{
 			sockaddr_in addr = sockaddr_in( addrinfo[ callback_result ] );
-			if( !mWinsockInitializer::Get().ConnextEx( MySocket, reinterpret_cast<const sockaddr*>( &addr ) , (int)sizeof( addr ) , nullptr , 0 , nullptr , &MyConnectData->Entry.Ov ) )
+			if( !mWinsockInitializer::Get().ConnextEx( MySocket, reinterpret_cast<const sockaddr*>( &addr ) , (int)sizeof( addr ) , nullptr , 0 , nullptr , &MyConnectData->Ov ) )
 			{
 				if( WSAGetLastError() != ERROR_IO_PENDING )
 				{
 					RaiseError( g_ErrorLogger , 0 , L"TCP" , L"接続に失敗しました" );
-					CallErrorEvent( entry->Entry , WSAGetLastError() );
+					CallErrorEvent( WSAGetLastError() );
 					return;
 				}
 			}
@@ -897,32 +896,23 @@ void mASyncTcpSocket::AddressLookupRoutine( DWORD ec , DWORD len , LPOVERLAPPED 
 		if( addrinfo[ callback_result ].Version == Version::IPv6 )
 		{
 			sockaddr_in6 addr = sockaddr_in6( addrinfo[ callback_result ] );
-			if( !mWinsockInitializer::Get().ConnextEx( MySocket, reinterpret_cast<const sockaddr*>( &addr ) , (int)sizeof( addr ) , nullptr , 0 , nullptr , &MyConnectData->Entry.Ov ) )
+			if( !mWinsockInitializer::Get().ConnextEx( MySocket, reinterpret_cast<const sockaddr*>( &addr ) , (int)sizeof( addr ) , nullptr , 0 , nullptr , &MyConnectData->Ov ) )
 			{
 				if( WSAGetLastError() != ERROR_IO_PENDING )
 				{
 					RaiseError( g_ErrorLogger , 0 , L"TCP" , L"接続に失敗しました" );
-					CallErrorEvent( entry->Entry , WSAGetLastError() );
+					CallErrorEvent( WSAGetLastError() );
 					return;
 				}
 			}
 		}
-
-		//接続が始まったらアドレス解決の結果は不要なので廃棄
-		MyConnectData->ClearEntry();
 	}
 	return;
 }
 
 //接続完了時の完了ルーチン
-void mASyncTcpSocket::ConnectCompleteRoutine( DWORD ec , DWORD len , LPOVERLAPPED ov )
+void mASyncTcpSocket::ConnectCompleteRoutine( DWORD ec , ConnectData& entry )
 {
-	BufferQueueEntry* entry = CONTAINING_RECORD( ov ,  BufferQueueEntry , Ov );
-
-	//キューを完了状態にする
-	entry->ErrorCode = ec;
-	entry->Parent->MyIsConnected = true;
-
 	//非同期操作が失敗している場合は記録する
 	if( ec != ERROR_SUCCESS )
 	{
@@ -938,7 +928,7 @@ void mASyncTcpSocket::ConnectCompleteRoutine( DWORD ec , DWORD len , LPOVERLAPPE
 			NotifyFunctionOpt opt;
 			opt.OnError.Action = NotifyFunctionOpt::OnErrorOpt::ErrorAction::Connect;
 			opt.OnError.ErrorCode = ec;
-			AsyncEvent( *entry->Parent , entry->Parent->MyNotifyOption.OnError , opt );
+			AsyncEvent( *this , MyNotifyOption.OnError , opt );
 		}
 		}
 	}
@@ -947,23 +937,13 @@ void mASyncTcpSocket::ConnectCompleteRoutine( DWORD ec , DWORD len , LPOVERLAPPE
 		//完了イベントをコール
 		NotifyFunctionOpt opt;
 
-		AsyncEvent( *entry->Parent , entry->Parent->MyNotifyOption.OnConnect , opt );
+		AsyncEvent( *this , MyNotifyOption.OnConnect , opt );
 
 		//読み取りバッファを補充
-		if( !entry->Parent->PrepareReadBuffer( entry->Parent->MyOption.ReadPacketCount ) )
+		if( !PrepareReadBuffer( MyOption.ReadPacketCount ) )
 		{
 			RaiseAssert( g_ErrorLogger , 0 , L"読み込み用のバッファを準備できませんでした" );
 		}
 	}
-
-	entry->Parent->MyConnectData.reset();
 }
 
-bool mASyncTcpSocket::Connect( mASyncTcpListener& listener , const ConnectionOption& opt , const NotifyOption& notifier )
-{
-	mASyncTcpListener::TcpSocketInterface ref( listener );
-	AddressInfoEntry local;
-	AddressInfoEntry remote;
-	ref.GetNewSocket( MySocket , local , remote );
-	return true;
-}

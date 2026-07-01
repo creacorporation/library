@@ -279,14 +279,6 @@ bool mASyncTcpListener::PrepareAcceptSocket( void )
 	}
 	ZeroMemory( MyAcceptData.Buffer , sizeof( MyAcceptData.Buffer ) );
 
-	//ワーカースレッドプールに登録する
-	if( !MyWTP->Attach( reinterpret_cast<HANDLE>( MyAcceptData.Socket ) , CompleteRoutine ) )
-	{
-		RaiseError( g_ErrorLogger , 0 , L"TCP" , L"ワーカースレッドプールに登録できませんでした" );
-		MyAcceptData.Status = AcceptDataState::Empty;
-		return false;
-	}
-
 	//接続
 	if( !mWinsockInitializer::Get().AcceptEx( MySocket , MyAcceptData.Socket , MyAcceptData.Buffer , ReceiveDataLength , LocalAddressLength , RemoteAddressLength , &MyAcceptData.BytesTransfered , &MyAcceptData.Ov ) )
 	{
@@ -359,6 +351,11 @@ void mASyncTcpListener::ConnectCompleteRoutine( DWORD ec , DWORD len , LPOVERLAP
 mASyncTcpListener::TcpSocketInterface::TcpSocketInterface( mASyncTcpListener& listener )
 	: Object( listener )
 {
+}
+
+mWorkerThreadPool* mASyncTcpListener::TcpSocketInterface::GetWTP( void ) const
+{
+	return Object.MyWTP;
 }
 
 bool mASyncTcpListener::TcpSocketInterface::GetNewSocket( SOCKET& retNewSocket , AddressInfoEntry& retLocal , AddressInfoEntry& retRemote )

@@ -21,135 +21,6 @@
 #include <memory>
 #include <ws2tcpip.h>
 
-/*
-使い方
-
-#include "mStandard.h"
-#include "Network/mASyncTcpSocket.h"
-
-mWorkerThreadPool ThreadPool;
-mASyncTcpSocket Pipe;
-
-void ReadCallback_Server( mASyncTcpSocket& pipe , DWORD_PTR parameter , DWORD_PTR opt )
-{
-	WString str;
-	pipe.ReadLine( str );
-	wchar_printf( "Recieved(Server):%s\n" , str.c_str() );
-
-	pipe.WriteString( L"Pong" );
-	pipe.FlushCache();
-	return;
-}
-void ReadCallback_Client( mASyncTcpSocket& pipe , DWORD_PTR parameter , DWORD_PTR opt )
-{
-	WString str;
-	pipe.ReadLine( str );
-
-	wchar_printf( "Recieved(Client):%s\n" , str.c_str() );
-	return;
-}
-void ConnectCallback( mASyncTcpSocket& pipe , DWORD_PTR parameter , DWORD_PTR opt )
-{
-	pipe.SetEncode( mFileReadStreamBase::Encode::ENCODE_UTF16 );
-	return;
-}
-
-int main( int argc , char** argv )
-{
-
-	//---------------
-	//準備
-	//---------------
-	//スレッドプール作成
-	//・このクラスはスレッドプールと連携して動くので必須
-	ThreadPool.Begin( 1 );
-
-	//---------------
-	//サーバー側
-	//---------------
-	{
-		//接続まちパイプ生成時の設定
-		mASyncTcpSocket::CreateOption createopt;
-		createopt.MaxConn = 1;
-		createopt.Timeout = 50;
-		createopt.RemoteAccess = false;
-
-		//パイプ接続時の設定
-		mASyncTcpSocket::ConnectionOption connopt;
-
-		//通知関連の設定
-		mASyncTcpSocket::NotifyOption notifyopt;
-		notifyopt.OnConnect.Mode = mASyncTcpSocket::NotifyOption::NotifyMode::NOTIFY_CALLBACK;
-		notifyopt.OnConnect.Notifier.CallbackFunction = ConnectCallback;
-		notifyopt.OnConnect.Parameter = parameter;
-		notifyopt.OnRead.Mode = mASyncTcpSocket::NotifyOption::NotifyMode::NOTIFY_CALLBACK;
-		notifyopt.OnRead.Notifier.CallbackFunction = ReadCallback;
-		notifyopt.OnRead.Parameter = parameter;
-
-		Pipe.Create( ThreadPool , createopt , connopt , notifyopt , L"." , "crea\\test)" );
-	}
-
-	//---------------
-	//クライアント側
-	//---------------
-	mASyncTcpSocket client;
-	{
-		//パイプ接続時の設定
-		mASyncTcpSocket::ConnectionOption opt;
-
-		//通知関連の設定
-		mASyncTcpSocket::NotifyOption notifyopt;
-		notifyopt.OnConnect.Mode = mASyncTcpSocket::NotifyOption::NotifyMode::NOTIFY_CALLBACK;
-		notifyopt.OnConnect.Notifier.CallbackFunction = ConnectCallback;
-		notifyopt.OnConnect.Parameter = parameter;
-		notifyopt.OnRead.Mode = mASyncTcpSocket::NotifyOption::NotifyMode::NOTIFY_CALLBACK;
-		notifyopt.OnRead.Notifier.CallbackFunction = ReadCallback;
-		notifyopt.OnRead.Parameter = parameter;
-
-		client.Connect( ThreadPool , opt , notifyopt , L"." , "crea\\test)" );
-	}
-
-	for( int i = 0 ; i < 3 ; i++ )
-	{
-
-		SleepEx( 1000 , true );
-		if( Pipe.IsConnected() )
-		{
-			bool valid = true;
-			valid &= client.WriteString( L"Ping" );
-			valid &= client.FlushCache();
-			if( !valid )
-			{
-				//パイプが死んでる
-				wchar_printf( "pipe died" );
-				break;
-			}
-		}
-	}
-
-	//例なのでサーバー側だけ処理。本番ではクライアントも同様に処理する。
-	Pipe.Close();		//書き込み終了
-	Pipe.SetEOF();		//読み込み終了
-	//未処理の読み込みキュー破棄
-	while( !Pipe.IsEOF() )
-	{
-		SleepEx( 100 , true );
-		while( Pipe.Read() != EOF )
-		{
-		}
-	}
-	//未処理の書き込みキュー破棄
-	Pipe.Cancel();
-
-	//スレッドプール終了
-	ThreadPool.End();
-
-	return 0;
-}
-
-
-*/
-
 class mPipeReadStream : public mFileReadStreamBase
 {
 public:
@@ -232,7 +103,7 @@ public:
 	};
 
 	//通知設定
-	using NotifyFunction = int(*)( mASyncTcpSocket& pipe , DWORD_PTR parameter , const NotifyFunctionOpt& opt );
+	using NotifyFunction = int(*)( mASyncTcpSocket& sock , DWORD_PTR parameter , const NotifyFunctionOpt& opt );
 	class NotifyOption : public mNotifyOption< NotifyFunction , Definitions_NotifyOption::IONotifyMode >
 	{
 	public:
@@ -316,16 +187,13 @@ public:
 
 	//送信未完了のデータがあるかを返します
 	// ret : 送信未完了のデータの数(キューのエントリ単位)
-	DWORD IsWriting( void )const ;
+	//DWORD IsWriting( void )const ;
 
 	//送信未完了のデータを破棄します
-	bool Cancel( void );
+	//bool Cancel( void );
 
 	//現在未完了の通信(送受信とも)を全て破棄し、接続を閉じます
 	bool Abort( void );
-
-	//接続しているか否かを返します
-	bool IsConnected( void )const;
 
 	//読み込み用の内部バッファを確保します
 	//臨時にバッファが必要になるときに使用します
@@ -337,16 +205,10 @@ private:
 	mASyncTcpSocket( const mASyncTcpSocket& src ) = delete;
 	const mASyncTcpSocket& operator=( const mASyncTcpSocket& src ) = delete;
 
-	mASyncTcpSocket( mWorkerThreadPool& wtp , const ConnectionOption& opt , const NotifyOption& notifier );
-
 protected:
 	
-	//パイプのハンドル
-	HANDLE MyHandle;
+	//ソケット
 	SOCKET MySocket = INVALID_SOCKET;
-
-	//接続済みか？
-	bool MyIsConnected;
 
 	//設定値
 	ConnectionOption MyOption;
@@ -358,7 +220,7 @@ protected:
 	mutable mCriticalSectionContainer MyCritical;
 
 	//関連付けられているワーカースレッドプールへのポインタ
-	mWorkerThreadPool* MyWTP;
+	mWorkerThreadPool* MyWTP = nullptr;
 
 	//Notify呼び出し中のイベント数
 	using NotifyEventToken = std::shared_ptr<int>;
@@ -367,75 +229,120 @@ protected:
 	//処理内容フラグ
 	enum class QueueType
 	{
-		ADDRESS_LOOKUP_ENTRY,
-		CONNECT_QUEUE_ENTRY,
+		INVALID_ENTRY,
 		WRITE_QUEUE_ENTRY,
-		READ_QUEUE_ENTRY
+		READ_QUEUE_ENTRY,
+		CONNECT_QUEUE_ENTRY,
+		NAME_RESOLV_QUEUE_ENTRY,
 	};
 
-	//キュー
-	struct BufferQueueEntry
+	//非同期用データのベース
+	class ASyncDataBase
 	{
+	public:
+		const QueueType Type;
+
 		//親オブジェクトへのポインタ
 		//ただし、非同期操作の完了時点で親オブジェクトが破棄されている場合はヌルポインタ
-		mASyncTcpSocket* Parent;
-
-		//接続、送信、受信のどのエントリか
-		QueueType Type;
-
-		//処理対象バッファ
-		BYTE* Buffer;
+		mASyncTcpSocket* Parent = nullptr;
 
 		//非同期用のOVERLAPPED構造体（Windowsに渡す用）
-		OVERLAPPED Ov;
+		WSAOVERLAPPED Ov = { 0 };
+
+	protected:
+		ASyncDataBase( QueueType type ) : Type( type ){}
+	};
+
+	//接続データ
+	class ConnectData : public ASyncDataBase
+	{
+	public:
+		ConnectData() : ASyncDataBase( QueueType::CONNECT_QUEUE_ENTRY ){}
+	};
+
+	//接続データ
+	ConnectData* MyConnectData = nullptr;
+
+	//キュー
+	class BufferQueueEntry : public ASyncDataBase
+	{
+	public:
+		//実データ用バッファ
+		WSABUF Buffer = { 0 , nullptr };
+
+		//フラグ
+		DWORD Flags = 0;
 
 		//完了済みならばtrue(IO完了時に設定)
-		bool Completed;
+		bool Completed = false;
 
 		//完了時のエラーコード(IO完了時に設定)
-		DWORD ErrorCode;
+		DWORD ErrorCode = 0;
 
-		//完了時の処理済みバイト数(IO完了時に設定)
-		DWORD BytesTransfered;
-
+		//読み取りサイズ
+		DWORD BytesTransfered = 0;
+	protected:
+		BufferQueueEntry( QueueType type ) : ASyncDataBase( type ){}
 	};
-
-	using BufferQueue = std::deque<BufferQueueEntry*>;
-
+	
 	//ライトバッファ
-	BufferQueue MyWriteQueue;
+	class WriteQueueEntry : public BufferQueueEntry
+	{
+	public:
+		WriteQueueEntry() : BufferQueueEntry( QueueType::WRITE_QUEUE_ENTRY ){}
+	};
+	//ライトバッファ
+	using WriteQueue = std::deque<WriteQueueEntry*>;
+	//ライトバッファ
+	WriteQueue MyWriteQueue;
 
 	//リードバッファ
-	BufferQueue MyReadQueue;
-
-	//接続用
-	struct ConnectData
+	class ReadQueueEntry : public BufferQueueEntry
 	{
-		BufferQueueEntry Entry;
-		WString Address;
-		uint16_t Port;
-		void ClearEntry( void );
+	public:
+		ReadQueueEntry() : BufferQueueEntry( QueueType::READ_QUEUE_ENTRY ){}
 	};
-	std::unique_ptr<ConnectData> MyConnectData;
+	//リードバッファ
+	using ReadQueue = std::deque<ReadQueueEntry*>;
+	//リードバッファ
+	ReadQueue MyReadQueue;
+
+	//名前解決用
+	class NameResolveData : public ASyncDataBase
+	{
+	public:
+		//実データ用バッファ
+		ADDRINFOEXW* Info = nullptr;
+
+		//接続先アドレス（アドレス解決前）
+		WString Address;
+
+		//接続先ポート番号
+		uint16_t Port = 0;
+	public:
+		NameResolveData() : ASyncDataBase( QueueType::NAME_RESOLV_QUEUE_ENTRY ){}
+	};
+	NameResolveData* MyNameResolveData = nullptr;
 
 protected:
 
 	//完了ルーチン
-	static VOID CALLBACK CompleteRoutine( DWORD ec , DWORD len , LPOVERLAPPED ov );
+	static void CompleteRoutine( DWORD ec , DWORD len , LPWSAOVERLAPPED ov );
 
 	//接続完了時の完了ルーチン
-	void AddressLookupRoutine( DWORD ec , DWORD len , LPOVERLAPPED ov );
+	static void AddressLookupCompleteRoutine( DWORD ec , DWORD len , LPWSAOVERLAPPED ov );
 
 	//接続完了時の完了ルーチン
-	void ConnectCompleteRoutine( DWORD ec , DWORD len , LPOVERLAPPED ov );
+	void AddressLookupRoutine( DWORD ec , NameResolveData& entry );
+
+	//接続完了時の完了ルーチン
+	void ConnectCompleteRoutine( DWORD ec , ConnectData& entry );
 
 	//受信完了時の完了ルーチン
 	void ReadCompleteRoutine( DWORD ec , DWORD len , LPOVERLAPPED ov );
 
 	//送信完了時の完了ルーチン
 	void WriteCompleteRoutine( DWORD ec , DWORD len , LPOVERLAPPED ov );
-
-
 
 };
 
