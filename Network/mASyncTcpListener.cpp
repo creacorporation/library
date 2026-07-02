@@ -349,8 +349,48 @@ void mASyncTcpListener::ConnectCompleteRoutine( DWORD ec , DWORD len , LPOVERLAP
 	}
 	else
 	{
+		auto ReadSockAddr = []( const sockaddr* addr , AddressInfoEntry& entry )->void
+		{
+			switch( addr->sa_family )
+			{
+			case AF_INET6:
+				entry = AddressInfoEntry( *reinterpret_cast<const sockaddr_in6*>( addr ) );
+				break;
+			case AF_INET:
+			default:
+				entry = AddressInfoEntry( *reinterpret_cast<const sockaddr_in*>( addr ) );
+				break;
+			}
+		};
+
+		if( setsockopt( MyAcceptData.Socket , SOL_SOCKET , SO_UPDATE_ACCEPT_CONTEXT , reinterpret_cast<char*>( &MySocket ) , sizeof( MySocket ) ) != 0 )
+		{
+			RaiseError( g_ErrorLogger , 0 , L"TCP" , L"ソケット設定エラー" );
+		}
+
+		sockaddr* localaddr = nullptr;
+		int localaddr_len = 0;
+		sockaddr* remoteaddr = nullptr;
+		int remoteaddr_len = 0;
+
+		mWinsockInitializer::Get().GetAcceptExSockaddrs( MyAcceptData.Buffer , ReceiveDataLength , LocalAddressLength , RemoteAddressLength , &localaddr , &localaddr_len , &remoteaddr , &remoteaddr_len );
+
+		AddressInfoEntry Local;
+		AddressInfoEntry Remote;
+		if( !localaddr || !remoteaddr )
+		{
+			RaiseError( g_ErrorLogger , 0 , L"TCP" , L"アドレス取得エラー" );
+		}
+		else
+		{
+			ReadSockAddr( localaddr , Local );
+			ReadSockAddr( remoteaddr , Remote );
+		}
+
 		//完了イベントをコール
 		NotifyFunctionOpt opt;
+		opt.OnConnect.Local = &Local;
+		opt.OnConnect.Remote = &Remote;
 		AsyncEvent( *entry->Parent , entry->Parent->MyNotifyOption.OnConnect , opt );
 	}
 	return;
@@ -366,7 +406,7 @@ mWorkerThreadPool* mASyncTcpListener::TcpSocketInterface::GetWTP( void ) const
 	return Object.MyWTP;
 }
 
-bool mASyncTcpListener::TcpSocketInterface::GetNewSocket( SOCKET& retNewSocket , AddressInfoEntry& retLocal , AddressInfoEntry& retRemote )
+bool mASyncTcpListener::TcpSocketInterface::GetNewSocket( SOCKET& retNewSocket )
 {
 	mASyncTcpListener::AcceptDataState state;
 	{
@@ -389,44 +429,7 @@ bool mASyncTcpListener::TcpSocketInterface::GetNewSocket( SOCKET& retNewSocket ,
 	else if( state == mASyncTcpListener::AcceptDataState::WaitForAccept )
 	{
 		//Accept完了　→　返すソケット=得られたソケット、戻り値=次のAccept開始した結果
-		auto ReadSockAddr = []( const sockaddr* addr , AddressInfoEntry& entry )->void
-		{
-			switch( addr->sa_family )
-			{
-			case AF_INET6:
-				entry = AddressInfoEntry( *reinterpret_cast<const sockaddr_in6*>( addr ) );
-				break;
-			case AF_INET:
-			default:
-				entry = AddressInfoEntry( *reinterpret_cast<const sockaddr_in*>( addr ) );
-				break;
-			}
-		};
-
 		retNewSocket = Object.MyAcceptData.Socket;
-		if( setsockopt( retNewSocket , SOL_SOCKET , SO_UPDATE_ACCEPT_CONTEXT , reinterpret_cast<char*>( &Object.MySocket ) , sizeof( Object.MySocket ) ) != 0 )
-		{
-			RaiseError( g_ErrorLogger , 0 , L"TCP" , L"ソケット設定エラー" );
-		}
-
-		sockaddr* localaddr = nullptr;
-		int localaddr_len = 0;
-		sockaddr* remoteaddr = nullptr;
-		int remoteaddr_len = 0;
-
-		mWinsockInitializer::Get().GetAcceptExSockaddrs( Object.MyAcceptData.Buffer , ReceiveDataLength , LocalAddressLength , RemoteAddressLength , &localaddr , &localaddr_len , &remoteaddr , &remoteaddr_len );
-		if( !localaddr || !remoteaddr )
-		{
-			RaiseError( g_ErrorLogger , 0 , L"TCP" , L"アドレス取得エラー" );
-			retLocal = AddressInfoEntry();
-			retRemote = AddressInfoEntry();
-		}
-		else
-		{
-			ReadSockAddr( localaddr , retLocal );
-			ReadSockAddr( remoteaddr , retRemote );
-		}
-
 		Object.MyAcceptData = AcceptData();
 		return Object.PrepareAcceptSocket();
 	}

@@ -34,11 +34,27 @@ public:
 		IPv6,			//IPv6アドレス
 	};
 
+	//アドレス情報
+	struct AddressInfoEntry
+	{
+		AddressInfoEntry();
+		AddressInfoEntry( const sockaddr_in& in );
+		AddressInfoEntry( const sockaddr_in6& in );
+		explicit operator sockaddr_in()const;
+		explicit operator sockaddr_in6()const;
+
+		Version Version;
+		std::vector<uint8_t> Address;
+		uint16_t Port;
+	};
+
 	//通知データ
 	union NotifyFunctionOpt
 	{
 		struct OnConnectOpt
 		{
+			const AddressInfoEntry* Local;
+			const AddressInfoEntry* Remote;
 		}OnConnect;
 
 		struct OnErrorOpt
@@ -82,20 +98,6 @@ public:
 	//現在未完了の通信(送受信とも)を全て破棄し、接続を閉じます
 	bool Close( void );
 
-	//アドレス情報
-	struct AddressInfoEntry
-	{
-		AddressInfoEntry();
-		AddressInfoEntry( const sockaddr_in& in );
-		AddressInfoEntry( const sockaddr_in6& in );
-		explicit operator sockaddr_in()const;
-		explicit operator sockaddr_in6()const;
-
-		Version Version;
-		std::vector<uint8_t> Address;
-		uint16_t Port;
-	};
-
 	//接続してきたソケットの取得
 	class TcpSocketInterface
 	{
@@ -116,7 +118,7 @@ public:
 		// INVALID_SOCKET | 偽　　 | 着信待機は失敗している。
 		// 有効　　　　　 | 真　　 | 新たなソケットあり。
 		// 有効　　　　　 | 偽　　 | 新たなソケットあり。しかし着信待機は失敗した。
-		bool GetNewSocket( SOCKET& retNewSocket , AddressInfoEntry& retLocal , AddressInfoEntry& retRemote );
+		bool GetNewSocket( SOCKET& retNewSocket );
 	};
 
 private:

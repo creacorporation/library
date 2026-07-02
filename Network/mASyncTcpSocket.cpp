@@ -727,9 +727,7 @@ bool mASyncTcpSocket::Connect( mASyncTcpListener& listener , const ConnectionOpt
 	mASyncTcpListener::TcpSocketInterface ref( listener );
 
 	//ソケットを取得
-	AddressInfoEntry local;
-	AddressInfoEntry remote;
-	if( !ref.GetNewSocket( MySocket , local , remote ) )
+	if( !ref.GetNewSocket( MySocket ) )
 	{
 		RaiseErrorF( g_ErrorLogger , 0 , L"TCP" , L"受信待機が失敗しました" );
 	}

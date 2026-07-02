@@ -107,7 +107,10 @@ public:
 	class NotifyOption : public mNotifyOption< NotifyFunction , Definitions_NotifyOption::IONotifyMode >
 	{
 	public:
+		//コールバックの場合、渡されたInfoのインデックスを返すと、そのインデックスのIPに接続します。
+		//コールバックを使わない場合、アドレス解決したとき一番最初に見つかったアドレスに接続します。
 		NotifierInfo OnAddressLookup;
+		//接続完了時のコールバック
 		NotifierInfo OnConnect;
 		NotifierInfo OnRead;
 		NotifierInfo OnWrite;
@@ -156,6 +159,7 @@ public:
 	//指定のリスナーに着信している相手と接続する
 	// listener : リスンしているソケット
 	// opt : 通知オプション
+	//※このメソッドでは、OnConnectのコールバックは発生しません
 	bool Connect( mASyncTcpListener& listener , const ConnectionOption& opt , const NotifyOption& notifier );
 
 	//１文字（１バイト）読み込みます
@@ -182,13 +186,6 @@ public:
 	//・以降、新たな受信は行いません。
 	//・その時点までに受信していたデータは通常通り読み取れます。
 	virtual bool SetEOF( void ) ;
-
-	//送信未完了のデータがあるかを返します
-	// ret : 送信未完了のデータの数(キューのエントリ単位)
-	//DWORD IsWriting( void )const ;
-
-	//送信未完了のデータを破棄します
-	//bool Cancel( void );
 
 	//現在未完了の通信(送受信とも)を全て破棄し、接続を閉じます
 	bool Abort( void );
