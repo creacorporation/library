@@ -36,6 +36,14 @@ mASyncTcpSocket::~mASyncTcpSocket()
 		{
 			(*itr)->Parent = nullptr;
 		}
+		if( MyFinCallbackData )
+		{
+			MyFinCallbackData->Parent = nullptr;
+		}
+		if( MyCloseCallbackData )
+		{
+			MyCloseCallbackData->Parent = nullptr;
+		}
 	}
 
 	return;
@@ -87,6 +95,9 @@ bool mASyncTcpSocket::PrepareReadBuffer( DWORD count )
 		{
 		case WSA_IO_PENDING:
 			break;
+		case WSAESHUTDOWN:
+			PostFinCallbackTask();
+			break;
 		default:
 			RaiseError( g_ErrorLogger , ec , L"読み込みの非同期操作が開始しませんでした" );
 			MyReadQueue.pop_back();
@@ -95,8 +106,23 @@ bool mASyncTcpSocket::PrepareReadBuffer( DWORD count )
 			return false;
 		}
 	}
-
 	return true;
+}
+
+//Finコールバックを呼び出すタスクをポストする
+void mASyncTcpSocket::PostFinCallbackTask( void )
+{
+	MyFinCallbackData = mNew FinCallbackData;
+	MyFinCallbackData->Parent = this;
+	MyWTP->AddTask( GenericCallbackRoutine , 0 , reinterpret_cast<DWORD_PTR>( &MyFinCallbackData->Ov ) );
+}
+
+//クローズコールバックを呼び出すタスクをポストする
+void mASyncTcpSocket::PostCloseCallbackTask( void )
+{
+	MyCloseCallbackData = mNew CloseCallbackData;
+	MyCloseCallbackData->Parent = this;
+	MyWTP->AddTask( GenericCallbackRoutine , 0 , reinterpret_cast<DWORD_PTR>( &MyCloseCallbackData->Ov ) );
 }
 
 int AsyncEvent( mASyncTcpSocket& pipe , const mASyncTcpSocket::NotifyOption::NotifierInfo& info , const mASyncTcpSocket::NotifyFunctionOpt& opt )
@@ -142,6 +168,11 @@ int AsyncEvent( mASyncTcpSocket& pipe , const mASyncTcpSocket::NotifyOption::Not
 	return result;
 }
 
+bool mASyncTcpSocket::GenericCallbackRoutine( mWorkerThreadPool& pool , DWORD Param1 , DWORD_PTR Param2 )
+{
+	CompleteRoutine( 0 , 0 , reinterpret_cast<LPWSAOVERLAPPED>( Param2 ) );
+	return false;
+}
 
 VOID CALLBACK mASyncTcpSocket::CompleteRoutine( DWORD ec , DWORD len , LPWSAOVERLAPPED ov )
 {
@@ -175,6 +206,16 @@ VOID CALLBACK mASyncTcpSocket::CompleteRoutine( DWORD ec , DWORD len , LPWSAOVER
 			mDelete[] entry->Buffer.buf;
 			mDelete entry;
 		}
+		else if( baseptr->Type == QueueType::FIN_CALLBACK_ENTRY )
+		{
+			FinCallbackData* entry = CONTAINING_RECORD( ov ,  FinCallbackData , Ov );
+			mDelete entry;
+		}
+		else if( baseptr->Type == QueueType::CLOSE_CALLBACK_ENTRY )
+		{
+			CloseCallbackData* entry = CONTAINING_RECORD( ov ,  CloseCallbackData , Ov );
+			mDelete entry;
+		}
 		else
 		{
 			;
@@ -187,16 +228,7 @@ VOID CALLBACK mASyncTcpSocket::CompleteRoutine( DWORD ec , DWORD len , LPWSAOVER
 	NotifyEventToken token = token_ptr.lock();
 
 	//コールバックの呼び出し
-	if( baseptr->Type == QueueType::CONNECT_QUEUE_ENTRY )
-	{
-		ConnectData* entry = CONTAINING_RECORD( ov ,  ConnectData , Ov );
-		if( token )
-		{
-			me->ConnectCompleteRoutine( ec , *entry );
-		}
-		mDelete entry;
-	}
-	else if( baseptr->Type == QueueType::READ_QUEUE_ENTRY )
+	if( baseptr->Type == QueueType::READ_QUEUE_ENTRY )
 	{
 		ReadQueueEntry* entry = CONTAINING_RECORD( ov ,  ReadQueueEntry , Ov );
 		entry->Completed = true;
@@ -212,6 +244,34 @@ VOID CALLBACK mASyncTcpSocket::CompleteRoutine( DWORD ec , DWORD len , LPWSAOVER
 		if( token )
 		{
 			me->WriteCompleteRoutine( ec , len , ov );
+		}
+	}
+	else if( baseptr->Type == QueueType::CONNECT_QUEUE_ENTRY )
+	{
+		ConnectData* entry = CONTAINING_RECORD( ov ,  ConnectData , Ov );
+		if( token )
+		{
+			me->ConnectCompleteRoutine( ec , *entry );
+			me->MyConnectData = nullptr;
+		}
+		mDelete entry;
+	}
+	else if( baseptr->Type == QueueType::FIN_CALLBACK_ENTRY )
+	{
+		FinCallbackData* entry = CONTAINING_RECORD( ov ,  FinCallbackData , Ov );
+		mDelete entry;
+		if( token )
+		{
+			me->FinCompleteRoutine( ec );
+		}
+	}
+	else if( baseptr->Type == QueueType::CLOSE_CALLBACK_ENTRY )
+	{
+		CloseCallbackData* entry = CONTAINING_RECORD( ov ,  CloseCallbackData , Ov );
+		mDelete entry;
+		if( token )
+		{
+			me->CloseCompleteRoutine( ec );
 		}
 	}
 	else
@@ -269,26 +329,42 @@ void mASyncTcpSocket::ReadCompleteRoutine( DWORD ec , DWORD len , LPOVERLAPPED o
 		entry->ErrorCode = ec;
 		entry->BytesTransfered = len;
 
-		//キューの先頭ではない場合はコールバックを呼ばない
-		//※NOTIFY_CALLBACK_PARALLELのときは、先頭か否かに関係なくコールバックを呼ぶ
-		if( MyNotifyOption.OnRead.Mode != NotifyOption::NotifyMode::NOTIFY_CALLBACK_PARALLEL )
+		if( len == 0 )
 		{
-			if( MyReadQueue.empty() )
+			//FIN受信時
+			if( !entry->Parent->MyIsEOF )
+			{
+				entry->Parent->MyIsEOF = true;
+				complete_callback = true;
+			}
+			else
 			{
 				complete_callback = false;
 			}
-			else if( 2 < MyNotifyEventToken.use_count() )
+		}
+		else
+		{
+			//キューの先頭ではない場合はコールバックを呼ばない
+			//※NOTIFY_CALLBACK_PARALLELのときは、先頭か否かに関係なくコールバックを呼ぶ
+			if( MyNotifyOption.OnRead.Mode != NotifyOption::NotifyMode::NOTIFY_CALLBACK_PARALLEL )
 			{
-				complete_callback = ( MyReadQueue.front() == entry );
+				if( MyReadQueue.empty() )
+				{
+					complete_callback = false;
+				}
+				else if( 2 < MyNotifyEventToken.use_count() )
+				{
+					complete_callback = ( MyReadQueue.front() == entry );
+				}
+				else
+				{
+					complete_callback = true;
+				}
 			}
 			else
 			{
 				complete_callback = true;
 			}
-		}
-		else
-		{
-			complete_callback = true;
 		}
 	}
 
@@ -316,7 +392,14 @@ void mASyncTcpSocket::ReadCompleteRoutine( DWORD ec , DWORD len , LPOVERLAPPED o
 		{
 			//完了イベントをコール
 			NotifyFunctionOpt opt;
-			AsyncEvent( *entry->Parent , entry->Parent->MyNotifyOption.OnRead , opt );
+			if( len )
+			{
+				AsyncEvent( *entry->Parent , entry->Parent->MyNotifyOption.OnRead , opt );
+			}
+			else
+			{
+				PostFinCallbackTask();
+			}
 		}
 	}
 	return;
@@ -328,28 +411,30 @@ void mASyncTcpSocket::WriteCompleteRoutine( DWORD ec , DWORD len , LPOVERLAPPED 
 
 	WriteQueue remove_queue;	//削除予定のキュー
 	size_t queue_size = 0;		//削除後のキューサイズ
+	bool send_closed = false;	//クローズずみ？（クリティカルセクション内でチェック用）
 	{
 		//このブロックはクリティカルセクション
-		mCriticalSectionTicket critical( entry->Parent->MyCritical );
+		mCriticalSectionTicket critical( MyCritical );
 
 		//キューを完了状態にする
 		entry->ErrorCode = ec;
 		entry->BytesTransfered = len;
 
 		//キューの先頭からスキャンし、完了済みのパケットを順次削除
-		while( !entry->Parent->MyWriteQueue.empty() )
+		while( !MyWriteQueue.empty() )
 		{
-			if( entry->Parent->MyWriteQueue.front()->Completed )
+			if( MyWriteQueue.front()->Completed )
 			{
-				remove_queue.push_back( std::move( entry->Parent->MyWriteQueue.front() ) );
-				entry->Parent->MyWriteQueue.pop_front();
+				remove_queue.push_back( std::move( MyWriteQueue.front() ) );
+				MyWriteQueue.pop_front();
 			}
 			else
 			{
 				break;
 			}
 		}
-		queue_size = entry->Parent->MyWriteQueue.size();
+		queue_size = MyWriteQueue.size();
+		send_closed = MyIsClosed;
 	}
 
 	//イベント呼び出し
@@ -362,13 +447,26 @@ void mASyncTcpSocket::WriteCompleteRoutine( DWORD ec , DWORD len , LPOVERLAPPED 
 		NotifyFunctionOpt opt;
 		opt.OnError.Action = NotifyFunctionOpt::OnErrorOpt::ErrorAction::Write;
 		opt.OnError.ErrorCode = ec;
-		AsyncEvent( *entry->Parent , entry->Parent->MyNotifyOption.OnError , opt );
+		AsyncEvent( *this , MyNotifyOption.OnError , opt );
 	}
-	else if( queue_size < entry->Parent->MyOption.WritePacketNotifyCount )
+	else if( send_closed )
+	{
+		//シャットダウン
+		if( queue_size == 0 )
+		{
+			int rc = WSASendDisconnect( MySocket , nullptr );
+			if( rc != 0 )
+			{
+				SetLastError( WSAGetLastError() );
+				RaiseError( g_ErrorLogger , 0 , L"TCP" , L"ソケットのシャットダウンが失敗" );
+			}
+		}
+	}
+	else if( queue_size < MyOption.WritePacketNotifyCount )
 	{
 		//キューのエントリ数が減ったからイベントをコール
 		NotifyFunctionOpt opt;
-		AsyncEvent( *entry->Parent , entry->Parent->MyNotifyOption.OnWrite , opt );
+		AsyncEvent( *this , MyNotifyOption.OnWrite , opt );
 	}
 
 	//ポインタの削除を行う
@@ -450,8 +548,26 @@ bool mASyncTcpSocket::IsEOF( void )const
 //書き込み側の経路を閉じます
 bool mASyncTcpSocket::Close( void )
 {
-	MyIsClosed = true;
-	FlushCache();
+	if( MyIsClosed )
+	{
+		return true;
+	}
+	bool is_empty = false;
+	{
+		mCriticalSectionTicket critical( MyCritical );
+		MyIsClosed = true;
+		FlushCache();
+		is_empty = MyWriteQueue.empty();
+	}
+	if( is_empty )
+	{
+		if( WSASendDisconnect( MySocket , nullptr ) != 0 )
+		{
+			SetLastError( WSAGetLastError() );
+			RaiseError( g_ErrorLogger , 0 , L"TCP" , L"ソケットのシャットダウンが失敗" );
+			return false;
+		}
+	}
 	return true;
 }
 
@@ -479,7 +595,7 @@ bool mASyncTcpSocket::Write( INT data )
 	if( MyIsClosed )
 	{
 		//書き込み済みだからエラー終了
-		RaiseError( g_ErrorLogger , 0 , L"パイプはすでに閉じられています" );
+		RaiseError( g_ErrorLogger , 0 , L"ソケットはすでに閉じられています" );
 		return false;
 	}
 
@@ -937,6 +1053,11 @@ void mASyncTcpSocket::ConnectCompleteRoutine( DWORD ec , ConnectData& entry )
 	}
 	else
 	{
+		if( setsockopt( MySocket , SOL_SOCKET , SO_UPDATE_CONNECT_CONTEXT , nullptr , 0 ) != 0 )
+		{
+			RaiseError( g_ErrorLogger , 0 , L"TCP" , L"ソケット設定エラー" );
+		}
+
 		//完了イベントをコール
 		AddressInfoEntry Local;
 		{
@@ -970,3 +1091,14 @@ void mASyncTcpSocket::ConnectCompleteRoutine( DWORD ec , ConnectData& entry )
 	}
 }
 
+void mASyncTcpSocket::FinCompleteRoutine( DWORD ec )
+{
+	NotifyFunctionOpt opt;
+	AsyncEvent( *this , MyNotifyOption.OnFin , opt );
+}
+
+void mASyncTcpSocket::CloseCompleteRoutine( DWORD ec )
+{
+	NotifyFunctionOpt opt;
+	AsyncEvent( *this , MyNotifyOption.OnClose , opt );
+}

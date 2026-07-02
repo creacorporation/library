@@ -88,6 +88,14 @@ public:
 		{
 		}OnWrite;
 
+		struct OnFinOpt
+		{
+		}OnFin;
+
+		struct OnCloseOpt
+		{
+		}OnClose;
+
 		struct OnErrorOpt
 		{
 			enum class ErrorAction
@@ -112,8 +120,15 @@ public:
 		NotifierInfo OnAddressLookup;
 		//接続完了時のコールバック
 		NotifierInfo OnConnect;
+		//データ到着コールバック
 		NotifierInfo OnRead;
+		//データ送信完了コールバック
 		NotifierInfo OnWrite;
+		//FIN受信コールバック
+		NotifierInfo OnFin;
+		//閉鎖完了コールバック
+		NotifierInfo OnClose;
+		//エラー発生コールバック
 		NotifierInfo OnError;
 	};
 
@@ -168,10 +183,6 @@ public:
 	//（時間が経てば再度読み取れるかもしれない）
 	virtual INT Read( void ) override;
 
-	//EOFをセットしているかを調べます
-	//・SetEOF()をコールするとtrueになります
-	virtual bool IsEOF( void )const override;
-
 	//１文字書き込み
 	virtual bool Write( INT data ) override;
 
@@ -179,13 +190,13 @@ public:
 	//これを呼ばないと実際の送信は発生しません
 	virtual bool FlushCache( void ) override;
 
-	//書き込み側の経路を閉じます
-	virtual bool Close( void ) override;
+	//データの終端に到達しているか調べます。
+	//※FIN受信後かつ未読み取りのデータ無しで真
+	virtual bool IsEOF( void )const override;
 
-	//読み込み側の経路を閉じます
-	//・以降、新たな受信は行いません。
-	//・その時点までに受信していたデータは通常通り読み取れます。
-	virtual bool SetEOF( void ) ;
+	//書き込み側の経路を閉じます
+	//※TCP接続的なクローズではない。TCP的にはFINを送る処理。
+	virtual bool Close( void ) override;
 
 	//現在未完了の通信(送受信とも)を全て破棄し、接続を閉じます
 	bool Abort( void );
@@ -229,6 +240,8 @@ protected:
 		READ_QUEUE_ENTRY,
 		CONNECT_QUEUE_ENTRY,
 		NAME_RESOLV_QUEUE_ENTRY,
+		FIN_CALLBACK_ENTRY,
+		CLOSE_CALLBACK_ENTRY,
 	};
 
 	//非同期用データのベース
@@ -321,13 +334,38 @@ protected:
 	};
 	NameResolveData* MyNameResolveData = nullptr;
 
+	//FIN受信データ
+	class FinCallbackData : public ASyncDataBase
+	{
+	public:
+		FinCallbackData() : ASyncDataBase( QueueType::FIN_CALLBACK_ENTRY ){}
+	};
+	FinCallbackData* MyFinCallbackData = nullptr;
+
+	//クローズ受信データ
+	class CloseCallbackData : public ASyncDataBase
+	{
+	public:
+		CloseCallbackData() : ASyncDataBase( QueueType::CLOSE_CALLBACK_ENTRY ){}
+	};
+	CloseCallbackData* MyCloseCallbackData = nullptr;
+
 protected:
+
+	//Finコールバックを呼び出すタスクをポストする
+	void PostFinCallbackTask( void );
+
+	//クローズコールバックを呼び出すタスクをポストする
+	void PostCloseCallbackTask( void );
 
 	//完了ルーチン
 	static void CompleteRoutine( DWORD ec , DWORD len , LPWSAOVERLAPPED ov );
 
 	//接続完了時の完了ルーチン
 	static void AddressLookupCompleteRoutine( DWORD ec , DWORD len , LPWSAOVERLAPPED ov );
+
+	//FIN受信時のコールバック
+	static bool GenericCallbackRoutine( mWorkerThreadPool& pool , DWORD Param1 , DWORD_PTR Param2 );
 
 	//接続完了時の完了ルーチン
 	void AddressLookupRoutine( DWORD ec , NameResolveData& entry );
@@ -340,6 +378,19 @@ protected:
 
 	//送信完了時の完了ルーチン
 	void WriteCompleteRoutine( DWORD ec , DWORD len , LPOVERLAPPED ov );
+
+	//Fin受信時の完了ルーチン
+	void FinCompleteRoutine( DWORD ec );
+
+	//クローズ完了時の完了ルーチン
+	void CloseCompleteRoutine( DWORD ec );
+
+private:
+
+	//読み込み側の経路を閉じます
+	//・以降、新たな受信は行いません。
+	//・その時点までに受信していたデータは通常通り読み取れます。
+	virtual bool SetEOF( void ) ;
 
 };
 
