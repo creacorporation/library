@@ -142,23 +142,6 @@ bool mASyncTcpListener::Close( void )
 	return true;
 }
 
-int mASyncTcpListener::GetAddressFamily( Version ver )const
-{
-	switch( ver )
-	{
-	case Version::IPv4:
-		return AF_INET;
-		break;
-	case Version::IPv6:
-		return AF_INET6;
-		break;
-	default:
-		return AF_INET;
-		break;
-	};
-}
-
-
 bool mASyncTcpListener::Open( mWorkerThreadPool& wtp , const ConnectionOption& opt , const NotifyOption& notifier )
 {
 	//二重に開こうとしている？
@@ -186,11 +169,10 @@ bool mASyncTcpListener::Open( mWorkerThreadPool& wtp , const ConnectionOption& o
 	//リスンソケットの生成
 	{
 		MYADDRINFO serv_addr;
-		ADDRINFOEXW addr = {0};
-		addr.ai_family = GetAddressFamily( opt.Ver );
+		WString listen_addr = ( opt.Address != L"" ) ? ( opt.Address ) : ( L"::" );
 
-		INT rc = GetAddrInfoExW( opt.Address.c_str() , nullptr , NS_DNS , nullptr , &addr , &serv_addr.AddrInfo , nullptr , nullptr , nullptr , nullptr );
-		if( rc != NO_ERROR )
+		//アドレス→IP変換
+		if( GetAddrInfoExW( listen_addr.c_str() , nullptr , NS_DNS , nullptr , nullptr , &serv_addr.AddrInfo , nullptr , nullptr , nullptr , nullptr ) != 0 )
 		{
 			//アドレス取得失敗
 			RaiseError( g_ErrorLogger , 0 , L"TCP" , L"オープンするアドレスを取得できません" );
@@ -202,10 +184,21 @@ bool mASyncTcpListener::Open( mWorkerThreadPool& wtp , const ConnectionOption& o
 		MySocket = WSASocketW( serv_addr.AddrInfo->ai_family , SOCK_STREAM , IPPROTO_TCP , nullptr , 0 , WSA_FLAG_OVERLAPPED );
 		if( MySocket == INVALID_SOCKET )
 		{
-			//選択範囲外なのでエラーにする
 			RaiseError( g_ErrorLogger , 0 , L"TCP" , L"ソケットの生成が失敗しました" );
 			Close();
 			return false;
+		}
+
+		//デュアルスタックの有効化
+		if( opt.Address == L"" )
+		{
+			int optval = 0; //0=デュアルスタック有効
+			if( setsockopt( MySocket , IPPROTO_IPV6 , IPV6_V6ONLY , (char*)&optval , sizeof( optval ) ) != 0 )
+			{
+				RaiseError( g_ErrorLogger , 0 , L"TCP" , L"デュアルスタックの設定が失敗しました" );
+				Close();
+				return false;
+			}
 		}
 
 		//ワーカースレッドプールに登録する
@@ -226,7 +219,7 @@ bool mASyncTcpListener::Open( mWorkerThreadPool& wtp , const ConnectionOption& o
 			reinterpret_cast<sockaddr_in*>( serv_addr.AddrInfo->ai_addr )->sin_port = htons( opt.Port );
 			break;
 		}
-		if( bind( MySocket , serv_addr.AddrInfo->ai_addr , serv_addr.AddrInfo->ai_addrlen ) == SOCKET_ERROR )
+		if( bind( MySocket , serv_addr.AddrInfo->ai_addr , static_cast<int>( serv_addr.AddrInfo->ai_addrlen ) ) == SOCKET_ERROR )
 		{
 			RaiseError( g_ErrorLogger , 0 , L"TCP" , L"バインドが失敗しました" );
 			Close();
@@ -269,7 +262,22 @@ bool mASyncTcpListener::PrepareAcceptSocket( void )
 	MyAcceptData.Status = AcceptDataState::Listening;
 	MyAcceptData.ErrorCode = 0;
 	MyAcceptData.BytesTransfered = 0;
-	int address_family = GetAddressFamily( MyOption.Ver );
+	int address_family;
+	{
+		sockaddr_storage in;
+		int len = sizeof( in );
+		if( getsockname( MySocket , reinterpret_cast<sockaddr*>( &in ) , &len ) == 0 )
+		{
+			address_family = in.ss_family;
+		}
+		else
+		{
+			RaiseError( g_ErrorLogger , 0 , L"TCP" , L"リスンソケットのIPバージョンが不正です" );
+			MyAcceptData.Status = AcceptDataState::Empty;
+			return false;
+		}
+	}
+
 	MyAcceptData.Socket = WSASocketW( address_family , SOCK_STREAM , IPPROTO_TCP , nullptr , 0 , WSA_FLAG_OVERLAPPED );
 	if( MyAcceptData.Socket == INVALID_SOCKET )
 	{
@@ -396,6 +404,10 @@ bool mASyncTcpListener::TcpSocketInterface::GetNewSocket( SOCKET& retNewSocket ,
 		};
 
 		retNewSocket = Object.MyAcceptData.Socket;
+		if( setsockopt( retNewSocket , SOL_SOCKET , SO_UPDATE_ACCEPT_CONTEXT , reinterpret_cast<char*>( &Object.MySocket ) , sizeof( Object.MySocket ) ) != 0 )
+		{
+			RaiseError( g_ErrorLogger , 0 , L"TCP" , L"ソケット設定エラー" );
+		}
 
 		sockaddr* localaddr = nullptr;
 		int localaddr_len = 0;
@@ -415,6 +427,7 @@ bool mASyncTcpListener::TcpSocketInterface::GetNewSocket( SOCKET& retNewSocket ,
 			ReadSockAddr( remoteaddr , retRemote );
 		}
 
+		Object.MyAcceptData = AcceptData();
 		return Object.PrepareAcceptSocket();
 	}
 	else

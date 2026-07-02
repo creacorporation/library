@@ -30,8 +30,8 @@ public:
 	//IPアドレスバージョン
 	enum class Version
 	{
-		IPv4,
-		IPv6,
+		IPv4,			//IPv4アドレス
+		IPv6,			//IPv6アドレス
 	};
 
 	//通知データ
@@ -60,9 +60,13 @@ public:
 	struct ConnectionOption
 	{
 	public:
-		//IPバージョン
-		Version Ver = Version::IPv4;
 		//アドレス
+		//※ソケットのIPバージョンは書いたアドレスの形式で決まります
+		//※DNS名を書くとそれを解決するが、複数結果が返った場合にどのIPアドレスを使うかは不定
+		//[特殊例]
+		//"0.0.0.0"→inaddr_any(IPv4)
+		//"::"     →in6addr_any(IPv6)
+		//""       →デュアルスタック
 		WString Address;
 		//ポート番号
 		uint16_t Port = 10000;
@@ -124,7 +128,7 @@ protected:
 
 	bool PrepareAcceptSocket( void );
 
-	//パイプのハンドル
+	//リスンしているソケットのハンドル
 	SOCKET MySocket = INVALID_SOCKET;
 
 	//設定値
@@ -192,9 +196,6 @@ protected:
 
 	//接続完了時の完了ルーチン
 	void ConnectCompleteRoutine( DWORD ec , DWORD len , LPOVERLAPPED ov );
-
-	//バージョンのenum→AF_INETx
-	int GetAddressFamily( Version ver )const;
 
 };
 
