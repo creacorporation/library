@@ -687,6 +687,7 @@ bool mASyncTcpSocket::FlushCache( void )
 bool mASyncTcpSocket::Abort( bool disconnect_notify_request )
 {
 	//キューの破棄
+	if( MySocket != INVALID_SOCKET )
 	{
 		//完了関数からこのオブジェクトが呼び出されないようにする
 		mCriticalSectionTicket critical( MyCritical );
@@ -711,13 +712,10 @@ bool mASyncTcpSocket::Abort( bool disconnect_notify_request )
 		{
 			MyCloseCallbackData->Parent = nullptr;
 		}
-	}
-	//ハンドル廃棄
-	if( MySocket != INVALID_SOCKET )
-	{
+
+		//ハンドル廃棄
 		closesocket( MySocket );
 		MySocket = INVALID_SOCKET;
-
 		if( disconnect_notify_request )
 		{
 			PostDisconnectCallbackTask();
