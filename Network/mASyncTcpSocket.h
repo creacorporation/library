@@ -21,41 +21,7 @@
 #include <memory>
 #include <ws2tcpip.h>
 
-class mPipeReadStream : public mFileReadStreamBase
-{
-public:
-	//読み取り側の経路が開いているかを判定します
-	//開いている場合は真が返ります
-	virtual bool IsOpen( void )const override
-	{
-		return !IsEOF();
-	}
-};
-
-class mPipeWriteStream : public mFileWriteStreamBase
-{
-public:
-	mPipeWriteStream()
-	{
-		MyIsClosed = false;
-	}
-
-	//書き込み側の経路が開いているかを判定します
-	//開いている場合は真が返ります
-	virtual bool IsOpen( void )const override
-	{
-		return !MyIsClosed;
-	}
-
-private:
-	mPipeWriteStream( const mPipeWriteStream& src ) = delete;
-	const mPipeWriteStream& operator=( const mPipeWriteStream& src ) = delete;
-
-protected:
-	bool MyIsClosed;
-};
-
-class mASyncTcpSocket : public mPipeReadStream , public mPipeWriteStream
+class mASyncTcpSocket : public mFileReadStreamBase , public mFileWriteStreamBase
 {
 public:
 	mASyncTcpSocket();
@@ -92,9 +58,9 @@ public:
 		{
 		}OnFin;
 
-		struct OnCloseOpt
+		struct OnDisconnectOpt
 		{
-		}OnClose;
+		}OnDisconnect;
 
 		struct OnErrorOpt
 		{
@@ -127,7 +93,7 @@ public:
 		//FIN受信コールバック
 		NotifierInfo OnFin;
 		//閉鎖完了コールバック
-		NotifierInfo OnClose;
+		NotifierInfo OnDisconnect;
 		//エラー発生コールバック
 		NotifierInfo OnError;
 	};
@@ -190,16 +156,19 @@ public:
 	//これを呼ばないと実際の送信は発生しません
 	virtual bool FlushCache( void ) override;
 
-	//データの終端に到達しているか調べます。
-	//※FIN受信後かつ未読み取りのデータ無しで真
+	//読み込み側の経路が閉じているかを返します
 	virtual bool IsEOF( void )const override;
+
+	//書き込み側の経路が開いているかを返します
+	virtual bool IsOpen( void )const override;
 
 	//書き込み側の経路を閉じます
 	//※TCP接続的なクローズではない。TCP的にはFINを送る処理。
 	virtual bool Close( void ) override;
 
-	//現在未完了の通信(送受信とも)を全て破棄し、接続を閉じます
-	bool Abort( void );
+	//即座に接続を閉じます
+	// disconnect_notify_request : 真にすると、OnDisconnectのnotifyを発生させます
+	bool Abort( bool disconnect_notify_request );
 
 	//読み込み用の内部バッファを確保します
 	//臨時にバッファが必要になるときに使用します
@@ -230,7 +199,33 @@ protected:
 
 	//Notify呼び出し中のイベント数
 	using NotifyEventToken = std::shared_ptr<int>;
+	//Notify呼び出し中のイベント数
 	NotifyEventToken MyNotifyEventToken;
+
+	//送信側のシャットダウン状態
+	enum class SendShutdownState
+	{
+		Open,
+		CloseRequest,
+		Closed,
+	};
+	//送信側のシャットダウン状態
+	SendShutdownState MySendShutdownState = SendShutdownState::Open;
+
+	//受信側のシャットダウン状態
+	enum class RecvShutdownState
+	{
+		Open,
+		CallbackRequest,
+		Closed,
+	};
+	//送信側のシャットダウン状態
+	RecvShutdownState MyRecvShutdownState = RecvShutdownState::Open;
+
+	//送受信ともにシャットダウンが完成したかをチェックする
+	void DisconnectCheck( void );
+
+protected:
 
 	//処理内容フラグ
 	enum class QueueType
@@ -241,7 +236,7 @@ protected:
 		CONNECT_QUEUE_ENTRY,
 		NAME_RESOLV_QUEUE_ENTRY,
 		FIN_CALLBACK_ENTRY,
-		CLOSE_CALLBACK_ENTRY,
+		DISCONNECT_CALLBACK_ENTRY,
 	};
 
 	//非同期用データのベース
@@ -343,20 +338,20 @@ protected:
 	FinCallbackData* MyFinCallbackData = nullptr;
 
 	//クローズ受信データ
-	class CloseCallbackData : public ASyncDataBase
+	class DisconnectCallbackData : public ASyncDataBase
 	{
 	public:
-		CloseCallbackData() : ASyncDataBase( QueueType::CLOSE_CALLBACK_ENTRY ){}
+		DisconnectCallbackData() : ASyncDataBase( QueueType::DISCONNECT_CALLBACK_ENTRY ){}
 	};
-	CloseCallbackData* MyCloseCallbackData = nullptr;
+	DisconnectCallbackData* MyCloseCallbackData = nullptr;
 
 protected:
 
 	//Finコールバックを呼び出すタスクをポストする
 	void PostFinCallbackTask( void );
 
-	//クローズコールバックを呼び出すタスクをポストする
-	void PostCloseCallbackTask( void );
+	//切断コールバックを呼び出すタスクをポストする
+	void PostDisconnectCallbackTask( void );
 
 	//完了ルーチン
 	static void CompleteRoutine( DWORD ec , DWORD len , LPWSAOVERLAPPED ov );
@@ -364,7 +359,7 @@ protected:
 	//接続完了時の完了ルーチン
 	static void AddressLookupCompleteRoutine( DWORD ec , DWORD len , LPWSAOVERLAPPED ov );
 
-	//FIN受信時のコールバック
+	//FIN受信/切断時のコールバック
 	static bool GenericCallbackRoutine( mWorkerThreadPool& pool , DWORD Param1 , DWORD_PTR Param2 );
 
 	//接続完了時の完了ルーチン
@@ -382,15 +377,8 @@ protected:
 	//Fin受信時の完了ルーチン
 	void FinCompleteRoutine( DWORD ec );
 
-	//クローズ完了時の完了ルーチン
-	void CloseCompleteRoutine( DWORD ec );
-
-private:
-
-	//読み込み側の経路を閉じます
-	//・以降、新たな受信は行いません。
-	//・その時点までに受信していたデータは通常通り読み取れます。
-	virtual bool SetEOF( void ) ;
+	//切断完了時の完了ルーチン
+	static void DisconnectCompleteRoutine( mASyncTcpSocket& obj , DWORD ec );
 
 };
 
