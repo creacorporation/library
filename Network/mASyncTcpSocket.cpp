@@ -1049,6 +1049,10 @@ void mASyncTcpSocket::FinCompleteRoutine( DWORD ec )
 void mASyncTcpSocket::DisconnectCompleteRoutine( mASyncTcpSocket& obj , DWORD ec )
 {
 	NotifyFunctionOpt opt;
+	{
+		//クリティカルセクションに入って抜けることで、パケットを投げたスレッドの裏で別のスレッドが完了させないようにする
+		mCriticalSectionTicket ticket( obj.MyCritical );
+	}
 	AsyncEvent( obj , obj.MyNotifyOption.OnDisconnect , opt );
 }
 
